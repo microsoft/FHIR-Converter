@@ -16,12 +16,12 @@ For additional information, see the following documentation:
 
 * QuickStart guide to deploy locally
 * QuickStart guide to deploy to Azure
-* [How to create templates guide](template-creation-how-to-guide.md)
-* [Partial template conceptual guide](partial-template-concept.md)
-* [Examples of using helper functions](using-helpers-concept.md)
-* [Summary of available APIs](api-summary.md)
-* [Helper function summary](helper-functions-summary.md)
-* [Web UI summary](web-ui-summary.md)
+* [How to create templates guide](docs/template-creation-how-to-guide.md)
+* [Partial template conceptual guide](docs/partial-template-concept.md)
+* [Examples of using helper functions](docs/using-helpers-concept.md)
+* [Summary of available APIs](docs/api-summary.md)
+* [Helper function summary](docs/helper-functions-summary.md)
+* [Web UI summary](docs/web-ui-summary.md)
 
 ## Contributing
 
