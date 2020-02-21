@@ -2,11 +2,11 @@
 
 For Healthcare IT teams and solution architects who want to integrate clinical data currently in different formats, the FHIR Converter is an open source project that enables the conversion of legacy formatted health data to FHIR, expanding the use cases for health data and enabling interoperability.  
 
-Right now, the FHIR Converter transforms HL7 v2 messages into FHIR bundles using templates that define the mappings between the two data formats. Additional data types will be released in the future. Leveraging the FHIR Converter, organizations can customize or create their own mapping templates based on their HL7 v2 implementation and transform them into FHIR bundles. These FHIR bundles are returned for further data manipulation or can be immediately persisted into a FHIR server, like the Azure API for FHIR. The FHIR Converter released to open source on Thursday March 5th, 2020.
+Right now, the FHIR Converter transforms HL7 v2 messages into FHIR bundles using templates that define the mappings between the two data formats. Additional data types will be released in the future. Leveraging the FHIR Converter, organizations can customize or create their own mapping templates based on their HL7 v2 implementation and transform them into FHIR bundles. These FHIR bundles are returned for further data manipulation or can be immediately persisted into a FHIR server, such as the Azure API for FHIR. The FHIR Converter released to open source on Thursday March 5th, 2020.
 
 The open-source FHIR Converter consists of the following of functionality:
 
-1. A set of starting templates, leveraging [handlebars](https://handlebarsjs.com/), to translate HL7 v2 messages into FHIR bundles. These templates were generated based on the mappings defined by the [HL7 community](https://confluence.hl7.org/display/OO/2-To-FHIR+Project). As more mappings are defined, we will continue to release updated version of these templates. Current examples are ADT-A01, ORU-R01, and VXU_V04.
+1. A set of starting templates, leveraging [handlebars](https://handlebarsjs.com/), to translate HL7 v2 messages into FHIR bundles. These templates were generated based on the mappings defined by the [HL7 community](https://confluence.hl7.org/display/OO/2-To-FHIR+Project). As more mappings are defined, we will continue to release updated of these templates. Current examples are ADT-A01, ORU-R01, and VXU_V04.
 1. A collection of APIs to convert messages real time and assist in the template management and creation.
 1. A Web UI editor to modify templates and test single message conversion to FHIR bundles.
 
