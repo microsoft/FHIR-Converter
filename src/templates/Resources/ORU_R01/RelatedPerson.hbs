@@ -1,0 +1,83 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "RelatedPerson",
+        "id":"{{ID}}",
+        "identifier":
+        [
+            { {{>DataType/CX.hbs CX=PID-21}} },
+            {
+                {{>DataType/PLN.hbs PLN=PRT-24}},
+            },
+        ],
+        "relationship":
+        [
+            { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Participation.hbs" CWE=PRT-4}} },
+            { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Relationship.hbs" CWE=NK1-3}} },
+            {
+                {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Relationship.hbs" CWE=NK1-7}},
+            },
+        ],
+        {{>DataType/XCNRelatedPerson.hbs XCN=PRT-5}},
+        "period":
+        {
+            "start":"{{convertDateTimeStringToUTC PRT-11}}",
+            "start":"{{convertDateTimeStringToUTC NK1-8}}",
+            "end":"{{convertDateTimeStringToUTC PRT-12}}",
+            "end":"{{convertDateTimeStringToUTC NK1-9}}",
+        },
+        "address":
+        [
+            { {{>DataType/XAD.hbs XAD=PRT-14}} },
+            {
+                {{>DataType/XAD.hbs XAD=NK1-4}},
+            },
+            {
+                {{>DataType/XAD.hbs XAD=NK1-32}},
+            },
+        ],
+        "telecom":
+        [
+            { {{>DataType/XTN.hbs XTN=PRT-15}} },
+            {
+                {{>DataType/XTN.hbs XTN=NK1-5}},
+            },
+            {
+                {{>DataType/XTN.hbs XTN=NK1-6}},
+                {{#if NK1-6}},
+                    "use":"work",
+                {{/if}},
+            },
+            {
+                {{>DataType/XTN.hbs XTN=NK1-31}},
+            },
+            {
+                {{>DataType/XTN.hbs XTN=NK1-40}},
+            },
+            {
+                {{>DataType/XTN.hbs XTN=NK1-41}},
+            },
+        ],
+        "name":
+        [
+            { {{>DataType/XPN.hbs XPN=NK1-2}} },
+            { {{>DataType/XPN.hbs XPN=NK1-30}} },
+        ],
+        "gender":{{>DataType/_string.hbs mapping="CodeSystem/Gender.hbs" inCode=NK1-15 }},
+        "birthDate":"{{addHyphensDate NK1-16}}",
+        "communication":
+        [
+            {
+                "language":
+                [
+                    { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Language.hbs" CWE=NK1-20}} },
+                ],
+            },
+        ],
+        ,
+    },
+    "request":{
+        "method":"POST",
+        "url":"RelatedPerson",
+    },
+},
