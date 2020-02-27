@@ -22,6 +22,6 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
     
     - run: |
-        docker build . -t healthplatformregistry.azurecr.io/fhirconverter:${{ github.sha }}
-        docker push healthplatformregistry.azurecr.io/fhirconverter:${{ github.sha }}
+        docker build . -t healthplatformregistry.azurecr.io/fhirconverter:${{ github.sha }} -t healthplatformregistry.azurecr.io/fhirconverter:latest
+        docker push healthplatformregistry.azurecr.io/fhirconverter
 
