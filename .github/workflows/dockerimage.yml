@@ -1,0 +1,27 @@
+name: Docker Image CI
+
+on: 
+  push:
+    branches:
+      - master
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 'Checkout Github Action'
+      uses: actions/checkout@master
+      
+    - uses: azure/docker-login@v1
+      with:
+        login-server: healthplatformregistry.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    
+    - run: |
+        docker build . -t healthplatformregistry.azurecr.io/fhirconverter:${{ github.sha }}
+        docker push healthplatformregistry.azurecr.io/fhirconverter:${{ github.sha }}
+
