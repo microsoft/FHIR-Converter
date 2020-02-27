@@ -1,0 +1,40 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "PractitionerRole",
+        "id":"{{ID}}",
+        {{>DataType/XCNPractitionerRole.hbs XCN=PD1-4}},
+        {{>DataType/XCNPractitionerRole.hbs XCN=OBX-25}},
+        {{>DataType/XCNPractitionerRole.hbs XCN=OBX-25}},
+        "code":
+        {
+            {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Participation.hbs" CWE=PRT-4}},
+        },
+        {{>DataType/XCNPractitionerRole.hbs XCN=PRT-5}},
+        "specialty":
+        {
+            {{>DataType/CWECodeableConcept.hbs CWE=PRT-6}},
+        },
+        "period":
+        {
+            "start":"{{convertDateTimeStringToUTC PRT-11}}",
+            "end":"{{convertDateTimeStringToUTC PRT-12}}",
+        },
+        "telecom":
+        [
+            { {{>DataType/XTN.hbs XTN=PRT-15}} },
+        ],
+        "identifier":
+        [
+            {
+                {{>DataType/PLN.hbs PLN=PRT-24}},
+            },
+        ],
+        {{>DataType/XCNPractitionerRole.hbs XCN=ORC-12}},
+        ,
+    },
+    "request":{
+        "method":"POST",
+        "url":"PractitionerRole",
+    },
+},
