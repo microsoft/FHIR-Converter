@@ -1,4 +1,4 @@
-# FHIR® Converter Overview
+# FHIR® Converter
 
 For Healthcare IT teams and solution architects who want to integrate clinical data currently in different formats, the FHIR® Converter is an open source project that enables the conversion of legacy formatted health data to FHIR, expanding the use cases for health data and enabling interoperability.  
 
