@@ -17,7 +17,7 @@ jobs:
       
     - name: Set output
       id: extractbranchname
-      run: echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+      run: echo ::set-output name=short_ref::${GITHUB_REF##*/}
       
     - uses: azure/docker-login@v1
       with:
