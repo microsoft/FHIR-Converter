@@ -13,5 +13,7 @@ RUN apt remove imagemagick* -y && apt remove libmagick* -y && apt autoremove -y 
 # Bundle app source
 COPY . .
 
+RUN ["chmod", "+x", "/usr/src/app/deploy/webapp.sh"]
+
 EXPOSE 2019
 CMD [ "npm", "start" ]
