@@ -11,7 +11,7 @@ To edit templates, the open-source release includes a Web UI. Below is a screens
 | 3 | FHIR bundle output of the message in #1 using the json template in #2 |
 | 4 | UI rendering of the swagger to see details on all available APIs. Note that this will navigate you way from the editor to a new page |
 | 5 | Displays settings available in the UI. Currently the available settings are **scroll sync** (on by default) and **dark mode** (off by default). This is also the pop-up you will see each time you access the UI from a new browser and where you will enter your API Key |
-| 6 | Location to select pre loaded test messages for testing the template and conversion |
+| 6 | Location to select pre loaded test messages for testing the template and conversion. You can add additional test messages using the Git functionality, but not via the UI |
 | 7 | Location to select available templates |
 | 8 | Shows which template is currently being displayed in #2 and allows you to rename templates for saving |
 | 9 | Allows you to save updates to the template being displayed in #2 and #8 |
