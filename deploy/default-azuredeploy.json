@@ -92,7 +92,7 @@
                             "value": "true"
                         }
                     ],
-                    "linuxFxVersion": "[concat('DOCKER|', variables('registryName'), '/fhirconverter:branch-quickdeploy')]",
+                    "linuxFxVersion": "[concat('DOCKER|', variables('registryName'), '/fhirconverter:latest')]",
                     "appCommandLine": "./deploy/webapp.sh",
                     "alwaysOn": true
                 },
