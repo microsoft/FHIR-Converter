@@ -30,7 +30,8 @@ describe('hl7.parseHL7v2', function () {
     var fileNames = ['ADT01-23.hl7', 'ADT04-23.hl7', 'ADT04-251.hl7', 'IZ_1_1.1_Admin_Child_Max_Message.hl7', 'LRI_2.0-NG_CBC_Typ_Message.hl7'];
     fileNames.forEach(fileName => {
         it('should return an array when given valid HL7 v2 message (' + fileName + ')', function (done) {
-            parseFile(fileName, function (out) {
+            var messageFile = path.join(path.join(__dirname, "../../sample-data"), fileName);
+            parseFile(messageFile, function (out) {
                 done(Array.isArray(out));
             });
         });
@@ -39,7 +40,8 @@ describe('hl7.parseHL7v2', function () {
 
 describe('hl7.parseCoverageReport', function () {
     it('should successfully parse a coverage report', function (done) {
-        convertFile('coverage-test.hl7', 'basic.hbs', (msgContext) => {
+        var messageFile = path.join(path.join(__dirname, "../../test-data"), 'coverage-test.hl7');
+        convertFile(messageFile, 'basic.hbs', (msgContext) => {
             var coverageReport = hl7.parseCoverageReport(msgContext);
             assert.deepEqual(coverageReport, [
                 {
@@ -68,7 +70,8 @@ describe('hl7.parseCoverageReport', function () {
 
 describe('hl7.parseInvalidAccess', function () {
     it('should successfully parse an invalid access report', function (done) {
-        convertFile('coverage-test.hl7', 'basic.hbs', (msgContext) => {
+        var messageFile = path.join(path.join(__dirname, "../../test-data"), 'coverage-test.hl7');
+        convertFile(messageFile, 'basic.hbs', (msgContext) => {
             var accessReport = hl7.parseInvalidAccess(msgContext);
             assert.deepEqual(accessReport, [
                 {
@@ -103,9 +106,8 @@ function GetTemplate(templateString) {
     return instance.compile(templatePreprocessor.Process(templateString));
 }
 
-function parseFile(fileName, cb) {
-    var messageFolder = path.join(__dirname, "../../test-data");
-    fs.readFile(path.join(messageFolder, fileName), (err, msg) => {
+function parseFile(filePath, cb) {
+    fs.readFile(filePath, (err, msg) => {
         cb(hl7.parseHL7v2(msg.toString()));
     });
 }
