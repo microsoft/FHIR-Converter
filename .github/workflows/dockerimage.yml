@@ -21,7 +21,10 @@ jobs:
         username: ${{ secrets.REGISTRY_USERNAME }}
         password: ${{ secrets.REGISTRY_PASSWORD }}
     
-    - run: |
-        docker build . -t healthplatformregistry.azurecr.io/fhirconverter:${{ github.sha }} -t healthplatformregistry.azurecr.io/fhirconverter:latest
-        docker push healthplatformregistry.azurecr.io/fhirconverter
+    - name: Build the Docker image
+      env:
+        IMAGE_NAME: healthplatformregistry.azurecr.io/fhirconverter
+      run: |
+        docker build . -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:$(date +'%Y-%m-%d') -t $IMAGE_NAME:latest
+        docker push $IMAGE_NAME
 
