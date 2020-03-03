@@ -14,18 +14,20 @@ The open-source FHIR Converter consists of the following of functionality:
 
 ## Deploy the FHIR Converter
 
-The source code is available to be deployed in any manner you would like. The FHIR Converter can be run on-prem or in the cloud. We have provided below a quick link to deploy to Azure or details to deploy locally.
+The source code is available to be deployed in any manner you would like. The FHIR Converter can be run on-prem or in the cloud. Below are details to quickly deploy to Azure or deploy locally.
 
 ### Deploy to Azure
-Click this link to quickly deploy in Azure.
+Click this link to deploy in Azure.
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2FFHIR-Converter%2Fmaster%2Fdeploy%2Fdefault-azuredeploy.json" target="_blank">
     <img src="https://azuredeploy.net/deploybutton.png"/>
 </a>
 
-Note that the service name will be the name of your App Service and be included in the URL you will use to access the application. An API Key is required and you can set this to whatever you want.
+Note that the Service Name will be the name of your App Service and be included in the URL you will use to access the application. An API Key is required and you can set this to whatever you want.
 
-Once deployment is complete, you can go to the newly created App Service to see the details. Here you will get the URL to access your FHIR Converter (https://\<SERVICE NAME>.azurewebsites.net). If you need to grab your API Key again take the following steps:
+Once deployment is complete, you can go to the newly created App Service to see the details. Here you will get the URL to access your FHIR Converter (https://\<SERVICE NAME>.azurewebsites.net). 
+
+If you need to grab your API Key again take the following steps:
 1. Navigate back to your Resource group 
 1. Under Settings-->Deployments select your deployment 
 1. Select Outputs on the left-hand side 
@@ -42,7 +44,7 @@ npm install
 npm start
 ```
 
-Once this completes, you should be able to access the repo locally at http://localhost:2019/
+Once this completes, you can access Web UI locally at http://localhost:2019/
 
 ## Documentation
 
