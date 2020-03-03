@@ -24,7 +24,7 @@ The source code is available to be deployed in any manner you would like. The FH
 
 Once you click the link above, you will need to fill in all the details below in Azure. Note that the service name will be the name of your App Service and be included in the URL you will use to access the application. An API Key is required and you can set this to whatever you want.
 
-The **F1** App Service Plan SKU is the free SKU. You can also select a different SKU for increased performance, such as **B1**.
+The **F1** App Service Plan SKU is the free SKU. You can also select a different SKU for increased performance, such as **B2**.
 
 
 
