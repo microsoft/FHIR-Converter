@@ -26,13 +26,19 @@ Once you click the link above, you will need to fill in all the details below in
 
 The **F1** App Service Plan SKU is the free SKU. You can also select a different SKU for increased performance, such as **B1**.
 
+
+
 ### Deploy Locally
+Follow these steps to deploy a local copy of the FHIR Converter
 
-Note that we support node versions greater than or equal to version 10.10.0 and less than version 11.0.
+Make sure that you have Node.js >=10.10.0 < 11.0 installed
 
-1. Clone the repo and save it locally on your machine
-2. Open the saved repo in the command prompt and do npm install
-3. From the command prompt enter npm start
+```
+git clone https://github.com/microsoft/FHIR-Converter/
+cd FHIR-Converter
+npm install
+npm start
+```
 
 Once this completes, you should be able to access the repo locally at http://localhost:2019/
 
