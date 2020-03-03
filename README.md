@@ -28,7 +28,7 @@ The **F1** App Service Plan SKU is the free SKU. You can also select a different
 
 ![Deploy App Service](docs/images/azuredeployfhirconverter.PNG)
 
-Once deployment is complete, you can go to the newly created App Service to see the details. Here you will get the URL to access your FHIR Converter (https://<SERVICE NAME>.azurewebsites.net). If you need to grab your API Key again take the following steps:
+Once deployment is complete, you can go to the newly created App Service to see the details. Here you will get the URL to access your FHIR Converter (https://\<SERVICE NAME>.azurewebsites.net). If you need to grab your API Key again take the following steps:
 1. Navigate back to your Resource group 
 1. Under Settings-->Deployments select your deployment 
 1. Select Outputs on the left-hand side 
