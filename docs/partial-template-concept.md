@@ -40,9 +40,9 @@ Reference templates allow you to create references between two related resources
 },
 ```
 
-When this template is called in the main template, you must specify the values for **ID** and **REF**. Below is the example in the ADT.hbs template. DG1Instance is a parameter passed to get each condition from the encounter.
+When this template is called in the main template, you must specify the values for **ID** and **REF**. Below is the example in the ADT_A01.hbs template. DG1Instance is a parameter passed to get each condition from the encounter.
 
-```json
+```
 {{>References/Encounter/diagnosis.condition.hbs ID=(generateUUID ../../PV1) REF=(generateUUID DG1Instance)}}
 ```
 
