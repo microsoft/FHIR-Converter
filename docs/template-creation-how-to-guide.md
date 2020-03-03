@@ -24,15 +24,15 @@ To get started updating/creating templates:
 
 3. As you make updates in the left-hand editor, you will see the results of those reflected on the right-hand side. As you make updates in the left-hand editor, you will see the results of those reflected on the right-hand side.
 
-> [!TIP]
-> When editing templates, auto-completion is available for common scenarios to help you pull in commands, helper functions, and template names. To pull these in, start with {{. If you need to pull a partial template, type {{>.
+
+**TIP**: When editing templates, auto-completion is available for common scenarios to help you pull in commands, helper functions, and template names. To pull these in, start with {{. If you need to pull a partial template, type {{>.
 
 4. To ensure that you have included all of the needed message parts in your FHIR bundle, any segment that is not referenced by the template will be underlined in red dots (…). Review the sections underlined in red to ensure you have accounted for all necessary segments.
 
 ![web UI](images/full-ui.png)
 
->[!NOTE]
->The red dot underline functionality checks if the data is referenced in the template and does not guarantee that the specific value is directly included (or included at all) in the FHIR bundle output. Examples of this are any element used to generate the unique ID using the helper function generateUUID will count as included in the FHIR bundle output and any element referenced as part of an if statement will count as included, even if the if condition is not satisfied.
+
+**NOTE**: The red dot underline functionality checks if the data is referenced in the template and does not guarantee that the specific value is directly included (or included at all) in the FHIR bundle output. Examples of this are any element used to generate the unique ID using the helper function generateUUID will count as included in the FHIR bundle output and any element referenced as part of an if statement will count as included, even if the if condition is not satisfied.
 
 5. Once you are done editing, make sure to hit save. Your template will now be available to be called by the API for real time message translation.
 
@@ -51,13 +51,11 @@ Handlebars allows for nested templates, enabling you to create partial templates
 
 ![edit partial template](images/partial-template-edit.png)
 
->[!NOTE]
->When creating a FHIR bundle, it is often required to pull details from several sub-templates. When doing this, it is possible that resources could be repeated. To avoid duplicate entries, once the message has been compiled, it will merge/de-dup any created resources that have the same resourceType, ID, and versionID. An example of a template leveraging this is ADT.hbs.
+**NOTE**: When creating a FHIR bundle, it is often required to pull details from several sub-templates. When doing this, it is possible that resources could be repeated. To avoid duplicate entries, once the message has been compiled, it will merge/de-dup any created resources that have the same resourceType, ID, and versionID. An example of a template leveraging this is ADT.hbs.
 
 While you’re modifying a partial template, decide if you want to modify the partial template for all main templates that reference this partial or just the one you’re working on. If you only want to modify it for the one template you are working on, make sure to rename the template at the top before make any changes and hit save. On the main template you will have to update the partial template to call your newly named partial.
 
->[!NOTE]
->Scrolling between the template editor on the left and FHIR bundle output on the right-hand side only works for the original template you selected. When working with a template that you drilled into, you will need to scroll on both sides of the UI.
+**NOTE**: Scrolling between the template editor on the left and FHIR bundle output on the right-hand side only works for the original template you selected. When working with a template that you drilled into, you will need to scroll on both sides of the UI.
 
 For more details on the released partial templates and examples, see the [Partial Templates concept](partial-template-concept.md) documentation.
 
