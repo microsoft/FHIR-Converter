@@ -44,6 +44,7 @@ To get started updating/creating templates:
 1. As part of handlebars, there are some build-in helper functions available to you. The handlebars documentation will have the most up to date information on this.
 1. Leveraging partial templates allows you to build building block and utilize them across multiple templates
 1. Helper functions give you additional functionality for parsing the data. See the helper section below for more details.
+1. When updating templates, you may not want to save the updates immediately in your production system. To assist with this, the FHIR Converter includes basic Git functionality.
 
 ## Partial templates
 
