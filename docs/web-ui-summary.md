@@ -1,6 +1,6 @@
 # Web UI Summary
 
-To edit templates, the open-source release includes a Web UI. Below is a screenshot of the web UI with an overview of the key functionality.
+To edit templates, the open-source release includes a web UI. Below is a screenshot of the web UI with an overview of the key functionality.
 
 ![Web UI](images/web-ui-overview.jpeg)
 
