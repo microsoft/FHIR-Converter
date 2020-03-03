@@ -24,10 +24,6 @@ The source code is available to be deployed in any manner you would like. The FH
 
 Once you click the link above, you will need to fill in all the details below in Azure. Note that the service name will be the name of your App Service and be included in the URL you will use to access the application. An API Key is required and you can set this to whatever you want.
 
-The **F1** App Service Plan SKU is the free SKU. You can also select a different SKU for increased performance, such as **B2**.
-
-![Deploy App Service](docs/images/azuredeployfhirconverter.PNG)
-
 Once deployment is complete, you can go to the newly created App Service to see the details. Here you will get the URL to access your FHIR Converter (https://\<SERVICE NAME>.azurewebsites.net). If you need to grab your API Key again take the following steps:
 1. Navigate back to your Resource group 
 1. Under Settings-->Deployments select your deployment 
