@@ -12,18 +12,19 @@ The open-source FHIR Converter consists of the following of functionality:
 
 ![Node.js CI](https://github.com/microsoft/FHIR-Converter/workflows/Node.js%20CI/badge.svg?branch=master)
 
-## Documentation
+## Deploy the FHIR Converter
 
-For additional information, see the following documentation:
+The source code is available to be deployed in any manner you would like. The FHIR Converter can be run on-prem or in the cloud. We have provided below a quick link to deploy to Azure.
 
-### QuickStart guides
-
-* QuickStart guide to deploy locally
-* QuickStart guide to deploy to Azure
+### Deploy to Azure
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2FFHIR-Converter%2Fmaster%2Fdeploy%2Fdefault-azuredeploy.json" target="_blank">
     <img src="https://azuredeploy.net/deploybutton.png"/>
 </a>
+
+## Documentation
+
+For additional information, see the following documentation:
 
 ### Template creation and management details
 
@@ -40,6 +41,11 @@ For additional information, see the following documentation:
 * [Summary of available APIs](docs/api-summary.md)
 * [Helper function summary](docs/helper-functions-summary.md)
 * [Web UI summary](docs/web-ui-summary.md)
+
+## Resources
+
+* [Handlebars Documentation](https://handlebarsjs.com/)
+* [HL7 Community 2-To-FHIR-Project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project)
 
 ## Contributing
 
