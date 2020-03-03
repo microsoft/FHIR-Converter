@@ -4,7 +4,7 @@ The power of the FHIR Converter lies in its ability to convert 100s of messages 
 
 ## APIs
 
-To convert your messages leveraging the API, there are two different POST calls you can make depending on how you want to call your template. You can either setup the end point to call the template directly or you can call a template from storage.
+To convert your messages leveraging the API, there are two different POST calls you can make depending on how you want to call your template. You can either convert by passing the entire template's content or you can call a template from storage by name.
 
 | Function | Syntax                    | Details                                         |
 |----------|---------------------------|-------------------------------------------------|
