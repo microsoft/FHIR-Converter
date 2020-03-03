@@ -26,7 +26,7 @@ Once you click the link above, you will need to fill in all the details below in
 
 The **F1** App Service Plan SKU is the free SKU. You can also select a different SKU for increased performance, such as **B2**.
 
-![Deploy App Service](docs/images/azuredeployfhirconverter.png)
+![Deploy App Service](docs/images/azuredeployfhirconverter.PNG)
 
 ### Deploy Locally
 Follow these steps to deploy a local copy of the FHIR Converter
