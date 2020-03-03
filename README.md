@@ -14,13 +14,27 @@ The open-source FHIR Converter consists of the following of functionality:
 
 ## Deploy the FHIR Converter
 
-The source code is available to be deployed in any manner you would like. The FHIR Converter can be run on-prem or in the cloud. We have provided below a quick link to deploy to Azure.
+The source code is available to be deployed in any manner you would like. The FHIR Converter can be run on-prem or in the cloud. We have provided below a quick link to deploy to Azuree or .
 
 ### Deploy to Azure
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2FFHIR-Converter%2Fmaster%2Fdeploy%2Fdefault-azuredeploy.json" target="_blank">
     <img src="https://azuredeploy.net/deploybutton.png"/>
 </a>
+
+Once you click the link above, you will need to fill in all the details below in Azure. Note that the service name will be the name of your App Service and be included in the URL you will use to access the application. An API Key is required and you can set this to whatever you want.
+
+The **F1** App Service Plan SKU is the free SKU. You can also select a different SKU for increased performance, such as **B1**.
+
+### Deploy Locally
+
+Note that we support node versions greater than or equal to version 10.10.0 and less than version 11.0.
+
+1. Clone the repo and save it locally on your machine
+2. Open the saved repo in the command prompt and do npm install
+3. From the command prompt enter npm start
+
+Once this completes, you should be able to access the repo locally at http://localhost:2019/
 
 ## Documentation
 
