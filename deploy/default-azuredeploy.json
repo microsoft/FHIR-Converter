@@ -47,7 +47,7 @@
             "location": "[variables('resourcesLocation')]",
             "kind": "linux",
             "tags": {
-                "FhirService": "[variables('tagValue')]"
+                "[variables('tagValue')]": "[variables('tagValue')]"
             },
             "sku": {
                 "name": "[parameters('appServicePlanSku')]"
@@ -62,7 +62,7 @@
             "name": "[variables('lowerCaseServiceName')]",
             "location": "[variables('resourcesLocation')]",
             "tags": {
-                "FhirService": "[variables('tagValue')]"
+                "[variables('tagValue')]": "[variables('tagValue')]"
             },
             "dependsOn": [
                 "[concat('Microsoft.Web/serverfarms/', variables('serverfarmName'))]"
