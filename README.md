@@ -10,6 +10,8 @@ The open-source FHIR Converter consists of the following of functionality:
 1. A collection of APIs to convert messages real time and assist in the template management and creation.
 1. A Web UI editor to modify templates and test single message conversion to FHIR bundles.
 
+![Node.js CI](https://github.com/microsoft/FHIR-Converter/workflows/Node.js%20CI/badge.svg?branch=master)
+
 ## Documentation
 
 For additional information, see the following documentation:
