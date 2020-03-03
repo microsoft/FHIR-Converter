@@ -12,7 +12,7 @@ A common need when translating HL7 v2 messages into FHIR will be to get a specif
 
 Below is an example using two of these helper functions. First, the template leverages getFirstSegment to get the first PID, PD1, and PV1 from the message. From there, we want to remain in the context of the patient and encounter that we pulled from above and pull all the associated DG1 segments. This is accomplished using getSegmentLists.
 
-```json
+```
 {
     "resourceType": "Bundle",
     "type": "transaction",
@@ -38,7 +38,7 @@ Below is an example using two of these helper functions. First, the template lev
 
 As part of creating a FHIR resource, you will want to create a unique ID for the resource. To enable this, you can use the generateUUID helper which will generate a unique GUID for the resource.
 
-```json
+```
 {
     "resourceType": "Bundle",
     "type": "transaction",
@@ -53,7 +53,7 @@ In some scenarios, you may want to return an error instead of the FHIR bundle if
 
 To force the error instead of having the template run, you can use the assert helper function. An example of how this would look in the template is:
 
-```json
+```
 {
     "resourceType": "Bundle",
     "type": "transaction",
@@ -88,7 +88,7 @@ OBR|1|88502218|82503246|24317-0^Hemogram and platelet count, automated^LN||20141
 
 To get location, room, and building, you could use the following DataType template:
 
-```json
+```
 "Location":
 [
 "{{PV1-3-2}}"
