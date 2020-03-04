@@ -63,13 +63,13 @@ For additional information, see the following documentation:
 
 * [Converting messages conceptual guide](docs/convert-messages-concept.md)
 
-### Additional Resources
+### Additional resources
 
 * [Summary of available APIs](docs/api-summary.md)
 * [Helper function summary](docs/helper-functions-summary.md)
 * [Web UI summary](docs/web-ui-summary.md)
 
-## External Resources
+## External resources
 
 * [Handlebars Documentation](https://handlebarsjs.com/)
 * [HL7 Community 2-To-FHIR-Project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project)
