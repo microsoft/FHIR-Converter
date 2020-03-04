@@ -1,6 +1,6 @@
 # Using helpers
 
-Helper functions are a useful tool when creating templates. In the following sections, we have given some example of how to use the included helper functions for the FHIR converter. You can see the full list of included helper functions [here](helper-functions-summary.md).
+Helper functions are a useful tool when creating templates. In the following sections, we have given some example of how to use the included helper functions for the FHIR Converter. You can see the full list of included helper functions [here](helper-functions-summary.md).
 
 ## Basic Operators
 
@@ -72,7 +72,7 @@ For example, a birth date that is stored in an HL7 v2 message may be in the form
 
 ## Manipulating HL7 v2 data for FHIR bundle
 
-There are scenarios where you need to parse or combine elements from the HL7 v2 message to get the right attribute for your FHIR bundle. We have included several array and string functions to help you pull data and get return it in the way you need.
+There are scenarios where you need to parse or combine elements from the HL7 v2 message to get the right attribute for your FHIR bundle. We have included several array and string functions to help you pull data and return it in the way you need.
 
 For example, if you get a patient location from PV1 3-2 in an HL7 v2 message as Cherry123 where Cherry corresponds to the building and 123 corresponds to the room, you may want to store both building and room separately in your FHIR resource.
 
