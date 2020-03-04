@@ -11,6 +11,7 @@
         },
         "apiKey": {
             "type": "secureString",
+            "defaultValue": "[newGuid()]",
             "metadata": {
                 "description": "API key to access the app."
             }
@@ -101,11 +102,5 @@
                 "httpsOnly": true
             }
         }
-    ],
-    "outputs": {
-      "apiKey": {
-         "type": "string",
-         "value": "[parameters('apiKey')]"
-      }
-    }
+    ]
 }
