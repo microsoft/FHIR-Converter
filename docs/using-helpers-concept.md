@@ -68,7 +68,7 @@ The output on the right-hand side would return {BadRequest: Unable to create res
 
 Data in HL7 v2 messages may not provide the correct format for the FHIR resource. There are several helper functions available to help format things like social security number and dates to meet the FHIR specification.
 
-For example, a birth date that is stored in an HL7 v2 message may be in the format of 20000101. Using the helper function addHypensDate you can get it into the format 2000-01-01 which is required by FHIR. In the template, you would write this as "birthDate":"{{addHyphensDate PID-7}}" if birthday is stored in PID-7 and the output in the FHIR bundle would be "birthDate": "2000-01-01"
+For example, a birth date that is stored in an HL7 v2 message may be in the format of 20000101. Using the helper function addHyphensDate you can get it into the format 2000-01-01 which is required by FHIR. In the template, you would write this as "birthDate":"{{addHyphensDate PID-7}}" if birthday is stored in PID-7 and the output in the FHIR bundle would be "birthDate": "2000-01-01"
 
 ## Manipulating HL7 v2 data for FHIR bundle
 
