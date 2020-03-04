@@ -20,6 +20,7 @@ var nextRequestCall;
 var waitForTypingTimeout = 100;
 var bannerFade;
 var transitionTime = 1000;
+var uncheckedApiKey = false;
 // eslint-disable-next-line no-unused-vars
 var templateNames;
 
@@ -127,6 +128,7 @@ function checkApiKey(successFunc, errorFunc) {
             templateList.templates.map(template => template.templateName);
             // eslint-disable-next-line no-undef
             initHelperList();
+            uncheckedApiKey = false;
             if (successFunc) successFunc();
         },
         'error': function () {
@@ -372,7 +374,6 @@ function loadMessage(messageFile) {
 
 function loadTemplate(templateFile) {
     var okToLoadTemplate;
-    // add code to check all open tabs for changes and close all tabs when the template changes
 
     // Compare to cache while making sure line breaks are handled consistently
     if (openTemplates.reduce(
@@ -437,10 +438,6 @@ function loadMessageOptions() {
 
         $.each(messageList.messages, function (index, item) {
             $("#message-load-dropdown").append("<a class=\"dropdown-item\" href=\"#\">" + item.messageName + "</a>");
-        });
-
-        $("#message-load-dropdown").on('click', 'a', function () {
-            loadMessage($(this).text());
         });
     });
 }
@@ -667,7 +664,6 @@ function displayBanner(message, cssClass) {
 }
 
 function isTemplateName(templateName) {
-    loadTemplateOptions();
     return templateNames.includes(templateName);
 }
 
@@ -921,6 +917,10 @@ $(document).ready(function () {
         loadMessageOptions();
     });
 
+    $("#message-load-dropdown").on('click', 'a', function () {
+        loadMessage($(this).text());
+    });
+
     $('#git-dropdown-button').on('click', function () {
         loadGitMenu();
     });
@@ -937,6 +937,7 @@ $(document).ready(function () {
     });
 
     $("#settings-modal").on('show.bs.modal', function () {
+        uncheckedApiKey = true;
         $('#api-key-input').val(!hasSuccessfulCallBeenMade || apiKey === '' ? '' : maskedApiKey);
         $('#settings-scroll-sync').prop('checked', getSettings().scrollSync);
         $('#settings-dark-mode').prop('checked', getSettings().darkMode);
@@ -948,7 +949,9 @@ $(document).ready(function () {
 
     // We will not allow the API key modal to be closed if the API key is wrong. 
     $("#settings-modal").on('hidden.bs.modal', function () {
-        checkApiKey(undefined, function () { $('#settings-modal').modal('show'); });
+        if (uncheckedApiKey) {
+            checkApiKey(undefined, function () { $('#settings-modal').modal('show'); });
+        }
     });
 
     // API Key save button 
