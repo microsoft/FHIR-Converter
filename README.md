@@ -4,13 +4,14 @@
 
 For Healthcare IT teams and solution architects who want to integrate clinical data currently in different formats, the FHIR® Converter is an open source project that enables the conversion of legacy formatted health data to FHIR, expanding the use cases for health data and enabling interoperability.  
 
-Right now, the FHIR Converter transforms HL7 v2 messages into FHIR bundles using templates that define the mappings between the two data formats. Additional data types will be released in the future. Leveraging the FHIR Converter, organizations can customize or create their own mapping templates based on their HL7 v2 implementation and transform them into FHIR bundles. These FHIR bundles are returned for further data manipulation or can be immediately persisted into a FHIR server, such as the Azure API for FHIR. The FHIR Converter released to open source on Thursday March 5th, 2020.
+Right now, the FHIR Converter transforms HL7 v2 messages into FHIR bundles using templates that define the mappings between the two data formats. Leveraging the FHIR Converter organizations can customize or create their own mapping templates based on their HL7 v2 implementation and transform them into FHIR bundles. These FHIR bundles are returned for further data manipulation or can be immediately persisted into a FHIR server, such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/). The FHIR Converter released to open source on Thursday March 5th, 2020.
 
 The open-source FHIR Converter consists of the following of functionality:
 
 1. A set of starting templates, leveraging [handlebars](https://handlebarsjs.com/), to translate HL7 v2 messages into FHIR bundles. These templates were generated based on the mappings defined by the [HL7 community](https://confluence.hl7.org/display/OO/2-To-FHIR+Project). As more mappings are defined, we will continue to release updated of these templates. Current examples are ADT-A01, ORU-R01, and VXU_V04.
+1. A set of sample messages to accompany the released templates.
 1. A collection of APIs to convert messages real time and assist in the template management and creation.
-1. A Web UI editor to modify templates and test single message conversion to FHIR bundles.
+1. A Web UI editor to modify and create templates and test single message conversion to FHIR bundles.
 
 FHIR® is the registered trademark of HL7 and is used with the permission of HL7. Use of the FHIR trademark does not constitute endorsement of this product by HL7
 
@@ -25,14 +26,14 @@ Click this link to deploy in Azure.
     <img src="https://azuredeploy.net/deploybutton.png"/>
 </a>
 
-Note that the Service Name will be the name of your App Service and be included in the URL you will use to access the application. An API Key is required and you can set this to whatever you want.
+Note that the Service Name will be included in the URL you will use to access the application. In addition, the API Key is automatically generated when you deploy the App Service but you can change this to another value if you want.
 
 Once deployment is complete, you can go to the newly created App Service to see the details. Here you will get the URL to access your FHIR Converter (https://\<SERVICE NAME>.azurewebsites.net). 
 
-If you need to grab your API Key again take the following steps:
-1. Navigate back to your Resource group 
-1. Under Settings-->Deployments select your deployment 
-1. Select Outputs on the left-hand side 
+If you need to find your API Key again or change the value take the following steps:
+1. Navigate to your App Service
+1. Under Settings, select Configuration
+1. You will see CONVERSION_API_KEYS listed here. You can view the key and edit from this location.
 
 ### Deploy Locally
 Follow these steps to deploy a local copy of the FHIR Converter
