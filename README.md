@@ -49,9 +49,14 @@ npm start
 
 Once this completes, you can access Web UI locally at http://localhost:2019/
 
-## Documentation
+## Getting started
+Now that you have deployed the FHIR Converter, you can get started with using the functionality. We have included several documents to help you with template creation and management, understanding message conversion and some general summary guides that include functionality overview.
 
-For additional information, see the following documentation:
+If you are ready to start modifying and creating your own templates, check out the [how to create templates guide](docs/template-creation-how-to-guide.md) as the first place to start.
+
+Once you are ready to use the FHIR Converter to convert messages real time, we have sample archtecture diagrams and scenarios available to walk you through an end to end work flow in the [Microsoft Health References repo](https://github.com/microsoft/health-references).
+
+## Documentation
 
 ### Template creation and management details
 
