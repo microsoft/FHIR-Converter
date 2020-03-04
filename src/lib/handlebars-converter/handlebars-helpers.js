@@ -365,7 +365,7 @@ module.exports.external = [
     },
     {
         name: 'getRelatedSegmentList',
-        description: 'Given a segment name and index, return the collection of related named segments: getRelatedSegmentList message segment index',
+        description: 'Given a segment name and index, return the collection of related named segments: getRelatedSegmentList message parentSegmentName parentSegmentIndex childSegmentName',
         func: function getRelatedSegmentList(msg, parentSegment, parentIndex, childSegment) {
             try {
                 var ret = {};
@@ -401,7 +401,7 @@ module.exports.external = [
     },
     {
         name: 'getParentSegment',
-        description: 'Given a child segment name and overall message index, return the first matched parent segment: getParentSegment message segment index',
+        description: 'Given a child segment name and overall message index, return the first matched parent segment: getParentSegment message childSegmentName childSegmentIndex parentSegmentName',
         func: function getParentSegment(msg, childSegment, childIndex, parentSegment) {
             try {
                 var ret = {};
