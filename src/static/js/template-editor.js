@@ -778,8 +778,6 @@ function underlinePartialTemplateNames(document, change) {
     var startLine = change ? change.from.line : document.firstLine();
     var endLine = (change ? change.to.line : document.lastLine()) + 1;
 
-    loadTemplateOptions();
-
     // remove marks before adding new one, only check changed lines if passed
     activeTemplate.marks = activeTemplate.marks.filter(mark => {
         var section = mark.find();
