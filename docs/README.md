@@ -10,7 +10,7 @@ Here is a table of contents to help you find the document you need:
 
 * [Converting messages conceptual guide](docs/convert-messages-concept.md)
 
-## Additional Resources
+## Additional resources
 
 * [Summary of available APIs](docs/api-summary.md)
 * [Helper function summary](docs/helper-functions-summary.md)
