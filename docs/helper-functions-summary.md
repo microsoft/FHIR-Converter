@@ -13,7 +13,7 @@ The open-source release includes a set of helper functions to assist with templa
 | gte | Greater than or equal | **gte** ***a b*** |
 | not | Not true | **not** ***x*** |
 | and | Checks if all input arguments are true | **and** ***a b …*** |
-| or | Check if all input arguments are false | **or** ***a b…*** |
+| or | Checks if at least one input argument is true | **or** ***a b…*** |
 | elementAt | Returns array element at position index | **elementAt** ***array  index*** |
 | charAt | Returns char at position index | **charAt** ***string index*** |
 | length | Returns array length | **length** ***array*** |
