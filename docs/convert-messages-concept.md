@@ -34,7 +34,7 @@ MSH|^~\&|AccMgr
 ZA1|1||10006579^^^1^MRN^1
 ```
 #### Template
-```json
+```
 {
     "resourceType": "Bundle",
     "entry": [
