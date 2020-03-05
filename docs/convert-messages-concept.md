@@ -1,6 +1,6 @@
 # HL7 v2 Message to FHIR Bundle Conversion
 
-The power of the FHIR Converter lies in its ability to convert 100s of messages per second real-time. Once you have modified the templates to meet your need, you can call the API as part of your workflow. In the sections below we have an overview of the API and the output you get from the conversion.
+The power of the FHIR Converter lies in its ability to convert 100s of messages per second real-time. Once you have modified the templates to meet your needs, you can call the API as part of your workflow. In the sections below we have an overview of the API and the output you get from the conversion.
 
 ## APIs
 
@@ -8,7 +8,7 @@ To convert your messages leveraging the API, there are two different POST calls 
 
 | Function | Syntax                    | Details                                         |
 |----------|---------------------------|-------------------------------------------------|
-|POST      |/api/convert/hl7           |Converts an HL7 v2 message to FHIR using a template directly from the end point|
+|POST      |/api/convert/hl7           |Converts an HL7 v2 message to FHIR passing entire template content|
 |POST      |/api/convert/hl7/{template}|Converts an HL7 v2 message to FHIR using a template from storage|
 
 ## Conversion output
@@ -23,163 +23,104 @@ Each time a message is converted using the APIs, there are three pieces of infor
 
 ## Examples
 
-Below are examples of each piece of the conversion output.
+Below is an example of how this data is returned
 
-### fhirResource example
+### Sample message and template
+For the example, we will use the simple message and template below:
+
+#### Message
+```plaintext
+MSH|^~\&|AccMgr
+ZA1|1||10006579^^^1^MRN^1
+```
+#### Template
+```json
+{
+    "resourceType": "Bundle",
+    "entry": [
+        {{#with (getFirstSegments msg.v2 'MSH' 'ZA1' )}}           
+            {
+              "field1" : "{{ZA1-1}}",
+                "field2" : "{{ZA1-2}}",
+                "field3A" : "{{ZA1-3-4}}",
+                "field3B" : "{{ZA1-3-5}}",
+                "field4" : "{{ZA1-4}}",
+            } 
+        {{/with}}
+    ] 
+}
+```
+
+### Example conversion response
+
+Below is the output you get from the message and template. It includes the three pieces of data.
 
 ```JSON
 {
-  "fhirResource": {
-    "resourceType": "Bundle",
-    "$2$": "transaction",
-    "entry": [
-      {
-        "fullUrl": "urn:uuid:4eb5c7ca-9f74-3032-981c-c1954b471dbe",
-        "resource": {
-          "resourceType": "Patient",
-          "id": "4eb5c7ca-9f74-3032-981c-c1954b471dbe",
-          "identifier": [
+    "fhirResource": {
+        "resourceType": "Bundle",
+        "entry": [
             {
-              "value": "10006579"
-            },
-            {
-              "value": "123121234"
+                "field1": "1",
+                "field3A": "1",
+                "field3B": "MRN"
             }
-          ],
-          "name": [
-            {
-              "family": "DUCK",
-              "given": [
-                "DONALD",
-                "D"
-              ]
-            }
-          ],
-          "birthDate": "1924-10-10",
-          "gender": "male",
-          "address": [
-            {
-              "line": [
-                "111 DUCK ST"
-              ],
-              "city": "FOWL",
-              "state": "CA",
-              "postalCode": "999990000",
-              "type": "postal"
-            },
-            {
-              "district": "1"
-            }
-          ],
-          "telecom": [
-            {
-              "value": "8885551212",
-              "use": "home"
-            }
-          ],
-          "communication": [
-            {
-              "preferred": "true"
-            }
-          ]
+        ]
+    },
+    "unusedSegments": [
+        {
+            "type": "MSH",
+            "line": 0,
+            "field": [
+                {
+                    "index": 2,
+                    "component": [
+                        {
+                            "index": 0,
+                            "value": "AccMgr"
+                        }
+                    ]
+                }
+            ]
         },
-        "request": {
-          "method": "POST",
-          "url": "Patient"
+        {
+            "type": "ZA1",
+            "line": 1,
+            "field": [
+                {
+                    "index": 3,
+                    "component": [
+                        {
+                            "index": 0,
+                            "value": "10006579"
+                        },
+                        {
+                            "index": 1,
+                            "value": ""
+                        },
+                        {
+                            "index": 2,
+                            "value": ""
+                        },
+                        {
+                            "index": 5,
+                            "value": "1"
+                        }
+                    ]
+                }
+            ]
         }
-      },
+    ],
+    "invalidAccess": [
+        {
+            "type": "ZA1",
+            "line": 1,
+            "field": [
+                {
+                    "index": 4
+                }
+            ]
+        }
     ]
-  }
-  ```
-
-### unusedSegments
-
-  ```JSON
-  "unusedSegments": [
-    {
-      "type": "IN1",
-      "line": 7,
-      "field": [
-        {
-          "index": 1,
-          "component": [
-            "1"
-          ]
-        },
-        {
-          "index": 2,
-          "component": [
-            "MEDICARE"
-          ]
-        },
-        {
-          "index": 3,
-          "component": [
-            "3"
-          ]
-        },
-        {
-          "index": 12,
-          "component": [
-            "19891001"
-          ]
-        },
-        {
-          "index": 15,
-          "component": [
-            "4"
-          ]
-        },
-        {
-          "index": 16,
-          "component": [
-            "DUCK",
-            "DONALD",
-            "D"
-          ]
-        },
-      ]
-    },
-  ]
-  ```
-
-### invalidAccess
-
-```json
-  "invalidAccess": [
-    {
-      "type": "PID",
-      "line": 2,
-      "field": [
-        {
-          "index": 40
-        },
-        {
-          "index": 33
-        }
-      ]
-    },
-    {
-      "type": "NK1",
-      "line": 3,
-      "field": [
-        {
-          "index": 32
-        },
-        {
-          "index": 31
-        },
-        {
-          "index": 40
-        },
-        {
-          "index": 41
-        },
-        {
-          "index": 30
-        }
-      ]
-    },
-  ]
 }
 ```
