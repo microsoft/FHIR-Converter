@@ -25,7 +25,7 @@
                     {{>References/RelatedPerson/patient.hbs ID=(generateUUID NK1Instance) REF=(generateUUID ../../PID-3-1)}},
     
                 {{/each}}
-            {{/with}} 	
+            {{/with}} 
         
             {{#with (getSegmentLists ../msg.v2 'ORC')}}
                 {{#each ORC as |ORCInstance|}}
@@ -61,7 +61,7 @@
                         {{/each}}
                     {{/with}}
                     
-                    {{#with (getRelatedSegmentList ../../../msg.v2 'ORC' ORCInstance-1'DG1')}}
+                    {{#with (getRelatedSegmentList ../../../msg.v2 'ORC' ORCInstance-1 'DG1')}}
                         {{#each DG1 as |DG1Instance|}}
     
                           {{>Resources/OML_O21/Condition.hbs DG1=DG1Instance ID=(generateUUID DG1Instance)}},
