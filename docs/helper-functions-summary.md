@@ -32,12 +32,12 @@ The open-source release includes a set of helper functions to assist with templa
 | getFieldRepeats | Returns repeat list for a field | **getFieldRepeats** ***fieldData*** |
 | getFirstSegments | Returns first instance of the segments | **getFirstSegments** ***message segment1 segment2 …***
 | getSegmentLists | Extract HL7 v2 segments | **getSegmentLists** ***message segment1 segment2 …*** |
-| getRelatedSegmentList | Given a segment name and index, return the collection of related named segments | **getRelatedSegmentList** ***message segment1 segment2 …*** |
-| getParentSegment | Given a child segment name and overall message index, return the first matched parent segment | **getParentSegment** ***message segment1 segment2 …*** |
+| getRelatedSegmentList | Given a segment name and index, return the collection of related named segments | **getRelatedSegmentList** ***message parentSegmentName parentSegmentIndex childSegmentName*** |
+| getParentSegment | Given a child segment name and overall message index, return the first matched parent segment | **getParentSegment** ***message childSegmentName childSegmentIndex parentSegmentName*** |
 | hasSegments | Check if HL7 v2 message has segments | **hasSegments** ***message segment1 segment2 …*** |
 | concat | Returns the concatenation of provided strings | **concat** ***aString bString cString …*** |
 | generateUUID | Generates a guid based on a URL | **generateUUID** ***url***
-| addHyphensSSN | Adds hyphens to a SSN without hyphens | **addHyphensSSN** ***SSN*** |
+| addHyphensSSN | Adds hyphens to an SSN without hyphens | **addHyphensSSN** ***SSN*** |
 | addHyphensDate | Adds hyphens to a date without hyphens | **addHyphensDate** ***date*** |
 | now | Provides current UTC time in YYYYMMDDHHmmssSSS format | **now** |
 | formatAsDateTime | Converts an YYYYMMDDHHmmssSSS string, e.g. 20040629175400000 to dateTime format, e.g. 2004-06-29T17:54:00.000z | **formatAsDateTime** ***dateTimeString*** |
