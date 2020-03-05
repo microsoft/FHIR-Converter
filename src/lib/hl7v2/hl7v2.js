@@ -139,7 +139,7 @@ function parseCoverageReport(parsedMsg) {
                             });
                         }
 
-                        var item = { "index": recordIndex }
+                        var item = { "index": recordIndex };
                         item.value = component[recordIndex] ? component[recordIndex][0] : "";
                         fields.find((element) => element.index === correctedIndex).component.push(item);
                     }
