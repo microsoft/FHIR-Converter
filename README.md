@@ -54,7 +54,7 @@ Now that you have deployed the FHIR Converter, you can get started with using th
 
 If you are ready to start modifying and creating your own templates, check out the [how to create templates guide](docs/template-creation-how-to-guide.md) as the first place to start.
 
-Once you are ready to use the FHIR Converter to convert messages real time, we have sample archtecture diagrams and scenarios available to walk you through an end to end work flow in the [Microsoft Health References repo](https://github.com/microsoft/health-references).
+Once you are ready to use the FHIR Converter to convert messages real time, we have sample architecture diagrams and scenarios available to walk you through an end to end work flow in the [Microsoft Health References repo](https://github.com/microsoft/health-references).
 
 ## Documentation
 
