@@ -50,13 +50,19 @@ describe('hl7.parseCoverageReport', function () {
                     'field': [
                         {
                             "component": [
-                                "NES"
+                                {
+                                    "value": "NES",
+                                    "index": 0
+                                }
                             ],
                             "index": 2
                         },
                         {
                             "component": [
-                                "NINTENDO"
+                                {
+                                    "value": "NINTENDO",
+                                    "index": 0
+                                }
                             ],
                             "index": 3
                         }

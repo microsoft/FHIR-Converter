@@ -298,7 +298,6 @@ function convertMessage(resetOutputScroll) {
                                 line.field.forEach((field) => {
                                     if (field && field.index !== 0 && field.component.length > 0) {
                                         field.component.forEach((component) => {
-                                            var placedMark = false;
                                             var lineText = messageDoc.getLine(line.line);
                                             var startFieldIndex = indexOfX(lineText, fieldSeparator, field.index - 1) + 1;
                                             var endFieldIndex = indexOfX(lineText, fieldSeparator, field.index);
@@ -306,29 +305,9 @@ function convertMessage(resetOutputScroll) {
                                                 endFieldIndex = lineText.length;
                                             }
 
-                                            var startComponentIndex = lineText.indexOf(component, startFieldIndex);
-                                            var endComponentIndex = startComponentIndex + component.length;
-
-                                            while (startComponentIndex < endFieldIndex && startComponentIndex !== -1) {
-                                                if ((startComponentIndex === 0
-                                                    || lineText.charAt(startComponentIndex - 1) === fieldSeparator
-                                                    || lineText.charAt(startComponentIndex - 1) === componentSeparator)
-                                                    && (endComponentIndex === lineText.length
-                                                        || lineText.charAt(endComponentIndex) === fieldSeparator
-                                                        || lineText.charAt(endComponentIndex) === componentSeparator)
-                                                    && messageDoc.findMarksAt({ line: line.line, ch: startComponentIndex }).length === 0) {
-                                                    messageDoc.markText({ line: line.line, ch: startComponentIndex }, { line: line.line, ch: endComponentIndex }, { className: 'unused-segment' });
-                                                    placedMark = true;
-                                                    break;
-                                                }
-
-                                                startComponentIndex = lineText.indexOf(component, startComponentIndex + 1);
-                                                endComponentIndex = startComponentIndex + component.length;
-                                            }
-
-                                            if (!placedMark) {
-                                                console.warn("Unable to find unused segment " + component + " in field " + field.index + " on line " + (line.line + 1));
-                                            }
+                                            var startComponentIndex = indexOfX(lineText.substring(startFieldIndex, endFieldIndex), componentSeparator, component.index - 1) + startFieldIndex + 1;
+                                            var endComponentIndex = startComponentIndex + component.value.length;
+                                            messageDoc.markText({ line: line.line, ch: startComponentIndex }, { line: line.line, ch: endComponentIndex }, { className: 'unused-segment' });
                                         });
                                     }
                                 });
@@ -352,14 +331,11 @@ function convertMessage(resetOutputScroll) {
 }
 
 function indexOfX(source, target, number, offset = 0) {
-    if (offset === -1) {
+    if (offset === -1 || number < 0) {
         return -1;
     }
     else if (number === 0) {
         return source.indexOf(target, offset);
-    }
-    else if (number < 0) {
-        return offset;
     }
 
     return indexOfX(source, target, number - 1, source.indexOf(target, offset) + 1);

@@ -957,47 +957,79 @@ describe('POST /api/convert/hl7 (inline conversion)', function () {
                         "field": [
                             {
                                 "component": [
-                                    "AccMgr"
+                                    {
+                                        "index": 0,
+                                        "value": "AccMgr"
+                                    }
+
                                 ],
                                 "index": 2
                             },
                             {
                                 "component": [
-                                    "1"
+                                    {
+                                        "index": 0,
+                                        "value": "1"
+                                    }
+
                                 ],
                                 "index": 3
                             },
                             {
                                 "component": [
-                                    "20050110045504"
+                                    {
+                                        "index": 0,
+                                        "value": "20050110045504"
+                                    }
+
                                 ],
                                 "index": 6
                             },
                             {
                                 "component": [
-                                    "ADT",
-                                    "A01"
+                                    {
+                                        "index": 0,
+                                        "value": "ADT"
+                                    },
+                                    {
+                                        "index": 1,
+                                        "value": "A01"
+                                    }
+
+
                                 ],
                                 "index": 8
                             },
                             {
                                 "component": [
-                                    "599102"
+                                    {
+                                        "index": 0,
+                                        "value": "599102"
+                                    }
+
                                 ],
                                 "index": 9
                             },
                             {
                                 "component": [
-                                    "P"
+                                    {
+                                        "index": 0,
+                                        "value": "P"
+                                    }
+
                                 ],
                                 "index": 10
                             },
                             {
                                 "component": [
-                                    "2.3"
+                                    {
+                                        "index": 0,
+                                        "value": "2.3"
+                                    }
+
                                 ],
                                 "index": 11
-                            },
+                            }
                         ],
                         "line": 0,
                         "type": "MSH"
