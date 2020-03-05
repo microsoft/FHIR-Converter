@@ -24,16 +24,16 @@
                     {{>Resources/VXU_V04/Immunization.hbs ORC=ORCInstance ID=(generateUUID ORCInstance)}},
                     {{>References/Immunization/patient.hbs ID=(generateUUID ORCInstance) REF=(generateUUID ../../PID-3-1)}},
     
-                    {{#with (getSegmentLists ../../msg.v2 'ORC' ORCInstance-1 'RXA')}}
+                    {{#with (getSegmentLists ../../../msg.v2 'ORC' ORCInstance-1 'RXA')}}
                         {{#each RXA as |RXAInstance|}}
     
-                            {{>Resources/VXU_V04/Immunization.hbs RXA=RXAInstance ID=(generateUUID ../../ORCInstance)}},
+                            {{>Resources/VXU_V04/Immunization.hbs RXA=RXAInstance ID=(generateUUID ORCInstance)}},
     
-                            {{#with (getRelatedSegmentList ../../../../msg.v2 'RXA' RXAInstance-1 'OBX')}}
+                            {{#with (getRelatedSegmentList ../../../../../msg.v2 'RXA' RXAInstance-1 'OBX')}}
                                 {{#each OBX as |OBXInstance|}}
                                     {{>Resources/VXU_V04/Observation.hbs OBX=OBXInstance ID=(generateUUID OBXInstance)}},
-                                    {{>References/Observation/subject.hbs ID=(generateUUID OBXInstance) REF=(generateUUID ../../../../../PID-3-1)}},
-                                    {{>References/Observation/partOf.hbs ID=(generateUUID OBXInstance) REF=(generateUUID ../../../ORCInstance)}},
+                                    {{>References/Observation/subject.hbs ID=(generateUUID OBXInstance) REF=(generateUUID ../../../../../../PID-3-1)}},
+                                    {{>References/Observation/partOf.hbs ID=(generateUUID OBXInstance) REF=(generateUUID ORCInstance)}},
                                 {{/each}}
                             {{/with}}
 

@@ -32,8 +32,8 @@
                     
                     {{>Resources/OML_O21/ServiceRequest.hbs ORC=ORCInstance ID=(generateUUID (concat "ServiceRequest" ORCInstance))}},
                     {{>Resources/OML_O21/Provenance.hbs ORC=ORCInstance ID=(generateUUID (concat "Provenance" ORCInstance))}},
-                    {{>References/ServiceRequest/subject.hbs ID=(generateUUID (concat "ServiceRequest" ORCInstance)) REF=(generateUUID  ../../../PID-3-1)}}
-                    {{>References/Provenance/target.hbs ID=(generateUUID (concat "Provenance" ORCInstance)) REF=(generateUUID (concat "ServiceRequest" OBRInstance))}},
+                    {{>References/ServiceRequest/subject.hbs ID=(generateUUID (concat "ServiceRequest" ORCInstance)) REF=(generateUUID  ../../PID-3-1)}}
+                    {{>References/Provenance/target.hbs ID=(generateUUID (concat "Provenance" ORCInstance)) REF=(generateUUID (concat "ServiceRequest" ORCInstance))}},
     
                     {{#with (getRelatedSegmentList ../../../msg.v2 'ORC' ORCInstance-1 'TQ1')}}
                         {{#each TQ1 as |TQ1Instance|}}
@@ -51,7 +51,7 @@
                         {{/each}}
                     {{/with}}
     
-                    {{#with (getRelatedSegmentList ../../../msg.v2 'OBX')}}
+                    {{#with (getSegmentLists ../../../msg.v2 'OBX')}}
                         {{#each OBX as |OBXInstance|}}
                             
                             {{>Resources/OML_O21/Observation.hbs OBX=OBXInstance ID=(generateUUID (concat "Observation" OBXInstance))}},
@@ -71,7 +71,7 @@
                         {{/each}}
                     {{/with}} 
     
-                    {{#with (getRelatedSegmentList ../../../msg.v2 'SPM')}}
+                    {{#with (getSegmentLists ../../../msg.v2 'SPM')}}
                         {{#each SPM as |SPMInstance|}}
     
                             {{>Resources/OML_O21/Specimen.hbs SPM=SPMInstance ID=(generateUUID (concat "Specimen" SPMInstance))}},
