@@ -50,7 +50,7 @@ npm start
 Once this completes, you can access Web UI locally at http://localhost:2019/
 
 ## Getting started
-Now that you have deployed the FHIR Converter, you can get started with using the functionality. We have included several documents to help you with template creation and management, understanding message conversion and some general summary guides that include functionality overview.
+Now that you have deployed the FHIR Converter, you can get started with using the functionality. You will need to provide your API key when accessing service for the first time. We have included several documents to help you with template creation and management, understanding message conversion and some general summary guides that include functionality overview.
 
 If you are ready to start modifying and creating your own templates, check out the [how to create templates guide](docs/template-creation-how-to-guide.md) as the first place to start.
 
