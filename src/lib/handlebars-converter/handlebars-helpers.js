@@ -129,7 +129,7 @@ module.exports.external = [
     },
     {
         name: 'or',
-        description: 'Check if all input arguments are false: or a b …',
+        description: 'Checks if at least one input argument is true: or a b …',
         func: function (...inputElements) {
             return Array.prototype.slice.call(inputElements.slice(0, -1)).some(Boolean); //last element is full msg
         }
