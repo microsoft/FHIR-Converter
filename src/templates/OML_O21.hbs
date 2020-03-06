@@ -21,7 +21,7 @@
             {{#with (getSegmentLists ../msg.v2 'NK1')}}
                 {{#each NK1 as |NK1Instance|}}
     
-                    {{>Resources/ADT_A01/RelatedPerson.hbs NK1=NK1Instance ID=(generateUUID NK1Instance)}},
+                    {{>Resources/OML_O21/RelatedPerson.hbs NK1=NK1Instance ID=(generateUUID NK1Instance)}},
                     {{>References/RelatedPerson/patient.hbs ID=(generateUUID NK1Instance) REF=(generateUUID ../../PID-3-1)}},
     
                 {{/each}}
