@@ -35,7 +35,7 @@ If you need to find your API Key again or change the value take the following st
 1. Under Settings, select Configuration
 1. You will see CONVERSION_API_KEYS listed here. You can view the key and edit from this location.
 
-### Deploy Locally
+### Deploy locally
 Follow these steps to deploy a local copy of the FHIR Converter
 
 Make sure that you have Node.js >=10.10.0 < 11.0 installed
