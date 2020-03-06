@@ -10,14 +10,6 @@
                 {{>DataType/PLN.hbs PLN=PRT-24}},
             },
         ],
-        "relationship":
-        [
-            { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Participation.hbs" CWE=PRT-4}} },
-            { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Relationship.hbs" CWE=NK1-3}} },
-            {
-                {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Relationship.hbs" CWE=NK1-7}},
-            },
-        ],
         {{>DataType/XCNRelatedPerson.hbs XCN=PRT-5}},
         "period":
         {
@@ -62,6 +54,13 @@
         [
             { {{>DataType/XPN.hbs XPN=NK1-2}} },
             { {{>DataType/XPN.hbs XPN=NK1-30}} },
+        ],
+        "relationship":
+        [
+            { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Relationship.hbs" CWE=NK1-3}} },
+            {
+                {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Relationship.hbs" CWE=NK1-7}},
+            },
         ],
         "gender":{{>DataType/_string.hbs mapping="CodeSystem/Gender.hbs" inCode=NK1-15 }},
         "birthDate":"{{addHyphensDate NK1-16}}",

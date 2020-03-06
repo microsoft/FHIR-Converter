@@ -3,16 +3,14 @@
     "resource":{
         "resourceType": "Account",
         "id":"{{ID}}",
+        "identifier":
+        [
+            { {{>DataType/CX.hbs CX=PID-18}} },
+        ],
+        "subject":
         {
-            "identifier":
-            [
-                { {{>DataType/CX.hbs CX=PID-18}} },
-            ],
-            "subject":
-            {
-                {{#if PID-18}},
-                {{/if}},
-            },
+            {{#if PID-18}},
+            {{/if}},
         },
         ,
     },
