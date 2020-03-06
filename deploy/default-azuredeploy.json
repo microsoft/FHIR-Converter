@@ -38,9 +38,20 @@
         "registryName": "healthplatformregistry.azurecr.io",
         "resourcesLocation": "[resourceGroup().location]",
         "serverfarmName": "[concat(variables('lowerCaseServiceName'), '-plan')]",
+        "appInsightName": "[concat(variables('lowerCaseServiceName'), '-appinsight')]",
         "tagValue": "FhirConverter"
     },
     "resources": [
+        {
+            "type": "microsoft.insights/components",
+            "apiVersion": "2015-05-01",
+            "name": "[variables('appInsightName')]",
+            "location": "[variables('resourcesLocation')]",
+            "kind": "web",
+            "properties": {
+                "Application_Type": "web"
+            }
+        },
         {
             "apiVersion": "2018-02-01",
             "name": "[variables('serverfarmName')]",
@@ -66,7 +77,8 @@
                 "[variables('tagValue')]": "[variables('tagValue')]"
             },
             "dependsOn": [
-                "[concat('Microsoft.Web/serverfarms/', variables('serverfarmName'))]"
+                "[concat('Microsoft.Web/serverfarms/', variables('serverfarmName'))]",
+                "[resourceId('Microsoft.Insights/components', variables('appInsightName'))]"
             ],
             "properties": {
                 "name": "[variables('lowerCaseServiceName')]",
@@ -75,6 +87,10 @@
                         {
                             "name":"CONVERSION_API_KEYS",
                             "value":"[parameters('apiKey')]"
+                        },
+                        {
+                            "name":"APPINSIGHTS_INSTRUMENTATIONKEY",
+                            "value":"[reference(resourceId('Microsoft.Insights/components', variables('appInsightName')), '2014-04-01').InstrumentationKey]"
                         },
                         {
                             "name": "DOCKER_REGISTRY_SERVER_URL",
