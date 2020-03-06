@@ -1,6 +1,6 @@
 # HL7 v2 Message to FHIR Bundle Conversion
 
-The power of the FHIR Converter lies in its ability to convert 100s of messages per second real-time. Once you have modified the templates to meet your needs, you can call the API as part of your workflow. In the sections below we have an overview of the API and the output you get from the conversion.
+The power of the FHIR Converter lies in its ability to convert messages near real-time. Once you have modified the templates to meet your needs, you can call the API as part of your workflow. In the sections below we have an overview of the API and the output you get from the conversion.
 
 ## APIs
 
