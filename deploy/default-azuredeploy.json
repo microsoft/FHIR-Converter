@@ -50,6 +50,9 @@
             "kind": "web",
             "properties": {
                 "Application_Type": "web"
+            },
+            "tags": {
+                "[variables('tagValue')]": "[variables('tagValue')]"
             }
         },
         {
