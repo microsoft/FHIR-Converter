@@ -14,18 +14,10 @@ This document describes guidelines for contributing to the FHIR Converter repo.
 - **DO NOT** submit "work in progress" PRs. A PR should only be submitted when it is considered ready for review.
 - **DO NOT** mix independent and unrelated changes in one PR.
 
-## Coding Style
-
-The coding style is enforced through [StyleCop.Analyzers](https://github.com/DotNetAnalyzers/StyleCopAnalyzers), [.editorconfig](.editorconfig), and [stylecop.json](stylecop.json). Contributors should ensure these guidelines are followed when making submissions.
-
-- **DO** address the StyleCop.Analyzers errors.
-- **DO** follow the [.editorconfig](.editorconfig) and [stylecop.json](stylecop.json) settings.
-
 ## Creating Issues
 
 - **DO** use a descriptive title that identifies the issue or the requested feature.
 - **DO** write a detailed description of the issue or the requested feature.
 - **DO** provide details for issues you create:
   - Describe the expected and actual behavior.
-  - Provide any relevant exception message or OperationOutcome.
 - **DO** subscribe to notifications for created issues in case there are any follow-up questions.
