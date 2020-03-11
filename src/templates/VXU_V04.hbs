@@ -7,13 +7,13 @@
             {{assert ORC "Missing ORC"}},
             {{>Resources/Patient.hbs PID=PID NK1=NK1 PD1=PD1 ID=(generateUUID PID-3-1)}},
             {{>Resources/Encounter.hbs PV1=PV1 ID=(generateUUID PV1)}},
-            {{>References/Encounter/subject.hbs ID=(generateUUID PV1) REF=(generateUUID PID-3-1)}},
+            {{>References/Encounter/subject.hbs ID=(generateUUID PV1) REF=(concat 'Patient/' (generateUUID PID-3-1))}},
     
             {{#with (getSegmentLists ../msg.v2 'NK1')}}
                 {{#each NK1 as |NK1Instance|}}
     
                     {{>Resources/RelatedPerson.hbs NK1=NK1Instance ID=(generateUUID NK1Instance)}},
-                    {{>References/RelatedPerson/patient.hbs ID=(generateUUID NK1Instance) REF=(generateUUID ../../PID-3-1)}},
+                    {{>References/RelatedPerson/patient.hbs ID=(generateUUID NK1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
     
                 {{/each}}
             {{/with}} 	
@@ -22,7 +22,7 @@
                 {{#each ORC as |ORCInstance|}}
     
                     {{>Resources/Immunization.hbs ORC=ORCInstance ID=(generateUUID ORCInstance)}},
-                    {{>References/Immunization/patient.hbs ID=(generateUUID ORCInstance) REF=(generateUUID ../../PID-3-1)}},
+                    {{>References/Immunization/patient.hbs ID=(generateUUID ORCInstance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
     
                     {{#with (getRelatedSegmentList ../../../msg.v2 'ORC' ORCInstance-1 'RXA')}}
                         {{#each RXA as |RXAInstance|}}
@@ -32,8 +32,8 @@
                             {{#with (getRelatedSegmentList ../../../../../msg.v2 'RXA' RXAInstance-1 'OBX')}}
                                 {{#each OBX as |OBXInstance|}}
                                     {{>Resources/Observation.hbs OBX=OBXInstance ID=(generateUUID OBXInstance)}},
-                                    {{>References/Observation/subject.hbs ID=(generateUUID OBXInstance) REF=(generateUUID ../../../../../../PID-3-1)}},
-                                    {{>References/Observation/partOf.hbs ID=(generateUUID OBXInstance) REF=(generateUUID ORCInstance)}},
+                                    {{>References/Observation/subject.hbs ID=(generateUUID OBXInstance) REF=(concat 'Patient/' (generateUUID ../../../../../../PID-3-1))}},
+                                    {{>References/Observation/partOf.hbs ID=(generateUUID OBXInstance) REF=(concat 'Immunization/' (generateUUID ORCInstance))}},
                                 {{/each}}
                             {{/with}}
 

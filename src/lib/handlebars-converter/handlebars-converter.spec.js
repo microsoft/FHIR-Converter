@@ -17,8 +17,8 @@ describe('HandlebarsConverter', function () {
     var handlerbarExistingInstance = HandlebarsConverter.instance(false, path.join(__dirname, '../../templates'));
 
     var templatesMap = {};
-    templatesMap['Resources/ADT_A01/Patient.hbs'] = '{"key1":"value1"}';
-    templatesMap['Resources/ADT_A01/Encounter.hbs'] = '{"key2":"value2"}';
+    templatesMap['Resources/Patient.hbs'] = '{"key1":"value1"}';
+    templatesMap['Resources/Encounter.hbs'] = '{"key2":"value2"}';
     var handlerbarInstanceWithTemplatesMap = HandlebarsConverter.instance(true, path.join(__dirname, '../../templates'), templatesMap);
 
     it('should compile the ADT_A01.hbs template, which includes nested partials (using handlebar new insatnce)', function (done) {

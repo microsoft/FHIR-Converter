@@ -7,13 +7,13 @@
             {{assert ORC "Missing ORC"}},
             {{>Resources/Patient.hbs PID=PID PD1=PD1 NK1=NK1 ID=(generateUUID PID-3-1)}},
             {{>Resources/Encounter.hbs PV1=PV1 PV2=PV2 ID=(generateUUID PV1)}},
-            {{>References/Encounter/subject.hbs ID=(generateUUID PV1) REF=(generateUUID PID-3-1)}},
+            {{>References/Encounter/subject.hbs ID=(generateUUID PV1) REF=(concat 'Patient/' (generateUUID PID-3-1))}},
             
             {{#with (getSegmentLists ../msg.v2 'AL1')}}
                 {{#each AL1 as |AL1Instance|}}
     
                     {{>Resources/AllergyIntolerance.hbs AL1 ID=(generateUUID AL1Instance)}},
-                    {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID AL1Instance) REF=(generateUUID ../../PID-3-1)}},
+                    {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID AL1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
     
                 {{/each}}
             {{/with}} 	
@@ -22,7 +22,7 @@
                 {{#each NK1 as |NK1Instance|}}
     
                     {{>Resources/RelatedPerson.hbs NK1=NK1Instance ID=(generateUUID NK1Instance)}},
-                    {{>References/RelatedPerson/patient.hbs ID=(generateUUID NK1Instance) REF=(generateUUID ../../PID-3-1)}},
+                    {{>References/RelatedPerson/patient.hbs ID=(generateUUID NK1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
     
                 {{/each}}
             {{/with}} 
@@ -32,8 +32,8 @@
                     
                     {{>Resources/ServiceRequest.hbs ORC=ORCInstance ID=(generateUUID (concat "ServiceRequest" ORCInstance))}},
                     {{>Resources/Provenance.hbs ORC=ORCInstance ID=(generateUUID (concat "Provenance" ORCInstance))}},
-                    {{>References/ServiceRequest/subject.hbs ID=(generateUUID (concat "ServiceRequest" ORCInstance)) REF=(generateUUID  ../../PID-3-1)}}
-                    {{>References/Provenance/target.hbs ID=(generateUUID (concat "Provenance" ORCInstance)) REF=(generateUUID (concat "ServiceRequest" ORCInstance))}},
+                    {{>References/ServiceRequest/subject.hbs ID=(generateUUID (concat "ServiceRequest" ORCInstance)) REF=(concat 'Patient/' (generateUUID  ../../PID-3-1))}}
+                    {{>References/Provenance/target.hbs ID=(generateUUID (concat "Provenance" ORCInstance)) REF=(concat 'ServiceRequest/' (generateUUID (concat "ServiceRequest" ORCInstance)))}},
     
                     {{#with (getRelatedSegmentList ../../../msg.v2 'ORC' ORCInstance-1 'TQ1')}}
                         {{#each TQ1 as |TQ1Instance|}}
@@ -55,8 +55,8 @@
                         {{#each OBX as |OBXInstance|}}
                             
                             {{>Resources/Observation.hbs OBX=OBXInstance ID=(generateUUID (concat "Observation" OBXInstance))}},
-                            {{>References/ServiceRequest/supportingInfo.hbs ID=(generateUUID (concat "ServiceRequest" ORCInstance)) REF=(generateUUID (concat "Observation" OBXInstance))}}
-                            {{>References/Observation/subject.hbs ID=(generateUUID (concat "Observation" OBXInstance)) REF=(generateUUID ../../../../PID-3-1)}},
+                            {{>References/ServiceRequest/supportingInfo.hbs ID=(generateUUID (concat "ServiceRequest" ORCInstance)) REF=(concat 'Observation/' (generateUUID (concat "Observation" OBXInstance)))}}
+                            {{>References/Observation/subject.hbs ID=(generateUUID (concat "Observation" OBXInstance)) REF=(concat 'Patient/' (generateUUID ../../../../PID-3-1))}},
     
                         {{/each}}
                     {{/with}}
@@ -65,8 +65,8 @@
                         {{#each DG1 as |DG1Instance|}}
     
                           {{>Resources/Condition.hbs DG1=DG1Instance ID=(generateUUID DG1Instance)}},
-                          {{>References/ServiceRequest/reasonReference.hbs ID=(generateUUID (concat "ServiceRequest" ORCInstance)) REF=(generateUUID DG1Instance)}},
-                          {{>References/Condition/subject.hbs ID=(generateUUID DG1Instance) REF=(generateUUID ../../../../PID-3-1)}},
+                          {{>References/ServiceRequest/reasonReference.hbs ID=(generateUUID (concat "ServiceRequest" ORCInstance)) REF=(concat 'Condition/' (generateUUID DG1Instance))}},
+                          {{>References/Condition/subject.hbs ID=(generateUUID DG1Instance) REF=(concat 'Patient/' (generateUUID ../../../../PID-3-1))}},
     
                         {{/each}}
                     {{/with}} 
@@ -75,7 +75,7 @@
                         {{#each SPM as |SPMInstance|}}
     
                             {{>Resources/Specimen.hbs SPM=SPMInstance ID=(generateUUID (concat "Specimen" SPMInstance))}},
-                            {{>References/ServiceRequest/specimen.hbs ID=(generateUUID (concat "ServiceRequest" ORCInstance)) REF=(generateUUID (concat "Specimen" SPMInstance))}},
+                            {{>References/ServiceRequest/specimen.hbs ID=(generateUUID (concat "ServiceRequest" ORCInstance)) REF=(concat 'Specimen/' (generateUUID (concat "Specimen" SPMInstance)))}},
     
                         {{/each}}
                     {{/with}}

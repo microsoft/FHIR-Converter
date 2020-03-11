@@ -1540,7 +1540,7 @@ describe('POST /api/convert/hl7/:template (with stored template)', function () {
 
     it('should return 200 OK with valid message and existing template in a subdirectory', function (done) {
         supertest(app)
-            .post("/api/convert/hl7/Resources/ADT_A01/Patient.hbs")
+            .post("/api/convert/hl7/Resources/Patient.hbs")
             .set(API_KEY_HEADER, apiKeys[0])
             .set('Content-Type', 'text/plain')
             .send("MSH|^~\\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||")
