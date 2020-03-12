@@ -35,10 +35,10 @@
         "use":{{>DataType/_string.hbs mapping="CodeSystem/NameType.hbs" inCode=XCN-10 }},
         "period":
         {
-            "start":"{{convertDateTimeStringToUTC XCN-17-1}}",
-            "start":"{{convertDateTimeStringToUTC XCN-19}}",
-            "end":"{{convertDateTimeStringToUTC XCN-17-2}}",
-            "end":"{{convertDateTimeStringToUTC XCN-20}}",
+            "start":"{{formatAsDateTime XCN-17-1}}",
+            "start":"{{formatAsDateTime XCN-19}}",
+            "end":"{{formatAsDateTime XCN-17-2}}",
+            "end":"{{formatAsDateTime XCN-20}}",
         },
     },
 ],
