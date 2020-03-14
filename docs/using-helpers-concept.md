@@ -95,7 +95,7 @@ To get location, room, and building, you could use the following DataType templa
 ],
 "Room":
 [
-"{{replace PV1-3-2 '[A-Z,a-z]' ''}}"
+"{{replace PV1-3-2 '[A-Za-z]+' ''}}"
 ],
 "Building":
 [
