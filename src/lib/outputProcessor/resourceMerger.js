@@ -58,10 +58,8 @@ function getKey(res) {
         && Object.prototype.hasOwnProperty.call(res.resource, 'resourceType')) {
         let key = res.resource.resourceType;
         if (Object.prototype.hasOwnProperty.call(res.resource, 'meta')) {
-            for (var element of res.resource.meta) {
-                if (Object.prototype.hasOwnProperty.call(element, 'versionId')) {
-                    key = key.concat('_', element.versionId);
-                }
+            if (Object.prototype.hasOwnProperty.call(res.resource.meta, 'versionId')) {
+                key = key.concat('_', res.resource.meta.versionId);
             }
         }
         if (Object.prototype.hasOwnProperty.call(res.resource, 'id')) {
