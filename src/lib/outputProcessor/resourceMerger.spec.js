@@ -8,9 +8,9 @@ var resMerger = require('./resourceMerger');
 
 describe('resourceMerger', function () {
     var mergeTests = [
-        {in: [{"entry": [ { "resource":{"resourceType":"Patient", "a":"1", "meta":[{"dummy":"true"}]}},
+        {in: [{"entry": [ { "resource":{"resourceType":"Patient", "a":"1", "meta":{"dummy":"true"}}},
             {"resource":{"resourceType":"Patient","b":"2"}}]}, {}],
-        out: '{"entry":[{"resource":{"resourceType":"Patient","a":"1","meta":[{"dummy":"true"}],"b":"2"}}]}'}, // add property
+        out: '{"entry":[{"resource":{"resourceType":"Patient","a":"1","meta":{"dummy":"true"},"b":"2"}}]}'}, // add property
 
         {in: [{"entry":[{"a": "b"}]},{}], out: '{"entry":[{"a":"b"}]}'}, // invalid input returned as is
 
@@ -33,19 +33,19 @@ describe('resourceMerger', function () {
             {"resource":{"resourceType":"Observation","b":"2"}}]},{}],
         out: '{"entry":[{"resource":{"resourceType":"Patient","a":"1"}},{"resource":{"resourceType":"Observation","b":"2"}}]}'}, // merging only for same resourceType
 
-        {in: [{"entry": [ { "resource":{"resourceType":"Patient", "id":"1", "meta":[{"versionId":"1"},{"versionId":"2"}]}}, {"resource":{"resourceType":"Patient","id":"1","meta":[{"versionId":"1"},{"versionId":"2"}]}}]},{}],
-            out: '{"entry":[{"resource":{"resourceType":"Patient","id":"1","meta":[{"versionId":"1"},{"versionId":"2"}]}}]}' }, // 2 resources with matching type/id/versionId
+        {in: [{"entry": [ { "resource":{"resourceType":"Patient", "id":"1", "meta":{"versionId":"1"}}}, {"resource":{"resourceType":"Patient","id":"1","meta":{"versionId":"1"}}}]},{}],
+            out: '{"entry":[{"resource":{"resourceType":"Patient","id":"1","meta":{"versionId":"1"}}}]}' }, // 2 resources with matching type/id/versionId
 
-        {in: [{"entry": [ { "resource":{"resourceType":"Patient", "id":"1", "meta":[{"versionId":"1"},{"versionId":"3"}]}}, {"resource":{"resourceType":"Patient","id":"1","meta":[{"versionId":"1"},{"versionId":"2"}]}}]},{}],
-            out: '{"entry":[{"resource":{"resourceType":"Patient","id":"1","meta":[{"versionId":"1"},{"versionId":"3"}]}},{"resource":{"resourceType":"Patient","id":"1","meta":[{"versionId":"1"},{"versionId":"2"}]}}]}' }, // 2 resources with matching type/id and non-matching versionId
+        {in: [{"entry": [ { "resource":{"resourceType":"Patient", "id":"1", "meta":{"versionId":"1"}}}, {"resource":{"resourceType":"Patient","id":"1","meta":{"versionId":"2"}}}]},{}],
+            out: '{"entry":[{"resource":{"resourceType":"Patient","id":"1","meta":{"versionId":"1"}}},{"resource":{"resourceType":"Patient","id":"1","meta":{"versionId":"2"}}}]}' }, // 2 resources with matching type/id and non-matching versionId
 
-        {in: [{"entry": [ { "resource":{"resourceType":"Patient", "a":"1", "meta":[{"dummy":"true"}]}},
+        {in: [{"entry": [ { "resource":{"resourceType":"Patient", "a":"1", "meta":{"dummy":"true"}}},
             {"resource":{"resourceType":"Patient","$1$":"2"}}]}, {'"$1$":' : '"b":'}],
-        out: '{"entry":[{"resource":{"resourceType":"Patient","a":"1","meta":[{"dummy":"true"}],"b":"2"}}]}'}, // use replacement dictionary
+        out: '{"entry":[{"resource":{"resourceType":"Patient","a":"1","meta":{"dummy":"true"},"b":"2"}}]}'}, // use replacement dictionary
 
-        {in: [{"entry": [ { "resource":{"resourceType":"Patient", "a":"1", "meta":[{"dummy":"true"}]}},
+        {in: [{"entry": [ { "resource":{"resourceType":"Patient", "a":"1", "meta":{"dummy":"true"}}},
             {"resource":{"resourceType":"Patient","b":"2"}}]}],
-        out: '{"entry":[{"resource":{"resourceType":"Patient","a":"1","meta":[{"dummy":"true"}],"b":"2"}}]}'}, // no replacement dictionary
+        out: '{"entry":[{"resource":{"resourceType":"Patient","a":"1","meta":{"dummy":"true"},"b":"2"}}]}'}, // no replacement dictionary
     ];
 
     mergeTests.forEach(t => {
