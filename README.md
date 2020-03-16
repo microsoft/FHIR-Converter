@@ -17,10 +17,12 @@ FHIR® is the registered trademark of HL7 and is used with the permission of HL7
 
 ## Deploy the FHIR Converter
 
-The source code is available to be deployed in any manner you would like. The FHIR Converter can be run on-prem or in the cloud. Below are details to quickly deploy to Azure or deploy locally.
+The source code is available to be deployed in any manner you would like. The FHIR Converter can be run on-prem or in the cloud. To deploy the FHIR Converter, there are two key pieces of functionality. One is a web server (node.js) and the other is a persistence layer for the templates. To assist with easy deployment we have included two options below, one through Azure and one which will deploy locally. If you choose to deploy from another mechanism then the two options below, you will need to setup the storage for the templates.
 
 ### Deploy to Azure
-Click this link to deploy in Azure.
+To deploy in Azure, you will need to have a subscription in Azure. If you do not have an Azure subscription, you can start [here](https://azure.microsoft.com/free/).
+
+Once you have your subscription, click the link below:
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2FFHIR-Converter%2Fmaster%2Fdeploy%2Fdefault-azuredeploy.json" target="_blank">
     <img src="https://azuredeploy.net/deploybutton.png"/>
