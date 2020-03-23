@@ -1,0 +1,58 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+    {{#with msg.ClinicalDocument.recordTarget.patientRole as |pt|}}
+      "fullUrl": "urn:uuid:{{generateUUID (toJsonString pt.patient)}}",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "{{generateUUID (toJsonString pt.patient)}}",
+        "identifier": [
+          {
+            "value": "{{pt.id.extension}}",
+            "type": {
+              "coding": [
+                {
+                  "code": "MR"
+                }
+              ]
+            }
+          },
+        ],
+        "name": [
+          {
+            "family": "{{pt.patient.name.family}}",
+            "given": [
+              "{{pt.patient.name.given-1}}",
+              "{{pt.patient.name.given-2._}}",
+            ]
+          }
+        ],
+        "birthDate": "{{addHyphensDate pt.patient.birthTime.value}}",
+        "gender": "{{pt.patient.administrativeGenderCode.displayName}}",
+        "address": [
+          {
+            "line": [
+              "{{pt.addr.streetAddressLine}}"
+            ],
+            "city": "{{pt.addr.city}}",
+            "state": "{{pt.addr.state}}",
+            "postalCode": "{{pt.addr.postalCode}}",
+          },
+        ],
+        "telecom": [
+          {
+            "value": "{{replace pt.telecom.value 'tel:' ''}}",
+            "use": "home"
+          },
+        ],
+      },
+      "request": {
+        "method": "POST",
+        "url": "Patient"
+      }
+      {{/with}}
+    },
+  ]
+}

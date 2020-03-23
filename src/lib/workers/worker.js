@@ -9,6 +9,7 @@ var fs = require('fs');
 var Promise = require('promise');
 var compileCache = require('memory-cache');
 var hl7 = require('../hl7v2/hl7v2');
+var cda = require('../cda/cda');
 var constants = require('../constants/constants');
 var errorCodes = require('../error/error').errorCodes;
 var errorMessage = require('../error/error').errorMessage;
@@ -39,12 +40,12 @@ function generateResult(msgContext, template, replacementDictionary = null) {
             jsonProcessor.Process(template(msgContext))
         ), replacementDictionary);
 
-    var coverage = hl7.parseCoverageReport(msgContext.msg);
-    var invalidAccess = hl7.parseInvalidAccess(msgContext.msg);
+    //var coverage = hl7.parseCoverageReport(msgContext.msg);
+    //var invalidAccess = hl7.parseInvalidAccess(msgContext.msg);
     var result = {
         'fhirResource': message,
-        'unusedSegments': coverage,
-        'invalidAccess': invalidAccess,
+        //'unusedSegments': coverage,
+        //'invalidAccess': invalidAccess,
     };
 
     return result;
@@ -82,45 +83,66 @@ WorkerUtils.workerTaskProcessor((msg) => {
                             templatesMap = JSON.parse(Buffer.from(msg.templatesMapBase64, 'base64').toString());
                         }
 
-                        var msgObj = {};
-                        try {
-                            var b = Buffer.from(msg.messageBase64, 'base64');
-                            var s = b.toString();
-                            msgObj = hl7.parseHL7v2(s);
-                        }
-                        catch (err) {
-                            reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, `Unable to decode and parse HL7 v2 message. ${err.message}`) });
-                        }
-
+                        
                         var templateString = "";
                         if (msg.templateBase64) {
                             templateString = Buffer.from(msg.templateBase64, 'base64').toString();
                         }
 
-                        var context = { msg: msgObj };
-                        if (templateString == null || templateString.length == 0) {
-                            var coverage = hl7.parseCoverageReport(context.msg);
-                            var invalidAccess = hl7.parseInvalidAccess(context.msg);
-                            var result = {
-                                'fhirResource': JSON.parse(JSON.stringify(context.msg)),
-                                'unusedSegments': coverage,
-                                'invalidAccess': invalidAccess,
-                            };
+                        /*var msgObj = {};
 
-                            fulfill({ 'status': 200, 'resultMsg': result });
-                        }
-                        else {
-                            var template = GetHandlebarsInstance(templatesMap).compile(templatePreprocessor.Process(templateString));
 
-                            try {
-                                fulfill({ 'status': 200, 'resultMsg': generateResult(context, template, replacementDictionary) });
-                            }
-                            catch (err) {
-                                reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, "Unable to create result: " + err.toString()) });
-                            }
+                        try {
+                            var b = Buffer.from(msg.messageBase64, 'base64');
+                            var s = b.toString();
+                            console.log(`s : ${s}`);
+                            msgObj = cda.parseCDA(s);// hl7.parseHL7v2(s);
+                            console.log(`msgObj : ${JSON.stringify(msgObj)}`);
                         }
+                        catch (err) {
+                            reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, `Unable to decode and parse HL7 v2 message. ${err.message}`) });
+                        }*/
+
+                        var b = Buffer.from(msg.messageBase64, 'base64');
+                        var s = b.toString();
+                        //console.log(`s : ${s}`);
+                        cda.parseCDA(s)
+                        .then((msgObj) => {
+                            //console.log(`inside then`);
+                            //console.log(`msgObj : ${msgObj}`);
+                            var context = { msg: msgObj };
+                            //console.log(typeof context);
+                            //console.log(JSON.stringify(context));
+                            if (templateString == null || templateString.length == 0) {
+                                var coverage = hl7.parseCoverageReport(context.msg);
+                                var invalidAccess = hl7.parseInvalidAccess(context.msg);
+                                var result = {
+                                    'fhirResource': JSON.parse(JSON.stringify(context.msg)),
+                                    'unusedSegments': coverage,
+                                    'invalidAccess': invalidAccess,
+                                };
+    
+                                fulfill({ 'status': 200, 'resultMsg': result });
+                            }
+                            else {
+                                var template = GetHandlebarsInstance(templatesMap).compile(templatePreprocessor.Process(templateString));
+    
+                                try {
+                                    fulfill({ 'status': 200, 'resultMsg': generateResult(context, template, replacementDictionary) });
+                                }
+                                catch (err) {
+                                    reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, "Unable to create result: " + err.toString()) });
+                                }
+                            }
+
+                        })
+                        .catch(err => {
+                            //console.log(err);
+                            reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, `Unable to decode and parse HL7 v2 message. ${err.message}`) });
+                        });
                     }
                     catch (err) {
+                        //console.log(err);
                         reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, err.toString()) });
                     }
                 }
