@@ -313,6 +313,20 @@ module.exports.external = [
         }
     },
     {
+        name: 'toArray',
+        description: 'Returns Array',
+        func: function (val) {
+            if (Array.isArray(val)) {
+                return val;
+            }
+            else {
+                var arr = [];
+                arr.push(val);
+                return arr;
+            }
+        }
+    },
+    {
         name: 'isArray',
         description: 'Returns true if value is array: isArray val',
         func: function (val) {

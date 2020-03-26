@@ -4,7 +4,7 @@
         "resourceType": "AllergyIntolerance",
         "id":"{{ID}}",
         
-        {{#each allergyEntry.act.entryRelationship}}
+        {{#each (toArray allergyEntry.act.entryRelationship)}}
         	{{#if (eq this.observation.templateId.root '2.16.840.1.113883.10.20.22.4.7')}}
         		"category":[
            			{{#if (eq this.observation.value.xsi:type 'CD')}}
@@ -14,8 +14,9 @@
         		"reaction":
         		[
            			{
-           				"substance": {{>DataType/CodeableConcept.hbs code=this.observation.participant.participantRole.playingEntity.code}}           	
-                        {{#each this.observation.entryRelationship}}
+           				"substance": {{>DataType/CodeableConcept.hbs code=this.observation.participant.participantRole.playingEntity.code}},
+                        "substance": {{>DataType/CodeableConcept.hbs code=this.observation.participant.participantRole.playingEntity.code.translation}},  
+                        {{#each (toArray this.observation.entryRelationship)}}
                         	{{#if (eq this.observation.templateId.root '2.16.840.1.113883.10.20.22.4.9')}}
                 				"manifestation":
                 				[
