@@ -313,6 +313,64 @@ module.exports.external = [
         }
     },
     {
+        name: 'isArray',
+        description: 'Returns true if value is array: isArray val',
+        func: function (val) {
+            return Array.isArray(val);
+        }
+    },
+    {
+        name: 'isString',
+        description: 'Returns true if value is string: isString val',
+        func: function (val) {
+            return (typeof val === 'string');
+        }
+    },
+    {
+        name: 'getFirstCdaSections',
+        description: "Returns first instance of the sections e.g. getFirstCdaSections msg 'Allergies' 'Medication': getFirstCdaSections message section1 section2 …",
+        func: function getFirstCdaSections(msg, ...sectionNames) {
+            try {
+                var ret = {};
+                for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
+                    let sectionTitle = msg.ClinicalDocument.component.structuredBody.component[i].section.title;
+                    for (var s = 0; s < sectionNames.length - 1; s++) {
+                        if (sectionTitle.includes(sectionNames[s]) && !ret[sectionNames[s]]) {
+                            ret[sectionNames[s]] = msg.ClinicalDocument.component.structuredBody.component[i].section;
+                            break;
+                        }
+                    }
+                }
+                return ret;
+            }
+            catch (err) {
+                throw `helper "getFirstSegments" : ${err}`;
+            }
+        }
+    },
+   /* {
+        name: 'getEntriesList',
+        description: "Returns first instance of the sections e.g. getEntriesList msg 'BP' 'BMI': getEntriesList message entry1 entry2 …",
+        func: function getEntriesList(section, ...entryNames) {
+            try {
+                var ret = {};
+                for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
+                    let sectionTitle = msg.ClinicalDocument.component.structuredBody.component[i].section.title;
+                    for (var s = 0; s < sectionNames.length - 1; s++) {
+                        if (sectionTitle.includes(sectionNames[s]) && !ret[sectionNames[s]]) {
+                            ret[sectionNames[s]] = msg.ClinicalDocument.component.structuredBody.component[i].section;
+                            break;
+                        }
+                    }
+                }
+                return ret;
+            }
+            catch (err) {
+                throw `helper "getFirstSegments" : ${err}`;
+            }
+        }
+    },
+    {
         name: 'getFieldRepeats',
         description: 'Returns repeat list for a field: getFieldRepeats fieldData',
         func: function getFieldRepeats(fieldData) {
@@ -458,7 +516,7 @@ module.exports.external = [
                 throw `helper "hasSegments" : ${err}`;
             }
         }
-    },
+    },*/
     {
         name: 'concat',
         description: 'Returns the concatenation of provided strings: concat aString bString cString …',

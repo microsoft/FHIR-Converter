@@ -1,0 +1,18 @@
+{
+	"resourceType": "Bundle",
+	"type": "transaction",
+	"entry": [
+    	{{#with msg.ClinicalDocument.recordTarget.patientRole}}
+    		{{>Resources/Patient.hbs patientRole=this ID=(generateUUID this.id)}},
+            {{>Resources/Organization.hbs org=this.providerOrganization ID=(generateUUID this.providerOrganization.id)}},
+            {{>References/Patient/managingOrganization.hbs ID=(generateUUID this.id) REF=(concat 'Organization/' (generateUUID this.providerOrganization.id))}},
+      	{{/with}}
+        
+        {{#with (getFirstCdaSections msg 'Allergies')}}
+        	{{#each Allergies.entry as |alEntry|}}
+            	{{>Resources/AllergyIntolerance.hbs allergyEntry=alEntry ID=(generateUUID alEntry.act.id)}},
+                {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID alEntry.act.id) REF=(concat 'Patient/' (generateUUID msg.ClinicalDocument.recordTarget.patientRole.id))}},
+            {{/each}}
+        {{/with}},
+  	]
+}

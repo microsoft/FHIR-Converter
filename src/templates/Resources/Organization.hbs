@@ -1,0 +1,20 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Organization",
+        "id":"{{ID}}",
+        "name":"{{org.name}}",
+        "address":
+        [
+        	{{>DataType/Address.hbs addr=org.addr}},
+        ],
+        "telecom":
+        [
+        	{{>DataType/ContactPoint.hbs contactPoint=org.telecom}},
+        ],
+    },
+    "request":{
+        "method":"POST",
+        "url":"Organization",
+    },
+},

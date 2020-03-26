@@ -1,0 +1,21 @@
+{
+	"use":"{{name.use}}",
+	"family":"{{name.family}}",
+	"given":[
+    	{{#if (isArray name.given)}}
+        	{{#each name.given}}
+            	{{#if (isString this)}}
+                	"{{this}}",
+            	{{else}}
+                	"{{this._}}",
+            	{{/if}}
+          	{{/each}}
+        {{else if (isString name.given)}}
+        	"{{name.given}}",
+        {{else}}
+        	"{{name.given._}}",
+        {{/if}}
+    ]
+	"prefix":"{{name.prefix}}",
+    "suffix":"{{name.suffix}}",
+}

@@ -1,0 +1,16 @@
+{
+    "use": "{{addr.use}}",
+    "line": [
+        {{#if (isArray addr.streetAddressLine)}}
+        	{{#each addr.streetAddressLine}}
+            	"{{this}}",
+          	{{/each}}
+        {{else}}
+        	"{{addr.streetAddressLine}}",
+        {{/if}}
+    ],
+    "city": "{{addr.city}}",
+    "state": "{{addr.state}}",
+    "country": "{{addr.country}}",
+    "postalCode": "{{addr.postalCode}}",
+},

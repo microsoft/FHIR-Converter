@@ -1,0 +1,29 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Patient",
+        "id":"{{ID}}",
+        "identifier":
+        [
+            {{>DataType/Identifier.hbs id=patientRole.id}},
+        ],
+        "name":
+        [
+        	{{>DataType/HumanName.hbs name=patientRole.patient.name}},
+        ],
+        "birthDate":"{{addHyphensDate patientRole.patient.birthTime.value}}",
+        "gender":"{{toLower patientRole.patient.administrativeGenderCode.displayName}}",
+        "address":
+        [
+        	{{>DataType/Address.hbs addr=patientRole.addr}},
+        ],
+        "telecom":
+        [
+        	{{>DataType/ContactPoint.hbs contactPoint=patientRole.telecom}},
+        ],
+    },
+    "request":{
+        "method":"POST",
+        "url":"Patient",
+    },
+},

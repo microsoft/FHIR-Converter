@@ -282,7 +282,7 @@ function convertMessage(resetOutputScroll) {
                     }
 
                     // Makes the unused line marking asyc to help performance.
-                    setTimeout(() => {
+                    /*setTimeout(() => {
                         if (latestRequest === requestNumber) {
                             // Highlights unused sections of the Hl7 message
                             var unusedReport = data.unusedSegments;
@@ -313,7 +313,7 @@ function convertMessage(resetOutputScroll) {
                                 });
                             });
                         }
-                    }, 0);
+                    }, 0);*/
                 }
 
             },
@@ -817,10 +817,13 @@ function unchangedFromReference(templateName, templateData) {
 
 $(document).ready(function () {
     messageEditor = CodeMirror.fromTextArea(document.getElementById("hl7messagebox"), {
-        readOnly: false,
+        //readOnly: false,
         lineNumbers: true,
         theme: lightMode,
-        mode: { name: "default" }
+        mode: { name: "text/html" },
+        extraKeys: { "Ctrl-Q": function (cm) { cm.foldCode(cm.getCursor()); } },
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
     });
 
     messageEditor.on("change", function () {
@@ -983,8 +986,7 @@ $(document).ready(function () {
 
     Split(['.msg-area', '.editor-area'], {
         gutterSize: 5,
-        sizes: [20, 80],
-        direction: 'vertical'
+        sizes: [30, 70]
     });
 
     // See if we have a valid API key and if not raise modal
