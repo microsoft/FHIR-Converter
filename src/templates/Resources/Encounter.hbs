@@ -1,0 +1,23 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Encounter",
+        "id":"{{ID}}",
+        "status":"{{encounter.statusCode}}",
+        "class":{{>DataType/Coding.hbs code=encounter.code.translation}},
+        "type":
+        [
+           	{{>DataType/CodeableConcept.hbs code=encounter.code}},
+        ],
+        "identifier":
+        [
+        	{{>DataType/Identifier.hbs id=encounter.id}},
+        ],
+        "period": {{>DataType/Period.hbs period=encounter.effectiveTime}},
+        "priority":{{>DataType/CodeableConcept.hbs code=encounter.priorityCode}},
+    },
+    "request":{
+        "method":"POST",
+        "url":"Encounter",
+    },
+},

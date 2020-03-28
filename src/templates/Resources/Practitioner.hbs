@@ -1,0 +1,23 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Practitioner",
+        "id":"{{ID}}",
+        "name":
+        [
+        	{{>DataType/HumanName.hbs name=practitioner.assignedPerson.name}},
+        ],
+        "address":
+        [
+        	{{>DataType/Address.hbs addr=practitioner.addr}},
+        ],
+        "telecom":
+        [
+        	{{>DataType/ContactPoint.hbs contactPoint=practitioner.telecom}},
+        ],
+    },
+    "request":{
+        "method":"POST",
+        "url":"Practitioner",
+    },
+},

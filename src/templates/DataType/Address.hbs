@@ -1,13 +1,9 @@
 {
     "use": "{{addr.use}}",
     "line": [
-        {{#if (isArray addr.streetAddressLine)}}
-        	{{#each addr.streetAddressLine}}
-            	"{{this}}",
-          	{{/each}}
-        {{else}}
-        	"{{addr.streetAddressLine}}",
-        {{/if}}
+       	{{#each (toArray addr.streetAddressLine)}}
+           	"{{this}}",
+       	{{/each}}
     ],
     "city": "{{addr.city}}",
     "state": "{{addr.state}}",

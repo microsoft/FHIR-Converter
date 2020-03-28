@@ -1,0 +1,25 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ID}}",
+        "identifier":
+        [
+            {{>DataType/Identifier.hbs id=location.id}},
+        ],
+        "name":"{{location.playingEntity.name}}",
+        "address": {{>DataType/Address.hbs addr=location.addr}},
+        "telecom":
+        [
+            {{>DataType/ContactPoint.hbs contactPoint=location.telecom}},
+        ],
+        "type":
+        [
+        	{{>DataType/CodeableConcept.hbs code=location.code}},
+        ],        
+    },
+    "request":{
+        "method":"POST",
+        "url":"Location",
+    },
+},

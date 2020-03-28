@@ -3,16 +3,41 @@
     "type": "transaction",
     "entry": [
         {{#with msg.ClinicalDocument.recordTarget.patientRole}}
-            {{>Resources/Patient.hbs patientRole=this ID=(generateUUID (toJsonString this.id))}},
-            {{>Resources/Organization.hbs org=this.providerOrganization ID=(generateUUID (toJsonString this.providerOrganization.id))}},
-            {{>References/Patient/managingOrganization.hbs ID=(generateUUID (toJsonString this.id)) REF=(concat 'Organization/' (generateUUID (toJsonString this.providerOrganization.id)))}},
+            {{>Resources/Patient.hbs patientRole=this ID=(generateUUID (toJsonString this))}},
+            {{>Resources/Organization.hbs org=this.providerOrganization ID=(generateUUID (toJsonString this.providerOrganization))}},
+            {{>References/Patient/managingOrganization.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Organization/' (generateUUID (toJsonString this.providerOrganization)))}},
           {{/with}}
        
         {{#with (getFirstCdaSections msg 'Allergies')}}
-            {{#each Allergies.entry as |alEntry|}}
-                {{>Resources/AllergyIntolerance.hbs allergyEntry=alEntry ID=(generateUUID (toJsonString alEntry.act.id))}},
-                {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID (toJsonString alEntry.act.id)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole.id)))}},
+            {{#each (toArray Allergies.entry) as |alEntry|}}
+                {{>Resources/AllergyIntolerance.hbs allergyEntry=alEntry ID=(generateUUID (toJsonString alEntry))}},
+                {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID (toJsonString alEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
             {{/each}}
-        {{/with}},
+        {{/with}}
+        
+        {{#with (getFirstCdaSections msg 'Immunization')}}
+            {{#each (toArray Immunization.entry) as |immEntry|}}
+                {{>Resources/Immunization.hbs imm=immEntry.substanceAdministration ID=(generateUUID (toJsonString immEntry))}},
+                {{>Resources/Practitioner.hbs practitioner=immEntry.substanceAdministration.performer.assignedEntity ID=(generateUUID (toJsonString immEntry.substanceAdministration.performer.assignedEntity))}},
+                {{>References/Immunization/patient.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                {{>References/Immunization/performer.actor.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Practitioner/' (generateUUID (toJsonString immEntry.substanceAdministration.performer.assignedEntity)))}},
+            {{/each}}
+        {{/with}}
+        
+        {{#with (getFirstCdaSections msg 'Encounters')}}
+            {{#each (toArray Encounters.entry) as |encounterEntry|}}
+                {{>Resources/Encounter.hbs encounter=encounterEntry.encounter ID=(generateUUID (toJsonString encounterEntry))}},
+                {{>Resources/Practitioner.hbs practitioner=encounterEntry.encounter.performer.assignedEntity ID=(generateUUID (toJsonString encounterEntry.encounter.performer.assignedEntity))}},
+                {{>References/Encounter/subject.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                {{>References/Encounter/participant.individual.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Practitioner/' (generateUUID (toJsonString encounterEntry.encounter.performer.assignedEntity)))}},
+
+                {{#if (eq encounterEntry.encounter.participant.typeCode 'LOC')}}
+                	{{#if (eq encounterEntry.encounter.participant.participantRole.templateId.root '2.16.840.1.113883.10.20.22.4.32')}}
+               			{{>Resources/Location.hbs location=encounterEntry.encounter.participant.participantRole ID=(generateUUID (toJsonString encounterEntry.encounter.participant.participantRole))}},
+                		{{>References/Encounter/location.location.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Location/' (generateUUID (toJsonString encounterEntry.encounter.participant.participantRole)))}},                    
+                    {{/if}}                
+                {{/if}}
+            {{/each}}
+        {{/with}}
       ]
 }

@@ -1,4 +1,6 @@
 {
-   	"value": "{{replace contactPoint.value 'tel:' ''}}",
+	{{#if contactPoint.value}}
+   		"value": "{{replace contactPoint.value 'tel:' ''}}",
+    {{/if}}
    	"use": "{{contactPoint.use}}"
 },
