@@ -594,5 +594,81 @@ module.exports.external = [
         func: function (o) {
             return isNaN(o);
         }
+    },
+    {
+        name: 'abs',
+        description: 'Returns the absolute value of a number.',
+        func: function (x) {
+            return Math.abs(x);
+        }
+    },
+    {
+        name: 'ceil',
+        description: 'Returns the next largest whole number or integer.',
+        func: function (x) {
+            return Math.ceil(x);
+        }
+    },
+    {
+        name: 'floor',
+        description: 'Returns the largest integer less than or equal to a given number.',
+        func: function (x) {
+            return Math.floor(x);
+        }
+    },
+    {
+        name: 'max',
+        description: 'Returns the largest of zero or more numbers.',
+        func: function () {
+            var args = [];
+            for (var i = 0; i < arguments.length - 1; i++)
+                args[i] = arguments[i];
+            return Math.max(...args);
+        }
+    },
+    {
+        name: 'min',
+        description: 'Returns the lowest-valued number passed into it, or NaN if any parameter isn\'t a number and can\'t be converted into one.',
+        func: function () {
+            var args = [];
+            for (var i = 0; i < arguments.length - 1; i++)
+                args[i] = arguments[i];
+            return Math.min(...args);
+        }
+    },
+    {
+        name: 'pow',
+        description: 'Returns the base to the exponent power, that is, base^exponent.',
+        func: function (x,y) {
+            return Math.pow(x,y);
+        }
+    },
+    {
+        name: 'random',
+        description: 'Returns a floating-point, pseudo-random number in the range 0 to less than 1 (inclusive of 0, but not 1) with approximately uniform distribution over that range — which you can then scale to your desired range.',
+        func: function () {
+            return Math.random();
+        }
+    },
+    {
+        name: 'round',
+        description: 'Returns the value of a number rounded to the nearest integer.',
+        func: function (x) {
+            return Math.round(x);
+        }
+    },
+    {
+        name: 'sign',
+        description: 'returns either a positive or negative +/- 1, indicating the sign of a number passed into the argument. If the number passed into is 0, it will return a +/- 0. Note that if the number is positive, an explicit (+) will not be returned',
+        func: function (x) {
+            return Math.sign(x);
+        }
+    },
+    {
+        name: 'trunc',
+        description: 'Returns the integer part of a number by removing any fractional digits.',
+        func: function (x) {
+            return Math.trunc(x);
+        }
     }
 ];
