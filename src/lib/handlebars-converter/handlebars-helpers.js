@@ -358,7 +358,7 @@ module.exports.external = [
                 return ret;
             }
             catch (err) {
-                throw `helper "getFirstSegments" : ${err}`;
+                throw `helper "getFirstCdaSections" : ${err}`;
             }
         }
     },

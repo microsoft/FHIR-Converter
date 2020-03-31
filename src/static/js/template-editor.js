@@ -205,7 +205,7 @@ function convertMessage(resetOutputScroll) {
         var scrollInfo = outputCode.getScrollInfo();
 
         if (messageEditor.getValue()) {
-            reqBody.messageBase64 = btoa(messageEditor.getValue());
+            reqBody.messageBase64 = btoa(messageEditor.getValue().replace(/[^\x00-\x7F]/g, "")); //TODO
         }
 
         var topTemplate = openTemplates.find(template => template.parent === null);
