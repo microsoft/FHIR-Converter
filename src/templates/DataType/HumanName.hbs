@@ -1,15 +1,15 @@
 {
-	"use":"{{name.use}}",
+	"use":"{{>ValueSet/NameUse.hbs code=name.use}}",
 	"family":"{{name.family}}",
 	"given":[
-       	{{#each (toArray name.given)}}
-           	{{#if (isString this)}}
-               	"{{this}}",
-           	{{else}}
-               	"{{this._}}",
-           	{{/if}}
-       	{{/each}}
-    ]
+		{{#each (toArray name.given)}}
+			{{#if (isString this)}}
+				"{{this}}",
+			{{else}}
+				"{{this._}}",
+			{{/if}}
+		{{/each}}
+	]
 	"prefix":"{{name.prefix}}",
-    "suffix":"{{name.suffix}}",
+	"suffix":"{{name.suffix}}",
 }

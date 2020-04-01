@@ -1,6 +1,6 @@
 {
 	{{#if contactPoint.value}}
-   		"value": "{{replace contactPoint.value 'tel:' ''}}",
-    {{/if}}
-   	"use": "{{contactPoint.use}}"
+		"value": "{{replace contactPoint.value 'tel:' ''}}",
+	{{/if}}
+	"use": "{{>ValueSet/TelecomUse.hbs code=contactPoint.use}}"
 },

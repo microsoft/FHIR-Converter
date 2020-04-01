@@ -1,5 +1,5 @@
 {
-    "use": "{{addr.use}}",
+    "use": "{{>ValueSet/AddressUse.hbs code=addr.use}}",
     "line": [
        	{{#each (toArray addr.streetAddressLine)}}
            	"{{{this}}}",
