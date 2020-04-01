@@ -5,21 +5,38 @@
         "id":"{{ID}}",
         "identifier":
         [
-            {{>DataType/Identifier.hbs id=patientRole.id}},
+        	{{#each (toArray patientRole.id)}}
+            	{{>DataType/Identifier.hbs id=this}},
+            {{/each}}
         ],
         "name":
         [
-        	{{>DataType/HumanName.hbs name=patientRole.patient.name}},
+        	{{#each (toArray patientRole.patient.name)}}
+        		{{>DataType/HumanName.hbs name=this}},
+            {{/each}}
         ],
         "birthDate":"{{addHyphensDate patientRole.patient.birthTime.value}}",
         "gender":"{{toLower patientRole.patient.administrativeGenderCode.displayName}}",
         "address":
         [
-        	{{>DataType/Address.hbs addr=patientRole.addr}},
+        	{{#each (toArray patientRole.addr)}}
+        		{{>DataType/Address.hbs addr=this}},
+            {{/each}}
         ],
         "telecom":
         [
-        	{{>DataType/ContactPoint.hbs contactPoint=patientRole.telecom}},
+        	{{#each (toArray patientRole.telecom)}}
+        		{{>DataType/ContactPoint.hbs contactPoint=this}},
+            {{/each}}
+        ],
+        "communication":
+        [
+        	{{#each (toArray patientRole.patient.languageCommunication)}}
+            	{
+        			"language":{{>DataType/CodeableConcept.hbs code=this.languageCode}},
+                	"preferred":"{{this.preferenceInd.value}}",
+                }
+            {{/each}}         
         ],
     },
     "request":{

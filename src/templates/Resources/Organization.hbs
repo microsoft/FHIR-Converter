@@ -6,11 +6,15 @@
         "name":"{{org.name}}",
         "address":
         [
-        	{{>DataType/Address.hbs addr=org.addr}},
+        	{{#each (toArray org.addr)}}
+        		{{>DataType/Address.hbs addr=this}},
+            {{/each}}
         ],
         "telecom":
         [
-        	{{>DataType/ContactPoint.hbs contactPoint=org.telecom}},
+        	{{#each (toArray org.telecom)}}
+        		{{>DataType/ContactPoint.hbs contactPoint=this}},
+            {{/each}}
         ],
     },
     "request":{
