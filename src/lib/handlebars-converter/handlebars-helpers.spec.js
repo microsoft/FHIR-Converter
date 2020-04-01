@@ -128,6 +128,10 @@ describe('Handlebars helpers', function() {
         {f: 'sign', in: [5], out: 1},
         {f: 'sign', in: [0], out: 0},
         {f: 'trunc', in: [9.89], out: 9},
+        {f: 'add', in: [5, 4], out: 9},
+        {f: 'subtract', in: [5, 4], out: 1},
+        {f: 'multiply', in: [2, 3], out: 6},
+        {f: 'divide', in: [10, 5], out: 2}
     ];
 
     opTests.forEach(t => {

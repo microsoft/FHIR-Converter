@@ -597,28 +597,28 @@ module.exports.external = [
     },
     {
         name: 'abs',
-        description: 'Returns the absolute value of a number.',
+        description: 'Returns the absolute value of a number: abs number',
         func: function (x) {
             return Math.abs(x);
         }
     },
     {
         name: 'ceil',
-        description: 'Returns the next largest whole number or integer.',
+        description: 'Returns the next largest whole number or integer: ceil number',
         func: function (x) {
             return Math.ceil(x);
         }
     },
     {
         name: 'floor',
-        description: 'Returns the largest integer less than or equal to a given number.',
+        description: 'Returns the largest integer less than or equal to a given number: floor number',
         func: function (x) {
             return Math.floor(x);
         }
     },
     {
         name: 'max',
-        description: 'Returns the largest of zero or more numbers.',
+        description: 'Returns the largest of zero or more numbers: max number1, number2, number3 . . .',
         func: function () {
             var args = [];
             for (var i = 0; i < arguments.length - 1; i++)
@@ -628,7 +628,7 @@ module.exports.external = [
     },
     {
         name: 'min',
-        description: 'Returns the lowest-valued number passed into it, or NaN if any parameter isn\'t a number and can\'t be converted into one.',
+        description: 'Returns the lowest-valued number passed into it, or NaN if any parameter isn\'t a number and can\'t be converted into one: min number1, number2, number3 . . .',
         func: function () {
             var args = [];
             for (var i = 0; i < arguments.length - 1; i++)
@@ -638,37 +638,65 @@ module.exports.external = [
     },
     {
         name: 'pow',
-        description: 'Returns the base to the exponent power, that is, base^exponent.',
+        description: 'Returns the base to the exponent power, that is, base^exponent.: pow base, exponent',
         func: function (x,y) {
             return Math.pow(x,y);
         }
     },
     {
         name: 'random',
-        description: 'Returns a floating-point, pseudo-random number in the range 0 to less than 1 (inclusive of 0, but not 1) with approximately uniform distribution over that range — which you can then scale to your desired range.',
+        description: 'Returns a floating-point, pseudo-random number in the range 0 to less than 1 (inclusive of 0, but not 1) with approximately uniform distribution over that range — which you can then scale to your desired range: random',
         func: function () {
             return Math.random();
         }
     },
     {
         name: 'round',
-        description: 'Returns the value of a number rounded to the nearest integer.',
+        description: 'Returns the value of a number rounded to the nearest integer: round number',
         func: function (x) {
             return Math.round(x);
         }
     },
     {
         name: 'sign',
-        description: 'returns either a positive or negative +/- 1, indicating the sign of a number passed into the argument. If the number passed into is 0, it will return a +/- 0. Note that if the number is positive, an explicit (+) will not be returned',
+        description: 'returns either a positive or negative +/- 1, indicating the sign of a number passed into the argument. If the number passed into is 0, it will return a +/- 0. Note that if the number is positive, an explicit (+) will not be returned: sign number',
         func: function (x) {
             return Math.sign(x);
         }
     },
     {
         name: 'trunc',
-        description: 'Returns the integer part of a number by removing any fractional digits.',
+        description: 'Returns the integer part of a number by removing any fractional digits: trunc number',
         func: function (x) {
             return Math.trunc(x);
+        }
+    },
+    {
+        name: 'add',
+        description: 'add two numbers: + number1 number 2',
+        func: function (x, y) {
+            return Number(x) + Number(y);
+        }
+    },
+    {
+        name: 'subtract',
+        description: 'subtract second number from the first: - number1 number2',
+        func: function (x, y) {
+            return Number(x) - Number(y);
+        }
+    },
+    {
+        name: 'multiply',
+        description: 'multiply two numbers: * number1 number2',
+        func: function (x, y) {
+            return Number(x) * Number(y);
+        }
+    },
+    {
+        name: 'divide',
+        description: 'divide first number by the second number: / number1 number2',
+        func: function (x, y) {
+            return Number(x) / Number(y);
         }
     }
 ];
