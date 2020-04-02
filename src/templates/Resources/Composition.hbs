@@ -1,0 +1,72 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Composition",
+        "id":"{{ID}}",
+        "identifier":
+  			{
+  				"use":"official",
+				"value":"{{composition.id.root}}",
+        	},
+		"status":"preliminary",
+        "type":
+			[
+        		{{#each (toArray composition.code)}}
+        			{{>DataType/Coding.hbs code=this}},
+            	{{/each}}
+        	],
+        "class":"UNKNOWN",
+        "date":"{{formatAsDateTime composition.effectiveTime.value}}"
+        "title":"{{composition.title}}"
+        "attester": 
+        	[
+        		{
+        		"mode": ["legal"],
+            	"time":"{{formatAsDateTime composition.legalAuthenticator.time.value}}"
+				}
+        	],
+       "event":
+        	[
+            	{
+                "period":
+            		{
+                    	"start":"{{formatAsDateTime composition.documentationOf.serviceEvent.effectiveTime.low.value}}"
+                    },
+                "detail":
+                	[
+                		{{#each composition.documentationOf.serviceEvent.performer}}
+                       		{
+                                "reference":"{{generateUUID (toJsonString this)}}",
+                    			"display":"{{this.assignedEntity.assignedPerson.name.given}} {{this.assignedEntity.assignedPerson.name.family}}"
+                            },
+                   		{{/each}}         
+            		],
+              	},
+             ],
+		"section": 
+                [
+                
+                {{#each composition.component.structuredBody.component}}
+                	{
+                    	"title":"{{this.section.code.displayName}}",
+                        "code":{{>DataType/CodeableConcept.hbs code=this.section.code}},
+                        "mode":"snapshot",
+                        "entry":
+                        [
+                        	{{#each this.section.entry}}
+                            	{
+
+                                	"reference":"{{generateUUID (toJsonString this)}}"
+                      			},
+                  			{{/each}}
+                  		]
+                    },
+                {{/each}}
+                ]
+        },
+    "request":{
+        "method":"POST",
+        "url":"Composition",
+    },
+},
+

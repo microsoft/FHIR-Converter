@@ -1,0 +1,25 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Device",
+        "id":"{{ID}}",
+        "identifier":
+  			{
+  				"use":"official",
+				"value":"{{msg.ClinicalDocument.author.assignedAuthor.id.root}}",
+        	},
+		"type":
+			{
+        		"coding": 
+                	{
+              			"display":"{{msg.ClinicalDocument.author.assignedAuthor.assignedAuthoringDevice.manufacturerModelName}}",
+        			}
+            }, 
+		"manufacturer":"{{msg.ClinicalDocument.author.assignedAuthor.assignedAuthoringDevice.manufacturerModelName}}",
+        "version":"{{msg.ClinicalDocument.author.assignedAuthor.assignedAuthoringDevice.softwareName}}",
+    },
+    "request":{
+        "method":"POST",
+        "url":"Device",
+    },
+},
