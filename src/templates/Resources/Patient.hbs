@@ -33,9 +33,19 @@
         [
         	{{#each (toArray patientRole.patient.languageCommunication)}}
             	{
-        			"language":{{>DataType/CodeableConcept.hbs code=this.languageCode}},
+        			"language":
+                    {
+                       	"coding":
+                        [
+                          	{
+                               	"system":"http://hl7.org/fhir/ValueSet/languages",
+                               	"code":"{{this.languageCode.code}}", 
+                                "display":"{{>ValueSet/Language.hbs code=this.languageCode.code}}",
+                            },
+                        ],
+                    },           
                 	"preferred":"{{this.preferenceInd.value}}",
-                }
+                },
             {{/each}}         
         ],
     },

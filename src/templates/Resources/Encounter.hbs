@@ -11,7 +11,9 @@
         ],
         "identifier":
         [
-        	{{>DataType/Identifier.hbs id=encounter.id}},
+        	{{#each (toArray encounter.id)}}
+        		{{>DataType/Identifier.hbs id=this}},
+            {{/each}}
         ],
         "period": {{>DataType/Period.hbs period=encounter.effectiveTime}},
         "priority":{{>DataType/CodeableConcept.hbs code=encounter.priorityCode}},

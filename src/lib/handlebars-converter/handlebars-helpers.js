@@ -228,6 +228,18 @@ module.exports.external = [
         }
     },
     {
+        name: 'contains',
+        description: 'Returns true if a string includes another string: contains parentStr childStr',
+        func: function (parentStr, childStr) {
+            try {
+                return parentStr.toString().includes(childStr);
+            }
+            catch (err) {
+                throw `helper "contains" : ${err}`;
+            }
+        }
+    },
+    {
         name: 'base64Encode',
         description: 'Returns base64 encoded string: base64Encode string',
         func: function (str) {

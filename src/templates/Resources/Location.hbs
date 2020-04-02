@@ -5,17 +5,23 @@
         "id":"{{ID}}",
         "identifier":
         [
-            {{>DataType/Identifier.hbs id=location.id}},
+        	{{#each (toArray location.id)}}
+            	{{>DataType/Identifier.hbs id=this}},
+            {{/each}}
         ],
         "name":"{{location.playingEntity.name}}",
         "address": {{>DataType/Address.hbs addr=location.addr}},
         "telecom":
         [
-            {{>DataType/ContactPoint.hbs contactPoint=location.telecom}},
+        	{{#each (toArray location.telecom)}}
+            	{{>DataType/ContactPoint.hbs contactPoint=this}},
+            {{/each}}
         ],
         "type":
         [
-        	{{>DataType/CodeableConcept.hbs code=location.code}},
+        	{{#each (toArray location.code)}}
+        		{{>DataType/CodeableConcept.hbs code=this}},
+            {{/each}}
         ],        
     },
     "request":{

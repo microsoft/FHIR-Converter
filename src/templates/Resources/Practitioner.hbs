@@ -5,15 +5,21 @@
         "id":"{{ID}}",
         "name":
         [
-        	{{>DataType/HumanName.hbs name=practitioner.assignedPerson.name}},
+        	{{#each (toArray practitioner.assignedPerson.name)}}
+        		{{>DataType/HumanName.hbs name=this}},
+            {{/each}}
         ],
         "address":
         [
-        	{{>DataType/Address.hbs addr=practitioner.addr}},
+        	{{#each (toArray practitioner.addr)}}
+        		{{>DataType/Address.hbs addr=this}},
+            {{/each}}
         ],
         "telecom":
         [
-        	{{>DataType/ContactPoint.hbs contactPoint=practitioner.telecom}},
+        	{{#each (toArray practitioner.telecom)}}
+        		{{>DataType/ContactPoint.hbs contactPoint=this}},
+            {{/each}}
         ],
     },
     "request":{

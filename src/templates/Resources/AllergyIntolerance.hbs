@@ -8,7 +8,7 @@
         	{{#if (eq this.observation.templateId.root '2.16.840.1.113883.10.20.22.4.7')}}
         		"category":[
            			{{#if (eq this.observation.value.xsi:type 'CD')}}
-               			"{{this.observation.value.code}}",
+               			"{{>ValueSet/AllergyCategory.hbs code=this.observation.value.code}}",
             		{{/if}}
         		]
         		"reaction":
