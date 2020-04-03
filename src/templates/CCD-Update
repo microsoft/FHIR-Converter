@@ -9,6 +9,7 @@
     	
         {{#if msg.ClinicalDocument.author.assignedAuthor.assignedAuthoringDevice}}
         	 {{>Resources/Device.hbs ID=(generateUUID (toJsonString msg.ClinicalDocument.author))}},
+      		 {{>Resources/Organization.hbs org=msg.ClinicalDocument.author.assignedAuthor.representedOrganization ID=(generateUUID (toJsonString msg.ClinicalDocument.author.assignedAuthor.representedOrganization))}},
              {{>References/Composition/author.hbs ID=(generateUUID (toJsonString msg.ClinicalDocument)) REF=(concat 'Device/' (generateUUID (toJsonString msg.ClinicalDocument.author)))}},
 			 {{>References/Device/owner.hbs ID=(generateUUID (toJsonString msg.ClinicalDocument.author)) REF=(concat 'Organization/' (generateUUID (toJsonString msg.ClinicalDocument.author.assignedAuthor.representedOrganization)))}}         
         {{/if}}
@@ -50,5 +51,6 @@
                 {{/if}}
             {{/each}}
         {{/with}}
+
       ]
 }
