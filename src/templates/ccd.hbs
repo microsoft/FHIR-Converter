@@ -4,17 +4,17 @@
     "entry": [
     	{{#with msg.ClinicalDocument}}
       		{{>Resources/Composition.hbs composition=this ID=(generateUUID (toJsonString this))}},
+            {{>Resources/Practitioner.hbs practitioner=this.legalAuthenticator.assignedEntity ID=(generateUUID (toJsonString this.legalAuthenticator.assignedEntity))}},
       		{{>References/Composition/subject.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Patient/' (generateUUID (toJsonString this.recordTarget.patientRole)))}}
-    		{{>References/Composition/attester.party.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Practitioner/' (generateUUID (toJsonString this.legalAuthenticator)))}}
+    		{{>References/Composition/attester.party.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Practitioner/' (generateUUID (toJsonString this.legalAuthenticator.assignedEntity)))}}
     		{{>References/Composition/custodian.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Organization/' (generateUUID (toJsonString this.custodian)))}}
         {{/with}}
     	
         {{#if msg.ClinicalDocument.author.assignedAuthor.assignedAuthoringDevice}}
-        	{{#with msg.ClinicalDocument.author.assignedAuthor}}
-        		{{>Resources/Device.hbs author=this ID=(generateUUID (toJsonString this))}},
-            	{{>References/Composition/author.hbs ID=(generateUUID (toJsonString msg.ClinicalDocument)) REF=(concat 'Device/' (generateUUID (toJsonString this)))}},
-				{{>References/Device/owner.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Organization/' (generateUUID (toJsonString this.representedOrganization)))}}         
-            {{/with}}
+        	 {{>Resources/Device.hbs ID=(generateUUID (toJsonString msg.ClinicalDocument.author))}},
+      		 {{>Resources/Organization.hbs org=msg.ClinicalDocument.author.assignedAuthor.representedOrganization ID=(generateUUID (toJsonString msg.ClinicalDocument.author.assignedAuthor.representedOrganization))}},
+             {{>References/Composition/author.hbs ID=(generateUUID (toJsonString msg.ClinicalDocument)) REF=(concat 'Device/' (generateUUID (toJsonString msg.ClinicalDocument.author)))}},
+			 {{>References/Device/owner.hbs ID=(generateUUID (toJsonString msg.ClinicalDocument.author)) REF=(concat 'Organization/' (generateUUID (toJsonString msg.ClinicalDocument.author.assignedAuthor.representedOrganization)))}}         
         {{/if}}
     
         {{#with msg.ClinicalDocument.recordTarget.patientRole}}
@@ -33,7 +33,8 @@
         {{#with (getFirstCdaSections msg 'Immunization')}}
             {{#each (toArray Immunization.entry) as |immEntry|}}
                 {{>Resources/Immunization.hbs imm=immEntry.substanceAdministration ID=(generateUUID (toJsonString immEntry))}},
-                {{>Resources/Practitioner.hbs practitioner=immEntry.substanceAdministration.performer.assignedEntity ID=(generateUUID (toJsonString immEntry.substanceAdministration.performer.assignedEntity))}},
+                {{>Resources/Practitioner.hbs practitioner=immEntry.substanceAdministration.informant.assignedEntity ID=(generateUUID (toJsonString immEntry.substanceAdministration.informant.assignedEntity))}},
+                {{>Resources/Organization.hbs org=immEntry.substranceAdministration.informant.assignedEntity.representedOrganization ID=(generateUUID (toJsonString immEntry.substranceAdministration.informant.assignedEntity.representedOrganization))}},
                 {{>References/Immunization/patient.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
                 {{>References/Immunization/performer.actor.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Practitioner/' (generateUUID (toJsonString immEntry.substanceAdministration.performer.assignedEntity)))}},
             {{/each}}

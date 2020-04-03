@@ -3,17 +3,13 @@
     "resource":{
         "resourceType": "Organization",
         "id":"{{ID}}",
-<<<<<<< HEAD
         "identifier":
   		[
         	{{#each (toArray org.id)}}
             	{{>DataType/Identifier.hbs id=this}}
             {{/each}}
         ],
-        "name":"{{org.name}}",
-=======
         "name":"{{org.name._}}",
->>>>>>> 3706d25cd435523471e3641216e52b3577ce0e69
         "address":
         [
         	{{#each (toArray org.addr)}}
