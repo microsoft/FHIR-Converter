@@ -4,19 +4,19 @@
         "resourceType": "Device",
         "id":"{{ID}}",
         "identifier":
-  			{
-  				"use":"official",
-				"value":"{{msg.ClinicalDocument.author.assignedAuthor.id.root}}",
-        	},
+  		{
+  			"use":"official",
+			"value":"{{author.id.root}}",
+        },
 		"type":
-			{
-        		"coding": 
-                	{
-              			"display":"{{msg.ClinicalDocument.author.assignedAuthor.assignedAuthoringDevice.manufacturerModelName}}",
-        			}
-            }, 
-		"manufacturer":"{{msg.ClinicalDocument.author.assignedAuthor.assignedAuthoringDevice.manufacturerModelName}}",
-        "version":"{{msg.ClinicalDocument.author.assignedAuthor.assignedAuthoringDevice.softwareName}}",
+		{
+        	"coding": 
+            {
+           		"display":"{{author.assignedAuthoringDevice.manufacturerModelName._}}",
+        	},
+        }, 
+		"manufacturer":"{{author.assignedAuthoringDevice.manufacturerModelName._}}",
+        "version":"{{author.assignedAuthoringDevice.softwareName._}}",
     },
     "request":{
         "method":"POST",
