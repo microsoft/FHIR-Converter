@@ -361,7 +361,7 @@ module.exports.external = [
                 for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
                     let sectionTitle = msg.ClinicalDocument.component.structuredBody.component[i].section.title;
                     for (var s = 0; s < sectionNames.length - 1; s++) {
-                        if (sectionTitle.includes(sectionNames[s]) && !ret[sectionNames[s]]) {
+                        if (sectionTitle._.includes(sectionNames[s]) && !ret[sectionNames[s]]) {
                             ret[sectionNames[s]] = msg.ClinicalDocument.component.structuredBody.component[i].section;
                             break;
                         }

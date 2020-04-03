@@ -6,7 +6,7 @@ var parseString = require('xml2js').parseString;
 
 function parseCDA(msg) {
     return new Promise((fulfill, reject) => {
-        parseString(msg, { trim: true, mergeAttrs: true, explicitArray:false }, function (err, result) {
+        parseString(msg, { trim: true, explicitCharkey :true, mergeAttrs: true, explicitArray:false }, function (err, result) {
             if (err) {
                 reject(err);
             }

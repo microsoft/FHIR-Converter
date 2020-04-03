@@ -9,7 +9,7 @@
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
-        "name":"{{location.playingEntity.name}}",
+        "name":"{{location.playingEntity.name._}}",
         "address": {{>DataType/Address.hbs addr=location.addr}},
         "telecom":
         [
