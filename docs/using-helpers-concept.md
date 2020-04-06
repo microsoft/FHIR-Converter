@@ -102,3 +102,6 @@ To get location, room, and building, you could use the following DataType templa
 "{{replace PV1-3-2 '\d+' ''}}"
 ],
 ```
+## Mathematical Functions
+
+We have included mathematical helper functions so you can do basic math. Some of these functions are addition, subtraction, a random number generator and maximum/minimum finders. 
