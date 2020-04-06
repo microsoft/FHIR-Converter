@@ -56,6 +56,8 @@ Now that you have deployed the FHIR Converter, you can get started with using th
 
 If you are ready to start modifying and creating your own templates, check out the [how to create templates guide](docs/template-creation-how-to-guide.md) as the first place to start.
 
+Once you have your template complete, check out our [health architectures](https://github.com/microsoft/health-architectures/tree/master/HL7Conversion) which describe how to leverage the FHIR Converter in an end to end scenario. 
+
 ## Documentation
 
 ### Template creation and management details
