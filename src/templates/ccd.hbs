@@ -25,7 +25,14 @@
         
       	{{#with msg.ClinicalDocument.documentationOf.serviceEvent.performer}}
         	{{#each this}}
-      			{{>Resources/Practitioner.hbs practitioner=this.assignedEntity ID=(generateUUID (toJsonString this))}}
+      			{{>Resources/Practitioner.hbs practitioner=this.assignedEntity ID=(generateUUID (toJsonString this))}},
+            {{/each}}
+        {{/with}}
+        
+      	{{#with (getFirstCdaSections msg 'Medication')}}
+            {{#each (toArray Medication.entry) as |medEntry|}}
+                {{>Resources/MedicationStatement.hbs medicationEntry=medEntry ID=(generateUUID (toJsonString medEntry))}},
+                {{>References/MedicationStatement/medicationReference.hbs ID=(generateUUID (toJsonString medEntry)) REF=(concat 'Medication/' (generateUUID (toJsonString medEntry.substanceAdministration.consumable)))}}
             {{/each}}
         {{/with}}
          
