@@ -3,6 +3,12 @@
     "resource":{
         "resourceType": "Practitioner",
         "id":"{{ID}}",
+        "identifier":
+  		[
+        	{{#each (toArray practitioner.id)}}
+            	{{>DataType/Identifier.hbs id=this}}
+            {{/each}}
+        ],
         "name":
         [
         	{{#each (toArray practitioner.assignedPerson.name)}}

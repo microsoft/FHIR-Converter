@@ -4,10 +4,11 @@
         "resourceType": "Device",
         "id":"{{ID}}",
         "identifier":
-  		{
-  			"use":"official",
-			"value":"{{author.id.root}}",
-        },
+  		[
+        	{{#each (toArray author.id)}}
+            	{{>DataType/Identifier.hbs id=this}}
+            {{/each}}
+        ],
 		"type":
 		{
         	"coding": 

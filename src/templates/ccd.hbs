@@ -11,7 +11,7 @@
         {{/with}}
     	
         {{#if msg.ClinicalDocument.author.assignedAuthor.assignedAuthoringDevice}}
-        	 {{>Resources/Device.hbs ID=(generateUUID (toJsonString msg.ClinicalDocument.author))}},
+        	 {{>Resources/Device.hbs author=msg.ClinicalDocument.author.assignedAuthor ID=(generateUUID (toJsonString msg.ClinicalDocument.author))}},
       		 {{>Resources/Organization.hbs org=msg.ClinicalDocument.author.assignedAuthor.representedOrganization ID=(generateUUID (toJsonString msg.ClinicalDocument.author.assignedAuthor.representedOrganization))}},
              {{>References/Composition/author.hbs ID=(generateUUID (toJsonString msg.ClinicalDocument)) REF=(concat 'Device/' (generateUUID (toJsonString msg.ClinicalDocument.author)))}},
 			 {{>References/Device/owner.hbs ID=(generateUUID (toJsonString msg.ClinicalDocument.author)) REF=(concat 'Organization/' (generateUUID (toJsonString msg.ClinicalDocument.author.assignedAuthor.representedOrganization)))}}         
@@ -22,6 +22,12 @@
             {{>Resources/Organization.hbs org=this.providerOrganization ID=(generateUUID (toJsonString this.providerOrganization))}},
             {{>References/Patient/managingOrganization.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Organization/' (generateUUID (toJsonString this.providerOrganization)))}},
 		{{/with}}
+        
+      	{{#with msg.ClinicalDocument.documentationOf.serviceEvent.performer}}
+        	{{#each this}}
+      			{{>Resources/Practitioner.hbs practitioner=this.assignedEntity ID=(generateUUID (toJsonString this))}}
+            {{/each}}
+        {{/with}}
          
         {{#with (getFirstCdaSections msg 'Allergies')}}
             {{#each (toArray Allergies.entry) as |alEntry|}}
