@@ -5,16 +5,15 @@
         "id":"{{ID}}",
         "identifier":
   		[
-        	{{#each (toArray medicationEntry.substanceAdministration.id)}}
+        	{{#each (toArray medicationStatement.id)}}
             	{{>DataType/Identifier.hbs id=this}}
             {{/each}}
         ],
-        "status":"{{medicationEntry.substanceAdministration.statusCode.code}}",
+        "status":"{{medicationStatement.statusCode.code}}",
         "effectivePeriod":
-        	{"start":"{{formatAsDateTime medicationEntry.substanceAdministration.effectiveTime.low.value}}",
-            "end":"{{formatAsDateTime medicationEntry.substanceAdministration.effectiveTime.high.value}}"
+        	{"start":"{{formatAsDateTime medicationStatement.effectiveTime.low.value}}",
+            "end":"{{formatAsDateTime medicationStatement.effectiveTime.high.value}}"
         	},
-        "taken":
     },
     "request":{
         "method":"POST",
