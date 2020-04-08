@@ -94,7 +94,8 @@ module.exports = class fsCache {
                 .then(() => {
                     let fullFileName = path.join(this._path, key);
                     fs.mkdir(path.dirname(fullFileName), { recursive: true }, (err) => {
-                        if (err) {
+                        // For some versions, mkdir throws EEXIST even if recursive:true is passed, which can be ignored here.
+                        if (err && (err.code !== 'EEXIST')) {
                             reject(errorMessage(errorCodes.WriteError, err.message));
                         }
                         else {
