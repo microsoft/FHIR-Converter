@@ -232,6 +232,9 @@ module.exports.external = [
         description: 'Returns true if a string includes another string: contains parentStr childStr',
         func: function (parentStr, childStr) {
             try {
+                if (!parentStr) {
+                    return false;
+                }
                 return parentStr.toString().includes(childStr);
             }
             catch (err) {

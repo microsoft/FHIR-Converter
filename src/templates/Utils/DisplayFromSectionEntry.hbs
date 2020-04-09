@@ -1,0 +1,8 @@
+{{#with (evaluate 'Utils/ResourceTypeFromSection.hbs' section=section)}}
+    {{#if (eq this.resourceType 'AllergyIntolerance')}}
+        {{#with (evaluate 'Resources/AllergyIntolerance.hbs' allergyEntry=../entry) as |obj|}}
+           	"display":"{{obj.resource.reaction.[0].substance.coding.[0].display}}"
+        {{/with}}
+    {{/if}}
+{{/with}}
+

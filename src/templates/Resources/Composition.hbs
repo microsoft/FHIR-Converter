@@ -36,7 +36,7 @@
                	[
                		{{#each composition.documentationOf.serviceEvent.performer}}
                  		{
-                            "reference":"{{generateUUID (toJsonString this)}}",
+                            "reference":"{{concat 'Practitioner/' (generateUUID (toJsonString this))}}",
                   			"display":"{{this.assignedEntity.assignedPerson.name.given._}} {{this.assignedEntity.assignedPerson.name.family._}}"
                         },
                		{{/each}}         
@@ -52,12 +52,17 @@
                     "mode":"snapshot",
                     "entry":
                     [
-                       	{{#each this.section.entry}}
-                           	{
-                               	"reference":"{{generateUUID (toJsonString this)}}"
-                      		},
-                  		{{/each}}
-                  	]
+                        {{#with (evaluate 'Utils/ResourceTypeFromSection.hbs' section=this.section) as |resObj|}}
+                            {{#if resObj.resourceType}}
+                                {{#each ../this.section.entry}}                           	
+                                    {
+                                        "reference":"{{concat resObj.resourceType '/' (generateUUID (toJsonString this))}}",
+                                        {{>Utils/DisplayFromSectionEntry.hbs section=../../this.section entry=this}}
+                                    },
+                                {{/each}}
+                            {{/if}}
+                        {{/with}}
+                    ]
                 },
             {{/each}}
         ]
