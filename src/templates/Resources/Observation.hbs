@@ -3,40 +3,32 @@
     "resource":{
         "resourceType": "Observation",
         "id":"{{ID}}",
-        "identifier":
+        "code":
         [
-        	{{#each (toArray observationEntry.id)}}
-            	{{>DataType/Identifier.hbs id=this}},
-            {{/each}}
+        	{{#each (toArray observationEntry.code)}}
+            	{{>DataType/CodeableConcept.hbs code=this}},
+                [
+                {{#each (toArray this.translation)}}
+                	{{>DataType/Coding.hbs code=this}},
+                {{/each}}
+                ]
+  			{{/each}}
         ],
+        "statusCode":"{{observationEntry.statusCode.code}}"
+        "effectivePeriod":
+        	{"start":"{{formatAsDateTime observationEntry.effectiveTime.value}}"
+            "start":"{{formatAsDateTime observationEntry.effectiveTime.low.value}}"}
+        "valueQuantity":
+        {
+        	{{#each (toArray observationEntry.value)}}
+            	"value":"{{this.value}}",
+                "unit":"{{this.unit}}",
+  			{{/each}}
+        },
         
-        {{#each (toArray observationEntry.value)}}
-        	{{#if (eq this.xsi:type 'CD')}}
-            	"code":{{>DataType/CodeableConcept.hbs code=this}},
-            {{/if}}
-        {{/each}}
-        
-        {{#if imm.effectiveTime.low}}
-        	"recorded":"{{formatAsDateTime imm.effectiveTime.low.value}}",
-        {{else}}
-        	"recorded":"{{formatAsDateTime imm.effectiveTime.value}}",
-        {{/if}}
-        
-        {{#each (toArray imm.consumable)}}
-            {{#each (toArray this.manufacturedProduct)}}
-                {{#if (contains (toJsonString this.templateId) '2.16.840.1.113883.10.20.22.4.54')}}
-                    "vaccineCode":{{>DataType/CodeableConcept.hbs code=this.manufacturedMaterial.code}},
-                    "lotNumber":"{{this.manufacturedMaterial.IotNumberText}}",
-                {{/if}}
-            {{/each}}
-        {{/each}}
-
-        "status":"{{imm.statusCode}}",
-        "route":{{>DataType/CodeableConcept.hbs code=imm.routeCode}},
-        "site":{{>DataType/CodeableConcept.hbs code=imm.approachSiteCode}},      
     },
     "request":{
         "method":"POST",
-        "url":"Immunization",
+        "url":"Observation",
     },
 },
