@@ -33,6 +33,7 @@
             {{#each (toArray Medication.entry) as |medEntry|}}
                 {{>Resources/MedicationStatement.hbs medicationEntry=medEntry ID=(generateUUID (toJsonString medEntry))}},
                 {{>References/MedicationStatement/medicationReference.hbs ID=(generateUUID (toJsonString medEntry)) REF=(concat 'Medication/' (generateUUID (toJsonString medEntry.substanceAdministration.consumable)))}}
+            	{{>References/MedicationStatement/subject.hbs ID=(generateUUID (toJsonString medEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
             {{/each}}
         {{/with}}
          
