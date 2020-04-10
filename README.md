@@ -4,7 +4,7 @@
 
 For Healthcare IT teams and solution architects who want to integrate clinical data currently in different formats, the FHIR® Converter is an open source project that enables the conversion of legacy formatted health data to FHIR, expanding the use cases for health data and enabling interoperability.  
 
-Right now, the FHIR Converter transforms HL7 v2 messages into FHIR bundles using templates that define the mappings between the two data formats. Leveraging the FHIR Converter organizations can customize or create their own mapping templates based on their HL7 v2 implementation and transform them into FHIR bundles. These FHIR bundles are returned for further data manipulation or can be immediately persisted into a FHIR server, such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/). The FHIR Converter released to open source on Thursday March 5th, 2020.
+Right now, the FHIR Converter transforms HL7 v2 messages into FHIR bundles using templates that define the mappings between the two data formats. Leveraging the FHIR Converter organizations can customize or create their own mapping templates based on their HL7 v2 implementation and transform them into FHIR bundles. These FHIR bundles are returned for further data manipulation or can be immediately persisted into a FHIR server, such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/). The FHIR Converter released to open source on Thursday March 6th, 2020.
 
 The open-source FHIR Converter consists of the following functionality:
 
