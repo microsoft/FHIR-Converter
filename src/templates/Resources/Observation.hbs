@@ -4,27 +4,24 @@
         "resourceType": "Observation",
         "id":"{{ID}}",
         "code":
-        	{
+        {
             "coding":
-        		[
+        	[
             	{{>DataType/Coding.hbs code=observationEntry.code}},
-
                 {{>DataType/Coding.hbs code=observationEntry.code.translation}},
-
-        ],
+            ],
         }
         "statusCode":"{{observationEntry.statusCode.code}}"
         "effectivePeriod":
-        	{"start":"{{formatAsDateTime observationEntry.effectiveTime.value}}"
-            "start":"{{formatAsDateTime observationEntry.effectiveTime.low.value}}"}
+        {
+            "start":"{{formatAsDateTime observationEntry.effectiveTime.value}}"
+            "start":"{{formatAsDateTime observationEntry.effectiveTime.low.value}}"
+        }
         "valueQuantity":
         {
-        	{{#each (toArray observationEntry.value)}}
-            	"value":"{{this.value}}",
-                "unit":"{{this.unit}}",
-  			{{/each}}
-        },
-        
+            "value":"{{observationEntry.value.value}}",
+            "unit":"{{observationEntry.value.unit}}",
+        },       
     },
     "request":{
         "method":"POST",

@@ -1,17 +1,16 @@
 {{#with (evaluate 'Utils/ResourceTypeFromSection.hbs' section=section)}}
     {{#if (eq this.resourceType 'AllergyIntolerance')}}
-        {{#with (evaluate 'Resources/AllergyIntolerance.hbs' allergyEntry=../entry) as |obj|}}
-           	"display":"{{obj.resource.reaction.[0].substance.coding.[0].display}}"
-        {{/with}}
-    {{/if}}
-    
-	{{#if (eq this.resourceType 'Observation')}}
-    "x":"{{toJsonString ../entry.observation.code.originalText}}",
-        {{#with (evaluate 'Resources/Observation.hbs' observationEntry=../entry.observation) as |obj|}}
-           	"display":"{{obj.resource.code.[0].coding.[0].display}}"
-        {{/with}}
-    {{/if}}
-    
+    	{{#each (toArray ../entry.act.entryRelationship)}}
+        	{{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.7')}}
+                "display":"{{this.observation.participant.participantRole.playingEntity.code.displayName}}",
+                "display":"{{this.observation.participant.participantRole.playingEntity.code.translation.displayName}}",
+            {{/if}}
+        {{/each}}
+	{{else if (eq this.resourceType 'Observation')}}
+    	"display":"{{../entry.observation.code.originalText._}}",
+        "display":"{{../entry.observation.code.displayName}}",
+        "display":"{{../entry.observation.code.translation.displayName}}",
+    {{/if}}   
 {{/with}}
 
 

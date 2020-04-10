@@ -4,15 +4,19 @@
         "resourceType": "AllergyIntolerance",
         "id":"{{ID}}",
         "clinicalStatus":"{{allergyEntry.act.statusCode.code}}",
-        {{#each (toArray allergyEntry.act.entryRelationship)}}
-        	{{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.7')}}
-        		"category":[
-           			{{#if (eq this.observation.value.xsi:type 'CD')}}
-               			"{{>ValueSet/AllergyCategory.hbs code=this.observation.value.code}}",
-            		{{/if}}
-        		]
-        		"reaction":
-        		[
+        "category":[
+            {{#each (toArray allergyEntry.act.entryRelationship)}}
+                {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.7')}}
+           	        {{#if (eq this.observation.value.xsi:type 'CD')}}
+                        "{{>ValueSet/AllergyCategory.hbs code=this.observation.value.code}}",
+                    {{/if}}
+                {{/if}}
+        	{{/each}}
+        ]
+        "reaction":
+        [
+            {{#each (toArray allergyEntry.act.entryRelationship)}}
+        		{{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.7')}}
            			{
            				"substance": {{>DataType/CodeableConcept.hbs code=this.observation.participant.participantRole.playingEntity.code}},
                         "substance": {{>DataType/CodeableConcept.hbs code=this.observation.participant.participantRole.playingEntity.code.translation}},  
@@ -22,7 +26,7 @@
                 				[
                                 	{{#if (eq this.observation.value.xsi:type 'CD')}}
                                     	{{#if this.observation.value.translation}}
-                              			{{>DataType/CodeableConcept.hbs code=this.observation.value.translation}},
+                              			    {{>DataType/CodeableConcept.hbs code=this.observation.value.translation}},
                                         {{else}}
                                         	{{>DataType/CodeableConcept.hbs code=this.observation.value}},
                                         {{/if}}
@@ -33,13 +37,12 @@
                             		{{>DataType/CodeableConcept.hbs code=this.observation.value.translation}},	
                             	],
                         		"onset": "{{formatAsDateTime this.observation.effectiveTime.low.value}}"
-                                {{/if}}
+                            {{/if}}
                         {{/each}}
             		},
-        		],
-        	{{/if}}
-        {{/each}}
-        
+                {{/if}}
+            {{/each}}
+        ],      
         "onsetDateTime":"{{formatAsDateTime allergyEntry.act.effectiveTime.low.value}}",
     },
     "request":{

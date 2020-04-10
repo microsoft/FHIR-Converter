@@ -47,23 +47,23 @@
         [               
             {{#each composition.component.structuredBody.component}}
                	{
-                   	"title":"{{this.section.code.displayName}}",
+                	"title":"{{this.section.title._}}",
+                   	"title":"{{this.section.code.displayName}}",         
                     "code":{{>DataType/CodeableConcept.hbs code=this.section.code}},
                     "mode":"snapshot",
                     "entry":
                     [
                         {{#with (evaluate 'Utils/ResourceTypeFromSection.hbs' section=this.section) as |resObj|}}
-                            {{#if (eq resObj.resourceType 'Observation')}}
+                            {{#if (and (eq resObj.resourceType 'Observation') (contains (toJsonString ../this.section.templateId) '2.16.840.1.113883.10.20.22.2.4.1'))}}
                                 {{#each (toArray ../this.section.entry)}}
-                                {{#each (toArray this.organizer.component)}}                           	
-                                    {
-                                    "y":"{{toJsonString this}}",
-                                        "reference":"{{concat resObj.resourceType '/' (generateUUID (toJsonString this))}}",
-                                        {{>Utils/DisplayFromSectionEntry.hbs section=../../../this.section entry=this}}
-                                    },
+                                    {{#each (toArray this.organizer.component)}}                           	
+                                        {
+                                            "reference":"{{concat resObj.resourceType '/' (generateUUID (toJsonString this))}}",
+                                            {{>Utils/DisplayFromSectionEntry.hbs section=../../../this.section entry=this}}
+                                        },
                                     {{/each}}
                                 {{/each}}
-                             {{else}}
+                            {{else if resObj.resourceType}}
                                 {{#each ../this.section.entry}}                           	
                                     {
                                         "reference":"{{concat resObj.resourceType '/' (generateUUID (toJsonString this))}}",

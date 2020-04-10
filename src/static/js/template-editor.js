@@ -840,11 +840,17 @@ $(document).ready(function () {
         gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
     });
 
+    let extrakeysObj = {};
+    extrakeysObj["Tab"] = function(cm) {
+        var spaces = Array(5).join(" ");
+        cm.replaceSelection(spaces);
+    };
+
     templateCodeEditor = CodeMirror.fromTextArea(document.getElementById("templatebox"), {
         theme: lightMode,
         lineNumbers: true,
         /*global hintExtraKeysObj*/
-        extraKeys: hintExtraKeysObj,
+        extraKeys: Object.assign(extrakeysObj, hintExtraKeysObj),
         mode: { name: "handlebars", base: "application/json" },
         smartIndent: false,
         matchBrackets: true
