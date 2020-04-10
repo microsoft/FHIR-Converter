@@ -1,0 +1,32 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "DiagnosticReport",
+        "id":"{{ID}}",
+        "identifier":
+        [
+        	{{#each (toArray diagReport.id)}}
+            	{{>DataType/Identifier.hbs id=this}},
+            {{/each}}
+        ],
+        "status":"{{diagReport.statusCode.code}}",
+        "code":
+        {
+            "coding":
+        	[
+            	{{>DataType/Coding.hbs code=diagReport.code}},
+                {{>DataType/Coding.hbs code=diagReport.code.translation}},
+            ],
+        }
+        "effectivePeriod":
+        {
+            "start":"{{formatAsDateTime diagReport.effectiveTime.low.value}}",
+            "end":"{{formatAsDateTime diagReport.effectiveTime.high.value}}"
+        },
+
+    },
+    "request":{
+        "method":"POST",
+        "url":"DiagnosticReport",
+    },
+},

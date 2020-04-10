@@ -11,17 +11,33 @@
                 {{>DataType/Coding.hbs code=observationEntry.code.translation}},
             ],
         }
-        "statusCode":"{{observationEntry.statusCode.code}}"
+        "statusCode":"{{observationEntry.statusCode.code}}",
         "effectivePeriod":
         {
-            "start":"{{formatAsDateTime observationEntry.effectiveTime.value}}"
-            "start":"{{formatAsDateTime observationEntry.effectiveTime.low.value}}"
+            "start":"{{formatAsDateTime observationEntry.effectiveTime.low.value}}",
+            "end":"{{formatAsDateTime observationEntry.effectiveTime.high.value}}",
         }
+        
+        "effectiveDateTime":"{{formatAsDateTime observationEntry.effectiveTime.value}}",
+        
         "valueQuantity":
         {
             "value":"{{observationEntry.value.value}}",
             "unit":"{{observationEntry.value.unit}}",
-        },       
+        }, 
+        "referenceRange":
+        {
+            "low":
+                {
+                    "value":"{{observationEntry.referenceRange.observationRange.value.low.value}}"
+                    "unit":"{{observationEntry.referenceRange.observationRange.value.low.unit}}"
+                }
+           "high":
+               {
+                   "value":"{{observationEntry.referenceRange.observationRange.value.high.value}}"
+                   "unit":"{{observationEntry.referenceRange.observationRange.value.high.unit}}"
+               }
+        }
     },
     "request":{
         "method":"POST",

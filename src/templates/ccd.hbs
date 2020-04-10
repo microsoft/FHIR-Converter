@@ -70,6 +70,18 @@
             {{/each}}
         {{/with}}
         
+        {{#with (getFirstCdaSections msg 'Results')}}
+            {{#each (toArray Results.entry) as |drEntry|}}
+                {{>Resources/DiagnosticReport.hbs diagReport=drEntry.organizer ID=(generateUUID (toJsonString drEntry.organizer))}}
+                {{#each (toArray this.organizer.component) as |obsEntry|}}
+                    {{>Resources/Observation.hbs observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}}
+                    {{#if obsEntry.observation}}
+                    {{>References/DiagnosticReport/result.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Observation/' (generateUUID (toJsonString obsEntry.observation)))}}
+                    {{/if}}
+                {{/each}}
+            {{/each}}
+        {{/with}}
+        
         {{#with (getFirstCdaSections msg 'Encounters')}}
             {{#each (toArray Encounters.entry) as |encounterEntry|}}
                 {{>Resources/Encounter.hbs encounter=encounterEntry.encounter ID=(generateUUID (toJsonString encounterEntry))}},

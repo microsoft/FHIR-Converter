@@ -34,7 +34,7 @@
                 				],
 								"severity":
 								[
-                            		{{>DataType/CodeableConcept.hbs code=this.observation.value.translation}},	
+                            		{{>DataType/CodeableConcept.hbs code=this.observation.entryRelationship.observation.value.translation}},	
                             	],
                         		"onset": "{{formatAsDateTime this.observation.effectiveTime.low.value}}"
                             {{/if}}
