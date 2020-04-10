@@ -4,16 +4,15 @@
         "resourceType": "Observation",
         "id":"{{ID}}",
         "code":
-        [
-        	{{#each (toArray observationEntry.code)}}
-            	{{>DataType/CodeableConcept.hbs code=this}},
-                [
-                {{#each (toArray this.translation)}}
-                	{{>DataType/Coding.hbs code=this}},
-                {{/each}}
-                ]
-  			{{/each}}
+        	{
+            "coding":
+        		[
+            	{{>DataType/Coding.hbs code=observationEntry.code}},
+
+                {{>DataType/Coding.hbs code=observationEntry.code.translation}},
+
         ],
+        }
         "statusCode":"{{observationEntry.statusCode.code}}"
         "effectivePeriod":
         	{"start":"{{formatAsDateTime observationEntry.effectiveTime.value}}"

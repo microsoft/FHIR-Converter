@@ -53,7 +53,17 @@
                     "entry":
                     [
                         {{#with (evaluate 'Utils/ResourceTypeFromSection.hbs' section=this.section) as |resObj|}}
-                            {{#if resObj.resourceType}}
+                            {{#if (eq resObj.resourceType 'Observation')}}
+                                {{#each (toArray ../this.section.entry)}}
+                                {{#each (toArray this.organizer.component)}}                           	
+                                    {
+                                    "y":"{{toJsonString this}}",
+                                        "reference":"{{concat resObj.resourceType '/' (generateUUID (toJsonString this))}}",
+                                        {{>Utils/DisplayFromSectionEntry.hbs section=../../../this.section entry=this}}
+                                    },
+                                    {{/each}}
+                                {{/each}}
+                             {{else}}
                                 {{#each ../this.section.entry}}                           	
                                     {
                                         "reference":"{{concat resObj.resourceType '/' (generateUUID (toJsonString this))}}",

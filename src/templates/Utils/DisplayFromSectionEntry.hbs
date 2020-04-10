@@ -4,5 +4,15 @@
            	"display":"{{obj.resource.reaction.[0].substance.coding.[0].display}}"
         {{/with}}
     {{/if}}
+    
+	{{#if (eq this.resourceType 'Observation')}}
+    "x":"{{toJsonString ../entry.observation.code.originalText}}",
+        {{#with (evaluate 'Resources/Observation.hbs' observationEntry=../entry.observation) as |obj|}}
+           	"display":"{{obj.resource.code.[0].coding.[0].display}}"
+        {{/with}}
+    {{/if}}
+    
 {{/with}}
+
+
 
