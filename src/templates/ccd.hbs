@@ -4,6 +4,7 @@
     "entry": [
     	{{#with msg.ClinicalDocument}}
       		{{>Resources/Composition.hbs composition=this ID=(generateUUID (toJsonString this))}},
+            {{>Resources/DocumentReference.hbs docref=this ID=(generateUUID (toJsonString this))}}
             {{>Resources/Practitioner.hbs practitioner=this.legalAuthenticator.assignedEntity ID=(generateUUID (toJsonString this.legalAuthenticator.assignedEntity))}},
       		{{>References/Composition/subject.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Patient/' (generateUUID (toJsonString this.recordTarget.patientRole)))}}
     		{{>References/Composition/attester.party.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Practitioner/' (generateUUID (toJsonString this.legalAuthenticator.assignedEntity)))}}
@@ -72,7 +73,8 @@
         
         {{#with (getFirstCdaSections msg 'Results')}}
             {{#each (toArray Results.entry) as |drEntry|}}
-                {{>Resources/DiagnosticReport.hbs diagReport=drEntry.organizer ID=(generateUUID (toJsonString drEntry.organizer))}}
+                {{>Resources/DiagnosticReport.hbs diagReport=drEntry.organizer ID=(generateUUID (toJsonString drEntry.organizer))}},
+                {{>References/DiagnosticReport/subject.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
                 {{#each (toArray this.organizer.component) as |obsEntry|}}
                     {{>Resources/Observation.hbs observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}}
                     {{#if obsEntry.observation}}

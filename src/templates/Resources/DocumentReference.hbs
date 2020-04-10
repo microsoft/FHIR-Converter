@@ -1,0 +1,18 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "DocumentReference",
+        "id":"{{ID}}",
+        "type":
+		[
+        	{{#each (toArray docref.code)}}
+        		{{>DataType/CodeableConcept.hbs code=this}},
+           	{{/each}}
+        ],
+        "indexed":"{{formatAsDateTime docref.effectiveTime.value}}"
+    },
+    "request":{
+        "method":"POST",
+        "url":"DocumentReference",
+    },
+},
