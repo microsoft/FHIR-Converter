@@ -8,6 +8,7 @@ var HandlebarsUtils = require('handlebars').Utils;
 var constants = require('../constants/constants');
 var HandlebarsConverter = require('./handlebars-converter');
 var fs = require('fs');
+var crypto = require('crypto');
 var templatePreprocessor = require('../inputProcessor/templatePreprocessor');
 var jsonProcessor = require('../outputProcessor/jsonProcessor');
 var resourceMerger = require('../outputProcessor/resourceMerger');
@@ -239,6 +240,20 @@ module.exports.external = [
             }
             catch (err) {
                 throw `helper "contains" : ${err}`;
+            }
+        }
+    },
+    {
+        name: 'sha1Hash',
+        description: 'Returns sha1 hash of given string: sha1Hash string',
+        func: function (str) {
+            try {
+                var shasum = crypto.createHash('sha1');
+                shasum.update(str);
+                return shasum.digest().toString();
+            }
+            catch (err) {
+                throw `helper "sha1hash" : ${err}`;
             }
         }
     },

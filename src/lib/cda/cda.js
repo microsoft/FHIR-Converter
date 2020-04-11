@@ -10,13 +10,8 @@ function parseCDA(msg) {
             if (err) {
                 reject(err);
             }
-            //console.log(msg);
-            //console.log(`submitted xmltojson`);
-            //console.log(result);
-            //console.log(typeof result);
-            //console.log(`before fulfill in parsecda`);
+            result._originalData=msg;
             fulfill(result);
-            //return result; //JSON.parse(result);
         });
     });
 }

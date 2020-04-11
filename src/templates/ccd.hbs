@@ -2,9 +2,10 @@
     "resourceType": "Bundle",
     "type": "transaction",
     "entry": [
+        {{>Resources/DocumentReference.hbs docref=msg ID=(generateUUID (toJsonString msg))}}
+
     	{{#with msg.ClinicalDocument}}
       		{{>Resources/Composition.hbs composition=this ID=(generateUUID (toJsonString this))}},
-            {{>Resources/DocumentReference.hbs docref=this ID=(generateUUID (toJsonString this))}}
             {{>Resources/Practitioner.hbs practitioner=this.legalAuthenticator.assignedEntity ID=(generateUUID (toJsonString this.legalAuthenticator.assignedEntity))}},
       		{{>References/Composition/subject.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Patient/' (generateUUID (toJsonString this.recordTarget.patientRole)))}}
     		{{>References/Composition/attester.party.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Practitioner/' (generateUUID (toJsonString this.legalAuthenticator.assignedEntity)))}}
