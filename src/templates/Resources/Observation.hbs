@@ -11,13 +11,10 @@
                 {{>DataType/Coding.hbs code=observationEntry.code.translation}},
             ],
         }
-
-        "status":
-        [
-            {{#each (toArray observationEntry.entryRelationship)}}
-               "{{this.observation.value.code}}",
-            {{/each}}
-        ]
+        
+        {{#each (toArray observationEntry.entryRelationship)}}
+            "status":"{{this.observation.value.code}}",
+        {{/each}}
 
         "effectivePeriod":
         {
