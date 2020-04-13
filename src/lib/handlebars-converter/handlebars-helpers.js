@@ -245,24 +245,28 @@ module.exports.external = [
     },
     {
         name: 'sha1Hash',
-        description: 'Returns sha1 hash of given string: sha1Hash string',
+        description: 'Returns sha1 hash (in hex) of given string: sha1Hash string',
         func: function (str) {
             try {
                 var shasum = crypto.createHash('sha1');
                 shasum.update(str);
-                return shasum.digest().toString();
+                return shasum.digest().toString('hex');
             }
             catch (err) {
-                throw `helper "sha1hash" : ${err}`;
+                throw `helper "sha1Hash" : ${err}`;
             }
         }
     },
     {
         name: 'base64Encode',
-        description: 'Returns base64 encoded string: base64Encode string',
-        func: function (str) {
+        description: 'Returns base64 encoded string: base64Encode string encoding',
+        func: function (str, encoding) {
             try {
-                return Buffer.from(str.toString()).toString('base64');
+                if (typeof encoding !== 'string')
+                {
+                    encoding = 'utf8';
+                }
+                return Buffer.from(str.toString(), encoding).toString('base64');
             }
             catch (err) {
                 throw `helper "base64Encode" : ${err}`;
@@ -271,10 +275,14 @@ module.exports.external = [
     },
     {
         name: 'base64Decode',
-        description: 'Returns base64 decoded string: base64Decode string',
-        func: function (str) {
+        description: 'Returns base64 decoded string: base64Decode string encoding',
+        func: function (str, encoding) {
             try {
-                return Buffer.from(str.toString(), 'base64').toString();
+                if (typeof encoding !== 'string')
+                {
+                    encoding = 'utf8';
+                }
+                return Buffer.from(str.toString(), 'base64').toString(encoding);
             }
             catch (err) {
                 throw `helper "base64Decode" : ${err}`;
