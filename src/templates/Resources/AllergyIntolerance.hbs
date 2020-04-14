@@ -32,10 +32,7 @@
                                         {{/if}}
                             		{{/if}}
                 				],
-								"severity":
-								[
-                            		{{>DataType/CodeableConcept.hbs code=this.observation.entryRelationship.observation.value.translation}},	
-                            	],
+								"severity":"{{this.observation.entryRelationship.observation.value.translation.displayName}}",
                         		"onset": "{{formatAsDateTime this.observation.effectiveTime.low.value}}"
                             {{/if}}
                         {{/each}}
