@@ -19,15 +19,7 @@
     
         {{#with msg.ClinicalDocument.recordTarget.patientRole}}
             {{>Resources/Patient.hbs patientRole=this ID=(generateUUID (toJsonString this))}},
-            {{>Resources/Organization.hbs org=this.providerOrganization ID=(generateUUID (toJsonString this.providerOrganization))}},
-            {{>References/Patient/managingOrganization.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Organization/' (generateUUID (toJsonString this.providerOrganization)))}},
 		{{/with}}
-        
-      	{{#with msg.ClinicalDocument.documentationOf.serviceEvent.performer}}
-        	{{#each this}}
-      			{{>Resources/Practitioner.hbs practitioner=this.assignedEntity ID=(generateUUID (toJsonString this))}},
-            {{/each}}
-        {{/with}}
         
       	{{#with (getFirstCdaSections msg 'Medication')}}
             {{#each (toArray Medication.entry) as |medEntry|}}
