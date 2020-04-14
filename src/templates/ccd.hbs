@@ -53,6 +53,13 @@
             {{/each}}
         {{/with}}
         
+        {{#with (getFirstCdaSections msg 'Problems')}}
+            {{#each (toArray Problems.entry) as |condEntry|}}
+                {{>Resources/Condition.hbs conditionEntry=condEntry.act ID=(generateUUID (toJsonString condEntry.act))}},
+                {{>References/Condition/subject.hbs ID=(generateUUID (toJsonString condEntry.act)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{/each}}
+        {{/with}} 
+        
       	{{#with (getFirstCdaSections msg 'Vital')}}
         	{{#each (toArray Vital.entry)}}
             	{{#each (toArray this.organizer.component) as |obsEntry|}}
