@@ -1,0 +1,19 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Condition",
+        "id":"{{ID}}",
+        "clinicalStatus":"{{conditionEntry.statusCode.code}}",
+        "code":
+        [
+            {{#each (toArray conditionEntry.entryRelationship)}}
+                {{>DataType/CodeableConcept.hbs code=this.observation.value}},
+            {{/each}}
+         ],
+         
+    },
+    "request":{
+        "method":"POST",
+        "url":"Condition",
+    },
+},
