@@ -1,0 +1,19 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Procedure",
+        "id":"{{ID}}",
+        "status":"{{procedureEntry.statusCode.code}}",
+        "code":
+        [
+            {{#each (toArray procedureEntry)}}
+                {{>DataType/CodeableConcept.hbs code=this.code.translation}},
+            {{/each}}
+         ],
+         
+    },
+    "request":{
+        "method":"POST",
+        "url":"Condition",
+    },
+},
