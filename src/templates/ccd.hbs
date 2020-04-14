@@ -77,9 +77,9 @@
                 {{>Resources/DiagnosticReport.hbs diagReport=drEntry.organizer ID=(generateUUID (toJsonString drEntry.organizer))}},
                 {{>References/DiagnosticReport/subject.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
                 {{#each (toArray this.organizer.component) as |obsEntry|}}
-                    {{>Resources/Observation.hbs observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}}
                     {{#if obsEntry.observation}}
-                    {{>References/DiagnosticReport/result.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Observation/' (generateUUID (toJsonString obsEntry.observation)))}}
+                        {{>Resources/Observation.hbs observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}}                   
+                        {{>References/DiagnosticReport/result.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Observation/' (generateUUID (toJsonString obsEntry.observation)))}}
                     {{/if}}
                 {{/each}}
             {{/each}}
@@ -92,12 +92,14 @@
                 {{>References/Encounter/subject.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
                 {{>References/Encounter/participant.individual.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Practitioner/' (generateUUID (toJsonString encounterEntry.encounter.performer.assignedEntity)))}},
 
-                {{#if (eq encounterEntry.encounter.participant.typeCode 'LOC')}}
-                	{{#if (contains (toJsonString encounterEntry.encounter.participant.participantRole.templateId) '2.16.840.1.113883.10.20.22.4.32')}}
-               			{{>Resources/Location.hbs location=encounterEntry.encounter.participant.participantRole ID=(generateUUID (toJsonString encounterEntry.encounter.participant.participantRole))}},
-                		{{>References/Encounter/location.location.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Location/' (generateUUID (toJsonString encounterEntry.encounter.participant.participantRole)))}},                    
-                    {{/if}}                
-                {{/if}}
+                {{#each (toArray encounterEntry.encounter.participant)}}
+                    {{#if (eq this.typeCode 'LOC')}}
+                	    {{#if (contains (toJsonString this.participantRole.templateId) '2.16.840.1.113883.10.20.22.4.32')}}
+               			    {{>Resources/Location.hbs location=this.participantRole ID=(generateUUID (toJsonString this.participantRole))}},
+                		    {{>References/Encounter/location.location.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Location/' (generateUUID (toJsonString this.participantRole)))}},                    
+                        {{/if}}                
+                    {{/if}}
+                {{/each}}
             {{/each}}
         {{/with}}
       ]

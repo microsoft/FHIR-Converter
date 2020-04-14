@@ -365,20 +365,6 @@ module.exports.external = [
         }
     },
     {
-        name: 'isArray',
-        description: 'Returns true if value is array: isArray val',
-        func: function (val) {
-            return Array.isArray(val);
-        }
-    },
-    {
-        name: 'isString',
-        description: 'Returns true if value is string: isString val',
-        func: function (val) {
-            return (typeof val === 'string');
-        }
-    },
-    {
         name: 'getFirstCdaSections',
         description: "Returns first instance of the sections e.g. getFirstCdaSections msg 'Allergies' 'Medication': getFirstCdaSections message section1 section2 …",
         func: function getFirstCdaSections(msg, ...sectionNames) {
