@@ -3,6 +3,11 @@
     "resource":{
         "resourceType": "Observation",
         "id":"{{ID}}",
+        
+          {{#each (toArray observationEntry.entryRelationship)}}
+            "status":"{{this.observation.value.code}}",
+        {{/each}}
+        
         "code":
         {
             "coding":
@@ -11,11 +16,6 @@
                 {{>DataType/Coding.hbs code=observationEntry.code.translation}},
             ],
         }
-        
-        {{#each (toArray observationEntry.entryRelationship)}}
-            "status":"{{this.observation.value.code}}",
-        {{/each}}
-
         "effectivePeriod":
         {
             "start":"{{formatAsDateTime observationEntry.effectiveTime.low.value}}",

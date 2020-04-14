@@ -2,8 +2,6 @@
     "resourceType": "Bundle",
     "type": "transaction",
     "entry": [
-        {{>Resources/DocumentReference.hbs docref=msg ID=(generateUUID (toJsonString msg))}}
-
     	{{#with msg.ClinicalDocument}}
       		{{>Resources/Composition.hbs composition=this ID=(generateUUID (toJsonString this))}},
             {{>Resources/Practitioner.hbs practitioner=this.legalAuthenticator.assignedEntity ID=(generateUUID (toJsonString this.legalAuthenticator.assignedEntity))}},
@@ -33,9 +31,18 @@
         
       	{{#with (getFirstCdaSections msg 'Medication')}}
             {{#each (toArray Medication.entry) as |medEntry|}}
-                {{>Resources/MedicationStatement.hbs medicationEntry=medEntry ID=(generateUUID (toJsonString medEntry))}},
-                {{>References/MedicationStatement/medicationReference.hbs ID=(generateUUID (toJsonString medEntry)) REF=(concat 'Medication/' (generateUUID (toJsonString medEntry.substanceAdministration.consumable)))}}
-            	{{>References/MedicationStatement/subject.hbs ID=(generateUUID (toJsonString medEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                {{>Resources/MedicationStatement.hbs medicationStatement=medEntry.substanceAdministration ID=(generateUUID (toJsonString medEntry.substanceAdministration))}},
+                {{>Resources/Medication.hbs medication=medEntry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial.name ID=(generateUUID (toJsonString medEntry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial.name))}},
+                {{>Resources/Organization.hbs org=medEntry.substanceAdministration.informant.assignedEntity ID=(generateUUID (toJsonString medEntry.substanceAdministration.informant.assignedEntity))}},
+                {{>References/MedicationStatement/medicationReference.hbs ID=(generateUUID (toJsonString medEntry.substanceAdministration)) REF=(concat 'Medication/' (generateUUID (toJsonString medEntry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial.name)))}},
+            	{{>References/MedicationStatement/subject.hbs ID=(generateUUID (toJsonString medEntry.substanceAdministration)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                {{#each (toArray this.substanceAdministration.entryRelationship) as |medReq|}}
+                    {{>Resources/MedicationRequest.hbs medicationRequest=medReq.supply ID=(generateUUID (toJsonString medReq.supply))}},
+                    {{>Resources/Practitioner.hbs practitioner=medReq.supply.author.assignedAuthor ID=(generateUUID (toJsonString medReq.supply.author.assignedAuthor))}},
+                    {{>References/MedicationRequest/medicationReference.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Medication/' (generateUUID (toJsonString medEntry.substanceAdministration.consumable)))}},
+                    {{>References/MedicationRequest/subject.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                    {{>References/MedicationRequest/requester.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Practitioner/' (generateUUID (toJsonString medReq.supply.author.assignedAuthor)))}}
+                {{/each}}  
             {{/each}}
         {{/with}}
          
@@ -50,7 +57,7 @@
         	{{#each (toArray Vital.entry)}}
             	{{#each (toArray this.organizer.component) as |obsEntry|}}
             		{{>Resources/Observation.hbs observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}}
-                    {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}}
+                    {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}}
             	{{/each}}
             {{/each}}
         {{/with}}
@@ -65,10 +72,11 @@
         {{#with (getFirstCdaSections msg 'Immunization')}}
             {{#each (toArray Immunization.entry) as |immEntry|}}
                 {{>Resources/Immunization.hbs imm=immEntry.substanceAdministration ID=(generateUUID (toJsonString immEntry))}},
-                {{>Resources/Practitioner.hbs practitioner=immEntry.substanceAdministration.informant.assignedEntity ID=(generateUUID (toJsonString immEntry.substanceAdministration.informant.assignedEntity))}},
-                {{>Resources/Organization.hbs org=immEntry.substranceAdministration.informant.assignedEntity.representedOrganization ID=(generateUUID (toJsonString immEntry.substranceAdministration.informant.assignedEntity.representedOrganization))}},
+                {{#if (eq immEntry.substanceAdministration.informant.assignedEntity.id.root 'FACILITY')}}
+                    {{>Resources/Organization.hbs org=immEntry.substanceAdministration.informant.assignedEntity.representedOrganization ID=(generateUUID (toJsonString immEntry.substanceAdministration.informant.assignedEntity.representedOrganization))}},
+                    {{>References/Immunization/performer.actor.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Organization/' (generateUUID (toJsonString immEntry.substanceAdministration.informant.assignedEntity.representedOrganization)))}},
+                {{/if}}
                 {{>References/Immunization/patient.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
-                {{>References/Immunization/performer.actor.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Practitioner/' (generateUUID (toJsonString immEntry.substanceAdministration.performer.assignedEntity)))}},
             {{/each}}
         {{/with}}
         
@@ -78,8 +86,9 @@
                 {{>References/DiagnosticReport/subject.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
                 {{#each (toArray this.organizer.component) as |obsEntry|}}
                     {{#if obsEntry.observation}}
-                        {{>Resources/Observation.hbs observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}}                   
-                        {{>References/DiagnosticReport/result.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Observation/' (generateUUID (toJsonString obsEntry.observation)))}}
+                        {{>Resources/Observation.hbs observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}},                   
+                        {{>References/DiagnosticReport/result.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Observation/' (generateUUID (toJsonString obsEntry.observation)))}},
+                        {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
                     {{/if}}
                 {{/each}}
             {{/each}}
@@ -102,5 +111,7 @@
                 {{/each}}
             {{/each}}
         {{/with}}
+        
+         {{>Resources/DocumentReference.hbs docref=msg ID=(generateUUID (toJsonString msg))}}
       ]
 }

@@ -9,11 +9,7 @@
             	{{>DataType/Identifier.hbs id=this}}
             {{/each}}
         ],
-        
-        
         "status":"{{medicationRequest.statusCode.code}}",
-        "intent":"instance-order",
-        "authoredOn":"{{formatAsDateTime medicationRequest.author.time.value}}"
     },
     "request":{
         "method":"POST",

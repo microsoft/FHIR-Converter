@@ -9,6 +9,7 @@
         		{{>DataType/CodeableConcept.hbs code=this}},
            	{{/each}}
         ],
+        "indexed":"{{formatAsDateTime docref.ClinicalDocument.effectiveTime.value}}"
         "content":
         [
             {
@@ -20,7 +21,6 @@
                 }
             }
         ]
-        "indexed":"{{formatAsDateTime docref.ClinicalDocument.effectiveTime.value}}"
     },
     "request":{
         "method":"POST",

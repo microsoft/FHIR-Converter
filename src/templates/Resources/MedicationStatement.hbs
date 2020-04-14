@@ -14,6 +14,14 @@
         	{"start":"{{formatAsDateTime medicationStatement.effectiveTime.low.value}}",
             "end":"{{formatAsDateTime medicationStatement.effectiveTime.high.value}}"
         	},
+        "dosage":
+        [
+            "doseQuantity":
+            {
+                "value":{{medicationStatement.doseQuantity.value}},
+                "unit":"{{medicationStatement.doseQuantity.unit}}"
+          }
+        ]
     },
     "request":{
         "method":"POST",
