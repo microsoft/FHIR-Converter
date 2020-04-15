@@ -5,7 +5,7 @@
         "id":"{{ID}}",
         
           {{#each (toArray observationEntry.entryRelationship)}}
-            "status":"{{this.observation.value.code}}",
+            "status":"{{>ValueSet/ObservationStatus.hbs code=this.observation.statusCode.code}}",
         {{/each}}
         
         "code":
