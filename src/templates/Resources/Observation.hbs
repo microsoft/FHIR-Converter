@@ -7,12 +7,16 @@
         {{#each (toArray observationEntry.entryRelationship)}}
             "status":"{{>ValueSet/ObservationStatus.hbs code=this.observation.statusCode.code}}",
         {{/each}}
-        
+
         "code":
         	[
-            	{{>DataType/CodeableConcept.hbs code=observationEntry.code}},
-                {{>DataType/CodeableConcept.hbs code=observationEntry.code.translation}},
-            ],
+            	{{#if observationEntry.code.translation}},
+                    {{>DataType/CodeableConcept.hbs code=observationEntry.code.translation}},
+                {{else}},
+                    {{>DataType/CodeableConcept.hbs code=observationEntry.code}},
+                {{/if}}
+            ],   
+            
         "effectivePeriod":
         {
             "start":"{{formatAsDateTime observationEntry.effectiveTime.low.value}}",
