@@ -4,18 +4,15 @@
         "resourceType": "Observation",
         "id":"{{ID}}",
         
-          {{#each (toArray observationEntry.entryRelationship)}}
+        {{#each (toArray observationEntry.entryRelationship)}}
             "status":"{{>ValueSet/ObservationStatus.hbs code=this.observation.statusCode.code}}",
         {{/each}}
         
         "code":
-        {
-            "coding":
         	[
-            	{{>DataType/Coding.hbs code=observationEntry.code}},
-                {{>DataType/Coding.hbs code=observationEntry.code.translation}},
+            	{{>DataType/CodeableConcept.hbs code=observationEntry.code}},
+                {{>DataType/CodeableConcept.hbs code=observationEntry.code.translation}},
             ],
-        }
         "effectivePeriod":
         {
             "start":"{{formatAsDateTime observationEntry.effectiveTime.low.value}}",
@@ -43,13 +40,9 @@
                }
         },
         "interpretation":
-        {
-            "coding":
         	[
-                {{>DataType/Coding.hbs code=observationEntry.interpretationCode}},
+                {{>DataType/CodeableConcept.hbs code=observationEntry.interpretationCode}},
             ],
-        },
-
     },
     "request":{
         "method":"POST",
