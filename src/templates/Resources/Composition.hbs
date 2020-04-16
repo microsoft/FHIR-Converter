@@ -8,7 +8,7 @@
   			"use":"official",
 			"value":"{{composition.id.root}}",
         },
-		"status":"preliminary",
+		"status":"{{>ValueSet/CompositionStatus.hbs code=composition.statusCode}}"
         "type":
 		[
         	{{#each (toArray composition.code)}}
