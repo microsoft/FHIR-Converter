@@ -89,30 +89,11 @@ WorkerUtils.workerTaskProcessor((msg) => {
                             templateString = Buffer.from(msg.templateBase64, 'base64').toString();
                         }
 
-                        /*var msgObj = {};
-
-
-                        try {
-                            var b = Buffer.from(msg.messageBase64, 'base64');
-                            var s = b.toString();
-                            console.log(`s : ${s}`);
-                            msgObj = cda.parseCDA(s);// hl7.parseHL7v2(s);
-                            console.log(`msgObj : ${JSON.stringify(msgObj)}`);
-                        }
-                        catch (err) {
-                            reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, `Unable to decode and parse HL7 v2 message. ${err.message}`) });
-                        }*/
-
                         var b = Buffer.from(msg.messageBase64, 'base64');
                         var s = b.toString();
-                        //console.log(`s : ${s}`);
                         cda.parseCDA(s)
                         .then((msgObj) => {
-                            //console.log(`inside then`);
-                            //console.log(`msgObj : ${msgObj}`);
                             var context = { msg: msgObj };
-                            //console.log(typeof context);
-                            //console.log(JSON.stringify(context));
                             if (templateString == null || templateString.length == 0) {
                                 var coverage = hl7.parseCoverageReport(context.msg);
                                 var invalidAccess = hl7.parseInvalidAccess(context.msg);
@@ -138,7 +119,7 @@ WorkerUtils.workerTaskProcessor((msg) => {
                         })
                         .catch(err => {
                             //console.log(err);
-                            reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, `Unable to decode and parse HL7 v2 message. ${err.message}`) });
+                            reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, `Unable to decode and parse input data. ${err.message}`) });
                         });
                     }
                     catch (err) {
@@ -155,17 +136,6 @@ WorkerUtils.workerTaskProcessor((msg) => {
 
                     if (!messageContent || messageContent.length == 0) {
                         reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, "No message provided.") });
-                    }
-
-                    var msgObject = {};
-                    try {
-                        msgObject = hl7.parseHL7v2(messageContent);
-                    }
-                    catch (err) {
-                        reject({
-                            'status': 400,
-                            'resultMsg': errorMessage(errorCodes.BadRequest, "Unable to decode and parse HL7 v2 message. " + err.toString())
-                        });
                     }
 
                     const getTemplate = (templateName) => {
@@ -197,25 +167,31 @@ WorkerUtils.workerTaskProcessor((msg) => {
                             }
                         });
                     };
-
-                    var msgContext = { msg: msgObject };
-                    getTemplate(templateName)
-                        .then((compiledTemplate) => {
-                            try {
-                                fulfill({
-                                    'status': 200, 'resultMsg': generateResult(msgContext, compiledTemplate)
-                                });
-                            }
-                            catch (convertErr) {
-                                reject({
-                                    'status': 400,
-                                    'resultMsg': errorMessage(errorCodes.BadRequest,
-                                        "Error during template evaluation. " + convertErr.toString())
-                                });
-                            }
-                        }, (err) => {
-                            reject(err);
-                        });
+                
+                    cda.parseCDA(messageContent)
+                    .then((msgObject) => {
+                        var msgContext = { msg: msgObject };
+                        getTemplate(templateName)
+                            .then((compiledTemplate) => {
+                                try {
+                                    fulfill({
+                                        'status': 200, 'resultMsg': generateResult(msgContext, compiledTemplate)
+                                    });
+                                }
+                                catch (convertErr) {
+                                    reject({
+                                        'status': 400,
+                                        'resultMsg': errorMessage(errorCodes.BadRequest,
+                                            "Error during template evaluation. " + convertErr.toString())
+                                    });
+                                }
+                            }, (err) => {
+                                reject(err);
+                            });
+                    })
+                    .catch(err => {
+                        reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, `Unable to parse input data. ${err.message}`) });
+                    });
                 }
                 break;
 
