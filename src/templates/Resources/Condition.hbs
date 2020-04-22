@@ -4,13 +4,8 @@
         "resourceType": "Condition",
         "id":"{{ID}}",
         "clinicalStatus":"{{conditionEntry.statusCode.code}}",
-        "code":
-        [
-            {{#each (toArray conditionEntry.entryRelationship)}}
-                {{>DataType/CodeableConcept.hbs code=this.observation.value}},
-            {{/each}}
-         ],
-         
+        "code":{{>DataType/CodeableConcept.hbs code=conditionEntry.value}},
+        "onsetDateTime":"{{formatAsDateTime conditionEntry.effectiveTime.low.value}}",    
     },
     "request":{
         "method":"POST",

@@ -119,6 +119,14 @@
                         {{/if}}                
                     {{/if}}
                 {{/each}}
+              
+                {{#each (toArray encounter.entryRelationship)}}
+                    {{#if this.act}}
+                        {{>Resources/Condition.hbs conditionEntry=this.act ID=(generateUUID (toJsonString this.act))}},
+                        {{>References/Encounter/diagnosis.condition.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(generateUUID (toJsonString this.act))}},
+                    {{/if}}
+                {{/each}}
+
             {{/each}}
         {{/with}}
         

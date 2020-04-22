@@ -17,7 +17,12 @@
         ],
         "period": {{>DataType/Period.hbs period=encounter.effectiveTime}},
         "priority":{{>DataType/CodeableConcept.hbs code=encounter.priorityCode}},
-    },
+       
+        "hospitalization":
+            {
+            "dischargeDisposition":{{>DataType/CodeableConcept.hbs code=encounter.sdtc:dischargeDispositionCode}},
+            }
+     },
     "request":{
         "method":"POST",
         "url":"Encounter",
