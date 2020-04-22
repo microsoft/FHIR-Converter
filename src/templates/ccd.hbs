@@ -94,6 +94,7 @@
             {{#each (toArray Results.entry) as |drEntry|}}
                 {{>Resources/DiagnosticReport.hbs diagReport=drEntry.organizer ID=(generateUUID (toJsonString drEntry.organizer))}},
                 {{>References/DiagnosticReport/subject.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                {{>References/DiagnosticReport/performer.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Practitioner/' (generateUUID (toJsonString drEntry.organizer.performer)))}}
                 {{#each (toArray this.organizer.component) as |obsEntry|}}
                     {{#if obsEntry.observation}}
                         {{>Resources/Observation.hbs observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}},                   
