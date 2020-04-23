@@ -14,6 +14,8 @@
         
         "status":"{{>ValueSet/ObservationStatus.hbs code=observationEntry.statusCode.code}}",
         
+
+        
         "code":
         	[
             	{{#if observationEntry.code.translation}},
@@ -30,6 +32,11 @@
         }
         
         "effectiveDateTime":"{{formatAsDateTime observationEntry.effectiveTime.value}}",
+        
+        "valueCodeableConcept":
+        [
+            {{>DataType/CodeableConcept.hbs code=observationEntry.value}},
+        ]
         
         "valueQuantity":
         {

@@ -40,8 +40,8 @@
          
         {{#with (getFirstCdaSections msg 'Allergies')}}
             {{#each (toArray Allergies.entry) as |alEntry|}}
-                {{>Resources/AllergyIntolerance.hbs allergyEntry=alEntry ID=(generateUUID (toJsonString alEntry))}},
-                {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID (toJsonString alEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                {{>Resources/AllergyIntolerance.hbs allergyEntry=alEntry.act ID=(generateUUID (toJsonString alEntry.act))}},
+                {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID (toJsonString alEntry.act)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
             {{/each}}
         {{/with}}
         
@@ -86,6 +86,7 @@
                     {{>Resources/Organization.hbs org=immEntry.substanceAdministration.informant.assignedEntity.representedOrganization ID=(generateUUID (toJsonString immEntry.substanceAdministration.informant.assignedEntity.representedOrganization))}},
                     {{>References/Immunization/performer.actor.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Organization/' (generateUUID (toJsonString immEntry.substanceAdministration.informant.assignedEntity.representedOrganization)))}},
                 {{/if}}
+                {{>References/Immunization/performer.actor.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Practitioner/' (generateUUID (toJsonString immEntry.substanceAdministration.performer.assignedEntity.assignedPerson)))}}
                 {{>References/Immunization/patient.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
             {{/each}}
         {{/with}}

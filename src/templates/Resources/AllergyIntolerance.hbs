@@ -3,9 +3,18 @@
     "resource":{
         "resourceType": "AllergyIntolerance",
         "id":"{{ID}}",
-        "clinicalStatus":"{{allergyEntry.act.statusCode.code}}",
+        
+          "identifier":
+        [
+        	{{#each (toArray allergyEntry.id)}}
+            	{{>DataType/Identifier.hbs id=this}},
+            {{/each}}
+        ],
+        
+        
+        "clinicalStatus":"{{allergyEntry.statusCode.code}}",
         "category":[
-            {{#each (toArray allergyEntry.act.entryRelationship)}}
+            {{#each (toArray allergyEntry.entryRelationship)}}
                 {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.7')}}
            	        {{#if (eq this.observation.value.xsi:type 'CD')}}
                         "{{>ValueSet/AllergyCategory.hbs code=this.observation.value.code}}",
@@ -15,7 +24,7 @@
         ]
         "reaction":
         [
-            {{#each (toArray allergyEntry.act.entryRelationship)}}
+            {{#each (toArray allergyEntry.entryRelationship)}}
         		{{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.7')}}
            			{
            				"substance": {{>DataType/CodeableConcept.hbs code=this.observation.participant.participantRole.playingEntity.code}},
@@ -40,7 +49,7 @@
                 {{/if}}
             {{/each}}
         ],      
-        "onsetDateTime":"{{formatAsDateTime allergyEntry.act.effectiveTime.low.value}}",
+        "onsetDateTime":"{{formatAsDateTime allergyEntry.effectiveTime.low.value}}",
     },
     "request":{
         "method":"POST",

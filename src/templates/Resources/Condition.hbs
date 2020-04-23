@@ -3,6 +3,12 @@
     "resource":{
         "resourceType": "Condition",
         "id":"{{ID}}",
+        "identifier":
+        [
+        	{{#each (toArray conditionEntry.id)}}
+            	{{>DataType/Identifier.hbs id=this}},
+            {{/each}}
+        ],
         "clinicalStatus":"{{conditionEntry.statusCode.code}}",
         "code":{{>DataType/CodeableConcept.hbs code=conditionEntry.value}},
         "onsetDateTime":"{{formatAsDateTime conditionEntry.effectiveTime.low.value}}",    
