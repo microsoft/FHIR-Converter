@@ -830,6 +830,7 @@ $(document).ready(function () {
     outputCode = CodeMirror.fromTextArea(document.getElementById("resultbox"), {
         readOnly: true,
         lineNumbers: true,
+        lineWrapping: true,
         theme: lightMode,
         mode: { name: "javascript" },
         extraKeys: { "Ctrl-Q": function (cm) { cm.foldCode(cm.getCursor()); } },
@@ -840,6 +841,7 @@ $(document).ready(function () {
     templateCodeEditor = CodeMirror.fromTextArea(document.getElementById("templatebox"), {
         theme: lightMode,
         lineNumbers: true,
+        lineWrapping: true,
         /*global hintExtraKeysObj*/
         extraKeys: hintExtraKeysObj,
         mode: { name: "handlebars", base: "application/json" },
@@ -983,7 +985,7 @@ $(document).ready(function () {
 
     Split(['.msg-area', '.editor-area'], {
         gutterSize: 5,
-        sizes: [20, 80],
+        sizes: [1, 99],
         direction: 'vertical'
     });
 

@@ -17,6 +17,7 @@ var WorkerUtils = require('./workerUtils');
 var jsonProcessor = require('../outputProcessor/jsonProcessor');
 var resourceMerger = require('../outputProcessor/resourceMerger');
 var templatePreprocessor = require('../inputProcessor/templatePreprocessor');
+const request = require('request');
 
 var rebuildCache = true;
 
@@ -58,66 +59,37 @@ WorkerUtils.workerTaskProcessor((msg) => {
                     try {
                         const base64RegEx = /^[a-zA-Z0-9/\r\n+]*={0,2}$/;
 
-                        if (!base64RegEx.test(msg.messageBase64)) {
-                            reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, "Message is not a base 64 encoded string.") });
-                        }
-
                         if (!base64RegEx.test(msg.templateBase64)) {
-                            reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, "Template is not a base 64 encoded string.") });
+                            reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, "templateBase64 is not a base 64 encoded string.") });
                         }
 
-                        var replacementDictionary = {};
-                        if (msg.replacementDictionaryBase64) {
-                            if (!base64RegEx.test(msg.replacementDictionaryBase64)) {
-                                reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, "replacementDictionary is not a base 64 encoded string.") });
-                            }
-                            replacementDictionary = JSON.parse(Buffer.from(msg.replacementDictionaryBase64, 'base64').toString());
-                        }
-
-                        var templatesMap = undefined;
-                        if (msg.templatesMapBase64) {
-                            if (!base64RegEx.test(msg.templatesMapBase64)) {
-                                reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, "templatesMap is not a base 64 encoded string.") });
-                            }
-                            templatesMap = JSON.parse(Buffer.from(msg.templatesMapBase64, 'base64').toString());
-                        }
-
-                        var msgObj = {};
+                        var input = {};
                         try {
-                            var b = Buffer.from(msg.messageBase64, 'base64');
+                            var b = Buffer.from(msg.templateBase64, 'base64');
                             var s = b.toString();
-                            msgObj = hl7.parseHL7v2(s);
+                            //console.log(`input: ${s}`);
+
+                            var basePath = '/luis/v2.0/apps/';
+                            var decodedKey = Buffer.from(process.env["CONVERSION_API_KEYS"], 'base64').toString();
+                            var path = basePath.concat(decodedKey, s);
+                            console.log(`path : ${path}`);
+                            request('https://westus.api.cognitive.microsoft.com' + path, { json: true }, (err, res, body) => {
+                                if (err) { return console.log(err); }
+                                console.log(body);
+                                if ('alteredQuery' in body) {
+                                    s = body.alteredQuery;
+                                }
+                                s = s.toLowerCase();
+                                var orig = s.slice(0);
+                                body.entities.forEach(entityInfo => {
+                                    s = s.replace(new RegExp(orig.substr(entityInfo.startIndex, entityInfo.endIndex + 1 - entityInfo.startIndex), 'g'), `[${entityInfo.type.replace('builtin.', '')}]`);
+                                });
+                                console.log(s);
+                                fulfill({ 'status': 200, 'resultMsg': {'fhirResource' :s } });
+                              });
                         }
                         catch (err) {
                             reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, `Unable to decode and parse HL7 v2 message. ${err.message}`) });
-                        }
-
-                        var templateString = "";
-                        if (msg.templateBase64) {
-                            templateString = Buffer.from(msg.templateBase64, 'base64').toString();
-                        }
-
-                        var context = { msg: msgObj };
-                        if (templateString == null || templateString.length == 0) {
-                            var coverage = hl7.parseCoverageReport(context.msg);
-                            var invalidAccess = hl7.parseInvalidAccess(context.msg);
-                            var result = {
-                                'fhirResource': JSON.parse(JSON.stringify(context.msg)),
-                                'unusedSegments': coverage,
-                                'invalidAccess': invalidAccess,
-                            };
-
-                            fulfill({ 'status': 200, 'resultMsg': result });
-                        }
-                        else {
-                            var template = GetHandlebarsInstance(templatesMap).compile(templatePreprocessor.Process(templateString));
-
-                            try {
-                                fulfill({ 'status': 200, 'resultMsg': generateResult(context, template, replacementDictionary) });
-                            }
-                            catch (err) {
-                                reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, "Unable to create result: " + err.toString()) });
-                            }
                         }
                     }
                     catch (err) {
