@@ -1,0 +1,9 @@
+
+        {{#with (getFirstCdaSectionsWithExactMatch msg 'Family history')}}
+            {{#each (toArray Family_history.entry) as |famEntry|}}
+                {{>Resources/FamilyMemberHistory.hbs familyEntry=famEntry.organizer ID=(generateUUID (toJsonString famEntry.organizer))}},
+                {{>References/FamilyMemberHistory/patient.hbs ID=(generateUUID (toJsonString famEntry.organizer)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{/each}}
+        {{/with}} 
+        
+     

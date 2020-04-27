@@ -1,4 +1,4 @@
-        {{#with (getFirstCdaSections msg 'Immunization')}}
+        {{#with (getFirstCdaSectionsWithExactMatch msg 'Immunization')}}
             {{#each (toArray Immunization.entry) as |immEntry|}}
                 {{>Resources/Immunization.hbs imm=immEntry.substanceAdministration ID=(generateUUID (toJsonString immEntry))}},
                 {{#if (eq immEntry.substanceAdministration.informant.assignedEntity.id.root 'FACILITY')}}

@@ -4,7 +4,7 @@
         "resourceType": "CarePlan",
         "id":"{{ID}}",
         
-        "status":"{{>ValueSet/RequestStatus.hbs code=this.statusCode.code}}",
+        "status":"{{>ValueSet/RequestStatus.hbs code=careplanEntry.statusCode.code}}",
 
         "code":
         	[
