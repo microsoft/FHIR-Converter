@@ -1,5 +1,5 @@
-        {{#with (getFirstCdaSections msg 'Plan')}}
-        	{{#each (toArray Plan.entry) as |planEntry|}}
+        {{#with (getFirstCdaSectionsWithExactMatch msg 'Plan of Care')}}
+        	{{#each (toArray Plan_of_Care.entry) as |planEntry|}}
             	{{>Resources/CarePlan.hbs careplanEntry=planEntry.observation ID=(generateUUID (toJsonString planEntry.observation))}} 
                 {{>References/CarePlan/subject.hbs ID=(generateUUID (toJsonString planEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}}
             {{/each}}
