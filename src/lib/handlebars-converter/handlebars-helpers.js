@@ -29,6 +29,10 @@ var getSegmentListsInternal = function (msg, ...segmentIds) {
     return ret;
 };
 
+var normalizeSectionName = function (name) {
+    return name.replace(/ /g, '_');
+}
+
 var getDate = function (dateTimeString) {
     var ds = dateTimeString.toString();
     ds = ds.padEnd(17, '0');
@@ -373,8 +377,8 @@ module.exports.external = [
                 for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
                     let sectionTitle = msg.ClinicalDocument.component.structuredBody.component[i].section.title;
                     for (var s = 0; s < sectionNames.length - 1; s++) {
-                        if (sectionTitle._.includes(sectionNames[s]) && !ret[sectionNames[s]]) {
-                            ret[sectionNames[s]] = msg.ClinicalDocument.component.structuredBody.component[i].section;
+                        if (sectionTitle._.includes(sectionNames[s]) && !ret[normalizeSectionName(sectionNames[s])]) {
+                            ret[normalizeSectionName(sectionNames[s])] = msg.ClinicalDocument.component.structuredBody.component[i].section;
                             break;
                         }
                     }
@@ -383,6 +387,28 @@ module.exports.external = [
             }
             catch (err) {
                 throw `helper "getFirstCdaSections" : ${err}`;
+            }
+        }
+    },
+    {
+        name: 'getFirstCdaSectionsWithExactMatch',
+        description: "Returns first instance of the sections e.g. getFirstCdaSectionsWithExactMatch msg 'Allergies' 'Medication': getFirstCdaSectionsWithExactMatch message section1 section2 …",
+        func: function getFirstCdaSectionsWithExactMatch(msg, ...sectionNames) {
+            try {
+                var ret = {};
+                for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
+                    let sectionTitle = msg.ClinicalDocument.component.structuredBody.component[i].section.title;
+                    for (var s = 0; s < sectionNames.length - 1; s++) {
+                        if ((sectionTitle._ === sectionNames[s]) && !ret[normalizeSectionName(sectionNames[s])]) {
+                            ret[normalizeSectionName(sectionNames[s])] = msg.ClinicalDocument.component.structuredBody.component[i].section;
+                            break;
+                        }
+                    }
+                }
+                return ret;
+            }
+            catch (err) {
+                throw `helper "getFirstCdaSectionsWithExactMatch" : ${err}`;
             }
         }
     },
