@@ -1,0 +1,9 @@
+
+        {{#with (getFirstCdaSections msg 'Procedures')}}
+            {{#each (toArray Procedures.entry) as |procEntry|}}
+                {{>Resources/Procedure.hbs procedureEntry=procEntry.procedure ID=(generateUUID (toJsonString procEntry.procedure))}},
+                {{>References/Procedure/subject.hbs ID=(generateUUID (toJsonString procEntry.procedure)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{/each}}
+        {{/with}}
+        
+     

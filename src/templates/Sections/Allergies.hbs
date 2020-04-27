@@ -1,0 +1,6 @@
+        {{#with (getFirstCdaSections msg 'Allergies')}}
+            {{#each (toArray Allergies.entry) as |alEntry|}}
+                {{>Resources/AllergyIntolerance.hbs allergyEntry=alEntry.act ID=(generateUUID (toJsonString alEntry.act))}},
+                {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID (toJsonString alEntry.act)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{/each}}
+        {{/with}}

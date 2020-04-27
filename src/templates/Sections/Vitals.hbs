@@ -1,0 +1,8 @@
+      	{{#with (getFirstCdaSections msg 'Vital')}}
+        	{{#each (toArray Vital.entry)}}
+            	{{#each (toArray this.organizer.component) as |obsEntry|}}
+            		{{>Resources/Observation.hbs observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}}
+                    {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}}
+            	{{/each}}
+            {{/each}}
+        {{/with}}

@@ -1,0 +1,25 @@
+        {{#with (getFirstCdaSections msg 'Encounters')}}
+            {{#each (toArray Encounters.entry) as |encounterEntry|}}
+                {{>Resources/Encounter.hbs encounter=encounterEntry.encounter ID=(generateUUID (toJsonString encounterEntry))}},
+                {{>Resources/Practitioner.hbs practitioner=encounterEntry.encounter.performer.assignedEntity ID=(generateUUID (toJsonString encounterEntry.encounter.performer.assignedEntity))}},
+                {{>References/Encounter/subject.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                {{>References/Encounter/participant.individual.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Practitioner/' (generateUUID (toJsonString encounterEntry.encounter.performer.assignedEntity)))}},
+
+                {{#each (toArray encounterEntry.encounter.participant)}}
+                    {{#if (eq this.typeCode 'LOC')}}
+                	    {{#if (contains (toJsonString this.participantRole.templateId) '2.16.840.1.113883.10.20.22.4.32')}}
+               			    {{>Resources/Location.hbs location=this.participantRole ID=(generateUUID (toJsonString this.participantRole))}},
+                		    {{>References/Encounter/location.location.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Location/' (generateUUID (toJsonString this.participantRole)))}},                    
+                        {{/if}}                
+                    {{/if}}
+                {{/each}}
+              
+                {{#each (toArray encounter.entryRelationship)}}
+                    {{#if this.act}}
+                        {{>Resources/Condition.hbs conditionEntry=this.act ID=(generateUUID (toJsonString this.act))}},
+                        {{>References/Encounter/diagnosis.condition.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(generateUUID (toJsonString this.act))}},
+                    {{/if}}
+                {{/each}}
+
+            {{/each}}
+        {{/with}}

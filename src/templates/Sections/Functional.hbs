@@ -1,0 +1,6 @@
+      	{{#with (getFirstCdaSections msg 'Functional')}}
+            {{#each (toArray Functional.entry) as |funcEntry|}}
+                {{>Resources/Observation.hbs observationEntry=funcEntry.observation ID=(generateUUID (toJsonString funcEntry.observation))}},
+                {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString funcEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{/each}}
+        {{/with}} 
