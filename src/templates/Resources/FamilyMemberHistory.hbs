@@ -17,7 +17,7 @@
              {{#each familyEntry.component}}
                  {
                      "code":{{>DataType/CodeableConcept.hbs code=this.observation.value}},
-                     {{#each this.observation.entryRelationship}}
+                     {{#each (toArray this.observation.entryRelationship)}}
                          {{#if (eq this.observation.templateId.root '2.16.840.1.113883.10.20.22.4.47')}}
                                  "contributedToDeath":"true"
                          {{/if}}
@@ -27,7 +27,8 @@
                    {{/each}} 
                  },
              {{/each}}
-             ] 
+         ],
+    },
     "request":{
         "method":"POST",
         "url":"FamilyMemberHistory",
