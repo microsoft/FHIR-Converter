@@ -3,17 +3,17 @@
     "resource":{
         "resourceType": "Procedure",
         "id":"{{ID}}",
-        "status":"{{procedureEntry.statusCode.code}}",
-        "code":
+        "identifier":
         [
-            {{#each (toArray procedureEntry)}}
-                {{>DataType/CodeableConcept.hbs code=this.code.translation}},
+        	{{#each (toArray procedureEntry.id)}}
+            	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
-         ],
-         
+        ],
+        "status":"{{procedureEntry.statusCode.code}}",
+        "code":{{>DataType/CodeableConcept.hbs code=procedureEntry.code.translation}},
     },
     "request":{
         "method":"POST",
-        "url":"Procedure",
+        "url":"Condition",
     },
 },
