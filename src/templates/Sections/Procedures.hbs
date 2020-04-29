@@ -1,9 +1,10 @@
-
-        {{#with (getFirstCdaSectionsWithExactMatch msg 'Procedures')}}
-            {{#each (toArray Procedures.entry) as |procEntry|}}
-                {{>Resources/Procedure.hbs procedureEntry=procEntry.procedure ID=(generateUUID (toJsonString procEntry.procedure))}},
-                {{>References/Procedure/subject.hbs ID=(generateUUID (toJsonString procEntry.procedure)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+        {{#with (getFirstCdaSections msg 'Procedures')}}
+            {{#each (toArray Procedures.entry)}}
+                {{#each (toArray this) as |procEntry|}}
+                    {{#if procEntry.procedure}}
+                        {{>Resources/Procedure.hbs procedureEntry=procEntry.procedure ID=(generateUUID (toJsonString procEntry.procedure))}},
+                        {{>References/Procedure/subject.hbs ID=(generateUUID (toJsonString procEntry.procedure)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                    {{/if}}
+                {{/each}}
             {{/each}}
-        {{/with}}
-        
-     
+        {{/with}} 
