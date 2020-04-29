@@ -3,54 +3,49 @@
     "resource":{
         "resourceType": "AllergyIntolerance",
         "id":"{{ID}}",
-        
-          "identifier":
+        "identifier":
         [
         	{{#each (toArray allergyEntry.id)}}
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
-        
-        
-        "clinicalStatus":"{{allergyEntry.statusCode.code}}",
-        "category":[
-            {{#each (toArray allergyEntry.entryRelationship)}}
-                {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.7')}}
-           	        {{#if (eq this.observation.value.xsi:type 'CD')}}
-                        "{{>ValueSet/AllergyCategory.hbs code=this.observation.value.code}}",
-                    {{/if}}
-                {{/if}}
-        	{{/each}}
-        ]
-        "reaction":
+       "clinicalStatus":
         [
-            {{#each (toArray allergyEntry.entryRelationship)}}
-        		{{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.7')}}
-           			{
-           				"substance": {{>DataType/CodeableConcept.hbs code=this.observation.participant.participantRole.playingEntity.code}},
-                        "substance": {{>DataType/CodeableConcept.hbs code=this.observation.participant.participantRole.playingEntity.code.translation}},  
-                        {{#each (toArray this.observation.entryRelationship)}}
-                        	{{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.9')}}
-                				"manifestation":
-                				[
-                                	{{#if (eq this.observation.value.xsi:type 'CD')}}
-                                    	{{#if this.observation.value.translation}}
-                              			    {{>DataType/CodeableConcept.hbs code=this.observation.value.translation}},
-                                        {{else}}
-                                        	{{>DataType/CodeableConcept.hbs code=this.observation.value}},
-                                        {{/if}}
-                            		{{/if}}
-                				],
-								"severity":"{{this.observation.entryRelationship.observation.value.translation.displayName}}",
-                        		"onset": "{{formatAsDateTime this.observation.effectiveTime.low.value}}"
-                            {{/if}}
-                        {{/each}}
-            		},
+            {{#each (toArray this.observation.entryRelationship)}}
+                {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.28')}} 
+                    {{>DataType/CodeableConcept.hbs code=this.observation.value}},
                 {{/if}}
             {{/each}}
         ],      
+        "reaction":
+        {
+            "substance":{{>DataType/CodeableConcept.hbs code=allergyEntry.participant.participantRole.playingEntity.code}},
+            "substance":{{>DataType/CodeableConcept.hbs code=allergyEntry.participant.participantRole.playingEntity.code.translation}},  
+
+                {{#each (toArray allergyEntry.entryRelationship)}}
+                    
+                    {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.9')}}
+                        "manifestation":
+                            {{#if this.observation.value.translation}}
+                                {{>DataType/CodeableConcept.hbs code=this.observation.value.translation}},
+                            {{else}}
+                                {{>DataType/CodeableConcept.hbs code=this.observation.value}},
+                            {{/if}}
+                        "onset": "{{formatAsDateTime this.observation.effectiveTime.low.value}}", 
+                    {{/if}}
+                    
+                    {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.8')}}
+                        {{#if this.observation.value.translation}}
+                            "severity":"{{this.observation.value.translation.displayName}}",
+                        {{else}}
+                            "severity":"{{this.observation.value.displayName}}",
+                        {{/if}}
+                    {{/if}}
+                    
+                {{/each}}
+        },
         "onsetDateTime":"{{formatAsDateTime allergyEntry.effectiveTime.low.value}}",
-    },
+            },
     "request":{
         "method":"POST",
         "url":"AllergyIntolerance",

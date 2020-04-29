@@ -6,7 +6,7 @@
         "identifier":
   		[
         	{{#each (toArray org.id)}}
-            	{{>DataType/Identifier.hbs id=this}}
+            	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
         "name":"{{org.name._}}",

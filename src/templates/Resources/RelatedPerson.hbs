@@ -9,7 +9,7 @@
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
-        "relationship":{{>DataType/CodeableConcept.hbs code=relatedPerson.code}}
+        "relationship":{{>DataType/CodeableConcept.hbs code=relatedPerson.code}},
         "name":
         [
         	{{#each (toArray relatedPerson.guardianPerson.name)}}

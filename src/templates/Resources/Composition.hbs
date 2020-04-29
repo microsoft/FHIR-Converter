@@ -8,36 +8,36 @@
   			"use":"official",
 			"value":"{{composition.id.root}}",
         },
-		"status":"{{>ValueSet/CompositionStatus.hbs code=composition.statusCode}}"
+		"status":"{{>ValueSet/CompositionStatus.hbs code=composition.statusCode}}",
         "type":
 		[
         	{{#each (toArray composition.code)}}
         		{{>DataType/Coding.hbs code=this}},
            	{{/each}}
         ],
-        "date":"{{formatAsDateTime composition.effectiveTime.value}}"
-        "title":"{{composition.title._}}"
-        "confidentiality":{{>DataType/Coding.hbs code=composition.confidentialityCode}}
+        "date":"{{formatAsDateTime composition.effectiveTime.value}}",
+        "title":"{{composition.title._}}",
+        "confidentiality":{{>DataType/Coding.hbs code=composition.confidentialityCode}},
         "attester": 
         [
         	{
         		"mode": ["legal"],
-            	"time":"{{formatAsDateTime composition.legalAuthenticator.time.value}}"
-			}
+            	"time":"{{formatAsDateTime composition.legalAuthenticator.time.value}}",
+			},
         ],
         "event":
         [
            	{
                 "period":
            		{
-                   	"start":"{{formatAsDateTime composition.documentationOf.serviceEvent.effectiveTime.low.value}}"
+                   	"start":"{{formatAsDateTime composition.documentationOf.serviceEvent.effectiveTime.low.value}}",
                 },
                 "detail":
                	[
                		{{#each composition.documentationOf.serviceEvent.performer}}
                  		{
                             "reference":"{{concat 'Practitioner/' (generateUUID (toJsonString this))}}",
-                  			"display":"{{this.assignedEntity.assignedPerson.name.given._}} {{this.assignedEntity.assignedPerson.name.family._}}"
+                  			"display":"{{this.assignedEntity.assignedPerson.name.given._}} {{this.assignedEntity.assignedPerson.name.family._}}",
                         },
                		{{/each}}         
            		],
@@ -59,7 +59,7 @@
                                     {{#each (toArray this.organizer.component)}}                           	
                                         {
                                             "reference":"{{concat resObj.resourceType '/' (generateUUID (toJsonString this))}}",
-                                            {{>Utils/DisplayFromSectionEntry.hbs section=../../../this.section entry=this}}
+                                            {{>Utils/DisplayFromSectionEntry.hbs section=../../../this.section entry=this}},
                                         },
                                     {{/each}}
                                 {{/each}}
@@ -72,10 +72,10 @@
                                 {{/each}}
                             {{/if}}
                         {{/with}}
-                    ]
+                    ],
                 },
             {{/each}}
-        ]
+        ],
     },
     "request":{
         "method":"POST",

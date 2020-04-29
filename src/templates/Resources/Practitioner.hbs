@@ -6,7 +6,7 @@
         "identifier":
   		[
         	{{#each (toArray practitioner.id)}}
-            	{{>DataType/Identifier.hbs id=this}}
+            	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
         "name":

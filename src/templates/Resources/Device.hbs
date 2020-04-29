@@ -6,7 +6,7 @@
         "identifier":
   		[
         	{{#each (toArray author.id)}}
-            	{{>DataType/Identifier.hbs id=this}}
+            	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
 		"type":
