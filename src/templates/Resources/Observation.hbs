@@ -10,39 +10,41 @@
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
-        
-        
         "status":"{{>ValueSet/ObservationStatus.hbs code=observationEntry.statusCode.code}}",
-        
-
-        
         "code":
-        	[
-            	{{#if observationEntry.code.translation}},
-                    {{>DataType/CodeableConcept.hbs code=observationEntry.code.translation}},
-                {{else}},
-                    {{>DataType/CodeableConcept.hbs code=observationEntry.code}},
-                {{/if}}
-            ],   
-            
-        "effectivePeriod":
-        {
-            "start":"{{formatAsDateTime observationEntry.effectiveTime.low.value}}",
-            "end":"{{formatAsDateTime observationEntry.effectiveTime.high.value}}",
-        }
+        [
+            {{#if observationEntry.code.translation}},
+                {{>DataType/CodeableConcept.hbs code=observationEntry.code.translation}},
+            {{else}},
+                {{>DataType/CodeableConcept.hbs code=observationEntry.code}},
+            {{/if}}
+        ],   
         
-        "effectiveDateTime":"{{formatAsDateTime observationEntry.effectiveTime.value}}",
+        {{#if observationEntry.effectiveTime.low.value}}
+            "effectivePeriod":
+            {
+                "start":"{{formatAsDateTime observationEntry.effectiveTime.low.value}}",
+                "end":"{{formatAsDateTime observationEntry.effectiveTime.high.value}}",
+            },
+        {{else}},
+            "effectiveDateTime":"{{formatAsDateTime observationEntry.effectiveTime.value}}",
+        {{/if}}
         
+        {{#if observationEntry.value.code}}
         "valueCodeableConcept":
         [
             {{>DataType/CodeableConcept.hbs code=observationEntry.value}},
-        ]
-        
+        ],
+        {{else observation.value.value}},
         "valueQuantity":
         {
-            "value":"{{observationEntry.value.value}}",
+            "value":{{observationEntry.value.value}},
             "unit":"{{observationEntry.value.unit}}",
         }, 
+        {{else}},
+        "valueString":"{{observationEntry.value._}}",
+        {{/if}}
+        
         "referenceRange":
         {
             "low":
