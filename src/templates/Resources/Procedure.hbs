@@ -10,10 +10,19 @@
             {{/each}}
         ],
         "status":"{{procedureEntry.statusCode.code}}",
-        "code":{{>DataType/CodeableConcept.hbs code=procedureEntry.code.translation}},
+        "code":
+        [
+        {{#if procedureEntry.code.translation}}
+            {{>DataType/CodeableConcept.hbs code=procedureEntry.code.translation}},
+        {{else}}
+            {{>DataType/CodeableConcept.hbs code=procedureEntry.code}},
+        {{/if}}
+        ],    
+        "performedDateTime":"{{formatAsDateTime procedureEntry.effectiveTime.value}}",
+        
     },
     "request":{
         "method":"POST",
-        "url":"Condition",
+        "url":"Procedure",
     },
 },

@@ -30,6 +30,8 @@
             "effectiveDateTime":"{{formatAsDateTime observationEntry.effectiveTime.value}}",
         {{/if}}
         
+        "bodySite":{{>DataType/CodeableConcept.hbs code=observationEntry.targetSiteCode}},
+        
         {{#if observationEntry.value.code}}
         "valueCodeableConcept":
         [
