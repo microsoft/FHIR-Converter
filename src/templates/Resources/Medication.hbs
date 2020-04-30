@@ -4,9 +4,13 @@
         "resourceType": "Medication",
         "id":"{{ID}}",
         "code":
-            {
-                "text":"{{medication._}}",
-            }
+        [
+            {{#if medication.code.translation}}
+                {{>DataType/CodeableConcept.hbs code=medication.code.translation}},
+            {{else}}
+                {{>DataType/CodeableConcept.hbs code=medication.code}},
+            {{/if}}
+        ],      
     },
     "request":{
         "method":"POST",

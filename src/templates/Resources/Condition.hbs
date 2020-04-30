@@ -5,7 +5,7 @@
         "id":"{{ID}}",
         "identifier":
         [
-        	{{#each (toArray conditionEntry.id)}}
+            {{#each (toArray conditionEntry.id)}}
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
@@ -17,7 +17,6 @@
                 {{/if}}
           {{/each}}
         ],  
-
         "code":{{>DataType/CodeableConcept.hbs code=conditionEntry.value}},
         "onsetDateTime":"{{formatAsDateTime conditionEntry.effectiveTime.low.value}}", 
         "onsetAge":
@@ -26,7 +25,6 @@
                     "{{this.observation.value.value}}",
                 {{/if}}
           {{/each}}
-        , 
     },
     "request":{
         "method":"POST",
