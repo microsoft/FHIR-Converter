@@ -17,7 +17,12 @@
                 {{/if}}
           {{/each}}
         ],  
-        "code":{{>DataType/CodeableConcept.hbs code=conditionEntry.value}},
+        "code":
+            {{#if conditionEntry.value.translation}}
+                {{>DataType/CodeableConcept.hbs code=conditionEntry.value.translation}},
+            {{else}},
+                {{>DataType/CodeableConcept.hbs code=conditionEntry.value}},
+            {{/if}}
         "onsetDateTime":"{{formatAsDateTime conditionEntry.effectiveTime.low.value}}", 
         "onsetAge":
             {{#each (toArray conditionEntry.entryRelationship)}}

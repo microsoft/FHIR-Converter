@@ -1,0 +1,9 @@
+
+        {{#with (getFirstCdaSectionsWithExactMatch msg 'Procedure Findings')}}
+            {{#each (toArray Procedure_Findings.entry) as |condEntry|}}
+                {{>Resources/Condition.hbs conditionEntry=condEntry.observation ID=(generateUUID (toJsonString condEntry.observation))}},
+                {{>References/Condition/subject.hbs ID=(generateUUID (toJsonString condEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{/each}}
+        {{/with}} 
+        
+     
