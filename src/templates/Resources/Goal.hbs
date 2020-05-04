@@ -1,0 +1,54 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Goal",
+        "id":"{{ID}}",
+
+        "identifier":
+        [
+        	{{#each (toArray goalEntry.id)}}
+            	{{>DataType/Identifier.hbs id=this}},
+            {{/each}}
+        ],
+        
+        "description":{{>DataType/CodeableConcept.hbs code=goalEntry.code}},
+        
+        "lifecycleStatus":"{{goalEntry.statusCode.code}}",
+       
+        
+        {{#with (elementAt (toArray goalEntry.entryRelationship) 1)}}
+        "priority":{{>DataType/CodeableConcept.hbs code=this.observation.value}}, 
+        {{/with}}
+        
+        {{#with (elementAt (toArray goalEntry.author) 0)}}
+            "test":"{{this.templateId.root}}",
+        {{/with}}
+        
+        "priority":"{{goalEntry.entryRelationship.act.value.displayName}}",
+        "priority":"{{goalEntry.entryRelationship.observation.value.displayName}}",
+
+
+        "target":
+        {
+            "measure":
+            [
+            	{{#if goalEntry.code.translation}},
+                    {{>DataType/CodeableConcept.hbs code=goalEntry.code.translation}},
+                {{else}},
+                    {{>DataType/CodeableConcept.hbs code=goalEntry.code}},
+                {{/if}}
+            ],  
+            "detailQuantity":"{{goalEntry.value.low.value}}{{goalEntry.value.low.unit}}",
+            "dueDate":"{{addHyphensDate goalEntry.effectiveTime.value}}",
+          
+            
+        },
+        
+
+ 
+    },
+    "request":{
+        "method":"POST",
+        "url":"Goal",
+    },
+},
