@@ -17,16 +17,8 @@
        
         
         {{#with (elementAt (toArray goalEntry.entryRelationship) 1)}}
-        "priority":{{>DataType/CodeableConcept.hbs code=this.observation.value}}, 
+            "priority":{{>DataType/CodeableConcept.hbs code=this.observation.value}}, 
         {{/with}}
-        
-        {{#with (elementAt (toArray goalEntry.author) 0)}}
-            "test":"{{this.templateId.root}}",
-        {{/with}}
-        
-        "priority":"{{goalEntry.entryRelationship.act.value.displayName}}",
-        "priority":"{{goalEntry.entryRelationship.observation.value.displayName}}",
-
 
         "target":
         {
