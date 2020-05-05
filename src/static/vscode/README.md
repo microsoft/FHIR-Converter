@@ -2,6 +2,25 @@
 
 This extension is a POC for making a VS Code extension for the FHIR Converter.
 
+## Features and Limitations
+The following features from the web editor are supported by the POC VS Code extension:
+- Converting Hl7 messages into FHIR resources
+- Editing templates and message (locally only)
+- Jumping to partial template definitions (Ctrl+click)
+- Auto completion of partial template names
+- Scroll sync
+   
+Features present that aren't in the web editor:
+- Check partial templates exist
+  
+Features that are missing:
+- Highlighting of message sections that were not used
+- Saving to the server
+- Editing multiple templates
+  
+Known Bugs:
+- The function that looks up partial template names treats the paths as relative to the template it is being referenced from, not as relative to the top level templates folder.
+   
 ## Running the extension
 
 - Run `npm install` in this folder. This installs all necessary npm modules in both the client and server folder
