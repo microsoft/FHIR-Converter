@@ -1,0 +1,31 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Consent",
+        "id":"{{ID}}",
+        "identifier":
+        [
+        	{{#each (toArray consentEntry.id)}}
+            	{{>DataType/Identifier.hbs id=this}},
+            {{/each}}
+        ],
+        "docStatus":"{{>ValueSet/CompositionStatus.hbs code=consentEntry.statusCode.code}}",
+        "scope":
+        {
+            "coding":"adr",
+        },
+        "category":
+        {
+            "coding":"acd",
+        },
+        "dateTime":"{{formatAsDateTime consentEntry.component.observation.effectiveTime.low.value}}",
+        "provision":
+        {
+            "code":{{>DataType/CodeableConcept.hbs code=consentEntry.component.observation.value}},
+        },
+    },
+    "request":{
+        "method":"POST",
+        "url":"Consent",
+    },
+},

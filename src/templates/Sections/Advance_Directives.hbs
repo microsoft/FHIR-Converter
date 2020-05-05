@@ -1,0 +1,10 @@
+{{#with (getFirstCdaSectionsWithExactMatch msg 'Advance Directives')}}
+    {{#each (toArray Advance_Directives.entry) as |advdirEntry|}}
+        {{>Resources/Consent.hbs consentEntry=advdirEntry.organizer ID=(generateUUID (toJsonString advdirEntry.organizer))}},
+        {{>Resources/DocumentReference2.hbs docref=advdirEntry.organizer.component.observation.reference ID=(generateUUID (toJsonString advdirEntry.organizer.component.observation.reference))}},
+        {{>Resources/Practitioner.hbs practitioner=advdirEntry.organizer.component.observation.author.assignedAuthor ID=(generateUUID (toJsonString advdirEntry.organizer.component.observation.author))}},
+        {{>References/Consent/patient.hbs ID=(generateUUID (toJsonString advdirEntry.organizer)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+        {{>References/Consent/sourceReference.hbs ID=(generateUUID (toJsonString advdirEntry.organizer)) REF=(concat 'DocumentReference/' (generateUUID (toJsonString advdirEntry.organizer.component.observation.reference)))}},
+        {{>References/Consent/performer.hbs ID=(generateUUID (toJsonString advdirEntry.organizer)) REF=(concat 'Practitioner/' (generateUUID (toJsonString advdirEntry.organizer.component.observation.author)))}},
+    {{/each}}
+{{/with}} 
