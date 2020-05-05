@@ -19,7 +19,7 @@
         {{/if}}
         ],    
         "performedDateTime":"{{formatAsDateTime procedureEntry.effectiveTime.value}}",
-        
+        "bodySite":{{>DataType/CodeableConcept.hbs code=procedureEntry.targetSiteCode}},
     },
     "request":{
         "method":"POST",
