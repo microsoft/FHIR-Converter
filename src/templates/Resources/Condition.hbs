@@ -18,18 +18,25 @@
           {{/each}}
         ],  
         "code":
+        [
             {{#if conditionEntry.value.translation}}
                 {{>DataType/CodeableConcept.hbs code=conditionEntry.value.translation}},
             {{else}},
                 {{>DataType/CodeableConcept.hbs code=conditionEntry.value}},
             {{/if}}
-        "onsetDateTime":"{{formatAsDateTime conditionEntry.effectiveTime.low.value}}", 
-        "onsetAge":
-            {{#each (toArray conditionEntry.entryRelationship)}}
-                {{#if (eq this.observation.templateId.root '2.16.840.1.113883.10.20.22.4.31')}} 
-                    "{{this.observation.value.value}}",
-                {{/if}}
-          {{/each}}
+        ],
+        {{#if conditionEntry.effectiveTime.low.value}} 
+            "onsetDateTime":"{{formatAsDateTime conditionEntry.effectiveTime.low.value}}", 
+        {{else}},
+            "onsetAge":
+            [
+                {{#each (toArray conditionEntry.entryRelationship)}}
+                    {{#if (eq this.observation.templateId.root '2.16.840.1.113883.10.20.22.4.31')}} 
+                        "{{this.observation.value.value}}",
+                    {{/if}}
+                {{/each}}
+            ],
+        {{/if}}
     },
     "request":{
         "method":"POST",
