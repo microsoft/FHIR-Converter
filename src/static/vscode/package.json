@@ -1,0 +1,68 @@
+{
+	"name": "fhir-converter-vsc",
+	"displayName": "VSCode Fhir Converter",
+	"description": "Fhir Converter VSCode Extension",
+	"version": "0.0.1",
+	"enableProposedApi": true,
+	"engines": {
+		"vscode": "^1.44.0"
+	},
+	"categories": [],
+	"keywords": [
+		"multi-root ready"
+	],
+	"activationEvents": [
+		"onLanguage:handlebars",
+		"onCommand:dc_extension.dataConversion"
+	],
+	"main": "./client/out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "dc_extension.dataConversion",
+				"title": "Convert To FHIR"
+			}
+		],
+		"configuration": {
+			"type": "object",
+			"title": "FHIR Converter",
+			"properties": {
+				"fhirConverter.serverName": {
+					"type": "string",
+					"default": "",
+					"description": "The name of the FHIR conversion server."
+				},
+				"fhirConverter.apiKey": {
+					"type": "string",
+					"default": "",
+					"description": "The API key for accessing the FHIR conversion server."
+				},
+				"languageServerExample.trace.server": {
+					"scope": "window",
+					"type": "string",
+					"enum": [
+						"off",
+						"messages",
+						"verbose"
+					],
+					"default": "off",
+					"description": "Traces the communication between VS Code and the language server."
+				}
+			}
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -b",
+		"watch": "tsc -b -w",
+		"postinstall": "cd client && npm install && cd ../server && npm install && cd ..",
+		"test": "sh ./scripts/e2e.sh"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"@types/node": "^12.12.0",
+		"tslint": "^5.19.0",
+		"typescript": "^3.8.3",
+		"@types/vscode": "^1.44.0"
+	}
+}
