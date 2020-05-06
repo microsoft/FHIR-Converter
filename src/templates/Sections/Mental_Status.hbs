@@ -1,0 +1,21 @@
+{{#with (getFirstCdaSections msg 'Mental Status')}}
+    {{#each (toArray Mental_Status.entry) as |mentalEntry|}}
+    
+        {{#if mentalEntry.observation}}
+            {{>Resources/Observation.hbs observationEntry=mentalEntry.observation ID=(generateUUID (toJsonString mentalEntry.observation))}},
+            {{>Resources/Practitioner.hbs practitioner=mentalEntry.observation.author.assignedAuthor ID=(generateUUID (toJsonString mentalEntry.observation.author.assignedAuthor))}},
+            {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString mentalEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{>References/Observation/performer.hbs ID=(generateUUID (toJsonString mentalEntry.observation)) REF=(concat 'Practitioner/' (generateUUID (toJsonString mentalEntry.observation.author.assignedAuthor)))}},
+        {{/if}}
+        
+        {{#if mentalEntry.organizer}}
+            {{#each (toArray this.organizer.component) as |mentalComp|}}
+                {{>Resources/Observation.hbs observationEntry=mentalComp.observation ID=(generateUUID (toJsonString mentalComp.observation))}},
+                {{>Resources/Practitioner.hbs practitioner=mentalComp.observation.author.assignedAuthor ID=(generateUUID (toJsonString mentalComp.observation.author.assignedAuthor))}},
+                {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString mentalComp.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                {{>References/Observation/performer.hbs ID=(generateUUID (toJsonString mentalComp.observation)) REF=(concat 'Practitioner/' (generateUUID (toJsonString mentalComp.observation.author.assignedAuthor)))}},
+            {{/each}}
+        {{/if}}
+        
+    {{/each}}
+{{/with}}
