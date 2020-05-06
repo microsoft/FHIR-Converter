@@ -22,7 +22,7 @@ var handlebarsHelpers = require('./lib/handlebars-converter/handlebars-helpers')
 var ncp = require('ncp').ncp;
 
 module.exports = function (app) {
-    const workerPool = new WorkerPool('./src/lib/workers/worker.js', require('os').cpus().length);
+    const workerPool = new WorkerPool('./src/lib/workers/worker.js', 1);
     let templateCache = new fileSystemCache(constants.TEMPLATE_FILES_LOCATION);
     templateCache.init();
     let messageCache = new fileSystemCache(constants.SAMPLE_DATA_LOCATION);
