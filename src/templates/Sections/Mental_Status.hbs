@@ -1,4 +1,4 @@
-{{#with (getFirstCdaSections msg 'Mental Status')}}
+{{#with (getFirstCdaSectionsWithExactMatch msg 'Mental Status')}}
     {{#each (toArray Mental_Status.entry) as |mentalEntry|}}
     
         {{#if mentalEntry.observation}}
