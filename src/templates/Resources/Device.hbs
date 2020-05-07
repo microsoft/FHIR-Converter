@@ -17,7 +17,10 @@
         	},
         }, 
 		"manufacturer":"{{author.assignedAuthoringDevice.manufacturerModelName._}}",
-        "version":"{{author.assignedAuthoringDevice.softwareName._}}",
+        "version":
+        {
+            "value":"{{author.assignedAuthoringDevice.softwareName._}}",
+        }
     },
     "request":{
         "method":"POST",

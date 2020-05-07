@@ -21,7 +21,9 @@
         "attester": 
         [
         	{
-        		"mode": ["legal"],
+                {{#if composition.legalAuthenticator}}            
+        		    "mode": ["legal"],
+                {{/if}},
             	"time":"{{formatAsDateTime composition.legalAuthenticator.time.value}}",
 			},
         ],
