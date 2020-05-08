@@ -5,41 +5,40 @@
 
 import * as path from 'path';
 import * as vscode from 'vscode';
-
-import {
-	LanguageClient,
-	LanguageClientOptions,
-	ServerOptions,
-	TransportKind
-} from 'vscode-languageclient';
-
 import * as fs from 'fs';
+
+import { LanguageClient } from 'vscode-languageclient';
+
+import { setUpScrollSync } from './scroll-manager';
+import { generateLanguageClient } from './language-client';
 
 var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 let client: LanguageClient;
-var outputmsg = "outputmsg";
-var linePosition: number | undefined;
-var libraries = {};
 var apiKey: string;
 var serviceName: string;
-var panel: vscode.WebviewPanel;
+
+interface FhirConversion {
+    templatePath: string,
+    messagePath: string,
+    panel: vscode.WebviewPanel
+}
+const openFhirConversions: FhirConversion[] = [];
 
 export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('dc_extension.dataConversion', async () => {
-        vscode.window.showInformationMessage('data conversion starting...');
-        libraries = {
-            'prismJSuri': vscode.Uri.file(path.join(context.extensionPath, 'src', 'prism.js')).with({scheme:'vscode-resource'}),
-            'prismCSSuri': vscode.Uri.file(path.join(context.extensionPath, 'src', 'prism.css')).with({scheme:'vscode-resource'})
-        };
-        var inputName = "";
+
+        var messageName = "";
 		var templateName = "";
-		
-		serviceName = vscode.workspace.getConfiguration('fhirConverter').get('serverName');
-		if(!serviceName){
+        
+        const config = vscode.workspace.getConfiguration('fhirConverter');
+
+        serviceName = config.get('serverName');
+		while(!serviceName){
 			await vscode.window.showInputBox({placeHolder: "Your service's name"}).then((input) => {
 				if (input !== undefined) {
-					serviceName = input;    
+                    serviceName = input;    
+                    config.update('serverName', serviceName, true);
 				}
 				else {
 					vscode.window.showErrorMessage("Name missing.");
@@ -47,23 +46,73 @@ export function activate(context: vscode.ExtensionContext) {
 			});
 		}
 		
-		apiKey = vscode.workspace.getConfiguration('fhirConverter').get('apiKey');
-		if(!apiKey) {
+		apiKey = config.get('apiKey');
+		while(!apiKey) {
       	  await vscode.window.showInputBox({placeHolder: "Your API key"}).then((input) => {
 				if (input !== undefined) {
-					apiKey = input;
+                    apiKey = input;
+                    config.update('apiKey', apiKey, true);
 				}
 				else {
-					vscode.window.showErrorMessage("API key missing. Authentication failed.");
+					vscode.window.showErrorMessage("API key missing.");
 				}
 			});
-		}
+        }
+        
+        let templateFolder = config.get('templateFolder');
+		while(!templateFolder) {
+      	  await vscode.window.showInputBox({placeHolder: "Path of the template folder"}).then((input) => {
+				if (input !== undefined) {
+                    templateFolder = input;
+                    config.update('templateFolder', templateFolder, true);
+				}
+				else {
+					vscode.window.showErrorMessage("Template folder missing.");
+				}
+			});
+        }
+        
+        let messageFolder = config.get('messageFolder');
+		while(!messageFolder) {
+      	  await vscode.window.showInputBox({placeHolder: "Path of the message folder"}).then((input) => {
+				if (input !== undefined) {
+					messageFolder = input;
+                    config.update('messageFolder', messageFolder, true);
+				}
+				else {
+					vscode.window.showErrorMessage("Message folder missing.");
+				}
+			});
+        }
+        
+        while(!templateName) {
+            await vscode.window.showInputBox({placeHolder: "Name of the tempalte file"}).then((input) => {
+                if (input !== undefined) {
+                    templateName = input;
+                }
+                else {
+                    vscode.window.showErrorMessage("No template provided.");
+                }
+            });
+        }
 
-		console.log(serviceName + " " + apiKey);
+        while(!messageName) {
+            await vscode.window.showInputBox({placeHolder: "Name of the message file"}).then((input) => {
+                if (input !== undefined) {
+                    messageName = input;
+                }
+                else {
+                    vscode.window.showErrorMessage("No message provided.");
+                }
+            });
+        }
 
-		panel = vscode.window.createWebviewPanel (
-			'fhirOutputWindow',
-			'FHIR Resource',
+        const messagePath = messageFolder + '/' + messageName;
+        const templatePath = templateFolder + '/' + templateName;
+
+		const panel = vscode.window.createWebviewPanel (
+			'fhirOutput_' + messageName + '_' + templateName,
+			messageName + ': ' + templateName,
 			vscode.ViewColumn.Two,
 			{
 				enableScripts: true,
@@ -71,134 +120,41 @@ export function activate(context: vscode.ExtensionContext) {
 					vscode.Uri.file(path.join(context.extensionPath, 'src'))    
 				]
 			}
-		);     
-
-        vscode.window.onDidChangeActiveTextEditor((textEditor) => {
-			console.log("Changed text editor");
-            if (!textEditor) {
-                return;
-            }
-            if (textEditor.document.fileName.endsWith(".hl7")) {
-                inputName = textEditor.document.fileName;
-            }
-            if (textEditor.document.fileName.endsWith(".hbs")) {
-                templateName = textEditor.document.fileName;
-            }
-            if (inputName.endsWith("hl7") && templateName.endsWith("hbs")) {
-                readFiletoConvert(panel, inputName, templateName, apiKey);
-            } 
-        });
+        );   
         
-        vscode.workspace.onDidChangeTextDocument((e) => {
-            vscode.workspace.saveAll();
-            readFiletoConvert(panel, inputName, templateName, apiKey);
-        });
+        openFhirConversions.push({templatePath, messagePath, panel});
+        readFileToConvert(panel, messagePath, templatePath, apiKey);
        
-        vscode.window.onDidChangeTextEditorVisibleRanges((event) => {
-            if (!event.textEditor.visibleRanges.length) {
-                return undefined;
-              } else {
-                const topLine = getTopVisibleLine(event.textEditor);
-                const bottomLine = getBottomVisibleLine(event.textEditor);
-                let midLine;
-                if (topLine === 0) {
-                  midLine = 0;
-                } else if (
-                  Math.floor(bottomLine) ===
-                  event.textEditor.document.lineCount - 1
-                ) {
-                  midLine = bottomLine;
-                } else {
-                  midLine = Math.floor((topLine + bottomLine) / 2);
-                }
-                linePosition = midLine;
-                panel.webview.postMessage(linePosition);
-                panel.webview.postMessage({command: 'scroll'});
-              }
-        });
+        setUpScrollSync(panel.webview)
 
-        panel.webview.onDidReceiveMessage (message => {
-            switch(message.command) {
-                case 'editor-scroll':
-                    var start = Math.round(message.pos/8);
-                    vscode.window.visibleTextEditors.filter(
-                        (editor) => editor.document.fileName.endsWith('hbs')
-                    ).forEach((editor) => editor.revealRange (
-                        new vscode.Range(start, 0, start, 0),
-                            vscode.TextEditorRevealType.InCenter
-                    ));   
-            }
-		});
         context.subscriptions.push(disposable);
-	});
-	
-	// The server is implemented in node
-	let serverModule = context.asAbsolutePath(
-		path.join('server', 'out', 'server.js')
-	);
-	// The debug options for the server
-	// --inspect=6009: runs the server in Node's Inspector mode so VS Code can attach to the server for debugging
-	let debugOptions = { execArgv: ['--nolazy', '--inspect=6009'] };
+    });
+    
+    vscode.workspace.onDidChangeTextDocument((e) => {
+        const conversions = openFhirConversions.filter(conversion => urlStringsEqual(conversion.messagePath, e.document.fileName) || urlStringsEqual(conversion.templatePath, e.document.fileName));
+        conversions.forEach(conversion => {
+            readFileToConvert(conversion.panel, conversion.messagePath, conversion.templatePath, apiKey);
+        });
+    });
 
-	// If the extension is launched in debug mode then the debug server options are used
-	// Otherwise the run options are used
-	let serverOptions: ServerOptions = {
-		run: { module: serverModule, transport: TransportKind.ipc },
-		debug: {
-			module: serverModule,
-			transport: TransportKind.ipc,
-			options: debugOptions
-		}
-	};
-
-	// Options to control the language client
-	let clientOptions: LanguageClientOptions = {
-		// Register the server for plain text documents
-		documentSelector: [{ scheme: 'file', language: 'handlebars' }],
-	};
-
-	// Create the language client and start the client.
-	client = new LanguageClient(
-		'languageServerExample',
-		'Language Server Example',
-		serverOptions,
-		clientOptions
-	);
-
+    client = generateLanguageClient(context);
 	// Start the client. This will also launch the server
 	client.start();
 }
 
 export function deactivate(): Thenable<void> | undefined {
+    // Stops the language client if it was created
 	if (!client) {
 		return undefined;
 	}
 	return client.stop();
 }
 
-function getTopVisibleLine (editor: vscode.TextEditor) {
-    const firstVisiblePosition = editor["visibleRanges"][0].start;
-    const lineNumber = firstVisiblePosition.line;
-    const line = editor.document.lineAt(lineNumber);
-    const progress = firstVisiblePosition.character / (line.text.length + 2);
-    return lineNumber + progress;
+function urlStringsEqual(url1: string, url2: string): boolean {
+    return url1.toLowerCase().replace(/\\/g, '/') === url2.toLowerCase().replace(/\\/g, '/');
 }
 
-function getBottomVisibleLine (editor: vscode.TextEditor) {
-    if (!editor["visibleRanges"].length) {
-      return undefined;
-    }
-    const firstVisiblePosition = editor["visibleRanges"][0].end;
-    const lineNumber = firstVisiblePosition.line;
-    let text = "";
-    if (lineNumber < editor.document.lineCount) {
-      text = editor.document.lineAt(lineNumber).text;
-    }
-    const progress = firstVisiblePosition.character / (text.length + 2);
-    return lineNumber + progress;
-}
-
-function readFiletoConvert(webViewPanel: any, inputName: any, templateName: any, apiKey: string) {
+function readFileToConvert(webViewPanel: vscode.WebviewPanel, inputName: string, templateName: string, apiKey: string) {
     var sendJson = {
         templateBase64: "",
         messageBase64: ""
@@ -212,10 +168,10 @@ function readFiletoConvert(webViewPanel: any, inputName: any, templateName: any,
     request.setRequestHeader("X-MS-CONVERSION-API-KEY", apiKey);
     request.onreadystatechange = function () {
         if (request.readyState >= 3 && request.status >= 200) {
-            outputmsg = request.responseText.replace(/\\/g, "");
+            let outputmsg = request.responseText.replace(/\\/g, "");
             outputmsg = JSON.parse(outputmsg);
             outputmsg = JSON.stringify(outputmsg, undefined, 2);
-            webViewPanel.webview.html = getWebviewContent(libraries);
+            webViewPanel.webview.html = getWebviewContent(outputmsg);
         }
         else {
             //console.log('request not working:\r\n' + JSON.stringify(request));
@@ -224,7 +180,7 @@ function readFiletoConvert(webViewPanel: any, inputName: any, templateName: any,
 	request.send(JSON.stringify(sendJson));
 }
 
-function getWebviewContent(libraries: any) {
+function getWebviewContent(outputmsg: string) {
     return `<!DOCTYPE html>
 <html lang="en">
 <head>

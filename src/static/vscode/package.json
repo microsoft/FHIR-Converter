@@ -37,6 +37,16 @@
 					"default": "",
 					"description": "The API key for accessing the FHIR conversion server."
 				},
+				"fhirConverter.templateFolder": {
+					"type": "string",
+					"default": "",
+					"description": "The Path to the folder the conversion templates are saved in."
+				},
+				"fhirConverter.messageFolder": {
+					"type": "string",
+					"default": "",
+					"description": "The Path to the folder the messages are saved in."
+				},
 				"languageServerExample.trace.server": {
 					"scope": "window",
 					"type": "string",

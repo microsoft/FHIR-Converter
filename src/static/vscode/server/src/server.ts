@@ -10,14 +10,12 @@ import {
 	DiagnosticSeverity,
 	ProposedFeatures,
 	InitializeParams,
-	DidChangeConfigurationNotification,
 	CompletionItem,
 	CompletionItemKind,
 	TextDocumentPositionParams,
 	TextDocumentSyncKind,
 	InitializeResult,
 	DefinitionParams,
-	Definition,
 	DefinitionLink
 } from 'vscode-languageserver';
 
@@ -26,6 +24,7 @@ import {
 } from 'vscode-languageserver-textdocument';
 import * as path from 'path';
 import * as glob from 'glob';
+import { SettingsManager } from './settings';
 
 // Create a connection for the server. The connection uses Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -35,25 +34,15 @@ let connection = createConnection(ProposedFeatures.all);
 // supports full document sync only
 let documents: TextDocuments<TextDocument> = new TextDocuments(TextDocument);
 
-let hasConfigurationCapability: boolean = false;
-let hasWorkspaceFolderCapability: boolean = false;
-let hasDiagnosticRelatedInformationCapability: boolean = false;
+let settingsManager: SettingsManager;
 
 connection.onInitialize((params: InitializeParams) => {
 	let capabilities = params.capabilities;
 
-	// Does the client support the `workspace/configuration` request?
-	// If not, we will fall back using global settings
-	hasConfigurationCapability = !!(
-		capabilities.workspace && !!capabilities.workspace.configuration
-	);
-	hasWorkspaceFolderCapability = !!(
+	settingsManager = new SettingsManager(connection, capabilities, validateTextDocument);
+
+	const hasWorkspaceFolderCapability = !!(
 		capabilities.workspace && !!capabilities.workspace.workspaceFolders
-	);
-	hasDiagnosticRelatedInformationCapability = !!(
-		capabilities.textDocument &&
-		capabilities.textDocument.publishDiagnostics &&
-		capabilities.textDocument.publishDiagnostics.relatedInformation
 	);
 
 	const result: InitializeResult = {
@@ -86,9 +75,10 @@ async function validateTextDocument(textDocument: TextDocument): Promise<void> {
 	// The validator creates diagnostics for all uppercase words length 2 and more
 	let text = textDocument.getText();
 	const pattern = /\{\{\>([^\s\}]*)/g;
-	let m: RegExpExecArray | null;	
+	let m: RegExpExecArray | null;
 
-	const templates = await getAllTemplatePaths(textDocument.uri);
+	const templateFolder = (await settingsManager.getDocumentSettings(textDocument.uri)).templateFolder
+	const templates = await getAllTemplatePaths(templateFolder);
 
 	let diagnostics: Diagnostic[] = [];
 	while ((m = pattern.exec(text))) {
@@ -118,7 +108,7 @@ connection.onCompletion(
 
 		// This isn't working...
 		//if (partialFilePath.startsWith('{{>')) {
-			const templates = await getAllTemplatePaths(_textDocumentPosition.textDocument.uri);
+			const templates = await getAllTemplatePaths((await settingsManager.getDocumentSettings(_textDocumentPosition.textDocument.uri)).templateFolder);
 			return templates.map((path, index) => {
 				return {
 					label: path,
@@ -165,7 +155,7 @@ connection.onCompletionResolve(
 	}
 );
 
-connection.onDefinition((params: DefinitionParams): DefinitionLink[] => {
+connection.onDefinition(async (params: DefinitionParams): Promise<DefinitionLink[]> => {
 	const contextString = getSuroundingText(params);
 	if (contextString === '') {
 		return [];
@@ -175,8 +165,9 @@ connection.onDefinition((params: DefinitionParams): DefinitionLink[] => {
 	let match: RegExpExecArray | null;
 	if ((match = pattern.exec(contextString)) !== null) {
 		const relativeFilePath = match[1];
-		if (getAllTemplatePaths(params.textDocument.uri).some(uri => uri === relativeFilePath)) {
-			const fileUri = path.dirname(params.textDocument.uri) + '/' + relativeFilePath;
+		const templateFolder = (await settingsManager.getDocumentSettings(params.textDocument.uri)).templateFolder
+		if (getAllTemplatePaths(templateFolder).some(uri => uri === relativeFilePath)) {
+			const fileUri = 'file:///' + templateFolder + '/' + relativeFilePath;
 			const firstChar = {
 				start: {
 					line: 0,
@@ -201,11 +192,13 @@ connection.onDefinition((params: DefinitionParams): DefinitionLink[] => {
 });
 
 // This does not currently work properly as it only finds templates that are in the same folder or below the current template.
-function getAllTemplatePaths(fileUri: string): string[] {
+function getAllTemplatePaths(directory: string): string[] {
+	/*
 	// Strips off the file:/// at the start of the uri
 	fileUri = fileUri.substring(8).replace('%3A',':'); 
 
 	const directory = path.dirname(fileUri);
+	*/
 	const searchPattern = directory + '/**/*.hbs';
 	const files: string[] = glob.sync(searchPattern, {}).map(uri => path.relative(directory, uri).replace(/\\/g,'/'));
 
