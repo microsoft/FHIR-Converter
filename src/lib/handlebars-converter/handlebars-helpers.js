@@ -30,7 +30,7 @@ var getSegmentListsInternal = function (msg, ...segmentIds) {
 };
 
 var normalizeSectionName = function (name) {
-    return name.replace(/ /g, '_');
+    return name.replace(/[^A-Za-z0-9]/g, '_');
 }
 
 var getDate = function (dateTimeString) {
@@ -363,7 +363,9 @@ module.exports.external = [
             }
             else {
                 var arr = [];
-                arr.push(val);
+                if (val) {
+                    arr.push(val);
+                }
                 return arr;
             }
         }
@@ -374,11 +376,13 @@ module.exports.external = [
         func: function getFirstCdaSections(msg, ...sectionNames) {
             try {
                 var ret = {};
-                for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
-                    let sectionTitle = msg.ClinicalDocument.component.structuredBody.component[i].section.title;
-                    for (var s = 0; s < sectionNames.length - 1; s++) {
-                        if (sectionTitle._.includes(sectionNames[s]) && !ret[normalizeSectionName(sectionNames[s])]) {
-                            ret[normalizeSectionName(sectionNames[s])] = msg.ClinicalDocument.component.structuredBody.component[i].section;
+
+                for (var s = 0; s < sectionNames.length - 1; s++) {
+                    for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
+                        let sectionObj = msg.ClinicalDocument.component.structuredBody.component[i].section;
+
+                        if (sectionObj.title._.toLowerCase().includes(sectionNames[s].toLowerCase())) {
+                            ret[normalizeSectionName(sectionNames[s])] = sectionObj;
                             break;
                         }
                     }
@@ -396,11 +400,13 @@ module.exports.external = [
         func: function getFirstCdaSectionsWithExactMatch(msg, ...sectionNames) {
             try {
                 var ret = {};
-                for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
-                    let sectionTitle = msg.ClinicalDocument.component.structuredBody.component[i].section.title;
-                    for (var s = 0; s < sectionNames.length - 1; s++) {
-                        if ((sectionTitle._ === sectionNames[s]) && !ret[normalizeSectionName(sectionNames[s])]) {
-                            ret[normalizeSectionName(sectionNames[s])] = msg.ClinicalDocument.component.structuredBody.component[i].section;
+
+                for (var s = 0; s < sectionNames.length - 1; s++) {
+                    for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
+                        let sectionObj = msg.ClinicalDocument.component.structuredBody.component[i].section;
+
+                        if ((sectionObj.title._ === sectionNames[s])) {
+                            ret[normalizeSectionName(sectionNames[s])] = sectionObj;
                             break;
                         }
                     }
@@ -412,7 +418,57 @@ module.exports.external = [
             }
         }
     },
-   /* {
+    {
+        name: 'getCdaSectionLists',
+        description: "Returns first instance of the sections e.g. getCdaSectionLists msg 'Allergies' 'Medication': getCdaSectionLists message section1 section2 …",
+        func: function getCdaSectionLists(msg, ...sectionNames) {
+            try {
+                var ret = {};
+
+                for (var s = 0; s < sectionNames.length - 1; s++) {
+                    let normalizedSectionName = normalizeSectionName(sectionNames[s]);
+                    ret[normalizedSectionName] = [];
+
+                    for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
+                        let sectionObj = msg.ClinicalDocument.component.structuredBody.component[i].section;
+
+                        if (sectionObj.title._.toLowerCase().includes(sectionNames[s].toLowerCase())) {
+                            ret[normalizedSectionName].push(sectionObj);
+                        }
+                    }
+                }
+                return ret;
+            }
+            catch (err) {
+                throw `helper "getCdaSectionLists" : ${err}`;
+            }
+        }
+    },
+    {
+        name: 'getFirstCdaSectionsByTemplateId',
+        description: "Returns first instance of the sections e.g. getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.14' '1.3.6.1.4.1.19376.1.5.3.1.3.1': getFirstCdaSectionsByTemplateId message templateId1 templateId2 …",
+        func: function getFirstCdaSectionsByTemplateId(msg, ...templateIds) {
+            try {
+                var ret = {};
+
+                for (var t = 0; t < templateIds.length - 1; t++) { //-1 because templateIds includes the full message at the end
+                    for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
+                        let sectionObj = msg.ClinicalDocument.component.structuredBody.component[i].section;
+
+                        if (JSON.stringify(sectionObj.templateId).includes(templateIds[t])) {
+                            ret[normalizeSectionName(templateIds[t])] = sectionObj;
+                            break;
+                        }
+                    }
+                }
+                return ret;
+            }
+            catch (err) {
+                throw `helper "getFirstCdaSectionsByTemplateId" : ${err}`;
+            }
+        }
+    },
+    /* {
         name: 'getEntriesList',
         description: "Returns first instance of the sections e.g. getEntriesList msg 'BP' 'BMI': getEntriesList message entry1 entry2 …",
         func: function getEntriesList(section, ...entryNames) {
