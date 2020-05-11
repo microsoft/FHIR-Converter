@@ -8,7 +8,7 @@ The following features from the web editor are supported by the POC VS Code exte
 - Editing templates and message (locally only)
 - Jumping to partial template definitions (Ctrl+click)
 - Auto completion of partial template names
-- Scroll sync
+- Scroll sync (doesn't work great)
    
 Features present that aren't in the web editor:
 - Check partial templates exist
@@ -17,10 +17,8 @@ Features that are missing:
 - Highlighting of message sections that were not used
 - Saving to the server
 - Editing multiple templates
-  
-Known Bugs:
-- The function that looks up partial template names treats the paths as relative to the template it is being referenced from, not as relative to the top level templates folder.
-   
+- Collapsing sections on the FHIR resource
+     
 ## Running the extension
 
 - Run `npm install` in this folder. This installs all necessary npm modules in both the client and server folder
@@ -34,11 +32,15 @@ Known Bugs:
   - Auto completion for partial template names
   - Goto file for partial templates (Ctrl+click)
   - Name check for partial templates
-    - These features currently treats partial template names as relative paths to the template file, not relative to the top level template folder.
 - To convert a message/template pair press F1 and run the command 'Convert to FHIR'.
-  - A prompt will pop up for the server's name and API key
+  - A prompt will pop up for the server's name, API key, the top level template folder, and the messages folder. This prompt will not appear if you have previously set these settings.
     - These values can also be set under the extension's settings (File > Preferences > Settings)
-  - Open a template file (.hbs)
-  - Open a message file (.hl7)
-  - The response should be displayed in the 'FHIR Resource' window
-    - This feature currently only sends the last selected template. It does not support editing of multiple templates, or editing of partial templates
+  - File selection windows will open to allow the template and message to be selected. 
+  - The template, message, and FHIR response should be displayed in new windows.
+    - This feature currently only sends the selected template. It does not support editing of multiple templates, or editing of partial templates
+
+## Future improvement
+
+- Launch VS Code from a hyperlink: https://stackoverflow.com/questions/56471739/html-link-starting-with-vscode-to-open-a-file-in-visual-studio-code
+- Display the HL7 message in a tree view.
+  - A custom webview could do this and allow us to highlight the unused sections
