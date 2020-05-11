@@ -11,14 +11,11 @@
             {{/each}}
         ],
         "status":"{{>ValueSet/ObservationStatus.hbs code=observationEntry.statusCode.code}}",
-        "code":
-        [
-            {{#if observationEntry.code.translation}},
-                {{>DataType/CodeableConcept.hbs code=observationEntry.code.translation}},
-            {{else}},
-                {{>DataType/CodeableConcept.hbs code=observationEntry.code}},
-            {{/if}}
-        ],   
+        {{#if observationEntry.code.translation}},
+            "code": {{>DataType/CodeableConcept.hbs code=observationEntry.code.translation}},
+        {{else}},
+            "code": {{>DataType/CodeableConcept.hbs code=observationEntry.code}},
+        {{/if}}
         
         {{#if observationEntry.effectiveTime.low.value}}
             "effectivePeriod":

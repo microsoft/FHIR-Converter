@@ -20,7 +20,7 @@
         [
         	{
                 {{#if composition.legalAuthenticator}}            
-        		    "mode": ["legal"],
+        		    "mode": "legal",
                 {{/if}},
             	"time":"{{formatAsDateTime composition.legalAuthenticator.time.value}}",
 			},
@@ -48,7 +48,9 @@
             {{#each composition.component.structuredBody.component}}
                	{
                 	"title":"{{this.section.title._}}",
-                   	"title":"{{this.section.code.displayName}}",         
+                   	"title":"{{this.section.code.displayName}}",
+                    "text":"{{this.section.title._}}",                               
+                   	"text":"{{this.section.code.displayName}}",                    
                     "code":{{>DataType/CodeableConcept.hbs code=this.section.code}},
                     "mode":"snapshot",
                     "entry":
