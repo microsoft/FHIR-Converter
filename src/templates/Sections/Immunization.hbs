@@ -5,7 +5,6 @@
                     {{>Resources/Organization.hbs org=immEntry.substanceAdministration.informant.assignedEntity.representedOrganization ID=(generateUUID (toJsonString immEntry.substanceAdministration.informant.assignedEntity.representedOrganization))}},
                     {{>References/Immunization/performer.actor.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Organization/' (generateUUID (toJsonString immEntry.substanceAdministration.informant.assignedEntity.representedOrganization)))}},
                 {{/if}}
-                {{>References/Immunization/performer.actor.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Practitioner/' (generateUUID (toJsonString immEntry.substanceAdministration.performer.assignedEntity.assignedPerson)))}}
                 {{>References/Immunization/patient.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
             {{/each}}
         {{/with}}

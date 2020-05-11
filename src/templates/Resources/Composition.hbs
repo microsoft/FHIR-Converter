@@ -9,12 +9,10 @@
 			"value":"{{composition.id.root}}",
         },
 		"status":"{{>ValueSet/CompositionStatus.hbs code=composition.statusCode}}",
-        "type":
-		[
-        	{{#each (toArray composition.code)}}
-        		{{>DataType/Coding.hbs code=this}},
-           	{{/each}}
-        ],
+        {{#with (elementAt (toArray composition.code) 0)}}
+            "type":{{>DataType/CodeableConcept.hbs code=this}},
+        {{/with}}
+
         "date":"{{formatAsDateTime composition.effectiveTime.value}}",
         "title":"{{composition.title._}}",
         "confidentiality":{{>DataType/Coding.hbs code=composition.confidentialityCode}},
