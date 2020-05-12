@@ -18,9 +18,11 @@
         }, 
 		"manufacturer":"{{author.assignedAuthoringDevice.manufacturerModelName._}}",
         "version":
-        {
-            "value":"{{author.assignedAuthoringDevice.softwareName._}}",
-        }
+        [
+            {
+                "value":"{{author.assignedAuthoringDevice.softwareName._}}",
+            },
+        ],
     },
     "request":{
         "method":"POST",

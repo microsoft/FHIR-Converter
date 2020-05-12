@@ -4,8 +4,8 @@
                     {{>Resources/MedicationStatement.hbs medicationStatement=medEntry.substanceAdministration ID=(generateUUID (toJsonString medEntry.substanceAdministration))}},
                    	{{>References/MedicationStatement/subject.hbs ID=(generateUUID (toJsonString medEntry.substanceAdministration)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
 
-                    {{#if medEntry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial.name}}
-                        {{>Resources/Medication.hbs medication=medEntry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial.name ID=(generateUUID (toJsonString medEntry.substanceAdministration.consumable))}},
+                    {{#if medEntry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial}}
+                        {{>Resources/Medication.hbs medication=medEntry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial ID=(generateUUID (toJsonString medEntry.substanceAdministration.consumable))}},
                         {{>References/MedicationStatement/medicationReference.hbs ID=(generateUUID (toJsonString medEntry.substanceAdministration)) REF=(concat 'Medication/' (generateUUID (toJsonString medEntry.substanceAdministration.consumable)))}},
                         {{#each (toArray this.substanceAdministration.entryRelationship) as |medReq|}}
                             {{#if medReq.supply}}
@@ -19,8 +19,8 @@
                             {{/if}}
                         {{/each}}
                     {{/if}}
-                    {{#if medEntry.substanceAdministration.informant.assignedEntity}}
-                        {{>Resources/Organization.hbs org=medEntry.substanceAdministration.informant.assignedEntity ID=(generateUUID (toJsonString medEntry.substanceAdministration.informant.assignedEntity))}},
+                    {{#if medEntry.substanceAdministration.informant.assignedEntity.representedOrganization.name._}}
+                        {{>Resources/Organization.hbs org=medEntry.substanceAdministration.informant.assignedEntity.representedOrganization ID=(generateUUID (toJsonString medEntry.substanceAdministration.informant.assignedEntity.representedOrganization))}},
                     {{/if}}
                 {{/if}}  
             {{/each}}

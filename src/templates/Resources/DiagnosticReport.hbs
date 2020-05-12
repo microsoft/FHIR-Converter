@@ -11,13 +11,12 @@
         ],
         "status":"{{>ValueSet/DiagnosticReportStatus.hbs code=diagReport.statusCode.code}}",
         "code":
-        	[
-            	{{#if diagReport.code.translation}},
-                    {{>DataType/CodeableConcept.hbs code=diagReport.code.translation}},
-                {{else}},
-                    {{>DataType/CodeableConcept.hbs code=diagReport.code}},
-                {{/if}}
-            ],
+            {{#if diagReport.code.translation}}
+                {{>DataType/CodeableConcept.hbs code=diagReport.code.translation}},
+            {{else}}
+                {{>DataType/CodeableConcept.hbs code=diagReport.code}},
+            {{/if}},
+            
         "effectivePeriod":
         {
             "start":"{{formatAsDateTime diagReport.effectiveTime.low.value}}",

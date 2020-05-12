@@ -30,37 +30,36 @@
         "bodySite":{{>DataType/CodeableConcept.hbs code=observationEntry.targetSiteCode}},
         
         {{#if observationEntry.value.code}}
-        "valueCodeableConcept":
-        [
-            {{>DataType/CodeableConcept.hbs code=observationEntry.value}},
-        ],
+            "valueCodeableConcept":{{>DataType/CodeableConcept.hbs code=observationEntry.value}},
         {{else observation.value.value}},
-        "valueQuantity":
-        {
-            "value":{{observationEntry.value.value}},
-            "unit":"{{observationEntry.value.unit}}",
-        }, 
+            "valueQuantity":
+            {
+                "value":{{observationEntry.value.value}},
+                "unit":"{{observationEntry.value.unit}}",
+            }, 
         {{else}},
-        "valueString":"{{observationEntry.value._}}",
+            "valueString":"{{observationEntry.value._}}",
         {{/if}}
         
         "referenceRange":
-        {
+        [
+          {
             "low":
                 {
-                    "value":"{{observationEntry.referenceRange.observationRange.value.low.value}}",
+                    "value":{{observationEntry.referenceRange.observationRange.value.low.value}},
                     "unit":"{{observationEntry.referenceRange.observationRange.value.low.unit}}",
                 }
            "high":
                {
-                   "value":"{{observationEntry.referenceRange.observationRange.value.high.value}}",
+                   "value":{{observationEntry.referenceRange.observationRange.value.high.value}},
                    "unit":"{{observationEntry.referenceRange.observationRange.value.high.unit}}",
                }
-        },
+          },
+        ],
         "interpretation":
-        	[
-                {{>DataType/CodeableConcept.hbs code=observationEntry.interpretationCode}},
-            ],
+        [
+            {{>DataType/CodeableConcept.hbs code=observationEntry.interpretationCode}},
+        ],
     },
     "request":{
         "method":"POST",

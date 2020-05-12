@@ -2,9 +2,12 @@
             {{#each (toArray Procedures.entry) as |procEntry|}}
                 {{#if procEntry.procedure}}
                     {{>Resources/Procedure.hbs procedureEntry=procEntry.procedure ID=(generateUUID (toJsonString procEntry.procedure))}},
-                    {{>Resources/Organization.hbs org=procEntry.procedure.performer.assignedEntity.representedOrganization ID=(generateUUID (toJsonString procEntry.procedure.performer.assignedEntity.representedOrganization))}},
                     {{>References/Procedure/subject.hbs ID=(generateUUID (toJsonString procEntry.procedure)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
-                    {{>References/Procedure/performer.actor.hbs ID=(generateUUID (toJsonString procEntry.procedure)) REF=(concat 'Organization/' (generateUUID (toJsonString procEntry.procedure.performer.assignedEntity.representedOrganization)))}},
+                
+                    {{#if procEntry.procedure.performer.assignedEntity.representedOrganization.name._}}
+                        {{>Resources/Organization.hbs org=procEntry.procedure.performer.assignedEntity.representedOrganization ID=(generateUUID (toJsonString procEntry.procedure.performer.assignedEntity.representedOrganization))}},
+                        {{>References/Procedure/performer.actor.hbs ID=(generateUUID (toJsonString procEntry.procedure)) REF=(concat 'Organization/' (generateUUID (toJsonString procEntry.procedure.performer.assignedEntity.representedOrganization)))}},
+                    {{/if}}
                 {{/if}}
                 
                 {{#if procEntry.observation}}

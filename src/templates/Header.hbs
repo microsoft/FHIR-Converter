@@ -16,10 +16,9 @@
             {{/if}}
         {{/if}}
         
-        {{#if this.custodian}}
-            {{>Resources/Organization.hbs organization=this.custodian ID=(generateUUID (toJsonString this.custodian))}},
-    		{{>References/Composition/custodian.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Organization/' (generateUUID (toJsonString this.custodian)))}},
-            
+        {{#if this.custodian.assignedCustodian.representedCustodianOrganization.name._}}
+            {{>Resources/Organization.hbs org=this.custodian.assignedCustodian.representedCustodianOrganization ID=(generateUUID (toJsonString this.custodian.assignedCustodian.representedCustodianOrganization))}},
+    		{{>References/Composition/custodian.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Organization/' (generateUUID (toJsonString this.custodian.assignedCustodian.representedCustodianOrganization)))}},            
         {{/if}}
         
 {{/with}}

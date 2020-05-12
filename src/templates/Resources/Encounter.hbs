@@ -3,8 +3,21 @@
     "resource":{
         "resourceType": "Encounter",
         "id":"{{ID}}",
-        "status":"{{encounter.statusCode}}",
-        "class":{{>DataType/Coding.hbs code=encounter.code.translation}},
+        
+        {{#if encounter.statusCode.code}}
+            "status":"{{encounter.statusCode.code}}",
+        {{else}}
+            "status":"unknown",
+        {{/if}}
+        
+        {{#if (elementAt (toArray encounter.code.translation) 0)}}
+            {{#with (elementAt (toArray encounter.code.translation) 0)}}
+                "class":{{>DataType/Coding.hbs code=this}},
+            {{/with}}
+        {{else}}
+            "class":{{>DataType/Coding.hbs code=encounter.code}},     
+        {{/if}}
+        
         "type":
         [
            	{{>DataType/CodeableConcept.hbs code=encounter.code}},

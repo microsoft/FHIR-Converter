@@ -1,9 +1,12 @@
-        {{#with (getFirstCdaSections msg 'Encounters')}}
-            {{#each (toArray Encounters.entry) as |encounterEntry|}}
+        {{#with (getFirstCdaSections msg 'Encounter')}}
+            {{#each (toArray Encounter.entry) as |encounterEntry|}}
                 {{>Resources/Encounter.hbs encounter=encounterEntry.encounter ID=(generateUUID (toJsonString encounterEntry))}},
-                {{>Resources/Practitioner.hbs practitioner=encounterEntry.encounter.performer.assignedEntity ID=(generateUUID (toJsonString encounterEntry.encounter.performer.assignedEntity))}},
                 {{>References/Encounter/subject.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
-                {{>References/Encounter/participant.individual.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Practitioner/' (generateUUID (toJsonString encounterEntry.encounter.performer.assignedEntity)))}},
+
+                {{#if encounterEntry.encounter.performer.assignedEntity}}
+                    {{>Resources/Practitioner.hbs practitioner=encounterEntry.encounter.performer.assignedEntity ID=(generateUUID (toJsonString encounterEntry.encounter.performer.assignedEntity))}},
+                    {{>References/Encounter/participant.individual.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Practitioner/' (generateUUID (toJsonString encounterEntry.encounter.performer.assignedEntity)))}},
+                {{/if}}
 
                 {{#each (toArray encounterEntry.encounter.participant)}}
                     {{#if (eq this.typeCode 'LOC')}}
@@ -14,11 +17,14 @@
                     {{/if}}
                 {{/each}}
               
-                {{#each (toArray encounter.entryRelationship)}}
-                    {{#if this.act}}
-                        {{>Resources/Condition.hbs conditionEntry=this.act ID=(generateUUID (toJsonString this.act))}},
-                        {{>References/Encounter/diagnosis.condition.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(generateUUID (toJsonString this.act))}},
-                    {{/if}}
+                {{#each (toArray encounterEntry.encounter.entryRelationship)}}
+                    {{#each (toArray this.act.entryRelationship) as |condEntry|}}
+                        {{#if condEntry.observation}}
+                            {{>Resources/Condition.hbs conditionEntry=condEntry.observation ID=(generateUUID (toJsonString condEntry.observation))}},
+                            {{>References/Condition/subject.hbs ID=(generateUUID (toJsonString condEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                            {{>References/Encounter/diagnosis.condition.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Condition/' (generateUUID (toJsonString condEntry.observation)))}},
+                        {{/if}}
+                    {{/each}}
                 {{/each}}
 
             {{/each}}

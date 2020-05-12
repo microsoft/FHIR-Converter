@@ -1,0 +1,20 @@
+{
+    "low":
+    {
+        {{#if (and range.low.value (eq (length (match range.low.value '[0123456789+-eE.]+'))))}}
+            "value":"{{range.low.value}}",
+        {{else}}
+            "value":{{range.low.value}},
+        {{/if}}
+        "unit":"{{range.low.unit}}",
+    }
+    "high":
+    {
+        {{#if (and range.high.value (eq (length (match range.high.value '[0123456789+-eE.]+'))))}}
+            "value":"{{range.high.value}}",
+        {{else}}
+            "value":{{range.high.value}},
+        {{/if}}
+        "unit":"{{range.high.unit}}",
+    }
+},

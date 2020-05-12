@@ -11,18 +11,23 @@
         ],
         "status":"{{medicationStatement.statusCode.code}}",
         "effectivePeriod":
-        	{"start":"{{formatAsDateTime medicationStatement.effectiveTime.low.value}}",
+        {
+            "start":"{{formatAsDateTime medicationStatement.effectiveTime.low.value}}",
             "end":"{{formatAsDateTime medicationStatement.effectiveTime.high.value}}"
-        	},
+        },
         "dosage":
         [
             {
-                "doseQuantity":
+                "doseAndRate": [
                 {
-                    "value":{{medicationStatement.doseQuantity.value}},
-                    "unit":"{{medicationStatement.doseQuantity.unit}}"
-                }
-            }
+                    "doseQuantity":
+                    {
+                        "value":{{medicationStatement.doseQuantity.value}},
+                        "unit":"{{medicationStatement.doseQuantity.unit}}"
+                    }
+                },
+                ],
+            },
         ]
     },
     "request":{

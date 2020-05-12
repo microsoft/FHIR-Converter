@@ -15,7 +15,7 @@
 
         "date":"{{formatAsDateTime composition.effectiveTime.value}}",
         "title":"{{composition.title._}}",
-        "confidentiality":{{>DataType/Coding.hbs code=composition.confidentialityCode}},
+        "confidentiality":"{{composition.confidentialityCode.code}}",
         "attester": 
         [
         	{
@@ -47,10 +47,21 @@
         [               
             {{#each composition.component.structuredBody.component}}
                	{
-                	"title":"{{this.section.title._}}",
-                   	"title":"{{this.section.code.displayName}}",
-                    "text":"{{this.section.title._}}",                               
-                   	"text":"{{this.section.code.displayName}}",                    
+                    {{#if this.section.title._}}
+                	    "title":"{{this.section.title._}}",
+                   	    "text":
+                        {
+                            "status":"generated",
+                            "div":"<div xmlns=\"http://www.w3.org/1999/xhtml\">{{this.section.title._}}</div>",
+                        }
+                    {{else}}                    
+                        "title":"{{this.section.code.displayName}}",
+                        "text":
+                        {
+                            "status":"generated",
+                            "div":"<div xmlns=\"http://www.w3.org/1999/xhtml\">{{this.section.code.displayName}}</div>",
+                        }
+                    {{/if}}
                     "code":{{>DataType/CodeableConcept.hbs code=this.section.code}},
                     "mode":"snapshot",
                     "entry":

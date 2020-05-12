@@ -1,6 +1,6 @@
 {
 	"code":"{{code.code}}",
 	"display":"{{code.displayName}}",
-	"system":"{{code.codeSystemName}}",
+	"system":{{>ValueSet/SystemReference.hbs code=code.codeSystemName}},
 	"version":"{{code.codeSystem}}",
 },

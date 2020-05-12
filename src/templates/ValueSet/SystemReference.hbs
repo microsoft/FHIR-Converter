@@ -1,0 +1,13 @@
+{{#if code}}
+    {{#if (eq (toLower code) 'loinc')}},
+	    "http://loinc.org"
+    {{else if (eq (toLower code) 'snomed ct')}},
+	    "http://snomed.info/sct"
+    {{else if (contains (toLower code) 'http://')}}
+        "{{code}}"
+    {{else if (eq (length (match code '[0123456789.]+')) 1)}},
+	    "urn:oid:{{code}}"
+    {{else}}
+        "http://terminology.hl7.org/CodeSystem/{{replace code ' ' ''}}"
+    {{/if}}
+{{/if}}

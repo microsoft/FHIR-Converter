@@ -10,14 +10,19 @@
             {{/each}}
         ],
         "status":"{{>ValueSet/CompositionStatus.hbs code=consentEntry.statusCode.code}}",
-        "scope":
-        {
-            "coding":"adr",
-        },
+        {{#if consentEntry.code.translation}}
+            "scope":{{>DataType/CodeableConcept.hbs code=consentEntry.code.translation}},
+        {{else}}
+            "scope":{{>DataType/CodeableConcept.hbs code=consentEntry.code}},
+        {{/if}}
         "category":
-        {
-            "coding":"acd",
-        },
+        [
+            {{#if consentEntry.code.translation}}
+                {>DataType/CodeableConcept.hbs code=consentEntry.code.translation}},
+            {{else}}
+                {{>DataType/CodeableConcept.hbs code=consentEntry.code}},
+            {{/if}}
+        ],
         "dateTime":"{{formatAsDateTime consentEntry.component.observation.effectiveTime.low.value}}",
         "provision":
         {

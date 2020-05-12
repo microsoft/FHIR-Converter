@@ -9,7 +9,8 @@
         		{{>DataType/CodeableConcept.hbs code=this}},
            	{{/each}}
         ],
-        "indexed":"{{formatAsDateTime docref.ClinicalDocument.effectiveTime.value}}"
+        "indexed":"{{formatAsDateTime docref.ClinicalDocument.effectiveTime.value}}",
+        "status":"current",
         "content":
         [
             {
@@ -18,9 +19,9 @@
                     "contentType":"text/plain",
                     "data":"{{{base64Encode docref._originalData}}}",
                     "hash":"{{{base64Encode (sha1Hash docref._originalData) 'hex'}}}",
-                }
-            }
-        ]
+                },
+            },
+        ],
     },
     "request":{
         "method":"POST",

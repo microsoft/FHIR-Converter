@@ -1,7 +1,7 @@
 {{#with (getFirstCdaSectionsWithExactMatch msg 'Medical Equipment')}}
     {{#each (toArray Medical_Equipment.entry)}}
         {{#if this.organizer}}
-        {{>Resources/Device2.hbs deviceEntry=this.organizer ID=(generateUUID (toJsonString this.organizer))}},
+            {{>Resources/Device2.hbs deviceEntry=this.organizer ID=(generateUUID (toJsonString this.organizer))}},
             {{#each (toArray this.organizer.component) as |medequipEntry|}}
                 {{>Resources/Device2.hbs deviceEntry=medequipEntry.supply ID=(generateUUID (toJsonString medequipEntry.supply))}},
             {{/each}}
@@ -13,8 +13,10 @@
         
         {{#if this.procedure}}
             {{>Resources/Procedure.hbs procedureEntry=this.procedure ID=(generateUUID (toJsonString this.procedure))}},
-            {{>Resources/Organization.hbs org=this.procedure.performer.assignedEntity.representedOrganization ID=(generateUUID (toJsonString this.procedure.performer.assignedEntity.representedOrganization))}},
-            {{>References/Procedure/performer.actor.hbs ID=(generateUUID (toJsonString this.procedure)) REF=(concat 'Organization/' (generateUUID (toJsonString this.procedure.performer.assignedEntity.representedOrganization)))}},
+            {{#if this.procedure.performer.assignedEntity.representedOrganization.name._}}
+                {{>Resources/Organization.hbs org=this.procedure.performer.assignedEntity.representedOrganization ID=(generateUUID (toJsonString this.procedure.performer.assignedEntity.representedOrganization))}},
+                {{>References/Procedure/performer.actor.hbs ID=(generateUUID (toJsonString this.procedure)) REF=(concat 'Organization/' (generateUUID (toJsonString this.procedure.performer.assignedEntity.representedOrganization)))}},
+            {{/if}}
         {{/if}}
         
     {{/each}}
