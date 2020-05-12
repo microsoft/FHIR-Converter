@@ -4,12 +4,10 @@
         "resourceType": "DocumentReference",
         "id":"{{ID}}",
         "type":
-		[
-        	{{#each (toArray docref.ClinicalDocument.code)}}
+        	{{#with (elementAt (toArray docref.ClinicalDocument.code) 0)}}
         		{{>DataType/CodeableConcept.hbs code=this}},
-           	{{/each}}
-        ],
-        "indexed":"{{formatAsDateTime docref.ClinicalDocument.effectiveTime.value}}",
+           	{{/with}},
+        "date":"{{formatAsDateTime (now)}}",
         "status":"current",
         "content":
         [

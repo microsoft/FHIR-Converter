@@ -9,7 +9,7 @@
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
-        "status":"{{>ValueSet/CompositionStatus.hbs code=consentEntry.statusCode.code}}",
+        "status":"active",
         {{#if consentEntry.code.translation}}
             "scope":{{>DataType/CodeableConcept.hbs code=consentEntry.code.translation}},
         {{else}}
