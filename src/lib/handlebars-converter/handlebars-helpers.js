@@ -13,6 +13,7 @@ var templatePreprocessor = require('../inputProcessor/templatePreprocessor');
 var jsonProcessor = require('../outputProcessor/jsonProcessor');
 var resourceMerger = require('../outputProcessor/resourceMerger');
 var specialCharProcessor = require('../inputProcessor/specialCharProcessor');
+var zlib = require('zlib');
 
 // Some helpers will be referenced in other helpers and declared outside the export below.
 var getSegmentListsInternal = function (msg, ...segmentIds) {
@@ -294,14 +295,42 @@ module.exports.external = [
         }
     },
     {
-        name: 'escapeSpecialChars',
-        description: 'Returns string with special chars escaped: escapeSpecialChars string',
-        func: function (str) {
+        name: 'gzip',
+        description: 'Returns compressed string: gzip string inencoding outEncoding',
+        func: function (str, inEncoding, outEncoding) {
             try {
-                return specialCharProcessor.Escape(str.toString());
+                if (typeof inEncoding !== 'string')
+                {
+                    inEncoding = 'utf8';
+                }
+                if (typeof outEncoding !== 'string')
+                {
+                    outEncoding = 'utf8';
+                }
+                return zlib.gzipSync(Buffer.from(str.toString(), inEncoding)).toString(outEncoding);
             }
             catch (err) {
-                throw `helper "escapeSpecialChars" : ${err}`;
+                throw `helper "gzip" : ${err}`;
+            }
+        }
+    },
+    {
+        name: 'gunzip',
+        description: 'Returns decompressed string: gunzip string inencoding outEncoding',
+        func: function (str, inEncoding, outEncoding) {
+            try {
+                if (typeof inEncoding !== 'string')
+                {
+                    inEncoding = 'utf8';
+                }
+                if (typeof outEncoding !== 'string')
+                {
+                    outEncoding = 'utf8';
+                }
+                return zlib.gunzipSync(Buffer.from(str.toString(), inEncoding)).toString(outEncoding);
+            }
+            catch (err) {
+                throw `helper "gunzip" : ${err}`;
             }
         }
     },
