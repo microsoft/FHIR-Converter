@@ -10,7 +10,7 @@
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
-        "status":"{{>ValueSet/RequestStatus.hbs code=serviceEntry.statusCode.code}}",
+        "status":{{>ValueSet/RequestStatus.hbs code=serviceEntry.statusCode.code}},
         "code":
         [
             {{#if serviceEntry.code.translation}},
@@ -23,7 +23,7 @@
         "occuranceDateTime":"{{formatAsDateTime serviceEntry.effectiveTime.value}}",
     },
     "request":{
-        "method":"POST",
-        "url":"ServiceRequest",
+        "method":"PUT",
+        "url":"ServiceRequest/{{ID}}",
     },
 },

@@ -5,7 +5,7 @@
         "id":"{{ID}}",
         
         {{#if encounter.statusCode.code}}
-            "status":"{{encounter.statusCode.code}}",
+            "status":{{>ValueSet/EncounterStatus.hbs code=encounter.statusCode.code}},
         {{else}}
             "status":"unknown",
         {{/if}}
@@ -37,7 +37,7 @@
             },
      },
     "request":{
-        "method":"POST",
-        "url":"Encounter",
+        "method":"PUT",
+        "url":"Encounter/{{ID}}",
     },
 },

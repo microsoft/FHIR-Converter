@@ -8,7 +8,7 @@
   			"use":"official",
 			"value":"{{composition.id.root}}",
         },
-		"status":"{{>ValueSet/CompositionStatus.hbs code=composition.statusCode}}",
+		"status":{{>ValueSet/CompositionStatus.hbs code=composition.statusCode}},
         {{#with (elementAt (toArray composition.code) 0)}}
             "type":{{>DataType/CodeableConcept.hbs code=this}},
         {{/with}}
@@ -37,7 +37,9 @@
                		{{#each composition.documentationOf.serviceEvent.performer}}
                  		{
                             "reference":"{{concat 'Practitioner/' (generateUUID (toJsonString this))}}",
-                  			"display":"{{this.assignedEntity.assignedPerson.name.given._}} {{this.assignedEntity.assignedPerson.name.family._}}",
+                            {{#if (and this.assignedEntity.assignedPerson.name.given._ this.assignedEntity.assignedPerson.name.family._)}}
+                  			    "display":"{{this.assignedEntity.assignedPerson.name.given._}} {{this.assignedEntity.assignedPerson.name.family._}}",
+                            {{/if}}
                         },
                		{{/each}}         
            		],
@@ -91,8 +93,8 @@
         ],
     },
     "request":{
-        "method":"POST",
-        "url":"Composition",
+        "method":"PUT",
+        "url":"Composition/{{ID}}",
     },
 },
 

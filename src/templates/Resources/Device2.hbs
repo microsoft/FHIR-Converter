@@ -10,17 +10,16 @@
             {{/each}}
         ],
 		"type":
-        [
         {{#if deviceEntry.code}}
             {{>DataType/CodeableConcept.hbs code=deviceEntry.code}},
-        {{else}},
+        {{else}}
             {{>DataType/CodeableConcept.hbs code=deviceEntry.participant.participantRole.playingDevice.code}},
-        {{/if}}
-        ],
-		"manufacturer":"{{deviceEntry.participant.participantRole.scopingEntity.desc._}}",
+        {{/if}},
+
+        "manufacturer":"{{deviceEntry.participant.participantRole.scopingEntity.desc._}}",
     },
     "request":{
-        "method":"POST",
-        "url":"Device",
+        "method":"PUT",
+        "url":"Device/{{ID}}",
     },
 },

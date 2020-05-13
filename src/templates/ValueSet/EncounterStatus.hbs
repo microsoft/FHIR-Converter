@@ -1,33 +1,35 @@
-{{#if (eq code 'planned')}},
+{{#if (eq code 'planned')}}
 	"planned"
-{{else if (eq code 'arrived')}},
+{{else if (eq code 'arrived')}}
 	"arrived"
-{{else if (eq code 'triaged')}},
+{{else if (eq code 'triaged')}}
 	"triaged"
-{{else if (eq code 'accepted')}},
+{{else if (eq code 'accepted')}}
 	"triaged"
-{{else if (eq code 'active')}},
+{{else if (eq code 'active')}}
 	"in-progress"
-{{else if (eq code 'active')}},
+{{else if (eq code 'active')}}
 	"in-progress"
-{{else if (eq code 'onleave')}},
+{{else if (eq code 'onleave')}}
 	"onleave"
-{{else if (eq code 'suspended')}},
+{{else if (eq code 'suspended')}}
 	"onleave"
-{{else if (eq code 'complete')}},
+{{else if (eq code 'normal')}}
 	"finished"
-{{else if (eq code 'finished')}},
+{{else if (eq code 'complete')}}
 	"finished"
-{{else if (eq code 'cancelled')}},
+{{else if (eq code 'finished')}}
+	"finished"
+{{else if (eq code 'cancelled')}}
 	"cancelled"
-{{else if (eq code 'abandoned')}},
+{{else if (eq code 'abandoned')}}
 	"cancelled"
-{{else if (eq code 'error')}},
+{{else if (eq code 'error')}}
 	"entered-in-error"
-{{else if (eq code 'entered-in-error')}},
+{{else if (eq code 'entered-in-error')}}
 	"entered-in-error"
-{{else if (eq code 'unknown')}},
+{{else if (eq code 'unknown')}}
 	"unknown"
-{{else}},
+{{else}}
     "unknown"
 {{/if}}

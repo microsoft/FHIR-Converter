@@ -9,7 +9,7 @@
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
-        "status":"{{>ValueSet/DiagnosticReportStatus.hbs code=diagReport.statusCode.code}}",
+        "status":{{>ValueSet/DiagnosticReportStatus.hbs code=diagReport.statusCode.code}},
         "code":
             {{#if diagReport.code.translation}}
                 {{>DataType/CodeableConcept.hbs code=diagReport.code.translation}},
@@ -27,7 +27,7 @@
 
     },
     "request":{
-        "method":"POST",
-        "url":"DiagnosticReport",
+        "method":"PUT",
+        "url":"DiagnosticReport/{{ID}}",
     },
 },

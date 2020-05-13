@@ -4,15 +4,15 @@
         "resourceType": "Communication",
         "id":"{{ID}}",
         
-        "status":"{{>ValueSet/EventStatus.hbs code=communicationEntry.statusCode.code}}",
+        "status":{{>ValueSet/EventStatus.hbs code=communicationEntry.statusCode.code}},
 
         "category":
-        	[
-                    {{>DataType/CodeableConcept.hbs code=communicationEntry.code}},
-            ],   
+        [
+            {{>DataType/CodeableConcept.hbs code=communicationEntry.code}},
+        ],   
     },
     "request":{
-        "method":"POST",
-        "url":"Communication",
+        "method":"PUT",
+        "url":"Communication/{{ID}}",
     },
 },

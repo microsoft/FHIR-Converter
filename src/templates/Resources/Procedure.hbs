@@ -21,7 +21,7 @@
         "bodySite":{{>DataType/CodeableConcept.hbs code=procedureEntry.targetSiteCode}},
     },
     "request":{
-        "method":"POST",
-        "url":"Procedure",
+        "method":"PUT",
+        "url":"Procedure/{{ID}}",
     },
 },

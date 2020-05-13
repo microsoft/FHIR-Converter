@@ -31,16 +31,11 @@
                 {{/if}}
             ],  
             "detailQuantity":"{{goalEntry.value.low.value}}{{goalEntry.value.low.unit}}",
-            "dueDate":"{{addHyphensDate goalEntry.effectiveTime.value}}",
-          
-            
+            "dueDate":"{{addHyphensDate goalEntry.effectiveTime.value}}",         
         },
-        
-
- 
     },
     "request":{
-        "method":"POST",
-        "url":"Goal",
+        "method":"PUT",
+        "url":"Goal/{{ID}}",
     },
 },

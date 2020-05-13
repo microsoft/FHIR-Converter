@@ -9,7 +9,7 @@
             	{{>DataType/Identifier.hbs id=this}}
             {{/each}}
         ],
-        "status":"{{medicationStatement.statusCode.code}}",
+        "status":{{>ValueSet/MedicationStatementStatus.hbs code=medicationStatement.statusCode.code}},
         "effectivePeriod":
         {
             "start":"{{formatAsDateTime medicationStatement.effectiveTime.low.value}}",
@@ -31,7 +31,7 @@
         ]
     },
     "request":{
-        "method":"POST",
-        "url":"MedicationStatement",
+        "method":"PUT",
+        "url":"MedicationStatement/{{ID}}",
     },
 },

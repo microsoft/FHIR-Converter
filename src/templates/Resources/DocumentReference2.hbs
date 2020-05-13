@@ -4,15 +4,17 @@
         "resourceType": "DocumentReference",
         "id":"{{ID}}",
         "content":
-        {
+        [
+          {
             "attachment":
             {
                 "title":"{{docref.externalDocument.text.reference.value}}",
             },
-        }, 
+          },
+        ],
     },
     "request":{
-        "method":"POST",
-        "url":"DocumentReference",
+        "method":"PUT",
+        "url":"DocumentReference/{{ID}}",
     },
 },

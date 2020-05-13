@@ -10,8 +10,8 @@
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
-        "status":"{{>ValueSet/ObservationStatus.hbs code=observationEntry.statusCode.code}}",
-        {{#if observationEntry.code.translation}},
+        "status":{{>ValueSet/ObservationStatus.hbs code=observationEntry.statusCode.code}},
+        {{#if observationEntry.code.translation.code}},
             "code": {{>DataType/CodeableConcept.hbs code=observationEntry.code.translation}},
         {{else}},
             "code": {{>DataType/CodeableConcept.hbs code=observationEntry.code}},
@@ -62,7 +62,7 @@
         ],
     },
     "request":{
-        "method":"POST",
-        "url":"Observation",
+        "method":"PUT",
+        "url":"Observation/{{ID}}",
     },
 },

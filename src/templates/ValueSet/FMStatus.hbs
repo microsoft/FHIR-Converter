@@ -1,15 +1,15 @@
-{{#if (eq code 'active')}},
+{{#if (eq code 'active')}}
 	"active"
-{{else if (eq code 'cancelled')}},
+{{else if (eq code 'cancelled')}}
 	"cancelled"
-{{else if (eq code 'abandonded')}},
+{{else if (eq code 'abandonded')}}
 	"cancelled"
-{{else if (eq code 'entered-in-error')}},
+{{else if (eq code 'entered-in-error')}}
 	"entered-in-error"
-{{else if (eq code 'error')}},
+{{else if (eq code 'error')}}
 	"entered-in-error"
-{{else if (eq code 'draft')}},
+{{else if (eq code 'draft')}}
 	"draft"
-{{else}},
+{{else}}
     "active"
 {{/if}}

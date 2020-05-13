@@ -1,23 +1,23 @@
-{{#if (eq code 'draft')}},
+{{#if (eq code 'draft')}}
 	"draft"
-{{else if (eq code 'active')}},
+{{else if (eq code 'active')}}
 	"active"
-{{else if (eq code 'suspended')}},
+{{else if (eq code 'suspended')}}
 	"on-hold"
-{{else if (eq code 'on-hold')}},
+{{else if (eq code 'on-hold')}}
 	"on-hold"
-{{else if (eq code 'failed')}},
+{{else if (eq code 'failed')}}
 	"revoked"
-{{else if (eq code 'revoked')}},
+{{else if (eq code 'revoked')}}
 	"revoked"
-{{else if (eq code 'completed')}},
+{{else if (eq code 'completed')}}
 	"completed"
-{{else if (eq code 'entered-in-error')}},
+{{else if (eq code 'entered-in-error')}}
 	"entered-in-error"
-{{else if (eq code 'error')}},
+{{else if (eq code 'error')}}
 	"entered-in-error"
-{{else if (eq code 'unknown')}},
+{{else if (eq code 'unknown')}}
 	"unknown"
-{{else}},
+{{else}}
     "unknown"
 {{/if}}

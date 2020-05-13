@@ -40,7 +40,7 @@
                           	{
                                	"system":"http://hl7.org/fhir/ValueSet/languages",
                                	"code":"{{this.languageCode.code}}", 
-                                "display":"{{>ValueSet/Language.hbs code=this.languageCode.code}}",
+                                "display":{{>ValueSet/Language.hbs code=this.languageCode.code}},
                             },
                         ],
                     },           
@@ -50,7 +50,7 @@
         ],
     },
     "request":{
-        "method":"POST",
-        "url":"Patient",
+        "method":"PUT",
+        "url":"Patient/{{ID}}",
     },
 },
