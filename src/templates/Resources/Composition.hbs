@@ -20,9 +20,15 @@
         [
         	{
                 {{#if composition.legalAuthenticator}}            
-        		    "mode": "legal",
+        		    "mode": "legal",                
+            	    "time":"{{formatAsDateTime composition.legalAuthenticator.time.value}}",
+                    {{#if composition.legalAuthenticator.assignedEntity}}  
+                        "party":
+                        {
+                            "reference":"{{concat 'Practitioner/' (generateUUID (toJsonString composition.legalAuthenticator.assignedEntity))}}",
+                        },
+                    {{/if}},
                 {{/if}},
-            	"time":"{{formatAsDateTime composition.legalAuthenticator.time.value}}",
 			},
         ],
         "event":

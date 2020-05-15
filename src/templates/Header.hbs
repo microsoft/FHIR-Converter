@@ -4,7 +4,6 @@
 
         {{#if this.legalAuthenticator}}
             {{>Resources/Practitioner.hbs practitioner=this.legalAuthenticator.assignedEntity ID=(generateUUID (toJsonString this.legalAuthenticator.assignedEntity))}},
-            {{>References/Composition/attester.party.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Practitioner/' (generateUUID (toJsonString this.legalAuthenticator.assignedEntity)))}},
         {{/if}}
     
         {{#if this.componentOf.encompassingEncounter}}
@@ -41,6 +40,6 @@
     {{>Resources/Patient.hbs patientRole=this ID=(generateUUID (toJsonString this))}},
     {{#if this.patient.guardian}}
         {{>Resources/RelatedPerson.hbs relatedPerson=this.patient.guardian ID=(generateUUID (toJsonString this.patient.guardian))}},
-        {{>References/RelatedPerson/patient.hbs ID=(generateUUID (toJsonString this.patient.guardian)) REF=(generateUUID (toJsonString this))}},
+        {{>References/RelatedPerson/patient.hbs ID=(generateUUID (toJsonString this.patient.guardian)) REF=(concat 'Patient/' (generateUUID (toJsonString this)))}},
     {{/if}}
 {{/with}}     

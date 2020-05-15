@@ -9,15 +9,12 @@
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
-        
-        "statusReason":
-        [
-            {{#each (toArray imm.entryRelationship)}}
-                {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.53')}}
-                    {{>DataType/CodeableConcept.hbs code=this.observation.code}},
-                {{/if}}
-            {{/each}}
-        ],
+
+        {{#each (toArray imm.entryRelationship)}}
+            {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.53')}}
+                "statusReason":{{>DataType/CodeableConcept.hbs code=this.observation.code}},
+            {{/if}}
+        {{/each}}
 
         {{#if imm.effectiveTime.low}}
         	"occurrenceDateTime":"{{formatAsDateTime imm.effectiveTime.low.value}}",
