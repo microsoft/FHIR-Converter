@@ -9,7 +9,6 @@ var constants = require('../constants/constants');
 var HandlebarsConverter = require('./handlebars-converter');
 var fs = require('fs');
 var crypto = require('crypto');
-var templatePreprocessor = require('../inputProcessor/templatePreprocessor');
 var jsonProcessor = require('../outputProcessor/jsonProcessor');
 var resourceMerger = require('../outputProcessor/resourceMerger');
 var specialCharProcessor = require('../inputProcessor/specialCharProcessor');
@@ -81,14 +80,14 @@ module.exports.external = [
         name: 'eq',
         description: 'Equals at least one of the values: eq x a b …',
         func: function (x, ...values) {
-            return Array.prototype.slice.call(values.slice(0, -1)).some(a => x == a); //last element is full msg
+            return Array.prototype.slice.call(values.slice(0, -1)).some(a => x === a); //last element is full msg
         }
     },
     {
         name: 'ne',
         description: 'Not equal to any value: ne x a b …',
         func: function (x, ...values) {
-            return Array.prototype.slice.call(values.slice(0, -1)).every(a => x != a); //last element is full msg
+            return Array.prototype.slice.call(values.slice(0, -1)).every(a => x !== a); //last element is full msg
         }
     },
     {
@@ -373,7 +372,7 @@ module.exports.external = [
                     var content = fs.readFileSync(templateLocation + "/" + templatePath);
 
                     // register partial with compilation output
-                    handlebarsInstance.registerPartial(templatePath, handlebarsInstance.compile(templatePreprocessor.Process(content.toString())));
+                    handlebarsInstance.registerPartial(templatePath, handlebarsInstance.compile(content.toString()));
                     partial = handlebarsInstance.partials[templatePath];
                 }
                 return resourceMerger.Process(JSON.parse(jsonProcessor.Process(partial(inObj.hash))));
@@ -670,6 +669,9 @@ module.exports.external = [
         name: 'concat',
         description: 'Returns the concatenation of provided strings: concat aString bString cString …',
         func: function (...values) {
+            if (Array.isArray(values[0])) {
+                return [].concat(...(values.slice(0, -1))); //last element is full msg
+            }
             return ''.concat(...(values.slice(0, -1))); //last element is full msg
         }
     },

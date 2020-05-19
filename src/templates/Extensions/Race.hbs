@@ -1,8 +1,8 @@
 {
-  {{#if raceCode}}
+  {{#if patient.raceCode}}
       "url" : "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
       "extension" : [
-          {{#each (toArray raceCode)}}
+          {{#each (concat (toArray patient.raceCode) (toArray patient.sdtc:raceCode))}}
               {
                   {{#if (or (eq this.code '1002-5') 
                             (eq this.code '2028-9') 
@@ -22,10 +22,10 @@
           {{/each}}
           {
               "url": "text",
-              {{#if (gt (length (toArray raceCode)) 1)}}
+              {{#if patient.sdtc:raceCode}}
                   "valueString":"Mixed",
               {{else}}
-                  "valueString":"{{raceCode.displayName}}",
+                  "valueString":"{{patient.raceCode.displayName}}",
               {{/if}}
           }
       ],                        

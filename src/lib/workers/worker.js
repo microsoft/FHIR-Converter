@@ -17,7 +17,6 @@ var HandlebarsConverter = require('../handlebars-converter/handlebars-converter'
 var WorkerUtils = require('./workerUtils');
 var jsonProcessor = require('../outputProcessor/jsonProcessor');
 var resourceMerger = require('../outputProcessor/resourceMerger');
-var templatePreprocessor = require('../inputProcessor/templatePreprocessor');
 
 var rebuildCache = true;
 
@@ -106,7 +105,7 @@ WorkerUtils.workerTaskProcessor((msg) => {
                                 fulfill({ 'status': 200, 'resultMsg': result });
                             }
                             else {
-                                var template = GetHandlebarsInstance(templatesMap).compile(templatePreprocessor.Process(templateString));
+                                var template = GetHandlebarsInstance(templatesMap).compile(templateString);
     
                                 try {
                                     fulfill({ 'status': 200, 'resultMsg': generateResult(context, template, replacementDictionary) });
@@ -148,7 +147,7 @@ WorkerUtils.workerTaskProcessor((msg) => {
                                     }
                                     else {
                                         try {
-                                            template = GetHandlebarsInstance().compile(templatePreprocessor.Process(templateContent.toString()));
+                                            template = GetHandlebarsInstance().compile(templateContent.toString());
                                             compileCache.put(templateName, template);
                                             fulfill(template);
                                         }

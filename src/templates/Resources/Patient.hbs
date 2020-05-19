@@ -18,8 +18,8 @@
         "birthDate":"{{addHyphensDate patientRole.patient.birthTime.value}}",
         "gender":"{{toLower patientRole.patient.administrativeGenderCode.displayName}}",
         "extension" : [
-            {{>Extensions/Race.hbs raceCode=patientRole.patient.raceCode}},
-            {{>Extensions/Ethnicity.hbs ethnicGroupCode=patientRole.patient.ethnicGroupCode}},
+            {{>Extensions/Race.hbs patient=patientRole.patient}},
+            {{>Extensions/Ethnicity.hbs patient=patientRole.patient}},
         ],
         "address":
         [

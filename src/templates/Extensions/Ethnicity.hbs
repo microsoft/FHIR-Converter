@@ -1,8 +1,8 @@
 {
-  {{#if ethnicGroupCode}}
+  {{#if patient.ethnicGroupCode}}
       "url" : "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
       "extension" : [
-          {{#each (toArray ethnicGroupCode)}}
+          {{#each (concat (toArray patient.ethnicGroupCode) (toArray patient.sdtc:ethnicGroupCode))}}
               {
                   {{#if (or (eq this.code '2135-2') 
                             (eq this.code '2186-5'))}}
@@ -19,10 +19,10 @@
           {{/each}}
           {
               "url": "text",
-              {{#if (gt (length (toArray ethnicGroupCode)) 1)}}
+              {{#if patient.sdtc:ethnicGroupCode}}
                   "valueString":"Mixed",
               {{else}}
-                  "valueString":"{{ethnicGroupCode.displayName}}",
+                  "valueString":"{{patient.ethnicGroupCode.displayName}}",
               {{/if}}
           }
       ],                        

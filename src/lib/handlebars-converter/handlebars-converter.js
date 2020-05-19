@@ -6,7 +6,6 @@
 var fs = require('fs');
 var Handlebars = require('handlebars');
 var helpers = require('./handlebars-helpers').external;
-var templatePreprocessor = require('../inputProcessor/templatePreprocessor');
 
 var handlebarsInstance = Handlebars;
 
@@ -24,7 +23,7 @@ module.exports.instance = function (createNew, templateFilesLocation, currentCon
                     else {
                         content = fs.readFileSync(templateFilesLocation + "/" + options.name);
                     }
-                    var preprocessedContent = templatePreprocessor.Process(content.toString());
+                    var preprocessedContent = content.toString();
                     handlebarsInstance.registerPartial(options.name, preprocessedContent);
 
                     // Need to set partial entry here due to a bug in Handlebars (refer # 70386).
