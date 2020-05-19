@@ -1,0 +1,30 @@
+{
+  {{#if ethnicGroupCode}}
+      "url" : "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
+      "extension" : [
+          {{#each (toArray ethnicGroupCode)}}
+              {
+                  {{#if (or (eq this.code '2135-2') 
+                            (eq this.code '2186-5'))}}
+                      "url" : "ombCategory",
+                  {{else}}
+                      "url" : "detailed",
+                  {{/if}}                   
+                      "valueCoding" : {
+                          "system":"urn:oid:{{this.codeSystem}}",
+                          "code":"{{this.code}}",
+                          "display":"{{this.displayName}}",
+                      },
+              },
+          {{/each}}
+          {
+              "url": "text",
+              {{#if (gt (length (toArray ethnicGroupCode)) 1)}}
+                  "valueString":"Mixed",
+              {{else}}
+                  "valueString":"{{ethnicGroupCode.displayName}}",
+              {{/if}}
+          }
+      ],                        
+  {{/if}}
+}
