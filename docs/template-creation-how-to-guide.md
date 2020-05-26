@@ -1,8 +1,8 @@
 # How to create a template
 
-In this how-to guide, we will cover some of the basics around creating templates for converting HL7 v2 messages into FHIR bundles. The templates are an implementation of the open-source project [handlebars](https://handlebarsjs.com/). Handlebars compiles templates into JavaScript functions. The handlebars website has the most up to date information and is a great reference as you get into template building.
+In this how-to guide, we will cover some of the basics around creating templates for converting HL7 v2 messages and CDA documents into FHIR bundles. The templates are an implementation of the open-source project [handlebars](https://handlebarsjs.com/). Handlebars compiles templates into JavaScript functions. The handlebars website has the most up to date information and is a great reference as you get into template building.
 
-The templates included in the release were created by generating the data from [Google spreadsheets](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk) created by the HL7 community as part of their [V2 to FHIR mapping project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project) which describes the mapping of HL7 v2 version 2.8.2 into FHIR bundles version R4. There are top level templates that can be used to create a FHIR bundle by translating a full HL7 v2 message and partial templates that are used as building blocks to create the top level template. For more details on the partial templates, see the [partial template concept section](partial-template-concept.md).
+The HL7 v2 templates included in the release were created by generating the data from [Google spreadsheets](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk) created by the HL7 community as part of their [V2 to FHIR mapping project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project) which describes the mapping of HL7 v2 version 2.8.2 into FHIR bundles version R4. The C-CDA templates included in this release were generated from customer feedback. There are top level templates that can be used to create a FHIR bundle by translating a full HL7 v2 message or CDA document. There are partial templates that are used as building blocks to create the top level template. For more details on the partial templates, see the [partial template concept section](partial-template-concept.md).
 
 ## Prerequisites
 
@@ -10,7 +10,7 @@ Before starting to create a template, ensure that you have deployed the GitHub c
 
 ## Getting started
 
-The easiest way to create a template is to start with an existing template and modify that template. Right now, we have top level templates for ADT_A01 (admit message), OML_021 (lab order message), ORU_R01 (observation result message), and VXU_V04 (vaccination update message). We will add more templates as the HL7 community defines them. You can also start from scratch to create your template.
+The easiest way to create a template is to start with an existing template and modify that template. However, you can also start from scratch to create your template. Right now for HL7 v2, we have top level templates for ADT_A01 (admit message), OML_021 (lab order message), ORU_R01 (observation result message), and VXU_V04 (vaccination update message). We will add more templates as the HL7 community defines them. For C-CDA, we have top level templates for Care Plan, CCD, Consultation Note, Discharge Summary, History and Physical, Operative Note, Procedure Note, Progress Note, Referral Note and Transfer Summary. We will add more templates as we receive more customer feedback. 
 
 To get started updating/creating templates:
 
