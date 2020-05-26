@@ -1,14 +1,10 @@
 # Partial Template Concept
 
-Partial templates are a helpful tool when creating templates in the FHIR Converter. Leveraging partial templates allows you to reference them in multiple templates in the future, preventing you from having to rewrite the same code over again. Within the FHIR converter release, there are four types of partial templates: **Resources**, **References**, **Data Types**, and **Code Systems**. The following sections will describe the purpose of each category of released partial templates and give you things to consider when you’re creating your own partial templates.
+Partial templates are a helpful tool when creating templates in the FHIR Converter. Leveraging partial templates allows you to reference them in multiple templates in the future, preventing you from having to rewrite the same code over again. Within the FHIR converter release, there are seven types of partial templates: **Resources**, **References**, **Data Type**, **Code Systems**, **Sections**, **Utils** and **Value Set**. The following sections will describe the purpose of each category of released partial templates and give you things to consider when you’re creating your own partial templates. Some partial templates are utilised both by the HL7 v2 Converter and C-CDA converter (**Data Type**, **Resources** and **References**). However, **Code Systems** is unique to HL7 v2 and **Sections**, **Utils** and **Value Set** are unique to C-CDA.
 
 ## Data Type
 
-Data type templates are building blocks used to define the contents of a data field in a HL7 v2 segment. In most cases, the data types in HL7 v2 map to FHIR attributes as part of the FHIR resource. The FHIR Converter includes a large number of data types as part of the release and new data type templates will be added as they are developed by the HL7 Community. As you create templates, you can create your own custom data types that map data fields in your HL7 v2 implementation to FHIR.
-
-## Code System
-
-Code system templates define mappings of common codes from HL7 v2 to FHIR bundles. An example of this is mapping “F” in HL7 v2 to “female” in a FHIR resource for gender. The FHIR Converter contains a set of starting code systems that have been defined for the released templates. You can also create your own code system templates. These templates will typically use if/else statements to map values from HL7 v2 to values in FHIR. You can see examples of this in the *Code Systems* folder of the released templates.
+Data type templates are building blocks used to define the contents of a data field. In most cases, the data types in HL7 v2 or C-CDA map to FHIR attributes as part of the FHIR resource. The FHIR Converter includes a large number of data types as part of the release and new data type templates will be added as they are developed by the HL7 Community or provided via customer feedback. As you create templates, you can create your own custom data types that map data fields in your implementation to FHIR.
 
 ## Resource
 
@@ -46,6 +42,21 @@ When this template is called in the main template, you must specify the values f
 {{>References/Encounter/diagnosis.condition.hbs ID=(generateUUID ../../PV1) REF=(generateUUID DG1Instance)}}
 ```
 
+## Code System
+
+Code system templates define mappings of common codes from HL7 v2 to FHIR bundles. An example of this is mapping “F” in HL7 v2 to “female” in a FHIR resource for gender. The FHIR Converter contains a set of starting code systems that have been defined for the released templates. You can also create your own code system templates. These templates will typically use if/else statements to map values from HL7 v2 to values in FHIR. You can see examples of this in the *Code Systems* folder of the released templates.
+
+
+
+## Sections
+
+Section templates are used in the C-CDA to FHIR Converter. A CDA document is comprised of sections, each of which contain narrative text and some of which contain structured data elements. Examples of these sections include *Encounters*, *Immunization*, *Procedures* and *Vital Signs*. The section templates map these sections to FHIR resources. Each CDA document template is comprised of section partial templates. 
+
+
+## Utils
+
+## Value Set
+
 ## Summary
 
-Outside of the four types of partial templates outlined above, you are welcome to create your own types of partial templates. For more details on template creation, please see the [how-to guide](template-creation-how-to-guide.md) that gives tips on creating templates. You can also visit the [handlebars website](https://handlebarsjs.com/) for full handlebars documentation.
+Outside of the seven types of partial templates outlined above, you are welcome to create your own types of partial templates. For more details on template creation, please see the [how-to guide](template-creation-how-to-guide.md) that gives tips on creating templates. You can also visit the [handlebars website](https://handlebarsjs.com/) for full handlebars documentation.
