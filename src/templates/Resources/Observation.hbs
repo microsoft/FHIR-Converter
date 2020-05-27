@@ -11,9 +11,9 @@
             {{/each}}
         ],
         "status":{{>ValueSet/ObservationStatus.hbs code=observationEntry.statusCode.code}},
-        {{#if observationEntry.code.translation.code}},
+        {{#if observationEntry.code.translation.code}}
             "code": {{>DataType/CodeableConcept.hbs code=observationEntry.code.translation}},
-        {{else}},
+        {{else}}
             "code": {{>DataType/CodeableConcept.hbs code=observationEntry.code}},
         {{/if}}
         
@@ -23,7 +23,7 @@
                 "start":"{{formatAsDateTime observationEntry.effectiveTime.low.value}}",
                 "end":"{{formatAsDateTime observationEntry.effectiveTime.high.value}}",
             },
-        {{else}},
+        {{else}}
             "effectiveDateTime":"{{formatAsDateTime observationEntry.effectiveTime.value}}",
         {{/if}}
         
@@ -31,13 +31,13 @@
         
         {{#if observationEntry.value.code}}
             "valueCodeableConcept":{{>DataType/CodeableConcept.hbs code=observationEntry.value}},
-        {{else observation.value.value}},
+        {{else observation.value.value}}
             "valueQuantity":
             {
                 "value":{{observationEntry.value.value}},
                 "unit":"{{observationEntry.value.unit}}",
             }, 
-        {{else}},
+        {{else}}
             "valueString":"{{observationEntry.value._}}",
         {{/if}}
         
