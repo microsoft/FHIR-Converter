@@ -20,6 +20,10 @@
     <script type="text/javascript" src="/codemirror/addon/fold/foldcode.js"></script>
     <script type="text/javascript" src="/codemirror/addon/fold/foldgutter.js"></script>
     <script type="text/javascript" src="/codemirror/addon/fold/brace-fold.js"></script>
+    <script type="text/javascript" src="/codemirror/addon/fold/xml-fold.js"></script>
+    <script type="text/javascript" src="/codemirror/addon/fold/indent-fold.js"></script>
+    <script type="text/javascript" src="/codemirror/addon/fold/markdown-fold.js"></script>
+    <script type="text/javascript" src="/codemirror/addon/fold/comment-fold.js"></script>
     <script type="text/javascript" src="/codemirror/addon/mode/multiplex.js"></script>
     <script type="text/javascript" src="/codemirror/addon/edit/matchbrackets.js"></script>
     <script type="text/javascript" src="/codemirror/addon/hint/show-hint.js"></script>
@@ -31,6 +35,9 @@
     <script type="text/javascript" src="/codemirror/mode/asciiarmor/asciiarmor.js"></script>
     <script type="text/javascript" src="/codemirror/mode/handlebars/handlebars.js"></script>
     <script type="text/javascript" src="/codemirror/mode/javascript/javascript.js"></script>
+    <script type="text/javascript" src="/codemirror/mode/xml/xml.js"></script>
+    <script type="text/javascript" src="/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script type="text/javascript" src="/codemirror/mode/markdown/markdown.js"></script>
 
     <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
 
@@ -98,7 +105,7 @@
         <!-- Split layout for editors -->
         <div class="vertical-content">
             <div class="content split msg-area">
-                <textarea id="hl7messagebox">MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||</textarea>
+                <textarea id="hl7messagebox"></textarea>
             </div>
             <div class="content split editor-area">
                 <div class="split template-area">

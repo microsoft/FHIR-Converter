@@ -1,0 +1,10 @@
+{
+	{{#if id.extension}}
+		"use":"official",
+    {{/if}}
+    "system":{{>ValueSet/SystemReference.hbs code=id.root}},
+    "value":"{{id.extension}}",
+    "assigner":{
+    	"display":"{{id.assigningAuthorityName}}"
+        }
+},

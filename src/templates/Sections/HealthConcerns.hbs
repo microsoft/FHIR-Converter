@@ -1,0 +1,11 @@
+{{#with (getFirstCdaSectionsWithExactMatch msg 'Health Concerns Section')}}
+    {{#each (toArray Health_Concerns_Section.entry)}}
+        {{#each (toArray this.act.entryRelationship) as |healthEntry|}}
+            {{#if healthEntry.observation}}
+                {{>Resources/Condition.hbs conditionEntry=healthEntry.observation ID=(generateUUID (toJsonString healthEntry.observation))}},
+                {{>References/Condition/subject.hbs ID=(generateUUID (toJsonString healthEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{/if}}
+        {{/each}}
+    {{/each}}
+{{/with}} 
+

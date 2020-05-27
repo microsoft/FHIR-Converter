@@ -3,25 +3,29 @@
     "resource":{
         "resourceType": "Location",
         "id":"{{ID}}",
-        {{>DataType/PL.hbs PL=ROL-13}},
-        {{>DataType/PL.hbs PL=PV1-3}},
-        {{>DataType/PL.hbs PL=PV1-6}},
-        {{>DataType/PL.hbs PL=PR1-23}},
-        {{>DataType/PL.hbs PL=PRT-9}},
-        {{>DataType/XONLocation.hbs XON=ORC-21}},
-        "address":
-        {
-            {{>DataType/XAD.hbs XAD=ORC-22}},
-            {{>DataType/XAD.hbs XAD=RXA-28}},
-        },
+        "identifier":
+        [
+        	{{#each (toArray location.id)}}
+            	{{>DataType/Identifier.hbs id=this}},
+            {{/each}}
+        ],
+        "name":"{{location.playingEntity.name._}}",
+        "address": {{>DataType/Address.hbs addr=location.addr}},
         "telecom":
         [
-            { {{>DataType/XTN.hbs XTN=ORC-23}} },
+        	{{#each (toArray location.telecom)}}
+            	{{>DataType/ContactPoint.hbs contactPoint=this}},
+            {{/each}}
         ],
-        {{>DataType/PL.hbs PL=RXA-27}},
+        "type":
+        [
+        	{{#each (toArray location.code)}}
+        		{{>DataType/CodeableConcept.hbs code=this}},
+            {{/each}}
+        ],        
     },
     "request":{
-        "method":"POST",
-        "url":"Location",
+        "method":"PUT",
+        "url":"Location/{{ID}}",
     },
 },

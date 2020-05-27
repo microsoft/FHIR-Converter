@@ -1,0 +1,32 @@
+{{#with (getFirstCdaSectionsWithExactMatch msg 'Procedure Anesthesia')}}
+    {{#each (toArray Procedure_Anesthesia.entry) as |procEntry|}}
+        {{#if procEntry.procedure}}
+            {{>Resources/Procedure.hbs procedureEntry=procEntry.procedure ID=(generateUUID (toJsonString procEntry.procedure))}},
+            {{>Resources/Organization.hbs org=procEntry.procedure.performer.assignedEntity.representedOrganization ID=(generateUUID (toJsonString procEntry.procedure.performer.assignedEntity.representedOrganization))}},
+            {{>References/Procedure/subject.hbs ID=(generateUUID (toJsonString procEntry.procedure)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{>References/Procedure/performer.actor.hbs ID=(generateUUID (toJsonString procEntry.procedure)) REF=(concat 'Organization/' (generateUUID (toJsonString procEntry.procedure.performer.assignedEntity.representedOrganization)))}},
+        {{/if}}
+                
+        {{#if procEntry.substanceAdministration}}
+            {{>Resources/MedicationAdministration.hbs medicationAdministration=procEntry.substanceAdministration ID=(generateUUID (toJsonString procEntry.substanceAdministration))}},
+            {{>Resources/Medication.hbs medication=procEntry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial ID=(generateUUID (toJsonString procEntry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial))}},
+            {{>References/MedicationAdministration/subject.hbs ID=(generateUUID (toJsonString procEntry.substanceAdministration)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{>References/MedicationAdministration/medicationReference.hbs ID=(generateUUID (toJsonString procEntry.substanceAdministration)) REF=(concat 'Medication/' (generateUUID (toJsonString procEntry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial)))}},
+        {{/if}}
+    {{/each}}
+{{/with}} 
+        
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

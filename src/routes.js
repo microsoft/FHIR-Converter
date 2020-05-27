@@ -27,8 +27,10 @@ module.exports = function (app) {
     templateCache.init();
     let messageCache = new fileSystemCache(constants.SAMPLE_DATA_LOCATION);
     messageCache.init();
-    app.use(bodyParser.json());
-    app.use(bodyParser.text());
+    app.use(bodyParser.json({limit: '10mb', extended: true}))
+    app.use(bodyParser.text({limit: '10mb', extended: true}))
+    //app.use(bodyParser.json());
+    //app.use(bodyParser.text());
     app.use(express.static(constants.STATIC_LOCATION));
     app.use('/codemirror', express.static(constants.CODE_MIRROR_LOCATION));
 

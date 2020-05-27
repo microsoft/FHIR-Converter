@@ -8,10 +8,11 @@ var HandlebarsUtils = require('handlebars').Utils;
 var constants = require('../constants/constants');
 var HandlebarsConverter = require('./handlebars-converter');
 var fs = require('fs');
-var templatePreprocessor = require('../inputProcessor/templatePreprocessor');
+var crypto = require('crypto');
 var jsonProcessor = require('../outputProcessor/jsonProcessor');
 var resourceMerger = require('../outputProcessor/resourceMerger');
 var specialCharProcessor = require('../inputProcessor/specialCharProcessor');
+var zlib = require('zlib');
 
 // Some helpers will be referenced in other helpers and declared outside the export below.
 var getSegmentListsInternal = function (msg, ...segmentIds) {
@@ -27,6 +28,10 @@ var getSegmentListsInternal = function (msg, ...segmentIds) {
     }
     return ret;
 };
+
+var normalizeSectionName = function (name) {
+    return name.replace(/[^A-Za-z0-9]/g, '_');
+}
 
 var getDate = function (dateTimeString) {
     var ds = dateTimeString.toString();
@@ -75,14 +80,14 @@ module.exports.external = [
         name: 'eq',
         description: 'Equals at least one of the values: eq x a b …',
         func: function (x, ...values) {
-            return Array.prototype.slice.call(values.slice(0, -1)).some(a => x == a); //last element is full msg
+            return Array.prototype.slice.call(values.slice(0, -1)).some(a => x === a); //last element is full msg
         }
     },
     {
         name: 'ne',
         description: 'Not equal to any value: ne x a b …',
         func: function (x, ...values) {
-            return Array.prototype.slice.call(values.slice(0, -1)).every(a => x != a); //last element is full msg
+            return Array.prototype.slice.call(values.slice(0, -1)).every(a => x !== a); //last element is full msg
         }
     },
     {
@@ -228,11 +233,44 @@ module.exports.external = [
         }
     },
     {
-        name: 'base64Encode',
-        description: 'Returns base64 encoded string: base64Encode string',
+        name: 'contains',
+        description: 'Returns true if a string includes another string: contains parentStr childStr',
+        func: function (parentStr, childStr) {
+            try {
+                if (!parentStr) {
+                    return false;
+                }
+                return parentStr.toString().includes(childStr);
+            }
+            catch (err) {
+                throw `helper "contains" : ${err}`;
+            }
+        }
+    },
+    {
+        name: 'sha1Hash',
+        description: 'Returns sha1 hash (in hex) of given string: sha1Hash string',
         func: function (str) {
             try {
-                return Buffer.from(str.toString()).toString('base64');
+                var shasum = crypto.createHash('sha1');
+                shasum.update(str);
+                return shasum.digest().toString('hex');
+            }
+            catch (err) {
+                throw `helper "sha1Hash" : ${err}`;
+            }
+        }
+    },
+    {
+        name: 'base64Encode',
+        description: 'Returns base64 encoded string: base64Encode string encoding',
+        func: function (str, encoding) {
+            try {
+                if (typeof encoding !== 'string')
+                {
+                    encoding = 'utf8';
+                }
+                return Buffer.from(str.toString(), encoding).toString('base64');
             }
             catch (err) {
                 throw `helper "base64Encode" : ${err}`;
@@ -241,10 +279,14 @@ module.exports.external = [
     },
     {
         name: 'base64Decode',
-        description: 'Returns base64 decoded string: base64Decode string',
-        func: function (str) {
+        description: 'Returns base64 decoded string: base64Decode string encoding',
+        func: function (str, encoding) {
             try {
-                return Buffer.from(str.toString(), 'base64').toString();
+                if (typeof encoding !== 'string')
+                {
+                    encoding = 'utf8';
+                }
+                return Buffer.from(str.toString(), 'base64').toString(encoding);
             }
             catch (err) {
                 throw `helper "base64Decode" : ${err}`;
@@ -252,14 +294,42 @@ module.exports.external = [
         }
     },
     {
-        name: 'escapeSpecialChars',
-        description: 'Returns string with special chars escaped: escapeSpecialChars string',
-        func: function (str) {
+        name: 'gzip',
+        description: 'Returns compressed string: gzip string inencoding outEncoding',
+        func: function (str, inEncoding, outEncoding) {
             try {
-                return specialCharProcessor.Escape(str.toString());
+                if (typeof inEncoding !== 'string')
+                {
+                    inEncoding = 'utf8';
+                }
+                if (typeof outEncoding !== 'string')
+                {
+                    outEncoding = 'utf8';
+                }
+                return zlib.gzipSync(Buffer.from(str.toString(), inEncoding)).toString(outEncoding);
             }
             catch (err) {
-                throw `helper "escapeSpecialChars" : ${err}`;
+                throw `helper "gzip" : ${err}`;
+            }
+        }
+    },
+    {
+        name: 'gunzip',
+        description: 'Returns decompressed string: gunzip string inencoding outEncoding',
+        func: function (str, inEncoding, outEncoding) {
+            try {
+                if (typeof inEncoding !== 'string')
+                {
+                    inEncoding = 'utf8';
+                }
+                if (typeof outEncoding !== 'string')
+                {
+                    outEncoding = 'utf8';
+                }
+                return zlib.gunzipSync(Buffer.from(str.toString(), inEncoding)).toString(outEncoding);
+            }
+            catch (err) {
+                throw `helper "gunzip" : ${err}`;
             }
         }
     },
@@ -302,13 +372,149 @@ module.exports.external = [
                     var content = fs.readFileSync(templateLocation + "/" + templatePath);
 
                     // register partial with compilation output
-                    handlebarsInstance.registerPartial(templatePath, handlebarsInstance.compile(templatePreprocessor.Process(content.toString())));
+                    handlebarsInstance.registerPartial(templatePath, handlebarsInstance.compile(content.toString()));
                     partial = handlebarsInstance.partials[templatePath];
                 }
                 return resourceMerger.Process(JSON.parse(jsonProcessor.Process(partial(inObj.hash))));
             }
             catch (err) {
                 throw `helper "evaluate" : ${err}`;
+            }
+        }
+    },
+    {
+        name: 'toArray',
+        description: 'Returns Array',
+        func: function (val) {
+            if (Array.isArray(val)) {
+                return val;
+            }
+            else {
+                var arr = [];
+                if (val) {
+                    arr.push(val);
+                }
+                return arr;
+            }
+        }
+    },
+    {
+        name: 'getFirstCdaSections',
+        description: "Returns first instance of the sections e.g. getFirstCdaSections msg 'Allergies' 'Medication': getFirstCdaSections message section1 section2 …",
+        func: function getFirstCdaSections(msg, ...sectionNames) {
+            try {
+                var ret = {};
+
+                for (var s = 0; s < sectionNames.length - 1; s++) {
+                    for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
+                        let sectionObj = msg.ClinicalDocument.component.structuredBody.component[i].section;
+
+                        if (sectionObj.title._.toLowerCase().includes(sectionNames[s].toLowerCase())) {
+                            ret[normalizeSectionName(sectionNames[s])] = sectionObj;
+                            break;
+                        }
+                    }
+                }
+                return ret;
+            }
+            catch (err) {
+                throw `helper "getFirstCdaSections" : ${err}`;
+            }
+        }
+    },
+    {
+        name: 'getFirstCdaSectionsWithExactMatch',
+        description: "Returns first instance of the sections e.g. getFirstCdaSectionsWithExactMatch msg 'Allergies' 'Medication': getFirstCdaSectionsWithExactMatch message section1 section2 …",
+        func: function getFirstCdaSectionsWithExactMatch(msg, ...sectionNames) {
+            try {
+                var ret = {};
+
+                for (var s = 0; s < sectionNames.length - 1; s++) {
+                    for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
+                        let sectionObj = msg.ClinicalDocument.component.structuredBody.component[i].section;
+
+                        if ((sectionObj.title._ === sectionNames[s])) {
+                            ret[normalizeSectionName(sectionNames[s])] = sectionObj;
+                            break;
+                        }
+                    }
+                }
+                return ret;
+            }
+            catch (err) {
+                throw `helper "getFirstCdaSectionsWithExactMatch" : ${err}`;
+            }
+        }
+    },
+    {
+        name: 'getCdaSectionLists',
+        description: "Returns first instance of the sections e.g. getCdaSectionLists msg 'Allergies' 'Medication': getCdaSectionLists message section1 section2 …",
+        func: function getCdaSectionLists(msg, ...sectionNames) {
+            try {
+                var ret = {};
+
+                for (var s = 0; s < sectionNames.length - 1; s++) {
+                    let normalizedSectionName = normalizeSectionName(sectionNames[s]);
+                    ret[normalizedSectionName] = [];
+
+                    for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
+                        let sectionObj = msg.ClinicalDocument.component.structuredBody.component[i].section;
+
+                        if (sectionObj.title._.toLowerCase().includes(sectionNames[s].toLowerCase())) {
+                            ret[normalizedSectionName].push(sectionObj);
+                        }
+                    }
+                }
+                return ret;
+            }
+            catch (err) {
+                throw `helper "getCdaSectionLists" : ${err}`;
+            }
+        }
+    },
+    {
+        name: 'getFirstCdaSectionsByTemplateId',
+        description: "Returns first instance of the sections e.g. getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.14' '1.3.6.1.4.1.19376.1.5.3.1.3.1': getFirstCdaSectionsByTemplateId message templateId1 templateId2 …",
+        func: function getFirstCdaSectionsByTemplateId(msg, ...templateIds) {
+            try {
+                var ret = {};
+
+                for (var t = 0; t < templateIds.length - 1; t++) { //-1 because templateIds includes the full message at the end
+                    for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
+                        let sectionObj = msg.ClinicalDocument.component.structuredBody.component[i].section;
+
+                        if (JSON.stringify(sectionObj.templateId).includes(templateIds[t])) {
+                            ret[normalizeSectionName(templateIds[t])] = sectionObj;
+                            break;
+                        }
+                    }
+                }
+                return ret;
+            }
+            catch (err) {
+                throw `helper "getFirstCdaSectionsByTemplateId" : ${err}`;
+            }
+        }
+    },
+    /* {
+        name: 'getEntriesList',
+        description: "Returns first instance of the sections e.g. getEntriesList msg 'BP' 'BMI': getEntriesList message entry1 entry2 …",
+        func: function getEntriesList(section, ...entryNames) {
+            try {
+                var ret = {};
+                for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
+                    let sectionTitle = msg.ClinicalDocument.component.structuredBody.component[i].section.title;
+                    for (var s = 0; s < sectionNames.length - 1; s++) {
+                        if (sectionTitle.includes(sectionNames[s]) && !ret[sectionNames[s]]) {
+                            ret[sectionNames[s]] = msg.ClinicalDocument.component.structuredBody.component[i].section;
+                            break;
+                        }
+                    }
+                }
+                return ret;
+            }
+            catch (err) {
+                throw `helper "getFirstSegments" : ${err}`;
             }
         }
     },
@@ -458,11 +664,14 @@ module.exports.external = [
                 throw `helper "hasSegments" : ${err}`;
             }
         }
-    },
+    },*/
     {
         name: 'concat',
         description: 'Returns the concatenation of provided strings: concat aString bString cString …',
         func: function (...values) {
+            if (Array.isArray(values[0])) {
+                return [].concat(...(values.slice(0, -1))); //last element is full msg
+            }
             return ''.concat(...(values.slice(0, -1))); //last element is full msg
         }
     },

@@ -1,0 +1,36 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Consent",
+        "id":"{{ID}}",
+        "identifier":
+        [
+        	{{#each (toArray consentEntry.id)}}
+            	{{>DataType/Identifier.hbs id=this}},
+            {{/each}}
+        ],
+        "status":"active",
+        {{#if consentEntry.code.translation}}
+            "scope":{{>DataType/CodeableConcept.hbs code=consentEntry.code.translation}},
+        {{else}}
+            "scope":{{>DataType/CodeableConcept.hbs code=consentEntry.code}},
+        {{/if}}
+        "category":
+        [
+            {{#if consentEntry.code.translation}}
+                {>DataType/CodeableConcept.hbs code=consentEntry.code.translation}},
+            {{else}}
+                {{>DataType/CodeableConcept.hbs code=consentEntry.code}},
+            {{/if}}
+        ],
+        "dateTime":"{{formatAsDateTime consentEntry.component.observation.effectiveTime.low.value}}",
+        "provision":
+        {
+            "code":{{>DataType/CodeableConcept.hbs code=consentEntry.component.observation.value}},
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Consent/{{ID}}",
+    },
+},

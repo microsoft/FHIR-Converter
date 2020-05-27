@@ -1,0 +1,31 @@
+        {{#with (getFirstCdaSections msg 'Encounter')}}
+            {{#each (toArray Encounter.entry) as |encounterEntry|}}
+                {{>Resources/Encounter.hbs encounter=encounterEntry.encounter ID=(generateUUID (toJsonString encounterEntry))}},
+                {{>References/Encounter/subject.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+
+                {{#if encounterEntry.encounter.performer.assignedEntity}}
+                    {{>Resources/Practitioner.hbs practitioner=encounterEntry.encounter.performer.assignedEntity ID=(generateUUID (toJsonString encounterEntry.encounter.performer.assignedEntity))}},
+                    {{>References/Encounter/participant.individual.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Practitioner/' (generateUUID (toJsonString encounterEntry.encounter.performer.assignedEntity)))}},
+                {{/if}}
+
+                {{#each (toArray encounterEntry.encounter.participant)}}
+                    {{#if (eq this.typeCode 'LOC')}}
+                	    {{#if (contains (toJsonString this.participantRole.templateId) '2.16.840.1.113883.10.20.22.4.32')}}
+               			    {{>Resources/Location.hbs location=this.participantRole ID=(generateUUID (toJsonString this.participantRole))}},
+                		    {{>References/Encounter/location.location.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Location/' (generateUUID (toJsonString this.participantRole)))}},                    
+                        {{/if}}                
+                    {{/if}}
+                {{/each}}
+              
+                {{#each (toArray encounterEntry.encounter.entryRelationship)}}
+                    {{#each (toArray this.act.entryRelationship) as |condEntry|}}
+                        {{#if condEntry.observation}}
+                            {{>Resources/Condition.hbs conditionEntry=condEntry.observation ID=(generateUUID (toJsonString condEntry.observation))}},
+                            {{>References/Condition/subject.hbs ID=(generateUUID (toJsonString condEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                            {{>References/Encounter/diagnosis.condition.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Condition/' (generateUUID (toJsonString condEntry.observation)))}},
+                        {{/if}}
+                    {{/each}}
+                {{/each}}
+
+            {{/each}}
+        {{/with}}

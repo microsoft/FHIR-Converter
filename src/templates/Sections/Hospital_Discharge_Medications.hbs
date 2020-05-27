@@ -1,0 +1,36 @@
+      	{{#with (getFirstCdaSectionsWithExactMatch msg 'Hospital Discharge Medications')}}
+            {{#each (toArray Hospital_Discharge_Medications.entry)}}
+                {{#each (toArray this.act.entryRelationship) as |medAdm|}}
+                    {{>Resources/MedicationAdministration.hbs medicationAdministration=medAdm.substanceAdministration ID=(generateUUID (toJsonString medAdm.substanceAdministration))}},
+                    {{>Resources/Medication.hbs medication=medAdm.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial ID=(generateUUID (toJsonString medAdm.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial))}},
+                    {{>Resources/Organization.hbs org=medAdm.substanceAdministration.performer.assignedEntity.representedOrganization ID=(generateUUID (toJsonString medAdm.substanceAdministration.performer.assignedEntity.representedOrganization))}},
+                    {{>References/MedicationAdministration/subject.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                    {{>References/MedicationAdministration/medicationReference.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Medication/' (generateUUID (toJsonString medAdm.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial)))}},
+
+                    {{#each (toArray this.substanceAdministration.entryRelationship)}}
+                        {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.19')}}
+                            {{>Resources/Condition.hbs conditionEntry=this.observation ID=(generateUUID (toJsonString this.observation))}},
+                            {{>References/MedicationAdministration/reasonReference.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Condition/' (generateUUID (toJsonString this.observation)))}},
+                        {{/if}}
+                    {{/each}}
+                    
+                    {{#each (toArray this.substanceAdministration.entryRelationship)}}
+                        {{#if (contains (toJsonString this.supply.templateId) '2.16.840.1.113883.10.20.22.4.17')}}
+                            {{>Resources/Practitioner.hbs practitioner=this.supply.author.assignedAuthor ID=(generateUUID (toJsonString this.supply.author.assignedAuthor))}},
+                            {{>References/MedicationAdministration/performer.actor.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Practitioner/' (generateUUID (toJsonString this.supply.author.assignedAuthor)))}},
+                        {{/if}}
+                    {{/each}}
+                    
+                    {{#each (toArray this.substanceAdministration.entryRelationship)}}
+                        {{#if (contains (toJsonString this.supply.templateId) '2.16.840.1.113883.10.20.22.4.18')}}
+                            {{>Resources/MedicationDispense.hbs medDispense=this.supply ID=(generateUUID (toJsonString this.supply))}},
+                            {{>Resources/Practitioner.hbs practitioner=this.supply.performer.assignedEntity ID=(generateUUID (toJsonString this.supply.performer.assignedEntity))}},
+                            {{>References/MedicationDispense/performer.actor.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Practioner/' (generateUUID (toJsonString this.supply.performer.assignedEntity)))}},
+                            {{>References/MedicationDispense/medicationReference.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Medication/' (generateUUID (toJsonString medAdm.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial)))}},
+                            {{>References/MedicationDispense/subject.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                        {{/if}}
+                    {{/each}}
+                    
+                {{/each}}  
+            {{/each}}
+        {{/with}}

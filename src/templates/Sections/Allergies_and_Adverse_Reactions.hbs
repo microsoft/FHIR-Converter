@@ -1,0 +1,10 @@
+{{#with (getFirstCdaSections msg 'Allergies')}}
+    {{#each (toArray Allergies.entry)}}
+        {{#each (toArray this.act.entryRelationship) as |alEntry|}}
+            {{#if (contains (toJsonString alEntry.observation.templateId) '2.16.840.1.113883.10.20.22.4.7')}}
+                {{>Resources/AllergyIntolerance.hbs allergyEntry=alEntry.observation ID=(generateUUID (toJsonString alEntry.observation))}},
+                {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID (toJsonString alEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{/if}}
+        {{/each}}
+    {{/each}}
+{{/with}}

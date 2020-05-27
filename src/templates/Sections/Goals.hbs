@@ -1,0 +1,6 @@
+{{#with (getFirstCdaSectionsWithExactMatch msg 'Goals Section')}}
+    {{#each (toArray Goals_Section.entry) as |glEntry|}}
+        {{>Resources/Goal.hbs goalEntry=glEntry.observation ID=(generateUUID (toJsonString glEntry.observation))}},
+        {{>References/Goal/subject.hbs ID=(generateUUID (toJsonString glEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+    {{/each}}
+{{/with}} 

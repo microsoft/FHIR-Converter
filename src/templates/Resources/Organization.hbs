@@ -3,54 +3,28 @@
     "resource":{
         "resourceType": "Organization",
         "id":"{{ID}}",
-        {{>DataType/HDOrganization.hbs HD=MSH-4}},
-        {{>DataType/HDMSH_6.hbs HD=MSH-6}},
+        "identifier":
+  		[
+        	{{#each (toArray org.id)}}
+            	{{>DataType/Identifier.hbs id=this}},
+            {{/each}}
+        ],
+        "name":"{{org.name._}}",
         "address":
         [
-            {
-                "country":{{>DataType/_string.hbs mapping="CodeSystem/Countries.hbs" inCode=MSH-17 }},
-            },
-            { {{>DataType/XAD.hbs XAD=OBX-24}} },
-            {{#if OBX-25}},
-                { {{>DataType/XAD.hbs XAD=OBX-24}} },
-            {{/if}},
-            { {{>DataType/XAD.hbs XAD=ORC-22}} },
+        	{{#each (toArray org.addr)}}
+        		{{>DataType/Address.hbs addr=this}},
+            {{/each}}
         ],
-        {{#if (not MSH-21)}},
-            {{>DataType/HDOrganization.hbs HD=MSH-4}},
-        {{/if}},
-        {{>DataType/HDOrganization.hbs HD=MSH-22}},
-        {{>DataType/XONOrganization.hbs XON=ROL-14}},
-        "contact":
-        [
-            {
-                "name":
-                {
-                    {{>DataType/XPN.hbs XPN=NK1-30}},
-                },
-                "telecom":
-                [
-                    { {{>DataType/XTN.hbs XTN=NK1-31}} },
-                ],
-                "address":
-                {
-                    {{>DataType/XAD.hbs XAD=NK1-32}},
-                },
-            },
-        ],
-        "type":
-        [
-            { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/OrganizationUnitType.hbs" CWE=PRT-7}} },
-        ],
-        {{>DataType/XONOrganization.hbs XON=PRT-8}},
         "telecom":
         [
-            { {{>DataType/XTN.hbs XTN=ORC-23}} },
+        	{{#each (toArray org.telecom)}}
+        		{{>DataType/ContactPoint.hbs contactPoint=this}},
+            {{/each}}
         ],
-        {{>DataType/CWEOrganization.hbs CWE=RXA-17}},
     },
     "request":{
-        "method":"POST",
-        "url":"Organization",
+        "method":"PUT",
+        "url":"Organization/{{ID}}",
     },
 },

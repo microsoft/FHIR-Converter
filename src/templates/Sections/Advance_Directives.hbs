@@ -1,0 +1,17 @@
+{{#with (getFirstCdaSectionsWithExactMatch msg 'Advance Directives')}}
+    {{#each (toArray Advance_Directives.entry) as |advdirEntry|}}
+        {{#if advdirEntry.organizer}}
+            {{>Resources/Consent.hbs consentEntry=advdirEntry.organizer ID=(generateUUID (toJsonString advdirEntry.organizer))}},
+            {{>References/Consent/patient.hbs ID=(generateUUID (toJsonString advdirEntry.organizer)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+
+            {{#if advdirEntry.organizer.component.observation.reference}}
+                {{>Resources/DocumentReference2.hbs docref=advdirEntry.organizer.component.observation.reference ID=(generateUUID (toJsonString advdirEntry.organizer.component.observation.reference))}},
+                {{>References/Consent/sourceReference.hbs ID=(generateUUID (toJsonString advdirEntry.organizer)) REF=(concat 'DocumentReference/' (generateUUID (toJsonString advdirEntry.organizer.component.observation.reference)))}},
+            {{/if}}
+            {{#if advdirEntry.organizer.component.observation.author.assignedAuthor}}
+                {{>Resources/Practitioner.hbs practitioner=advdirEntry.organizer.component.observation.author.assignedAuthor ID=(generateUUID (toJsonString advdirEntry.organizer.component.observation.author))}},
+                {{>References/Consent/performer.hbs ID=(generateUUID (toJsonString advdirEntry.organizer)) REF=(concat 'Practitioner/' (generateUUID (toJsonString advdirEntry.organizer.component.observation.author)))}},
+            {{/if}}
+        {{/if}}
+    {{/each}}
+{{/with}} 

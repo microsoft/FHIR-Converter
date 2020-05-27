@@ -1,0 +1,7 @@
+
+        {{#with (getFirstCdaSectionsWithExactMatch msg 'Procedure Indications')}}
+            {{#each (toArray Procedure_Indications.entry) as |procEntry|}}
+                {{>Resources/Observation.hbs observationEntry=procEntry.observation ID=(generateUUID (toJsonString procEntry.observation))}},
+                {{>References/OBservation/subject.hbs ID=(generateUUID (toJsonString procEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{/each}}
+        {{/with}} 
