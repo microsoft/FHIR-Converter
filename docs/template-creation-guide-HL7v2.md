@@ -35,5 +35,11 @@ To get started updating/creating templates:
 
 5. Once you are done editing, make sure to hit save. Your template will now be available to be called by the API for real time message translation.
 
+For more details, see some of our additional conceptual guides and resources:
+
+- [Partial template concept](partial-template-concept.md)
+- [Helper function concept](using-helpers-concept.md)
+- [List of helper functions](helper-function-summary.md)
+- [Web UI functionality](web-ui-summary.md)
 
 
