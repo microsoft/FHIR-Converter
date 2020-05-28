@@ -1,6 +1,6 @@
 # How to create a template
 
-In this how-to guide, we will cover some of the basics around creating templates for converting HL7 v2 messages and CDA documents into FHIR bundles. The templates are an implementation of the open-source project [handlebars](https://handlebarsjs.com/). Handlebars compiles templates into JavaScript functions. The handlebars website has the most up to date information and is a great reference as you get into template building.
+In this how-to guide, we will cover some of the basics around creating templates for converting healthcare data into FHIR bundles. The templates are an implementation of the open-source project [handlebars](https://handlebarsjs.com/). Handlebars compiles templates into JavaScript functions. The handlebars website has the most up to date information and is a great reference as you get into template building.
 
 The HL7 v2 templates included in the release were created by generating the data from [Google spreadsheets](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk) created by the HL7 community as part of their [V2 to FHIR mapping project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project) which describes the mapping of HL7 v2 version 2.8.2 into FHIR bundles version R4. The C-CDA templates included in this release were generated from customer feedback. There are top level templates that can be used to create a FHIR bundle by translating a full HL7 v2 message or CDA document. There are partial templates that are used as building blocks to create the top level template. For more details on the partial templates, see the [partial template concept section](partial-template-concept.md).
 
@@ -61,6 +61,16 @@ For more details on the released partial templates and examples, see the [Partia
 ## Helper Functions
 
 As part of the handlebars functionality, helper functions exist to assist in template creation. We have released a set of starting helpers. You can see the full list of helpers [here](helper-functions-summary.md). We have also included a [using helper function](using-helpers-concept.md) conceptual guide to give some examples of how to use these in your templates.
+
+## Tips for creating C-CDA templates 
+
+As part of the C-CDA converter release, we have provided partial templates for many of the sections found in various CCD documents. These partial templates are available under the Sections folder. We recommend taking advantage of these partial templates to construct your top level template. For example, in the ccd.hbs top level template, you can see partial templates both for the required sections and optional sections in the CCD document.
+
+![load_ccd_sections](images/ccd_sections_example.png)
+
+As part of the templates provided for the C-CDA converter, we have also included a Header.hbs partial template. The Header section is the root XML element and is present in every CCDA document. It helps identify and classify documents via basic information about them. The Header.hbs partial template can be used in any top level template to convert the header section in a CDA document to FHIR. 
+
+![load_ccd_header](images/ccd_sections_header.png)
 
 ## Summary
 
