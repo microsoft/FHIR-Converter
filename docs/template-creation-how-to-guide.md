@@ -2,37 +2,29 @@
 
 In this how-to guide, we will cover some of the basics around creating templates for converting healthcare data into FHIR bundles. The templates are an implementation of the open-source project [handlebars](https://handlebarsjs.com/). Handlebars compiles templates into JavaScript functions. The handlebars website has the most up to date information and is a great reference as you get into template building.
 
-The HL7 v2 templates included in the release were created by generating the data from [Google spreadsheets](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk) created by the HL7 community as part of their [V2 to FHIR mapping project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project) which describes the mapping of HL7 v2 version 2.8.2 into FHIR bundles version R4. The C-CDA templates included in this release were generated from customer feedback. There are top level templates that can be used to create a FHIR bundle by translating a full HL7 v2 message or CDA document. There are partial templates that are used as building blocks to create the top level template. For more details on the partial templates, see the [partial template concept section](partial-template-concept.md).
-
 ## Prerequisites
 
-Before starting to create a template, ensure that you have deployed the GitHub code and have a local repository of the existing templates. As part of the code, we have included an optional web editor to assist with modifying and creating templates. You can choose to use this web editor or another code editor. For a high level overview of the features for the web UI, see the [web UI summary](web-ui-summary).
+Before starting to create a template, ensure that you have deployed the GitHub code and have a local repository of the existing templates. As part of the code, we have included an optional web editor to assist with modifying and creating templates. You can choose to use this web editor or another code editor. For a high level overview of the features for the web UI, see the [web UI summary](web-ui-summary). 
 
-## Getting started
+## Getting started with templates 
 
-The easiest way to create a template is to start with an existing template and modify that template. However, you can also start from scratch to create your template. Right now for HL7 v2, we have top level templates for ADT_A01 (admit message), OML_021 (lab order message), ORU_R01 (observation result message), and VXU_V04 (vaccination update message). We will add more templates as the HL7 community defines them. For C-CDA, we have top level templates for Care Plan, CCD, Consultation Note, Discharge Summary, History and Physical, Operative Note, Procedure Note, Progress Note, Referral Note and Transfer Summary. We will add more templates as we receive more customer feedback. 
+The easiest way to create a template is to start with an existing template and modify that template. However, you can also start from scratch to create your template. There are top level templates that can be used to create a FHIR bundle by translating a full HL7 v2 message or CDA document. There are partial templates that are used as building blocks to create the top level template. For more details on the partial templates, see the [partial template concept section](partial-template-concept.md).
 
 To get started updating/creating templates:
 
-1. Load or paste in the sample message that you are using to validate your template. When modifying and creating templates, it’s helpful to have your sample message loaded so that you are able to see the FHIR results real time as you’re editing.
-
-![load message](images/load-message.png)
+1. Load or paste in the sample message that you are using to validate your template. When modifying and creating templates, it’s helpful to have your sample message loaded so that you are able to see the FHIR results real time as you’re editing. 
 
 2. Load your starting template or clear the template editing section. Rename the template and hit save so that your new template work doesn’t overwrite an existing template.
-
-![load template](images/load-template.png)
 
 3. As you make updates in the left-hand editor, you will see the results of those reflected on the right-hand side.
 
 **TIP**: When editing templates, auto-completion is available for common scenarios to help you pull in commands, helper functions, and template names. To pull these in, start with {{. If you need to pull a partial template, type {{>.
 
-4. To ensure that you have included all of the needed message parts in your FHIR bundle, any segment that is not referenced by the template will be underlined in red dots (…). Review the elements underlined in red to ensure you have accounted for all necessary segments.
+4. Once you are done editing, make sure to hit save. Your template will now be available to be called by the API for real time message translation.
 
-![web UI](images/full-ui.png)
+For step by step instructions for how to get started updating/creating HL7 v2 templates, see the [HL7v2_template_creation](HL7v2_template_creation.md). 
 
-**NOTE**: The red dot underline functionality checks if the data is referenced in the template and does not guarantee that the specific value is directly included (or included at all) in the FHIR bundle output. Examples of this are any element used to generate the unique ID using the helper function generateUUID will count as included in the FHIR bundle output and any element referenced as part of an if statement will count as included, even if the if condition is not satisfied.
-
-5. Once you are done editing, make sure to hit save. Your template will now be available to be called by the API for real time message translation.
+For step by step instructions for how to get started updating/creating C-CDA templates, see the [CCDA_template_creation](CCDA_template_creation.md). 
 
 ### Creating Template best practices
 
@@ -62,21 +54,19 @@ For more details on the released partial templates and examples, see the [Partia
 
 As part of the handlebars functionality, helper functions exist to assist in template creation. We have released a set of starting helpers. You can see the full list of helpers [here](helper-functions-summary.md). We have also included a [using helper function](using-helpers-concept.md) conceptual guide to give some examples of how to use these in your templates.
 
-## Tips for creating C-CDA templates 
-
-As part of the C-CDA converter release, we have provided partial templates for many of the sections found in various CCD documents. These partial templates are available under the Sections folder. We recommend taking advantage of these partial templates to construct your top level template. For example, in the ccd.hbs top level template, you can see partial templates both for the required sections and optional sections in the CCD document.
-
-![load_ccd_sections](images/ccd_sections_example.png)
-
-As part of the templates provided for the C-CDA converter, we have also included a Header.hbs partial template. The Header section is the root XML element and is present in every CCDA document. It helps identify and classify documents via basic information about them. The Header.hbs partial template can be used in any top level template to convert the header section in a CDA document to FHIR. 
-
-![load_ccd_header](images/ccd_sections_header.png)
 
 ## Summary
 
-In this how-to-guide we reviewed some of the basics around creating templates. For more details, see some of our additional conceptual guides and resources:
+In this how-to-guide we reviewed some of the basics around creating templates. For specifics on how to create HL7v2 templates and C-CDA templates, see our data type specific template creation guides:
+
+- [HL7v2_template_creation](HL7v2_template_creation.md)
+- [CCDA_template_creation](CCDA_template_creation.md)
+
+For more details, see some of our additional conceptual guides and resources:
 
 - [Partial template concept](partial-template-concept.md)
 - [Helper function concept](using-helpers-concept.md)
 - [List of helper functions](helper-function-summary.md)
 - [Web UI functionality](web-ui-summary.md)
+
+
