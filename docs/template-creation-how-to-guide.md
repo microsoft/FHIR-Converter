@@ -59,8 +59,8 @@ As part of the handlebars functionality, helper functions exist to assist in tem
 
 In this how-to-guide we reviewed some of the basics around creating templates. For specifics on how to create HL7v2 templates and C-CDA templates, see our data type specific template creation guides:
 
-- [HL7_v2_template_creation](template-creation-guide-HL7v2.md)
-- [CCDA_template_creation](template-creation-guide-CCDA.md)
+- [HL7 v2 template creation](template-creation-guide-HL7v2.md)
+- [CCDA template creation](template-creation-guide-CCDA.md)
 
 For more details, see some of our additional conceptual guides and resources:
 
