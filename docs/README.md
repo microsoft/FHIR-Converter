@@ -5,6 +5,8 @@ Here is a table of contents to help you find the document you need:
 * [How to create templates guide](template-creation-how-to-guide.md)
 * [Partial template conceptual guide](partial-template-concept.md)
 * [Examples of using helper functions](using-helpers-concept.md)
+* [HL7_v2_template_creation](template-creation-guide-HL7v2.md)
+* [CCDA_template_creation](template-creation-guide-CCDA.md)
 
 ## Message conversion details
 
