@@ -14,3 +14,9 @@ As part of the templates provided for the C-CDA converter, we have also included
 
 ![load_ccd_header](images/ccd_sections_header.png)
 
+For more details, see some of our additional conceptual guides and resources:
+
+- [Partial template concept](partial-template-concept.md)
+- [Helper function concept](using-helpers-concept.md)
+- [List of helper functions](helper-function-summary.md)
+- [Web UI functionality](web-ui-summary.md)
