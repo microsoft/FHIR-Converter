@@ -15,6 +15,20 @@
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
+        
+        {{#if observationCategory}}
+             "category": [
+                  {
+                      "coding": [
+                          {
+                            "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                            "code": "{{observationCategory}}"
+                          }
+                    ]
+                  }
+            ],
+        {{/if}}
+        
         "status":{{>ValueSet/ObservationStatus.hbs code=observationEntry.statusCode.code}},
         {{#if observationEntry.code.translation.code}}
             "code": {{>DataType/CodeableConcept.hbs code=observationEntry.code.translation}},
