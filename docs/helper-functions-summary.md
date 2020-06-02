@@ -1,6 +1,6 @@
 # Helper Functions
 
-The open-source release includes a set of helper functions to assist with template creation. The current list of available helper functions is below. If these do not meet your needs, you can also write your own helper functions.
+The open-source release includes a set of helper functions to assist with template creation. The current list of available helper functions is below. If these do not meet your needs, you can also write your own helper functions. Some of the helper functions are used by both the HL7 v2 to FHIR and C-CDA to FHIR implmentation, while others are specific to data type. 
 
 | Helper Function | Description | Syntax |
 |-|-|-|
@@ -29,12 +29,6 @@ The open-source release includes a set of helper functions to assist with templa
 | unescapeSpecialChars | Returns string after removing escaping of special char | **unescapeSpecialChars** ***string*** |
 | assert | Fails with message if predicate is false | **assert** ***predicate message*** |
 | evaluate | Returns template result object | **evaluate** ***templatePath inObj*** |
-| getFieldRepeats | Returns repeat list for a field | **getFieldRepeats** ***fieldData*** |
-| getFirstSegments | Returns first instance of the segments | **getFirstSegments** ***message segment1 segment2 …***
-| getSegmentLists | Extract HL7 v2 segments | **getSegmentLists** ***message segment1 segment2 …*** |
-| getRelatedSegmentList | Given a segment name and index, return the collection of related named segments | **getRelatedSegmentList** ***message parentSegmentName parentSegmentIndex childSegmentName*** |
-| getParentSegment | Given a child segment name and overall message index, return the first matched parent segment | **getParentSegment** ***message childSegmentName childSegmentIndex parentSegmentName*** |
-| hasSegments | Check if HL7 v2 message has segments | **hasSegments** ***message segment1 segment2 …*** |
 | concat | Returns the concatenation of provided strings | **concat** ***aString bString cString …*** |
 | generateUUID | Generates a guid based on a URL | **generateUUID** ***url***
 | addHyphensSSN | Adds hyphens to an SSN without hyphens | **addHyphensSSN** ***SSN*** |
@@ -60,3 +54,19 @@ The open-source release includes a set of helper functions to assist with templa
 | subtract | Subtract second number from the first: - number 1 number 2 | **subtract** ***a b*** |
 | multiply | Multiply two numbers: * number1 number2 | **multiply** ***a b*** |
 | divide | Divide first number by the second number: / number1 number2 | **divide** ***a b*** |
+
+## HL7 v2 Specific Helper Functions
+
+| Helper Function | Description | Syntax |
+|-|-|-|
+| getFieldRepeats | Returns repeat list for a field | **getFieldRepeats** ***fieldData*** |
+| getFirstSegments | Returns first instance of the segments | **getFirstSegments** ***message segment1 segment2 …***
+| getSegmentLists | Extract HL7 v2 segments | **getSegmentLists** ***message segment1 segment2 …*** |
+| getRelatedSegmentList | Given a segment name and index, return the collection of related named segments | **getRelatedSegmentList** ***message parentSegmentName parentSegmentIndex childSegmentName*** |
+| getParentSegment | Given a child segment name and overall message index, return the first matched parent segment | **getParentSegment** ***message childSegmentName childSegmentIndex parentSegmentName*** |
+| hasSegments | Check if HL7 v2 message has segments | **hasSegments** ***message segment1 segment2 …*** |
+
+## C-CDA Specific Helper Functions
+
+| Helper Function | Description | Syntax |
+|-|-|-|
