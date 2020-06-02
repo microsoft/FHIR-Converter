@@ -22,9 +22,9 @@ To get started updating/creating templates:
 
 4. Once you are done editing, make sure to hit save. Your template will now be available to be called by the API for real time message translation.
 
-For step by step instructions for how to get started updating/creating HL7 v2 templates, see the [HL7v2_template_creation](HL7v2_template_creation.md). 
+For step by step instructions for how to get started updating/creating HL7 v2 templates, see the [HL7v2 Template Creation](HL7v2_template_creation.md). 
 
-For step by step instructions for how to get started updating/creating C-CDA templates, see the [CCDA_template_creation](CCDA_template_creation.md). 
+For step by step instructions for how to get started updating/creating C-CDA templates, see the [CCDA Template Creation](CCDA_template_creation.md). 
 
 ### Creating Template best practices
 
