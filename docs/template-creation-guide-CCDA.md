@@ -1,6 +1,6 @@
 # C-CDA template creation 
 
-In this how-to-guide, we will cover how to create templates for converting C-CDA documents into FHIR bundles. For more general guidance on creating templates, see the [Template Creation Guide](template-creation-how-to-guide.md). The C-CDA templates included in this release were generated from customer feedback. 
+In this how-to-guide, we will cover how to create templates for converting C-CDA documents into FHIR bundles. For more general guidance on creating templates, see the [Template Creation Guide](template-creation-how-to-guide.md). The C-CDA templates included in this release were generated based on the C-CDA and FHIR specifications and validated with customer examples. 
 
 Currently for C-CDA, we have top level templates for CCD, Consultation Note, Discharge Summary, History and Physical, Operative Note, Procedure Note, Progress Note, Referral Note and Transfer Summary. There are partial templates available for Data Types, Resources, References, Sections, Utils and Value Sets. For more information on these types of partial templates, see the [Partial Template Guide](partial-template-concept.md).
 
