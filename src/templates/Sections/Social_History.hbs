@@ -1,6 +1,6 @@
       	{{#with (getFirstCdaSectionsWithExactMatch msg 'Social History')}}
         	{{#each (toArray Social_History.entry) as |obsEntry|}}
-            	{{>Resources/Observation.hbs observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}} 
+            	{{>Resources/Observation.hbs observationCategory="social-history" observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}} 
                 {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}}
             {{/each}}
         {{/with}}

@@ -11,7 +11,7 @@
                 {{/if}}
                 
                 {{#if procEntry.observation}}
-                    {{>Resources/Observation.hbs observationEntry=procEntry.observation ID=(generateUUID (toJsonString procEntry.observation))}},
+                    {{>Resources/Observation.hbs observationCategory="procedure" observationEntry=procEntry.observation ID=(generateUUID (toJsonString procEntry.observation))}},
                     {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString procEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
                 {{/if}}
             {{/each}}

@@ -2,6 +2,11 @@
     "fullUrl":"urn:uuid:{{ID}}",
     "resource":{
         "resourceType": "Practitioner",
+        "meta": 		{
+		    "profile": [
+			    "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+			]
+		},
         "id":"{{ID}}",
         "identifier":
   		[
@@ -25,6 +30,14 @@
         [
         	{{#each (toArray practitioner.telecom)}}
         		{{>DataType/ContactPoint.hbs contactPoint=this}},
+            {{/each}}
+        ],
+        "qualification":
+        [
+            {{#each (toArray practitioner.code)}}            
+        		{
+                "code": {{>DataType/CodeableConcept.hbs code=this}}
+                },
             {{/each}}
         ],
     },
