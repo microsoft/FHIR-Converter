@@ -14,7 +14,7 @@
             {{>DataType/CodeableConcept.hbs code=deviceEntry.code}},
         {{else}}
             {{>DataType/CodeableConcept.hbs code=deviceEntry.participant.participantRole.playingDevice.code}},
-        {{/if}},
+        {{/if}}
 
         "manufacturer":"{{deviceEntry.participant.participantRole.scopingEntity.desc._}}",
     },

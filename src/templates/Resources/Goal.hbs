@@ -24,9 +24,9 @@
         {
             "measure":
             [
-            	{{#if goalEntry.code.translation}},
+            	{{#if goalEntry.code.translation}}
                     {{>DataType/CodeableConcept.hbs code=goalEntry.code.translation}},
-                {{else}},
+                {{else}}
                     {{>DataType/CodeableConcept.hbs code=goalEntry.code}},
                 {{/if}}
             ],  

@@ -13,9 +13,9 @@
         "status":{{>ValueSet/RequestStatus.hbs code=serviceEntry.statusCode.code}},
         "code":
         [
-            {{#if serviceEntry.code.translation}},
+            {{#if serviceEntry.code.translation}}
                 {{>DataType/CodeableConcept.hbs code=serviceEntry.code.translation}},
-            {{else}},
+            {{else}}
                 {{>DataType/CodeableConcept.hbs code=serviceEntry.code}},
             {{/if}}
         ],   

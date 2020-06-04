@@ -1,5 +1,5 @@
-{{#with (getFirstCdaSectionsWithExactMatch msg 'Medical Equipment')}}
-    {{#each (toArray Medical_Equipment.entry)}}
+{{#with (getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.23')}}
+    {{#each (toArray 2_16_840_1_113883_10_20_22_2_23.entry)}}
         {{#if this.organizer}}
             {{>Resources/Device2.hbs deviceEntry=this.organizer ID=(generateUUID (toJsonString this.organizer))}},
             {{#each (toArray this.organizer.component) as |medequipEntry|}}

@@ -26,7 +26,7 @@
         "dateTime":"{{formatAsDateTime consentEntry.component.observation.effectiveTime.low.value}}",
         "provision":
         {
-            "code":{{>DataType/CodeableConcept.hbs code=consentEntry.component.observation.value}},
+            "code":[{{>DataType/CodeableConcept.hbs code=consentEntry.component.observation.value}},]
         },
     },
     "request":{

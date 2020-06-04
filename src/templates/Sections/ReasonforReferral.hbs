@@ -1,5 +1,5 @@
-{{#with (getFirstCdaSections msg 'Reason for Referral')}}
-    {{#each (toArray Reason_for_Referral.entry) as |referralEntry|}}
+{{#with (getFirstCdaSectionsByTemplateId msg '1.3.6.1.4.1.19376.1.5.3.1.3.1')}}
+    {{#each (toArray 1_3_6_1_4_1_19376_1_5_3_1_3_1.entry) as |referralEntry|}}
     
             {{>Resources/ServiceRequest.hbs serviceEntry=referralEntry.act ID=(generateUUID (toJsonString referralEntry.act))}},
             {{>Resources/Practitioner.hbs practitioner=referralEntry.act.author.assignedAuthor ID=(generateUUID (toJsonString referralEntry.act.author.assignedAuthor))}},

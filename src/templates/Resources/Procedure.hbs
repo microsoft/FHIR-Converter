@@ -20,7 +20,7 @@
                 {{>DataType/CodeableConcept.hbs code=procedureEntry.code.translation}},
             {{else}}
                 {{>DataType/CodeableConcept.hbs code=procedureEntry.code}},
-            {{/if}},
+            {{/if}}
  
         "performedDateTime":"{{formatAsDateTime procedureEntry.effectiveTime.value}}",
         "bodySite":
