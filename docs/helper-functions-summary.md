@@ -72,3 +72,12 @@ The open-source release includes a set of helper functions to assist with templa
 |-|-|-|
 | sha1Hash |Returns sha1 hash (in hex) of given string | **sha1Hash** ***string***|
 | contains | Returns true if a string includes another string | **contains** ***aString*** ***bString*** |  
+| gzip | Returns compressed string | **gzip** ***string*** |
+| gunzip | Returns decompressed string | **gunzip** ***string*** |
+| toArry | Returns an array created (if needed) from given object | **toArray** ***object*** |
+| getFirstCdaSections | Returns first instance (non-alphanumeric chars replace by *'_'* in name) of the sections (uses *contains*) | **getFirstCdaSections** ***message*** ***section1*** ***section2*** |
+| getFirstCdaSectionsWithExactMatch | Returns first instance (non-alphanumeric chars replace by *'_'* in name) of the sections with exact match (uses *equals*) | **getFirstCdaSectionsWithExactMatch** ***message*** ***section1*** ***section2*** |
+| getCdaSectionsLists | Returns instance list (non-alphanumeric chars replace by *'_'* in name) for the given sections | **getCdaSectionsLists** ***message*** ***section1*** ***section2*** |
+
+| getFirstCdaSectionsByTemplateId | Returns first instance  (non-alphanumeric chars replace by *'_'* in name) of the sections by template id| **getFirstCdaSectionsByTemplateId** ***message*** ***templateId1*** ***templateId2*** |
+
