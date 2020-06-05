@@ -7,7 +7,7 @@
             {{#if medication.code.translation}}
                 {{#with (elementAt (toArray medication.code.translation) 0)}}
                     {{>DataType/CodeableConcept.hbs code=this}},
-                {{/with}}
+                {{/with}},
             {{else}}
                 {{>DataType/CodeableConcept.hbs code=medication.code}},
             {{/if}}    

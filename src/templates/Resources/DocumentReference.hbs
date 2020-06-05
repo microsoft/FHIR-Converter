@@ -6,7 +6,7 @@
         "type":
         	{{#with (elementAt (toArray docref.ClinicalDocument.code) 0)}}
         		{{>DataType/CodeableConcept.hbs code=this}},
-           	{{/with}}
+           	{{/with}},
         "date":"{{formatAsDateTime (now)}}",
         "status":"current",
         "content":

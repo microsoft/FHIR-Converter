@@ -21,7 +21,7 @@
             {{#if conditionEntry.value.translation}}
                 {{#with (elementAt (toArray conditionEntry.value.translation) 0)}}
                     {{>DataType/CodeableConcept.hbs code=this}},
-                {{/with}}
+                {{/with}},
             {{else}}
                 {{>DataType/CodeableConcept.hbs code=conditionEntry.value}},
             {{/if}}
