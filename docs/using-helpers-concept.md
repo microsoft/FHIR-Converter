@@ -2,11 +2,70 @@
 
 Helper functions are a useful tool when creating templates. In the following sections, we have given some example of how to use the included helper functions for the FHIR Converter. You can see the full list of included helper functions [here](helper-functions-summary.md).
 
-## Basic Operators
+### Basic Operators
 
 As part of the implementation, we have included basic operators as helper functions so that you can pull in the data you need. This includes things such as equal, not equal, less than, etc.
 
-## Getting segments
+### Creating a unique ID
+
+As part of creating a FHIR resource, you will want to create a unique ID for the resource. To enable this, you can use the generateUUID helper which will generate a unique GUID for the resource.
+
+Here is an example for creating a unique GUID for an HL7 v2 message:
+
+```
+{
+    "resourceType": "Bundle",
+    "type": "transaction",
+    "entry": [
+        {{#with (getFirstSegments msg.v2 'PID' 'PD1' 'PV1')}}
+            {{>Resources/ADT_A01/Patient.hbs PID=PID PD1=PD1 NK1=NK1 ID=(generateUUID PID)}},
+```
+
+Here is an example for creating a unique GUID for a C-CDA document:
+
+```
+{
+    "resourceType": "Bundle",
+    "type": "batch",
+    "entry": [
+       {{#with msg.ClinicalDocument.recordTarget.patientRole}}
+            {{>Resources/Patient.hbs patientRole=this ID=(generateUUID (toJsonString this))}},
+  
+```
+
+
+### Force Error
+
+In some scenarios, you may want to return an error instead of the FHIR bundle if some condition isn’t met. For example, if an HL7 v2 message comes across without the PID segment, the translation to FHIR could give an error that the HL7 v2 message is missing the PID segment. Without forcing an error, the message would translate with an empty patient resource.
+
+To force the error instead of having the template run, you can use the assert helper function. An example of how this would look in the template is:
+
+```
+{
+    "resourceType": "Bundle",
+    "type": "transaction",
+    "entry": [
+        {{#with (getFirstSegments msg.v2 'PID' 'PD1' 'PV1')}}
+              {{assert PID 'HL7 v2 message is missing the PID segment’}}
+```
+
+The output on the right-hand side would return {BadRequest: Unable to create result: HL7 v2 message is missing the PID segment} in any case that the PID segment is missing from the original HL7 v2 message.
+
+
+### Formatting Data
+
+Data in HL7 v2 messages and C-CDA documents may not provide the correct format for the FHIR resource. There are several helper functions available to help format things like social security number and dates to meet the FHIR specification.
+
+In a clinical document, a birth date may be stored in the format of 20000101. Using the helper function addHyphensDate you can get it into the format 2000-01-01 which is required by FHIR. In an HL7 v2 template, you would write this as "birthDate":"{{addHyphensDate PID-7}}" if birthday is stored in PID-7. In a C-CDA document, you would write this as "birthDate":"{{addHyphensDate patientRole.patient.birthTime.value}}". The output in the FHIR bundle in both cases would be "birthDate": "2000-01-01". 
+
+### Mathematical Functions
+
+We have included mathematical helper functions so you can do basic math. Some of these functions are addition, subtraction, a random number generator and maximum/minimum finders. 
+
+
+## Using helpers for HL7v2 message conversion
+
+### Getting Segments
 
 A common need when translating HL7 v2 messages into FHIR will be to get a specific segment and parse over that segment. It may be that you want only the first time a segment shows up or to be able to loop over all instances of a segment type (e.g. DG1).
 
@@ -33,44 +92,7 @@ Below is an example using two of these helper functions. First, the template lev
     ]
 }
 ```
-
-## Creating a unique ID
-
-As part of creating a FHIR resource, you will want to create a unique ID for the resource. To enable this, you can use the generateUUID helper which will generate a unique GUID for the resource.
-
-```
-{
-    "resourceType": "Bundle",
-    "type": "transaction",
-    "entry": [
-        {{#with (getFirstSegments msg.v2 'PID' 'PD1' 'PV1')}}
-            {{>Resources/ADT_A01/Patient.hbs PID=PID PD1=PD1 NK1=NK1 ID=(generateUUID PID)}},
-```
-
-## Force Error
-
-In some scenarios, you may want to return an error instead of the FHIR bundle if some condition isn’t met. For example, if an HL7 v2 message comes across without the PID segment, the translation to FHIR could give an error that the HL7 v2 message is missing the PID segment. Without forcing an error, the message would translate with an empty patient resource.
-
-To force the error instead of having the template run, you can use the assert helper function. An example of how this would look in the template is:
-
-```
-{
-    "resourceType": "Bundle",
-    "type": "transaction",
-    "entry": [
-        {{#with (getFirstSegments msg.v2 'PID' 'PD1' 'PV1')}}
-              {{assert PID 'HL7 v2 message is missing the PID segment’}}
-```
-
-The output on the right-hand side would return {BadRequest: Unable to create result: HL7 v2 message is missing the PID segment} in any case that the PID segment is missing from the original HL7 v2 message.
-
-## Formatting Data
-
-Data in HL7 v2 messages may not provide the correct format for the FHIR resource. There are several helper functions available to help format things like social security number and dates to meet the FHIR specification.
-
-For example, a birth date that is stored in an HL7 v2 message may be in the format of 20000101. Using the helper function addHyphensDate you can get it into the format 2000-01-01 which is required by FHIR. In the template, you would write this as "birthDate":"{{addHyphensDate PID-7}}" if birthday is stored in PID-7 and the output in the FHIR bundle would be "birthDate": "2000-01-01"
-
-## Manipulating HL7 v2 data for FHIR bundle
+### Manipulating HL7 v2 data for FHIR bundle
 
 There are scenarios where you need to parse or combine elements from the HL7 v2 message to get the right attribute for your FHIR bundle. We have included several array and string functions to help you pull data and return it in the way you need.
 
@@ -102,6 +124,21 @@ To get location, room, and building, you could use the following DataType templa
 "{{replace PV1-3-2 '\d+' ''}}"
 ],
 ```
-## Mathematical Functions
+## Using helpers for C-CDA document conversion 
 
-We have included mathematical helper functions so you can do basic math. Some of these functions are addition, subtraction, a random number generator and maximum/minimum finders. 
+## Getting Sections
+
+A common need when translating C-CDA documents into FHIR will be to get a specific section and parse over that section. It may be that you want to return the first time a CDA section shows up by template ID, and then iterate over each entry underneath that section. 
+
+Below is an example of using helper functions to create Condition Resources and References in the FHIR Bundle. The helper function **getFirstCdaSectionsByTemplateId** is used to get the first time a CDA section shows up. Then, **toArray** is used to iterate over each entry and then each observation. 
+
+```
+{{#with (getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.5.1')}}
+    {{#each (toArray 2_16_840_1_113883_10_20_22_2_5_1.entry)}}
+        {{#each (toArray this.act.entryRelationship) as |condEntry|}}
+            {{>Resources/Condition.hbs conditionEntry=condEntry.observation ID=(generateUUID (toJsonString condEntry.observation))}},
+            {{>References/Condition/subject.hbs ID=(generateUUID (toJsonString condEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+        {{/each}}
+    {{/each}}
+{{/with}}    
+```
