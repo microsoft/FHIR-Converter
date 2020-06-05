@@ -79,5 +79,5 @@ The open-source release includes a set of helper functions to assist with templa
 | getFirstCdaSectionsWithExactMatch | Returns first instance (non-alphanumeric chars replace by *'_'* in name) of the sections with exact match (uses *equals*) | **getFirstCdaSectionsWithExactMatch** ***message*** ***section1*** ***section2*** |
 | getCdaSectionsLists | Returns instance list (non-alphanumeric chars replace by *'_'* in name) for the given sections | **getCdaSectionsLists** ***message*** ***section1*** ***section2*** |
 
-| getFirstCdaSectionsByTemplateId | Returns first instance  (non-alphanumeric chars replace by *'_'* in name) of the sections by template id| **getFirstCdaSectionsByTemplateId** ***message*** ***templateId1*** ***templateId2*** |
+| getFirstCdaSectionsByTemplateId | Returns first instance  (non-alphanumeric chars replace by *'_'* in name) of the sections by template id | **getFirstCdaSectionsByTemplateId** ***message*** ***templateId1*** ***templateId2*** |
 
