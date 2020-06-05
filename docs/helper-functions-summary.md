@@ -70,3 +70,5 @@ The open-source release includes a set of helper functions to assist with templa
 
 | Helper Function | Description | Syntax |
 |-|-|-|
+| sha1Hash |Returns sha1 hash (in hex) of given string | **sha1Hash** ***string***|
+| contains | Returns true if a string includes another string | **contains** ***aString*** ***bString*** |  
