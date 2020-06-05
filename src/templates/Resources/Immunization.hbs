@@ -11,7 +11,7 @@
         ],
 
         {{#each (toArray imm.entryRelationship)}}
-            {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.53')}}
+            {{#if (contains (toJsonString this.observation.templateId) '"2.16.840.1.113883.10.20.22.4.53"')}}
                 "statusReason":{{>DataType/CodeableConcept.hbs code=this.observation.code}},
             {{/if}}
         {{/each}}
@@ -24,7 +24,7 @@
         
         {{#each (toArray imm.consumable)}}
             {{#each (toArray this.manufacturedProduct)}}
-                {{#if (contains (toJsonString this.templateId) '2.16.840.1.113883.10.20.22.4.54')}}
+                {{#if (contains (toJsonString this.templateId) '"2.16.840.1.113883.10.20.22.4.54"')}}
                     "vaccineCode":{{>DataType/CodeableConcept.hbs code=this.manufacturedMaterial.code}},
                     "lotNumber":"{{this.manufacturedMaterial.IotNumberText._}}",
                 {{/if}}

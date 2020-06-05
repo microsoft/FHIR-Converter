@@ -9,11 +9,14 @@
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
-        {{#each (toArray this.observation.entryRelationship)}}
-            {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.28')}} 
-                "clinicalStatus":{{>DataType/CodeableConcept.hbs code=this.observation.value}},
-            {{/if}}
-        {{/each}}    
+        "clinicalStatus": {
+            "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+                            "code": "{{>ValueSet/AllergyStatus.hbs code=allergyStatus.code}}",
+                        }
+                    ]
+        },
         "reaction":
         [
             {
@@ -22,7 +25,7 @@
 
                 {{#each (toArray allergyEntry.entryRelationship)}}
                     
-                    {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.9')}}
+                    {{#if (contains (toJsonString this.observation.templateId) '"2.16.840.1.113883.10.20.22.4.9"')}}
                         "manifestation":
                         [
                             {{#if this.observation.value.translation}}
@@ -34,7 +37,7 @@
                         "onset": "{{formatAsDateTime this.observation.effectiveTime.low.value}}", 
                     {{/if}}
                     
-                    {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.8')}}
+                    {{#if (contains (toJsonString this.observation.templateId) '"2.16.840.1.113883.10.20.22.4.8"')}}
                         {{#if this.observation.value.translation}}
                             "severity":"{{>ValueSet/AllergySeverity.hbs sev=this.observation.value.translation.displayName}}",
                         {{else}}

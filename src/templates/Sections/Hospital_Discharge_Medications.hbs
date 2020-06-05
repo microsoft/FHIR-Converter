@@ -8,21 +8,21 @@
                     {{>References/MedicationAdministration/medicationReference.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Medication/' (generateUUID (toJsonString medAdm.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial)))}},
 
                     {{#each (toArray this.substanceAdministration.entryRelationship)}}
-                        {{#if (contains (toJsonString this.observation.templateId) '2.16.840.1.113883.10.20.22.4.19')}}
+                        {{#if (contains (toJsonString this.observation.templateId) '"2.16.840.1.113883.10.20.22.4.19"')}}
                             {{>Resources/Condition.hbs conditionEntry=this.observation ID=(generateUUID (toJsonString this.observation))}},
                             {{>References/MedicationAdministration/reasonReference.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Condition/' (generateUUID (toJsonString this.observation)))}},
                         {{/if}}
                     {{/each}}
                     
                     {{#each (toArray this.substanceAdministration.entryRelationship)}}
-                        {{#if (contains (toJsonString this.supply.templateId) '2.16.840.1.113883.10.20.22.4.17')}}
+                        {{#if (contains (toJsonString this.supply.templateId) '"2.16.840.1.113883.10.20.22.4.17"')}}
                             {{>Resources/Practitioner.hbs practitioner=this.supply.author.assignedAuthor ID=(generateUUID (toJsonString this.supply.author.assignedAuthor))}},
                             {{>References/MedicationAdministration/performer.actor.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Practitioner/' (generateUUID (toJsonString this.supply.author.assignedAuthor)))}},
                         {{/if}}
                     {{/each}}
                     
                     {{#each (toArray this.substanceAdministration.entryRelationship)}}
-                        {{#if (contains (toJsonString this.supply.templateId) '2.16.840.1.113883.10.20.22.4.18')}}
+                        {{#if (contains (toJsonString this.supply.templateId) '"2.16.840.1.113883.10.20.22.4.18"')}}
                             {{>Resources/MedicationDispense.hbs medDispense=this.supply ID=(generateUUID (toJsonString this.supply))}},
                             {{>Resources/Practitioner.hbs practitioner=this.supply.performer.assignedEntity ID=(generateUUID (toJsonString this.supply.performer.assignedEntity))}},
                             {{>References/MedicationDispense/performer.actor.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Practioner/' (generateUUID (toJsonString this.supply.performer.assignedEntity)))}},

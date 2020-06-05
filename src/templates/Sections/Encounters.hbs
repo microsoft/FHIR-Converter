@@ -10,7 +10,7 @@
 
                 {{#each (toArray encounterEntry.encounter.participant)}}
                     {{#if (eq this.typeCode 'LOC')}}
-                	    {{#if (contains (toJsonString this.participantRole.templateId) '2.16.840.1.113883.10.20.22.4.32')}}
+                	    {{#if (contains (toJsonString this.participantRole.templateId) '"2.16.840.1.113883.10.20.22.4.32"')}}
                			    {{>Resources/Location.hbs location=this.participantRole ID=(generateUUID (toJsonString this.participantRole))}},
                 		    {{>References/Encounter/location.location.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Location/' (generateUUID (toJsonString this.participantRole)))}},                    
                         {{/if}}                

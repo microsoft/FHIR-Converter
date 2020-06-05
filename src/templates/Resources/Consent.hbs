@@ -10,15 +10,18 @@
             {{/each}}
         ],
         "status":"active",
-        {{#if consentEntry.code.translation}}
-            "scope":{{>DataType/CodeableConcept.hbs code=consentEntry.code.translation}},
-        {{else}}
-            "scope":{{>DataType/CodeableConcept.hbs code=consentEntry.code}},
-        {{/if}}
+        "scope": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/consentscope",
+                "code": "{{consentScope}}"
+              }
+            ]
+        }
         "category":
         [
             {{#if consentEntry.code.translation}}
-                {>DataType/CodeableConcept.hbs code=consentEntry.code.translation}},
+                {{>DataType/CodeableConcept.hbs code=consentEntry.code.translation}},
             {{else}}
                 {{>DataType/CodeableConcept.hbs code=consentEntry.code}},
             {{/if}}
