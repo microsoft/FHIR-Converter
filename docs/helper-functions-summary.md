@@ -74,7 +74,7 @@ The open-source release includes a set of helper functions to assist with templa
 | contains | Returns true if a string includes another string | **contains** ***aString*** ***bString*** |  
 | gzip | Returns compressed string | **gzip** ***string*** |
 | gunzip | Returns decompressed string | **gunzip** ***string*** |
-| toArry | Returns an array created (if needed) from given object | **toArray** ***object*** |
+| toArray | Returns an array created (if needed) from given object | **toArray** ***object*** |
 | getFirstCdaSections | Returns first instance (non-alphanumeric chars replace by *'_'* in name) of the sections (uses *contains*) | **getFirstCdaSections** ***message*** ***section1*** ***section2*** |
 | getFirstCdaSectionsWithExactMatch | Returns first instance (non-alphanumeric chars replace by *'_'* in name) of the sections with exact match (uses *equals*) | **getFirstCdaSectionsWithExactMatch** ***message*** ***section1*** ***section2*** |
 | getCdaSectionsLists | Returns instance list (non-alphanumeric chars replace by *'_'* in name) for the given sections | **getCdaSectionsLists** ***message*** ***section1*** ***section2*** |
