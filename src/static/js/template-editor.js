@@ -9,9 +9,6 @@ var messageEditor;
 var templateCodeEditor;
 var outputCode;
 var lineMapping = []; // Mapping source (template) to destination (output) lines
-var lastScrollPositions = {};
-var skipScrollHandlers = {};
-var lastScrollEditors = [];
 var activeTemplate = { name: 'untitled', parent: null, data: '{}', active: true, marks: [] };
 var openTemplates = [activeTemplate];
 var currentTemplateReference = { [activeTemplate.name]: activeTemplate.data }; // This is what we set the template to initially
@@ -28,7 +25,7 @@ var templateNames;
 var darkMode = "blackboard";
 var lightMode = "eclipse";
 
-var currentEditorSettings = { scrollSync: true, darkMode: false };
+var currentEditorSettings = { darkMode: false };
 var apiKey = '';
 var maskedApiKey = '***********';
 var hasSuccessfulCallBeenMade = false;
@@ -55,7 +52,7 @@ function getApiKey() {
 }
 
 function getUrl(endpoint, fileName) {
-    return '/api/' + endpoint + '/' + currentMessageType + (filename ? '/' + fileName : '') + '?api-version=' + version;
+    return '/api/' + endpoint + (fileName ? '/' + fileName : '') + '?api-version=' + version;
 }
 
 function checkApiKey(successFunc, errorFunc) {
@@ -96,7 +93,7 @@ function checkApiKeyAndRaiseModal(userRequestedValidation) {
     );
 }
 
-function convertMessage(resetOutputScroll) {
+function convertMessage() {
     if (nextRequestCall) {
         clearTimeout(nextRequestCall);
     }
@@ -107,8 +104,6 @@ function convertMessage(resetOutputScroll) {
         var templateLines = [];
         var outputLines = [];
 
-        var scrollInfo = outputCode.getScrollInfo();
-
         if (messageEditor.getValue()) {
             reqBody.messageBase64 = btoa(messageEditor.getValue().replace(/[^\x00-\x7F]/g, "")); //TODO
         }
@@ -116,25 +111,6 @@ function convertMessage(resetOutputScroll) {
         var topTemplate = openTemplates.find(template => template.parent === null);
         if (topTemplate) {
             templateLines = topTemplate.data.replace(/(?:\r\n|\r|\n)/g, '\n').split('\n');
-
-            if (activeTemplate === topTemplate && getSettings().scrollSync) {
-                // Match the first property, e.g., '"propname":'
-                // Note, we will exclude properties that have a $ in the name, 
-                // since we will use that as a label. 
-                var propertyRegEx = /"[^("|$|{|})]+":/;
-                var excludeRegex = /entry|resource|resourceType|id|meta|versionId/; // for using these keys on server side
-                for (var i = 0; i < templateLines.length; i++) {
-                    var lineProps = templateLines[i].match(propertyRegEx);
-                    if (lineProps && lineProps.length > 0 && !excludeRegex.test(templateLines[i])) {
-                        var placeHolder = '"$' + i + '$":';
-                        replacementDictionary[placeHolder] = lineProps[0];
-
-                        // Replacing on the regex instead of the actual match, 
-                        // since we could have multiple matches and we just want the first.
-                        templateLines[i] = templateLines[i].replace(propertyRegEx, placeHolder);
-                    }
-                }
-            }
 
             var partialTemplates = openTemplates.filter(template => template.parent !== null);
 
@@ -148,7 +124,7 @@ function convertMessage(resetOutputScroll) {
 
         latestRequest++;
         const requestNumber = latestRequest;
-        $.ajax(getUrl('convert'), {
+        $.ajax(getUrl('convert/hl7'), {
             'data': JSON.stringify(reqBody),
             'type': 'POST',
             'processData': false,
@@ -161,30 +137,7 @@ function convertMessage(resetOutputScroll) {
                     // Formatting output and splitting on line breaks (taking platform variations into consideration)
                     outputLines = JSON.stringify(data.fhirResource, null, 2).replace(/(?:\r\n|\r|\n)/g, '\n').split('\n');
 
-                    // Reset line mappings
-                    if (activeTemplate === topTemplate && getSettings().scrollSync) {
-                        lineMapping = [];
-                        lineMapping.push({ source: 0, destination: 0 });
-                        if (templateLines.length > 1 && outputLines.length > 1) {
-                            lineMapping.push({ source: templateLines.length - 1, destination: outputLines.length - 1 });
-                        }
-
-                        // Loop through lines and undo substitutions while building line mapping
-                        var substitutionRegEx = /"\$([0-9]+)\$":/;
-                        for (var i = 0; i < outputLines.length; i++) {
-                            var subMatch = outputLines[i].match(substitutionRegEx);
-                            if (subMatch && subMatch.length > 0) {
-                                lineMapping.push({ source: Number(subMatch[1]), destination: i });
-                                outputLines[i] = outputLines[i].replace(substitutionRegEx, replacementDictionary[subMatch[0]]);
-                            }
-                        }
-                    }
-
                     outputCode.setValue(outputLines.join('\n'));
-                    if (!resetOutputScroll) {
-                        setSkipNextScrollHandler(outputCode, true);
-                        outputCode.scrollTo(null, scrollInfo.top);
-                    }
 
                     // Makes the unused line marking asyc to help performance.
                     setTimeout(() => {
@@ -472,12 +425,6 @@ $(document).ready(function () {
         convertMessage();
     });
 
-    templateCodeEditor.on('scroll', function () {
-        if (activeTemplate.parent === null) {
-            adjustScrolling(templateCodeEditor, outputCode, lineMapping.map(e => { return e.source; }), lineMapping.map(e => { return e.destination; }));
-        }
-    });
-
     templateCodeEditor.on('dblclick', function () {
         var doc = templateCodeEditor.getDoc();
         var cursorPos = doc.getCursor();
@@ -486,12 +433,6 @@ $(document).ready(function () {
 
         if (nameLocation && cursorPos.ch >= nameLocation.start && cursorPos.ch <= nameLocation.end) {
             addTab(nameLocation.name, activeTemplate.name);
-        }
-    });
-
-    outputCode.on('scroll', function () {
-        if (activeTemplate.parent === null) {
-            adjustScrolling(outputCode, templateCodeEditor, lineMapping.map(e => { return e.destination; }), lineMapping.map(e => { return e.source; }));
         }
     });
 
@@ -529,7 +470,6 @@ $(document).ready(function () {
     $("#settings-modal").on('show.bs.modal', function () {
         uncheckedApiKey = true;
         $('#api-key-input').val(!hasSuccessfulCallBeenMade || apiKey === '' ? '' : maskedApiKey);
-        $('#settings-scroll-sync').prop('checked', getSettings().scrollSync);
         $('#settings-dark-mode').prop('checked', getSettings().darkMode);
     });
 
@@ -547,18 +487,12 @@ $(document).ready(function () {
     // API Key save button 
     $('#settings-save-button').on('click', function () {
         var settings = getSettings();
-        var changesRequireNewConversion = false;
         var changesColorTheme = false;
-
-        if (settings.scrollSync != $('#settings-scroll-sync').prop('checked')) {
-            changesRequireNewConversion = true;
-        }
 
         if (settings.darkMode != $('#settings-dark-mode').prop('checked')) {
             changesColorTheme = true;
         }
 
-        settings.scrollSync = $('#settings-scroll-sync').prop('checked');
         settings.darkMode = $('#settings-dark-mode').prop('checked');
 
         var apiKeyInput = $('#api-key-input').val();
@@ -566,10 +500,6 @@ $(document).ready(function () {
 
         setSettings(settings);
         checkApiKeyAndRaiseModal(true);
-
-        if (changesRequireNewConversion) {
-            convertMessage();
-        }
 
         if (changesColorTheme) {
             setColorTheme(settings.darkMode);
