@@ -25,11 +25,7 @@
                       {{else}}
                           "url" : "detailed",
                       {{/if}}
-                      "valueCoding" : {
-                          "system":"urn:oid:{{this.codeSystem}}",
-                          "code":"{{this.code}}",
-                          "display":"{{this.displayName}}",
-                      },
+	                  "valueCoding": {{>DataType/Coding.hbs code=this}},
                   {{/if}}
               },
           {{/each}}
