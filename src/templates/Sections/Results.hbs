@@ -3,14 +3,22 @@
                 {{>Resources/DiagnosticReport.hbs diagReport=drEntry.organizer ID=(generateUUID (toJsonString drEntry.organizer))}},
                 {{>References/DiagnosticReport/subject.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
                 {{#if drEntry.organizer.performer}}
-                    {{>References/DiagnosticReport/performer.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Practitioner/' (generateUUID (toJsonString drEntry.organizer.performer)))}}
+                    {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=drEntry.organizer.performer) as |practitionerId|}}
+                        {{>References/DiagnosticReport/performer.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Practitioner/' practitionerId.Id)}}
+                    {{/with}}
                 {{/if}}
+
                 {{#each (toArray this.organizer.component) as |obsEntry|}}
                     {{#if obsEntry.observation}}
                         {{>Resources/Observation.hbs observationCategory="laboratory" observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}},                   
                         {{>References/DiagnosticReport/result.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Observation/' (generateUUID (toJsonString obsEntry.observation)))}},
                         {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
-                        {{>References/Observation/performer.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Practitioner/' (generateUUID (toJsonString obsEntry.observation.performer)))}},
+                        {{#if obsEntry.observation.author.assignedAuthor}}
+                            {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=obsEntry.observation.author.assignedAuthor) as |practitionerId|}}
+                                {{!--assert aaa toJsonString this.Id--}}
+                                {{>References/Observation/performer.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Practitioner/' practitionerId.Id )}},        
+                            {{/with}}
+                        {{/if}}
                     {{/if}}
                 {{/each}}
             {{/each}}

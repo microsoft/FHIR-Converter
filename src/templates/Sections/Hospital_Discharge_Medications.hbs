@@ -16,8 +16,12 @@
                     
                     {{#each (toArray this.substanceAdministration.entryRelationship)}}
                         {{#if (contains (toJsonString this.supply.templateId) '"2.16.840.1.113883.10.20.22.4.17"')}}
-                            {{>Resources/Practitioner.hbs practitioner=this.supply.author.assignedAuthor ID=(generateUUID (toJsonString this.supply.author.assignedAuthor))}},
-                            {{>References/MedicationAdministration/performer.actor.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Practitioner/' (generateUUID (toJsonString this.supply.author.assignedAuthor)))}},
+                            {{#if this.supply.author.assignedAuthor}}
+                                {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=this.supply.author.assignedAuthor) as |practitionerId|}}
+                                    {{>Resources/Practitioner.hbs practitioner=this.supply.author.assignedAuthor ID=practitionerId.Id}},
+                                    {{>References/MedicationAdministration/performer.actor.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Practitioner/' practitionerId.Id)}},
+                                {{/with}}
+                            {{/if}}                        
                         {{/if}}
                     {{/each}}
                     

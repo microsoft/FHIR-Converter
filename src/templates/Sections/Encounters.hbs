@@ -4,8 +4,10 @@
                 {{>References/Encounter/subject.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
 
                 {{#if encounterEntry.encounter.performer.assignedEntity}}
-                    {{>Resources/Practitioner.hbs practitioner=encounterEntry.encounter.performer.assignedEntity ID=(generateUUID (toJsonString encounterEntry.encounter.performer.assignedEntity))}},
-                    {{>References/Encounter/participant.individual.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Practitioner/' (generateUUID (toJsonString encounterEntry.encounter.performer.assignedEntity)))}},
+                    {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=encounterEntry.encounter.performer.assignedEntity) as |practitionerId|}}
+                        {{>Resources/Practitioner.hbs practitioner=encounterEntry.encounter.performer.assignedEntity ID=practitionerId.Id}},
+                        {{>References/Encounter/participant.individual.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Practitioner/' practitionerId.Id)}},
+                    {{/with}}
                 {{/if}}
 
                 {{#each (toArray encounterEntry.encounter.participant)}}

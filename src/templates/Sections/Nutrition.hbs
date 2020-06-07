@@ -6,11 +6,15 @@
         
             {{#each (toArray this.observation.entryRelationship) as |nutrEntryRel|}}
                 {{>Resources/Observation.hbs observationEntry=nutrEntryRel.observation ID=(generateUUID (toJsonString nutrEntryRel.observation))}},
-                {{>Resources/Practitioner.hbs practitioner=nutrEntryRel.observation.author.assignedAuthor ID=(generateUUID (toJsonString nutrEntryRel.observation.author.assignedAuthor))}},
                 {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString nutrEntryRel.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
-                {{>References/Observation/performer.hbs ID=(generateUUID (toJsonString nutrEntryRel.observation)) REF=(concat 'Practitioner/' (generateUUID (toJsonString nutrEntryRel.observation.author.assignedAuthor)))}},
-            {{/each}}
 
+                {{#if nutrEntryRel.observation.author.assignedAuthor}}
+                    {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=nutrEntryRel.observation.author.assignedAuthor) as |practitionerId|}}
+                        {{>Resources/Practitioner.hbs practitioner=nutrEntryRel.observation.author.assignedAuthor ID=practitionerId.Id}},
+                        {{>References/Observation/performer.hbs ID=(generateUUID (toJsonString nutrEntryRel.observation)) REF=(concat 'Practitioner/' practitionerId.Id)}},
+                    {{/with}}
+                {{/if}}
+            {{/each}}
         
     {{/each}}
 {{/with}}

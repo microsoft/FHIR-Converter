@@ -9,8 +9,10 @@
                 {{>References/Consent/sourceReference.hbs ID=(generateUUID (toJsonString advdirEntry.organizer)) REF=(concat 'DocumentReference/' (generateUUID (toJsonString advdirEntry.organizer.component.observation.reference)))}},
             {{/if}}
             {{#if advdirEntry.organizer.component.observation.author.assignedAuthor}}
-                {{>Resources/Practitioner.hbs practitioner=advdirEntry.organizer.component.observation.author.assignedAuthor ID=(generateUUID (toJsonString advdirEntry.organizer.component.observation.author))}},
-                {{>References/Consent/performer.hbs ID=(generateUUID (toJsonString advdirEntry.organizer)) REF=(concat 'Practitioner/' (generateUUID (toJsonString advdirEntry.organizer.component.observation.author)))}},
+                {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=advdirEntry.organizer.component.observation.author.assignedAuthor) as |practitionerId|}}
+                    {{>Resources/Practitioner.hbs practitioner=advdirEntry.organizer.component.observation.author.assignedAuthor ID=practitionerId.Id}},
+                    {{>References/Consent/performer.hbs ID=(generateUUID (toJsonString advdirEntry.organizer)) REF=(concat 'Practitioner/' practitionerId.Id)}},
+                {{/with}}
             {{/if}}
         {{/if}}
     {{/each}}

@@ -3,7 +3,9 @@
     {{>References/Composition/subject.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Patient/' (generateUUID (toJsonString this.recordTarget.patientRole)))}},
 
         {{#if this.legalAuthenticator}}
-            {{>Resources/Practitioner.hbs practitioner=this.legalAuthenticator.assignedEntity ID=(generateUUID (toJsonString this.legalAuthenticator.assignedEntity))}},
+            {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=this.legalAuthenticator.assignedEntity) as |practitionerId|}}
+                {{>Resources/Practitioner.hbs practitioner=this.legalAuthenticator.assignedEntity ID=practitionerId.Id}},
+            {{/with}}
         {{/if}}
     
         {{#if this.componentOf.encompassingEncounter}}
@@ -31,9 +33,11 @@
     {{/if}}
 {{/if}}
         
-{{#if msg.ClinicalDocument.author.assignedAuthor.assignedPerson}}
-    {{>Resources/Practitioner.hbs author=msg.ClinicalDocument.author.assignedAuthor ID=(generateUUID (toJsonString msg.ClinicalDocument.author))}},
-    {{>References/Composition/author.hbs ID=(generateUUID (toJsonString msg.ClinicalDocument)) REF=(concat 'Practitioner/' (generateUUID (toJsonString msg.ClinicalDocument.author)))}},
+{{#if msg.ClinicalDocument.author.assignedAuthor}}
+    {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=msg.ClinicalDocument.author.assignedAuthor) as |practitionerId|}}
+        {{>Resources/Practitioner.hbs practitioner=../msg.ClinicalDocument.author.assignedAuthor ID=practitionerId.Id}},
+        {{>References/Composition/author.hbs ID=(generateUUID (toJsonString ../msg.ClinicalDocument)) REF=(concat 'Practitioner/' practitionerId.Id)}},
+    {{/with}}
 {{/if}}
     
 {{#with msg.ClinicalDocument.recordTarget.patientRole}}

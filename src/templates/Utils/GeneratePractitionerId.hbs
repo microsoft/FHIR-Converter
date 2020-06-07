@@ -1,0 +1,14 @@
+{
+    "Id":
+        {{#with (elementAt (toArray obj.id) 0) as |FirstId|}}
+            {{#if (and FirstId.root FirstId.extension)}}
+                "{{generateUUID (concat (toString FirstId.root) '|' (toString FirstId.extension))}}"
+            {{else if FirstId.root}}
+                {{!--If only root is provided, it is supposed to be unique--}}
+                "{{generateUUID FirstId.root}}"
+            {{else}}
+                {{!--Generate random if no root or id is available--}}
+                "{{generateUUID (obj)}}"
+            {{/if}}
+        {{/with}}
+}

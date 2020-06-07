@@ -22,11 +22,13 @@
                 {{#if composition.legalAuthenticator}}            
         		    "mode": "legal",                
             	    "time":"{{formatAsDateTime composition.legalAuthenticator.time.value}}",
-                    {{#if composition.legalAuthenticator.assignedEntity}}  
-                        "party":
-                        {
-                            "reference":"{{concat 'Practitioner/' (generateUUID (toJsonString composition.legalAuthenticator.assignedEntity))}}",
-                        },
+                    {{#if composition.legalAuthenticator.assignedEntity}}
+                        {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=composition.legalAuthenticator.assignedEntity) as |practitionerId|}}
+                            "party":
+                            {
+                                "reference":"{{concat 'Practitioner/' practitionerId.Id}}",
+                            },
+                        {{/with}}
                     {{/if}}
                 {{/if}}
 			},
@@ -38,17 +40,6 @@
            		{
                    	"start":"{{formatAsDateTime composition.documentationOf.serviceEvent.effectiveTime.low.value}}",
                 },
-                "detail":
-               	[
-               		{{#each composition.documentationOf.serviceEvent.performer}}
-                 		{
-                            "reference":"{{concat 'Practitioner/' (generateUUID (toJsonString this))}}",
-                            {{#if (and this.assignedEntity.assignedPerson.name.given._ this.assignedEntity.assignedPerson.name.family._)}}
-                  			    "display":"{{this.assignedEntity.assignedPerson.name.given._}} {{this.assignedEntity.assignedPerson.name.family._}}",
-                            {{/if}}
-                        },
-               		{{/each}}         
-           		],
            	},
         ],
 		"section": 

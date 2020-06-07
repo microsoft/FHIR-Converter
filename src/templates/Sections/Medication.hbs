@@ -14,8 +14,10 @@
                                 {{>References/MedicationRequest/medicationReference.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Medication/' (generateUUID (toJsonString medEntry.substanceAdministration.consumable)))}},
                             {{/if}}
                             {{#if medReq.supply.author.assignedAuthor}}
-                                {{>Resources/Practitioner.hbs practitioner=medReq.supply.author.assignedAuthor ID=(generateUUID (toJsonString medReq.supply.author.assignedAuthor))}},
-                                {{>References/MedicationRequest/requester.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Practitioner/' (generateUUID (toJsonString medReq.supply.author.assignedAuthor)))}}
+                                {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=medReq.supply.author.assignedAuthor) as |practitionerId|}}
+                                    {{>Resources/Practitioner.hbs practitioner=medReq.supply.author.assignedAuthor ID=practitionerId.Id}},
+                                    {{>References/MedicationRequest/requester.hbs ID=(generateUUID (toJsonString ../supply)) REF=(concat 'Practitioner/' practitionerId.Id)}}
+                                {{/with}}
                             {{/if}}
                         {{/each}}
                     {{/if}}

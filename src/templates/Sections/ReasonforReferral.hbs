@@ -4,5 +4,11 @@
             {{>Resources/ServiceRequest.hbs serviceEntry=referralEntry.act ID=(generateUUID (toJsonString referralEntry.act))}},
             {{>Resources/Practitioner.hbs practitioner=referralEntry.act.author.assignedAuthor ID=(generateUUID (toJsonString referralEntry.act.author.assignedAuthor))}},
             {{>References/ServiceRequest/requester.hbs ID=(generateUUID (toJsonString referralEntry.act)) REF=(concat 'Practitioner/' (generateUUID (toJsonString referralEntry.act.author.assignedAuthor)))}},
+            {{#if referralEntry.act.author.assignedAuthor}}
+                {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=referralEntry.act.author.assignedAuthor) as |practitionerId|}}
+                    {{>Resources/Practitioner.hbs practitioner=referralEntry.act.author.assignedAuthor ID=practitionerId.Id}},
+                    {{>References/ServiceRequest/requester.hbs ID=(generateUUID (toJsonString referralEntry.act)) REF=(concat 'Practitioner/' practitionerId.Id)}},
+                {{/with}}
+            {{/if}}
     {{/each}}
 {{/with}}
