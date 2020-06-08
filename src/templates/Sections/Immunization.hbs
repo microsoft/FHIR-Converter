@@ -7,6 +7,8 @@
                         {{>References/Immunization/performer.actor.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Organization/' (generateUUID (toJsonString immEntry.substanceAdministration.informant.assignedEntity.representedOrganization)))}},
                     {{/if}}
                 {{/if}}
-                {{>References/Immunization/patient.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+                	{{>References/Immunization/patient.hbs ID=(generateUUID (toJsonString immEntry)) REF=(concat 'Patient/' patientId.Id)}},
+                {{/with}}
             {{/each}}
         {{/with}}

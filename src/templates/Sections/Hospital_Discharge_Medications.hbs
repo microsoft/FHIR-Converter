@@ -4,7 +4,9 @@
                     {{>Resources/MedicationAdministration.hbs medicationAdministration=medAdm.substanceAdministration ID=(generateUUID (toJsonString medAdm.substanceAdministration))}},
                     {{>Resources/Medication.hbs medication=medAdm.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial ID=(generateUUID (toJsonString medAdm.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial))}},
                     {{>Resources/Organization.hbs org=medAdm.substanceAdministration.performer.assignedEntity.representedOrganization ID=(generateUUID (toJsonString medAdm.substanceAdministration.performer.assignedEntity.representedOrganization))}},
-                    {{>References/MedicationAdministration/subject.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                    {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+                    	{{>References/MedicationAdministration/subject.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Patient/' patientId.Id)}},
+                    {{/with}}
                     {{>References/MedicationAdministration/medicationReference.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Medication/' (generateUUID (toJsonString medAdm.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial)))}},
 
                     {{#each (toArray this.substanceAdministration.entryRelationship)}}
@@ -31,7 +33,9 @@
                             {{>Resources/Practitioner.hbs practitioner=this.supply.performer.assignedEntity ID=(generateUUID (toJsonString this.supply.performer.assignedEntity))}},
                             {{>References/MedicationDispense/performer.actor.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Practioner/' (generateUUID (toJsonString this.supply.performer.assignedEntity)))}},
                             {{>References/MedicationDispense/medicationReference.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Medication/' (generateUUID (toJsonString medAdm.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial)))}},
-                            {{>References/MedicationDispense/subject.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                            {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+                            	{{>References/MedicationDispense/subject.hbs ID=(generateUUID (toJsonString ../supply)) REF=(concat 'Patient/' patientId.Id)}},
+                            {{/with}}
                         {{/if}}
                     {{/each}}
                     

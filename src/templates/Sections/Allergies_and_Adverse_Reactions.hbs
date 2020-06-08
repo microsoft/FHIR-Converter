@@ -4,7 +4,9 @@
             {{#if (contains (toJsonString alEntry.observation.templateId) '"2.16.840.1.113883.10.20.22.4.7"')}}
                 {{!-- Allergy status should come from the Act, not from observation. Observation status tells the status of the act of observing. --}}
                 {{>Resources/AllergyIntolerance.hbs allergyStatus=../this.act.statusCode allergyEntry=alEntry.observation ID=(generateUUID (toJsonString alEntry.observation))}},
-                {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID (toJsonString alEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+	                {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID (toJsonString alEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
+                {{/with}}
             {{/if}}
         {{/each}}
     {{/each}}

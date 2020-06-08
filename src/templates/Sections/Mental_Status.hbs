@@ -3,7 +3,9 @@
     
         {{#if mentalEntry.observation}}
             {{>Resources/Observation.hbs observationEntry=mentalEntry.observation ID=(generateUUID (toJsonString mentalEntry.observation))}},
-            {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString mentalEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+            	{{>References/Observation/subject.hbs ID=(generateUUID (toJsonString mentalEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
+            {{/with}}
             {{#if mentalEntry.observation.author.assignedAuthor}}
                 {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=mentalEntry.observation.author.assignedAuthor) as |practitionerId|}}
                     {{>Resources/Practitioner.hbs practitioner=mentalEntry.observation.author.assignedAuthor ID=practitionerId.Id}},
@@ -15,7 +17,9 @@
         {{#if mentalEntry.organizer}}
             {{#each (toArray this.organizer.component) as |mentalComp|}}
                 {{>Resources/Observation.hbs observationEntry=mentalComp.observation ID=(generateUUID (toJsonString mentalComp.observation))}},
-                {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString mentalComp.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+                {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+                	{{>References/Observation/subject.hbs ID=(generateUUID (toJsonString mentalComp.observation)) REF=(concat 'Patient/' patientId.Id)}},
+                {{/with}}
                 {{#if mentalComp.observation.author.assignedAuthor}}
                     {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=mentalComp.observation.author.assignedAuthor) as |practitionerId|}}
                         {{>Resources/Practitioner.hbs practitioner=mentalComp.observation.author.assignedAuthor ID=practitionerId.Id}},

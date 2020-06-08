@@ -2,7 +2,9 @@
     {{#each (toArray 2_16_840_1_113883_10_20_22_2_21.entry) as |advdirEntry|}}
         {{#if advdirEntry.organizer}}
             {{>Resources/Consent.hbs consentScope='adr' consentEntry=advdirEntry.organizer ID=(generateUUID (toJsonString advdirEntry.organizer))}},
-            {{>References/Consent/patient.hbs ID=(generateUUID (toJsonString advdirEntry.organizer)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+	            {{>References/Consent/patient.hbs ID=(generateUUID (toJsonString advdirEntry.organizer)) REF=(concat 'Patient/' patientId.Id)}},
+            {{/with}}
 
             {{#if advdirEntry.organizer.component.observation.reference}}
                 {{>Resources/DocumentReference2.hbs docref=advdirEntry.organizer.component.observation.reference ID=(generateUUID (toJsonString advdirEntry.organizer.component.observation.reference))}},

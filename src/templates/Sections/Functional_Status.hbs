@@ -4,12 +4,16 @@
     
         {{#if (eq funcEntry.observation.templateId.root '2.16.840.1.113883.10.20.22.4.4')}}
             {{>Resources/Condition.hbs conditionEntry=funcEntry.observation ID=(generateUUID (toJsonString funcEntry.observation))}},
-            {{>References/Condition/subject.hbs ID=(generateUUID (toJsonString funcEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+            	{{>References/Condition/subject.hbs ID=(generateUUID (toJsonString funcEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
+            {{/with}}
         {{/if}}
         
         {{#if (eq funcEntry.observation.templateId.root '2.16.840.1.113883.10.20.22.4.2')}}
             {{>Resources/Observation.hbs observationEntry=funcEntry.observation ID=(generateUUID (toJsonString funcEntry.observation))}},
-            {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString funcEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+            	{{>References/Observation/subject.hbs ID=(generateUUID (toJsonString funcEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
+            {{/with}}
         {{/if}}
         
     {{/each}}

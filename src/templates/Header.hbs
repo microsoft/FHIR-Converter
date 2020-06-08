@@ -1,6 +1,8 @@
 {{#with msg.ClinicalDocument}}
     {{>Resources/Composition.hbs composition=this ID=(generateUUID (toJsonString this))}},
-    {{>References/Composition/subject.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Patient/' (generateUUID (toJsonString this.recordTarget.patientRole)))}},
+    {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=this.recordTarget.patientRole) as |patientId|}}
+    	{{>References/Composition/subject.hbs ID=(generateUUID (toJsonString ..)) REF=(concat 'Patient/' patientId.Id)}},
+    {{/with}}
 
         {{#if this.legalAuthenticator}}
             {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=this.legalAuthenticator.assignedEntity) as |practitionerId|}}
@@ -44,6 +46,8 @@
     {{>Resources/Patient.hbs patientRole=this ID=(generateUUID (toJsonString this))}},
     {{#if this.patient.guardian}}
         {{>Resources/RelatedPerson.hbs relatedPerson=this.patient.guardian ID=(generateUUID (toJsonString this.patient.guardian))}},
-        {{>References/RelatedPerson/patient.hbs ID=(generateUUID (toJsonString this.patient.guardian)) REF=(concat 'Patient/' (generateUUID (toJsonString this)))}},
+        {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=this) as |patientId|}}
+        	{{>References/RelatedPerson/patient.hbs ID=(generateUUID (toJsonString ../patient.guardian)) REF=(concat 'Patient/' patientId.Id)}},
+        {{/with}}
     {{/if}}
 {{/with}}     

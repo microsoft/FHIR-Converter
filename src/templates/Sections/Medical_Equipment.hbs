@@ -13,7 +13,9 @@
         
         {{#if this.procedure}}
             {{>Resources/Procedure.hbs procedureEntry=this.procedure ID=(generateUUID (toJsonString this.procedure))}},
-            {{>References/Procedure/subject.hbs ID=(generateUUID (toJsonString this.procedure)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../msg.ClinicalDocument.recordTarget.patientRole)))}},
+            {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+            	{{>References/Procedure/subject.hbs ID=(generateUUID (toJsonString ../procedure)) REF=(concat 'Patient/' patientId.Id)}},
+            {{/with}}
             {{#if this.procedure.performer.assignedEntity.representedOrganization.name._}}
                 {{>Resources/Organization.hbs org=this.procedure.performer.assignedEntity.representedOrganization ID=(generateUUID (toJsonString this.procedure.performer.assignedEntity.representedOrganization))}},
                 {{>References/Procedure/performer.actor.hbs ID=(generateUUID (toJsonString this.procedure)) REF=(concat 'Organization/' (generateUUID (toJsonString this.procedure.performer.assignedEntity.representedOrganization)))}},
