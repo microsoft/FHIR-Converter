@@ -30,8 +30,10 @@
                     {{#each (toArray this.substanceAdministration.entryRelationship)}}
                         {{#if (contains (toJsonString this.supply.templateId) '"2.16.840.1.113883.10.20.22.4.18"')}}
                             {{>Resources/MedicationDispense.hbs medDispense=this.supply ID=(generateUUID (toJsonString this.supply))}},
-                            {{>Resources/Practitioner.hbs practitioner=this.supply.performer.assignedEntity ID=(generateUUID (toJsonString this.supply.performer.assignedEntity))}},
-                            {{>References/MedicationDispense/performer.actor.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Practioner/' (generateUUID (toJsonString this.supply.performer.assignedEntity)))}},
+                            {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=this.supply.performer.assignedEntity) as |practitionerId|}}
+                                {{>Resources/Practitioner.hbs practitioner=../supply.performer.assignedEntity ID=practitionerId.Id}},
+                                {{>References/MedicationDispense/performer.actor.hbs ID=(generateUUID (toJsonString ../supply)) REF=(concat 'Practioner/' practitionerId.Id)}},
+                            {{/with}}
                             {{>References/MedicationDispense/medicationReference.hbs ID=(generateUUID (toJsonString this.supply)) REF=(concat 'Medication/' (generateUUID (toJsonString medAdm.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial)))}},
                             {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
                             	{{>References/MedicationDispense/subject.hbs ID=(generateUUID (toJsonString ../supply)) REF=(concat 'Patient/' patientId.Id)}},
