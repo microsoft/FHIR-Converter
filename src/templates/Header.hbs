@@ -43,11 +43,12 @@
 {{/if}}
     
 {{#with msg.ClinicalDocument.recordTarget.patientRole}}
-    {{>Resources/Patient.hbs patientRole=this ID=(generateUUID (toJsonString this))}},
-    {{#if this.patient.guardian}}
-        {{>Resources/RelatedPerson.hbs relatedPerson=this.patient.guardian ID=(generateUUID (toJsonString this.patient.guardian))}},
-        {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=this) as |patientId|}}
-        	{{>References/RelatedPerson/patient.hbs ID=(generateUUID (toJsonString ../patient.guardian)) REF=(concat 'Patient/' patientId.Id)}},
-        {{/with}}
-    {{/if}}
+    {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=this) as |patientId|}}
+        {{>Resources/Patient.hbs patientRole=.. ID=patientId.Id}},
+        {{#if ../patient.guardian}}
+            {{>Resources/RelatedPerson.hbs relatedPerson=../patient.guardian ID=(generateUUID (toJsonString ../patient.guardian))}},
+            {{>References/RelatedPerson/patient.hbs ID=(generateUUID (toJsonString ../patient.guardian)) REF=(concat 'Patient/' patientId.Id)}},
+        {{/if}}
+    {{/with}}
+
 {{/with}}     
