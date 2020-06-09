@@ -8,7 +8,7 @@
   			"use":"official",
 			"value":"{{composition.id.root}}",
         },
-		"status":{{>ValueSet/CompositionStatus.hbs code=composition.statusCode}},
+		"status":"final",
         {{#with (elementAt (toArray composition.code) 0)}}
             "type":{{>DataType/CodeableConcept.hbs code=this}},
         {{/with}}
