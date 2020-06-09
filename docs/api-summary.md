@@ -11,8 +11,8 @@ The API is secured using an API Key.
 | Function | Syntax                    | Details                                         |
 |----------|---------------------------|-------------------------------------------------|
 |GET       |/api/helpers               |Lists available template helpers                 |
-|GET       |/api/messages              |Lists available HL7 v2 messages                  |
-|GET       |/api/messages/{file}       |Returns a specific HL7 test message              |
+|GET       |/api/data                  |Lists available data                             |
+|GET       |/api/data/{file}           |Returns specified data                            |
 |GET       |/api/templates/git/status  |Lists uncommitted changes                        |
 |GET       |/api/templates/git/branches|Lists of branches                                |
 |POST      |/api/templates/git/branches|Create new branch (from head)                    |
@@ -23,5 +23,5 @@ The API is secured using an API Key.
 |PUT       |/api/templates/{file}      |Stores a template in the template store          |
 |DELETE    |/api/templates/{file}      |Deletes a template                               |
 |POST      |/api/UpdateBaseTemplates   |Updates base templates (deletes existing data). This should be used only when latest version of templates needs to be pulled.
-|POST      |/api/convert/{template}           |Converts an HL7 v2 message to FHIR using a template directly from the end point|
-|POST      |/api/convert/{srcDataType}|Converts an HL7 v2 message to FHIR using a template from storage|
+|POST      |/api/convert/{template}    |Converts data to FHIR using a template directly from the end point|
+|POST      |/api/convert/{srcDataType} |Converts data to FHIR using a template from storage|
