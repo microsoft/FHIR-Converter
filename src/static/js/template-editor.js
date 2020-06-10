@@ -52,7 +52,7 @@ function getApiKey() {
 }
 
 function getUrl(endpoint, fileName) {
-    return '/api/' + endpoint + (fileName ? '/' + fileName : '') + '?api-version=' + version;
+    return '/api/' + endpoint + '/' + currentMessageType + '/' + (fileName ? '/' + fileName : '') + '?api-version=' + version;
 }
 
 function checkApiKey(successFunc, errorFunc) {
