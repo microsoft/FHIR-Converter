@@ -10,7 +10,7 @@ var path = require('path');
 var templatePreprocessor = require('../inputProcessor/templatePreprocessor');
 var HandlebarsConverter = require('../handlebars-converter/handlebars-converter');
 
-describe('hl7.parseHL7v2', function () {
+describe('hl7v2', function () {
     it('should throw when first segment is not MSH.', function () {
         assert.throws(() => { hl7.parseHL7v2("MSQ|||"); }, Error, "Invalid HL7 v2 message, first segment id = MSQ");
     });
@@ -30,11 +30,33 @@ describe('hl7.parseHL7v2', function () {
     var fileNames = ['ADT01-23.hl7', 'ADT04-23.hl7', 'ADT04-251.hl7', 'IZ_1_1.1_Admin_Child_Max_Message.hl7', 'LRI_2.0-NG_CBC_Typ_Message.hl7'];
     fileNames.forEach(fileName => {
         it('should return an array when given valid HL7 v2 message (' + fileName + ')', function (done) {
-            var messageFile = path.join(path.join(__dirname, "../../sample-data"), fileName);
+            var messageFile = path.join(path.join(__dirname, "../../sample-data/hl7v2"), fileName);
             parseFile(messageFile, function (out) {
                 done(Array.isArray(out));
             });
         });
+    });
+
+    it('should preprocess template correctly.', function () {
+        var result = new hl7().preProcessTemplate('{{PID-2}}');
+        assert.equal(result, '{{PID.[1]}}');
+    });
+
+    it('should postprocess result correctly.', function () {
+        var result = new hl7().postProcessResult('{"a":"b",,,,}');
+        assert.equal(JSON.stringify(result), JSON.stringify({ 'a': 'b' }));
+    });
+
+    it('should successfully parse correct data.', function (done) {
+        new hl7().parseSrcData('MSH|^~\\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||')
+            .then(() => done())
+            .catch(() => assert.fail());
+    });
+
+    it('should fail while parsing incorrect data.', function (done) {
+        new hl7().parseSrcData('MSQ|||')
+            .then(() => assert.fail())
+            .catch(() => done());
     });
 });
 
@@ -42,7 +64,7 @@ describe('hl7.parseCoverageReport', function () {
     it('should successfully parse a coverage report', function (done) {
         var messageFile = path.join(path.join(__dirname, "../../test-data"), 'coverage-test.hl7');
         convertFile(messageFile, 'basic.hbs', (msgContext) => {
-            var coverageReport = hl7.parseCoverageReport(msgContext);
+            var coverageReport = new hl7().getConversionResultMetadata(msgContext).unusedSegments;
             assert.deepEqual(coverageReport, [
                 {
                     'type': 'MSH',
@@ -78,7 +100,7 @@ describe('hl7.parseInvalidAccess', function () {
     it('should successfully parse an invalid access report', function (done) {
         var messageFile = path.join(path.join(__dirname, "../../test-data"), 'coverage-test.hl7');
         convertFile(messageFile, 'basic.hbs', (msgContext) => {
-            var accessReport = hl7.parseInvalidAccess(msgContext);
+            var accessReport = new hl7().getConversionResultMetadata(msgContext).invalidAccess;
             assert.deepEqual(accessReport, [
                 {
                     'type': 'NK1',

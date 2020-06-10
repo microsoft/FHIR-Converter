@@ -6,11 +6,9 @@
 var uuidv3 = require('uuid/v3');
 var HandlebarsUtils = require('handlebars').Utils;
 var constants = require('../constants/constants');
-var HandlebarsConverter = require('./handlebars-converter');
 var fs = require('fs');
 var crypto = require('crypto');
 var jsonProcessor = require('../outputProcessor/jsonProcessor');
-var resourceMerger = require('../outputProcessor/resourceMerger');
 var specialCharProcessor = require('../inputProcessor/specialCharProcessor');
 var zlib = require('zlib');
 
@@ -31,7 +29,7 @@ var getSegmentListsInternal = function (msg, ...segmentIds) {
 
 var normalizeSectionName = function (name) {
     return name.replace(/[^A-Za-z0-9]/g, '_');
-}
+};
 
 var getDate = function (dateTimeString) {
     var ds = dateTimeString.toString();
@@ -236,29 +234,19 @@ module.exports.external = [
         name: 'contains',
         description: 'Returns true if a string includes another string: contains parentStr childStr',
         func: function (parentStr, childStr) {
-            try {
-                if (!parentStr) {
-                    return false;
-                }
-                return parentStr.toString().includes(childStr);
+            if (!parentStr) {
+                return false;
             }
-            catch (err) {
-                throw `helper "contains" : ${err}`;
-            }
+            return parentStr.toString().includes(childStr);
         }
     },
     {
         name: 'sha1Hash',
         description: 'Returns sha1 hash (in hex) of given string: sha1Hash string',
         func: function (str) {
-            try {
-                var shasum = crypto.createHash('sha1');
-                shasum.update(str);
-                return shasum.digest().toString('hex');
-            }
-            catch (err) {
-                throw `helper "sha1Hash" : ${err}`;
-            }
+            var shasum = crypto.createHash('sha1');
+            shasum.update(str);
+            return shasum.digest().toString('hex');
         }
     },
     {
@@ -334,6 +322,18 @@ module.exports.external = [
         }
     },
     {
+        name: 'escapeSpecialChars',
+        description: 'Returns string with special chars escaped: escapeSpecialChars string',
+        func: function (str) {
+            try {
+                return specialCharProcessor.Escape(str.toString());
+            }
+            catch (err) {
+                throw `helper "escapeSpecialChars" : ${err}`;
+            }
+        }
+    },
+    {
         name: 'unescapeSpecialChars',
         description: 'Returns string after removing escaping of special char: unescapeSpecialChars string',
         func: function (str) {
@@ -360,11 +360,10 @@ module.exports.external = [
         description: 'Returns template result object: evaluate templatePath inObj',
         func: function (templatePath, inObj) {
             try {
-                let templateLocation = constants.TEMPLATE_FILES_LOCATION;
-
-                // Safe to use existing instance here, since the instance under which this helper 
-                // is being executed was refreshed when cache expired.
-                var handlebarsInstance = HandlebarsConverter.instance(false, templateLocation);
+                var getNamespace = require('cls-hooked').getNamespace;
+                var session = getNamespace(constants.CLS_NAMESPACE);
+                var handlebarsInstance = session.get(constants.CLS_KEY_HANDLEBAR_INSTANCE);
+                let templateLocation = session.get(constants.CLS_KEY_TEMPLATE_LOCATION);
 
                 var partial = handlebarsInstance.partials[templatePath];
 
@@ -375,7 +374,7 @@ module.exports.external = [
                     handlebarsInstance.registerPartial(templatePath, handlebarsInstance.compile(content.toString()));
                     partial = handlebarsInstance.partials[templatePath];
                 }
-                return resourceMerger.Process(JSON.parse(jsonProcessor.Process(partial(inObj.hash))));
+                return JSON.parse(jsonProcessor.Process(partial(inObj.hash)));
             }
             catch (err) {
                 throw `helper "evaluate" : ${err}`;
@@ -384,7 +383,7 @@ module.exports.external = [
     },
     {
         name: 'toArray',
-        description: 'Returns Array',
+        description: 'Returns an array created (if needed) from given object: toArray obj',
         func: function (val) {
             if (Array.isArray(val)) {
                 return val;
@@ -400,7 +399,7 @@ module.exports.external = [
     },
     {
         name: 'getFirstCdaSections',
-        description: "Returns first instance of the sections e.g. getFirstCdaSections msg 'Allergies' 'Medication': getFirstCdaSections message section1 section2 …",
+        description: "Returns first instance (non-alphanumeric chars replace by '_' in name) of the sections e.g. getFirstCdaSections msg 'Allergies' 'Medication': getFirstCdaSections message section1 section2 …",
         func: function getFirstCdaSections(msg, ...sectionNames) {
             try {
                 var ret = {};
@@ -423,32 +422,8 @@ module.exports.external = [
         }
     },
     {
-        name: 'getFirstCdaSectionsWithExactMatch',
-        description: "Returns first instance of the sections e.g. getFirstCdaSectionsWithExactMatch msg 'Allergies' 'Medication': getFirstCdaSectionsWithExactMatch message section1 section2 …",
-        func: function getFirstCdaSectionsWithExactMatch(msg, ...sectionNames) {
-            try {
-                var ret = {};
-
-                for (var s = 0; s < sectionNames.length - 1; s++) {
-                    for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
-                        let sectionObj = msg.ClinicalDocument.component.structuredBody.component[i].section;
-
-                        if ((sectionObj.title._ === sectionNames[s])) {
-                            ret[normalizeSectionName(sectionNames[s])] = sectionObj;
-                            break;
-                        }
-                    }
-                }
-                return ret;
-            }
-            catch (err) {
-                throw `helper "getFirstCdaSectionsWithExactMatch" : ${err}`;
-            }
-        }
-    },
-    {
         name: 'getCdaSectionLists',
-        description: "Returns first instance of the sections e.g. getCdaSectionLists msg 'Allergies' 'Medication': getCdaSectionLists message section1 section2 …",
+        description: "Returns instance (non-alphanumeric chars replace by '_' in name) list for the given sections e.g. getCdaSectionLists msg 'Allergies' 'Medication': getCdaSectionLists message section1 section2 …",
         func: function getCdaSectionLists(msg, ...sectionNames) {
             try {
                 var ret = {};
@@ -474,7 +449,7 @@ module.exports.external = [
     },
     {
         name: 'getFirstCdaSectionsByTemplateId',
-        description: "Returns first instance of the sections e.g. getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.14' '1.3.6.1.4.1.19376.1.5.3.1.3.1': getFirstCdaSectionsByTemplateId message templateId1 templateId2 …",
+        description: "Returns first instance (non-alphanumeric chars replace by '_' in name) of the sections by template id e.g. getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.14' '1.3.6.1.4.1.19376.1.5.3.1.3.1': getFirstCdaSectionsByTemplateId message templateId1 templateId2 …",
         func: function getFirstCdaSectionsByTemplateId(msg, ...templateIds) {
             try {
                 var ret = {};
@@ -493,28 +468,6 @@ module.exports.external = [
             }
             catch (err) {
                 throw `helper "getFirstCdaSectionsByTemplateId" : ${err}`;
-            }
-        }
-    },
-    /* {
-        name: 'getEntriesList',
-        description: "Returns first instance of the sections e.g. getEntriesList msg 'BP' 'BMI': getEntriesList message entry1 entry2 …",
-        func: function getEntriesList(section, ...entryNames) {
-            try {
-                var ret = {};
-                for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
-                    let sectionTitle = msg.ClinicalDocument.component.structuredBody.component[i].section.title;
-                    for (var s = 0; s < sectionNames.length - 1; s++) {
-                        if (sectionTitle.includes(sectionNames[s]) && !ret[sectionNames[s]]) {
-                            ret[sectionNames[s]] = msg.ClinicalDocument.component.structuredBody.component[i].section;
-                            break;
-                        }
-                    }
-                }
-                return ret;
-            }
-            catch (err) {
-                throw `helper "getFirstSegments" : ${err}`;
             }
         }
     },
@@ -664,7 +617,7 @@ module.exports.external = [
                 throw `helper "hasSegments" : ${err}`;
             }
         }
-    },*/
+    },
     {
         name: 'concat',
         description: 'Returns the concatenation of provided strings: concat aString bString cString …',
@@ -732,26 +685,6 @@ module.exports.external = [
         description: 'Converts an YYYYMMDDHHmmssSSS string, e.g. 20040629175400000 to dateTime format, e.g. 2004-06-29T17:54:00.000z: formatAsDateTime(dateTimeString)',
         func: function (dateTimeString) {
             try {
-                return getDate(dateTimeString).toJSON();
-            }
-            catch (err) {
-                return '';
-            }
-        }
-    },
-    {
-        // Deprecated since,
-        // 1. Applying server timezone offset to client time (without timezone info) doesn't make sense.
-        // 2. And passing timezone info (inside dateTimeString) unnecessarily adds complexity as compared to using only GMT/UTC.
-        // Note that user has the option of using Math helpers to adjust timezones.
-        name: 'convertDateTimeStringToUTC',
-        description: '[Deprecated] convertDateTimeStringToUTC(dateTimeString) : converts an YYYYMMDDHHmmssSSS string, e.g. 20040629175400000 to dateTime format, e.g. 2004-06-29T17:54:00.000Z.',
-        func: function (dateTimeString) {
-            try {
-                // "new Date(...)" behavior (local vs UTC) is OS dependent
-                // (see https://stackoverflow.com/questions/22947175/new-date-operating-system-dependent).
-                // Since this helper is anyway deprecated, for now, 
-                // keeping time unchanged (same as before for linux instances in private preview)
                 return getDate(dateTimeString).toJSON();
             }
             catch (err) {

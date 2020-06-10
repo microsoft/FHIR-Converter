@@ -27,10 +27,8 @@ module.exports = function (app) {
     templateCache.init();
     let messageCache = new fileSystemCache(constants.SAMPLE_DATA_LOCATION);
     messageCache.init();
-    app.use(bodyParser.json({limit: '10mb', extended: true}))
-    app.use(bodyParser.text({limit: '10mb', extended: true}))
-    //app.use(bodyParser.json());
-    //app.use(bodyParser.text());
+    app.use(bodyParser.json({ limit: '50mb', extended: true }));
+    app.use(bodyParser.text({ limit: '50mb', extended: true }));
     app.use(express.static(constants.STATIC_LOCATION));
     app.use('/codemirror', express.static(constants.CODE_MIRROR_LOCATION));
 
@@ -126,9 +124,9 @@ module.exports = function (app) {
 
     /**
      * @swagger
-     * /api/messages:
+     * /api/sample-data:
      *   get:
-     *     description: Lists available HL7 v2 messages
+     *     description: Lists available sample data
      *     produces:
      *       - application/json
      *     parameters:
@@ -144,24 +142,24 @@ module.exports = function (app) {
      *         type: string
      *     responses:
      *       200:
-     *         description: List of available test messages
+     *         description: List of available sample data
      *       401:
      *         description: Unauthorized
      */
-    app.get('/api/messages', function (req, res) {
+    app.get('/api/sample-data', function (req, res) {
         messageCache.keys()
             .then((files) => res.json({ messages: files.map(f => { return { messageName: f }; }) }))
             .catch(() => {
                 res.status(404);
-                res.json(errorMessage(errorCodes.NotFound, 'Unable to access sample message location'));
+                res.json(errorMessage(errorCodes.NotFound, 'Unable to access sample data location'));
             });
     });
 
     /**
      * @swagger
-     * /api/messages/{file}:
+     * /api/sample-data/{file}:
      *   get:
-     *     description: Returns a specific HL7 test message
+     *     description: Returns a specific sample data
      *     produces:
      *       - text/plain
      *     parameters:
@@ -182,16 +180,16 @@ module.exports = function (app) {
      *         type: string
      *     responses:
      *       200:
-     *         description: A specific HL7 message
+     *         description: A specific sample data
      *       401:
      *         description: Unauthorized
      */
-    app.get('/api/messages/:file', function (req, res) {
+    app.get('/api/sample-data/:file(*)', function (req, res) {
         messageCache.get(req.params.file)
             .then((content) => res.end(content.toString()))
             .catch(() => {
                 res.status(404);
-                res.json(errorMessage(errorCodes.NotFound, "Message not found"));
+                res.json(errorMessage(errorCodes.NotFound, "Sample data not found"));
             });
     });
 
@@ -664,13 +662,15 @@ module.exports = function (app) {
     });
 
     /**
-     * @swagger
-     * /api/convert/hl7:
-     *   post:
-     *     description: Converts an HL7 v2 message to FHIR using template
-     *     produces:
-     *       - application/json
-     *     parameters:
+    * @swagger
+    * /api/convert/{srcDataType}:
+    *   post:
+    *     description: Converts given data to FHIR using template
+    *     produces:
+    *       - application/json
+    *     consumes:
+    *       - text/plain
+    *     parameters:
      *       - name: conversion
      *         description: Conversion task
      *         in: body
@@ -680,66 +680,55 @@ module.exports = function (app) {
      *           properties:
      *             templateBase64:
      *               type: string
-     *             messageBase64:
+     *             srcDataBase64:
+     *               type: string
+     *             templatesOverrideBase64:
      *               type: string
      *           required:
      *             - templateBase64
-     *             - messageBase64
-     *       - name: api-version
-     *         in: query
-     *         description: API version to use. The current version is 1.0. Previous versions, including passing no version, are deprecated.
-     *         required: false
-     *         type: string
-     *       - name: code
-     *         in: query
-     *         description: 'API key'
-     *         required: false
-     *         type: string
-     *       - name: X-MS-CONVERSION-API-KEY
-     *         in: header
-     *         description: 'API key'
-     *         required: false
-     *         type: string
-     *     responses:
-     *       200:
-     *         description: conversion result and unused segments report
-     *       400:
-     *         description: Bad request
-     *       401:
-     *         description: Unauthorized
-     */
-    app.post('/api/convert/hl7', function (req, res) {
+     *             - srcDataBase64
+    *       - name: api-version
+    *         in: query
+    *         description: API version to use.
+    *         required: false
+    *         type: string
+    *       - name: code
+    *         in: query
+    *         description: 'API key'
+    *         required: false
+    *         type: string
+    *       - name: X-MS-CONVERSION-API-KEY
+    *         in: header
+    *         description: 'API key'
+    *         required: false
+    *         type: string
+    *     responses:
+    *       200:
+    *         description: Converted message
+    *       400:
+    *         description: Bad request
+    *       401:
+    *         description: Unauthorized
+    */
+    app.post('/api/convert/:srcDataType', function (req, res) {
         workerPool.exec({
-            'type': '/api/convert/hl7',
-            'messageBase64': req.body.messageBase64,
+            'type': '/api/convert/:srcDataType',
+            'srcDataType': req.params.srcDataType,
+            'srcDataBase64': req.body.srcDataBase64,
             'templateBase64': req.body.templateBase64,
-            'replacementDictionaryBase64': req.body.replacementDictionaryBase64,
-            'templatesMapBase64': req.body.templatesMapBase64,
+            'templatesOverrideBase64': req.body.templatesOverrideBase64
         }).then((result) => {
             res.status(result.status);
-
-            if (req.query['api-version'] === '1.0') {
-                res.json(result.resultMsg);
-            }
-            else {
-                if (result.status === 200) {
-                    res.json(result.resultMsg.fhirResource);
-                }
-                else {
-                    res.json(result.resultMsg);
-                }
-            }
-
+            res.json(result.resultMsg);
             return;
         });
     });
 
-
     /**
     * @swagger
-    * /api/convert/hl7/{template}:
+    * /api/convert/{template}:
     *   post:
-    *     description: Converts an HL7 v2 message to FHIR using template
+    *     description: Converts given data to FHIR using template
     *     produces:
     *       - application/json
     *     consumes:
@@ -750,8 +739,8 @@ module.exports = function (app) {
     *         in: path
     *         required: true
     *         type: string
-    *       - name: message
-    *         description: the message to convert
+    *       - name: srcData
+    *         description: the source data to convert
     *         in: body
     *         required: true
     *         schema:
@@ -781,29 +770,17 @@ module.exports = function (app) {
     *       404:
     *         description: Template not found
     */
-    app.post('/api/convert/hl7/:template(*)', function (req, res) {
+    app.post('/api/convert/:srcDataType/:template(*)', function (req, res) {
         workerPool.exec({
-            'type': '/api/convert/hl7/:template',
-            'messageContent': req.body.toString(),
+            'type': '/api/convert/:template',
+            'srcData': req.body.toString(),
+            'srcDataType': req.params.srcDataType,
             'templateName': req.params.template
         }).then((result) => {
             res.status(result.status);
-
-            if (req.query['api-version'] === '1.0') {
-                res.json(result.resultMsg);
-            }
-            else {
-                if (result.status === 200) {
-                    res.json(result.resultMsg.fhirResource);
-                }
-                else {
-                    res.json(result.resultMsg);
-                }
-            }
-
+            res.json(result.resultMsg);
             return;
         });
     });
-
     return app;
 };

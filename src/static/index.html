@@ -43,6 +43,11 @@
 
     <script type="text/javascript" src="/js/template-editor.js"></script>
     <script type="text/javascript" src="/js/hdc-hint.js"></script>
+    <script type="text/javascript" src="/js/editor-tabs.js"></script>
+    <script type="text/javascript" src="/js/git-menu.js"></script>
+    <script type="text/javascript" src="/js/scroll-sync.js"></script>
+    <script type="text/javascript" src="/js/template-menu.js"></script>
+
     <link rel="stylesheet" type="text/css" href="/css/template-editor.css">
 
 </head>
@@ -51,7 +56,16 @@
     <div class="container-fluid h-100">
 
         <nav class="navbar navbar-expand-sm bg-light navbar-light" id="navbar">
-            <a class="navbar-brand" href="#">FHIR Converter</a>
+            <div class="dropdown">
+                <a class="navbar-brand dropdown-toggle" href="#" id="message-type-dropdown-button" role="button"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    FHIR Converter
+                </a>
+                <div id="message-type-dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">HL7v2</a>
+                    <a class="dropdown-item" href="#">CDA</a>
+                </div>
+            </div>
 
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
@@ -103,9 +117,9 @@
         </div>
 
         <!-- Split layout for editors -->
-        <div class="vertical-content">
+        <div class="editor-content" id="editor-wrapper">
             <div class="content split msg-area">
-                <textarea id="hl7messagebox"></textarea>
+                <textarea id="messagebox"></textarea>
             </div>
             <div class="content split editor-area">
                 <div class="split template-area">
@@ -135,10 +149,6 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="settings-scroll-sync" checked>
-                            <label class="form-check-label" for="settings-scroll-sync">Scroll sync</label>
-                        </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="settings-dark-mode">
                             <label class="form-check-label" for="settings-dark-mode">Dark mode</label>

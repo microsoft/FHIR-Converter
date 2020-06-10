@@ -4,8 +4,45 @@
 // -------------------------------------------------------------------------------------------------
 var specialCharProcessor = require('../inputProcessor/specialCharProcessor');
 var hl7SequenceHandler = require('./hl7EscapeSequence');
-
+var hl7v2TemplatePreprocessor = require('../inputProcessor/templatePreprocessor');
 var CoverageArray = require('./coverage-array');
+var errorCodes = require('../error/error').errorCodes;
+var errorMessage = require('../error/error').errorMessage;
+var dataHandler = require('../dataHandler/dataHandler');
+
+module.exports = class hl7v2 extends dataHandler {
+    constructor(dataType) {
+        super(dataType);
+    }
+
+    parseSrcData(msg) {
+        return new Promise((fulfill, reject) => {
+
+            try{
+                var data = parseHL7v2(msg);
+                fulfill(data);
+            }
+            catch (err) {
+                reject(errorMessage(errorCodes.BadRequest, err.message));
+            }
+        });
+    }
+
+    preProcessTemplate(templateStr) {
+        return super.preProcessTemplate(hl7v2TemplatePreprocessor.Process(templateStr));
+    }
+
+    postProcessResult(inResult) {
+        return super.postProcessResult(inResult);
+    }
+
+    getConversionResultMetadata(context) {
+        return {
+            'unusedSegments': parseCoverageReport(context),
+            'invalidAccess': parseInvalidAccess(context)
+        };
+    }
+};
 
 function doesElementExistFactory(type, line) {
     return ((element) => element.type === type && element.line === line);
@@ -172,5 +209,3 @@ function parseInvalidAccess(parsedMsg) {
 }
 
 module.exports.parseHL7v2 = parseHL7v2;
-module.exports.parseCoverageReport = parseCoverageReport;
-module.exports.parseInvalidAccess = parseInvalidAccess;

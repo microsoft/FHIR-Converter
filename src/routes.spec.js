@@ -11,6 +11,8 @@ const path = require('path');
 var app = require("./routes")(express());
 const fs = require('fs');
 var assert = require('assert');
+var HandlebarsConverter = require('./lib/handlebars-converter/handlebars-converter');
+var dataHandlerFactory = require('./lib/dataHandler/dataHandlerFactory');
 
 const apiKeys = ['123', '456'];
 const API_KEY_HEADER = "X-MS-CONVERSION-API-KEY";
@@ -165,12 +167,16 @@ describe("GET /api/messages/:file", function () {
 
     it("should return status code 200 when getting ADT01-23.hl7", function (done) {
         supertest(app)
-            .get("/api/messages/ADT01-23.hl7")
+            .get("/api/messages/hl7v2/ADT01-23.hl7")
             .set(API_KEY_HEADER, apiKeys[0])
             .expect(200)
             .end(function (err) {
-                if (err) done(err);
-                done();
+                if (err) {
+                    done(err);
+                }
+                else {
+                    done();
+                }
             });
     });
 
@@ -297,7 +303,7 @@ describe("GET /api/templates/:file", function () {
 
     it("should return status code 200 for ADT_A01.hbs", function (done) {
         supertest(app)
-            .get("/api/templates/ADT_A01.hbs")
+            .get("/api/templates/hl7v2/ADT_A01.hbs")
             .set(API_KEY_HEADER, apiKeys[0])
             .expect(200)
             .end(function (err) {
@@ -750,7 +756,7 @@ describe('git endpoint', function () {
 describe('Helper "evaluate" usage', function () {
     // Not using temp repo path since constants couldn't be modified inside helper function
     // even if helper/converter/worker modules were modified to have updated constants.
-    const partialTemplateName = 'helpersTestPartial.hbs';
+    const partialTemplateName = 'hl7v2/helpersTestPartial.hbs';
     const partialTemplatePath = path.join(constants.TEMPLATE_FILES_LOCATION, partialTemplateName);
     const partialTemplateApiPath = '/api/templates/' + partialTemplateName;
 
@@ -773,38 +779,52 @@ describe('Helper "evaluate" usage', function () {
     });
 
     it('evaulate should get correct object from child template', function (done) {
-        supertest(app)
-            .put(partialTemplateApiPath)
-            .set(API_KEY_HEADER, apiKeys[0])
-            .set('Content-Type', 'text/plain')
-            .send('{"a":"{{x1}}", "c":"{{x2}}"}')
-            .end(function () {
-                supertest(app)
-                    .post("/api/convert/hl7")
-                    .set(API_KEY_HEADER, apiKeys[0])
-                    .send({ templateBase64: templateBase64Str, messageBase64: messageBase64Str })
-                    .expect(200, '{"out":"2"}')
-                    .end(function (err) {
-                        if (err) {
-                            done(err);
-                        }
-                        else {
-                            done();
-                        }
-                    });
-            });
+        var session = require("cls-hooked").createNamespace(constants.CLS_NAMESPACE);
+        var hl7v2Handler = dataHandlerFactory.createDataHandler('hl7v2');
+
+        session.run(() => {
+            var handlebarInstance = HandlebarsConverter.instance(true, hl7v2Handler, constants.TEMPLATE_FILES_LOCATION);
+            session.set(constants.CLS_KEY_HANDLEBAR_INSTANCE, handlebarInstance);
+            session.set(constants.CLS_KEY_TEMPLATE_LOCATION, constants.TEMPLATE_FILES_LOCATION);
+
+            supertest(app)
+                .put(partialTemplateApiPath)
+                .set(API_KEY_HEADER, apiKeys[0])
+                .set('Content-Type', 'text/plain')
+                .send('{"a":"{{x1}}", "c":"{{x2}}"}')
+                .end(function () {
+                    supertest(app)
+                        .post("/api/convert/hl7v2")
+                        .set(API_KEY_HEADER, apiKeys[0])
+                        .send({ templateBase64: templateBase64Str, srcDataBase64: messageBase64Str })
+                        .expect(200)
+                        .expect(function (response) {
+                            if (JSON.stringify(response.body.fhirResource) !== JSON.stringify({"out":"2"})) {
+                                throw new Error('incorrect fhir resource!');
+                            }
+                        })
+                        .end(function (err) {
+                            if (err) {
+                                done(err);
+                            }
+                            else {
+                                done();
+                            }
+                        });
+                });
+        });
     });
 });
 
-describe('POST /api/convert/hl7 (inline conversion)', function () {
+describe('POST /api/convert/hl7v2 (inline conversion)', function () {
     before(function () {
         app.setValidApiKeys(apiKeys);
     });
 
     it('should return 401 without a valid API key', function (done) {
         supertest(app)
-            .post("/api/convert/hl7")
-            .send({ templateBase64: "", messageBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
+            .post("/api/convert/hl7v2")
+            .send({ templateBase64: "", srcDataBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
             .expect(401)
             .end(function (err) {
                 if (err) {
@@ -819,13 +839,13 @@ describe('POST /api/convert/hl7 (inline conversion)', function () {
 
     it('should return 400 Bad Request when given a payload without a message', function (done) {
         supertest(app)
-            .post("/api/convert/hl7")
+            .post("/api/convert/hl7v2")
             .set(API_KEY_HEADER, apiKeys[0])
             .send({ templateBase64: "" })
             .expect(400, {
                 error: {
                     code: "BadRequest",
-                    message: "Unable to decode and parse HL7 v2 message. The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type undefined"
+                    message: "Unable to parse input data. The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type undefined"
                 }
             })
             .end(function (err) {
@@ -840,13 +860,13 @@ describe('POST /api/convert/hl7 (inline conversion)', function () {
 
     it('should return 400 Bad Request with invalid templatesMap', function (done) {
         supertest(app)
-            .post("/api/convert/hl7")
+            .post("/api/convert/hl7v2")
             .set(API_KEY_HEADER, apiKeys[0])
-            .send({ templateBase64: "e30=", messageBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=", templatesMapBase64: "abc==5" })
+            .send({ templateBase64: "e30=", srcDataBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=", templatesOverrideBase64: "abc==5" })
             .expect(400, {
                 error: {
                     code: "BadRequest",
-                    message: "templatesMap is not a base 64 encoded string."
+                    message: "templatesOverride is not a base 64 encoded string."
                 }
             })
             .end(function (err) {
@@ -862,13 +882,13 @@ describe('POST /api/convert/hl7 (inline conversion)', function () {
     it('should return 400 Bad Request when given a payload with an invalid HL7 message', function (done) {
         //This test passes a message with first segment "MSQ" (instead of MSH)
         supertest(app)
-            .post("/api/convert/hl7")
+            .post("/api/convert/hl7v2")
             .set(API_KEY_HEADER, apiKeys[0])
-            .send({ templateBase64: "", messageBase64: "TVNRfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
+            .send({ templateBase64: "", srcDataBase64: "TVNRfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
             .expect(400, {
                 error: {
                     code: "BadRequest",
-                    message: "Unable to decode and parse HL7 v2 message. Invalid HL7 v2 message, first segment id = MSQ"
+                    message: "Unable to parse input data. Invalid HL7 v2 message, first segment id = MSQ"
                 }
             })
             .end(function (err) {
@@ -884,9 +904,9 @@ describe('POST /api/convert/hl7 (inline conversion)', function () {
     it('should return 200 OK for valid message with an empty template', function (done) {
         //Message: MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||
         supertest(app)
-            .post("/api/convert/hl7")
+            .post("/api/convert/hl7v2")
             .set(API_KEY_HEADER, apiKeys[0])
-            .send({ templateBase64: "", messageBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
+            .send({ templateBase64: "", srcDataBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
             .expect(200)
             .expect(function (response) {
                 if (!Array.isArray(response.body.v2.data)) {
@@ -906,9 +926,9 @@ describe('POST /api/convert/hl7 (inline conversion)', function () {
     it('should return 200 OK for valid message without a template', function (done) {
         //Message: MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||
         supertest(app)
-            .post("/api/convert/hl7")
+            .post("/api/convert/hl7v2")
             .set(API_KEY_HEADER, apiKeys[0])
-            .send({ messageBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
+            .send({ srcDataBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
             .expect(200)
             .expect(function (response) {
                 if (!Array.isArray(response.body.v2.data)) {
@@ -925,31 +945,13 @@ describe('POST /api/convert/hl7 (inline conversion)', function () {
             });
     });
 
-    it('should return 200 OK for valid message with valid template', function (done) {
+    it('should return 200 OK with detailed report for valid message with valid template', function (done) {
         //Message: MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||
         //Template: {}
         supertest(app)
-            .post("/api/convert/hl7")
+            .post("/api/convert/hl7v2")
             .set(API_KEY_HEADER, apiKeys[0])
-            .send({ templateBase64: "e30=", messageBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=", templatesMapBase64: "e30=" })
-            .expect(200, {})
-            .end(function (err) {
-                if (err) {
-                    done(err);
-                }
-                else {
-                    done();
-                }
-            });
-    });
-
-    it('should return 200 OK with detailed report for valid message with valid template in version 1.0', function (done) {
-        //Message: MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||
-        //Template: {}
-        supertest(app)
-            .post("/api/convert/hl7?api-version=1.0")
-            .set(API_KEY_HEADER, apiKeys[0])
-            .send({ templateBase64: "e30=", messageBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=", templatesMapBase64: "e30=" })
+            .send({ templateBase64: "e30=", srcDataBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=", templatesOverrideBase64: "e30=" })
             .expect(200, {
                 'fhirResource': {},
                 'unusedSegments': [
@@ -1050,9 +1052,9 @@ describe('POST /api/convert/hl7 (inline conversion)', function () {
         //Message: MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||
         //Template: invalid base64
         supertest(app)
-            .post("/api/convert/hl7")
+            .post("/api/convert/hl7v2")
             .set(API_KEY_HEADER, apiKeys[0])
-            .send({ templateBase64: "\\", messageBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
+            .send({ templateBase64: "\\", srcDataBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
             .expect(400, {
                 error: {
                     code: "BadRequest",
@@ -1073,9 +1075,9 @@ describe('POST /api/convert/hl7 (inline conversion)', function () {
         //Message: MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||
         //Template: { , ,"a" : "1",,,,"b" : [, "c" , ,"d",,], ,}
         supertest(app)
-            .post("/api/convert/hl7")
+            .post("/api/convert/hl7v2")
             .set(API_KEY_HEADER, apiKeys[0])
-            .send({ templateBase64: "eyAsCiwKImEiIDogIjEiLCwsLAoiYiIgOiBbLCAiYyIgLCAsImQiLCxdLCAsCn0=", messageBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
+            .send({ templateBase64: "eyAsCiwKImEiIDogIjEiLCwsLAoiYiIgOiBbLCAiYyIgLCAsImQiLCxdLCAsCn0=", srcDataBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
             .expect(200)
             .end(function (err) {
                 if (err) {
@@ -1091,13 +1093,13 @@ describe('POST /api/convert/hl7 (inline conversion)', function () {
         //Message: \
         //Template: {}
         supertest(app)
-            .post("/api/convert/hl7")
+            .post("/api/convert/hl7v2")
             .set(API_KEY_HEADER, apiKeys[0])
-            .send({ templateBase64: "e30=", messageBase64: "\\" })
+            .send({ templateBase64: "e30=", srcDataBase64: "\\" })
             .expect(400, {
                 error: {
                     code: "BadRequest",
-                    message: "Message is not a base 64 encoded string."
+                    message: "srcData is not a base 64 encoded string."
                 }
             })
             .end(function (err) {
@@ -1114,13 +1116,14 @@ describe('POST /api/convert/hl7 (inline conversion)', function () {
         //Message: MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||
         //Template: {{>nonExistentPartial.hbs}}
         supertest(app)
-            .post("/api/convert/hl7")
+            .post("/api/convert/hl7v2")
             .set(API_KEY_HEADER, apiKeys[0])
-            .send({ templateBase64: "e3s+bm9uRXhpc3RlbnRQYXJ0aWFsLmhic319", messageBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
+            .send({ templateBase64: "e3s+bm9uRXhpc3RlbnRQYXJ0aWFsLmhic319", srcDataBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
             .expect(400, {
                 error: {
                     code: "BadRequest",
-                    message: "Unable to create result: Error: Referenced partial template nonExistentPartial.hbs not found on disk"
+                    //message: "Unable to create result: Error: Referenced partial template nonExistentPartial.hbs not found on disk"
+                    message: "Unable to create result: Error: Referenced partial template nonExistentPartial.hbs not found on disk : Error: ENOENT: no such file or directory, open 'C:\\src\\FHIR-Converter\\src\\service-templates\\hl7v2/nonExistentPartial.hbs'"
                 }
             })
             .end(function (err) {
@@ -1204,7 +1207,7 @@ describe('UpdateBaseTemplates', function () {
 describe('Partial template cache usage and invalidation', function () {
     var repoPath = path.join(__dirname, 'test-cache-repo-templates');
     var myConstants = JSON.parse(JSON.stringify(app.getConstants()));
-    const partialTemplateName = 'cachingTestPartial.hbs';
+    const partialTemplateName = 'hl7v2/cachingTestPartial.hbs';
     const partialTemplateApiPath = '/api/templates/' + partialTemplateName;
 
     // Template : { "entry" : {{>cachingTestPartial.hbs}} }
@@ -1215,7 +1218,7 @@ describe('Partial template cache usage and invalidation', function () {
 
     before(function (done) {
         fse.removeSync(repoPath);
-        fse.ensureDirSync(repoPath);
+        fse.ensureDirSync(path.join(repoPath, "hl7v2"));
         myConstants.TEMPLATE_FILES_LOCATION = repoPath;
         app.setConstants(myConstants);
 
@@ -1280,9 +1283,9 @@ describe('Partial template cache usage and invalidation', function () {
 
         for (var i = 0; i < cpuCount; ++i) {
             supertest(app)
-                .post("/api/convert/hl7")
+                .post("/api/convert/hl7v2")
                 .set(API_KEY_HEADER, apiKeys[0])
-                .send({ templateBase64: templateBase64Str, messageBase64: messageBase64Str })
+                .send({ templateBase64: templateBase64Str, srcDataBase64: messageBase64Str })
                 .expect(200)
                 .end(function () {
                     ++reqCount;
@@ -1301,10 +1304,15 @@ describe('Partial template cache usage and invalidation', function () {
             .send('{"myprop":"b"}')
             .end(function () {
                 supertest(app)
-                    .post("/api/convert/hl7")
+                    .post("/api/convert/hl7v2")
                     .set(API_KEY_HEADER, apiKeys[0])
-                    .send({ templateBase64: templateBase64Str, messageBase64: messageBase64Str })
-                    .expect(200, '{"entry":{"myprop":"b"}}')
+                    .send({ templateBase64: templateBase64Str, srcDataBase64: messageBase64Str })
+                    .expect(200)
+                    .expect(function(response) {
+                        if (JSON.stringify(response.body.fhirResource) !== JSON.stringify({"entry":{"myprop":"b"}})) {
+                            throw ("unexpected result");
+                        }
+                    })
                     .end(function (err) {
                         if (err) {
                             done(err);
@@ -1321,10 +1329,15 @@ describe('Partial template cache usage and invalidation', function () {
         fse.writeFileSync(filePath, 'dummy text');
 
         supertest(app)
-            .post("/api/convert/hl7")
+            .post("/api/convert/hl7v2")
             .set(API_KEY_HEADER, apiKeys[0])
-            .send({ templateBase64: templateBase64Str, messageBase64: messageBase64Str, templatesMapBase64: "e30=" })
-            .expect(200, '{"entry":{"myprop":"a"}}')
+            .send({ templateBase64: templateBase64Str, srcDataBase64: messageBase64Str, templatesOverrideBase64: "e30=" })
+            .expect(200)
+            .expect(function(response) {
+                if (JSON.stringify(response.body.fhirResource) !== JSON.stringify({"entry":{"myprop":"a"}})) {
+                    throw ("unexpected result");
+                }
+            })
             .end(function (err) {
                 if (err) {
                     done(err);
@@ -1340,10 +1353,15 @@ describe('Partial template cache usage and invalidation', function () {
         fse.removeSync(filePath);
 
         supertest(app)
-            .post("/api/convert/hl7")
+            .post("/api/convert/hl7v2")
             .set(API_KEY_HEADER, apiKeys[0])
-            .send({ templateBase64: templateBase64Str, messageBase64: messageBase64Str })
-            .expect(200, '{"entry":{"myprop":"a"}}')
+            .send({ templateBase64: templateBase64Str, srcDataBase64: messageBase64Str })
+            .expect(200)
+            .expect(function(response) {
+                if (JSON.stringify(response.body.fhirResource) !== JSON.stringify({"entry":{"myprop":"a"}})) {
+                    throw ("unexpected result");
+                }
+            })
             .end(function (err) {
                 if (err) {
                     done(err);
@@ -1360,9 +1378,9 @@ describe('Partial template cache usage and invalidation', function () {
             .set(API_KEY_HEADER, apiKeys[0])
             .end(function () {
                 supertest(app)
-                    .post("/api/convert/hl7")
+                    .post("/api/convert/hl7v2")
                     .set(API_KEY_HEADER, apiKeys[0])
-                    .send({ templateBase64: templateBase64Str, messageBase64: messageBase64Str })
+                    .send({ templateBase64: templateBase64Str, srcDataBase64: messageBase64Str })
                     .expect(400)
                     .end(function (err) {
                         if (err) {
@@ -1383,10 +1401,15 @@ describe('Partial template cache usage and invalidation', function () {
             .expect(200)
             .end(function () {
                 supertest(app)
-                    .post("/api/convert/hl7")
+                    .post("/api/convert/hl7v2")
                     .set(API_KEY_HEADER, apiKeys[0])
-                    .send({ templateBase64: templateBase64Str, messageBase64: messageBase64Str })
-                    .expect(200, '{"entry":{"myprop":"c"}}')
+                    .send({ templateBase64: templateBase64Str, srcDataBase64: messageBase64Str })
+                    .expect(200)
+                    .expect(function(response) {
+                        if (JSON.stringify(response.body.fhirResource) !== JSON.stringify({"myprop":"c"})) {
+                            throw ("unexpected result");
+                        }
+                    })
                     .end(function (err) {
                         if (err) {
                             done(err);
@@ -1402,9 +1425,9 @@ describe('Partial template cache usage and invalidation', function () {
 describe('Top level template cache usage and invalidation', function () {
     var repoPath = path.join(__dirname, 'test-top-cache-repo-templates');
     var myConstants = JSON.parse(JSON.stringify(app.getConstants()));
-    const templateName = 'cachingTestTemplate.hbs';
+    const templateName = 'hl7v2/cachingTestTemplate.hbs';
     const templateApiPath = '/api/templates/' + templateName;
-    const convertApiPath = '/api/convert/hl7/' + templateName;
+    const convertApiPath = '/api/convert/' + templateName;
     const message = 'MSH|^~\\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||';
 
     before(function () {
@@ -1467,7 +1490,12 @@ describe('Top level template cache usage and invalidation', function () {
                     .set(API_KEY_HEADER, apiKeys[0])
                     .set('Content-Type', 'text/plain')
                     .send(message)
-                    .expect(200, '{"myprop":"b"}')
+                    .expect(200)
+                    .expect(function(response) {
+                        if (JSON.stringify(response.body.fhirResource) !== JSON.stringify({"myprop":"b"})) {
+                            throw ("unexpected result");
+                        }
+                    })
                     .end(function (err) {
                         if (err) {
                             done(err);
@@ -1488,7 +1516,12 @@ describe('Top level template cache usage and invalidation', function () {
             .set(API_KEY_HEADER, apiKeys[0])
             .set('Content-Type', 'text/plain')
             .send(message)
-            .expect(200, '{"myprop":"a"}')
+            .expect(200)
+            .expect(function(response) {
+                if (JSON.stringify(response.body.fhirResource) !== JSON.stringify({"myprop":"a"})) {
+                    throw ("unexpected result");
+                }
+            })
             .end(function (err) {
                 if (err) {
                     done(err);
@@ -1500,14 +1533,14 @@ describe('Top level template cache usage and invalidation', function () {
     });
 });
 
-describe('POST /api/convert/hl7/:template (with stored template)', function () {
+describe('POST /api/convert/hl7v2/:template (with stored template)', function () {
     before(function () {
         app.setValidApiKeys(apiKeys);
     });
 
     it('should return 401 without valid API key', function (done) {
         supertest(app)
-            .post("/api/convert/hl7/ADT_A01.hbs")
+            .post("/api/convert/hl7v2/ADT_A01.hbs")
             .set('Content-Type', 'text/plain')
             .send("MSH|^~\\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||")
             .expect(401)
@@ -1523,7 +1556,7 @@ describe('POST /api/convert/hl7/:template (with stored template)', function () {
 
     it('should return 200 OK with valid message and existing template', function (done) {
         supertest(app)
-            .post("/api/convert/hl7/ADT_A01.hbs")
+            .post("/api/convert/hl7v2/ADT_A01.hbs")
             .set(API_KEY_HEADER, apiKeys[0])
             .set('Content-Type', 'text/plain')
             .send("MSH|^~\\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||")
@@ -1540,7 +1573,7 @@ describe('POST /api/convert/hl7/:template (with stored template)', function () {
 
     it('should return 200 OK with valid message and existing template in a subdirectory', function (done) {
         supertest(app)
-            .post("/api/convert/hl7/Resources/Patient.hbs")
+            .post("/api/convert/hl7v2/Resources/Patient.hbs")
             .set(API_KEY_HEADER, apiKeys[0])
             .set('Content-Type', 'text/plain')
             .send("MSH|^~\\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||")
@@ -1557,14 +1590,14 @@ describe('POST /api/convert/hl7/:template (with stored template)', function () {
 
     it('should return 400 Bad Request with empty message and existing template', function (done) {
         supertest(app)
-            .post("/api/convert/hl7/ADT_A01.hbs")
+            .post("/api/convert/hl7v2/ADT_A01.hbs")
             .set(API_KEY_HEADER, apiKeys[0])
             .set('Content-Type', 'text/plain')
             .send("")
             .expect(400, {
                 error: {
                     code: "BadRequest",
-                    message: "No message provided."
+                    message: "No srcData provided."
                 }
             })
             .end(function (err) {
@@ -1579,14 +1612,14 @@ describe('POST /api/convert/hl7/:template (with stored template)', function () {
 
     it('should return 400 Bad request with invalid message and existing template', function (done) {
         supertest(app)
-            .post("/api/convert/hl7/ADT_A01.hbs")
+            .post("/api/convert/hl7v2/ADT_A01.hbs")
             .set(API_KEY_HEADER, apiKeys[0])
             .set('Content-Type', 'text/plain')
             .send("MSQ|^~\\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||")
             .expect(400, {
                 error: {
                     code: "BadRequest",
-                    message: "Unable to decode and parse HL7 v2 message. Error: Invalid HL7 v2 message, first segment id = MSQ"
+                    message: "Unable to parse input data. Invalid HL7 v2 message, first segment id = MSQ"
                 }
             })
             .end(function (err) {
@@ -1601,7 +1634,7 @@ describe('POST /api/convert/hl7/:template (with stored template)', function () {
 
     it('should return 404 not found with valid message and non-existing template', function (done) {
         supertest(app)
-            .post("/api/convert/hl7/foobar.hbs")
+            .post("/api/convert/hl7v2/foobar.hbs")
             .set(API_KEY_HEADER, apiKeys[0])
             .set('Content-Type', 'text/plain')
             .send("MSH|^~\\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||")
@@ -1625,8 +1658,8 @@ describe('POST /api/convert/hl7/:template (with stored template)', function () {
         var repoPath = path.join(__dirname, 'test-invalid-templates');
         var myConstants = JSON.parse(JSON.stringify(app.getConstants()));
         const templateName = 'invalidTemplate.hbs';
-        const templateApiPath = '/api/templates/' + templateName;
-        const convertApiPath = '/api/convert/hl7/' + templateName;
+        const templateApiPath = '/api/templates/hl7v2/' + templateName;
+        const convertApiPath = '/api/convert/hl7v2/' + templateName;
 
         fse.removeSync(repoPath);
         fse.ensureDirSync(repoPath);
@@ -1647,7 +1680,7 @@ describe('POST /api/convert/hl7/:template (with stored template)', function () {
                     .expect(400, {
                         error: {
                             code: "BadRequest",
-                            message: "Error during template evaluation. Error: Referenced partial template nonExistingTemplate.hbs not found on disk"
+                            message: "Error during template evaluation. Error: Referenced partial template nonExistingTemplate.hbs not found on disk : Error: ENOENT: no such file or directory, open 'C:\\src\\FHIR-Converter\\src\\test-invalid-templates\\hl7v2/nonExistingTemplate.hbs'"
                         }
                     })
                     .end(function (err) {

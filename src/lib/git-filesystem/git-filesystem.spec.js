@@ -173,7 +173,6 @@ describe('git-filesystem (commit)', function () {
                     .getStatus()
                     .then(function (status) {
                         if (!Array.isArray(status) || status.length != 0) {
-                            console.log('Status: ' + JSON.stringify(status));
                             done(new Error('Status is not an empty array'));
                         }
                         else {
@@ -241,7 +240,6 @@ describe('git-filesystem (branches)', function () {
                 }
             })
             .catch(function (errReason) {
-                console.log(errReason);
                 done(new Error(errReason));
             });
     });
@@ -259,7 +257,6 @@ describe('git-filesystem (branches)', function () {
                 }
             })
             .catch(function (errReason) {
-                console.log(errReason);
                 done(new Error(errReason));
             });
     });
