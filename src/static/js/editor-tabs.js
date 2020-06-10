@@ -35,7 +35,7 @@ function changeTab(templateName) {
 
         templateCodeEditor.setValue(templateObj.data);
 
-        // This can be made more efficent. It shouldn't be nessisary to recheck the whole document after every load.
+        // TODO: This can be made more efficent. It shouldn't be nessisary to recheck the whole document after every load.
         underlinePartialTemplateNames(templateCodeEditor.getDoc());
 
         $('#template-name-input').val(templateName);

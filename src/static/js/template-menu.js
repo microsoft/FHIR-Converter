@@ -70,7 +70,12 @@ function loadMessageOptions() {
         $("#message-load-dropdown").html('');
 
         $.each(messageList.messages, function (index, item) {
-            $("#message-load-dropdown").append("<a class=\"dropdown-item\" href=\"#\">" + item.messageName + "</a>");
+            const messageNameWithType = item.messageName;
+
+            if (messageNameWithType.startsWith(currentMessageType)) {
+                const messageName = messageNameWithType.substring(currentMessageType.length + 1);
+                $("#message-load-dropdown").append("<a class=\"dropdown-item\" href=\"#\" onClick=\"loadMessage('" + messageNameWithType + "');\">" + messageName + "</a>");
+            }
         });
     });
 }
@@ -80,7 +85,12 @@ function loadTemplateOptions() {
         templateNames = templateList.templates.map(template => template.templateName);
         $("#template-load-dropdown").html('');
         $.each(templateList.templates, function (index, item) {
-            addToTemplateDropdown("#template-load-dropdown", item.templateName, item.templateName, 0);
+            const templateNameWithType = item.templateName;
+
+            if (templateNameWithType.startsWith(currentMessageType)) {
+                const templateName = templateNameWithType.substring(currentMessageType.length + 1);
+                addToTemplateDropdown("#template-load-dropdown", templateNameWithType, templateName, 0);
+            }
         });
     });
 }

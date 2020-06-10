@@ -52,7 +52,7 @@ function getApiKey() {
 }
 
 function getUrl(endpoint, fileName) {
-    return '/api/' + endpoint + '/' + (fileName ? '/' + fileName : '') + '?api-version=' + version;
+    return '/api/' + endpoint + (fileName ? '/' + fileName : '') + '?api-version=' + version;
 }
 
 function getDataTypeSpecificUrl(endpoint, fileName) {
@@ -142,6 +142,7 @@ function convertMessage() {
                     outputCode.setValue(outputLines.join('\n'));
 
                     // Makes the unused line marking asyc to help performance.
+                    if (currentMessageType === 'hl7v2')
                     setTimeout(() => {
                         if (latestRequest === requestNumber) {
                             // Highlights unused sections of the Hl7 message
@@ -448,10 +449,6 @@ $(document).ready(function () {
 
     $('#message-dropdown-button').on('click', function () {
         loadMessageOptions();
-    });
-
-    $("#message-load-dropdown").on('click', 'a', function () {
-        loadMessage($(this).text());
     });
 
     $('#git-dropdown-button').on('click', function () {
