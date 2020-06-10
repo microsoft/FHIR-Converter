@@ -5,7 +5,7 @@
 
 var version = '1.0';
 
-var messageEditor;
+var dataEditor;
 var templateCodeEditor;
 var outputCode;
 var lineMapping = []; // Mapping source (template) to destination (output) lines
@@ -30,11 +30,11 @@ var apiKey = '';
 var maskedApiKey = '***********';
 var hasSuccessfulCallBeenMade = false;
 
-var currentMessageType;
+var currentDataType;
 var templateOutputSplit;
-var messageTemplateSplit;
+var dataTemplateSplit;
 
-var messageTypeMappings = {
+var dataTypeMappings = {
     'HL7v2': 'hl7v2',
     'CDA': 'cda'
 }
@@ -56,7 +56,7 @@ function getUrl(endpoint, fileName) {
 }
 
 function getDataTypeSpecificUrl(endpoint, fileName) {
-    return '/api/' + endpoint + '/' + currentMessageType + '/' + (fileName ? '/' + fileName : '') + '?api-version=' + version;
+    return '/api/' + endpoint + '/' + currentDataType + '/' + (fileName ? '/' + fileName : '') + '?api-version=' + version;
 }
 
 function checkApiKey(successFunc, errorFunc) {
@@ -97,7 +97,7 @@ function checkApiKeyAndRaiseModal(userRequestedValidation) {
     );
 }
 
-function convertMessage() {
+function convertData() {
     if (nextRequestCall) {
         clearTimeout(nextRequestCall);
     }
@@ -107,8 +107,8 @@ function convertMessage() {
         var templateLines = [];
         var outputLines = [];
 
-        if (messageEditor.getValue()) {
-            reqBody.srcDataBase64 = btoa(messageEditor.getValue().replace(/[^\x00-\x7F]/g, "")); //TODO
+        if (dataEditor.getValue()) {
+            reqBody.srcDataBase64 = btoa(dataEditor.getValue().replace(/[^\x00-\x7F]/g, "")); //TODO
         }
 
         var topTemplate = openTemplates.find(template => template.parent === null);
@@ -142,24 +142,24 @@ function convertMessage() {
                     outputCode.setValue(outputLines.join('\n'));
 
                     // Makes the unused line marking asyc to help performance.
-                    if (currentMessageType === 'hl7v2')
+                    if (currentDataType === 'hl7v2')
                     setTimeout(() => {
                         if (latestRequest === requestNumber) {
-                            // Highlights unused sections of the Hl7 message
+                            // Highlights unused sections of the Hl7 data
                             var unusedReport = data.unusedSegments;
-                            var messageDoc = messageEditor.getDoc();
+                            var dataDoc = dataEditor.getDoc();
 
-                            var fieldSeparator = messageDoc.getLine(0)[3];
-                            var componentSeparator = messageDoc.getLine(0)[4];
+                            var fieldSeparator = dataDoc.getLine(0)[3];
+                            var componentSeparator = dataDoc.getLine(0)[4];
 
                             // Removes all the old highlighting
-                            messageDoc.getAllMarks().forEach((mark) => mark.clear());
+                            dataDoc.getAllMarks().forEach((mark) => mark.clear());
 
                             unusedReport.forEach((line) => {
                                 line.field.forEach((field) => {
                                     if (field && field.index !== 0 && field.component.length > 0) {
                                         field.component.forEach((component) => {
-                                            var lineText = messageDoc.getLine(line.line);
+                                            var lineText = dataDoc.getLine(line.line);
                                             var startFieldIndex = indexOfX(lineText, fieldSeparator, field.index - 1) + 1;
                                             var endFieldIndex = indexOfX(lineText, fieldSeparator, field.index);
                                             if (endFieldIndex === -1) {
@@ -168,7 +168,7 @@ function convertMessage() {
 
                                             var startComponentIndex = indexOfX(lineText.substring(startFieldIndex, endFieldIndex), componentSeparator, component.index - 1) + startFieldIndex + 1;
                                             var endComponentIndex = startComponentIndex + component.value.length;
-                                            messageDoc.markText({ line: line.line, ch: startComponentIndex }, { line: line.line, ch: endComponentIndex }, { className: 'unused-segment' });
+                                            dataDoc.markText({ line: line.line, ch: startComponentIndex }, { line: line.line, ch: endComponentIndex }, { className: 'unused-segment' });
                                         });
                                     }
                                 });
@@ -235,7 +235,7 @@ function setColorTheme(isDarkMode) {
     settingsModal.addClass("bg-" + addColor);
     settingsModal.addClass("text-" + removeColor);
 
-    messageEditor.setOption("theme", isDarkMode ? darkMode : lightMode);
+    dataEditor.setOption("theme", isDarkMode ? darkMode : lightMode);
     outputCode.setOption("theme", isDarkMode ? darkMode : lightMode);
     templateCodeEditor.setOption("theme", isDarkMode ? darkMode : lightMode);
 }
@@ -328,18 +328,18 @@ function unchangedFromReference(templateName, templateData) {
     return templateData.replace(newLineRegex, '\n') === currentTemplateReference[templateName].replace(newLineRegex, '\n');
 }
 
-function changeMessageType(messageType) {
-    $('#message-type-dropdown-button').text('FHIR Converter: ' + messageType);
-    currentMessageType = messageTypeMappings[messageType];
+function changeDataType(dataType) {
+    $('#data-type-dropdown-button').text('FHIR Converter: ' + dataType);
+    currentDataType = dataTypeMappings[dataType];
 
     if (templateOutputSplit) {
         templateOutputSplit.destroy();
     }
-    if (messageTemplateSplit) {
-        messageTemplateSplit.destroy();
+    if (dataTemplateSplit) {
+        dataTemplateSplit.destroy();
     }
 
-    switch (messageType) {
+    switch (dataType) {
         case 'HL7v2':
             $('#editor-wrapper').addClass('vertical-content');
 
@@ -349,7 +349,7 @@ function changeMessageType(messageType) {
                 sizes: [50, 50]
             });
 
-            messageTemplateSplit = Split(['.msg-area', '.editor-area'], {
+            dataTemplateSplit = Split(['.msg-area', '.editor-area'], {
                 gutterSize: 5,
                 sizes: [30, 70],
                 direction: 'vertical'
@@ -364,7 +364,7 @@ function changeMessageType(messageType) {
                 sizes: [50, 50]
             });
 
-            messageTemplateSplit = Split(['.msg-area', '.editor-area'], {
+            dataTemplateSplit = Split(['.msg-area', '.editor-area'], {
                 gutterSize: 5,
                 sizes: [30, 70]
             });
@@ -373,7 +373,7 @@ function changeMessageType(messageType) {
 }
 
 $(document).ready(function () {
-    messageEditor = CodeMirror.fromTextArea(document.getElementById("messagebox"), {
+    dataEditor = CodeMirror.fromTextArea(document.getElementById("databox"), {
         //readOnly: false,
         lineNumbers: true,
         theme: lightMode,
@@ -383,8 +383,8 @@ $(document).ready(function () {
         gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
     });
 
-    messageEditor.on("change", function () {
-        convertMessage();
+    dataEditor.on("change", function () {
+        convertData();
     });
 
     outputCode = CodeMirror.fromTextArea(document.getElementById("resultbox"), {
@@ -425,7 +425,7 @@ $(document).ready(function () {
                 getTab(activeTemplate.name).addClass("font-italic");
             }
         }
-        convertMessage();
+        convertData();
     });
 
     templateCodeEditor.on('dblclick', function () {
@@ -439,16 +439,16 @@ $(document).ready(function () {
         }
     });
 
-    $("#message-type-dropdown").on('click', 'a', function () {
-        changeMessageType($(this).text());
+    $("#data-type-dropdown").on('click', 'a', function () {
+        changeDataType($(this).text());
     });
 
     $('#template-dropdown-button').on('click', function () {
         loadTemplateOptions();
     });
 
-    $('#message-dropdown-button').on('click', function () {
-        loadMessageOptions();
+    $('#data-dropdown-button').on('click', function () {
+        loadDataOptions();
     });
 
     $('#git-dropdown-button').on('click', function () {
@@ -518,7 +518,7 @@ $(document).ready(function () {
         createBranch($('#branch-name-input').val(), $('#base-branch-select').val(), $("#checkout-new-branch").prop("checked") == true);
     });
 
-    changeMessageType('HL7v2');
+    changeDataType('HL7v2');
 
     // See if we have a valid API key and if not raise modal
     checkApiKeyAndRaiseModal();

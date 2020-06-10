@@ -1,7 +1,7 @@
-function loadMessage(messageFile) {
-    $.get(getUrl('sample-data', messageFile), function (data) {
-        messageEditor.setValue(data);
-        convertMessage();
+function loadData(dataFile) {
+    $.get(getUrl('sample-data', dataFile), function (data) {
+        dataEditor.setValue(data);
+        convertData();
     });
 }
 
@@ -65,16 +65,16 @@ function saveTemplate() {
     });
 }
 
-function loadMessageOptions() {
-    $.getJSON(getUrl('sample-data'), function (messageList) {
-        $("#message-load-dropdown").html('');
+function loadDataOptions() {
+    $.getJSON(getUrl('sample-data'), function (dataList) {
+        $("#data-load-dropdown").html('');
 
-        $.each(messageList.messages, function (index, item) {
-            const messageNameWithType = item.messageName;
+        $.each(dataList.messages, function (index, item) {
+            const dataNameWithType = item.messageName;
 
-            if (messageNameWithType.startsWith(currentMessageType)) {
-                const messageName = messageNameWithType.substring(currentMessageType.length + 1);
-                $("#message-load-dropdown").append("<a class=\"dropdown-item\" href=\"#\" onClick=\"loadMessage('" + messageNameWithType + "');\">" + messageName + "</a>");
+            if (dataNameWithType.startsWith(currentDataType)) {
+                const dataName = dataNameWithType.substring(currentDataType.length + 1);
+                $("#data-load-dropdown").append("<a class=\"dropdown-item\" href=\"#\" onClick=\"loadData('" + dataNameWithType + "');\">" + dataName + "</a>");
             }
         });
     });
@@ -87,8 +87,8 @@ function loadTemplateOptions() {
         $.each(templateList.templates, function (index, item) {
             const templateNameWithType = item.templateName;
 
-            if (templateNameWithType.startsWith(currentMessageType)) {
-                const templateName = templateNameWithType.substring(currentMessageType.length + 1);
+            if (templateNameWithType.startsWith(currentDataType)) {
+                const templateName = templateNameWithType.substring(currentDataType.length + 1);
                 addToTemplateDropdown("#template-load-dropdown", templateNameWithType, templateName, 0);
             }
         });
