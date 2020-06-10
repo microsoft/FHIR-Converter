@@ -76,7 +76,7 @@
                                     {{/each}}
                                 {{/each}}
                             {{else if resObj.resourceType}}
-                                {{#each ../this.section.entry}}                           	
+                                {{#each (toArray ../this.section.entry)}}                           	
                                     {
                                         "reference":"{{concat resObj.resourceType '/' (generateUUID (toJsonString this))}}",
                                         {{>Utils/DisplayFromSectionEntry.hbs section=../../this.section entry=this}}
