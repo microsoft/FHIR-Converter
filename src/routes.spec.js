@@ -85,14 +85,14 @@ describe("GET /api/helpers", function () {
     });
 });
 
-describe("GET /api/messages", function () {
+describe("GET /api/sample-data", function () {
     before(function () {
         app.setValidApiKeys(apiKeys);
     });
 
     it('should return 401 without a valid API key', function (done) {
         supertest(app)
-            .get("/api/messages")
+            .get("/api/sample-data")
             .expect(401)
             .end(function (err) {
                 if (err) {
@@ -106,7 +106,7 @@ describe("GET /api/messages", function () {
 
     it("should return status code 200 and contain an array", function (done) {
         supertest(app)
-            .get("/api/messages")
+            .get("/api/sample-data")
             .set(API_KEY_HEADER, apiKeys[0])
             .expect(200)
             .expect(function (response) {
@@ -125,7 +125,7 @@ describe("GET /api/messages", function () {
     });
 });
 
-describe("/api/messages (wrong configuration)", function () {
+describe("/api/sample-data (wrong configuration)", function () {
     before(function () {
         // Deep copy constants
         var myConstants = JSON.parse(JSON.stringify(app.getConstants()));
@@ -140,12 +140,12 @@ describe("/api/messages (wrong configuration)", function () {
 
     it("GET should return 404 when configured with wrong storage location", function (done) {
         supertest(app)
-            .get("/api/messages")
+            .get("/api/sample-data")
             .set(API_KEY_HEADER, apiKeys[0])
             .expect(404, {
                 error: {
                     code: "NotFound",
-                    message: "Unable to access sample message location"
+                    message: "Unable to access sample data location"
                 }
             })
             .end(function (err) {
@@ -160,14 +160,14 @@ describe("/api/messages (wrong configuration)", function () {
 });
 
 
-describe("GET /api/messages/:file", function () {
+describe("GET /api/sample-data/:file", function () {
     before(function () {
         app.setValidApiKeys(apiKeys);
     });
 
     it("should return status code 200 when getting ADT01-23.hl7", function (done) {
         supertest(app)
-            .get("/api/messages/hl7v2/ADT01-23.hl7")
+            .get("/api/sample-data/hl7v2/ADT01-23.hl7")
             .set(API_KEY_HEADER, apiKeys[0])
             .expect(200)
             .end(function (err) {
@@ -182,12 +182,12 @@ describe("GET /api/messages/:file", function () {
 
     it("should return status code 404 when getting foobar.hl7", function (done) {
         supertest(app)
-            .get("/api/messages/foobar.hl7")
+            .get("/api/sample-data/foobar.hl7")
             .set(API_KEY_HEADER, apiKeys[0])
             .expect(404, {
                 error: {
                     code: "NotFound",
-                    message: "Message not found"
+                    message: "Sample data not found"
                 }
             })
             .end(function (err) {
@@ -1119,11 +1119,13 @@ describe('POST /api/convert/hl7v2 (inline conversion)', function () {
             .post("/api/convert/hl7v2")
             .set(API_KEY_HEADER, apiKeys[0])
             .send({ templateBase64: "e3s+bm9uRXhpc3RlbnRQYXJ0aWFsLmhic319", srcDataBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=" })
-            .expect(400, {
-                error: {
-                    code: "BadRequest",
-                    //message: "Unable to create result: Error: Referenced partial template nonExistentPartial.hbs not found on disk"
-                    message: "Unable to create result: Error: Referenced partial template nonExistentPartial.hbs not found on disk : Error: ENOENT: no such file or directory, open 'C:\\src\\FHIR-Converter\\src\\service-templates\\hl7v2/nonExistentPartial.hbs'"
+            .expect(400)
+            .expect(function(response) {
+                if (response.body.error.code !== "BadRequest") {
+                    throw("unexpected error code!");
+                }
+                if (!response.body.error.message.includes("Unable to create result: Error: Referenced partial template nonExistentPartial.hbs not found on disk")) {
+                    throw("unexpected error message!");
                 }
             })
             .end(function (err) {
@@ -1677,10 +1679,13 @@ describe('POST /api/convert/hl7v2/:template (with stored template)', function ()
                     .set(API_KEY_HEADER, apiKeys[0])
                     .set('Content-Type', 'text/plain')
                     .send("MSH|^~\\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||")
-                    .expect(400, {
-                        error: {
-                            code: "BadRequest",
-                            message: "Error during template evaluation. Error: Referenced partial template nonExistingTemplate.hbs not found on disk : Error: ENOENT: no such file or directory, open 'C:\\src\\FHIR-Converter\\src\\test-invalid-templates\\hl7v2/nonExistingTemplate.hbs'"
+                    .expect(400)
+                    .expect(function(response) {
+                        if (response.body.error.code !== "BadRequest") {
+                            throw("unexpected error code!");
+                        }
+                        if (!response.body.error.message.includes("Error during template evaluation. Error: Referenced partial template nonExistingTemplate.hbs not found on disk")) {
+                            throw("unexpected error message!");
                         }
                     })
                     .end(function (err) {
