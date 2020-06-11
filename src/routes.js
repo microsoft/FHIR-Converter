@@ -772,7 +772,7 @@ module.exports = function (app) {
     */
     app.post('/api/convert/:srcDataType/:template(*)', function (req, res) {
         workerPool.exec({
-            'type': '/api/convert/:template',
+            'type': '/api/convert/:srcDataType/:template',
             'srcData': req.body.toString(),
             'srcDataType': req.params.srcDataType,
             'templateName': req.params.template

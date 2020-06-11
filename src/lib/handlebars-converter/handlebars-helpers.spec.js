@@ -88,7 +88,6 @@ describe('Handlebars helpers', function () {
         { f: 'length', in: [undefined], out: 0 },
         { f: 'strLength', in: [undefined], out: 0 },
         { f: 'strLength', in: ["abc"], out: 3 },
-        { f: 'gzip', in: ["abc", "utf8", "hex"], out: "1f8b080000000000000a4b4c4a0600c241243503000000" },
         { f: 'gunzip', in: ["1f8b080000000000000a4b4c4a0600c241243503000000", "hex", "utf8"], out: "abc" },
         { f: 'sha1Hash', in: ["abc"], out: "a9993e364706816aba3e25717850c26c9cd0d89d" },
         { f: 'strSlice', in: ["abcd", 1, 3], out: "bc" },
@@ -193,6 +192,13 @@ describe('Handlebars helpers', function () {
                 }
             }
         });
+    });
+
+    it('gzip returns an expected value', function() {
+        var result = getHelper('gzip').func("abc", "utf8", "hex");
+        // note : gzip output is dependent on OS : https://stackoverflow.com/questions/26516369/zlib-gzip-produces-different-results-for-same-input-on-different-oses
+        // So comparing against windows and linux output
+        assert.ok(result === "1f8b080000000000000a4b4c4a0600c241243503000000" || result === "1f8b08000000000000034b4c4a0600c241243503000000");
     });
 
     it('Random returns a value', function() {

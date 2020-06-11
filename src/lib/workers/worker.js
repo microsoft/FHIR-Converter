@@ -115,7 +115,7 @@ WorkerUtils.workerTaskProcessor((msg) => {
                     }
                     break;
 
-                case '/api/convert/:template':
+                case '/api/convert/:srcDataType/:template':
                     {
                         let srcData = msg.srcData;
                         let templateName = msg.templateName;
