@@ -9,7 +9,8 @@ var dataEditor;
 var templateCodeEditor;
 var outputCode;
 var lineMapping = []; // Mapping source (template) to destination (output) lines
-var activeTemplate = { name: 'untitled', parent: null, data: '{}', active: true, marks: [] };
+var defaultTemplate = { name: 'untitled', parent: null, data: '{}', active: true, marks: [] };
+var activeTemplate = defaultTemplate;
 var openTemplates = [activeTemplate];
 var currentTemplateReference = { [activeTemplate.name]: activeTemplate.data }; // This is what we set the template to initially
 var latestRequest = 0;
@@ -107,8 +108,11 @@ function convertData() {
         var templateLines = [];
         var outputLines = [];
 
-        if (dataEditor.getValue()) {
+        if (dataEditor.getValue() && dataEditor.getValue() !== "") {
             reqBody.srcDataBase64 = btoa(dataEditor.getValue().replace(/[^\x00-\x7F]/g, "")); //TODO
+        }
+        else {
+            return;
         }
 
         var topTemplate = openTemplates.find(template => template.parent === null);
@@ -329,46 +333,52 @@ function unchangedFromReference(templateName, templateData) {
 }
 
 function changeDataType(dataType) {
-    $('#data-type-dropdown-button').text('FHIR Converter: ' + dataType);
-    currentDataType = dataTypeMappings[dataType];
+    if (closeAllTemplates(true)) {
 
-    if (templateOutputSplit) {
-        templateOutputSplit.destroy();
-    }
-    if (dataTemplateSplit) {
-        dataTemplateSplit.destroy();
-    }
+        dataEditor.setValue("");
+        outputCode.setValue("");
 
-    switch (dataType) {
-        case 'HL7v2':
-            $('#editor-wrapper').addClass('vertical-content');
+        $('#data-type-dropdown-button').text('FHIR Converter: ' + dataType);
+        currentDataType = dataTypeMappings[dataType];
 
-            // Create splits for editor areas
-            templateOutputSplit = Split(['.template-area', '.output-area'], {
-                gutterSize: 5,
-                sizes: [50, 50]
-            });
+        if (templateOutputSplit) {
+            templateOutputSplit.destroy();
+        }
+        if (dataTemplateSplit) {
+            dataTemplateSplit.destroy();
+        }
 
-            dataTemplateSplit = Split(['.msg-area', '.editor-area'], {
-                gutterSize: 5,
-                sizes: [30, 70],
-                direction: 'vertical'
-            });
-            break;
-        case 'CDA':
-            $('#editor-wrapper').removeClass('vertical-content');
+        switch (dataType) {
+            case 'HL7v2':
+                $('#editor-wrapper').addClass('vertical-content');
 
-            // Create splits for editor areas
-            templateOutputSplit = Split(['.template-area', '.output-area'], {
-                gutterSize: 5,
-                sizes: [50, 50]
-            });
+                // Create splits for editor areas
+                templateOutputSplit = Split(['.template-area', '.output-area'], {
+                    gutterSize: 5,
+                    sizes: [50, 50]
+                });
 
-            dataTemplateSplit = Split(['.msg-area', '.editor-area'], {
-                gutterSize: 5,
-                sizes: [30, 70]
-            });
-            break;
+                dataTemplateSplit = Split(['.msg-area', '.editor-area'], {
+                    gutterSize: 5,
+                    sizes: [30, 70],
+                    direction: 'vertical'
+                });
+                break;
+            case 'CDA':
+                $('#editor-wrapper').removeClass('vertical-content');
+
+                // Create splits for editor areas
+                templateOutputSplit = Split(['.template-area', '.output-area'], {
+                    gutterSize: 5,
+                    sizes: [50, 50]
+                });
+
+                dataTemplateSplit = Split(['.msg-area', '.editor-area'], {
+                    gutterSize: 5,
+                    sizes: [30, 70]
+                });
+                break;
+        }
     }
 }
 

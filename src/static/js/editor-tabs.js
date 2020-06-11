@@ -1,6 +1,6 @@
 function addTab(templateName, parentName) {
     if (!openTemplates.reduce((isOpen, template) => template.name === templateName ? true : isOpen, false)) {
-        $.get(getUrl('templates', templateName), function (data) {
+        $.get(getUrl('templates', currentDataType + '/' + templateName), function (data) {
             currentTemplateReference[templateName] = data;
 
             var tabs = $('#template-tabs');

@@ -6,23 +6,39 @@ function loadData(dataFile) {
 }
 
 function loadTemplate(templateFile) {
-    var okToLoadTemplate;
+    if (closeAllTemplates()) {
+        addTab(templateFile, null);
+    }
+}
+
+function closeAllTemplates(openDefault = false) {
+    var okToClose;
 
     // Compare to cache while making sure line breaks are handled consistently
     if (openTemplates.reduce(
         (changesNotFound, template) => unchangedFromReference(template.name, template.data) && changesNotFound,
         true)) {
-        okToLoadTemplate = true;
+        okToClose = true;
     } else {
-        okToLoadTemplate = confirm('You have unsaved changes, loading template will reset changes.');
+        okToClose = confirm('You have unsaved changes. Do you wish to discard changes?');
     }
 
-    if (okToLoadTemplate) {
+    if (okToClose) {
         openTemplates.forEach(template => closeTab(template.name, true));
         openTemplates = [];
         currentTemplateReference = {};
-        addTab(templateFile, null);
+
+        if (openDefault) {
+            activeTemplate = null;
+            templateCodeEditor.setValue("{}");
+
+            activeTemplate = defaultTemplate;
+            openTemplates = [activeTemplate];
+            currentTemplateReference = { [activeTemplate.name]: activeTemplate.data };
+        }
     }
+
+    return okToClose;
 }
 
 function saveTemplate() {
@@ -82,22 +98,22 @@ function loadDataOptions() {
 
 function loadTemplateOptions() {
     $.getJSON(getUrl('templates'), function (templateList) {
-        templateNames = templateList.templates.map(template => template.templateName);
-        $("#template-load-dropdown").html('');
-        $.each(templateList.templates, function (index, item) {
-            const templateNameWithType = item.templateName;
+        templateNames = templateList.templates
+            .filter(template => template.templateName.startsWith(currentDataType))
+            .map(template => template.templateName.substring(currentDataType.length + 1));
 
-            if (templateNameWithType.startsWith(currentDataType)) {
-                const templateName = templateNameWithType.substring(currentDataType.length + 1);
-                addToTemplateDropdown("#template-load-dropdown", templateNameWithType, templateName, 0);
-            }
+        $("#template-load-dropdown").html('');
+        $.each(templateNames, function (index, item) {
+            addToTemplateDropdown("#template-load-dropdown", item, item, 0);
         });
     });
 }
 
 function refreshTemplateNames() {
     $.getJSON(getUrl('templates'), function (templateList) {
-        templateNames = templateList.templates.map(template => template.templateName);
+        templateNames = templateList.templates
+            .filter(template => template.templateName.startsWith(currentDataType))
+            .map(template => template.templateName.substring(currentDataType.length + 1));
     });
 }
 
