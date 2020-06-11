@@ -4,9 +4,9 @@ In this how-to guide, we will cover some of the basics around creating templates
 
 ## Prerequisites
 
-Before starting to create a template, ensure that you have deployed the GitHub code and have a local repository of the existing templates. As part of the code, we have included an optional web editor to assist with modifying and creating templates. You can choose to use this web editor or another code editor. For a high level overview of the features for the web UI, see the [web UI summary](web-ui-summary). 
+Before starting to create a template, ensure that you have deployed the GitHub code and have a local repository of the existing templates. As part of the code, we have included an optional web editor to assist with modifying and creating templates. You can choose to use this web editor or another code editor. For a high level overview of the features for the web UI, see the [web UI summary](web-ui-summary).
 
-## Getting started with templates 
+## Getting started with templates
 
 The easiest way to create a template is to start with an existing template and modify that template. However, you can also start from scratch to create your template. There are top level templates that can be used to create a FHIR bundle by translating a full HL7 v2 message or CDA document. There are partial templates that are used as building blocks to create the top level template. For more details on the partial templates, see the [partial template concept section](partial-template-concept.md).
 
@@ -25,14 +25,14 @@ To get started updating/creating templates:
 
 4. Once you are done editing, make sure to hit save. Your template will now be available to be called by the API for real time message translation.
 
-For step by step instructions for how to get started updating/creating HL7 v2 templates, see the [HL7v2 Template Creation](HL7v2_template_creation.md). 
+For step by step instructions for how to get started updating/creating HL7 v2 templates, see the [HL7v2 Template Creation](HL7v2_template_creation.md).
 
-For step by step instructions for how to get started updating/creating C-CDA templates, see the [CCDA Template Creation](CCDA_template_creation.md). 
+For step by step instructions for how to get started updating/creating C-CDA templates, see the [CCDA Template Creation](CCDA_template_creation.md).
 
 ### Creating Template best practices
 
 1. Read the [handlebars documentation](https://handlebarsjs.com/guide/) for best practices on handlebars.
-1. When creating FHIR resources, you will create a unique URL for each resource leveraging the helper function generateUUID. When you pass in the parameters for this helper function, you should consider what data would drive the same unique URL. For example, for a patient, you may only pass in the MRN to ensure that the unique URL For the patient resource is consistent even if other information like their address changes. 
+1. When creating FHIR resources, you will create a unique URL for each resource leveraging the helper function generateUUID. When you pass in the parameters for this helper function, you should consider what data would drive the same unique URL. For example, for a patient, you may only pass in the MRN to ensure that the unique URL For the patient resource is consistent even if other information like their address changes.
 1. In general, it is better to parse messages in the top level template and pass individual segment references to partial templates.
 1. As part of handlebars, there are some built-in helper functions available to you. The handlebars documentation will have the most up to date information on this.
 1. Leveraging partial templates allows you to build building blocks and utilize those building blocks across multiple templates.
@@ -57,7 +57,6 @@ For more details on the released partial templates and examples, see the [Partia
 
 As part of the handlebars functionality, helper functions exist to assist in template creation. We have released a set of starting helpers. You can see the full list of helpers [here](helper-functions-summary.md). We have also included a [using helper function](using-helpers-concept.md) conceptual guide to give some examples of how to use these in your templates.
 
-
 ## Summary
 
 In this how-to-guide we reviewed some of the basics around creating templates. For specifics on how to create HL7v2 templates and C-CDA templates, see our data type specific template creation guides:
@@ -71,5 +70,3 @@ For more details, see some of our additional conceptual guides and resources:
 - [Helper function concept](using-helpers-concept.md)
 - [List of helper functions](helper-function-summary.md)
 - [Web UI functionality](web-ui-summary.md)
-
-

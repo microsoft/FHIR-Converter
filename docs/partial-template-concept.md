@@ -1,10 +1,10 @@
 # Partial Template Concept
 
-Partial templates are a helpful tool when creating templates in the FHIR Converter. Leveraging partial templates allows you to reference them in multiple templates in the future, preventing you from having to rewrite the same code over again. Within the FHIR converter release, there are seven types of partial templates: **Resources**, **References**, **Data Type**, **Code Systems**, **Sections**, **Utils** and **Value Set**. The following sections will describe the purpose of each category of released partial templates and give you things to consider when you’re creating your own partial templates. 
+Partial templates are a helpful tool when creating templates in the FHIR Converter. Leveraging partial templates allows you to reference them in multiple templates in the future, preventing you from having to rewrite the same code over again. Within the FHIR converter release, there are seven types of partial templates: **Resources**, **References**, **Data Type**, **Code Systems**, **Sections**, **Utils** and **Value Set**. The following sections will describe the purpose of each category of released partial templates and give you things to consider when you’re creating your own partial templates.
 
 ## General Partial Templates
 
-The **Data Type**, **Resources** and **References** partial templates are utilised both by the HL7 v2 Converter and C-CDA converter. 
+The **Data Type**, **Resources** and **References** partial templates are utilised both by the HL7 v2 Converter and C-CDA converter.
 
 ### Data Type
 
@@ -42,9 +42,10 @@ Reference templates allow you to create references between two related resources
 
 When this template is called in the main template, you must specify the values for **ID** and **REF**. Below is the example in the ADT_A01.hbs template. DG1Instance is a parameter passed to get each condition from the encounter.
 
-```
+```hbs
 {{>References/Encounter/diagnosis.condition.hbs ID=(generateUUID ../../PV1) REF=(generateUUID DG1Instance)}}
 ```
+
 ## HL7 v2 Specific Partial Template
 
 The **Code Systems** partial template is unique to HL7 v2.
@@ -59,7 +60,7 @@ The **Sections**, **Utils** and **Value Set** partial templates are unique to C-
 
 ### Sections
 
-Section templates are used in the C-CDA to FHIR Converter. A CDA document is comprised of sections, each of which contain narrative text and some of which contain structured data elements. Examples of these sections include *Encounters*, *Immunization*, *Procedures* and *Vital Signs*. The section templates map these sections to FHIR resources. Each CDA document template is comprised of section partial templates. 
+Section templates are used in the C-CDA to FHIR Converter. A CDA document is comprised of sections, each of which contain narrative text and some of which contain structured data elements. Examples of these sections include *Encounters*, *Immunization*, *Procedures* and *Vital Signs*. The section templates map these sections to FHIR resources. Each CDA document template is comprised of section partial templates.
 
 ### Value Set
 

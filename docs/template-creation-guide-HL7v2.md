@@ -1,11 +1,12 @@
 # HL7 v2 template creation
 
-In this how-to-guide, we will cover how to create templates for converting HL7 v2 messages into FHIR bundles. For more general guidance on creating templates, see the [Template Creation Guide](template-creation-how-to-guide.md). 
+In this how-to-guide, we will cover how to create templates for converting HL7 v2 messages into FHIR bundles. For more general guidance on creating templates, see the [Template Creation Guide](template-creation-how-to-guide.md).
+
 The HL7 v2 templates included in the release were created by generating the data from [Google spreadsheets](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk) created by the HL7 community as part of their [V2 to FHIR mapping project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project) which describes the mapping of HL7 v2 version 2.8.2 into FHIR bundles version R4. We will add more templates as the HL7 community defines them.
 
 Right now for HL7 v2, we have top level templates for ADT_A01 (admit message), OML_021 (lab order message), ORU_R01 (observation result message), and VXU_V04 (vaccination update message). There are partial templates available for Data Types, Resources, References and Code Systems. For more information on these types of partial templates, see the [Partial Template Guide](partial-template-concept.md).  
 
-## Getting started 
+## Getting started
 
 To get started updating/creating HL7 v2 templates:
 
@@ -36,5 +37,3 @@ For more details, see some of our additional conceptual guides and resources:
 - [Helper function concept](using-helpers-concept.md)
 - [List of helper functions](helper-function-summary.md)
 - [Web UI functionality](web-ui-summary.md)
-
-

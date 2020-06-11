@@ -1,3 +1,6 @@
+
+# Table of Contents
+
 Here is a table of contents to help you find the document you need:
 
 ## Template creation and management details

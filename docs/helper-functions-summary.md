@@ -1,6 +1,6 @@
 # Helper Functions
 
-The open-source release includes a set of helper functions to assist with template creation. The current list of available helper functions is below. If these do not meet your needs, you can also write your own helper functions. Some of the helper functions are used by both the HL7 v2 to FHIR and C-CDA to FHIR implmentation, while others are specific to data type. 
+The open-source release includes a set of helper functions to assist with template creation. The current list of available helper functions is below. If these do not meet your needs, you can also write your own helper functions. Some of the helper functions are used by both the HL7 v2 to FHIR and C-CDA to FHIR implementation, while others are specific to data type.
 
 | Helper Function | Description | Syntax |
 |-|-|-|
@@ -79,4 +79,3 @@ The open-source release includes a set of helper functions to assist with templa
 | getFirstCdaSectionsWithExactMatch | Returns first instance (non-alphanumeric chars replace by *'_'* in name) of the sections with exact match (uses *equals*) | **getFirstCdaSectionsWithExactMatch** ***message*** ***section1*** ***section2*** |
 | getCdaSectionsLists | Returns instance list (non-alphanumeric chars replace by *'_'* in name) for the given sections | **getCdaSectionsLists** ***message*** ***section1*** ***section2*** |
 | getFirstCdaSectionsByTemplateId | Returns first instance  (non-alphanumeric chars replace by *'_'* in name) of the sections by template id | **getFirstCdaSectionsByTemplateId** ***message*** ***templateId1*** ***templateId2*** |
-

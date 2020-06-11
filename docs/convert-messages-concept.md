@@ -26,28 +26,32 @@ Each time an HL7 v2 message is converted using the APIs, there are three pieces 
 Below is an example of how this data is returned
 
 ### Sample message and template
+
 For the example, we will use the simple message and template below:
 
 #### Message
+
 ```plaintext
 MSH|^~\&|AccMgr
 ZA1|1||10006579^^^1^MRN^1
 ```
+
 #### Template
-```
+
+```hbs
 {
     "resourceType": "Bundle",
     "entry": [
-        {{#with (getFirstSegments msg.v2 'MSH' 'ZA1' )}}           
+        {{#with (getFirstSegments msg.v2 'MSH' 'ZA1' )}}
             {
               "field1" : "{{ZA1-1}}",
                 "field2" : "{{ZA1-2}}",
                 "field3A" : "{{ZA1-3-4}}",
                 "field3B" : "{{ZA1-3-5}}",
                 "field4" : "{{ZA1-4}}",
-            } 
+            }
         {{/with}}
-    ] 
+    ]
 }
 ```
 

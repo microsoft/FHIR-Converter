@@ -5,11 +5,11 @@ To edit templates, the open-source release includes a web UI. You can toggle bet
 
 The core functionality is consistent between the two editors, although there are some differences in the layout, which is described below.
 
-## HL7 v2 Web UI Summary 
+## HL7 v2 Web UI Summary
+
 Below is a screenshot of the HL7 v2 web UI with an overview of the key functionality.
 
 ![Web UI2](images/web-ui-summary-hl7v2.png)
-
 
 | Area | Name | Overview of Functionality |
 |------|------|---------------------|
@@ -25,7 +25,7 @@ Below is a screenshot of the HL7 v2 web UI with an overview of the key functiona
 | 10 | Git | Allows you to create a new branch for updating templates, switch between branches, and commit the current branch |
 | Refresh | Refresh | Brings any updates that you made in a parallel session into this session. For example, if you have two sessions open side by side and modify a template in one, you won’t see the update in the other until selecting refresh. Note that refresh will not reload any open templates.  To ensure you get all changes, close all open templates in the session and then hit refresh. |
 
-## C-CDA Web UI Summary 
+## C-CDA Web UI Summary
 
 Below is a screenshot of the C-CDA web UI with an overview of the key functionality.
 

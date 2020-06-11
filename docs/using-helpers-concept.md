@@ -12,7 +12,7 @@ As part of creating a FHIR resource, you will want to create a unique ID for the
 
 Here is an example for creating a unique GUID for an HL7 v2 message:
 
-```
+```hbs
 {
     "resourceType": "Bundle",
     "type": "transaction",
@@ -23,7 +23,7 @@ Here is an example for creating a unique GUID for an HL7 v2 message:
 
 Here is an example for creating a unique GUID for a C-CDA document:
 
-```
+```hbs
 {
     "resourceType": "Bundle",
     "type": "batch",
@@ -33,14 +33,13 @@ Here is an example for creating a unique GUID for a C-CDA document:
   
 ```
 
-
 ### Force Error
 
 In some scenarios, you may want to return an error instead of the FHIR bundle if some condition isn’t met. For example, if an HL7 v2 message comes across without the PID segment, the translation to FHIR could give an error that the HL7 v2 message is missing the PID segment. Without forcing an error, the message would translate with an empty patient resource.
 
 To force the error instead of having the template run, you can use the assert helper function. An example of how this would look in the template is:
 
-```
+```hbs
 {
     "resourceType": "Bundle",
     "type": "transaction",
@@ -51,17 +50,15 @@ To force the error instead of having the template run, you can use the assert he
 
 The output on the right-hand side would return {BadRequest: Unable to create result: HL7 v2 message is missing the PID segment} in any case that the PID segment is missing from the original HL7 v2 message.
 
-
 ### Formatting Data
 
 Data in HL7 v2 messages and C-CDA documents may not provide the correct format for the FHIR resource. There are several helper functions available to help format things like social security number and dates to meet the FHIR specification.
 
-In a clinical document, a birth date may be stored in the format of 20000101. Using the helper function addHyphensDate you can get it into the format 2000-01-01 which is required by FHIR. In an HL7 v2 template, you would write this as "birthDate":"{{addHyphensDate PID-7}}" if birthday is stored in PID-7. In a C-CDA document, you would write this as "birthDate":"{{addHyphensDate patientRole.patient.birthTime.value}}". The output in the FHIR bundle in both cases would be "birthDate": "2000-01-01". 
+In a clinical document, a birth date may be stored in the format of 20000101. Using the helper function addHyphensDate you can get it into the format 2000-01-01 which is required by FHIR. In an HL7 v2 template, you would write this as "birthDate":"{{addHyphensDate PID-7}}" if birthday is stored in PID-7. In a C-CDA document, you would write this as "birthDate":"{{addHyphensDate patientRole.patient.birthTime.value}}". The output in the FHIR bundle in both cases would be "birthDate": "2000-01-01".
 
 ### Mathematical Functions
 
-We have included mathematical helper functions so you can do basic math. Some of these functions are addition, subtraction, a random number generator and maximum/minimum finders. 
-
+We have included mathematical helper functions so you can do basic math. Some of these functions are addition, subtraction, a random number generator and maximum/minimum finders.
 
 ## Using helpers for HL7v2 message conversion
 
@@ -71,7 +68,7 @@ A common need when translating HL7 v2 messages into FHIR will be to get a specif
 
 Below is an example using two of these helper functions. First, the template leverages getFirstSegment to get the first PID, PD1, and PV1 from the message. From there, we want to remain in the context of the patient and encounter that we pulled from above and pull all the associated DG1 segments. This is accomplished using getSegmentLists.
 
-```
+```hbs
 {
     "resourceType": "Bundle",
     "type": "transaction",
@@ -92,6 +89,7 @@ Below is an example using two of these helper functions. First, the template lev
     ]
 }
 ```
+
 ### Manipulating HL7 v2 data for FHIR bundle
 
 There are scenarios where you need to parse or combine elements from the HL7 v2 message to get the right attribute for your FHIR bundle. We have included several array and string functions to help you pull data and return it in the way you need.
@@ -110,7 +108,7 @@ OBR|1|88502218|82503246|24317-0^Hemogram and platelet count, automated^LN||20141
 
 To get location, room, and building, you could use the following DataType template:
 
-```
+```hbs
 "Location":
 [
 "{{PV1-3-2}}"
@@ -124,15 +122,16 @@ To get location, room, and building, you could use the following DataType templa
 "{{replace PV1-3-2 '\d+' ''}}"
 ],
 ```
+
 ## Using helpers for C-CDA document conversion 
 
 ## Getting Sections
 
-A common need when translating C-CDA documents into FHIR will be to get a specific section and parse over that section. It may be that you want to return the first time a CDA section shows up by template ID, and then iterate over each entry underneath that section. 
+A common need when translating C-CDA documents into FHIR will be to get a specific section and parse over that section. It may be that you want to return the first time a CDA section shows up by template ID, and then iterate over each entry underneath that section.
 
-Below is an example of using helper functions to create Condition Resources and References in the FHIR Bundle. The helper function **getFirstCdaSectionsByTemplateId** is used to get the first time a CDA section shows up. Then, **toArray** is used to iterate over each entry and then each observation. 
+Below is an example of using helper functions to create Condition Resources and References in the FHIR Bundle. The helper function **getFirstCdaSectionsByTemplateId** is used to get the first time a CDA section shows up. Then, **toArray** is used to iterate over each entry and then each observation.
 
-```
+```hbs
 {{#with (getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.5.1')}}
     {{#each (toArray 2_16_840_1_113883_10_20_22_2_5_1.entry)}}
         {{#each (toArray this.act.entryRelationship) as |condEntry|}}
@@ -140,5 +139,5 @@ Below is an example of using helper functions to create Condition Resources and 
             {{>References/Condition/subject.hbs ID=(generateUUID (toJsonString condEntry.observation)) REF=(concat 'Patient/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.recordTarget.patientRole)))}},
         {{/each}}
     {{/each}}
-{{/with}}    
+{{/with}}
 ```
