@@ -3,7 +3,7 @@
 To edit templates, the open-source release includes a web UI. You can toggle between the HL7 v2 to FHIR editor and the C-CDA to FHIR editor: 
 ![toggle editor](images/editor-toggle.png)
 
-Much of the core functionality is consistent between the two editors, although there are some differences. The key functionality of eac editor is described below.
+The core functionality is consistent between the two editors, although there are some differences in the layout, which is described below.
 
 ## HL7 v2 Web UI Summary 
 Below is a screenshot of the HL7 v2 web UI with an overview of the key functionality.
