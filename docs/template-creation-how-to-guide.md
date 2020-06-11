@@ -10,6 +10,9 @@ Before starting to create a template, ensure that you have deployed the GitHub c
 
 The easiest way to create a template is to start with an existing template and modify that template. However, you can also start from scratch to create your template. There are top level templates that can be used to create a FHIR bundle by translating a full HL7 v2 message or CDA document. There are partial templates that are used as building blocks to create the top level template. For more details on the partial templates, see the [partial template concept section](partial-template-concept.md).
 
+To get started editing templates, select the HL7 v2 or C-CDA template editor from the drop down:  
+![toggle editor](images/editor-toggle.png)
+
 To get started updating/creating templates:
 
 1. Load or paste in the sample message that you are using to validate your template. When modifying and creating templates, it’s helpful to have your sample message loaded so that you are able to see the FHIR results real time as you’re editing. 
