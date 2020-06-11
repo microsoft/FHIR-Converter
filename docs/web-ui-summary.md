@@ -10,7 +10,7 @@ Below is a screenshot of the web UI with an overview of the key functionality.
 
 ![Web UI](images/web-ui-overview.jpeg)
 
-![Web UI2](images/web-ui-overview-hl7v2.png)
+![Web UI2](images/web-ui-summary-hl7v2.png)
 
 
 | Area | Name | Overview of Functionality |
