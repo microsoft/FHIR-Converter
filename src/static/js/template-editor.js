@@ -57,7 +57,7 @@ function getUrl(endpoint, fileName) {
 }
 
 function getDataTypeSpecificUrl(endpoint, fileName) {
-    return '/api/' + endpoint + '/' + currentDataType + '/' + (fileName ? '/' + fileName : '') + '?api-version=' + version;
+    return '/api/' + endpoint + '/' + currentDataType + (fileName ? '/' + fileName : '') + '?api-version=' + version;
 }
 
 function checkApiKey(successFunc, errorFunc) {

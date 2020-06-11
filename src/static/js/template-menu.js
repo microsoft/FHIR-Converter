@@ -35,6 +35,7 @@ function closeAllTemplates(openDefault = false) {
             activeTemplate = defaultTemplate;
             openTemplates = [activeTemplate];
             currentTemplateReference = { [activeTemplate.name]: activeTemplate.data };
+            $("#template-name-input").val("");
         }
     }
 
@@ -45,7 +46,7 @@ function saveTemplate() {
     var reqBody = templateCodeEditor.getValue();
     var templateName = $('#template-name-input').val();
 
-    $.ajax(getUrl('templates', templateName), {
+    $.ajax(getDataTypeSpecificUrl('templates', templateName), {
         'data': reqBody,
         'type': 'PUT',
         'processData': false,
