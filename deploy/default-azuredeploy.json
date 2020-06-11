@@ -112,7 +112,7 @@
                             "value": "true"
                         }
                     ],
-                    "linuxFxVersion": "[concat('DOCKER|', variables('registryName'), '/fhirconverter:branch-cda')]",
+                    "linuxFxVersion": "[concat('DOCKER|', variables('registryName'), '/fhirconverter:latest')]",
                     "appCommandLine": "./deploy/webapp.sh",
                     "alwaysOn": true
                 },

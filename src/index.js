@@ -11,7 +11,7 @@ if(process.env.APPINSIGHTS_INSTRUMENTATIONKEY) {
 var express = require('express');
 var app = require('./routes')(express());
 
-var port = process.env.PORT || 20190;
+var port = process.env.PORT || 2019;
 
 var server = app.listen(port, function () {
     var host = server.address().address;
