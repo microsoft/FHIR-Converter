@@ -114,7 +114,31 @@ describe('Handlebars helpers', function () {
         { f: 'toUpper', in: [undefined], out: "" },
         { f: 'toUpper', in: ["abcd"], out: "ABCD" },
         { f: 'isNaN', in: [5], out: false },
-        { f: 'isNaN', in: ["A"], out: true }
+        { f: 'isNaN', in: ["A"], out: true },
+        {f: 'abs', in: [-5], out: 5},
+        {f: 'abs', in: [3], out: 3},
+        {f: 'abs', in: [0], out: 0},
+        {f: 'ceil', in: [1], out: 1},
+        {f: 'ceil', in: [1.1], out: 2},
+        {f: 'ceil', in: [1.9], out: 2},
+        {f: 'floor', in: [1], out: 1},
+        {f: 'floor', in: [1.1], out: 1},
+        {f: 'floor', in: [1.9], out: 1},
+        {f: 'max', in: [3,4,5, "Object"], out: 5}, // when called from the template, an "Object" is the final parameter passed into the function
+        {f: 'min', in: [3,4,5, "Object"], out: 3}, // when called from the template, an "Object" is the final parameter passed into the function
+        {f: 'pow', in: [3,3], out: 27},
+        {f: 'round', in: [-5.5], out: -5},
+        {f: 'round', in: [10], out: 10},
+        {f: 'round', in: [10.9], out: 11},
+        {f: 'round', in: [10.1], out: 10},
+        {f: 'sign', in: [-5], out: -1},
+        {f: 'sign', in: [5], out: 1},
+        {f: 'sign', in: [0], out: 0},
+        {f: 'trunc', in: [9.89], out: 9},
+        {f: 'add', in: [5, 4], out: 9},
+        {f: 'subtract', in: [5, 4], out: 1},
+        {f: 'multiply', in: [2, 3], out: 6},
+        {f: 'divide', in: [10, 5], out: 2}
     ];
 
     opTests.forEach(t => {
@@ -171,7 +195,13 @@ describe('Handlebars helpers', function () {
         });
     });
 
-    it('assert should throw correct error message', function () {
+    it('Random returns a value', function() {
+        var n = getHelper('random').func();
+        assert.ok(n >= 0);
+        assert.ok(n <= 1);
+    });
+
+    it('assert should throw correct error message', function() {
         try {
             getHelper('assert').func(false, "abc");
             assert.fail();

@@ -46,3 +46,17 @@ The open-source release includes a set of helper functions to assist with templa
 | toLower | Converts string to lower case | **toLower** ***string*** |
 | toUpper | Converts string to upper case | **toUpper** ***string*** |
 | isNaN | Checks if the object is not a number using JavaScript isNaN | **isNaN** ***object*** |
+| abs | Returns the absolute value of a number | **abs** ***a*** |
+| ceil | Returns the next largest whole number or integer | **ceil** ***a*** |
+| floor | Returns the largest integer less than or equal to a given number | **floor** ***a*** |
+| max | Returns the largest of zero or more numbers | **max** ***a b …*** |
+| min | Returns the lowest-valued number passed into it, or NaN if any parameter isn't a number and can't be converted into one | **min** ***a b …*** |
+| pow | Returns the base to the exponent power, that is, base^exponent | **pow** ***x y*** |
+| random | Returns a floating-point, pseudo-random number in the range 0 to less than 1 (inclusive of 0, but not 1) with approximately uniform distribution over that range — which you can then scale to your desired range | **random** |
+| round | Returns the value of a number rounded to the nearest integer | **round** ***a*** |
+| sign | Returns either a positive or negative +/- 1, indicating the sign of a number passed into the argument. If the number passed into is 0, it will return a +/- 0. Note that if the number is positive, an explicit (+) will not be returned | **sign** ***a*** |
+| trunc | Returns the integer part of a number by removing any fractional digits | **trunc** ***a*** |
+| add | Add two numbers: + number1 number 2 | **add** ***a b*** |
+| subtract | Subtract second number from the first: - number 1 number 2 | **subtract** ***a b*** |
+| multiply | Multiply two numbers: * number1 number2 | **multiply** ***a b*** |
+| divide | Divide first number by the second number: / number1 number2 | **divide** ***a b*** |

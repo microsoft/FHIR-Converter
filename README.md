@@ -4,7 +4,7 @@
 
 For Healthcare IT teams and solution architects who want to integrate clinical data currently in different formats, the FHIR® Converter is an open source project that enables the conversion of legacy formatted health data to FHIR, expanding the use cases for health data and enabling interoperability.  
 
-Right now, the FHIR Converter transforms HL7 v2 messages into FHIR bundles using templates that define the mappings between the two data formats. Leveraging the FHIR Converter organizations can customize or create their own mapping templates based on their HL7 v2 implementation and transform them into FHIR bundles. These FHIR bundles are returned for further data manipulation or can be immediately persisted into a FHIR server, such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/). The FHIR Converter released to open source on Thursday March 5th, 2020.
+Right now, the FHIR Converter transforms HL7 v2 messages into FHIR bundles using templates that define the mappings between the two data formats. Leveraging the FHIR Converter organizations can customize or create their own mapping templates based on their HL7 v2 implementation and transform them into FHIR bundles. These FHIR bundles are returned for further data manipulation or can be immediately persisted into a FHIR server, such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/). The FHIR Converter released to open source on Thursday March 6th, 2020.
 
 The open-source FHIR Converter consists of the following functionality:
 
@@ -17,12 +17,14 @@ FHIR® is the registered trademark of HL7 and is used with the permission of HL7
 
 ## Deploy the FHIR Converter
 
-The source code is available to be deployed in any manner you would like. The FHIR Converter can be run on-prem or in the cloud. Below are details to quickly deploy to Azure or deploy locally.
+The source code is available to be deployed in any manner you would like. The FHIR Converter can be run on-prem or in the cloud. To deploy the FHIR Converter, there are two key pieces of functionality. One is a web server (node.js) and the other is a persistence layer for the templates. To assist with easy deployment we have included two options below, one through Azure and one which will deploy locally. If you choose to deploy from another mechanism then the two options below, you will need to setup the storage for the templates.
 
 ### Deploy to Azure
-Click this link to deploy in Azure.
+To deploy in Azure, you will need to have a subscription in Azure. If you do not have an Azure subscription, you can start [here](https://azure.microsoft.com/free/).
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2FFHIR-Converter%2Fpersonal%2Fdeepakba%2Fcda%2Fdeploy%2Fdefault-azuredeploy.json" target="_blank">
+Once you have your subscription, click the link below:
+
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2FFHIR-Converter%2Fmaster%2Fdeploy%2Fdefault-azuredeploy.json" target="_blank">
     <img src="https://azuredeploy.net/deploybutton.png"/>
 </a>
 
@@ -53,6 +55,8 @@ Once this completes, you can access Web UI locally at http://localhost:2019/
 Now that you have deployed the FHIR Converter, you can get started with using the functionality. You will need to provide your API key when accessing service for the first time. We have included several documents to help you with template creation and management, understanding message conversion and some general summary guides that include functionality overview.
 
 If you are ready to start modifying and creating your own templates, check out the [how to create templates guide](docs/template-creation-how-to-guide.md) as the first place to start.
+
+Once you have your template complete, check out our [health architectures](https://github.com/microsoft/health-architectures/tree/master/HL7Conversion) which describe how to leverage the FHIR Converter in an end to end scenario. 
 
 ## Documentation
 
