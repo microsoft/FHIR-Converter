@@ -1,3 +1,8 @@
+// -------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
+// -------------------------------------------------------------------------------------------------
+/* eslint-disable no-undef, no-unused-vars */
 function setLastScrollPosition(editor) {
     if (lastScrollEditors.indexOf(editor) < 0) lastScrollEditors.push(editor);
     lastScrollPositions['editor.' + lastScrollEditors.indexOf(editor)] = editor.getScrollInfo();

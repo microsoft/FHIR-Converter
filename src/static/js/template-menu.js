@@ -1,3 +1,9 @@
+// -------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
+// -------------------------------------------------------------------------------------------------
+/* eslint-disable no-undef, no-unused-vars */
+
 function loadData(dataFile) {
     $.get(getUrl('sample-data', dataFile), function (data) {
         dataEditor.setValue(data);

@@ -2,7 +2,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
-
+/* eslint-disable no-undef, no-unused-vars */
 var version = '1.0';
 
 var dataEditor;
@@ -38,7 +38,7 @@ var dataTemplateSplit;
 var dataTypeMappings = {
     'HL7v2': 'hl7v2',
     'CDA': 'cda'
-}
+};
 
 function getSettings() {
     return currentEditorSettings;
@@ -109,6 +109,7 @@ function convertData() {
         var outputLines = [];
 
         if (dataEditor.getValue() && dataEditor.getValue() !== "") {
+            // eslint-disable-next-line no-control-regex
             reqBody.srcDataBase64 = btoa(dataEditor.getValue().replace(/[^\x00-\x7F]/g, "")); //TODO
         }
         else {
@@ -147,38 +148,38 @@ function convertData() {
 
                     // Makes the unused line marking asyc to help performance.
                     if (currentDataType === 'hl7v2')
-                    setTimeout(() => {
-                        if (latestRequest === requestNumber) {
+                        setTimeout(() => {
+                            if (latestRequest === requestNumber) {
                             // Highlights unused sections of the Hl7 data
-                            var unusedReport = data.unusedSegments;
-                            var dataDoc = dataEditor.getDoc();
+                                var unusedReport = data.unusedSegments;
+                                var dataDoc = dataEditor.getDoc();
 
-                            var fieldSeparator = dataDoc.getLine(0)[3];
-                            var componentSeparator = dataDoc.getLine(0)[4];
+                                var fieldSeparator = dataDoc.getLine(0)[3];
+                                var componentSeparator = dataDoc.getLine(0)[4];
 
-                            // Removes all the old highlighting
-                            dataDoc.getAllMarks().forEach((mark) => mark.clear());
+                                // Removes all the old highlighting
+                                dataDoc.getAllMarks().forEach((mark) => mark.clear());
 
-                            unusedReport.forEach((line) => {
-                                line.field.forEach((field) => {
-                                    if (field && field.index !== 0 && field.component.length > 0) {
-                                        field.component.forEach((component) => {
-                                            var lineText = dataDoc.getLine(line.line);
-                                            var startFieldIndex = indexOfX(lineText, fieldSeparator, field.index - 1) + 1;
-                                            var endFieldIndex = indexOfX(lineText, fieldSeparator, field.index);
-                                            if (endFieldIndex === -1) {
-                                                endFieldIndex = lineText.length;
-                                            }
+                                unusedReport.forEach((line) => {
+                                    line.field.forEach((field) => {
+                                        if (field && field.index !== 0 && field.component.length > 0) {
+                                            field.component.forEach((component) => {
+                                                var lineText = dataDoc.getLine(line.line);
+                                                var startFieldIndex = indexOfX(lineText, fieldSeparator, field.index - 1) + 1;
+                                                var endFieldIndex = indexOfX(lineText, fieldSeparator, field.index);
+                                                if (endFieldIndex === -1) {
+                                                    endFieldIndex = lineText.length;
+                                                }
 
-                                            var startComponentIndex = indexOfX(lineText.substring(startFieldIndex, endFieldIndex), componentSeparator, component.index - 1) + startFieldIndex + 1;
-                                            var endComponentIndex = startComponentIndex + component.value.length;
-                                            dataDoc.markText({ line: line.line, ch: startComponentIndex }, { line: line.line, ch: endComponentIndex }, { className: 'unused-segment' });
-                                        });
-                                    }
+                                                var startComponentIndex = indexOfX(lineText.substring(startFieldIndex, endFieldIndex), componentSeparator, component.index - 1) + startFieldIndex + 1;
+                                                var endComponentIndex = startComponentIndex + component.value.length;
+                                                dataDoc.markText({ line: line.line, ch: startComponentIndex }, { line: line.line, ch: endComponentIndex }, { className: 'unused-segment' });
+                                            });
+                                        }
+                                    });
                                 });
-                            });
-                        }
-                    }, 0);
+                            }
+                        }, 0);
                 }
 
             },
