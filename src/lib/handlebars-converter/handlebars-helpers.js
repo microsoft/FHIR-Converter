@@ -283,7 +283,7 @@ module.exports.external = [
     },
     {
         name: 'gzip',
-        description: 'Returns compressed string: gzip string inencoding outEncoding',
+        description: 'Returns compressed string: gzip string inEncoding outEncoding',
         func: function (str, inEncoding, outEncoding) {
             try {
                 if (typeof inEncoding !== 'string')
@@ -303,7 +303,7 @@ module.exports.external = [
     },
     {
         name: 'gunzip',
-        description: 'Returns decompressed string: gunzip string inencoding outEncoding',
+        description: 'Returns decompressed string: gunzip string inEncoding outEncoding',
         func: function (str, inEncoding, outEncoding) {
             try {
                 if (typeof inEncoding !== 'string')

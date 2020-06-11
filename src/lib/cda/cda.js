@@ -7,8 +7,8 @@ let parseString = require('xml2js').parseString;
 let dataHandler = require('../dataHandler/dataHandler');
 
 module.exports = class cda extends dataHandler {
-    constructor(dataType) {
-        super(dataType);
+    constructor() {
+        super("cda");
     }
 
     parseSrcData(data) {

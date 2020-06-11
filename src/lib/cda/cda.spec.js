@@ -24,14 +24,23 @@ describe('cda', function () {
     });
 
     it('should successfully parse correct data.', function (done) {
-        new cda().parseSrcData('<a> <b c="d"/> </a>')
-            .then(() => done())
-            .catch(() => assert.fail());
+        let data = '<a> <b c="d"/> </a>';
+        new cda().parseSrcData(data)
+            .then((result) => {
+                if (result._originalData === data)
+                {
+                    done();
+                }
+                else {
+                    done(new Error(`_originalData doesn't match with data`));
+                }
+            })
+            .catch((err) => done(err));
     });
 
     it('should fail while parsing incorrect data.', function (done) {
         new cda().parseSrcData('<a b c="d"/> </a>')
-            .then(() => assert.fail())
+            .then(() => done(new Error(`parseSrcData should have failed!`)))
             .catch(() => done());
     });
 });

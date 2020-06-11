@@ -11,8 +11,8 @@ var errorMessage = require('../error/error').errorMessage;
 var dataHandler = require('../dataHandler/dataHandler');
 
 module.exports = class hl7v2 extends dataHandler {
-    constructor(dataType) {
-        super(dataType);
+    constructor() {
+        super("hl7v2");
     }
 
     parseSrcData(msg) {
