@@ -6,15 +6,20 @@
 var fs = require('fs');
 var Handlebars = require('handlebars');
 var helpers = require('./handlebars-helpers').external;
-var templatePreprocessor = require('../inputProcessor/templatePreprocessor');
 
-var handlebarsInstance = Handlebars;
+var handlebarsInstances = {};
 
-module.exports.instance = function (createNew, templateFilesLocation, currentContextTemplatesMap) {
+module.exports.instance = function (createNew, dataHandler, templateFilesLocation, currentContextTemplatesMap) {
     if (createNew) {
-        handlebarsInstance = Handlebars.create();
-        var origResolvePartial = handlebarsInstance.VM.resolvePartial;
-        handlebarsInstance.VM.resolvePartial = function (partial, context, options) {
+        handlebarsInstances = {};
+    }
+
+    let dataType = dataHandler.dataType;
+
+    if (!handlebarsInstances[dataType]) {
+        handlebarsInstances[dataType] = Handlebars.create();
+        var origResolvePartial = handlebarsInstances[dataType].VM.resolvePartial;
+        handlebarsInstances[dataType].VM.resolvePartial = function (partial, context, options) {
             if (!options.partials[options.name]) {
                 try {
                     var content;
@@ -24,8 +29,8 @@ module.exports.instance = function (createNew, templateFilesLocation, currentCon
                     else {
                         content = fs.readFileSync(templateFilesLocation + "/" + options.name);
                     }
-                    var preprocessedContent = templatePreprocessor.Process(content.toString());
-                    handlebarsInstance.registerPartial(options.name, preprocessedContent);
+                    var preprocessedContent = dataHandler.preProcessTemplate(content.toString());
+                    handlebarsInstances[dataType].registerPartial(options.name, preprocessedContent);
 
                     // Need to set partial entry here due to a bug in Handlebars (refer # 70386).
                     /* istanbul ignore else  */
@@ -33,7 +38,7 @@ module.exports.instance = function (createNew, templateFilesLocation, currentCon
                         options.partials[options.name] = preprocessedContent;
                     }
                 } catch (err) {
-                    throw new Error(`Referenced partial template ${options.name} not found on disk`);
+                    throw new Error(`Referenced partial template ${options.name} not found on disk : ${err}`);
                 }
             }
 
@@ -41,8 +46,9 @@ module.exports.instance = function (createNew, templateFilesLocation, currentCon
         };
 
         helpers.forEach(h => {
-            handlebarsInstance.registerHelper(h.name, h.func);
+            handlebarsInstances[dataType].registerHelper(h.name, h.func);
         });
     }
-    return handlebarsInstance;
+
+    return handlebarsInstances[dataType];
 };
