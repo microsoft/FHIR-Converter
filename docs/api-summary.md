@@ -4,7 +4,7 @@ Under the API tab on the main page of the web UI, you can see the list of all av
 
 The API is secured using an API Key.
 
-![API Summary](images/api-overview.png)
+![API Summary](images/api-summary.png)
 
 ## API Details
 
