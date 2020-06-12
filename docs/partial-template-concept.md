@@ -12,7 +12,7 @@ Data type templates are building blocks used to define the contents of a data fi
 
 ### Resource
 
-Resource partial templates are used to create one specific FHIR resource in the FHIR bundle. Examples of these are patient, encounter, and condition. What you need in your resource may be message type specific or you may be able to use the same resource template across multiple message types.
+Resource partial templates are used to create one specific FHIR resource in the FHIR bundle. Examples of these are patient, encounter, and condition. What you need in your resource may be message or document type specific or you may be able to use the same resource template across multiple message or document types.
 
 While the resource template maps to a single FHIR resource type, it may pull from multiple segments in an HL7 v2 message or CDA document. For example the released patient resource for HL7 v2 pulls from PID (Patient ID) and NK1 (Next of Kin) segments to generate the resource.
 

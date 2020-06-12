@@ -1,6 +1,6 @@
 # Web UI Summary
 
-To edit templates, the open-source release includes a web UI. You can toggle between the HL7 v2 to FHIR editor and the C-CDA to FHIR editor: 
+To edit templates, the open-source release includes a web UI. You can toggle between the HL7 v2 to FHIR editor and the C-CDA to FHIR editor:
 ![toggle editor](images/editor-toggle.png)
 
 The core functionality is consistent between the two editors, although there are some differences in the layout, which is described below.
@@ -17,7 +17,7 @@ Below is a screenshot of the HL7 v2 web UI with an overview of the key functiona
 | 2 | Display Template |json template based on selection in #7 and displayed in #8. The template can be edited in this window. |
 | 3 | FHIR Output | FHIR bundle output of the message in #1 using the json template in #2 |
 | 4 | API | UI rendering of the swagger to see details on all available APIs. Note that this will navigate you way from the editor to a new page |
-| 5 | Settings | Displays settings available in the UI. Currently the available settings are **scroll sync** (on by default) and **dark mode** (off by default). This is also the pop-up you will see each time you access the UI from a new browser and where you will enter your API Key |
+| 5 | Settings | Displays settings available in the UI. Currently the available setting is **dark mode** (off by default). This is also the pop-up you will see each time you access the UI from a new browser and where you will enter your API Key |
 | 6 | Load Message |Location to select pre loaded test messages for testing the template and conversion. You can add additional test messages using the Git functionality, but not via the UI |
 | 7 | Load Template |Location to select available templates |
 | 8 | Current Template | Shows which template is currently being displayed in #2 and allows you to rename templates for saving |
@@ -37,7 +37,7 @@ Below is a screenshot of the C-CDA web UI with an overview of the key functional
 | 2 | Display Template |json template based on selection in #7 and displayed in #8. The template can be edited in this window. |
 | 3 | FHIR Output | FHIR bundle output of the document in #1 using the json template in #2 |
 | 4 | API | UI rendering of the swagger to see details on all available APIs. Note that this will navigate you way from the editor to a new page |
-| 5 | Settings | Displays settings available in the UI. Currently the available settings are **scroll sync** (on by default) and **dark mode** (off by default). This is also the pop-up you will see each time you access the UI from a new browser and where you will enter your API Key |
+| 5 | Settings | Displays settings available in the UI. Currently the available setting is **dark mode** (off by default). This is also the pop-up you will see each time you access the UI from a new browser and where you will enter your API Key |
 | 6 | Load Data |Location to select pre loaded test documents for testing the template and conversion. You can add additional test documents using the Git functionality, but not via the UI |
 | 7 | Load Template |Location to select available templates |
 | 8 | Current Template | Shows which template is currently being displayed in #2 and allows you to rename templates for saving |

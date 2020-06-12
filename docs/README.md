@@ -11,9 +11,9 @@ Here is a table of contents to help you find the document you need:
 * [HL7 v2 template creation](template-creation-guide-HL7v2.md)
 * [C-CDA template creation](template-creation-guide-CCDA.md)
 
-## Message conversion details
+## Data conversion details
 
-* [Converting messages conceptual guide](convert-messages-concept.md)
+* [Converting data conceptual guide](convert-data-concept.md)
 
 ## Additional resources
 

@@ -123,9 +123,9 @@ To get location, room, and building, you could use the following DataType templa
 ],
 ```
 
-## Using helpers for C-CDA document conversion 
+## Using helpers for C-CDA document conversion
 
-## Getting Sections
+### Getting Sections
 
 A common need when translating C-CDA documents into FHIR will be to get a specific section and parse over that section. It may be that you want to return the first time a CDA section shows up by template ID, and then iterate over each entry underneath that section.
 

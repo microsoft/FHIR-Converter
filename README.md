@@ -9,9 +9,9 @@ The FHIR Converter transforms HL7 v2 messages and C-CDA documents into FHIR bund
 The open-source FHIR Converter consists of the following functionality:
 
 1. A set of starting templates, leveraging [handlebars](https://handlebarsjs.com/), to translate HL7 v2 messages or C-CDA documents into FHIR bundles. 
-1. A set of sample messages to accompany the released templates.
-1. A collection of APIs to convert messages real time and assist in the template management and creation.
-1. A Web UI editor to modify and create templates and test single message conversion to FHIR bundles.
+1. A set of sample data to accompany the released templates.
+1. A collection of APIs to convert data real time and assist in the template management and creation.
+1. A Web UI editor to modify and create templates and test single data conversion to FHIR bundles.
 
 FHIR® is the registered trademark of HL7 and is used with the permission of HL7. Use of the FHIR trademark does not constitute endorsement of this product by HL7.
 
@@ -56,7 +56,7 @@ Once this completes, you can access Web UI locally at http://localhost:2019/
 
 ## Getting started
 
-Now that you have deployed the FHIR Converter, you can get started with using the functionality. You will need to provide your API key when accessing service for the first time. We have included several documents to help you with template creation and management, understanding message conversion and some general summary guides that include functionality overview.
+Now that you have deployed the FHIR Converter, you can get started with using the functionality. You will need to provide your API key when accessing service for the first time. We have included several documents to help you with template creation and management, understanding data conversion and some general summary guides that include functionality overview.
 
 If you are ready to start modifying and creating your own templates, check out the [how to create templates guide](docs/template-creation-how-to-guide.md) as the first place to start.
 
@@ -70,9 +70,9 @@ Once you have your template complete, check out our [health architectures](https
 * [Partial template conceptual guide](docs/partial-template-concept.md)
 * [Examples of using helper functions](docs/using-helpers-concept.md)
 
-### Message conversion details
+### Data conversion details
 
-* [Converting messages conceptual guide](docs/convert-messages-concept.md)
+* [Converting data conceptual guide](docs/convert-data-concept.md)
 
 ### Additional resources
 

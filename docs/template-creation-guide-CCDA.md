@@ -8,9 +8,9 @@ Currently for C-CDA, we have top level templates for CCD, Consultation Note, Dis
 
 To get started updating/creating C-CDA templates:
 
-1. Load or paste in the sample message that you are using to validate your template. When modifying and creating templates, it’s helpful to have your sample message loaded so that you are able to see the FHIR results real time as you’re editing.
+1. Load or paste in the sample document that you are using to validate your template. When modifying and creating templates, it’s helpful to have your sample document loaded so that you are able to see the FHIR results real time as you’re editing.
 
-![load message](images/load-message-ccda.png)
+![load document](images/load-message-ccda.png)
 
 2. Load your starting template or clear the template editing section. Rename the template and hit save so that your new template work doesn’t overwrite an existing template.
 
@@ -20,7 +20,7 @@ To get started updating/creating C-CDA templates:
 
 **TIP**: When editing templates, auto-completion is available for common scenarios to help you pull in commands, helper functions, and template names. To pull these in, start with {{. If you need to pull a partial template, type {{>.
 
-4. Once you are done editing, make sure to hit save. Your template will now be available to be called by the API for real time message translation.
+4. Once you are done editing, make sure to hit save. Your template will now be available to be called by the API for real time document translation.
 
 ## Tips for creating C-CDA templates
 
@@ -28,7 +28,7 @@ As part of the C-CDA converter release, we have provided partial templates for m
 
 ![load_ccd_sections](images/ccd_sections_example.png)
 
-As part of the templates provided for the C-CDA converter, we have also included a Header.hbs partial template. The Header section is the root XML element and is present in every CCDA document. It helps identify and classify documents via basic information about them. The Header.hbs partial template can be used in any top level template to convert the header section in a CDA document to FHIR.
+As part of the templates provided for the C-CDA converter, we have also included a Header.hbs partial template. The Header section is the root XML element and is present in every CDA document. It helps identify and classify documents via basic information about them. The Header.hbs partial template can be used in any top level template to convert the header section in a CDA document to FHIR.
 
 ![load_ccd_header](images/ccd_sections_header.png)
 

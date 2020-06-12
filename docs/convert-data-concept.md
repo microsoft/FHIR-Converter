@@ -1,10 +1,10 @@
 # FHIR Bundle Conversion
 
-The power of the FHIR Converter lies in its ability to convert messages near real-time. Once you have modified the templates to meet your needs, you can call the API as part of your workflow. In the sections below we have an overview of the API and the output you get from the conversion.
+The power of the FHIR Converter lies in its ability to convert data near real-time. Once you have modified the templates to meet your needs, you can call the API as part of your workflow. In the sections below we have an overview of the API and the output you get from the conversion.
 
 ## APIs
 
-To convert your messages leveraging the API, there are two different POST calls you can make depending on how you want to call your template. You can either convert by passing the entire template's content or you can call a template from storage by name.
+To convert your data leveraging the API, there are two different POST calls you can make depending on how you want to call your template. You can either convert by passing the entire template's content or you can call a template from storage by name.
 
 | Function | Syntax                    | Details                                         |
 |----------|---------------------------|-------------------------------------------------|
