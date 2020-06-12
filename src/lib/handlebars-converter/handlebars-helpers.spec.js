@@ -9,18 +9,21 @@ var fs = require('fs');
 var helpers = require('./handlebars-helpers').external;
 var helperUtils = require('./handlebars-helpers').internal;
 var hl7 = require('../hl7v2/hl7v2');
+var cda = require('../cda/cda');
 var path = require('path');
 var validator = require('validator');
 const fse = require('fs-extra');
+var HandlebarsConverter = require('./handlebars-converter');
+var dataHandlerFactory = require('../dataHandler/dataHandlerFactory');
 
-describe('Handlebars helpers', function() {
-    helpers.forEach((h,idx) => {
-        it('Function ' + idx + ' should name a name', function(done) {
+describe('Handlebars helpers', function () {
+    helpers.forEach((h, idx) => {
+        it('Function ' + idx + ' should name a name', function (done) {
             if (h.name.length == 0) {
                 done(new Error("Length of name for function " + idx + " has zero length name"));
             } else {
                 done();
-            }            
+            }
         });
 
         it(h.name + ' should have a description', function (done) {
@@ -41,73 +44,76 @@ describe('Handlebars helpers', function() {
     });
 
     var opTests = [
-        {f: 'eq', in: [1,1,{}], out: true},
-        {f: 'eq', in: [1,2,{}], out: false},
-        {f: 'eq', in: ["foo","foo",{}], out: true},
-        {f: 'eq', in: ["foo","bar","foo","abc",{}], out: true},
-        {f: 'eq', in: [1,"1","2",3,{}], out: true},
-        {f: 'eq', in: [1,"2","2",3,{}], out: false},
-        {f: 'ne', in: [1,1,{}], out: false},
-        {f: 'ne', in: [1,2,{}], out: true},
-        {f: 'ne', in: ["foo","bar",{}], out: true},
-        {f: 'ne', in: ["foo","bar","foo",{}], out: false},
-        {f: 'ne', in: ["foo","bar","abc","def",{}], out: true},
-        {f: 'not', in: [true], out: false},
-        {f: 'not', in: [false], out: true},
-        {f: 'lt', in: [1,2], out: true},
-        {f: 'lt', in: [2,1], out: false},
-        {f: 'lt', in: [2,2], out: false},
-        {f: 'gt', in: [1,2], out: false},
-        {f: 'gt', in: [2,1], out: true},
-        {f: 'gt', in: [1,1], out: false},
-        {f: 'lte', in: [1,2], out: true},
-        {f: 'lte', in: [2,2], out: true},
-        {f: 'lte', in: [2,1], out: false},
-        {f: 'gte', in: [1,2], out: false},
-        {f: 'gte', in: [2,2], out: true},
-        {f: 'gte', in: [2,1], out: true},
-        {f: 'and', in: [true,true,{}], out: true},
-        {f: 'and', in: [true,true,true,false,{}], out: false},
-        {f: 'or', in: [true,true,{}], out: true},
-        {f: 'or', in: [false,false,true,false,{}], out: true},
-        {f: 'or', in: [false,false,{}], out: false},
-        {f: 'concat', in: ["foo","bar", {}], out: "foobar"},
-        {f: 'concat', in: ["a","b","c", {}], out: "abc"},
-        {f: 'elementAt', in: [["a","b","c"],1], out: "b"},
-        {f: 'elementAt', in: [["a","b","c"],5], out: undefined},
-        {f: 'charAt', in: ["abc",1], out: "b"},
-        {f: 'length', in: [["a","b","c"]], out: 3},
-        {f: 'length', in: [undefined], out: 0},
-        {f: 'strLength', in: [undefined], out: 0},
-        {f: 'strLength', in: ["abc"], out: 3},
-        {f: 'strSlice', in: ["abcd",1,3], out: "bc"},
-        {f: 'strSlice', in: ["abcd",1,10], out: "bcd"},
-        {f: 'slice', in: [["a","b","c","d"],1,3], out: ["b","c"]},
-        {f: 'split', in: ["a,b,c",","], out: ["a", "b", "c"]},
-        {f: 'split', in: ["a,x,b,x,c",",x"], out: ["a", ",b", ",c"]},
-        {f: 'replace', in: ["abcdbc","bc","x"], out: "axdx"},
-        {f: 'match', in: ["aBcdE","[A-Z]"], out: ["B", "E"]},
-        {f: 'base64Encode', in: ['a"b'], out: "YSJi"},
-        {f: 'base64Decode', in: ["YSJi"], out: 'a"b'},
-        {f: 'assert', in: [true, "abc"], out: ""},
-        {f: 'toJsonString', in: [["a", "b"]], out: '["a","b"]'},
-        {f: 'addHyphensSSN', in: [undefined], out: ""},
-        {f: 'addHyphensDate', in: [undefined], out: ""},
-        {f: 'convertDateTimeStringToUTC', in: [undefined], out: ""},
-        {f: 'convertDateTimeStringToUTC', in: ["2004062917540000"], out: (new Date(Date.UTC(2004, 05, 29, 17, 54)).toJSON())}, // eslint-disable-line
-        {f: 'convertDateTimeStringToUTC', in: ["2004"], out: (new Date(Date.UTC(2004, 00, 00, 00, 00)).toJSON())}, // eslint-disable-line
-        {f: 'convertDateTimeStringToUTC', in: ["2004062917540034599999"], out: (new Date(Date.UTC(2004, 05, 29, 17, 54, 0, 345)).toJSON())}, // eslint-disable-line
-        {f: 'formatAsDateTime', in: [undefined], out: ""},
-        {f: 'formatAsDateTime', in: ["2004062917540000"], out: (new Date(Date.UTC(2004, 05, 29, 17, 54)).toJSON())}, // eslint-disable-line
-        {f: 'formatAsDateTime', in: ["2004"], out: (new Date(Date.UTC(2004, 00, 00, 00, 00)).toJSON())}, // eslint-disable-line
-        {f: 'formatAsDateTime', in: ["2004062917540034599999"], out: (new Date(Date.UTC(2004, 05, 29, 17, 54, 0, 345)).toJSON())}, // eslint-disable-line
-        {f: 'getFieldRepeats', in: [null], out: null},
-        {f: 'toLower', in: ["ABCD"], out: "abcd"},
-        {f: 'toLower', in: [undefined], out: ""},
-        {f: 'toUpper', in: [undefined], out: ""},
-        {f: 'toUpper', in: ["abcd"], out: "ABCD"},
-        {f: 'isNaN', in: [5], out: false},
-        {f: 'isNaN', in: ["A"], out: true},
+        { f: 'eq', in: [1, 1, {}], out: true },
+        { f: 'eq', in: [1, 2, {}], out: false },
+        { f: 'eq', in: ["foo", "foo", {}], out: true },
+        { f: 'eq', in: ["foo", "bar", "foo", "abc", {}], out: true },
+        { f: 'eq', in: ["1", "1", "2", 3, {}], out: true },
+        { f: 'eq', in: [1, "2", "2", 3, {}], out: false },
+        { f: 'ne', in: [1, 1, {}], out: false },
+        { f: 'ne', in: [1, 2, {}], out: true },
+        { f: 'ne', in: ["foo", "bar", {}], out: true },
+        { f: 'ne', in: ["foo", "bar", "foo", {}], out: false },
+        { f: 'ne', in: ["foo", "bar", "abc", "def", {}], out: true },
+        { f: 'not', in: [true], out: false },
+        { f: 'not', in: [false], out: true },
+        { f: 'lt', in: [1, 2], out: true },
+        { f: 'lt', in: [2, 1], out: false },
+        { f: 'lt', in: [2, 2], out: false },
+        { f: 'gt', in: [1, 2], out: false },
+        { f: 'gt', in: [2, 1], out: true },
+        { f: 'gt', in: [1, 1], out: false },
+        { f: 'lte', in: [1, 2], out: true },
+        { f: 'lte', in: [2, 2], out: true },
+        { f: 'lte', in: [2, 1], out: false },
+        { f: 'gte', in: [1, 2], out: false },
+        { f: 'gte', in: [2, 2], out: true },
+        { f: 'gte', in: [2, 1], out: true },
+        { f: 'and', in: [true, true, {}], out: true },
+        { f: 'and', in: [true, true, true, false, {}], out: false },
+        { f: 'or', in: [true, true, {}], out: true },
+        { f: 'or', in: [false, false, true, false, {}], out: true },
+        { f: 'toArray', in: [['a']], out: ['a'] },
+        { f: 'toArray', in: ['a'], out: ['a'] },
+        { f: 'contains', in: ['abcd', 'bc'], out: true },
+        { f: 'contains', in: [undefined, 'bc'], out: false },
+        { f: 'split', in: ["a,b,c", ","], out: ["a", "b", "c"] },
+        { f: 'concat', in: ["foo", "bar", {}], out: "foobar" },
+        { f: 'concat', in: ["a", "b", "c", {}], out: "abc" },
+        { f: 'concat', in: [["a", "b"], "c", {}], out: ["a", "b", "c"] },
+        { f: 'elementAt', in: [["a", "b", "c"], 1], out: "b" },
+        { f: 'elementAt', in: [["a", "b", "c"], 5], out: undefined },
+        { f: 'charAt', in: ["abc", 1], out: "b" },
+        { f: 'length', in: [["a", "b", "c"]], out: 3 },
+        { f: 'length', in: [undefined], out: 0 },
+        { f: 'strLength', in: [undefined], out: 0 },
+        { f: 'strLength', in: ["abc"], out: 3 },
+        { f: 'gunzip', in: ["1f8b080000000000000a4b4c4a0600c241243503000000", "hex", "utf8"], out: "abc" },
+        { f: 'sha1Hash', in: ["abc"], out: "a9993e364706816aba3e25717850c26c9cd0d89d" },
+        { f: 'strSlice', in: ["abcd", 1, 3], out: "bc" },
+        { f: 'strSlice', in: ["abcd", 1, 10], out: "bcd" },
+        { f: 'slice', in: [["a", "b", "c", "d"], 1, 3], out: ["b", "c"] },
+        { f: 'split', in: ["a,b,c", ","], out: ["a", "b", "c"] },
+        { f: 'split', in: ["a,x,b,x,c", ",x"], out: ["a", ",b", ",c"] },
+        { f: 'replace', in: ["abcdbc", "bc", "x"], out: "axdx" },
+        { f: 'match', in: ["aBcdE", "[A-Z]"], out: ["B", "E"] },
+        { f: 'base64Encode', in: ['a"b'], out: "YSJi" },
+        { f: 'base64Decode', in: ["YSJi"], out: 'a"b' },
+        { f: 'assert', in: [true, "abc"], out: "" },
+        { f: 'toJsonString', in: [["a", "b"]], out: '["a","b"]' },
+        { f: 'addHyphensSSN', in: [undefined], out: "" },
+        { f: 'addHyphensDate', in: [undefined], out: "" },
+        { f: 'formatAsDateTime', in: [undefined], out: "" },
+        { f: 'formatAsDateTime', in: ["2004062917540000"], out: (new Date(Date.UTC(2004, 05, 29, 17, 54)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["2004"], out: (new Date(Date.UTC(2004, 00, 00, 00, 00)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["2004062917540034599999"], out: (new Date(Date.UTC(2004, 05, 29, 17, 54, 0, 345)).toJSON()) }, // eslint-disable-line
+        { f: 'getFieldRepeats', in: [null], out: null },
+        { f: 'toLower', in: ["ABCD"], out: "abcd" },
+        { f: 'toLower', in: [undefined], out: "" },
+        { f: 'toUpper', in: [undefined], out: "" },
+        { f: 'toUpper', in: ["abcd"], out: "ABCD" },
+        { f: 'isNaN', in: [5], out: false },
+        { f: 'isNaN', in: ["A"], out: true },
         {f: 'abs', in: [-5], out: 5},
         {f: 'abs', in: [3], out: 3},
         {f: 'abs', in: [0], out: 0},
@@ -135,41 +141,44 @@ describe('Handlebars helpers', function() {
     ];
 
     opTests.forEach(t => {
-        it(t.f + '(' + t.in.join(',') + ') should return ' + t.out, function(done) {
+        it(t.f + '(' + t.in.join(',') + ') should return ' + t.out, function (done) {
             var out = getHelper(t.f).func(...t.in);
-            if (JSON.stringify(t.out) === JSON.stringify(out))
-            {
+            if (JSON.stringify(t.out) === JSON.stringify(out)) {
                 done();
             }
-            else
-            {
+            else {
                 done(new Error(t.f + '(' + t.in.join(',') + ') DOES NOT return ' + t.out + '. Returns: ' + out));
             }
         });
     });
 
     var opErrorTests = [
-        {f: 'evaluate', in: [undefined]},
-        {f: 'getFieldRepeats', in: ["a"]},
-        {f: 'getFirstSegments', in: [undefined]},
-        {f: 'getSegmentLists', in: [undefined, 'PID', 'NK1']},
-        {f: 'getRelatedSegmentList', in: [undefined]},
-        {f: 'getParentSegment', in: [undefined]},
-        {f: 'hasSegments', in: [undefined, 'PID', 'NK1']},
-        {f: 'split', in: ["a,x,b,x,c",",(x"]},
-        {f: 'slice', in: [undefined, 1,2]},
-        {f: 'strSlice', in: [undefined, 1,2]},
-        {f: 'charAt', in: [undefined, 2]},
-        {f: 'replace', in: ["abcdbc","b[(c","x"]},
-        {f: 'match', in: ["aBcdE","[A-Z"]},
-        {f: 'base64Encode', in: [undefined]},
-        {f: 'base64Decode', in: [undefined]},
-        {f: 'escapeSpecialChars', in: [undefined]},
-        {f: 'unescapeSpecialChars', in: [undefined]},
+        { f: 'evaluate', in: [undefined] },
+        { f: 'getFieldRepeats', in: ["a"] },
+        { f: 'getFirstSegments', in: [undefined] },
+        { f: 'getSegmentLists', in: [undefined, 'PID', 'NK1'] },
+        { f: 'getRelatedSegmentList', in: [undefined] },
+        { f: 'getParentSegment', in: [undefined] },
+        { f: 'hasSegments', in: [undefined, 'PID', 'NK1'] },
+        { f: 'getFirstCdaSections', in: [undefined, 'dummy', {}] },
+        { f: 'getFirstCdaSectionsByTemplateId', in: [undefined, 'dummy', {}] },
+        { f: 'getCdaSectionLists', in: [undefined, 'dummy', {}] },
+        { f: 'gzip', in: [undefined] },
+        { f: 'gunzip', in: [undefined] },
+        { f: 'split', in: ["a,x,b,x,c", ",(x"] },
+        { f: 'slice', in: [undefined, 1, 2] },
+        { f: 'strSlice', in: [undefined, 1, 2] },
+        { f: 'charAt', in: [undefined, 2] },
+        { f: 'replace', in: ["abcdbc", "b[(c", "x"] },
+        { f: 'match', in: ["aBcdE", "[A-Z"] },
+        { f: 'base64Encode', in: [undefined] },
+        { f: 'base64Decode', in: [undefined] },
+        { f: 'escapeSpecialChars', in: [undefined] },
+        { f: 'unescapeSpecialChars', in: [undefined] },
     ];
 
     opErrorTests.forEach(t => {
-        it(t.f + '(' + t.in.join(',') + ') should throw error', function(done) {
+        it(t.f + '(' + t.in.join(',') + ') should throw error', function (done) {
             try {
                 var out = getHelper(t.f).func(...t.in);
                 done(new Error(t.f + '(' + t.in.join(',') + ') does not throw. Returns: ' + out));
@@ -183,6 +192,13 @@ describe('Handlebars helpers', function() {
                 }
             }
         });
+    });
+
+    it('gzip returns an expected value', function() {
+        var result = getHelper('gzip').func("abc", "utf8", "hex");
+        // note : gzip output is dependent on OS : https://stackoverflow.com/questions/26516369/zlib-gzip-produces-different-results-for-same-input-on-different-oses
+        // So comparing against windows and linux output
+        assert.ok(result === "1f8b080000000000000a4b4c4a0600c241243503000000" || result === "1f8b08000000000000034b4c4a0600c241243503000000");
     });
 
     it('Random returns a value', function() {
@@ -201,7 +217,7 @@ describe('Handlebars helpers', function() {
         }
     });
 
-    it('now should return current time', function() {
+    it('now should return current time', function () {
         var before = new Date();
         var currentString = getHelper('now').func();
         var after = new Date();
@@ -212,243 +228,280 @@ describe('Handlebars helpers', function() {
         assert.ok(current <= after);
     });
 
-    it('toString should return a string when given an array', function() {
-        var out = getHelper('toString').func(["foo","bar"]);
-        assert.strictEqual(typeof(out), "string");
+    it('toString should return a string when given an array', function () {
+        var out = getHelper('toString').func(["foo", "bar"]);
+        assert.strictEqual(typeof (out), "string");
         assert.strictEqual(out, 'foo,bar');
     });
 
-    it('generateUUID returns the same guid for same URL', function(){
+    it('generateUUID returns the same guid for same URL', function () {
         var f = getHelper('generateUUID').func;
         assert.strictEqual(f('https://localhost/blah'), f('https://localhost/blah'));
     });
 
-    it('generateUUID should return a guid', function() {
+    it('generateUUID should return a guid', function () {
         assert(validator.isUUID(getHelper('generateUUID').func('https://localhost/blah')));
     });
 
-    it('addHyphensSSN adds hyphens when passed 9 digits', function() {
+    it('addHyphensSSN adds hyphens when passed 9 digits', function () {
         assert.strictEqual('123-45-6789', getHelper('addHyphensSSN').func('123456789'));
     });
 
-    it('addHyphensSSN leaves input unchanged when not 9 digits', function() {
+    it('addHyphensSSN leaves input unchanged when not 9 digits', function () {
         assert.strictEqual('123', getHelper('addHyphensSSN').func('123'));
         assert.strictEqual('111111111111', getHelper('addHyphensSSN').func('111111111111'));
         assert.strictEqual('123-45-67', getHelper('addHyphensSSN').func('123-45-67'));
     });
 
-    it('addHyphensDate adds hyphens when passed 8 digits', function() {
+    it('addHyphensDate adds hyphens when passed 8 digits', function () {
         assert.strictEqual('2001-01-02', getHelper('addHyphensDate').func('20010102'));
     });
 
-    it('addHyphensDate leaves input unchanged when not 8 digits', function() {
+    it('addHyphensDate leaves input unchanged when not 8 digits', function () {
         assert.strictEqual('123', getHelper('addHyphensDate').func('123'));
         assert.strictEqual('111111111111', getHelper('addHyphensDate').func('111111111111'));
         assert.strictEqual('2001-01-', getHelper('addHyphensDate').func('2001-01-'));
     });
 
-    it('getSegmentLists should return a dictionary with segments', function(done) {
-        fs.readFile(path.join(constants.SAMPLE_DATA_LOCATION, 'ADT01-23.hl7'), (err, content) => {
+    it('getFirstCdaSections should return a dictionary with first instance of sections', function (done) {
+        fs.readFile(path.join(constants.CDA_DATA_LOCATION, '170.314B2_Amb_CCD.cda'), (err, content) => {
             if (err) {
                 done(err);
             }
-            else
-            {
+            else {
+                new cda().parseSrcData(content.toString())
+                    .then(data => {
+                        var sections = getHelper('getFirstCdaSections').func(data, 'Allerg', 'Problem', {});
+                        console.log(JSON.stringify(sections.Alvfvflerg));
+                        if (Object.prototype.toString.call(sections.Allerg) !== '[object Object]') {
+                            done(new Error('Incorrect Allerg section'));
+                        }
+                        else if (Object.prototype.toString.call(sections.Problem) !== '[object Object]') {
+                            done(new Error('Incorrect Problem section'));
+                        }
+                        else {
+                            done();
+                        }
+                    })
+                    .catch(err => done(new Error(err.toString())));
+            }
+        });
+    });
+
+    it('getFirstCdaSectionsByTemplateId should return a dictionary with first instance of sections', function (done) {
+        fs.readFile(path.join(constants.CDA_DATA_LOCATION, '170.314B2_Amb_CCD.cda'), (err, content) => {
+            if (err) {
+                done(err);
+            }
+            else {
+                new cda().parseSrcData(content.toString())
+                    .then(data => {
+                        var sections = getHelper('getFirstCdaSectionsByTemplateId').func(data, '2.16.840.1.113883.10.20.22.2.6.1', {});
+                        if (Object.prototype.toString.call(sections['2_16_840_1_113883_10_20_22_2_6_1']) !== '[object Object]') {
+                            done(new Error('Incorrect 2.16.840.1.113883.10.20.22.2.6.1 section'));
+                        }
+                        else {
+                            done();
+                        }
+                    })
+                    .catch(err => done(new Error(err.toString())));
+            }
+        });
+    });
+
+    it('getCdaSectionLists should return a dictionary with first instance of sections', function (done) {
+        fs.readFile(path.join(constants.CDA_DATA_LOCATION, '170.314B2_Amb_CCD.cda'), (err, content) => {
+            if (err) {
+                done(err);
+            }
+            else {
+                new cda().parseSrcData(content.toString())
+                    .then(data => {
+                        var sections = getHelper('getCdaSectionLists').func(data, 'Allerg', {});
+                        console.log(Object.prototype.toString.call(sections['Allerg']));
+                        if (Object.prototype.toString.call(sections['Allerg']) !== '[object Array]') {
+                            done(new Error('Incorrect Allerg section'));
+                        }
+                        else {
+                            done();
+                        }
+                    })
+                    .catch(err => done(new Error(err.toString())));
+            }
+        });
+    });
+
+    it('getSegmentLists should return a dictionary with segments', function (done) {
+        fs.readFile(path.join(constants.HL7V2_DATA_LOCATION, 'ADT01-23.hl7'), (err, content) => {
+            if (err) {
+                done(err);
+            }
+            else {
                 var msg = hl7.parseHL7v2(content.toString());
                 var segments = getHelper('getSegmentLists').func(msg.v2, 'PID', 'NK1', 'IN1', {});
-                if (segments.PID.length != 1)
-                {
+                if (segments.PID.length != 1) {
                     done(new Error('Wrong number of PID segments'));
                 }
-                else if (segments.NK1.length != 1)
-                {
+                else if (segments.NK1.length != 1) {
                     done(new Error('Wrong number of NK1 segments'));
                 }
-                else if (segments.IN1.length != 3)
-                {
+                else if (segments.IN1.length != 3) {
                     done(new Error('Wrong number of IN1 segments'));
                 }
-                else
-                {
+                else {
                     done();
                 }
             }
         });
     });
 
-    it('getFirstSegments should return a dictionary with first instance of segments', function(done) {
-        fs.readFile(path.join(constants.SAMPLE_DATA_LOCATION, 'ADT04-23.hl7'), (err, content) => {
+    it('getFirstSegments should return a dictionary with first instance of segments', function (done) {
+        fs.readFile(path.join(constants.HL7V2_DATA_LOCATION, 'ADT04-23.hl7'), (err, content) => {
             if (err) {
                 done(err);
             }
-            else
-            {
+            else {
                 var msg = hl7.parseHL7v2(content.toString());
                 var segments = getHelper('getFirstSegments').func(msg.v2, 'NK1', 'IN1', {});
-                if (segments.NK1[0] != 1)
-                {
+                if (segments.NK1[0] != 1) {
                     done(new Error('Incorrect NK1 segments'));
                 }
-                else if (segments.IN1[0] != 1)
-                {
+                else if (segments.IN1[0] != 1) {
                     done(new Error('Incorrect IN1 segments'));
                 }
-                else
-                {
+                else {
                     done();
                 }
             }
         });
     });
 
-    it('getFieldRepeats should return correct number of repeats', function(done) {
-        fs.readFile(path.join(constants.SAMPLE_DATA_LOCATION, 'ADT01-28.hl7'), (err, content) => {
+    it('getFieldRepeats should return correct number of repeats', function (done) {
+        fs.readFile(path.join(constants.HL7V2_DATA_LOCATION, 'ADT01-28.hl7'), (err, content) => {
             if (err) {
                 done(err);
             }
-            else
-            {
+            else {
                 var msg = hl7.parseHL7v2(content.toString());
                 var segments = getHelper('getFirstSegments').func(msg.v2, 'PID', {});
                 var repeats1 = getHelper('getFieldRepeats').func(segments.PID[0]);
                 var repeats2 = getHelper('getFieldRepeats').func(segments.PID[2]);
-                if (repeats1.length != 1)
-                {
+                if (repeats1.length != 1) {
                     done(new Error(`Incorrect repeats for field ${segments.PID[0]}`));
                 }
-                else if (repeats2.length != 2)
-                {
+                else if (repeats2.length != 2) {
                     done(new Error(`Incorrect repeats for field ${segments.PID[2]}`));
                 }
-                else
-                {
+                else {
                     done();
                 }
             }
         });
     });
 
-    it('hasSegments should return true with valid segments', function(done) {
-        fs.readFile(path.join(constants.SAMPLE_DATA_LOCATION, 'ADT01-23.hl7'), (err, content) => {
+    it('hasSegments should return true with valid segments', function (done) {
+        fs.readFile(path.join(constants.HL7V2_DATA_LOCATION, 'ADT01-23.hl7'), (err, content) => {
             if (err) {
                 done(err);
             }
-            else
-            {
+            else {
                 var msg = hl7.parseHL7v2(content.toString());
                 var result = getHelper('hasSegments').func(msg.v2, 'PID', 'NK1', 'IN1', {});
-                if (!result)
-                {
+                if (!result) {
                     done(new Error('Expected segments not found'));
                 }
-                else
-                {
+                else {
                     done();
                 }
             }
         });
     });
 
-    it('hasSegments should return false with valid segments', function(done) {
-        fs.readFile(path.join(constants.SAMPLE_DATA_LOCATION, 'ADT01-23.hl7'), (err, content) => {
+    it('hasSegments should return false with valid segments', function (done) {
+        fs.readFile(path.join(constants.HL7V2_DATA_LOCATION, 'ADT01-23.hl7'), (err, content) => {
             if (err) {
                 done(err);
             }
-            else
-            {
+            else {
                 var msg = hl7.parseHL7v2(content.toString());
                 var result = getHelper('hasSegments').func(msg.v2, 'PID', 'NK1', 'ORU', {});
-                if (result)
-                {
+                if (result) {
                     done(new Error('ORU segment should not be found'));
                 }
-                else
-                {
+                else {
                     done();
                 }
             }
         });
     });
 
-    it('getParentSegment should find parent', function(done) {
-        fs.readFile(path.join(constants.SAMPLE_DATA_LOCATION, 'LAB-ORU-2.hl7'), (err, content) => {
+    it('getParentSegment should find parent', function (done) {
+        fs.readFile(path.join(constants.HL7V2_DATA_LOCATION, 'LAB-ORU-2.hl7'), (err, content) => {
             if (err) {
                 done(err);
             }
-            else
-            {
+            else {
                 var msg = hl7.parseHL7v2(content.toString());
                 var result = getHelper('getParentSegment').func(msg.v2, 'OBX', 4, 'OBR', {});
-                if (result['OBR'])
-                {
+                if (result['OBR']) {
                     done();
                 }
-                else
-                {
+                else {
                     done(new Error('OBR segment should be found'));
                 }
             }
         });
     });
 
-    it('getParentSegment should not find parent', function(done) {
-        fs.readFile(path.join(constants.SAMPLE_DATA_LOCATION, 'LAB-ORU-2.hl7'), (err, content) => {
+    it('getParentSegment should not find parent', function (done) {
+        fs.readFile(path.join(constants.HL7V2_DATA_LOCATION, 'LAB-ORU-2.hl7'), (err, content) => {
             if (err) {
                 done(err);
             }
-            else
-            {
+            else {
                 var msg = hl7.parseHL7v2(content.toString());
                 var result = getHelper('getParentSegment').func(msg.v2, 'OBX', 4, 'FOO', {});
-                if (!result['FOO'])
-                {
+                if (!result['FOO']) {
                     done();
                 }
-                else
-                {
+                else {
                     done(new Error('OBR segment should be found'));
                 }
             }
         });
     });
 
-    it('getRelatedSegmentList should find children', function(done) {
-        fs.readFile(path.join(constants.SAMPLE_DATA_LOCATION, 'LAB-ORU-2.hl7'), (err, content) => {
+    it('getRelatedSegmentList should find children', function (done) {
+        fs.readFile(path.join(constants.HL7V2_DATA_LOCATION, 'LAB-ORU-2.hl7'), (err, content) => {
             if (err) {
                 done(err);
             }
-            else
-            {
+            else {
                 var msg = hl7.parseHL7v2(content.toString());
                 var result = getHelper('getRelatedSegmentList').func(msg.v2, 'OBR', '2', 'OBX');
-                if (result.OBX.length == 5)
-                {
+                if (result.OBX.length == 5) {
                     done();
                 }
-                else
-                {
+                else {
                     done(new Error('OBX segments should be found'));
                 }
             }
         });
     });
 
-    it('getRelatedSegmentList should not find children', function(done) {
-        fs.readFile(path.join(constants.SAMPLE_DATA_LOCATION, 'LAB-ORU-2.hl7'), (err, content) => {
+    it('getRelatedSegmentList should not find children', function (done) {
+        fs.readFile(path.join(constants.HL7V2_DATA_LOCATION, 'LAB-ORU-2.hl7'), (err, content) => {
             if (err) {
                 done(err);
             }
-            else
-            {
+            else {
                 var msg = hl7.parseHL7v2(content.toString());
                 var result = getHelper('getRelatedSegmentList').func(msg.v2, 'OBR', '2', 'FOO');
 
-                if (result.FOO.length == 0)
-                {
+                if (result.FOO.length == 0) {
                     done();
                 }
-                else
-                {
+                else {
                     done(new Error('FOO segments should NOT be found'));
                 }
             }
@@ -456,7 +509,7 @@ describe('Handlebars helpers', function() {
     });
 });
 
-describe('Helper "evaluate" test', function() {
+describe('Helper "evaluate" test', function () {
     var tempPath = path.join(__dirname, 'test-helpers');
     const oldTemplateLocation = constants.TEMPLATE_FILES_LOCATION;
     const childTemplateName = 'helpersTestChild.hbs';
@@ -473,36 +526,41 @@ describe('Helper "evaluate" test', function() {
     });
 
     it('evaluate() should work when invoked with template path and obj', function (done) {
-        var obj = {};
-        obj.hash = { x1 : "1", x2 : "2"};
+        var session = require("cls-hooked").createNamespace(constants.CLS_NAMESPACE);
+        var hl7v2Handler = dataHandlerFactory.createDataHandler('hl7v2');
+        session.run(() => {
+            var handlebarInstance = HandlebarsConverter.instance(true, hl7v2Handler, tempPath);
+            session.set(constants.CLS_KEY_HANDLEBAR_INSTANCE, handlebarInstance);
+            session.set(constants.CLS_KEY_TEMPLATE_LOCATION, tempPath);
 
-        fse.writeFileSync(path.join(tempPath, childTemplateName), '{"a":"{{x1}}", "b":"{{x2}}"}');
-        var result = getHelper('evaluate').func(childTemplateName, obj);
+            var obj = {};
+            obj.hash = { x1: "1", x2: "2" };
 
-        if (result['a'] == "1") {
-            // 2nd iteration to test cache by assigning incorrect path to template location
-            constants.TEMPLATE_FILES_LOCATION = "";
-            result = getHelper('evaluate').func(childTemplateName, obj);
+            fse.writeFileSync(path.join(tempPath, childTemplateName), '{"a":"{{x1}}", "b":"{{x2}}"}');
+            var result = getHelper('evaluate').func(childTemplateName, obj);
 
-            if (result['b'] == "2") {
-                done();
+            if (result['a'] == "1") {
+                // 2nd iteration to test cache by assigning incorrect path to template location
+                constants.TEMPLATE_FILES_LOCATION = "";
+                result = getHelper('evaluate').func(childTemplateName, obj);
+
+                if (result['b'] == "2") {
+                    done();
+                }
+                else {
+                    done(new Error('Incorrect output'));
+                }
             }
             else {
                 done(new Error('Incorrect output'));
             }
-        }
-        else {
-            done(new Error('Incorrect output'));
-        }
+        });
     });
 });
 
-function getHelper(helperName)
-{
-    for (var i = 0; i < helpers.length; i++)
-    {
-        if (helpers[i].name === helperName)
-        {
+function getHelper(helperName) {
+    for (var i = 0; i < helpers.length; i++) {
+        if (helpers[i].name === helperName) {
             return helpers[i];
         }
     }

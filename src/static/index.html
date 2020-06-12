@@ -20,6 +20,10 @@
     <script type="text/javascript" src="/codemirror/addon/fold/foldcode.js"></script>
     <script type="text/javascript" src="/codemirror/addon/fold/foldgutter.js"></script>
     <script type="text/javascript" src="/codemirror/addon/fold/brace-fold.js"></script>
+    <script type="text/javascript" src="/codemirror/addon/fold/xml-fold.js"></script>
+    <script type="text/javascript" src="/codemirror/addon/fold/indent-fold.js"></script>
+    <script type="text/javascript" src="/codemirror/addon/fold/markdown-fold.js"></script>
+    <script type="text/javascript" src="/codemirror/addon/fold/comment-fold.js"></script>
     <script type="text/javascript" src="/codemirror/addon/mode/multiplex.js"></script>
     <script type="text/javascript" src="/codemirror/addon/edit/matchbrackets.js"></script>
     <script type="text/javascript" src="/codemirror/addon/hint/show-hint.js"></script>
@@ -31,11 +35,12 @@
     <script type="text/javascript" src="/codemirror/mode/asciiarmor/asciiarmor.js"></script>
     <script type="text/javascript" src="/codemirror/mode/handlebars/handlebars.js"></script>
     <script type="text/javascript" src="/codemirror/mode/javascript/javascript.js"></script>
+    <script type="text/javascript" src="/codemirror/mode/xml/xml.js"></script>
+    <script type="text/javascript" src="/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+    <script type="text/javascript" src="/codemirror/mode/markdown/markdown.js"></script>
 
     <script src="https://unpkg.com/split.js/dist/split.min.js"></script>
 
-    <script type="text/javascript" src="/js/template-editor.js"></script>
-    <script type="text/javascript" src="/js/hdc-hint.js"></script>
     <link rel="stylesheet" type="text/css" href="/css/template-editor.css">
 
 </head>
@@ -44,7 +49,16 @@
     <div class="container-fluid h-100">
 
         <nav class="navbar navbar-expand-sm bg-light navbar-light" id="navbar">
-            <a class="navbar-brand" href="#">FHIR Converter</a>
+            <div class="dropdown">
+                <a class="navbar-brand dropdown-toggle" href="#" id="data-type-dropdown-button" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    FHIR Converter
+                </a>
+                <div id="data-type-dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">HL7v2</a>
+                    <a class="dropdown-item" href="#">CDA</a>
+                </div>
+            </div>
 
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
@@ -55,11 +69,11 @@
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="message-dropdown-button" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="data-dropdown-button" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Load message
+                        Load data
                     </a>
-                    <div id="message-load-dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div id="data-load-dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -96,9 +110,9 @@
         </div>
 
         <!-- Split layout for editors -->
-        <div class="vertical-content">
+        <div class="editor-content" id="editor-wrapper">
             <div class="content split msg-area">
-                <textarea id="hl7messagebox">MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||</textarea>
+                <textarea id="databox"></textarea>
             </div>
             <div class="content split editor-area">
                 <div class="split template-area">
@@ -128,10 +142,6 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="settings-scroll-sync" checked>
-                            <label class="form-check-label" for="settings-scroll-sync">Scroll sync</label>
-                        </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="settings-dark-mode">
                             <label class="form-check-label" for="settings-dark-mode">Dark mode</label>
@@ -187,6 +197,12 @@
             </div>
         </div>
     </div>
-</body>
 
+    <script type="text/javascript" src="/js/editor-tabs.js"></script>
+    <script type="text/javascript" src="/js/git-menu.js"></script>
+    <script type="text/javascript" src="/js/scroll-sync.js"></script>
+    <script type="text/javascript" src="/js/template-menu.js"></script>
+    <script type="text/javascript" src="/js/template-editor.js"></script>
+    <script type="text/javascript" src="/js/hdc-hint.js"></script>
+</body>
 </html>
