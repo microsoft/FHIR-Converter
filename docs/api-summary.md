@@ -11,8 +11,8 @@ The API is secured using an API Key.
 | Function | Syntax                    | Details                                         |
 |----------|---------------------------|-------------------------------------------------|
 |GET       |/api/helpers               |Lists available template helpers                 |
-|GET       |/api/data                  |Lists available data                             |
-|GET       |/api/data/{file}           |Returns specified data                            |
+|GET       |/api/sample-data           |Lists available data                             |
+|GET       |/api/sample-data/{file}    |Returns specified data                            |
 |GET       |/api/templates/git/status  |Lists uncommitted changes                        |
 |GET       |/api/templates/git/branches|Lists of branches                                |
 |POST      |/api/templates/git/branches|Create new branch (from head)                    |
