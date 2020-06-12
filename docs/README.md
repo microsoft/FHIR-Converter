@@ -9,7 +9,7 @@ Here is a table of contents to help you find the document you need:
 * [Partial template conceptual guide](partial-template-concept.md)
 * [Examples of using helper functions](using-helpers-concept.md)
 * [HL7 v2 template creation](template-creation-guide-HL7v2.md)
-* [CCDA template creation](template-creation-guide-CCDA.md)
+* [C-CDA template creation](template-creation-guide-CCDA.md)
 
 ## Message conversion details
 
