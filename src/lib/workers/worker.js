@@ -106,7 +106,7 @@ WorkerUtils.workerTaskProcessor((msg) => {
 
                                 })
                                 .catch(err => {
-                                    reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, `Unable to parse input data. ${err.error.message}`) });
+                                    reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, `Unable to parse input data. ${err.toString()}`) });
                                 });
                         }
                         catch (err) {
@@ -181,7 +181,7 @@ WorkerUtils.workerTaskProcessor((msg) => {
                                     });
                             })
                             .catch(err => {
-                                reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, `Unable to parse input data. ${err.error.message}`) });
+                                reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, `Unable to parse input data. ${err.toString()}`) });
                             });
                     }
                     break;

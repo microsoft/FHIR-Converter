@@ -6,8 +6,6 @@ var specialCharProcessor = require('../inputProcessor/specialCharProcessor');
 var hl7SequenceHandler = require('./hl7EscapeSequence');
 var hl7v2TemplatePreprocessor = require('../inputProcessor/templatePreprocessor');
 var CoverageArray = require('./coverage-array');
-var errorCodes = require('../error/error').errorCodes;
-var errorMessage = require('../error/error').errorMessage;
 var dataHandler = require('../dataHandler/dataHandler');
 
 module.exports = class hl7v2 extends dataHandler {
@@ -23,7 +21,7 @@ module.exports = class hl7v2 extends dataHandler {
                 fulfill(data);
             }
             catch (err) {
-                reject(errorMessage(errorCodes.BadRequest, err.message));
+                reject(err);
             }
         });
     }
