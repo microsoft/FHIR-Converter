@@ -888,7 +888,7 @@ describe('POST /api/convert/hl7v2 (inline conversion)', function () {
             .expect(400, {
                 error: {
                     code: "BadRequest",
-                    message: "Unable to parse input data. Invalid HL7 v2 message, first segment id = MSQ"
+                    message: "Unable to parse input data. Error: Invalid HL7 v2 message, first segment id = MSQ"
                 }
             })
             .end(function (err) {
@@ -1621,7 +1621,7 @@ describe('POST /api/convert/hl7v2/:template (with stored template)', function ()
             .expect(400, {
                 error: {
                     code: "BadRequest",
-                    message: "Unable to parse input data. Invalid HL7 v2 message, first segment id = MSQ"
+                    message: "Unable to parse input data. Error: Invalid HL7 v2 message, first segment id = MSQ"
                 }
             })
             .end(function (err) {
