@@ -32,7 +32,15 @@ var normalizeSectionName = function (name) {
 };
 
 var getDate = function (dateTimeString) {
+    // handling the date format here
     var ds = dateTimeString.toString();
+    if (/^(\d{0,5}|\d{7})$/.test(ds))
+        return ds;
+    if (/^\d{6}$/.test(ds))
+        return ds.substring(0, 4) + '-' + ds.substring(4, 6);
+    if (/^\d{8}$/.test(ds))
+        return ds.substring(0, 4) + '-' + ds.substring(4, 6) + '-' + ds.substring(6, 8);
+
     ds = ds.padEnd(17, '0');
     var year = ds.slice(0, 4);
     var monthIndex = ds.slice(4, 6) - 1;
@@ -44,7 +52,7 @@ var getDate = function (dateTimeString) {
     var minute = ds.slice(10, 12);
     var second = ds.slice(12, 14);
     var millisecond = ds.slice(14, 17);
-    return (new Date(Date.UTC(year, monthIndex, day, hour, minute, second, millisecond)));
+    return (new Date(Date.UTC(year, monthIndex, day, hour, minute, second, millisecond))).toJSON();
 };
 
 module.exports.internal = {
@@ -660,13 +668,11 @@ module.exports.external = [
         func: function (date) {
             try {
                 var bd = date.toString();
-
-                // Should be 8 digits
-                if (!/^\d{8}$/.test(bd)) {
-                    return bd;
-                }
-
-                return bd.substring(0, 4) + '-' + bd.substring(4, 6) + '-' + bd.substring(6, 8);
+                if (/^\d{8,17}$/.test(bd)) 
+                    return bd.substring(0, 4) + '-' + bd.substring(4, 6) + '-' + bd.substring(6, 8);
+                if (/^\d{6}$/.test(bd))
+                    return bd.substring(0, 4) + '-' + bd.substring(4, 6);
+                return bd;
             }
             catch (err) {
                 return '';
@@ -685,7 +691,7 @@ module.exports.external = [
         description: 'Converts an YYYYMMDDHHmmssSSS string, e.g. 20040629175400000 to dateTime format, e.g. 2004-06-29T17:54:00.000z: formatAsDateTime(dateTimeString)',
         func: function (dateTimeString) {
             try {
-                return getDate(dateTimeString).toJSON();
+                return getDate(dateTimeString);
             }
             catch (err) {
                 return '';

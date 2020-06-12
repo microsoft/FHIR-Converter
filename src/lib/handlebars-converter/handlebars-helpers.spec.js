@@ -104,8 +104,11 @@ describe('Handlebars helpers', function () {
         { f: 'addHyphensSSN', in: [undefined], out: "" },
         { f: 'addHyphensDate', in: [undefined], out: "" },
         { f: 'formatAsDateTime', in: [undefined], out: "" },
+        {f: 'formatAsDateTime', in: ["2004"], out: "2004"}, // eslint-disable-line
+        {f: 'formatAsDateTime', in: ["20041"], out: "20041"}, // eslint-disable-line
+        {f: 'formatAsDateTime', in: ["200411"], out: "2004-11"}, // eslint-disable-line
+        {f: 'formatAsDateTime', in: ["20041101"], out: "2004-11-01"}, // eslint-disable-line
         { f: 'formatAsDateTime', in: ["2004062917540000"], out: (new Date(Date.UTC(2004, 05, 29, 17, 54)).toJSON()) }, // eslint-disable-line
-        { f: 'formatAsDateTime', in: ["2004"], out: (new Date(Date.UTC(2004, 00, 00, 00, 00)).toJSON()) }, // eslint-disable-line
         { f: 'formatAsDateTime', in: ["2004062917540034599999"], out: (new Date(Date.UTC(2004, 05, 29, 17, 54, 0, 345)).toJSON()) }, // eslint-disable-line
         { f: 'getFieldRepeats', in: [null], out: null },
         { f: 'toLower', in: ["ABCD"], out: "abcd" },
@@ -222,7 +225,7 @@ describe('Handlebars helpers', function () {
         var currentString = getHelper('now').func();
         var after = new Date();
 
-        var current = helperUtils.getDate(currentString);
+        var current = new Date(helperUtils.getDate(currentString));
 
         assert.ok(before <= current);
         assert.ok(current <= after);
@@ -253,13 +256,18 @@ describe('Handlebars helpers', function () {
         assert.strictEqual('123-45-67', getHelper('addHyphensSSN').func('123-45-67'));
     });
 
-    it('addHyphensDate adds hyphens when passed 8 digits', function () {
-        assert.strictEqual('2001-01-02', getHelper('addHyphensDate').func('20010102'));
+    it('addHyphensDate adds hyphens when passed 6 digits', function() {
+        assert.strictEqual('2001-01', getHelper('addHyphensDate').func('200101'));
     });
 
-    it('addHyphensDate leaves input unchanged when not 8 digits', function () {
+    it('addHyphensDate adds hyphens when passed 8-17 digits', function() {
+        assert.strictEqual('2001-01-02', getHelper('addHyphensDate').func('20010102'));
+        assert.strictEqual('2001-01-02', getHelper('addHyphensDate').func('2001010200'));
+        assert.strictEqual('2001-01-02', getHelper('addHyphensDate').func('200101020000'));
+    });
+
+    it('addHyphensDate leaves input unchanged when not 6, 8-17 digits', function() {
         assert.strictEqual('123', getHelper('addHyphensDate').func('123'));
-        assert.strictEqual('111111111111', getHelper('addHyphensDate').func('111111111111'));
         assert.strictEqual('2001-01-', getHelper('addHyphensDate').func('2001-01-'));
     });
 
