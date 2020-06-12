@@ -53,11 +53,11 @@ function getApiKey() {
 }
 
 function getUrl(endpoint, fileName) {
-    return '/api/' + endpoint + (fileName ? '/' + fileName : '') + '?api-version=' + version;
+    return '/api/' + endpoint + (fileName ? '/' + fileName : '');
 }
 
 function getDataTypeSpecificUrl(endpoint, fileName) {
-    return '/api/' + endpoint + '/' + currentDataType + (fileName ? '/' + fileName : '') + '?api-version=' + version;
+    return '/api/' + endpoint + '/' + currentDataType + (fileName ? '/' + fileName : '');
 }
 
 function checkApiKey(successFunc, errorFunc) {
@@ -364,6 +364,8 @@ function changeDataType(dataType) {
                     sizes: [30, 70],
                     direction: 'vertical'
                 });
+
+                dataEditor.setOption("mode", "default");
                 break;
             case 'CDA':
                 $('#editor-wrapper').removeClass('vertical-content');
@@ -378,6 +380,8 @@ function changeDataType(dataType) {
                     gutterSize: 5,
                     sizes: [30, 70]
                 });
+
+                dataEditor.setOption("mode", "text/html");
                 break;
         }
     }
@@ -388,7 +392,7 @@ $(document).ready(function () {
         //readOnly: false,
         lineNumbers: true,
         theme: lightMode,
-        mode: { name: "text/html" },
+        mode: { name: "default" },
         extraKeys: { "Ctrl-Q": function (cm) { cm.foldCode(cm.getCursor()); } },
         foldGutter: true,
         gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
