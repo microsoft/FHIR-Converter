@@ -4,11 +4,11 @@
 
 For Healthcare IT teams and solution architects who want to integrate clinical data currently in different formats, the FHIR® Converter is an open source project that enables the conversion of legacy formatted health data to FHIR, expanding the use cases for health data and enabling interoperability.  
 
-The FHIR Converter transforms HL7 v2 messages and C-CDA documents into FHIR bundles using templates that define the mappings between the two data formats. Leveraging the FHIR Converter, organizations can customize or create their own mapping templates based on their HL7 v2 or C-CDA implementation and transform them into FHIR bundles. These FHIR bundles are returned for further data manipulation or can be immediately persisted into a FHIR server, such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/). The FHIR Converter released to open source on Thursday March 6th, 2020 with support for HL7 v2 to FHIR conversion. On Friday June 12th, 2020, C-CDA to FHIR conversion was added to the OSS FHIR Converter.
+The FHIR Converter transforms HL7 v2 messages and CDA documents into FHIR bundles using templates that define the mappings between the two data formats. Leveraging the FHIR Converter, organizations can customize or create their own mapping templates based on their HL7 v2 or C-CDA implementation and transform them into FHIR bundles. These FHIR bundles are returned for further data manipulation or can be immediately persisted into a FHIR server, such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/). The FHIR Converter released to open source on Thursday March 6th, 2020 with support for HL7 v2 to FHIR conversion. On Friday June 12th, 2020, C-CDA to FHIR conversion was added to the OSS FHIR Converter.
 
 The open-source FHIR Converter consists of the following functionality:
 
-1. A set of starting templates, leveraging [handlebars](https://handlebarsjs.com/), to translate HL7 v2 messages or C-CDA documents into FHIR bundles. 
+1. A set of starting templates, leveraging [handlebars](https://handlebarsjs.com/), to translate HL7 v2 messages or CDA documents into FHIR bundles.
 1. A set of sample data to accompany the released templates.
 1. A collection of APIs to convert data real time and assist in the template management and creation.
 1. A Web UI editor to modify and create templates and test single data conversion to FHIR bundles.

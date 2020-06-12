@@ -21,7 +21,7 @@ Here is an example for creating a unique GUID for an HL7 v2 message:
             {{>Resources/ADT_A01/Patient.hbs PID=PID PD1=PD1 NK1=NK1 ID=(generateUUID PID)}},
 ```
 
-Here is an example for creating a unique GUID for a C-CDA document:
+Here is an example for creating a unique GUID for a CDA document:
 
 ```hbs
 {
@@ -52,9 +52,9 @@ The output on the right-hand side would return {BadRequest: Unable to create res
 
 ### Formatting Data
 
-Data in HL7 v2 messages and C-CDA documents may not provide the correct format for the FHIR resource. There are several helper functions available to help format things like social security number and dates to meet the FHIR specification.
+Data in HL7 v2 messages and CDA documents may not provide the correct format for the FHIR resource. There are several helper functions available to help format things like social security number and dates to meet the FHIR specification.
 
-In a clinical document, a birth date may be stored in the format of 20000101. Using the helper function addHyphensDate you can get it into the format 2000-01-01 which is required by FHIR. In an HL7 v2 template, you would write this as "birthDate":"{{addHyphensDate PID-7}}" if birthday is stored in PID-7. In a C-CDA document, you would write this as "birthDate":"{{addHyphensDate patientRole.patient.birthTime.value}}". The output in the FHIR bundle in both cases would be "birthDate": "2000-01-01".
+In a clinical document, a birth date may be stored in the format of 20000101. Using the helper function addHyphensDate you can get it into the format 2000-01-01 which is required by FHIR. In an HL7 v2 template, you would write this as "birthDate":"{{addHyphensDate PID-7}}" if birthday is stored in PID-7. In a CDA document, you would write this as "birthDate":"{{addHyphensDate patientRole.patient.birthTime.value}}". The output in the FHIR bundle in both cases would be "birthDate": "2000-01-01".
 
 ### Mathematical Functions
 
@@ -127,7 +127,7 @@ To get location, room, and building, you could use the following DataType templa
 
 ### Getting Sections
 
-A common need when translating C-CDA documents into FHIR will be to get a specific section and parse over that section. It may be that you want to return the first time a CDA section shows up by template ID, and then iterate over each entry underneath that section.
+A common need when translating CDA documents into FHIR will be to get a specific section and parse over that section. It may be that you want to return the first time a CDA section shows up by template ID, and then iterate over each entry underneath that section.
 
 Below is an example of using helper functions to create Condition Resources and References in the FHIR Bundle. The helper function **getFirstCdaSectionsByTemplateId** is used to get the first time a CDA section shows up. Then, **toArray** is used to iterate over each entry and then each observation.
 

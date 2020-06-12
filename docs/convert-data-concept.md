@@ -8,8 +8,8 @@ To convert your data leveraging the API, there are two different POST calls you 
 
 | Function | Syntax                    | Details                                         |
 |----------|---------------------------|-------------------------------------------------|
-|POST      |/api/convert/{srcDataType} |Converts data to FHIR using a template directly from the end point|
-|POST      |/api/convert/{template}    |Converts data to FHIR using a template from storage|
+|POST      |/api/convert/{srcDataType} |Takes data, and temporary templates as input and outputs FHIR data after applying the templates on the data. The entry-point template is passed base64-encoded in templateBase64 parameter, whereas other overriding templates are passed in the templatesOverrideBase64 parameter.  templatesOverrideBase64 is a base64-encoded json object containing map between the template name and the template content.|
+|POST      |/api/convert/{template}    |Takes data and converts to FHIR using the {template} that is stored on the server.|
 
 ## HL7 v2 Conversion output
 
@@ -131,8 +131,8 @@ Below is the output you get from the message and template. It includes the three
 
 ## C-CDA Conversion output
 
-Each time a C-CDA document is converted using the APIs, there is one piece of information returned:
+Each time a CDA document is converted using the APIs, there is one piece of information returned:
 
 | Section | Details | Use Case |
 |-|-|-|
-| **fhirResource** | The FHIR bundle for the converted C-CDA document | The fhirResource is the FHIR bundle that you can do further manipulation on or persist directly in a FHIR server
+| **fhirResource** | The FHIR bundle for the converted CDA document | The fhirResource is the FHIR bundle that you can do further manipulation on or persist directly in a FHIR server
