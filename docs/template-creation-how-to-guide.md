@@ -15,11 +15,11 @@ To get started editing templates, select the HL7 v2 or C-CDA template editor fro
 
 To get started updating/creating templates:
 
-1. Load or paste in the sample message that you are using to validate your template. When modifying and creating templates, it’s helpful to have your sample message loaded so that you are able to see the FHIR results real time as you’re editing. 
+1. Load or paste in the sample message that you are using to validate your template. When modifying and creating templates, it’s helpful to have your sample message loaded so that you are able to see the FHIR results real time as you’re editing.
 
 2. Load your starting template or clear the template editing section. Rename the template and hit save so that your new template work doesn’t overwrite an existing template.
 
-3. As you make updates in the left-hand editor, you will see the results of those reflected on the right-hand side.
+3. As you make updates in the template editor, you will see the results of those reflected in the FHIR output.
 
 **TIP**: When editing templates, auto-completion is available for common scenarios to help you pull in commands, helper functions, and template names. To pull these in, start with {{. If you need to pull a partial template, type {{>.
 
@@ -41,7 +41,7 @@ For step by step instructions for how to get started updating/creating C-CDA tem
 
 ## Partial templates
 
-Handlebars allows for nested templates, enabling you to create partial templates to be called by your top level template. If you want to edit a referenced partial template, you can double click on any underlined reference in the template editor and that template will open in a new tab in the bottom left-hand side of the UI. As you make modifications, you will see the results reflected on the right-hand side, which still shows the main top level template you loaded originally.
+Handlebars allows for nested templates, enabling you to create partial templates to be called by your top level template. If you want to edit a referenced partial template, you can double click on any underlined reference in the template editor and that template will open in a new tab . As you make modifications, you will see the results reflected in the FHIR output, which still shows the main top level template you loaded originally.
 
 ![edit partial template](images/partial-template-edit.png)
 
@@ -49,7 +49,7 @@ Handlebars allows for nested templates, enabling you to create partial templates
 
 While you’re modifying a partial template, decide if you want to modify the partial template for all templates that reference this partial template or just the one you’re working on. If you only want to modify it for the one template you are working on, make sure to rename the template at the top before making any changes and hit save. On the main template you will have to update the template to call your newly named partial template.
 
-**NOTE**: Scrolling between the template editor on the left and FHIR bundle output on the right-hand side only works for the original template you selected. When working with a template that you drilled into, you will need to scroll on both sides of the UI.
+**NOTE**: Scrolling between the template editor and the FHIR bundle output only works for the original template you selected. When working with a template that you drilled into, you will need to scroll on both sides of the UI.
 
 For more details on the released partial templates and examples, see the [Partial Templates concept](partial-template-concept.md) documentation.
 

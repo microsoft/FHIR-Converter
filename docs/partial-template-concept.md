@@ -4,7 +4,7 @@ Partial templates are a helpful tool when creating templates in the FHIR Convert
 
 ## General Partial Templates
 
-The **Data Type**, **Resources** and **References** partial templates are utilised both by the HL7 v2 Converter and C-CDA converter.
+The **Data Type**, **Resources** and **References** partial templates are utilized both by the HL7 v2 Converter and C-CDA converter.
 
 ### Data Type
 
@@ -14,9 +14,9 @@ Data type templates are building blocks used to define the contents of a data fi
 
 Resource partial templates are used to create one specific FHIR resource in the FHIR bundle. Examples of these are patient, encounter, and condition. What you need in your resource may be message type specific or you may be able to use the same resource template across multiple message types.
 
-While the resource template maps to a single FHIR resource type, it may pull from multiple segments in an HL7 v2 message. For example the released patient resource pulls from PID (Patient ID) and NK1 (Next of Kin) segments to generate the resource.
+While the resource template maps to a single FHIR resource type, it may pull from multiple segments in an HL7 v2 message or CDA document. For example the released patient resource for HL7 v2 pulls from PID (Patient ID) and NK1 (Next of Kin) segments to generate the resource.
 
-Most of the resource templates will reference data type and code system partial templates. Resource templates are created by parsing the HL7 v2 elements and mapping those directly to the FHIR attribute. When parsing these elements, the helper functions can be helpful to ensure that you are able to pull the exact data that you need. For more details on the helper functions, please see the helper function section of the [How-To-Guide for template creation](template-creation-how-to-guide.md) and for a full list of helper functions, see the [helper function summary](helper-functions-summary.md) page.
+Most of the resource templates will reference data type or code system partial templates. Resource templates are created by parsing the HL7 v2 elements and CDA Sections and mapping those directly to the FHIR attribute. When parsing these elements, the helper functions can be helpful to ensure that you are able to pull the exact data that you need. For more details on the helper functions, please see the helper function section of the [How-To-Guide for template creation](template-creation-how-to-guide.md) and for a full list of helper functions, see the [helper function summary](helper-functions-summary.md) page.
 
 ### Reference
 
