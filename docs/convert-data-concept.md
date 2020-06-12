@@ -1,19 +1,19 @@
-# HL7 v2 Message to FHIR Bundle Conversion
+# FHIR Bundle Conversion
 
-The power of the FHIR Converter lies in its ability to convert messages near real-time. Once you have modified the templates to meet your needs, you can call the API as part of your workflow. In the sections below we have an overview of the API and the output you get from the conversion.
+The power of the FHIR Converter lies in its ability to convert data near real-time. Once you have modified the templates to meet your needs, you can call the API as part of your workflow. In the sections below we have an overview of the API and the output you get from the conversion.
 
 ## APIs
 
-To convert your messages leveraging the API, there are two different POST calls you can make depending on how you want to call your template. You can either convert by passing the entire template's content or you can call a template from storage by name.
+To convert your data leveraging the API, there are two different POST calls you can make depending on how you want to call your template. You can either convert by passing the entire template's content or you can call a template from storage by name.
 
 | Function | Syntax                    | Details                                         |
 |----------|---------------------------|-------------------------------------------------|
-|POST      |/api/convert/hl7           |Converts an HL7 v2 message to FHIR passing entire template content|
-|POST      |/api/convert/hl7/{template}|Converts an HL7 v2 message to FHIR using a template from storage|
+|POST      |/api/convert/{srcDataType} |Takes data, and temporary templates as input and outputs FHIR data after applying the templates on the data. The entry-point template is passed base64-encoded in templateBase64 parameter, whereas other overriding templates are passed in the templatesOverrideBase64 parameter.  templatesOverrideBase64 is a base64-encoded json object containing map between the template name and the template content.|
+|POST      |/api/convert/{template}    |Takes data and converts to FHIR using the {template} that is stored on the server.|
 
-## Conversion output
+## HL7 v2 Conversion output
 
-Each time a message is converted using the APIs, there are three pieces of information returned:
+Each time an HL7 v2 message is converted using the APIs, there are three pieces of information returned:
 
 | Section | Details | Use Case |
 |-|-|-|
@@ -21,33 +21,37 @@ Each time a message is converted using the APIs, there are three pieces of infor
 | **unusedSegments** | A list of segments that the template didn’t look at that were present in the message. In the Web UI, these are the segments that were underlined in red dots (...) | You can use the details returned in this section to see if there were any required segments that weren't processed. In this way, you can ensure that you don't store a FHIR bundle that is missing key information from the HL7 v2 message |
 | **invalidAccess** | A list of segments the template tried to access that didn’t exist in the incoming HL7 v2 message | The invalidAccess section allows you to do post-processing on the FHIR bundle to ensure that the incoming HL7 v2 messages that was processed didn't have any major issues. For example, you may want to reject or investigate any message that is missing the Patient Identifier |
 
-## Examples
+### Examples
 
 Below is an example of how this data is returned
 
 ### Sample message and template
+
 For the example, we will use the simple message and template below:
 
 #### Message
+
 ```plaintext
 MSH|^~\&|AccMgr
 ZA1|1||10006579^^^1^MRN^1
 ```
+
 #### Template
-```
+
+```hbs
 {
     "resourceType": "Bundle",
     "entry": [
-        {{#with (getFirstSegments msg.v2 'MSH' 'ZA1' )}}           
+        {{#with (getFirstSegments msg.v2 'MSH' 'ZA1' )}}
             {
               "field1" : "{{ZA1-1}}",
                 "field2" : "{{ZA1-2}}",
                 "field3A" : "{{ZA1-3-4}}",
                 "field3B" : "{{ZA1-3-5}}",
                 "field4" : "{{ZA1-4}}",
-            } 
+            }
         {{/with}}
-    ] 
+    ]
 }
 ```
 
@@ -124,3 +128,11 @@ Below is the output you get from the message and template. It includes the three
     ]
 }
 ```
+
+## C-CDA Conversion output
+
+Each time a CDA document is converted using the APIs, there is one piece of information returned:
+
+| Section | Details | Use Case |
+|-|-|-|
+| **fhirResource** | The FHIR bundle for the converted CDA document | The fhirResource is the FHIR bundle that you can do further manipulation on or persist directly in a FHIR server

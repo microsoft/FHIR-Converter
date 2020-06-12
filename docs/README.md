@@ -1,3 +1,6 @@
+
+# Table of Contents
+
 Here is a table of contents to help you find the document you need:
 
 ## Template creation and management details
@@ -5,10 +8,12 @@ Here is a table of contents to help you find the document you need:
 * [How to create templates guide](template-creation-how-to-guide.md)
 * [Partial template conceptual guide](partial-template-concept.md)
 * [Examples of using helper functions](using-helpers-concept.md)
+* [HL7 v2 template creation](template-creation-guide-HL7v2.md)
+* [C-CDA template creation](template-creation-guide-CCDA.md)
 
-## Message conversion details
+## Data conversion details
 
-* [Converting messages conceptual guide](convert-messages-concept.md)
+* [Converting data conceptual guide](convert-data-concept.md)
 
 ## Additional resources
 
