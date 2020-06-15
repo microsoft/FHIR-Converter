@@ -40,7 +40,6 @@ var getDate = function (dateTimeString) {
         return ds.substring(0, 4) + '-' + ds.substring(4, 6);
     if (ds.length <= 7)
         return ds;
-    
     if (ds.length == 8)
         return ds.substring(0, 4) + '-' + ds.substring(4, 6) + '-' + ds.substring(6, 8);
 
