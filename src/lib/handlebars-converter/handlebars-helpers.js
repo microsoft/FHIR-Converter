@@ -34,11 +34,13 @@ var normalizeSectionName = function (name) {
 var getDate = function (dateTimeString) {
     // handling the date format here
     var ds = dateTimeString.toString();
-    if (/^(\d{0,5}|\d{7})$/.test(ds))
+    if (!/^\d+$/.test(ds))
+        return null;
+    if (0 <= ds.length <= 5 && ds.length == 7)
         return ds;
-    if (/^\d{6}$/.test(ds))
+    if (ds.length == 6)
         return ds.substring(0, 4) + '-' + ds.substring(4, 6);
-    if (/^\d{8}$/.test(ds))
+    if (ds.length == 8)
         return ds.substring(0, 4) + '-' + ds.substring(4, 6) + '-' + ds.substring(6, 8);
 
     ds = ds.padEnd(17, '0');
@@ -668,10 +670,12 @@ module.exports.external = [
         func: function (date) {
             try {
                 var bd = date.toString();
-                if (/^\d{8,17}$/.test(bd)) 
-                    return bd.substring(0, 4) + '-' + bd.substring(4, 6) + '-' + bd.substring(6, 8);
-                if (/^\d{6}$/.test(bd))
+                if (!/^\d+$/.test(bd))
+                    return null;
+                if (bd.length == 6)
                     return bd.substring(0, 4) + '-' + bd.substring(4, 6);
+                if (bd.length >= 8)
+                    return bd.substring(0, 4) + '-' + bd.substring(4, 6) + '-' + bd.substring(6, 8);
                 return bd;
             }
             catch (err) {
