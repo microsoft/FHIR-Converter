@@ -1,4 +1,5 @@
-        {{#with (getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.7.1')}}
+{{#if (contains (toString (toJsonString msg)) '2.16.840.1.113883.10.20.22.2.7.1')}}
+    {{#with (getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.7.1')}}
             {{#each (toArray 2_16_840_1_113883_10_20_22_2_7_1.entry) as |procEntry|}}
                 {{#if procEntry.procedure}}
                     {{>Resources/Procedure.hbs procedureEntry=procEntry.procedure ID=(generateUUID (toJsonString procEntry.procedure))}},
@@ -20,3 +21,4 @@
                 {{/if}}
             {{/each}}
         {{/with}} 
+{{/if}}

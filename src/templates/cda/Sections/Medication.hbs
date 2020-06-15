@@ -1,4 +1,5 @@
-      	{{#with (getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.1.1')}}
+{{#if (contains (toString (toJsonString msg)) '2.16.840.1.113883.10.20.22.2.1.1')}}
+    {{#with (getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.1.1')}}
             {{#each (toArray 2_16_840_1_113883_10_20_22_2_1_1.entry) as |medEntry|}}
                 {{#if medEntry.substanceAdministration}}
                     {{>Resources/MedicationStatement.hbs medicationStatement=medEntry.substanceAdministration ID=(generateUUID (toJsonString medEntry.substanceAdministration))}},
@@ -31,3 +32,4 @@
                 {{/if}}  
             {{/each}}
         {{/with}}
+{{/if}}

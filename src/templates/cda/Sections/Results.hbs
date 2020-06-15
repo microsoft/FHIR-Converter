@@ -1,4 +1,5 @@
-        {{#with (getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.3.1')}}
+{{#if (contains (toString (toJsonString msg)) '2.16.840.1.113883.10.20.22.2.3.1')}}
+    {{#with (getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.3.1')}}
             {{#each (toArray 2_16_840_1_113883_10_20_22_2_3_1.entry) as |drEntry|}}
                 {{>Resources/DiagnosticReport.hbs diagReport=drEntry.organizer ID=(generateUUID (toJsonString drEntry.organizer))}},
                 {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
@@ -27,3 +28,4 @@
                 {{/each}}
             {{/each}}
         {{/with}}
+{{/if}}
