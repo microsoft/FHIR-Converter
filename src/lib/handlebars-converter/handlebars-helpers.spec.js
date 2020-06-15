@@ -266,9 +266,13 @@ describe('Handlebars helpers', function () {
         assert.strictEqual('2001-01-02', getHelper('addHyphensDate').func('200101020000'));
     });
 
+    it('addHyphensDate return null when passed some non-numeric characters', function() {
+        assert.strictEqual(null, getHelper('addHyphensDate').func('2001test'));
+    });
+
     it('addHyphensDate leaves input unchanged when not 6, 8-17 digits', function() {
         assert.strictEqual('123', getHelper('addHyphensDate').func('123'));
-        assert.strictEqual('2001-01-', getHelper('addHyphensDate').func('2001-01-'));
+        assert.strictEqual('1999110', getHelper('addHyphensDate').func('1999110'));
     });
 
     it('getFirstCdaSections should return a dictionary with first instance of sections', function (done) {
