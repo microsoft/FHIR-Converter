@@ -104,6 +104,7 @@ describe('Handlebars helpers', function () {
         { f: 'addHyphensSSN', in: [undefined], out: "" },
         { f: 'addHyphensDate', in: [undefined], out: "" },
         { f: 'formatAsDateTime', in: [undefined], out: "" },
+        {f: 'formatAsDateTime', in: ["20041wrong"], out: null}, // eslint-disable-line
         {f: 'formatAsDateTime', in: ["2004"], out: "2004"}, // eslint-disable-line
         {f: 'formatAsDateTime', in: ["20041"], out: "20041"}, // eslint-disable-line
         {f: 'formatAsDateTime', in: ["200411"], out: "2004-11"}, // eslint-disable-line
