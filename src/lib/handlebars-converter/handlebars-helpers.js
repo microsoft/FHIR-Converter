@@ -31,34 +31,116 @@ var normalizeSectionName = function (name) {
     return name.replace(/[^A-Za-z0-9]/g, '_');
 };
 
-var getDate = function (dateTimeString) {
-    // handling the date format here
-    var ds = dateTimeString.toString();
-    if (!/^\d+$/.test(ds))
-        return null;
-    if (ds.length == 6)
-        return ds.substring(0, 4) + '-' + ds.substring(4, 6);
-    if (ds.length <= 7)
-        return ds;
-    if (ds.length == 8)
-        return ds.substring(0, 4) + '-' + ds.substring(4, 6) + '-' + ds.substring(6, 8);
+// check the date is valid
+var validDate = function (year, monthIndex, day){
+    var dateInstance = new Date(year, monthIndex, day);
+    if(dateInstance.getFullYear() == year && dateInstance.getMonth() == monthIndex && dateInstance.getDate() == day)
+        return true;
+    return false;
+};
 
-    ds = ds.padEnd(17, '0');
-    var year = ds.slice(0, 4);
-    var monthIndex = ds.slice(4, 6) - 1;
-    if (monthIndex < 0) {
-        monthIndex = 0;
+// check the datetime is valid
+var validUTCDateTime = function (year, monthIndex, day, hours, minutes, seconds, milliseconds){
+    var dateInstance = new Date(Date.UTC(year, monthIndex, day, hours, minutes, seconds, milliseconds));
+    if(dateInstance.getUTCFullYear() == year && dateInstance.getUTCMonth() == monthIndex && dateInstance.getUTCDate() == day && dateInstance.getUTCHours() == hours 
+        && dateInstance.getUTCMinutes() == minutes && dateInstance.getSeconds() == seconds && dateInstance.getMilliseconds() == milliseconds)
+        return true;
+    return false;
+};
+
+// check the string is valid
+var validString = function (dateTimeString) {
+    if (!dateTimeString || dateTimeString.toString() == '')
+        return false;
+    return true;
+};
+
+// check the characters of string are digits
+var validDigitString = function (dateTimeString) {
+    var ds = dateTimeString.toString();
+    if (!/^(\d+)$/.test(ds))
+        throw `Contains non-numeric characters in ${ds}`;
+    return ds;
+};
+
+// convert the dateString to date string with hyphens
+var convertDate = function (dateString) {
+    if (dateString.length == 4)
+        return dateString;
+    if (dateString.length == 6 || dateString.length >= 8){
+        var year = dateString.substring(0, 4);
+        var month = dateString.substring(4, 6);
+        if (month <= 0 || month > 12)
+            throw `Invalid month: ${dateString}`;
+        if (dateString.length == 6)
+            return year + '-' + month;
+        var day = dateString.substring(6, 8);
+        if (!validDate(year, month - 1, day))
+            throw `Invalid day: ${dateString}`;
+        return year + '-' + month + '-' + day;
     }
-    var day = ds.slice(6, 8);
-    var hour = ds.slice(8, 10);
-    var minute = ds.slice(10, 12);
-    var second = ds.slice(12, 14);
-    var millisecond = ds.slice(14, 17);
-    return (new Date(Date.UTC(year, monthIndex, day, hour, minute, second, millisecond))).toJSON();
+    throw `Bad input for Date type in ${dateString}`;
+};
+
+
+// handling the date format here
+var getDate = function (dateString) {
+    try{
+        if (!validString(dateString))
+            return '';
+        var ds = validDigitString(dateString);
+        return convertDate(ds);
+    }
+    catch (err) {
+        throw `${err}`;
+    }
 };
 
 module.exports.internal = {
     getDate: getDate
+};
+
+// handling the datetime format here
+var getDateTime = function (dateTimeString) {
+    try{
+        if (!validString(dateTimeString))
+            return '';
+
+        // handle special datetime format like 20130130080051+0500, 20130130080051-0500
+        var ds = dateTimeString.toString();
+        if (/^(\d{14})(-|\+)(\d{4})$/.test(ds))
+        {
+            var dateSections = ds.split(ds[14]);
+            var date = dateSections[0].substring(0,4) + '-' + dateSections[0].substring(4,6) + '-' + dateSections[0].substring(6,8);
+            var time = dateSections[0].substring(8,10) + ':' + dateSections[0].substring(10,12) + ':' + dateSections[0].substring(12,14);
+            var timezone = ds[14] + dateSections[1];
+            return new Date(date + ' ' + time + ' ' + timezone).toISOString();
+        }
+
+        ds = validDigitString(dateTimeString);
+        if (ds.length <= 8)
+            return convertDate(ds);
+        
+        // Padding 0s to 17 digits 
+        ds = ds.padEnd(17, '0');
+        var year = ds.slice(0, 4);
+        var monthIndex = ds.slice(4, 6) - 1;
+        var day = ds.slice(6, 8);
+        var hours = ds.slice(8, 10);
+        var minutes = ds.slice(10, 12);
+        var seconds = ds.slice(12, 14);
+        var milliseconds = ds.slice(14, 17);
+        if (!validUTCDateTime(year, monthIndex, day, hours, minutes, seconds, milliseconds))
+            throw `Invalid dateTime: ${ds}`;
+        return (new Date(Date.UTC(year, monthIndex, day, hours, minutes, seconds, milliseconds))).toJSON();
+    }
+    catch (err) {
+        throw `${err}`;
+    }
+};
+
+module.exports.internal = {
+    getDateTime: getDateTime
 };
 
 module.exports.external = [
@@ -669,17 +751,10 @@ module.exports.external = [
         description: 'Adds hyphens to a date without hyphens: addHyphensDate date',
         func: function (date) {
             try {
-                var bd = date.toString();
-                if (!/^\d+$/.test(bd))
-                    return null;
-                if (bd.length == 6)
-                    return bd.substring(0, 4) + '-' + bd.substring(4, 6);
-                if (bd.length >= 8)
-                    return bd.substring(0, 4) + '-' + bd.substring(4, 6) + '-' + bd.substring(6, 8);
-                return bd;
+                return getDate(date);
             }
             catch (err) {
-                return '';
+                throw `helper "addHyphensDate" : ${err}`;
             }
         }
     },
@@ -695,10 +770,10 @@ module.exports.external = [
         description: 'Converts an YYYYMMDDHHmmssSSS string, e.g. 20040629175400000 to dateTime format, e.g. 2004-06-29T17:54:00.000z: formatAsDateTime(dateTimeString)',
         func: function (dateTimeString) {
             try {
-                return getDate(dateTimeString);
+                return getDateTime(dateTimeString);
             }
             catch (err) {
-                return '';
+                throw `helper "formatAsDateTime" : ${err}`;
             }
         }
     },
