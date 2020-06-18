@@ -135,7 +135,6 @@ var getDateTime = function (dateTimeString) {
         {
             var dateSections = ds.split(ds[14]);
             var dateTimeComposition = getDateTimeComposition(dateSections[0]);
-            dateTimeComposition.milliseconds = 0;
             var date = dateTimeComposition.year + '-' + dateTimeComposition.month + '-' + dateTimeComposition.day;
             var time = dateTimeComposition.hours + ':' + dateTimeComposition.minutes + ':' + dateTimeComposition.seconds;
             var timezone = ds[14] + dateSections[1];
