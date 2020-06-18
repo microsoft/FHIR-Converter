@@ -34,25 +34,27 @@ var normalizeSectionName = function (name) {
 // check the date is valid
 var validDate = function (year, monthIndex, day){
     var dateInstance = new Date(year, monthIndex, day);
-    if(dateInstance.getFullYear() == year && dateInstance.getMonth() == monthIndex && dateInstance.getDate() == day)
+    if(dateInstance.getFullYear() === Number(year) && dateInstance.getMonth() === Number(monthIndex) && dateInstance.getDate() === Number(day))
         return true;
     return false;
 };
 
 // check the datetime is valid
 var validUTCDateTime = function (dateTimeComposition){
+    for (var key in dateTimeComposition)
+        dateTimeComposition[key] = Number(dateTimeComposition[key]);
     var dateInstance = new Date(Date.UTC(dateTimeComposition.year, dateTimeComposition.month - 1, dateTimeComposition.day, dateTimeComposition.hours, dateTimeComposition.minutes, dateTimeComposition.seconds, dateTimeComposition.milliseconds));
-    if(dateInstance.getUTCFullYear() == dateTimeComposition.year && dateInstance.getUTCMonth() == dateTimeComposition.month - 1 
-        && dateInstance.getUTCDate() == dateTimeComposition.day && dateInstance.getUTCHours() == dateTimeComposition.hours 
-        && dateInstance.getUTCMinutes() == dateTimeComposition.minutes && dateInstance.getSeconds() == dateTimeComposition.seconds 
-        && dateInstance.getMilliseconds() == dateTimeComposition.milliseconds)
+    if(dateInstance.getUTCFullYear() === dateTimeComposition.year && dateInstance.getUTCMonth() === dateTimeComposition.month - 1 
+        && dateInstance.getUTCDate() === dateTimeComposition.day && dateInstance.getUTCHours() === dateTimeComposition.hours 
+        && dateInstance.getUTCMinutes() === dateTimeComposition.minutes && dateInstance.getSeconds() === dateTimeComposition.seconds 
+        && dateInstance.getMilliseconds() === dateTimeComposition.milliseconds)
         return true;
     return false;
 };
 
 // check the string is valid
 var validString = function (dateTimeString) {
-    if (!dateTimeString || dateTimeString.toString() == '')
+    if (!dateTimeString || dateTimeString.toString() === '')
         return false;
     return true;
 };
@@ -67,14 +69,14 @@ var validDigitString = function (dateTimeString) {
 
 // convert the dateString to date string with hyphens
 var convertDate = function (dateString) {
-    if (dateString.length == 4)
+    if (dateString.length === 4)
         return dateString;
-    if (dateString.length == 6 || dateString.length >= 8){
+    if (dateString.length === 6 || dateString.length >= 8){
         var year = dateString.substring(0, 4);
         var month = dateString.substring(4, 6);
         if (month <= 0 || month > 12)
             throw `Invalid month: ${dateString}`;
-        if (dateString.length == 6)
+        if (dateString.length === 6)
             return year + '-' + month;
         var day = dateString.substring(6, 8);
         if (!validDate(year, month - 1, day))
@@ -87,15 +89,10 @@ var convertDate = function (dateString) {
 
 // handling the date format here
 var getDate = function (dateString) {
-    try{
-        if (!validString(dateString))
-            return '';
-        var ds = validDigitString(dateString);
-        return convertDate(ds);
-    }
-    catch (err) {
-        throw `${err}`;
-    }
+    if (!validString(dateString))
+        return '';
+    var ds = validDigitString(dateString);
+    return convertDate(ds);
 };
 
 module.exports.internal = {
@@ -125,37 +122,32 @@ var getDateTimeComposition = function (ds){
 
 // handling the datetime format here
 var getDateTime = function (dateTimeString) {
-    try{
-        if (!validString(dateTimeString))
-            return '';
+    if (!validString(dateTimeString))
+        return '';
 
-        // handle special datetime format like 20130130080051+0500, 20130130080051-0500
-        var ds = dateTimeString.toString();
-        if (/^(\d{14})(-|\+)(\d{4})$/.test(ds))
-        {
-            var dateSections = ds.split(ds[14]);
-            var dateTimeComposition = getDateTimeComposition(dateSections[0]);
-            var date = dateTimeComposition.year + '-' + dateTimeComposition.month + '-' + dateTimeComposition.day;
-            var time = dateTimeComposition.hours + ':' + dateTimeComposition.minutes + ':' + dateTimeComposition.seconds;
-            var timezone = ds[14] + dateSections[1];
-            if (!validUTCDateTime(dateTimeComposition))
-                throw `Invalid datetime: ${ds}`;
-            return new Date(date + ' ' + time + ' ' + timezone).toISOString();
-        }
-
-        ds = validDigitString(dateTimeString);
-        if (ds.length <= 8)
-            return convertDate(ds);
-        
-        // Padding 0s to 17 digits 
-        dateTimeComposition = getDateTimeComposition(ds);
+    // handle special datetime format like 20130130080051+0500, 20130130080051-0500
+    var ds = dateTimeString.toString();
+    if (/^(\d{14})(-|\+)(\d{4})$/.test(ds))
+    {
+        var dateSections = ds.split(ds[14]);
+        var dateTimeComposition = getDateTimeComposition(dateSections[0]);
+        var date = dateTimeComposition.year + '-' + dateTimeComposition.month + '-' + dateTimeComposition.day;
+        var time = dateTimeComposition.hours + ':' + dateTimeComposition.minutes + ':' + dateTimeComposition.seconds;
+        var timezone = ds[14] + dateSections[1];
         if (!validUTCDateTime(dateTimeComposition))
             throw `Invalid datetime: ${ds}`;
-        return (new Date(Date.UTC(dateTimeComposition.year, dateTimeComposition.month - 1, dateTimeComposition.day, dateTimeComposition.hours, dateTimeComposition.minutes, dateTimeComposition.seconds, dateTimeComposition.milliseconds))).toJSON();
+        return new Date(date + ' ' + time + ' ' + timezone).toISOString();
     }
-    catch (err) {
-        throw `${err}`;
-    }
+
+    ds = validDigitString(dateTimeString);
+    if (ds.length <= 8)
+        return convertDate(ds);
+    
+    // Padding 0s to 17 digits 
+    dateTimeComposition = getDateTimeComposition(ds);
+    if (!validUTCDateTime(dateTimeComposition))
+        throw `Invalid datetime: ${ds}`;
+    return (new Date(Date.UTC(dateTimeComposition.year, dateTimeComposition.month - 1, dateTimeComposition.day, dateTimeComposition.hours, dateTimeComposition.minutes, dateTimeComposition.seconds, dateTimeComposition.milliseconds))).toJSON();
 };
 
 module.exports.internal = {
