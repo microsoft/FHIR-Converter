@@ -40,10 +40,12 @@ var validDate = function (year, monthIndex, day){
 };
 
 // check the datetime is valid
-var validUTCDateTime = function (year, monthIndex, day, hours, minutes, seconds, milliseconds){
-    var dateInstance = new Date(Date.UTC(year, monthIndex, day, hours, minutes, seconds, milliseconds));
-    if(dateInstance.getUTCFullYear() == year && dateInstance.getUTCMonth() == monthIndex && dateInstance.getUTCDate() == day && dateInstance.getUTCHours() == hours 
-        && dateInstance.getUTCMinutes() == minutes && dateInstance.getSeconds() == seconds && dateInstance.getMilliseconds() == milliseconds)
+var validUTCDateTime = function (dateTimeComposition){
+    var dateInstance = new Date(Date.UTC(dateTimeComposition.year, dateTimeComposition.month - 1, dateTimeComposition.day, dateTimeComposition.hours, dateTimeComposition.minutes, dateTimeComposition.seconds, dateTimeComposition.milliseconds));
+    if(dateInstance.getUTCFullYear() == dateTimeComposition.year && dateInstance.getUTCMonth() == dateTimeComposition.month - 1 
+        && dateInstance.getUTCDate() == dateTimeComposition.day && dateInstance.getUTCHours() == dateTimeComposition.hours 
+        && dateInstance.getUTCMinutes() == dateTimeComposition.minutes && dateInstance.getSeconds() == dateTimeComposition.seconds 
+        && dateInstance.getMilliseconds() == dateTimeComposition.milliseconds)
         return true;
     return false;
 };
@@ -100,6 +102,27 @@ module.exports.internal = {
     getDate: getDate
 };
 
+var getDateTimeComposition = function (ds){
+    ds = ds.padEnd(17, '0');
+    var year = ds.substring(0,4);
+    var month = ds.substring(4,6);
+    var day = ds.substring(6,8);
+    var hours = ds.substring(8,10);
+    var minutes = ds.substring(10,12);
+    var seconds = ds.substring(12,14);
+    var milliseconds = ds.substring(14, 17);
+    var dateTimeComposition = {
+        'year': year,
+        'month': month,
+        'day': day,
+        'hours': hours,
+        'minutes': minutes,
+        'seconds': seconds,
+        'milliseconds': milliseconds
+    };
+    return dateTimeComposition;
+};
+
 // handling the datetime format here
 var getDateTime = function (dateTimeString) {
     try{
@@ -111,9 +134,13 @@ var getDateTime = function (dateTimeString) {
         if (/^(\d{14})(-|\+)(\d{4})$/.test(ds))
         {
             var dateSections = ds.split(ds[14]);
-            var date = dateSections[0].substring(0,4) + '-' + dateSections[0].substring(4,6) + '-' + dateSections[0].substring(6,8);
-            var time = dateSections[0].substring(8,10) + ':' + dateSections[0].substring(10,12) + ':' + dateSections[0].substring(12,14);
+            var dateTimeComposition = getDateTimeComposition(dateSections[0]);
+            dateTimeComposition.milliseconds = 0;
+            var date = dateTimeComposition.year + '-' + dateTimeComposition.month + '-' + dateTimeComposition.day;
+            var time = dateTimeComposition.hours + ':' + dateTimeComposition.minutes + ':' + dateTimeComposition.seconds;
             var timezone = ds[14] + dateSections[1];
+            if (!validUTCDateTime(dateTimeComposition))
+                throw `Invalid datetime: ${ds}`;
             return new Date(date + ' ' + time + ' ' + timezone).toISOString();
         }
 
@@ -122,17 +149,10 @@ var getDateTime = function (dateTimeString) {
             return convertDate(ds);
         
         // Padding 0s to 17 digits 
-        ds = ds.padEnd(17, '0');
-        var year = ds.slice(0, 4);
-        var monthIndex = ds.slice(4, 6) - 1;
-        var day = ds.slice(6, 8);
-        var hours = ds.slice(8, 10);
-        var minutes = ds.slice(10, 12);
-        var seconds = ds.slice(12, 14);
-        var milliseconds = ds.slice(14, 17);
-        if (!validUTCDateTime(year, monthIndex, day, hours, minutes, seconds, milliseconds))
-            throw `Invalid dateTime: ${ds}`;
-        return (new Date(Date.UTC(year, monthIndex, day, hours, minutes, seconds, milliseconds))).toJSON();
+        dateTimeComposition = getDateTimeComposition(ds);
+        if (!validUTCDateTime(dateTimeComposition))
+            throw `Invalid datetime: ${ds}`;
+        return (new Date(Date.UTC(dateTimeComposition.year, dateTimeComposition.month - 1, dateTimeComposition.day, dateTimeComposition.hours, dateTimeComposition.minutes, dateTimeComposition.seconds, dateTimeComposition.milliseconds))).toJSON();
     }
     catch (err) {
         throw `${err}`;
