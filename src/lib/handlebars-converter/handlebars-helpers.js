@@ -95,10 +95,6 @@ var getDate = function (dateString) {
     return convertDate(ds);
 };
 
-module.exports.internal = {
-    getDate: getDate
-};
-
 var getDateTimeComposition = function (ds){
     ds = ds.padEnd(17, '0');
     var year = ds.substring(0,4);
@@ -151,7 +147,8 @@ var getDateTime = function (dateTimeString) {
 };
 
 module.exports.internal = {
-    getDateTime: getDateTime
+    getDateTime: getDateTime,
+    getDate: getDate
 };
 
 module.exports.external = [
