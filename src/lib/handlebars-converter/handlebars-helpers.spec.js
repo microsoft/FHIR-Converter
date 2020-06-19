@@ -103,9 +103,27 @@ describe('Handlebars helpers', function () {
         { f: 'toJsonString', in: [["a", "b"]], out: '["a","b"]' },
         { f: 'addHyphensSSN', in: [undefined], out: "" },
         { f: 'addHyphensDate', in: [undefined], out: "" },
+        { f: 'addHyphensDate', in: ["2001"], out: "2001" },
+        { f: 'addHyphensDate', in: ["200101"], out: "2001-01" },
+        { f: 'addHyphensDate', in: ["200106"], out: "2001-06" },
+        { f: 'addHyphensDate', in: ["200112"], out: "2001-12" },
+        { f: 'addHyphensDate', in: ["20011201"], out: "2001-12-01" },
+        { f: 'addHyphensDate', in: ["20011231"], out: "2001-12-31" },
+        { f: 'addHyphensDate', in: ["20010131"], out: "2001-01-31" },
+        { f: 'addHyphensDate', in: ["2001013100"], out: "2001-01-31" },
+        { f: 'addHyphensDate', in: ["200101310000"], out: "2001-01-31" },
         { f: 'formatAsDateTime', in: [undefined], out: "" },
+        { f: 'formatAsDateTime', in: ["2004"], out: "2004"}, 
+        { f: 'formatAsDateTime', in: ["200401"], out: "2004-01"}, 
+        { f: 'formatAsDateTime', in: ["200406"], out: "2004-06"}, 
+        { f: 'formatAsDateTime', in: ["200412"], out: "2004-12"}, 
+        { f: 'formatAsDateTime', in: ["20041101"], out: "2004-11-01"}, 
+        { f: 'formatAsDateTime', in: ["20041130"], out: "2004-11-30"}, 
+        { f: 'formatAsDateTime', in: ["20140130080051-0500"], out: (new Date(Date.UTC(2014, 0, 30, 13, 0, 51)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["20140130080051+0500"], out: (new Date(Date.UTC(2014, 0, 30, 3, 0, 51)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["20140130040051+0500"], out: (new Date(Date.UTC(2014, 0, 29, 23, 0, 51)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["20140129230051-0500"], out: (new Date(Date.UTC(2014, 0, 30, 4, 0, 51)).toJSON()) }, // eslint-disable-line
         { f: 'formatAsDateTime', in: ["2004062917540000"], out: (new Date(Date.UTC(2004, 05, 29, 17, 54)).toJSON()) }, // eslint-disable-line
-        { f: 'formatAsDateTime', in: ["2004"], out: (new Date(Date.UTC(2004, 00, 00, 00, 00)).toJSON()) }, // eslint-disable-line
         { f: 'formatAsDateTime', in: ["2004062917540034599999"], out: (new Date(Date.UTC(2004, 05, 29, 17, 54, 0, 345)).toJSON()) }, // eslint-disable-line
         { f: 'getFieldRepeats', in: [null], out: null },
         { f: 'toLower', in: ["ABCD"], out: "abcd" },
@@ -175,6 +193,24 @@ describe('Handlebars helpers', function () {
         { f: 'base64Decode', in: [undefined] },
         { f: 'escapeSpecialChars', in: [undefined] },
         { f: 'unescapeSpecialChars', in: [undefined] },
+        { f: 'formatAsDateTime', in: ["20badInput"]},  // bad input
+        { f: 'formatAsDateTime', in: ["2020-11"]},  // bad input
+        { f: 'formatAsDateTime', in: ["20140130080051--0500"]},  // bad input
+        { f: 'formatAsDateTime', in: ["20201"]},  // bad input
+        { f: 'formatAsDateTime', in: ["2020060"]},  // bad input
+        { f: 'formatAsDateTime', in: ["20201301"]}, // invalid month
+        { f: 'formatAsDateTime', in: ["20200134"]}, // invalid day
+        { f: 'formatAsDateTime', in: ["20200230"]}, // invalid day
+        { f: 'formatAsDateTime', in: ["2020010130"]},  // invalid hour
+        { f: 'formatAsDateTime', in: ["202001011080"]}, // invalid minutes
+        { f: 'formatAsDateTime', in: ["20200101101080"]}, // invalid seconds
+        { f: 'addHyphensDate', in: ["20badInput"]}, // bad input
+        { f: 'addHyphensDate', in: ["2020-11"]},  // bad input
+        { f: 'addHyphensDate', in: ["20201"]},  // bad input
+        { f: 'addHyphensDate', in: ["2020060"]},  // bad input
+        { f: 'addHyphensDate', in: ["20201301"]}, // invalid month
+        { f: 'addHyphensDate', in: ["20200134"]}, // invalid day
+        { f: 'addHyphensDate', in: ["20200230"]} // invalid day
     ];
 
     opErrorTests.forEach(t => {
@@ -222,7 +258,7 @@ describe('Handlebars helpers', function () {
         var currentString = getHelper('now').func();
         var after = new Date();
 
-        var current = helperUtils.getDate(currentString);
+        var current = new Date(helperUtils.getDateTime(currentString));
 
         assert.ok(before <= current);
         assert.ok(current <= after);
@@ -251,16 +287,6 @@ describe('Handlebars helpers', function () {
         assert.strictEqual('123', getHelper('addHyphensSSN').func('123'));
         assert.strictEqual('111111111111', getHelper('addHyphensSSN').func('111111111111'));
         assert.strictEqual('123-45-67', getHelper('addHyphensSSN').func('123-45-67'));
-    });
-
-    it('addHyphensDate adds hyphens when passed 8 digits', function () {
-        assert.strictEqual('2001-01-02', getHelper('addHyphensDate').func('20010102'));
-    });
-
-    it('addHyphensDate leaves input unchanged when not 8 digits', function () {
-        assert.strictEqual('123', getHelper('addHyphensDate').func('123'));
-        assert.strictEqual('111111111111', getHelper('addHyphensDate').func('111111111111'));
-        assert.strictEqual('2001-01-', getHelper('addHyphensDate').func('2001-01-'));
     });
 
     it('getFirstCdaSections should return a dictionary with first instance of sections', function (done) {
