@@ -103,6 +103,15 @@ describe('Handlebars helpers', function () {
         { f: 'toJsonString', in: [["a", "b"]], out: '["a","b"]' },
         { f: 'addHyphensSSN', in: [undefined], out: "" },
         { f: 'addHyphensDate', in: [undefined], out: "" },
+        { f: 'addHyphensDate', in: ["2001"], out: "2001" },
+        { f: 'addHyphensDate', in: ["200101"], out: "2001-01" },
+        { f: 'addHyphensDate', in: ["200106"], out: "2001-06" },
+        { f: 'addHyphensDate', in: ["200112"], out: "2001-12" },
+        { f: 'addHyphensDate', in: ["20011201"], out: "2001-12-01" },
+        { f: 'addHyphensDate', in: ["20011231"], out: "2001-12-31" },
+        { f: 'addHyphensDate', in: ["20010131"], out: "2001-01-31" },
+        { f: 'addHyphensDate', in: ["2001013100"], out: "2001-01-31" },
+        { f: 'addHyphensDate', in: ["200101310000"], out: "2001-01-31" },
         { f: 'formatAsDateTime', in: [undefined], out: "" },
         { f: 'formatAsDateTime', in: ["2004"], out: "2004"}, 
         { f: 'formatAsDateTime', in: ["200401"], out: "2004-01"}, 
@@ -278,24 +287,6 @@ describe('Handlebars helpers', function () {
         assert.strictEqual('123', getHelper('addHyphensSSN').func('123'));
         assert.strictEqual('111111111111', getHelper('addHyphensSSN').func('111111111111'));
         assert.strictEqual('123-45-67', getHelper('addHyphensSSN').func('123-45-67'));
-    });
-
-    it('addHyphensDate adds hyphens when passed 4 digits', function() {
-        assert.strictEqual('2001', getHelper('addHyphensDate').func('2001'));
-    });
-
-    it('addHyphensDate adds hyphens when passed 6 digits', function() {
-        assert.strictEqual('2001-01', getHelper('addHyphensDate').func('200101'));
-        assert.strictEqual('2001-06', getHelper('addHyphensDate').func('200106'));
-        assert.strictEqual('2001-12', getHelper('addHyphensDate').func('200112'));
-    });
-
-    it('addHyphensDate adds hyphens when passed more than 8 digits', function() {
-        assert.strictEqual('2001-12-01', getHelper('addHyphensDate').func('20011201'));
-        assert.strictEqual('2001-12-31', getHelper('addHyphensDate').func('20011231'));
-        assert.strictEqual('2001-01-31', getHelper('addHyphensDate').func('20010131'));
-        assert.strictEqual('2001-01-31', getHelper('addHyphensDate').func('2001013100'));
-        assert.strictEqual('2001-01-31', getHelper('addHyphensDate').func('200101310000'));
     });
 
     it('getFirstCdaSections should return a dictionary with first instance of sections', function (done) {
