@@ -116,6 +116,7 @@
                 "valueQuantity":
                 {
                     {{#if (eq OBX-2 "NM")}},
+                        "value":"{{OBX-5}}",
                     {{/if}},
                     {{#if (eq OBX-2 "SN")}},
                         {{>DataType/CWEQuantity.hbs CWE=OBX-6}},
