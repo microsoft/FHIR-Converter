@@ -120,21 +120,22 @@ describe('Handlebars helpers', function () {
         { f: 'formatAsDateTime', in: ["20041101"], out: "2004-11-01"}, 
         { f: 'formatAsDateTime', in: ["20041130"], out: "2004-11-30"},
         { f: 'formatAsDateTime', in: ["2014013008"], out: (new Date(Date.UTC(2014, 0, 30, 8, 0, 0, 0)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["2014013008-0500"], out: (new Date(Date.UTC(2014, 0, 30, 13, 0, 0, 0)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["2014013008+0500"], out: (new Date(Date.UTC(2014, 0, 30, 3, 0, 0, 0)).toJSON()) }, // eslint-disable-line
         { f: 'formatAsDateTime', in: ["201401300800"], out: (new Date(Date.UTC(2014, 0, 30, 8, 0, 0, 0)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["201401300800-0500"], out: (new Date(Date.UTC(2014, 0, 30, 13, 0, 0, 0)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["201401300800+0500"], out: (new Date(Date.UTC(2014, 0, 30, 3, 0, 0, 0)).toJSON()) }, // eslint-disable-line
         { f: 'formatAsDateTime', in: ["20140130080051"], out: (new Date(Date.UTC(2014, 0, 30, 8, 0, 51, 0)).toJSON()) }, // eslint-disable-line
-        { f: 'formatAsDateTime', in: ["20140130080051.1"], out: (new Date(Date.UTC(2014, 0, 30, 8, 0, 51, 100)).toJSON()) }, // eslint-disable-line
-        
-        { f: 'formatAsDateTime', in: ["20140130080051.1-0500"], out: (new Date(Date.UTC(2014, 0, 30, 13, 0, 51, 100)).toJSON()) }, // eslint-disable-line
-        { f: 'formatAsDateTime', in: ["20140130080051.12+0500"], out: (new Date(Date.UTC(2014, 0, 30, 3, 0, 51, 120)).toJSON()) }, // eslint-disable-line 
-        { f: 'formatAsDateTime', in: ["20140130080051.1-0500"], out: (new Date(Date.UTC(2014, 0, 30, 13, 0, 51, 100)).toJSON()) }, // eslint-disable-line
-        { f: 'formatAsDateTime', in: ["20140130080051.12+0500"], out: (new Date(Date.UTC(2014, 0, 30, 3, 0, 51, 120)).toJSON()) }, // eslint-disable-line
-        { f: 'formatAsDateTime', in: ["20140130080051.123+0500"], out: (new Date(Date.UTC(2014, 0, 30, 3, 0, 51, 123)).toJSON()) }, // eslint-disable-line
         { f: 'formatAsDateTime', in: ["20140130080051-0500"], out: (new Date(Date.UTC(2014, 0, 30, 13, 0, 51)).toJSON()) }, // eslint-disable-line
         { f: 'formatAsDateTime', in: ["20140130080051+0500"], out: (new Date(Date.UTC(2014, 0, 30, 3, 0, 51)).toJSON()) }, // eslint-disable-line
         { f: 'formatAsDateTime', in: ["20140130040051+0500"], out: (new Date(Date.UTC(2014, 0, 29, 23, 0, 51)).toJSON()) }, // eslint-disable-line
         { f: 'formatAsDateTime', in: ["20140129230051-0500"], out: (new Date(Date.UTC(2014, 0, 30, 4, 0, 51)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["20140130080051.1"], out: (new Date(Date.UTC(2014, 0, 30, 8, 0, 51, 100)).toJSON()) }, // eslint-disable-line
         { f: 'formatAsDateTime', in: ["20040629175400.00"], out: (new Date(Date.UTC(2004, 05, 29, 17, 54)).toJSON()) }, // eslint-disable-line
         { f: 'formatAsDateTime', in: ["20040629175400.34599999"], out: (new Date(Date.UTC(2004, 05, 29, 17, 54, 0, 345)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["20140130080051.1-0500"], out: (new Date(Date.UTC(2014, 0, 30, 13, 0, 51, 100)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["20140130080051.12+0500"], out: (new Date(Date.UTC(2014, 0, 30, 3, 0, 51, 120)).toJSON()) }, // eslint-disable-line 
+        { f: 'formatAsDateTime', in: ["20140130080051.123+0500"], out: (new Date(Date.UTC(2014, 0, 30, 3, 0, 51, 123)).toJSON()) }, // eslint-disable-line
         { f: 'getFieldRepeats', in: [null], out: null },
         { f: 'toLower', in: ["ABCD"], out: "abcd" },
         { f: 'toLower', in: [undefined], out: "" },
