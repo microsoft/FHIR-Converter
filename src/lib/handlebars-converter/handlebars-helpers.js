@@ -178,14 +178,14 @@ module.exports.external = [
         name: 'eq',
         description: 'Equals at least one of the values: eq x a b …',
         func: function (x, ...values) {
-            return Array.prototype.slice.call(values.slice(0, -1)).some(a => x === a); //last element is full msg
+            return Array.prototype.slice.call(values.slice(0, -1)).some(a => x == a); //last element is full msg
         }
     },
     {
         name: 'ne',
         description: 'Not equal to any value: ne x a b …',
         func: function (x, ...values) {
-            return Array.prototype.slice.call(values.slice(0, -1)).every(a => x !== a); //last element is full msg
+            return Array.prototype.slice.call(values.slice(0, -1)).every(a => x != a); //last element is full msg
         }
     },
     {
