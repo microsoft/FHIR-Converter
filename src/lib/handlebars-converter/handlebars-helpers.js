@@ -56,15 +56,11 @@ var validUTCDateTime = function (dateTimeComposition){
 var validString = function (dateTimeString) {
     if (!dateTimeString || dateTimeString.toString() === '')
         return false;
-    return true;
-};
-
-// check the characters of string are digits
-var validDigitString = function (dateTimeString) {
+    // datetime format in the spec: YYYY[MM[DD[HH[MM[SS[.S[S[S[S]]]]]]]]][+/-ZZZZ],
     var ds = dateTimeString.toString();
-    if (!/^(\d+)$/.test(ds))
-        throw `Contains non-numeric characters in ${ds}`;
-    return ds;
+    if (!/^((\d{4}(\d{2}(\d{2}(\d{2}(\d{2}(\d{2}(\.\d+)?)?)?)?)?)?((-|\+)\d{1,4})?))$/.test(ds))
+        throw `Bad input for Datetime type in ${ds}`;
+    return true;
 };
 
 // convert the dateString to date string with hyphens
@@ -91,11 +87,11 @@ var convertDate = function (dateString) {
 var getDate = function (dateString) {
     if (!validString(dateString))
         return '';
-    var ds = validDigitString(dateString);
-    return convertDate(ds);
+    return convertDate(dateString.toString());
 };
 
 var getDateTimeComposition = function (ds){
+    ds = ds.replace('.','');
     ds = ds.padEnd(17, '0');
     var year = ds.substring(0,4);
     var month = ds.substring(4,6);
@@ -121,21 +117,25 @@ var getDateTime = function (dateTimeString) {
     if (!validString(dateTimeString))
         return '';
 
-    // handle special datetime format like 20130130080051+0500, 20130130080051-0500
+    // handle the datetime format with time zone
     var ds = dateTimeString.toString();
-    if (/^(\d{14})(-|\+)(\d{4})$/.test(ds))
+    var timeZoneChar = '';
+    if (ds.indexOf('-') !== -1)
+        timeZoneChar = '-';
+    else if (ds.indexOf('+') !== -1)
+        timeZoneChar = '+'; 
+    if (timeZoneChar !== '')
     {
-        var dateSections = ds.split(ds[14]);
+        var dateSections = ds.split(timeZoneChar);
         var dateTimeComposition = getDateTimeComposition(dateSections[0]);
         var date = dateTimeComposition.year + '-' + dateTimeComposition.month + '-' + dateTimeComposition.day;
-        var time = dateTimeComposition.hours + ':' + dateTimeComposition.minutes + ':' + dateTimeComposition.seconds;
-        var timezone = ds[14] + dateSections[1];
+        var time = dateTimeComposition.hours + ':' + dateTimeComposition.minutes + ':' + dateTimeComposition.seconds + ':' + dateTimeComposition.milliseconds;
+        var timezone = timeZoneChar + dateSections[1];
         if (!validUTCDateTime(dateTimeComposition))
             throw `Invalid datetime: ${ds}`;
         return new Date(date + ' ' + time + ' ' + timezone).toISOString();
     }
 
-    ds = validDigitString(dateTimeString);
     if (ds.length <= 8)
         return convertDate(ds);
     
@@ -768,14 +768,15 @@ module.exports.external = [
     },
     {
         name: 'now',
-        description: 'Provides current UTC time in YYYYMMDDHHmmssSSS format: now',
+        description: 'Provides current UTC time in YYYYMMDDHHmmss.SSS format: now',
         func: function () {
-            return (new Date()).toISOString().replace(/[^0-9]/g, "").slice(0, 17);
+            var datetimeString = (new Date()).toISOString().replace(/[^0-9]/g, "");
+            return datetimeString.slice(0, 14) + '.' + datetimeString.slice(14, 17);
         }
     },
     {
         name: 'formatAsDateTime',
-        description: 'Converts an YYYYMMDDHHmmssSSS string, e.g. 20040629175400000 to dateTime format, e.g. 2004-06-29T17:54:00.000z: formatAsDateTime(dateTimeString)',
+        description: 'Converts an  YYYY[MM[DD[HH[MM[SS[.S[S[S[S]]]]]]]]][+/-ZZZZ] string, e.g. 20040629175400.000 to dateTime format, e.g. 2004-06-29T17:54:00.000z: formatAsDateTime(dateTimeString)',
         func: function (dateTimeString) {
             try {
                 return getDateTime(dateTimeString);
