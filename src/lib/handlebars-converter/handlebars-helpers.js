@@ -53,12 +53,12 @@ var validUTCDateTime = function (dateTimeComposition){
 };
 
 // check the string is valid
-var validString = function (dateTimeString) {
+var validDatetimeString = function (dateTimeString) {
     if (!dateTimeString || dateTimeString.toString() === '')
         return false;
     // datetime format in the spec: YYYY[MM[DD[HH[MM[SS[.S[S[S[S]]]]]]]]][+/-ZZZZ],
     var ds = dateTimeString.toString();
-    if (!/^((\d{4}(\d{2}(\d{2}(\d{2}(\d{2}(\d{2}(\.\d+)?)?)?)?)?)?((-|\+)\d{1,4})?))$/.test(ds))
+    if (!/^(\d{4}(\d{2}(\d{2}(\d{2}(\d{2}(\d{2}(\.\d+)?)?)?)?)?)?((-|\+)\d{1,4})?)$/.test(ds))
         throw `Bad input for Datetime type in ${ds}`;
     return true;
 };
@@ -85,7 +85,7 @@ var convertDate = function (dateString) {
 
 // handling the date format here
 var getDate = function (dateString) {
-    if (!validString(dateString))
+    if (!validDatetimeString(dateString))
         return '';
     return convertDate(dateString.toString());
 };
@@ -114,7 +114,7 @@ var getDateTimeComposition = function (ds){
 
 // handling the datetime format here
 var getDateTime = function (dateTimeString) {
-    if (!validString(dateTimeString))
+    if (!validDatetimeString(dateTimeString))
         return '';
 
     // handle the datetime format with time zone
