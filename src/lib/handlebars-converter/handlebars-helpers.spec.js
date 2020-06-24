@@ -119,6 +119,11 @@ describe('Handlebars helpers', function () {
         { f: 'formatAsDateTime', in: ["200412"], out: "2004-12"}, 
         { f: 'formatAsDateTime', in: ["20041101"], out: "2004-11-01"}, 
         { f: 'formatAsDateTime', in: ["20041130"], out: "2004-11-30"},
+        { f: 'formatAsDateTime', in: ["2014013008"], out: (new Date(Date.UTC(2014, 0, 30, 8, 0, 0, 0)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["201401300800"], out: (new Date(Date.UTC(2014, 0, 30, 8, 0, 0, 0)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["20140130080051"], out: (new Date(Date.UTC(2014, 0, 30, 8, 0, 51, 0)).toJSON()) }, // eslint-disable-line
+        { f: 'formatAsDateTime', in: ["20140130080051.1"], out: (new Date(Date.UTC(2014, 0, 30, 8, 0, 51, 100)).toJSON()) }, // eslint-disable-line
+        
         { f: 'formatAsDateTime', in: ["20140130080051.1-0500"], out: (new Date(Date.UTC(2014, 0, 30, 13, 0, 51, 100)).toJSON()) }, // eslint-disable-line
         { f: 'formatAsDateTime', in: ["20140130080051.12+0500"], out: (new Date(Date.UTC(2014, 0, 30, 3, 0, 51, 120)).toJSON()) }, // eslint-disable-line 
         { f: 'formatAsDateTime', in: ["20140130080051.1-0500"], out: (new Date(Date.UTC(2014, 0, 30, 13, 0, 51, 100)).toJSON()) }, // eslint-disable-line
