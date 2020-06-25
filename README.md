@@ -25,7 +25,7 @@ To deploy in Azure, you will need to have a subscription in Azure. If you do not
 
 Once you have your subscription, click the link below:
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2FFHIR-Converter%2Fmaster%2Fdeploy%2Fdefault-azuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2FFHIR-Converter%2Fpersonal%2Frojo%2Fdeploy-version%2Fdeploy%2Fdefault-azuredeploy.json" target="_blank">
     <img src="https://azuredeploy.net/deploybutton.png"/>
 </a>
 
