@@ -1,0 +1,36 @@
+name: Docker Image CI
+
+on: 
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 9 * * 1'
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 'Checkout Github Action'
+      uses: actions/checkout@master
+      
+    - uses: azure/docker-login@v1
+      with:
+        login-server: healthplatformregistry.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+
+    - name: get-npm-version
+      id: package-version
+      uses: martinbeentjes/npm-get-version-action@master
+
+    - name: Build the Docker image
+      env:
+        IMAGE_NAME: healthplatformregistry.azurecr.io/fhirconverter
+      run: |
+        docker build . -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:v${{ steps.package-version.outputs.current-version }}-$(date +'%Y-%m-%d') -t $IMAGE_NAME:testversionfy
+        docker push $IMAGE_NAME
+
