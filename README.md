@@ -80,6 +80,9 @@ Once you have your template complete, check out our [health architectures](https
 * [Helper function summary](docs/helper-functions-summary.md)
 * [Web UI summary](docs/web-ui-summary.md)
 
+### Known issues
+ * [The Web UI auto-update issue](docs/web-ui-auto-update-issue.md)
+
 ## External resources
 
 * [Handlebars Documentation](https://handlebarsjs.com/)
