@@ -7,12 +7,18 @@ const countOccurences = (arr, value) => arr.reduce((a, v) => v === value ? a + 1
 const defaultGuid = '4cfe8d6d-3fc8-3e41-b921-f204be18db31'; // pass the parameter 'undefined'
 
 var findDuplicates = function(arr) {
+    var dict = {};
     var result = [];
     arr.forEach(function(elem){
-        if(arr.indexOf(elem) !=arr.lastIndexOf(elem) && result.indexOf(elem) == -1){
-            result.push(elem);
-        }
+        if(dict[elem] !== undefined)
+            dict[elem] += 1;
+        else
+            dict[elem] = 1;
     });
+    for (var key in dict) {
+        if(dict[key] > 1)
+            result.push(key);
+    }
     return result;
 };
 
