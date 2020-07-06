@@ -10,41 +10,41 @@ var fhir = new fhirModule.Fhir();
 var fhirR4Validation =  function(resJson){
     var result = fhir.validate(resJson);
     if (!result.valid)
-        return JSON.stringify(result, null, "\t");
-    return '';
+        return { valid: false, errorMessage: JSON.stringify(result, null, "\t")};
+    return { valid: true, errorMessage: ''};
 };
 
 var onePatient = function(resJson){
     var resources = fhir.evaluate(resJson, 'Bundle.entry.resource.resourceType');
     var patientCount = testUtils.countOccurences(resources,'Patient');
     if( patientCount !== 1)
-        return 'The bundle contains ' + patientCount + ' Patient resources';
+        return { valid: false, errorMessage: 'The bundle contains ' + patientCount + ' Patient resources'};
     else
-        return '';
+        return { valid: true, errorMessage: ''};
 };
 
-var noDefaultGUID = function(resJson){
+var noDefaultGuid = function(resJson){
     var ids = fhir.evaluate(resJson, 'Bundle.entry.resource.id');
-    var defaultGUIDCount = testUtils.countOccurences(ids, testUtils.defaultGUID);
-    if(defaultGUIDCount > 0)
-        return 'The bundle contains ' + defaultGUIDCount + ' default GUID ' + testUtils.defaultGUID;
+    var defaultGuidCount = testUtils.countOccurences(ids, testUtils.defaultGuid);
+    if(defaultGuidCount > 0)
+        return { valid: false, errorMessage: 'The bundle contains ' + defaultGuidCount + ' default Guid ' + testUtils.defaultGuid};
     else
-        return '';
+        return { valid: true, errorMessage: ''};
 };
 
-var noSameGUID = function(resJson){
+var noSameGuid = function(resJson){
     var ids = fhir.evaluate(resJson, 'Bundle.entry.resource.id');
     var duplicates = testUtils.findDuplicates(ids);
     if(duplicates.length !== 0)
-        return 'The bundle contains some duplicate GUID: ' + duplicates.toString();
+        return { valid: false, errorMessage: 'The bundle contains some duplicate Guid: ' + duplicates.toString()};
     else
-        return '';
+        return { valid: true, errorMessage: ''};
 };
 
 module.exports = {
     fhirR4Validation: fhirR4Validation,
     onePatient: onePatient,
-    noDefaultGUID: noDefaultGUID,
-    noSameGUID: noSameGUID
+    noDefaultGuid: noDefaultGuid,
+    noSameGuid: noSameGuid
 };
 

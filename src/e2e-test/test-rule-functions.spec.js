@@ -12,8 +12,8 @@ describe('testRule', function () {
 
     it('Rule fhirR4Validation should return empty string when the bundle is a standard FHIR R4 data', function () {
         var resJson = JSON.parse(fs.readFileSync(path.join(__dirname, './test-samples/FHIR R4/sample1.json')));
-        assert.strictEqual(testRules.fhirR4Validation(resJson), '');
-
+        assert.strictEqual(testRules.fhirR4Validation(resJson).valid, true);
+        assert.strictEqual(testRules.fhirR4Validation(resJson).errorMessage, '');
     });
 
     it('Rule fhirR4Validation should return error message when the bundle is not a standard FHIR R4 data', function () {
@@ -46,7 +46,8 @@ describe('testRule', function () {
                 }
             ]
         };
-        assert.strictEqual(JSON.parse(testRules.fhirR4Validation(resJson)).valid, false);
+        assert.strictEqual(testRules.fhirR4Validation(resJson).valid, false);
+        assert.strictEqual(JSON.parse(testRules.fhirR4Validation(resJson).errorMessage).valid, false);
     });
 
     it('Rule onePatient should return empty string when there is one Patient resourse', function () {
@@ -79,7 +80,8 @@ describe('testRule', function () {
                 }
             ]
         };
-        assert.strictEqual(testRules.onePatient(resJson), '');
+        assert.strictEqual(testRules.onePatient(resJson).valid, true);
+        assert.strictEqual(testRules.onePatient(resJson).errorMessage, '');
     });
 
     it('Rule onePatient should return error message when there are more than one Patient resourse', function () {
@@ -124,10 +126,11 @@ describe('testRule', function () {
                 }
             ]
         };
-        assert.strictEqual(testRules.onePatient(resJson), 'The bundle contains 2 Patient resources');
+        assert.strictEqual(testRules.onePatient(resJson).valid, false);
+        assert.strictEqual(testRules.onePatient(resJson).errorMessage, 'The bundle contains 2 Patient resources');
     });
 
-    it('Rule noDefaultGUID should return empty string when there is no default GUID', function () {
+    it('Rule noDefaultGuid should return empty string when there is no default Guid', function () {
         var resJson = {
             "resourceType": "Bundle",
             "type": "batch",
@@ -157,10 +160,11 @@ describe('testRule', function () {
                 }
             ]
         };
-        assert.strictEqual(testRules.noDefaultGUID(resJson), '');
+        assert.strictEqual(testRules.noDefaultGuid(resJson).valid, true);
+        assert.strictEqual(testRules.noDefaultGuid(resJson).errorMessage, '');
     });
 
-    it('Rule noDefaultGUID should return error message when there is default GUID', function () {
+    it('Rule noDefaultGuid should return error message when there is default Guid', function () {
         var resJson = {
             "resourceType": "Bundle",
             "type": "batch",
@@ -190,10 +194,11 @@ describe('testRule', function () {
                 }
             ]
         };
-        assert.strictEqual(testRules.noDefaultGUID(resJson), 'The bundle contains 1 default GUID 4cfe8d6d-3fc8-3e41-b921-f204be18db31');
+        assert.strictEqual(testRules.noDefaultGuid(resJson).valid, false);
+        assert.strictEqual(testRules.noDefaultGuid(resJson).errorMessage, 'The bundle contains 1 default Guid 4cfe8d6d-3fc8-3e41-b921-f204be18db31');
     });
 
-    it('Rule noSameGUID should return empty string when there is no duplicate GUID', function () {
+    it('Rule noSameGuid should return empty string when there is no duplicate Guid', function () {
         var resJson = {
             "resourceType": "Bundle",
             "type": "batch",
@@ -223,10 +228,11 @@ describe('testRule', function () {
                 }
             ]
         };
-        assert.strictEqual(testRules.noSameGUID(resJson), '');
+        assert.strictEqual(testRules.noSameGuid(resJson).valid, true);
+        assert.strictEqual(testRules.noSameGuid(resJson).errorMessage, '');
     });
 
-    it('Rule noSameGUID should return error message when there are duplicate GUIDs', function () {
+    it('Rule noSameGuid should return error message when there are duplicate Guids', function () {
         var resJson = {
             "resourceType": "Bundle",
             "type": "batch",
@@ -256,6 +262,7 @@ describe('testRule', function () {
                 }
             ]
         };
-        assert.strictEqual(testRules.noSameGUID(resJson), 'The bundle contains some duplicate GUID: 40386838-40ff-3f80-b68b-4904de7e7b7b');
+        assert.strictEqual(testRules.noSameGuid(resJson).valid, false);
+        assert.strictEqual(testRules.noSameGuid(resJson).errorMessage, 'The bundle contains some duplicate Guid: 40386838-40ff-3f80-b68b-4904de7e7b7b');
     });
 });

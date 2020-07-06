@@ -4,7 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 const countOccurences = (arr, value) => arr.reduce((a, v) => v === value ? a + 1 : a + 0, 0);
-const defaultGUID = '4cfe8d6d-3fc8-3e41-b921-f204be18db31'; // pass the parameter 'undefined'
+const defaultGuid = '4cfe8d6d-3fc8-3e41-b921-f204be18db31'; // pass the parameter 'undefined'
 
 var findDuplicates = function(arr) {
     var result = [];
@@ -18,6 +18,6 @@ var findDuplicates = function(arr) {
 
 module.exports = {
     countOccurences: countOccurences,
-    defaultGUID: defaultGUID,
+    defaultGuid: defaultGuid,
     findDuplicates: findDuplicates
 };

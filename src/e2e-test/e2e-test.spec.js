@@ -43,6 +43,9 @@ describe('E2E test - FHIR data validation', function () {
                 templateLocation = constants.CDA_TEMPLATE_LOCATION;
                 dataLocation = constants.CDA_DATA_LOCATION;
             }
+            else{
+                done(new Error('The data type ('+ dataType+ ') is not supported.'));
+            }
             requestJson.srcDataBase64 = Buffer.from(fs.readFileSync(path.join(dataLocation, t.dataFile))).toString('base64');
             requestJson.templateBase64 = Buffer.from(fs.readFileSync(path.join(templateLocation, t.templateFile))).toString('base64');
             
@@ -54,8 +57,8 @@ describe('E2E test - FHIR data validation', function () {
                 .expect(response => {
                     t.testRules.every( testRule =>{
                         var result = testRule(response.body.fhirResource);
-                        if (result !== '') {
-                            throw new Error(testRule.name + " validation failed.\n" + result);
+                        if (result.valid === false) {
+                            throw new Error(testRule.name + " validation failed.\n" + result.errorMessage);
                         }
                         return true;
                     });
