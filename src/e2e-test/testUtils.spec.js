@@ -20,7 +20,6 @@ describe('testUtils', function () {
         var resources = ['Patient', 'Patient', 'Encounter', 'Compositon', 'Encounter'];
         var ids = ['1','2','3','4','5','5','5','4'];
         assert.deepStrictEqual(testUtils.findDuplicates(resources), ['Patient', 'Encounter']);
-        assert.deepStrictEqual(testUtils.findDuplicates(resources), ['Patient', 'Encounter']);
         assert.deepStrictEqual(testUtils.findDuplicates(ids), ['4','5']);
     });
 });
