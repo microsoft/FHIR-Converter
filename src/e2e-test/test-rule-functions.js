@@ -7,38 +7,44 @@ var testUtils = require('./testUtils');
 var fhirModule = require('fhir');
 var fhir = new fhirModule.Fhir();
 
+var response = function(status, message=''){
+    return { valid: status, errorMessage: message};
+};
+
 var fhirR4Validation =  function(resJson){
     var result = fhir.validate(resJson);
     if (!result.valid)
-        return { valid: false, errorMessage: JSON.stringify(result, null, "\t")};
-    return { valid: true, errorMessage: ''};
+        return response(false, JSON.stringify(result, null, "\t"));
+    return response(true);
 };
 
 var onePatient = function(resJson){
     var resources = fhir.evaluate(resJson, 'Bundle.entry.resource.resourceType');
     var patientCount = testUtils.countOccurences(resources,'Patient');
     if( patientCount !== 1)
-        return { valid: false, errorMessage: 'The bundle contains ' + patientCount + ' Patient resources'};
+        return response(false, 'The bundle contains ' + patientCount + ' Patient resources');
     else
-        return { valid: true, errorMessage: ''};
+        return response(true);
 };
 
 var noDefaultGuid = function(resJson){
     var ids = fhir.evaluate(resJson, 'Bundle.entry.resource.id');
     var defaultGuidCount = testUtils.countOccurences(ids, testUtils.defaultGuid);
-    if(defaultGuidCount > 0)
-        return { valid: false, errorMessage: 'The bundle contains ' + defaultGuidCount + ' default Guid ' + testUtils.defaultGuid};
+    if(defaultGuidCount === 1)
+        return response(false, 'The bundle contains ' + defaultGuidCount + ' default Guid ' + testUtils.defaultGuid);
+    else if(defaultGuidCount > 1)
+        return response(false, 'The bundle contains ' + defaultGuidCount + ' default Guids ' + testUtils.defaultGuid);
     else
-        return { valid: true, errorMessage: ''};
+        return response(true);
 };
 
 var noSameGuid = function(resJson){
     var ids = fhir.evaluate(resJson, 'Bundle.entry.resource.id');
     var duplicates = testUtils.findDuplicates(ids);
     if(duplicates.length !== 0)
-        return { valid: false, errorMessage: 'The bundle contains some duplicate Guid: ' + duplicates.toString()};
+        return response(false, 'The bundle contains some duplicate Guids: ' + duplicates.toString());
     else
-        return { valid: true, errorMessage: ''};
+        return response(true);
 };
 
 module.exports = {
