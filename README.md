@@ -81,7 +81,7 @@ Once you have your template complete, check out our [health architectures](https
 * [Web UI summary](docs/web-ui-summary.md)
 
 ### Known issues
- * [The Web UI auto-update issue](docs/web-ui-auto-update-issue.md)
+There is a known issue that the v1.0.0 converter UI gets auto-updated to v2.0.0 and the v1.0.0 templates are no longer visible in the UI. You can follow [these steps](docs/web-ui-auto-update-issue.md) to resolve this issue.
 
 ## External resources
 
