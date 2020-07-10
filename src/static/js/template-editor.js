@@ -37,7 +37,8 @@ var dataTemplateSplit;
 
 var dataTypeMappings = {
     'HL7v2': 'hl7v2',
-    'CDA': 'cda'
+    'CDA': 'cda',
+    'JSON': 'json'
 };
 
 function getSettings() {
@@ -368,6 +369,7 @@ function changeDataType(dataType) {
                 dataEditor.setOption("mode", "default");
                 break;
             case 'CDA':
+            case 'JSON':
                 $('#editor-wrapper').removeClass('vertical-content');
 
                 // Create splits for editor areas
