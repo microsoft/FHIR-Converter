@@ -18,8 +18,8 @@ describe('testUtils', function () {
 
     it('Function findDuplicates should return a list of duplicates', function () {
         var resources = ['Patient', 'Patient', 'Encounter', 'Compositon', 'Encounter'];
-        var ids = ['1','2','3','4','5','5','5','4'];
+        var ids = ['Patient/1','Patient/2','Patient/3','Patient/4','Patient/5','Patient/5','Patient/5','Encounter/4'];
         assert.deepStrictEqual(testUtils.findDuplicates(resources), ['Patient', 'Encounter']);
-        assert.deepStrictEqual(testUtils.findDuplicates(ids), ['4','5']);
+        assert.deepStrictEqual(testUtils.findDuplicates(ids), ['Patient/5']);
     });
 });

@@ -30,7 +30,7 @@ describe('E2E test - FHIR data validation', function () {
             var dataLocation = '';
             var requestJson = {
                 templateBase64: "",
-                messageBase64: ""
+                srcDataBase64: ""
             };
 
             if(dataType === '.hl7'){

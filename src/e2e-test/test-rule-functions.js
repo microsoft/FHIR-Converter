@@ -39,7 +39,11 @@ var noDefaultGuid = function(resJson){
 };
 
 var noSameGuid = function(resJson){
-    var ids = fhir.evaluate(resJson, 'Bundle.entry.resource.id');
+    var resources = fhir.evaluate(resJson, 'Bundle.entry.resource');
+    var ids = [];
+    for(var index in resources){
+        ids.push(resources[index].resourceType + '/' + resources[index].id);
+    }
     var duplicates = testUtils.findDuplicates(ids);
     if(duplicates.length !== 0)
         return response(false, 'The bundle contains some duplicate Guids: ' + duplicates.toString());
