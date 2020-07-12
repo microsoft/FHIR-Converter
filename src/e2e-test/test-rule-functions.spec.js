@@ -113,7 +113,7 @@ var patientEncounterSameGuidBundle = {
                 "resourceType": "Encounter",
                 "meta": {
                     "profile": [
-                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-encounter"
                     ]
                 },
                 "id": "2745d583-e3d1-3f88-8b21-7b59adb60779",
