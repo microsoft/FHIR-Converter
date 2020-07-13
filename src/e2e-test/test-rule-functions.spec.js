@@ -182,7 +182,7 @@ describe('testRule', function () {
 
     it('Rule noDefaultGuid should return a object with invalid status and error message when there is default Guid', function () {
         assert.strictEqual(testRules.noDefaultGuid(defaultGuidBundle).valid, false);
-        assert.strictEqual(testRules.noDefaultGuid(defaultGuidBundle).errorMessage, 'The bundle contains 1 default Guid 4cfe8d6d-3fc8-3e41-b921-f204be18db31');
+        assert.strictEqual(testRules.noDefaultGuid(defaultGuidBundle).errorMessage, 'The bundle contains 1 default Guid(s) 4cfe8d6d-3fc8-3e41-b921-f204be18db31');
     });
 
     it('Rule noSameGuid should return a object with valid status and empty string when there is no duplicate Guid', function () {

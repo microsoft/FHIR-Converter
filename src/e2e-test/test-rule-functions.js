@@ -30,10 +30,8 @@ var onePatient = function(resJson){
 var noDefaultGuid = function(resJson){
     var ids = fhir.evaluate(resJson, 'Bundle.entry.resource.id');
     var defaultGuidCount = testUtils.countOccurences(ids, testUtils.defaultGuid);
-    if(defaultGuidCount === 1)
-        return response(false, 'The bundle contains ' + defaultGuidCount + ' default Guid ' + testUtils.defaultGuid);
-    else if(defaultGuidCount > 1)
-        return response(false, 'The bundle contains ' + defaultGuidCount + ' default Guids ' + testUtils.defaultGuid);
+    if(defaultGuidCount >= 1)
+        return response(false, 'The bundle contains ' + defaultGuidCount + ' default Guid(s) ' + testUtils.defaultGuid);
     else
         return response(true);
 };
