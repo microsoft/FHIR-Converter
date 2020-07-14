@@ -41,7 +41,7 @@ function generateResult(dataTypeHandler, dataContext, template) {
     return Object.assign(dataTypeHandler.getConversionResultMetadata(dataContext.msg), { 'fhirResource': result });
 }
 
-WorkerUtils.workerTaskProcessor((msg) => {
+var convert = function(msg) {
     return new Promise((fulfill, reject) => {
         session.run(() => {
             switch (msg.type) {
@@ -203,4 +203,10 @@ WorkerUtils.workerTaskProcessor((msg) => {
             }
         });
     });
+};
+
+WorkerUtils.workerTaskProcessor((msg) => {
+    return convert(msg);
 });
+
+module.exports = { convert: convert};
