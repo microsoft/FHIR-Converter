@@ -6,13 +6,16 @@
 var { parentPort } = require('worker_threads');
 
 module.exports.workerTaskProcessor = function (taskProcessor) {
-    parentPort.on('message', (msg) => {
-        taskProcessor(msg.msg)
-            .then(data => { 
-                msg.channelWorkerPort.postMessage(data);
-            }).catch(err => {
-                msg.channelWorkerPort.postMessage((err instanceof Error) ? err.message : err);
-            });
-    });
+    if (parentPort){
+        parentPort.on('message', (msg) => {
+            taskProcessor(msg.msg)
+                .then(data => { 
+                    msg.channelWorkerPort.postMessage(data);
+                }).catch(err => {
+                    msg.channelWorkerPort.postMessage((err instanceof Error) ? err.message : err);
+                });
+        });
+    }
 };
+
 
