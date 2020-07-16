@@ -9,6 +9,7 @@ const http = require('http');
 const cases = require('./config');
 const express = require('express');
 const routes = require("../routes");
+const utils = require('./testUtils');
 
 const API_KEY_HEADER = 'X-MS-CONVERSION-API-KEY';
 const API_KEY = '=2&jcNFjtsvp=V97mBcH%T_kU=5SMGm=';
@@ -79,7 +80,7 @@ const generateTruths = (basePath, domain, subCases) => {
 
         convertData(`/api/convert/${domain}`, payload)
             .then(result => {
-                const filePath = path.join(subTemplatePath, `${subCase.templateFile}-${subCase.dataFile}.json`);
+                const filePath = path.join(subTemplatePath, utils.getGroundTruthFileName(subCase));
                 fs.writeFile(filePath, JSON.stringify(JSON.parse(result), null, 4), 'UTF8', error => {
                     if (error) {
                         return reject(error);
@@ -103,6 +104,7 @@ const main = () => {
     truthsExist(basePath).then(flag => {
         if (flag) {
             console.log(prompt);
+            server.close(() => process.exit(0));
             return;
         }
         const cdaPromises = generateTruths(basePath, 'cda', cases.cdaCases);
