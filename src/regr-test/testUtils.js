@@ -8,32 +8,58 @@ const _ = require('lodash');
 const getGroundTruthFileName = testCase => 
     `${testCase.templateFile}-${testCase.dataFile}.json`;
 
-// To make sure the error message is in a relatively fine grain,
-// manually detect the json properties in the first level.
-const compareContent = (content, groundTruth) => {
-    const left = JSON.parse(content);
-    const right = JSON.parse(groundTruth);
-    const leftPros = Object.keys(left);
-    const rightPros = Object.keys(right);
-
-    const totalPros = _.union(leftPros, rightPros);
-    const leftDiffs = _.xor(leftPros, totalPros);
-    const rightDiffs = _.xor(rightPros, totalPros);
-
-    if (!_.isEmpty(leftDiffs)) {
-        return new Error(`The conversion result lacks these properties: ${leftDiffs}`);
+const __compareContent = (propPrefix, left, right) => {
+    const objectFlag = _.isPlainObject(left) && _.isPlainObject(right);
+    const arrayFlag = _.isArray(left) && _.isArray(right);
+    
+    if (!objectFlag && !arrayFlag) {
+        throw new Error('Inner comparator\'s parameters should both be plain object or array.');
     }
-    else if (!_.isEmpty(rightDiffs)) {
-        return new Error(`The conversion result has these extra properties: ${rightDiffs}`);
-    }
-    else {
-        for (let prop of totalPros) {
-            if (!_.isEqual(left[prop], right[prop])) {
-                return new Error(`The conversion result has different property: [${prop}]`);
+
+    if (objectFlag) {
+        const leftPros = Object.keys(left);
+        const rightPros = Object.keys(right);
+    
+        const totalPros = _.union(leftPros, rightPros);
+        const leftDiffs = _.xor(leftPros, totalPros);
+        const rightDiffs = _.xor(rightPros, totalPros);
+    
+        if (!_.isEmpty(leftDiffs)) {
+            throw new Error(`The conversion result lacks these properties: [${propPrefix}[${leftDiffs.toString()}]]`);
+        }
+        else if (!_.isEmpty(rightDiffs)) {
+            throw new Error(`The conversion result has these extra properties: [${propPrefix}[${rightDiffs.toString()}]]`);
+        }
+        else {
+            for (const prop of totalPros) {
+                const subObjectFlag = _.isPlainObject(left[prop]) && _.isPlainObject(right[prop]);
+                const subArrayFlag = _.isArray(left[prop]) && _.isArray(right[prop]);
+                
+                if (subObjectFlag || subArrayFlag) {
+                    __compareContent(`${propPrefix}${prop}.`, left[prop], right[prop]);
+                }
+                else if (!_.isEqual(left[prop], right[prop])) {
+                    throw new Error(`The conversion result has different property: [${propPrefix}${prop}]`);
+                }
             }
+            return true;
+        }
+    }
+
+    // TODO: The array comparision can be done in a
+    // finer granularity
+    else if (arrayFlag) {
+        if (!_.isEqual(left, right)) {
+            throw new Error(`The conversion result has different property: [${propPrefix}Array]`);
         }
         return true;
     }
+};
+
+const compareContent = (content, groundTruth) => {
+    const left = JSON.parse(content);
+    const right = JSON.parse(groundTruth);
+    __compareContent('', left, right);
 };
 
 module.exports = {

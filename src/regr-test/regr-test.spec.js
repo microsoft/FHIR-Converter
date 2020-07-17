@@ -52,11 +52,8 @@ describe('Regression test - FHIR data validation', () => {
                     const groundTruth = fs.existsSync(groundTruthFilePath) ? 
                         fs.readFileSync(groundTruthFilePath) : '{}';
                     const result = JSON.stringify(response.body);
-                    const validation = utils.compareContent(result, groundTruth);
-                    if (validation !== true) {
-                        throw validation;
-                    }
-                    return validation;
+                    utils.compareContent(result, groundTruth);
+                    return true;
                 })
                 .end(done);
         }).timeout(MAX_TEST_TIME);
