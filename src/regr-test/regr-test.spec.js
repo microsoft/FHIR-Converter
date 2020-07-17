@@ -22,7 +22,7 @@ describe('Regression test - FHIR data validation', () => {
     before(() => app.setValidApiKeys([ API_KEY ]));
 
     allCases.forEach(subCase => {
-        it(`should output a valid FHIR data with ${subCase.dataFile} and ${subCase.templateFile}`, done => {
+        it (`should output a valid FHIR data with ${subCase.dataFile} and ${subCase.templateFile}`, done => {
             const dataType = path.extname(subCase.dataFile);
             const meta = {
                 '.cda': [ '/api/convert/cda', constants.CDA_TEMPLATE_LOCATION, constants.CDA_DATA_LOCATION, 'cda' ],

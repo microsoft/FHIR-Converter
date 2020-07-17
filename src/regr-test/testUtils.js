@@ -5,8 +5,12 @@
 
 const _ = require('lodash');
 
-const getGroundTruthFileName = testCase => 
-    `${testCase.templateFile}-${testCase.dataFile}.json`;
+const getGroundTruthFileName = testCase => {
+    if (!!testCase && !!testCase.templateFile && !!testCase.dataFile) {
+        return `${testCase.templateFile}-${testCase.dataFile}.json`;
+    }
+    throw new Error(`The testCase should both have property [templateFile] and [dataFile].`);
+}
 
 const __compareContent = (propPrefix, left, right) => {
     const objectFlag = _.isPlainObject(left) && _.isPlainObject(right);
@@ -57,6 +61,10 @@ const __compareContent = (propPrefix, left, right) => {
 };
 
 const compareContent = (content, groundTruth) => {
+    if (typeof content !== 'string' || typeof groundTruth !== 'string') {
+        throw new Error('The parameters must be both string type.');
+    }
+
     const left = JSON.parse(content);
     const right = JSON.parse(groundTruth);
     __compareContent('', left, right);
