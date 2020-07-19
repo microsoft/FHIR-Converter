@@ -50,7 +50,7 @@ describe('Regression test - FHIR data validation', () => {
                 .expect(200)
                 .expect(response => {
                     const groundTruth = fs.existsSync(groundTruthFilePath) ? 
-                        fs.readFileSync(groundTruthFilePath) : '{}';
+                        fs.readFileSync(groundTruthFilePath, 'utf8') : '{}';
                     const result = JSON.stringify(response.body);
                     utils.compareContent(result, groundTruth);
                     return true;
