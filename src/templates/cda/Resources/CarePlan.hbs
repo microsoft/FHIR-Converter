@@ -1,0 +1,35 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "CarePlan",
+        "id":"{{ID}}",
+        "status":"active",
+        "intent":"plan",
+        "title":{{planOfTreatment.title._}},
+        "activity":[
+            {{#each (toArray planOfTreatment.entry)}}
+            {
+                "detail":{
+                    "kind": {{>ValueSet/CarePlanKind.hbs code=this.act.templateId.root}},
+                    {{#if (and this.act.effectiveTime.low this.act.effectiveTime.high)}}
+                        "scheduledPeriod":{
+                            "start":"{{formatAsDateTime this.act.effectiveTime.low.value}}",
+                            "end":"{{formatAsDateTime this.act.effectiveTime.high.value}}",
+                        },
+                    {{else if this.act.effectiveTime.value}}
+                        "scheduledString":"{{formatAsDateTime this.act.effectiveTime.value}}",
+                    {{/if}}
+                    "description": "{{this.act.text._}}",
+                },
+            },
+            {{/each}}
+        ]
+    },
+    "request":{
+        "method":"PUT",
+        "url":"CarePlan/{{ID}}",
+    },
+},
+
+
+

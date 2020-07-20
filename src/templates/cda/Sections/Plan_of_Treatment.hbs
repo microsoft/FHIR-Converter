@@ -1,0 +1,9 @@
+{{#with (getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.10')}}
+    {{>Resources/CarePlan.hbs planOfTreatment=this.2_16_840_1_113883_10_20_22_2_10 ID=(generateUUID (toJsonString this))}},
+    {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+	    {{>References/CarePlan/subject.hbs ID=(generateUUID (toJsonString ..)) REF=(concat 'Patient/' patientId.Id)}},
+    {{/with}}
+    {{#if ../msg.ClinicalDocument.componentOf.encompassingEncounter}}
+        {{>References/CarePlan/encounter.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Encounter/' (generateUUID (toJsonString ../msg.ClinicalDocument.componentOf.encompassingEncounter)))}},
+    {{/if}}
+{{/with}} 
