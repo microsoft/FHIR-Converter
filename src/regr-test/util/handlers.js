@@ -18,6 +18,13 @@ class Handler {
 }
 
 
+class DoNothingHandler extends Handler {
+    handle (data) {
+        return super.handle(data);
+    }
+}
+
+
 class ExtraCdaFieldHandler extends Handler {
     handle (data) {
         if (!_.isPlainObject(data)) {
@@ -47,5 +54,6 @@ class ExtraCdaFieldHandler extends Handler {
 }
 
 module.exports = {
+    DoNothingHandler,
     ExtraCdaFieldHandler,
 };

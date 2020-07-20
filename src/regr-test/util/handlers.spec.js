@@ -2,3 +2,117 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
+
+const assert = require('assert');
+const _ = require('lodash');
+const handlers = require('./handlers');
+const { utimes } = require('fs');
+const dataNormal = () => ({
+    "fhirResource": {
+        "resourceType": "Bundle",
+        "type": "batch",
+        "entry": [
+            {
+                "fullUrl": "urn:uuid:7536a83a-0dbf-3c3d-8af5-13629bcfeade",
+                "resource": {
+                    "resourceType": "DocumentReference",
+                    "id": "7536a83a-0dbf-3c3d-8af5-13629bcfeade",
+                    "type": { },
+                    "date": "2020-07-20T06:03:58.183Z",
+                    "status": "current",
+                    "content": [ ]
+                },
+                "request": { }
+            }
+        ]
+    }
+});
+const dataInvalid = () => ([
+    undefined,
+    null,
+    'is not plain object',
+    { },
+    {
+        "fhirResource": { }
+    },
+    {
+        "fhirResource": {
+            "resourceType": "Bundle",
+            "type": "batch",
+            "entry": 'entry'
+        }
+    },
+    {
+        "fhirResource": {
+            "resourceType": "Bundle",
+            "type": "batch",
+            "entry": [
+                { },
+            ]
+        }
+    },
+    {
+        "fhirResource": {
+            "resourceType": "Bundle",
+            "type": "batch",
+            "entry": [
+                {
+                    "fullUrl": "urn:uuid:ab06cca0-80d5-3efe-9322-84093fb5c5da",
+                    "resource": { },
+                    "request": { }
+                },
+            ]
+        }
+    },
+    {
+        "fhirResource": {
+            "resourceType": "Bundle",
+            "type": "batch",
+            "entry": [
+                {
+                    "fullUrl": "urn:uuid:ab06cca0-80d5-3efe-9322-84093fb5c5da",
+                    "resource": {
+                        "resourceType": "RelatedPerson",
+                        "id": "ab06cca0-80d5-3efe-9322-84093fb5c5da",
+                        "relationship": [ ],
+                        "name": [ ],
+                        "telecom": [ ],
+                        "address": [ ],
+                        "patient": { }
+                    },
+                    "request": { }
+                },
+            ]
+        }
+    }
+]);
+
+describe('Regression test handlers - ExtraCdaFieldHandler', () => {
+    it ('should handle extra field properly when given normal input', () => {
+        const handler = new handlers.ExtraCdaFieldHandler(null);
+        const expect = dataNormal();
+        const result = handler.handle(dataNormal());
+        expect['fhirResource']['entry'][0]['resource']['date'] = 'removed';
+
+        assert.deepStrictEqual(result, expect);
+    });
+    it ('should return the origin data when encountering invalid input', () => {
+        const handler = new handlers.ExtraCdaFieldHandler(null);
+        const expect = dataInvalid();
+        const actual = dataInvalid();
+        
+        for (let i = 0; i < actual.length; ++ i) {
+            const result = handler.handle(actual[i]);
+            assert.deepStrictEqual(result, expect[i]);
+        }
+    });
+    it ('should work normally when series with other handlers', () => {
+        const innerHandler = new handlers.DoNothingHandler(null);
+        const handler = new handlers.ExtraCdaFieldHandler(innerHandler);
+        const expect = dataNormal();
+        const result = handler.handle(dataNormal());
+        expect['fhirResource']['entry'][0]['resource']['date'] = 'removed';
+
+        assert.deepStrictEqual(result, expect);
+    });
+});

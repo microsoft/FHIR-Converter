@@ -3,8 +3,8 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-var assert = require('assert');
-var utils = require('./utils');
+const assert = require('assert');
+const utils = require('./utils');
 
 describe('Regression test testUtils - getGroundTruthFileName', () => {
     it ('should generate normal ground truth file name', () => {
