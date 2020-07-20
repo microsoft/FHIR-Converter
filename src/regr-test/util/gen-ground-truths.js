@@ -6,10 +6,10 @@
 const path  = require('path');
 const fs = require("fs");
 const http = require('http');
-const cases = require('./config');
+const cases = require('../config');
 const express = require('express');
-const routes = require("../routes");
-const utils = require('./testUtils');
+const routes = require('../../routes');
+const utils = require('./utils');
 
 const API_KEY_HEADER = 'X-MS-CONVERSION-API-KEY';
 const API_KEY = '=2&jcNFjtsvp=V97mBcH%T_kU=5SMGm=';
@@ -60,8 +60,8 @@ const convertData = (url, payload) => {
 };
 
 const generateTruths = (basePath, domain, subCases) => {
-    const templateBasePath = path.join(__dirname, '../service-templates', domain);
-    const dataBasePath = path.join(__dirname, '../sample-data', domain);
+    const templateBasePath = path.join(__dirname, '../../service-templates', domain);
+    const dataBasePath = path.join(__dirname, '../../sample-data', domain);
     const subPath = path.join(basePath, domain);
 
     return subCases.map(subCase => new Promise((fulfill, reject) => {
@@ -95,7 +95,7 @@ const generateTruths = (basePath, domain, subCases) => {
 const main = () => {
     const app = routes(express());
     const server = initEnvironment(app);
-    const basePath = path.join(__dirname, 'data');
+    const basePath = path.join(__dirname, '../data');
     const prompt = `
         The truths files are already exist in ${basePath}. 
         Please remove them manually for the normal operation of the program.
@@ -122,5 +122,5 @@ const main = () => {
 
 // Be very careful before running this file and make sure that you indeed want
 // to generate new ground truths.
-// command: `node --experimental-worker .\src\regr-test\gen-ground-truths.js`
+// command: `node --experimental-worker .\src\regr-test\util\gen-ground-truths.js`
 main();

@@ -10,7 +10,7 @@ const path  = require('path');
 const routes = require('../routes');
 const constants = require('../lib/constants/constants');
 const cases = require('./config');
-const utils = require('./testUtils');
+const utils = require('./util/utils');
 
 const MAX_TEST_TIME = 10000;
 const API_KEY_HEADER = "X-MS-CONVERSION-API-KEY";

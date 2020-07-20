@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 const _ = require('lodash');
+const handlers = require('./handlers');
 const MAX_COMPARISION_DEPTH = 10;
 
 const getGroundTruthFileName = testCase => {
@@ -73,8 +74,9 @@ const compareContent = (content, groundTruth) => {
         throw new Error('The parameters must be both string type.');
     }
 
-    const left = JSON.parse(content);
-    const right = JSON.parse(groundTruth);
+    const handler = new handlers.ExtraCdaFieldHandler();
+    const left = handler.handle(JSON.parse(content));
+    const right = handler.handle(JSON.parse(groundTruth));
     __compareContent('', left, right, 0);
 };
 

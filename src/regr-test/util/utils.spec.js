@@ -4,7 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 var assert = require('assert');
-var utils = require('./testUtils');
+var utils = require('./utils');
 
 describe('Regression test testUtils - getGroundTruthFileName', () => {
     it ('should generate normal ground truth file name', () => {
