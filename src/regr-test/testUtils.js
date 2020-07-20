@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 const _ = require('lodash');
+const MAX_COMPARISION_DEPTH = 10;
 
 const getGroundTruthFileName = testCase => {
     if (!!testCase && !!testCase.templateFile && !!testCase.dataFile) {
@@ -12,7 +13,14 @@ const getGroundTruthFileName = testCase => {
     throw new Error(`The testCase should both have property [templateFile] and [dataFile].`);
 }
 
-const __compareContent = (propPrefix, left, right) => {
+const __compareContent = (propPrefix, left, right, depth) => {
+    if (depth >= MAX_COMPARISION_DEPTH) {
+        if (!_.isEqual(left, right)) {
+            throw new Error(`The conversion result has different property: [${propPrefix}]`);
+        }
+        return true;
+    }
+
     const objectFlag = _.isPlainObject(left) && _.isPlainObject(right);
     const arrayFlag = _.isArray(left) && _.isArray(right);
     
@@ -40,7 +48,7 @@ const __compareContent = (propPrefix, left, right) => {
                 const subArrayFlag = _.isArray(left[prop]) && _.isArray(right[prop]);
                 
                 if (subObjectFlag || subArrayFlag) {
-                    __compareContent(`${propPrefix}${prop}.`, left[prop], right[prop]);
+                    __compareContent(`${propPrefix}${prop}.`, left[prop], right[prop], depth + 1);
                 }
                 else if (!_.isEqual(left[prop], right[prop])) {
                     throw new Error(`The conversion result has different property: [${propPrefix}${prop}]`);
@@ -67,7 +75,7 @@ const compareContent = (content, groundTruth) => {
 
     const left = JSON.parse(content);
     const right = JSON.parse(groundTruth);
-    __compareContent('', left, right);
+    __compareContent('', left, right, 0);
 };
 
 module.exports = {
