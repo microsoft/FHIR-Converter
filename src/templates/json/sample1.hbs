@@ -1,0 +1,43 @@
+{
+  "resourceType": "Patient",
+  "id": "{{generateUUID (toJsonString msg.PatientId)}}"
+  "identifier": [
+    {
+      "use": "usual",
+      "type": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "MR"
+          }
+        ]
+      },
+      "system": "urn:oid:2.16.840.1.113883.19.5",
+      "value": "{{msg.MRN}}"
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "family": "{{msg.[Last Name]}}",
+      "given": [
+        "{{msg.[First Name]}}"
+      ]
+    }
+  ],
+  "gender":   
+    {{#if (eq msg.Gender 'M')}}
+	    "male",
+    {{else if (eq msg.Gender 'F')}}
+	    "female",
+    {{else if (eq msg.Gender 'U')}}
+	    "unknown",
+    {{else if code}}
+	    "other",
+    {{/if}}
+  "birthDate": "{{addHyphensDate msg.DOB}}",
+  "managingOrganization": {
+    "reference": "Organization/2.16.840.1.113883.19.5",
+    "display": "Good Health Clinic"
+  }
+}
