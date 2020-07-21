@@ -34,10 +34,12 @@ var hasSuccessfulCallBeenMade = false;
 var currentDataType;
 var templateOutputSplit;
 var dataTemplateSplit;
+var baseDataSplit;
 
 var dataTypeMappings = {
     'HL7v2': 'hl7v2',
-    'CDA': 'cda'
+    'CDA': 'cda',
+    'JSON': 'json'
 };
 
 function getSettings() {
@@ -114,6 +116,11 @@ function convertData() {
         }
         else {
             return;
+        }
+
+        if (baseEditor.getValue() && baseEditor.getValue() !== "") {
+            // eslint-disable-next-line no-control-regex
+            reqBody.baseDataBase64 = btoa(baseEditor.getValue().replace(/[^\x00-\x7F]/g, "")); //TODO
         }
 
         var topTemplate = openTemplates.find(template => template.parent === null);
@@ -348,6 +355,9 @@ function changeDataType(dataType) {
         if (dataTemplateSplit) {
             dataTemplateSplit.destroy();
         }
+        if (baseDataSplit) {
+            baseDataSplit.destroy();
+        }
 
         switch (dataType) {
             case 'HL7v2':
@@ -368,6 +378,7 @@ function changeDataType(dataType) {
                 dataEditor.setOption("mode", "default");
                 break;
             case 'CDA':
+            case 'JSON':
                 $('#editor-wrapper').removeClass('vertical-content');
 
                 // Create splits for editor areas
@@ -376,9 +387,14 @@ function changeDataType(dataType) {
                     sizes: [50, 50]
                 });
 
-                dataTemplateSplit = Split(['.msg-area', '.editor-area'], {
+                baseDataSplit = Split(['.msg-area', '.base-area'], {
                     gutterSize: 5,
-                    sizes: [30, 70]
+                    sizes: [50, 50]
+                });
+
+                dataTemplateSplit = Split(['.src-area', '.editor-area'], {
+                    gutterSize: 5,
+                    sizes: [50, 50]
                 });
 
                 dataEditor.setOption("mode", "text/html");
@@ -399,6 +415,20 @@ $(document).ready(function () {
     });
 
     dataEditor.on("change", function () {
+        convertData();
+    });
+
+    baseEditor = CodeMirror.fromTextArea(document.getElementById("basebox"), {
+        //readOnly: false,
+        lineNumbers: true,
+        theme: lightMode,
+        mode: { name: "default" },
+        extraKeys: { "Ctrl-Q": function (cm) { cm.foldCode(cm.getCursor()); } },
+        foldGutter: true,
+        gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+    });
+
+    baseEditor.on("change", function () {
         convertData();
     });
 
@@ -521,7 +551,7 @@ $(document).ready(function () {
     });
 
     $('#refresh-button').on('click', function () {
-        convertMessage();
+        convertData();
     });
 
     $("#new-branch-modal").on('show.bs.modal', function () {

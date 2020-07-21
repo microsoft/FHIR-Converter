@@ -4,10 +4,12 @@
 // -------------------------------------------------------------------------------------------------
 var hl7v2 = require('../hl7v2/hl7v2');
 var cda = require('../cda/cda');
+var json = require('../json/json');
 
 var map = [];
 map["cda"] = new cda();
 map["hl7v2"] = new hl7v2();
+map["json"] = new json();
 
 module.exports = class dataHandlerFactory {
     static createDataHandler(dataType) {

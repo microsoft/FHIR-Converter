@@ -713,6 +713,7 @@ module.exports = function (app) {
     app.post('/api/convert/:srcDataType', function (req, res) {
         workerPool.exec({
             'type': '/api/convert/:srcDataType',
+            'baseDataBase64': req.body.baseDataBase64,
             'srcDataType': req.params.srcDataType,
             'srcDataBase64': req.body.srcDataBase64,
             'templateBase64': req.body.templateBase64,

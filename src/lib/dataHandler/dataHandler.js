@@ -21,11 +21,11 @@ module.exports = class dataHandler {
         return templateStr;
     }
 
-    postProcessResult(inResult) {
+    postProcessResult(inResult, baseData) {
         return resourceMerger.Process(
             JSON.parse(
                 jsonProcessor.Process(inResult)
-            ));
+            ), baseData);
     }
 
     getConversionResultMetadata() {

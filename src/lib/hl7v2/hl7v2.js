@@ -30,8 +30,8 @@ module.exports = class hl7v2 extends dataHandler {
         return super.preProcessTemplate(hl7v2TemplatePreprocessor.Process(templateStr));
     }
 
-    postProcessResult(inResult) {
-        return super.postProcessResult(inResult);
+    postProcessResult(inResult, baseData) {
+        return super.postProcessResult(inResult, baseData);
     }
 
     getConversionResultMetadata(context) {

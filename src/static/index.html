@@ -57,6 +57,7 @@
                 <div id="data-type-dropdown" class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">HL7v2</a>
                     <a class="dropdown-item" href="#">CDA</a>
+                    <a class="dropdown-item" href="#">JSON</a>
                 </div>
             </div>
 
@@ -111,8 +112,13 @@
 
         <!-- Split layout for editors -->
         <div class="editor-content" id="editor-wrapper">
-            <div class="content split msg-area">
-                <textarea id="databox"></textarea>
+             <div class="content split src-area">
+                <div class="split base-area">
+                    <textarea class="form-control" id="basebox">{}</textarea>
+                </div>
+                <div class="split msg-area">
+                    <textarea class="form-control" id="databox">{}</textarea>
+                </div>
             </div>
             <div class="content split editor-area">
                 <div class="split template-area">

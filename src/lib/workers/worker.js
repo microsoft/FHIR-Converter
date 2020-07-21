@@ -36,8 +36,10 @@ function expireCache() {
     compileCache.clear();
 }
 
-function generateResult(dataTypeHandler, dataContext, template) {
-    var result = dataTypeHandler.postProcessResult(template(dataContext));
+function generateResult(dataTypeHandler, dataContext, template, baseData) {
+
+    var result = dataTypeHandler.postProcessResult(template(dataContext), baseData);
+
     return Object.assign(dataTypeHandler.getConversionResultMetadata(dataContext.msg), { 'fhirResource': result });
 }
 
@@ -66,6 +68,10 @@ WorkerUtils.workerTaskProcessor((msg) => {
                                 templatesMap = JSON.parse(Buffer.from(msg.templatesOverrideBase64, 'base64').toString());
                             }
 
+                            var baseData = undefined;
+                            if (msg.baseDataBase64) {
+                                baseData = JSON.parse(Buffer.from(msg.baseDataBase64, 'base64').toString());
+                            }
 
                             var templateString = "";
                             if (msg.templateBase64) {
@@ -97,7 +103,7 @@ WorkerUtils.workerTaskProcessor((msg) => {
                                         var template = handlebarInstance.compile(dataTypeHandler.preProcessTemplate(templateString));
 
                                         try {
-                                            fulfill({ 'status': 200, 'resultMsg': generateResult(dataTypeHandler, dataContext, template) });
+                                            fulfill({ 'status': 200, 'resultMsg': generateResult(dataTypeHandler, dataContext, template, baseData) });
                                         }
                                         catch (err) {
                                             reject({ 'status': 400, 'resultMsg': errorMessage(errorCodes.BadRequest, "Unable to create result: " + err.toString()) });
