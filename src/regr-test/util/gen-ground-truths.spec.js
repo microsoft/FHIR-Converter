@@ -5,11 +5,55 @@
 
 const path = require('path');
 const assert = require('assert');
-const _ = require('lodash');
+const fs = require('fs-extra');
+const cases = require('../config');
 const generator = require('./gen-ground-truths');
+const utils = require('./utils');
+
+const clearTestDir = basePath => {
+    if (fs.pathExistsSync(basePath)) {
+        fs.removeSync(basePath);
+    }
+};
 
 describe('Regression test generate-ground-truths - main', () => {
+    const basePath = path.join(__dirname, '../data/test');
+    const allCases = cases.cdaCases.concat(cases.hl7v2Cases);
+
+    beforeEach('clean work directory before testing', () => clearTestDir(basePath));
+    afterEach('clean work directory after testing', () => clearTestDir(basePath));
+    after('clean work directory after all testing', () => clearTestDir(basePath));
+    
     it ('should generate normal ground truth files in normal situations', () => {
-        const basePath = path.join(__dirname, '../data/test');
-    })
+        return generator.generate(basePath)
+            .then(result => {
+                for (const subCase of allCases) {
+                    const domain = path.extname(subCase.dataFile) === '.hl7' ? 'hl7v2' : 'cda';
+                    const domainPath = path.join(basePath, domain);
+                    const filePath = path.join(domainPath, subCase.templateFile, utils.getGroundTruthFileName(subCase));
+                    assert.strictEqual(typeof result, 'object');
+                    assert.ok(fs.pathExistsSync(filePath));
+                }
+            });
+    });
+    it ('should return understandable prompt if truth files are exist', () => {
+        fs.ensureDirSync(path.join(basePath, 'cda'));
+        fs.ensureDirSync(path.join(basePath, 'hl7v2'));
+        return generator.generate(basePath)
+            .then(prompt => {
+                const trimedPrompt = prompt.split('\n').map(e => e.trim()).join('');
+                assert.strictEqual(trimedPrompt, `The truths files are already exist in ${basePath}.Please remove them manually for the normal operation of the program.`);
+            });
+    });
+    it ('should return understandable prompt if truth files are exist', () => {
+        for (const subCase of allCases) {
+            const domain = path.extname(subCase.dataFile) === '.hl7' ? 'hl7v2' : 'cda';
+            fs.ensureDirSync(path.join(basePath, domain, subCase.templateFile));
+        }
+        return generator.generate(basePath)
+            .then(prompt => {
+                const trimedPrompt = prompt.split('\n').map(e => e.trim()).join('');
+                assert.strictEqual(trimedPrompt, `The truths files are already exist in ${basePath}.Please remove them manually for the normal operation of the program.`);
+            });
+    });
 });

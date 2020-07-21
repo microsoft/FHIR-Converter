@@ -101,22 +101,21 @@ const main = (basePath) => {
         Please remove them manually for the normal operation of the program.
     `;
     
-    truthsExist(basePath).then(flag => {
-        if (flag) {
-            console.log(prompt);
-            server.close(() => process.exit(0));
-            return;
-        }
-        const cdaPromises = generateTruths(basePath, 'cda', cases.cdaCases);
-        const hl7v2Promises = generateTruths(basePath, 'hl7v2', cases.hl7v2Cases);
-
-        const cdaFinalPromise = Promise.all(cdaPromises);
-        const hl7v2FinalPromise = Promise.all(hl7v2Promises);
-
-        Promise.all([ cdaFinalPromise, hl7v2FinalPromise ])
-            .then(console.log)
-            .catch(console.error)
-            .finally(() => server.close(() => process.exit(0)));
+    return new Promise((fulfill, reject) => {
+        truthsExist(basePath).then(flag => {
+            if (flag) {
+                server.close(() => fulfill(prompt));
+            }
+            const cdaPromises = generateTruths(basePath, 'cda', cases.cdaCases);
+            const hl7v2Promises = generateTruths(basePath, 'hl7v2', cases.hl7v2Cases);
+    
+            const cdaFinalPromise = Promise.all(cdaPromises);
+            const hl7v2FinalPromise = Promise.all(hl7v2Promises);
+    
+            Promise.all([ cdaFinalPromise, hl7v2FinalPromise ])
+                .then(result => server.close(() => fulfill(result)))
+                .catch(error => server.close(() => reject(error)));
+        });
     });
 };
 
@@ -125,7 +124,7 @@ const main = (basePath) => {
 // command: `node --experimental-worker .\src\regr-test\util\gen-ground-truths.js`
 // Before running, uncomment the following line and comment it in time after running.
 
-// main(path.join(__dirname, '../data'));
+// main(path.join(__dirname, '../data')).then(console.log).catch(console.error);
 
 
 module.exports = {

@@ -13,7 +13,7 @@ const getGroundTruthFileName = testCase => {
         return `${testCase.templateFile}-${testCase.dataFile}.json`;
     }
     throw new Error(`The testCase should both have property [templateFile] and [dataFile].`);
-}
+};
 
 const __compareContent = (propPrefix, left, right, depth) => {
     if (depth >= MAX_COMPARISION_DEPTH) {

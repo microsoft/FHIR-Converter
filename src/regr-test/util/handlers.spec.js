@@ -4,9 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 const assert = require('assert');
-const _ = require('lodash');
 const handlers = require('./handlers');
-const { utimes } = require('fs');
 const dataNormal = () => ({
     "fhirResource": {
         "resourceType": "Bundle",

@@ -108,9 +108,9 @@ describe('Regression test testUtils - compareContent', () => {
     it ('should compare correctly when given equal arrays', () => {
         const parameters = [
             [ '[1, 2, 3, 4]', '[4, 2, 3, 1]' ],
-            [ '[\"Cat\", \"Apple\", \"Dog\"]', '[\"Apple\", \"Cat\", \"Dog\"]' ],
-            [ '{\"items\": [1, 2, 3, 4]}', '{\"items\": [4, 2, 3, 1]}' ],
-            [ '{\"items\": [\"Apple\", \"Cat\", \"Dog\"]}', '{\"items\": [\"Cat\", \"Apple\", \"Dog\"]}' ]
+            [ '["Cat", "Apple", "Dog"]', '["Apple", "Cat", "Dog"]' ],
+            [ '{"items": [1, 2, 3, 4]}', '{"items": [4, 2, 3, 1]}' ],
+            [ '{"items": ["Apple", "Cat", "Dog"]}', '{"items": ["Cat", "Apple", "Dog"]}' ]
         ];
         for (const parameter of parameters) {
             assert.ok(utils.compareContent(...parameter));
@@ -178,8 +178,8 @@ describe('Regression test testUtils - compareContent', () => {
     it ('should throw error when given unequal arrays', () => {
         const parameters = [
             [[ '[1, 2, 3, 4]', '[2, 3, 4]' ], ''],
-            [[ '[1, 2, 3, 4]', '[\"Apple\", \"Cat\", \"Dog\"]' ], ''],
-            [[ '{\"items\": [1, 2, 3, 4]}', '{\"items\": [\"Apple\", \"Cat\", \"Dog\"]}' ], 'items.']
+            [[ '[1, 2, 3, 4]', '["Apple", "Cat", "Dog"]' ], ''],
+            [[ '{"items": [1, 2, 3, 4]}', '{"items": ["Apple", "Cat", "Dog"]}' ], 'items.']
         ];
         const expectError = {
             name: 'Error',
@@ -192,7 +192,7 @@ describe('Regression test testUtils - compareContent', () => {
     });
     it ('should throw error when given parameters with different types', () => {
         const parameters = [
-            [ '{\"name\": \"Ferris\"}', '[1, 2, 3, 4]' ]
+            [ '{"name": "Ferris"}', '[1, 2, 3, 4]' ]
         ];
         const expectError = {
             name: 'Error',
