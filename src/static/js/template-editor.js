@@ -369,7 +369,7 @@ function changeDataType(dataType) {
                     sizes: [50, 50]
                 });
 
-                dataTemplateSplit = Split(['.msg-area', '.editor-area'], {
+                dataTemplateSplit = Split(['.src-area', '.editor-area'], {
                     gutterSize: 5,
                     sizes: [30, 70],
                     direction: 'vertical'
