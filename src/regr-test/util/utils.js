@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+// TODO: consider using `util` nodule inside node env
 const _ = require('lodash');
 const handlers = require('./handlers');
 const MAX_COMPARISION_DEPTH = 10;
@@ -25,10 +26,6 @@ const __compareContent = (propPrefix, left, right, depth) => {
     const objectFlag = _.isPlainObject(left) && _.isPlainObject(right);
     const arrayFlag = _.isArray(left) && _.isArray(right);
     
-    if (!objectFlag && !arrayFlag) {
-        throw new Error('Inner comparator\'s parameters should both be plain object or array.');
-    }
-
     if (objectFlag) {
         const leftPros = Object.keys(left);
         const rightPros = Object.keys(right);
@@ -44,28 +41,22 @@ const __compareContent = (propPrefix, left, right, depth) => {
             throw new Error(`The conversion result has these extra properties: [${propPrefix}[${rightDiffs.toString()}]]`);
         }
         else {
-            for (const prop of totalPros) {
-                const subObjectFlag = _.isPlainObject(left[prop]) && _.isPlainObject(right[prop]);
-                const subArrayFlag = _.isArray(left[prop]) && _.isArray(right[prop]);
-                
-                if (subObjectFlag || subArrayFlag) {
-                    __compareContent(`${propPrefix}${prop}.`, left[prop], right[prop], depth + 1);
-                }
-                else if (!_.isEqual(left[prop], right[prop])) {
-                    throw new Error(`The conversion result has different property: [${propPrefix}${prop}]`);
-                }
-            }
-            return true;
+            return totalPros.every(prop => __compareContent(`${propPrefix}${prop}.`, left[prop], right[prop], depth + 1));
         }
     }
-
     // TODO: The array comparision can be done in a
     // finer granularity
     else if (arrayFlag) {
-        if (!_.isEqual(left, right)) {
+        if (!_.isEqual(left.sort(), right.sort())) {
             throw new Error(`The conversion result has different property: [${propPrefix}Array]`);
         }
         return true;
+    }
+    else {
+        if (_.isEqual(left, right)) {
+            return true;
+        }
+        throw new Error(`The conversion result has different property: [${propPrefix}]`);
     }
 };
 
@@ -77,10 +68,11 @@ const compareContent = (content, groundTruth) => {
     const handler = new handlers.ExtraCdaFieldHandler();
     const left = handler.handle(JSON.parse(content));
     const right = handler.handle(JSON.parse(groundTruth));
-    __compareContent('', left, right, 0);
+    return __compareContent('', left, right, 0);
 };
 
 module.exports = {
+    MAX_COMPARISION_DEPTH,
     getGroundTruthFileName,
     compareContent
 };
