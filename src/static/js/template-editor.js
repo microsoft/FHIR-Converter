@@ -352,11 +352,11 @@ function changeDataType(dataType) {
         if (templateOutputSplit) {
             templateOutputSplit.destroy();
         }
-        if (dataTemplateSplit) {
-            dataTemplateSplit.destroy();
-        }
         if (baseDataSplit) {
             baseDataSplit.destroy();
+        }
+        if (dataTemplateSplit) {
+            dataTemplateSplit.destroy();
         }
 
         switch (dataType) {
@@ -365,6 +365,11 @@ function changeDataType(dataType) {
 
                 // Create splits for editor areas
                 templateOutputSplit = Split(['.template-area', '.output-area'], {
+                    gutterSize: 5,
+                    sizes: [50, 50]
+                });
+
+                baseDataSplit = Split(['.base-area', '.msg-area'], {
                     gutterSize: 5,
                     sizes: [50, 50]
                 });
@@ -387,7 +392,7 @@ function changeDataType(dataType) {
                     sizes: [50, 50]
                 });
 
-                baseDataSplit = Split(['.msg-area', '.base-area'], {
+                baseDataSplit = Split(['.base-area', '.msg-area'], {
                     gutterSize: 5,
                     sizes: [50, 50]
                 });
