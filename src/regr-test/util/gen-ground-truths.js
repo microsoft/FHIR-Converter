@@ -5,24 +5,10 @@
 
 const path  = require('path');
 const fs = require("fs");
-const http = require('http');
 const cases = require('../config');
-const express = require('express');
-const routes = require('../../routes');
+const WorkerPool = require('../../lib/workers/workerPool');
 const utils = require('./utils');
 const constants = require('../../lib/constants/constants');
-
-const API_KEY_HEADER = 'X-MS-CONVERSION-API-KEY';
-const API_KEY = '=2&jcNFjtsvp=V97mBcH%T_kU=5SMGm=';
-const GEN_SERVER_PORT = 2019;
-
-const initEnvironment = app => {
-    app.setValidApiKeys([ API_KEY ]);
-
-    const port = process.env.PORT || GEN_SERVER_PORT;
-    const server = app.listen(port);
-    return server;
-};
 
 const truthsExist = basePath => {
     const cdaPath = path.join(basePath, 'cda');
@@ -33,34 +19,7 @@ const truthsExist = basePath => {
     return Promise.all(promises).then(flags => flags.every(x => x));
 };
 
-const convertData = (url, payload) => {
-    const options = {
-        host: process.env.HOST || 'localhost',
-        port: process.env.PORT || GEN_SERVER_PORT,
-        path: url,
-        method: 'POST',
-        headers: {
-            [API_KEY_HEADER]: API_KEY,
-            'Content-Type': 'application/json'
-        }
-    };
-
-    return new Promise((fulfill, reject) => {
-        const request = http.request(options, response => {
-            let result = '';
-            response.resume();
-            response.on('data', chunk => result += chunk);
-            response.on('end', () => fulfill(result));
-            response.on('error', reject);
-        });
-
-        request.on('error', reject);
-        request.write(JSON.stringify(payload));
-        request.end();
-    });
-};
-
-const generateTruths = (basePath, domain, subCases) => {
+const generateTruths = (workerPool, basePath, domain, subCases) => {
     const templateBasePath = path.join(constants.TEMPLATE_FILES_LOCATION, domain);
     const dataBasePath = path.join(constants.SAMPLE_DATA_LOCATION, domain);
     const subPath = path.join(basePath, domain);
@@ -75,14 +34,16 @@ const generateTruths = (basePath, domain, subCases) => {
         }
 
         const payload = {
+            type: `/api/convert/:srcDataType`,
+            srcDataType: domain,
             templateBase64: Buffer.from(templateContent).toString('base64'),
             srcDataBase64: Buffer.from(dataContent).toString('base64')
         };
 
-        convertData(`/api/convert/${domain}`, payload)
+        workerPool.exec(payload)
             .then(result => {
                 const filePath = path.join(subTemplatePath, utils.getGroundTruthFileName(subCase));
-                fs.writeFile(filePath, JSON.stringify(JSON.parse(result), null, 4), 'UTF8', error => {
+                fs.writeFile(filePath, JSON.stringify(result.resultMsg, null, 4), 'UTF8', error => {
                     if (error) {
                         return reject(error);
                     }
@@ -93,38 +54,45 @@ const generateTruths = (basePath, domain, subCases) => {
     }));
 };
 
-const main = (basePath) => {
-    const app = routes(express());
-    const server = initEnvironment(app);
+const main = basePath => {
     const prompt = `
         The truths files are already exist in ${basePath}. 
         Please remove them manually for the normal operation of the program.
     `;
     
     return new Promise((fulfill, reject) => {
-        truthsExist(basePath).then(flag => {
-            if (flag) {
-                server.close(() => fulfill(prompt));
-            }
-            const cdaPromises = generateTruths(basePath, 'cda', cases.cdaCases);
-            const hl7v2Promises = generateTruths(basePath, 'hl7v2', cases.hl7v2Cases);
-    
-            const cdaFinalPromise = Promise.all(cdaPromises);
-            const hl7v2FinalPromise = Promise.all(hl7v2Promises);
-    
-            Promise.all([ cdaFinalPromise, hl7v2FinalPromise ])
-                .then(result => server.close(() => fulfill(result)))
-                .catch(error => server.close(() => reject(error)));
-        });
+        truthsExist(basePath)
+            .then(flag => {
+                if (flag) {
+                    fulfill(prompt);
+                }
+                const workerPath = path.join(__dirname, '../../lib/workers/worker.js');
+                const workerPool = new WorkerPool(workerPath, require('os').cpus().length);
+                const cdaPromises = generateTruths(workerPool, basePath, 'cda', cases.cdaCases);
+                const hl7v2Promises = generateTruths(workerPool, basePath, 'hl7v2', cases.hl7v2Cases);
+        
+                const cdaFinalPromise = Promise.all(cdaPromises);
+                const hl7v2FinalPromise = Promise.all(hl7v2Promises);
+        
+                Promise.all([ cdaFinalPromise, hl7v2FinalPromise ])
+                    .then(fulfill)
+                    .catch(reject);
+            })
+            .catch(reject);
     });
 };
 
 // Be very careful before running this file and make sure that you indeed want
 // to generate new ground truths.
 // command: `node --experimental-worker .\src\regr-test\util\gen-ground-truths.js`
-// Before running, uncomment the following line and comment it in time after running.
+// Before running, uncomment the following lines and comment them in time after running.
 
-// main(path.join(__dirname, '../data')).then(console.log).catch(console.error);
+// main(path.join(__dirname, '../data'))
+//     .then(result => {
+//         console.log(result);
+//         process.exit(0);
+//     })
+//     .catch(console.error);
 
 
 module.exports = {

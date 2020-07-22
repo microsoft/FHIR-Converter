@@ -34,7 +34,8 @@ describe('Regression test generate-ground-truths - main', () => {
                     assert.strictEqual(typeof result, 'object');
                     assert.ok(fs.pathExistsSync(filePath));
                 }
-            });
+            })
+            .catch(console.error);
     });
     it ('should return understandable prompt if truth files are exist', () => {
         fs.ensureDirSync(path.join(basePath, 'cda'));
@@ -43,7 +44,8 @@ describe('Regression test generate-ground-truths - main', () => {
             .then(prompt => {
                 const trimedPrompt = prompt.split('\n').map(e => e.trim()).join('');
                 assert.strictEqual(trimedPrompt, `The truths files are already exist in ${basePath}.Please remove them manually for the normal operation of the program.`);
-            });
+            })
+            .catch(console.error);
     });
     it ('should return understandable prompt if truth files are exist', () => {
         for (const subCase of allCases) {
@@ -54,6 +56,7 @@ describe('Regression test generate-ground-truths - main', () => {
             .then(prompt => {
                 const trimedPrompt = prompt.split('\n').map(e => e.trim()).join('');
                 assert.strictEqual(trimedPrompt, `The truths files are already exist in ${basePath}.Please remove them manually for the normal operation of the program.`);
-            });
+            })
+            .catch(console.error);
     });
 });
