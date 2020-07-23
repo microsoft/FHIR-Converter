@@ -7,7 +7,7 @@ const path = require('path');
 const assert = require('assert');
 const fs = require('fs-extra');
 const cases = require('../config');
-const generator = require('./gen-ground-truths');
+const generator = require('./generate-ground-truths');
 const utils = require('./utils');
 
 const clearTestDir = basePath => {
