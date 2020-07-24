@@ -8,9 +8,11 @@
             {
                 {{>DataType/CX.hbs CX=PID-2}},
             },
-            {
-                {{>DataType/CX.hbs CX=PID-3}},
-            },
+            {{#each (getFieldRepeats PID-3)}}
+                {
+                    {{>DataType/CX.hbs CX=this}},
+                },
+            {{/each}}
             {
                 {{>DataType/CX.hbs CX=PID-4}},
             },

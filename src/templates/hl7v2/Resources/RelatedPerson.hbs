@@ -43,9 +43,11 @@
         "telecom":
         [
             { {{>DataType/XTN.hbs XTN=ROL-12}} },
-            {
-                {{>DataType/XTN.hbs XTN=NK1-5}},
-            },
+            {{#each (getFieldRepeats NK1-5)}}
+                {
+                    {{>DataType/XTN.hbs XTN=this}},
+                },
+            {{/each}}
             {
                 {{>DataType/XTN.hbs XTN=NK1-6}},
                 {{#if NK1-6}},
