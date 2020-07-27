@@ -56,21 +56,25 @@
         ],
         "telecom":
         [
+            {{#each (getFieldRepeats PID-13)}}
             {
-                {{>DataType/XTN.hbs XTN=PID-13}},
-                {{#if PID-13}},
-                    "use":"home",
-                {{/if}},
+                {{>DataType/XTN.hbs XTN=this}},
+                "use":"home",
             },
+            {{/each}}
+
+            {{#each (getFieldRepeats PID-14)}}
             {
-                {{>DataType/XTN.hbs XTN=PID-14}},
-                {{#if PID-14}},
-                    "use":"work",
-                {{/if}},
+                {{>DataType/XTN.hbs XTN=this}},
+                "use":"work",
             },
+            {{/each}}
+            
+            {{#each (getFieldRepeats PID-40)}}
             {
-                {{>DataType/XTN.hbs XTN=PID-40}},
+                {{>DataType/XTN.hbs XTN=this}},
             },
+            {{/each}}
         ],
         "communication":
         [
