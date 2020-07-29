@@ -4,7 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 var assert = require('assert');
-var testUtils = require('./testUtils');
+var testUtils = require('./utils');
 
 describe('testUtils', function () {
     it('Function countOccurences should return the number of occurrences', function () {

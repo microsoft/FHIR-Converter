@@ -92,9 +92,9 @@ describe('Regression test testUtils - getGroundTruthFileName', () => {
 describe('Regression test testUtils - compareContent', () => {
     it ('should compare correctly when given equal parameters deeper than threshold', () => {
         const parameters = [
-            [ createDeepObject(10, false), createDeepObject(10, false) ],
-            [ createDeepObject(16, false), createDeepObject(16, false) ],
-            [ createDeepObject(32, false), createDeepObject(32, false) ]
+            [ createDeepObject(100, false), createDeepObject(100, false) ],
+            [ createDeepObject(128, false), createDeepObject(128, false) ],
+            [ createDeepObject(256, false), createDeepObject(256, false) ]
         ];
         for (const parameter of parameters) {
             assert.ok(utils.compareContent(...parameter.map(JSON.stringify)));
@@ -129,9 +129,9 @@ describe('Regression test testUtils - compareContent', () => {
     });
     it ('should throw error when given unequal parameters deeper than threshold', () => {
         const parameters = [
-            [ createDeepObject(10, true), createDeepObject(10, true) ],
-            [ createDeepObject(16, true), createDeepObject(16, true) ],
-            [ createDeepObject(32, true), createDeepObject(32, true) ]
+            [ createDeepObject(100, true), createDeepObject(100, true) ],
+            [ createDeepObject(128, true), createDeepObject(128, true) ],
+            [ createDeepObject(256, true), createDeepObject(256, true) ]
         ];
         const expectError = {
             name: 'Error',

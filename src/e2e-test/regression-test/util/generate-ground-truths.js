@@ -84,15 +84,7 @@ const main = basePath => {
 
 // Be very careful before running this file and make sure that you indeed want
 // to generate new ground truths.
-// command: `node --experimental-worker .\src\regr-test\util\gen-ground-truths.js`
-// Before running, uncomment the following lines and comment them in time after running.
-
-// main(path.join(__dirname, '../data'))
-//     .then(result => {
-//         console.log(result);
-//         process.exit(0);
-//     })
-//     .catch(console.error);
+// You can generate ground truth files in command line by requiring `main` function.
 
 
 module.exports = {

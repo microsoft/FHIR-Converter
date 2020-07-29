@@ -6,10 +6,10 @@
 // TODO: consider using `util` nodule inside node env
 const _ = require('lodash');
 const handlers = require('./handlers');
-const MAX_COMPARISION_DEPTH = 10;
+const MAX_COMPARISION_DEPTH = 100;
 
 const getGroundTruthFileName = testCase => {
-    if (!!testCase && !!testCase.templateFile && !!testCase.dataFile) {
+    if (testCase && testCase.templateFile && testCase.dataFile) {
         return `${testCase.templateFile}-${testCase.dataFile}.json`;
     }
     throw new Error(`The testCase should both have property [templateFile] and [dataFile].`);
@@ -44,8 +44,7 @@ const __compareContent = (propPrefix, left, right, depth) => {
             return totalPros.every(prop => __compareContent(`${propPrefix}${prop}.`, left[prop], right[prop], depth + 1));
         }
     }
-    // TODO: The array comparision can be done in a
-    // finer granularity
+    // TODO: The array comparision can be done in a finer granularity
     else if (arrayFlag) {
         if (!_.isEqual(left.sort(), right.sort())) {
             throw new Error(`The conversion result has different property: [${propPrefix}Array]`);
