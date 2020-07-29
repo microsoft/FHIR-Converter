@@ -557,8 +557,8 @@ module.exports.external = [
                 for (var t = 0; t < templateIds.length - 1; t++) { //-1 because templateIds includes the full message at the end
                     for (var i = 0; i < msg.ClinicalDocument.component.structuredBody.component.length; i++) {
                         let sectionObj = msg.ClinicalDocument.component.structuredBody.component[i].section;
-
-                        if (JSON.stringify(sectionObj.templateId).includes(templateIds[t])) {
+                        
+                        if (sectionObj.templateId && JSON.stringify(sectionObj.templateId).includes(templateIds[t])) {
                             ret[normalizeSectionName(templateIds[t])] = sectionObj;
                             break;
                         }
