@@ -82,7 +82,7 @@ const main = basePath => {
     });
 };
 
-// Be very careful before running this file and make sure that you indeed want
+// Be very careful before invoking `main` function and make sure that you indeed want
 // to generate new ground truths.
 // You can generate ground truth files in command line by requiring `main` function.
 
