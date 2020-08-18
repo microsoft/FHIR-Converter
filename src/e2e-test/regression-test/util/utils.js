@@ -5,7 +5,7 @@
 
 // TODO: consider using `util` nodule inside node env
 const _ = require('lodash');
-const handlers = require('./handlers');
+const interceptors = require('./interceptors');
 const MAX_COMPARISION_DEPTH = 100;
 
 const getGroundTruthFileName = testCase => {
@@ -64,9 +64,9 @@ const compareContent = (content, groundTruth) => {
         throw new Error('The parameters must be both string type.');
     }
 
-    const handler = new handlers.ExtraCdaFieldHandler();
-    const left = handler.handle(JSON.parse(content));
-    const right = handler.handle(JSON.parse(groundTruth));
+    const interceptor = new interceptors.ExtraDynamicFieldInterceptor();
+    const left = interceptor.handle(JSON.parse(content));
+    const right = interceptor.handle(JSON.parse(groundTruth));
     return __compareContent('', left, right, 0);
 };
 

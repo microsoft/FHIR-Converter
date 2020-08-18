@@ -4,7 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 const assert = require('assert');
-const handlers = require('./handlers');
+const interceptors = require('./interceptors');
 const dataNormal = () => ({
     "fhirResource": {
         "resourceType": "Bundle",
@@ -85,30 +85,30 @@ const dataInvalid = () => ([
     }
 ]);
 
-describe('Regression test handlers - ExtraCdaFieldHandler', () => {
+describe('Regression test interceptors - ExtraDynamicFieldInterceptor', () => {
     it ('should handle extra field properly when given normal input', () => {
-        const handler = new handlers.ExtraCdaFieldHandler(null);
+        const interceptor = new interceptors.ExtraDynamicFieldInterceptor(null);
         const expect = dataNormal();
-        const result = handler.handle(dataNormal());
+        const result = interceptor.handle(dataNormal());
         expect['fhirResource']['entry'][0]['resource']['date'] = 'removed';
 
         assert.deepStrictEqual(result, expect);
     });
     it ('should return the origin data when encountering invalid input', () => {
-        const handler = new handlers.ExtraCdaFieldHandler(null);
+        const interceptor = new interceptors.ExtraDynamicFieldInterceptor(null);
         const expect = dataInvalid();
         const actual = dataInvalid();
         
         for (let i = 0; i < actual.length; ++ i) {
-            const result = handler.handle(actual[i]);
+            const result = interceptor.handle(actual[i]);
             assert.deepStrictEqual(result, expect[i]);
         }
     });
-    it ('should work normally when series with other handlers', () => {
-        const innerHandler = new handlers.DoNothingHandler(null);
-        const handler = new handlers.ExtraCdaFieldHandler(innerHandler);
+    it ('should work normally when series with other interceptors', () => {
+        const innerInterceptor = new interceptors.DoNothingInterceptor(null);
+        const interceptor = new interceptors.ExtraDynamicFieldInterceptor(innerInterceptor);
         const expect = dataNormal();
-        const result = handler.handle(dataNormal());
+        const result = interceptor.handle(dataNormal());
         expect['fhirResource']['entry'][0]['resource']['date'] = 'removed';
 
         assert.deepStrictEqual(result, expect);

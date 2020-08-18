@@ -4,13 +4,13 @@
 // -------------------------------------------------------------------------------------------------
 const _ = require('lodash');
 
-class Handler {
+class Interceptor {
     constructor (next) {
         this.__next = next;
     }
 
     handle (data) {
-        if (!!this.__next && this.__next instanceof Handler) {
+        if (!!this.__next && this.__next instanceof Interceptor) {
             return this.__next.handle(data);
         }
         return data;
@@ -18,14 +18,14 @@ class Handler {
 }
 
 
-class DoNothingHandler extends Handler {
+class DoNothingInterceptor extends Interceptor {
     handle (data) {
         return super.handle(data);
     }
 }
 
 
-class ExtraCdaFieldHandler extends Handler {
+class ExtraDynamicFieldInterceptor extends Interceptor {
     handle (data) {
         if (!_.isPlainObject(data)) {
             return data;
@@ -54,6 +54,6 @@ class ExtraCdaFieldHandler extends Handler {
 }
 
 module.exports = {
-    DoNothingHandler,
-    ExtraCdaFieldHandler,
+    DoNothingInterceptor,
+    ExtraDynamicFieldInterceptor,
 };
