@@ -1,0 +1,25 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Organization",
+        "id":"{{ID}}",
+        {{>DataType/HDOrganization.hbs HD=MSH-4}},
+        "address":
+        [
+            {
+                "country":{{>DataType/_string.hbs mapping="CodeSystem/Countries.hbs" inCode=MSH-17 }},
+            },
+        ],
+        {{>DataType/XONOrganization.hbs XON=MSH-22}},
+        {{>DataType/XONOrganization.hbs XON=MSH-23}},
+        {{#if (not MSH-22)}},
+            {{>DataType/HDOrganization.hbs HD=MSH-4}},
+        {{/if}},
+        {{>DataType/XONOrganization.hbs XON=MSH-22}},
+        ,
+    },
+    "request":{
+        "method":"POST",
+        "url":"Organization",
+    },
+},

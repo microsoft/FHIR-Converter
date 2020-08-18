@@ -1,12 +1,9 @@
-"identifier":
-[
-    {
-        "value":"{{HD-1}}",
-    },
-    {
-        "value":"{{HD-2}}",
-        {{#if HD-3}},
-            "system":{{>DataType/_uri.hbs mapping="CodeSystem/UniversalIDType.hbs" inCode="urn:ietf:rfc:3986" }},
-        {{/if}},
-    },
-],
+{
+    "value":"{{HD-1}}",
+},
+{
+    "value":"{{HD-2}}",
+    {{#if (eq HD-3 "ISO" "UUID")}},
+        "system":"{{HD-3}}",
+    {{/if}},
+},
