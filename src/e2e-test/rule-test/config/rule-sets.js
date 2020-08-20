@@ -4,7 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 // define your own rule set as you want
-var rules = require("../test-rule-functions");
+var rules = require("../util/test-rule-functions");
 var commonRules = [rules.onePatient, rules.noDefaultGuid, rules.noSameGuid];
 var guidRules = [rules.noDefaultGuid, rules.noSameGuid];
 

@@ -3,7 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-var testUtils = require('./testUtils');
+var testUtils = require('./utils');
 var fhirModule = require('fhir');
 var fhir = new fhirModule.Fhir();
 

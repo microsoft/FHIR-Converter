@@ -155,7 +155,7 @@ var defaultGuidBundle = {
 describe('testRule', function () {
 
     it('Rule fhirR4Validation should return a object with valid status and empty string when the bundle is a standard FHIR R4 data', function () {
-        var resJson = JSON.parse(fs.readFileSync(path.join(__dirname, './test-samples/FHIR R4/sample1.json')));
+        var resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR R4/sample1.json')));
         assert.strictEqual(testRules.fhirR4Validation(resJson).valid, true);
         assert.strictEqual(testRules.fhirR4Validation(resJson).errorMessage, '');
     });
