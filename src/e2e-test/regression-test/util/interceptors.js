@@ -35,10 +35,7 @@ class ExtraDynamicFieldInterceptor extends Interceptor {
     }
 
     __handle (data) {
-        if (!('fhirResource' in data && 'entry' in data['fhirResource'])) {
-            return data;
-        }
-        const entries = data['fhirResource']['entry'];
+        const entries = data['entry'];
         if (!_.isArray(entries)) {
             return data;
         }

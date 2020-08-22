@@ -4,7 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 const path  = require('path');
-const fs = require("fs");
+const fs = require('fs-extra');
 const cases = require('../config');
 const WorkerPool = require('../../../lib/workers/workerPool');
 const utils = require('./utils');
@@ -16,7 +16,7 @@ const truthsExist = basePath => {
 
     const promises = [cdaPath, hl7v2Path].map(subPath => 
         new Promise(fulfill => fs.exists(subPath, fulfill)));
-    return Promise.all(promises).then(flags => flags.every(x => x));
+    return Promise.all(promises).then(flags => flags.some(x => x));
 };
 
 const generateTruths = (workerPool, basePath, domain, subCases) => {
@@ -28,10 +28,7 @@ const generateTruths = (workerPool, basePath, domain, subCases) => {
         const templateContent = fs.readFileSync(path.join(templateBasePath, subCase.templateFile));
         const dataContent = fs.readFileSync(path.join(dataBasePath, subCase.dataFile));
         const subTemplatePath = path.join(subPath, subCase.templateFile);
-        
-        if (!fs.existsSync(subTemplatePath)) {
-            fs.mkdirSync(subTemplatePath, { recursive: true });
-        }
+        fs.ensureDirSync(subTemplatePath);
 
         const payload = {
             type: `/api/convert/:srcDataType`,
@@ -43,10 +40,7 @@ const generateTruths = (workerPool, basePath, domain, subCases) => {
         workerPool.exec(payload)
             .then(result => {
                 const filePath = path.join(subTemplatePath, utils.getGroundTruthFileName(subCase));
-                fs.writeFile(filePath, JSON.stringify(result.resultMsg, null, 4), 'UTF8', error => {
-                    if (error) {
-                        return reject(error);
-                    }
+                fs.writeFile(filePath, JSON.stringify(result.resultMsg.fhirResource, null, 4), 'UTF8', () => {
                     fulfill(filePath);
                 });
             })
@@ -66,17 +60,20 @@ const main = basePath => {
                 if (flag) {
                     fulfill(prompt);
                 }
-                const workerPath = path.join(__dirname, '../../../lib/workers/worker.js');
-                const workerPool = new WorkerPool(workerPath, require('os').cpus().length);
-                const cdaPromises = generateTruths(workerPool, basePath, 'cda', cases.cdaCases);
-                const hl7v2Promises = generateTruths(workerPool, basePath, 'hl7v2', cases.hl7v2Cases);
-        
-                const cdaFinalPromise = Promise.all(cdaPromises);
-                const hl7v2FinalPromise = Promise.all(hl7v2Promises);
-        
-                Promise.all([ cdaFinalPromise, hl7v2FinalPromise ])
-                    .then(fulfill)
-                    .catch(reject);
+                else {
+                    const workerPath = path.join(__dirname, '../../../lib/workers/worker.js');
+                    const workerPool = new WorkerPool(workerPath, require('os').cpus().length);
+                    const cdaPromises = generateTruths(workerPool, basePath, 'cda', cases.cdaCases);
+                    const hl7v2Promises = generateTruths(workerPool, basePath, 'hl7v2', cases.hl7v2Cases);
+            
+                    const cdaFinalPromise = Promise.all(cdaPromises);
+                    const hl7v2FinalPromise = Promise.all(hl7v2Promises);
+            
+                    return Promise.all([ cdaFinalPromise, hl7v2FinalPromise ])
+                        .then(fulfill)
+                        .catch(reject)
+                        .finally(() => workerPool.destroy());
+                }
             })
             .catch(reject);
     });

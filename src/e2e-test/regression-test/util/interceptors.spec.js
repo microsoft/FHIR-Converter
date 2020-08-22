@@ -6,24 +6,22 @@
 const assert = require('assert');
 const interceptors = require('./interceptors');
 const dataNormal = () => ({
-    "fhirResource": {
-        "resourceType": "Bundle",
-        "type": "batch",
-        "entry": [
-            {
-                "fullUrl": "urn:uuid:7536a83a-0dbf-3c3d-8af5-13629bcfeade",
-                "resource": {
-                    "resourceType": "DocumentReference",
-                    "id": "7536a83a-0dbf-3c3d-8af5-13629bcfeade",
-                    "type": { },
-                    "date": "2020-07-20T06:03:58.183Z",
-                    "status": "current",
-                    "content": [ ]
-                },
-                "request": { }
-            }
-        ]
-    }
+    "resourceType": "Bundle",
+    "type": "batch",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:7536a83a-0dbf-3c3d-8af5-13629bcfeade",
+            "resource": {
+                "resourceType": "DocumentReference",
+                "id": "7536a83a-0dbf-3c3d-8af5-13629bcfeade",
+                "type": { },
+                "date": "2020-07-20T06:03:58.183Z",
+                "status": "current",
+                "content": [ ]
+            },
+            "request": { }
+        }
+    ]
 });
 const dataInvalid = () => ([
     undefined,
@@ -31,57 +29,46 @@ const dataInvalid = () => ([
     'is not plain object',
     { },
     {
-        "fhirResource": { }
+        "resourceType": "Bundle",
+        "type": "batch",
+        "entry": 'entry'
     },
     {
-        "fhirResource": {
-            "resourceType": "Bundle",
-            "type": "batch",
-            "entry": 'entry'
-        }
+        "resourceType": "Bundle",
+        "type": "batch",
+        "entry": [
+            { },
+        ]
     },
     {
-        "fhirResource": {
-            "resourceType": "Bundle",
-            "type": "batch",
-            "entry": [
-                { },
-            ]
-        }
+        "resourceType": "Bundle",
+        "type": "batch",
+        "entry": [
+            {
+                "fullUrl": "urn:uuid:ab06cca0-80d5-3efe-9322-84093fb5c5da",
+                "resource": { },
+                "request": { }
+            },
+        ]
     },
     {
-        "fhirResource": {
-            "resourceType": "Bundle",
-            "type": "batch",
-            "entry": [
-                {
-                    "fullUrl": "urn:uuid:ab06cca0-80d5-3efe-9322-84093fb5c5da",
-                    "resource": { },
-                    "request": { }
+        "resourceType": "Bundle",
+        "type": "batch",
+        "entry": [
+            {
+                "fullUrl": "urn:uuid:ab06cca0-80d5-3efe-9322-84093fb5c5da",
+                "resource": {
+                    "resourceType": "RelatedPerson",
+                    "id": "ab06cca0-80d5-3efe-9322-84093fb5c5da",
+                    "relationship": [ ],
+                    "name": [ ],
+                    "telecom": [ ],
+                    "address": [ ],
+                    "patient": { }
                 },
-            ]
-        }
-    },
-    {
-        "fhirResource": {
-            "resourceType": "Bundle",
-            "type": "batch",
-            "entry": [
-                {
-                    "fullUrl": "urn:uuid:ab06cca0-80d5-3efe-9322-84093fb5c5da",
-                    "resource": {
-                        "resourceType": "RelatedPerson",
-                        "id": "ab06cca0-80d5-3efe-9322-84093fb5c5da",
-                        "relationship": [ ],
-                        "name": [ ],
-                        "telecom": [ ],
-                        "address": [ ],
-                        "patient": { }
-                    },
-                    "request": { }
-                },
-            ]
-        }
+                "request": { }
+            },
+        ]
     }
 ]);
 
@@ -90,7 +77,7 @@ describe('Regression test interceptors - ExtraDynamicFieldInterceptor', () => {
         const interceptor = new interceptors.ExtraDynamicFieldInterceptor(null);
         const expect = dataNormal();
         const result = interceptor.handle(dataNormal());
-        expect['fhirResource']['entry'][0]['resource']['date'] = 'removed';
+        expect['entry'][0]['resource']['date'] = 'removed';
 
         assert.deepStrictEqual(result, expect);
     });
@@ -109,7 +96,7 @@ describe('Regression test interceptors - ExtraDynamicFieldInterceptor', () => {
         const interceptor = new interceptors.ExtraDynamicFieldInterceptor(innerInterceptor);
         const expect = dataNormal();
         const result = interceptor.handle(dataNormal());
-        expect['fhirResource']['entry'][0]['resource']['date'] = 'removed';
+        expect['entry'][0]['resource']['date'] = 'removed';
 
         assert.deepStrictEqual(result, expect);
     });
