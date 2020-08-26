@@ -49,8 +49,13 @@ class ExtraDynamicFieldInterceptor extends Interceptor {
                     // Hence the hash result will be different too, which will trigger NodeJS CI error.
                     if ('content' in resource && _.isArray(resource['content'])) {
                         for (const ele of resource['content']) {
-                            if ('attachment' in ele && 'hash' in ele['attachment']) {
-                                ele['attachment']['hash'] = 'removed-hash';
+                            if ('attachment' in ele) {
+                                if ('hash' in ele['attachment']) {
+                                    ele['attachment']['hash'] = 'removed-hash';
+                                }
+                                if ('data' in ele['attachment']) {
+                                    ele['attachment']['data'] = 'removed-data';
+                                }
                             }
                         }
                     }
