@@ -79,10 +79,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:14693cea-02b9-3743-9010-fa549107ea68",
+            "fullUrl": "urn:uuid:785a8bef-9829-3dad-a8e9-82898594b58f",
             "resource": {
                 "resourceType": "Encounter",
-                "id": "14693cea-02b9-3743-9010-fa549107ea68",
+                "id": "785a8bef-9829-3dad-a8e9-82898594b58f",
                 "class": {
                     "code": "IMP",
                     "display": "inpatient encounter",
@@ -163,14 +163,14 @@
                 "diagnosis": [
                     {
                         "condition": {
-                            "reference": "Condition/f7cf74e6-f132-3946-8d4c-23f8305e3bfc"
+                            "reference": "Condition/3ff8861b-e57f-3405-80c4-593ad85903f2"
                         }
                     }
                 ]
             },
             "request": {
                 "method": "POST",
-                "url": "Encounter/14693cea-02b9-3743-9010-fa549107ea68"
+                "url": "Encounter/785a8bef-9829-3dad-a8e9-82898594b58f"
             }
         },
         {
@@ -188,10 +188,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:a447a61d-cde0-394f-ab88-6a6f01215075",
+            "fullUrl": "urn:uuid:44fb0332-a810-3aa8-b87e-4318ab731191",
             "resource": {
                 "resourceType": "RelatedPerson",
-                "id": "a447a61d-cde0-394f-ab88-6a6f01215075",
+                "id": "44fb0332-a810-3aa8-b87e-4318ab731191",
                 "address": [
                     {
                         "line": [
@@ -221,14 +221,14 @@
             },
             "request": {
                 "method": "POST",
-                "url": "RelatedPerson/a447a61d-cde0-394f-ab88-6a6f01215075"
+                "url": "RelatedPerson/44fb0332-a810-3aa8-b87e-4318ab731191"
             }
         },
         {
-            "fullUrl": "urn:uuid:f7cf74e6-f132-3946-8d4c-23f8305e3bfc",
+            "fullUrl": "urn:uuid:3ff8861b-e57f-3405-80c4-593ad85903f2",
             "resource": {
                 "resourceType": "Condition",
-                "id": "f7cf74e6-f132-3946-8d4c-23f8305e3bfc",
+                "id": "3ff8861b-e57f-3405-80c4-593ad85903f2",
                 "code": {
                     "coding": [
                         {
@@ -245,7 +245,7 @@
             },
             "request": {
                 "method": "POST",
-                "url": "Condition/f7cf74e6-f132-3946-8d4c-23f8305e3bfc"
+                "url": "Condition/3ff8861b-e57f-3405-80c4-593ad85903f2"
             }
         }
     ]
