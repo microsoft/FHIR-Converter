@@ -51,7 +51,8 @@ describe('Regression test - FHIR data validation', () => {
                 .expect(response => {
                     const groundTruth = fs.existsSync(groundTruthFilePath) ? 
                         fs.readFileSync(groundTruthFilePath, 'utf8') : '{}';
-                    const result = JSON.stringify(response.body);
+                    // TODO: the `unusedSegments` & `invalidAccess` still need to be tested
+                    const result = JSON.stringify(response.body.fhirResource);
                     utils.compareContent(result, groundTruth);
                     return true;
                 })
