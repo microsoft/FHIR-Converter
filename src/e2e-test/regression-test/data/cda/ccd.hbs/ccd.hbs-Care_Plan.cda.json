@@ -1,0 +1,471 @@
+{
+    "resourceType": "Bundle",
+    "type": "batch",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:97bdf3fe-e238-3fd0-948f-ccc3a60efa2c",
+            "resource": {
+                "resourceType": "Composition",
+                "id": "97bdf3fe-e238-3fd0-948f-ccc3a60efa2c",
+                "identifier": {
+                    "use": "official",
+                    "value": "db734647-fc99-424c-a864-7e3cda82e703"
+                },
+                "status": "final",
+                "type": {
+                    "coding": [
+                        {
+                            "code": "52521-2",
+                            "display": "Overall Plan of Care/Advance Care Directives",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "date": "2013-08-20T19:20:00.000Z",
+                "title": "Good Health Hospital Care Plan",
+                "confidentiality": "N",
+                "attester": [
+                    {
+                        "mode": "legal",
+                        "time": "2013-07-30",
+                        "party": {
+                            "reference": "Practitioner/4533ef76-e935-3802-8cb7-6a076afafc08"
+                        }
+                    }
+                ],
+                "event": [
+                    {
+                        "period": {
+                            "start": "2013-07-20"
+                        }
+                    }
+                ],
+                "section": [
+                    {
+                        "title": "Health Concerns Section",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Health Concerns Section</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "75310-3",
+                                    "display": "Health Concerns Document",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Goals Section",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Goals Section</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "61146-7",
+                                    "display": "Goals",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Interventions Section",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Interventions Section</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "62387-6",
+                                    "display": "Interventions Provided",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Health Status Evaluations/Outcomes Section",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Health Status Evaluations/Outcomes Section</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "11383-7",
+                                    "display": "Patient Problem Outcome",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "encounter": {
+                    "reference": "Encounter/b4b96f98-4b01-3f51-a8d3-68ff93681c5f"
+                },
+                "custodian": {
+                    "reference": "Organization/b592a2a0-74bc-37af-896b-ff0fbf6aefb6"
+                },
+                "author": [
+                    {
+                        "reference": "Practitioner/4533ef76-e935-3802-8cb7-6a076afafc08"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Composition/97bdf3fe-e238-3fd0-948f-ccc3a60efa2c"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:4533ef76-e935-3802-8cb7-6a076afafc08",
+            "resource": {
+                "resourceType": "Practitioner",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+                    ]
+                },
+                "id": "4533ef76-e935-3802-8cb7-6a076afafc08",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:20cf14fb-b65c-4c8c-a54d-b0cca834c18c"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Nightingale",
+                        "given": [
+                            "Nurse"
+                        ],
+                        "suffix": [
+                            "RN"
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "1004 Healthcare Drive"
+                        ],
+                        "city": "Portland",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "99123"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "+1(555)555-1004",
+                        "use": "work"
+                    }
+                ],
+                "qualification": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "163W00000X",
+                                    "display": "Registered nurse",
+                                    "system": "http://nucc.org/provider-taxonomy"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/4533ef76-e935-3802-8cb7-6a076afafc08"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:b4b96f98-4b01-3f51-a8d3-68ff93681c5f",
+            "resource": {
+                "resourceType": "Encounter",
+                "id": "b4b96f98-4b01-3f51-a8d3-68ff93681c5f",
+                "status": "unknown",
+                "class": {
+                    "code": "IMP",
+                    "display": "Inpatient",
+                    "system": "urn:oid:2.16.840.1.113883.5.4"
+                },
+                "type": [
+                    {
+                        "coding": [
+                            {
+                                "code": "IMP",
+                                "display": "Inpatient",
+                                "system": "urn:oid:2.16.840.1.113883.5.4"
+                            }
+                        ]
+                    }
+                ],
+                "identifier": [
+                    {
+                        "system": "urn:oid:2.16.840.1.113883.19",
+                        "value": "9937012"
+                    }
+                ],
+                "period": {
+                    "start": "2013-06-15"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Encounter/b4b96f98-4b01-3f51-a8d3-68ff93681c5f"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:b592a2a0-74bc-37af-896b-ff0fbf6aefb6",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "b592a2a0-74bc-37af-896b-ff0fbf6aefb6",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "321CX"
+                    }
+                ],
+                "name": "Good Health HIE",
+                "address": [
+                    {
+                        "use": "work",
+                        "line": [
+                            "1009 Healthcare Drive"
+                        ],
+                        "city": "Portland",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "99123"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "+1(555)555-1009",
+                        "use": "work"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/b592a2a0-74bc-37af-896b-ff0fbf6aefb6"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:2745d583-e3d1-3f88-8b21-7b59adb60779",
+            "resource": {
+                "resourceType": "Patient",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
+                    ]
+                },
+                "id": "2745d583-e3d1-3f88-8b21-7b59adb60779",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-ssn",
+                        "value": "444222222"
+                    }
+                ],
+                "name": [
+                    {
+                        "use": "usual",
+                        "family": "Betterhalf",
+                        "given": [
+                            "Eve"
+                        ]
+                    },
+                    {
+                        "family": "Everywoman",
+                        "given": [
+                            "Eve"
+                        ]
+                    }
+                ],
+                "birthDate": "1975-05-01",
+                "gender": "female",
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+                        "extension": [
+                            {
+                                "url": "ombCategory",
+                                "valueCoding": {
+                                    "code": "2106-3",
+                                    "display": "White",
+                                    "system": "urn:oid:2.16.840.1.113883.6.238"
+                                }
+                            },
+                            {
+                                "url": "ombCategory",
+                                "valueCoding": {
+                                    "code": "2076-8",
+                                    "display": "Hawaiian or Other Pacific Islander",
+                                    "system": "urn:oid:2.16.840.1.113883.6.238"
+                                }
+                            },
+                            {
+                                "url": "text",
+                                "valueString": "Mixed"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
+                        "extension": [
+                            {
+                                "url": "ombCategory",
+                                "valueCoding": {
+                                    "code": "2186-5",
+                                    "display": "Not Hispanic or Latino",
+                                    "system": "urn:oid:2.16.840.1.113883.6.238"
+                                }
+                            },
+                            {
+                                "url": "text",
+                                "valueString": "Not Hispanic or Latino"
+                            }
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "use": "home",
+                        "line": [
+                            "2222 Home Street"
+                        ],
+                        "city": "Beaverton",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "97867"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "+1(555)555-2003",
+                        "use": "home"
+                    }
+                ],
+                "communication": [
+                    {
+                        "language": {
+                            "coding": [
+                                {
+                                    "system": "urn:ietf:bcp:47",
+                                    "code": "eng"
+                                }
+                            ]
+                        },
+                        "preferred": true
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:5fab84f6-27ae-3100-a4be-3785d3a7a76b",
+            "resource": {
+                "resourceType": "RelatedPerson",
+                "id": "5fab84f6-27ae-3100-a4be-3785d3a7a76b",
+                "relationship": [
+                    {
+                        "coding": [
+                            {
+                                "code": "POWATT",
+                                "display": "Power of Attorney",
+                                "system": "urn:oid:2.16.840.1.113883.1.11.19830"
+                            }
+                        ]
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Betterhalf",
+                        "given": [
+                            "Boris",
+                            "Bo"
+                        ]
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "+1(555)555-2008",
+                        "use": "mobile"
+                    }
+                ],
+                "address": [
+                    {
+                        "use": "home",
+                        "line": [
+                            "2222 Home Street"
+                        ],
+                        "city": "Beaverton",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "97867"
+                    }
+                ],
+                "patient": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "RelatedPerson/5fab84f6-27ae-3100-a4be-3785d3a7a76b"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:0bb298e7-0115-30be-b2bf-888511ad4d66",
+            "resource": {
+                "resourceType": "DocumentReference",
+                "id": "0bb298e7-0115-30be-b2bf-888511ad4d66",
+                "type": {
+                    "coding": [
+                        {
+                            "code": "52521-2",
+                            "display": "Overall Plan of Care/Advance Care Directives",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "date": "2020-08-31T07:43:34.696Z",
+                "status": "current",
+                "content": [
+                    {
+                        "attachment": {
+                            "contentType": "text/plain",
+                            "data": "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",
+                            "hash": "7uVeGFHm7ESuuReu1JC9rEUYOJE="
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "DocumentReference/0bb298e7-0115-30be-b2bf-888511ad4d66"
+            }
+        }
+    ]
+}

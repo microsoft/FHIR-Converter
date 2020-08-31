@@ -1,0 +1,632 @@
+{
+    "resourceType": "Bundle",
+    "type": "batch",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:8fc4d09b-b4ff-3805-9fd7-0325d67f47b5",
+            "resource": {
+                "resourceType": "Composition",
+                "id": "8fc4d09b-b4ff-3805-9fd7-0325d67f47b5",
+                "identifier": {
+                    "use": "official",
+                    "value": "2.16.840.1.113883.19"
+                },
+                "status": "final",
+                "type": {
+                    "coding": [
+                        {
+                            "code": "11506-3",
+                            "display": "Subsequent evaluation note",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "date": "2005-03-29T22:15:04.000Z",
+                "title": "Progress Note",
+                "confidentiality": "N",
+                "attester": [
+                    {
+                        "mode": "legal",
+                        "time": "2005-03-30T03:44:11.000Z",
+                        "party": {
+                            "reference": "Practitioner/d503a497-3239-328b-900d-7fdff816f8a9"
+                        }
+                    }
+                ],
+                "event": [
+                    {
+                        "period": {
+                            "start": "2010-06-01"
+                        }
+                    }
+                ],
+                "section": [
+                    {
+                        "title": "ALLERGIES AND ADVERSE REACTIONS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">ALLERGIES AND ADVERSE REACTIONS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "48765-2",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "ASSESSMENT",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">ASSESSMENT</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "51848-0",
+                                    "display": "ASSESSMENT",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "CHIEF COMPLAINT",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">CHIEF COMPLAINT</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "10154-3",
+                                    "display": "CHIEF COMPLAINT",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "MEDICATIONS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">MEDICATIONS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "10160-0",
+                                    "display": "HISTORY OF MEDICATION USE",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "OBJECTIVE DATA",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">OBJECTIVE DATA</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "61149-1",
+                                    "display": "OBJECTIVE DATA ",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "PHYSICAL EXAMINATION",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">PHYSICAL EXAMINATION</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "29545-1",
+                                    "display": "PHYSICAL FINDINGS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "TREATMENT PLAN",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">TREATMENT PLAN</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "18776-5",
+                                    "display": "Treatment plan",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "CarePlan/aa52d96a-5156-3dbf-8e82-9bc6c8fa229a"
+                            },
+                            {
+                                "reference": "CarePlan/6217ad0e-53be-324b-8aef-1c88a47a953a"
+                            },
+                            {
+                                "reference": "CarePlan/c6f7aada-76ff-344c-9b30-a6ab85957636"
+                            },
+                            {
+                                "reference": "CarePlan/a7ae98ca-0928-3851-9082-dc25ae0c4a97"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "PROBLEMS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">PROBLEMS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "11450-4",
+                                    "display": "PROBLEM LIST",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "RESULTS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">RESULTS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "30954-2",
+                                    "display": "RESULTS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "REVIEW OF SYSTEMS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">REVIEW OF SYSTEMS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "10187-3",
+                                    "display": "REVIEW OF SYSTEMS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "SUBJECTIVE DATA",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SUBJECTIVE DATA</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "61150-9",
+                                    "display": "SUBJECTIVE",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "VITAL SIGNS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">VITAL SIGNS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "8716-3",
+                                    "display": "VITAL SIGNS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/4c6e05ad-5408-3d42-a64f-b9d1e603c9c6"
+                },
+                "encounter": {
+                    "reference": "Encounter/c618c0c7-a2e4-3866-9cdd-9cd967b64798"
+                },
+                "custodian": {
+                    "reference": "Organization/6af2a719-a618-34d6-90d1-0e1f1b07185c"
+                },
+                "author": [
+                    {
+                        "reference": "Practitioner/d276aed6-83a7-313b-b45b-d59f2aafe9ad"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Composition/8fc4d09b-b4ff-3805-9fd7-0325d67f47b5"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:d503a497-3239-328b-900d-7fdff816f8a9",
+            "resource": {
+                "resourceType": "Practitioner",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+                    ]
+                },
+                "id": "d503a497-3239-328b-900d-7fdff816f8a9"
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/d503a497-3239-328b-900d-7fdff816f8a9"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:c618c0c7-a2e4-3866-9cdd-9cd967b64798",
+            "resource": {
+                "resourceType": "Encounter",
+                "id": "c618c0c7-a2e4-3866-9cdd-9cd967b64798",
+                "status": "unknown",
+                "class": {
+                    "code": "99213",
+                    "display": "Evaluation and Management",
+                    "system": "urn:oid:2.16.840.1.113883.6.12"
+                },
+                "type": [
+                    {
+                        "coding": [
+                            {
+                                "code": "99213",
+                                "display": "Evaluation and Management",
+                                "system": "urn:oid:2.16.840.1.113883.6.12"
+                            }
+                        ]
+                    }
+                ],
+                "identifier": [
+                    {
+                        "system": "urn:oid:2.16.840.1.113883.19",
+                        "value": "9937012"
+                    }
+                ],
+                "period": {
+                    "start": "2005-03-29",
+                    "end": "2005-03-29"
+                },
+                "location": [
+                    {
+                        "location": {
+                            "reference": "Location/2c3b30b5-39e7-3c88-b345-eed888cc36f0"
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Encounter/c618c0c7-a2e4-3866-9cdd-9cd967b64798"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:2c3b30b5-39e7-3c88-b345-eed888cc36f0",
+            "resource": {
+                "resourceType": "Location",
+                "id": "2c3b30b5-39e7-3c88-b345-eed888cc36f0"
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/2c3b30b5-39e7-3c88-b345-eed888cc36f0"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:6af2a719-a618-34d6-90d1-0e1f1b07185c",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "6af2a719-a618-34d6-90d1-0e1f1b07185c",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:2.16.840.1.113883.19.5"
+                    }
+                ],
+                "name": "Good Health Clinic",
+                "address": [
+                    {
+                        "use": "work",
+                        "line": [
+                            "17 Daws Rd."
+                        ],
+                        "city": "Blue Bell",
+                        "state": "MA",
+                        "country": "USA",
+                        "postalCode": "02368"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "(555)555-1212",
+                        "use": "work"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/6af2a719-a618-34d6-90d1-0e1f1b07185c"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:d276aed6-83a7-313b-b45b-d59f2aafe9ad",
+            "resource": {
+                "resourceType": "Practitioner",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+                    ]
+                },
+                "id": "d276aed6-83a7-313b-b45b-d59f2aafe9ad",
+                "identifier": [
+                    {
+                        "system": "urn:oid:2.16.840.1.113883.19.5",
+                        "value": "KP00017"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Seven",
+                        "given": [
+                            "Henry"
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "21 North Ave."
+                        ],
+                        "city": "Burlington",
+                        "state": "MA",
+                        "country": "USA",
+                        "postalCode": "02368"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "(555)555-1003",
+                        "use": "work"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/d276aed6-83a7-313b-b45b-d59f2aafe9ad"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:4c6e05ad-5408-3d42-a64f-b9d1e603c9c6",
+            "resource": {
+                "resourceType": "Patient",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
+                    ]
+                },
+                "id": "4c6e05ad-5408-3d42-a64f-b9d1e603c9c6",
+                "identifier": [
+                    {
+                        "system": "urn:oid:2.16.840.1.113883.19",
+                        "value": "12345"
+                    },
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-ssn",
+                        "value": "111-00-1234"
+                    }
+                ],
+                "name": [
+                    {
+                        "use": "usual",
+                        "family": "Everyman",
+                        "given": [
+                            "Adam",
+                            "Frankie"
+                        ],
+                        "prefix": [
+                            "Mr."
+                        ]
+                    }
+                ],
+                "birthDate": "1954-11-25",
+                "gender": "male",
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+                        "extension": [
+                            {
+                                "url": "ombCategory",
+                                "valueCoding": {
+                                    "code": "2106-3",
+                                    "display": "White",
+                                    "system": "urn:oid:2.16.840.1.113883.6.238"
+                                }
+                            },
+                            {
+                                "url": "text",
+                                "valueString": "White"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
+                        "extension": [
+                            {
+                                "url": "ombCategory",
+                                "valueCoding": {
+                                    "code": "2186-5",
+                                    "display": "Not Hispanic or Latino",
+                                    "system": "urn:oid:2.16.840.1.113883.6.238"
+                                }
+                            },
+                            {
+                                "url": "text",
+                                "valueString": "Not Hispanic or Latino"
+                            }
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "use": "home",
+                        "line": [
+                            "17 Daws Rd."
+                        ],
+                        "city": "Blue Bell",
+                        "state": "MA",
+                        "country": "US",
+                        "postalCode": "02368"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "(781)555-1212",
+                        "use": "home"
+                    }
+                ],
+                "communication": [
+                    {
+                        "language": {
+                            "coding": [
+                                {
+                                    "system": "urn:ietf:bcp:47",
+                                    "code": "fr-CN"
+                                }
+                            ]
+                        },
+                        "preferred": true
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Patient/4c6e05ad-5408-3d42-a64f-b9d1e603c9c6"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:ab06cca0-80d5-3efe-9322-84093fb5c5da",
+            "resource": {
+                "resourceType": "RelatedPerson",
+                "id": "ab06cca0-80d5-3efe-9322-84093fb5c5da",
+                "relationship": [
+                    {
+                        "coding": [
+                            {
+                                "code": "GRFTH",
+                                "display": "Grandfather",
+                                "system": "urn:oid:2.16.840.1.113883.5.111"
+                            }
+                        ]
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Relative",
+                        "given": [
+                            "Ralph"
+                        ]
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "(781)555-1212",
+                        "use": "home"
+                    }
+                ],
+                "address": [
+                    {
+                        "use": "home",
+                        "line": [
+                            "17 Daws Rd."
+                        ],
+                        "city": "Blue Bell",
+                        "state": "MA",
+                        "country": "US",
+                        "postalCode": "02368"
+                    }
+                ],
+                "patient": {
+                    "reference": "Patient/4c6e05ad-5408-3d42-a64f-b9d1e603c9c6"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "RelatedPerson/ab06cca0-80d5-3efe-9322-84093fb5c5da"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:ff246223-e247-35ef-8d9f-7f5da0fd4705",
+            "resource": {
+                "resourceType": "DocumentReference",
+                "id": "ff246223-e247-35ef-8d9f-7f5da0fd4705",
+                "type": {
+                    "coding": [
+                        {
+                            "code": "11506-3",
+                            "display": "Subsequent evaluation note",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "date": "2020-08-31T07:43:35.441Z",
+                "status": "current",
+                "content": [
+                    {
+                        "attachment": {
+                            "contentType": "text/plain",
+                            "data": "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",
+                            "hash": "1py+gFk3AJwx39Wq7sx3V/7uEbE="
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "DocumentReference/ff246223-e247-35ef-8d9f-7f5da0fd4705"
+            }
+        }
+    ]
+}

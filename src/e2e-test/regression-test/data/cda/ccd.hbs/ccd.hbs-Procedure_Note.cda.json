@@ -1,0 +1,702 @@
+{
+    "resourceType": "Bundle",
+    "type": "batch",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:5b372e18-4400-3728-8c15-72759f2b2372",
+            "resource": {
+                "resourceType": "Composition",
+                "id": "5b372e18-4400-3728-8c15-72759f2b2372",
+                "identifier": {
+                    "use": "official",
+                    "value": "2.16.840.1.113883.19.5.99999.1"
+                },
+                "status": "final",
+                "type": {
+                    "coding": [
+                        {
+                            "code": "28570-0",
+                            "display": "Procedure Note",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "date": "2012-09-16T23:11:00.000Z",
+                "title": "Community Health and Hospitals: Procedure Note",
+                "confidentiality": "N",
+                "attester": [
+                    {
+                        "mode": "legal",
+                        "time": "2009-02-27T18:00:00.000Z",
+                        "party": {
+                            "reference": "Practitioner/6a84aefd-6f50-3666-8ccb-bdad442a4c6a"
+                        }
+                    }
+                ],
+                "event": [
+                    {
+                        "period": {
+                            "start": "2012-09-09T23:11:00.000Z"
+                        }
+                    }
+                ],
+                "section": [
+                    {
+                        "title": "Assessment",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Assessment</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "51848-0",
+                                    "display": "ASSESSMENT",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Plan of Treatment",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Plan of Treatment</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "18776-5",
+                                    "display": "Treatment plan",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "CarePlan/a3469712-3824-32c1-b591-08495194a604"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Procedure Indications",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Procedure Indications</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "59768-2",
+                                    "display": "PROCEDURE INDICATIONS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Planned Procedure",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Planned Procedure</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "59772-4",
+                                    "display": "Planned Procedure",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "PROCEDURE DESCRIPTION",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">PROCEDURE DESCRIPTION</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "29554-3",
+                                    "display": "PROCEDURE DESCRIPTION",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Preoperative Diagnosis",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Preoperative Diagnosis</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "10219-4",
+                                    "display": "SURGICAL OPERATION NOTE PREOPERATIVE DX",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Anesthesia",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Anesthesia</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "59774-0",
+                                    "display": "PROCEDURE ANESTHESIA",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Surgical Drains",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Surgical Drains</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "11537-8",
+                                    "display": "SURGICAL DRAINS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Procedure Findings",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Procedure Findings</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "59776-5",
+                                    "display": "PROCEDURE FINDINGS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Estimated Blood Loss",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Estimated Blood Loss</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "59770-8",
+                                    "display": "PROCEDURE ESTIMATED BLOOD LOSS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Procedure Implants",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Procedure Implants</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "59771-6",
+                                    "display": "PROCEDURE IMPLANTS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Specimens Taken",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Specimens Taken</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "59773-2",
+                                    "display": "PROCEDURE SPECIMENS TAKEN",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Complications",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Complications</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "55109-3",
+                                    "display": "Complications",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Postoperative Diagnosis",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Postoperative Diagnosis</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "10218-6",
+                                    "display": "POSTOPERATIVE DIAGNOSIS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Postprocedure Diagnosis",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Postprocedure Diagnosis</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "59769-0",
+                                    "display": "POSTPROCEDURE DIAGNOSIS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Procedure Disposition",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Procedure Disposition</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "59775-7",
+                                    "display": "PROCEDURE DISPOSITION",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+                },
+                "encounter": {
+                    "reference": "Encounter/5452cafc-449e-3798-a264-5502a074f560"
+                },
+                "custodian": {
+                    "reference": "Organization/ce67676d-faa6-3ac3-8d71-f0a778b99cd0"
+                },
+                "author": [
+                    {
+                        "reference": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Composition/5b372e18-4400-3728-8c15-72759f2b2372"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:6a84aefd-6f50-3666-8ccb-bdad442a4c6a",
+            "resource": {
+                "resourceType": "Practitioner",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+                    ]
+                },
+                "id": "6a84aefd-6f50-3666-8ccb-bdad442a4c6a"
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/6a84aefd-6f50-3666-8ccb-bdad442a4c6a"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:5452cafc-449e-3798-a264-5502a074f560",
+            "resource": {
+                "resourceType": "Encounter",
+                "id": "5452cafc-449e-3798-a264-5502a074f560",
+                "status": "unknown",
+                "class": {
+                    "code": "99213",
+                    "display": "Evaluation and Management",
+                    "system": "urn:oid:2.16.840.1.113883.6.12"
+                },
+                "type": [
+                    {
+                        "coding": [
+                            {
+                                "code": "99213",
+                                "display": "Evaluation and Management",
+                                "system": "urn:oid:2.16.840.1.113883.6.12"
+                            }
+                        ]
+                    }
+                ],
+                "identifier": [
+                    {
+                        "system": "urn:oid:2.16.840.1.113883.19",
+                        "value": "9937012"
+                    }
+                ],
+                "period": {
+                    "start": "2009-02-27T18:00:00.000Z",
+                    "end": "2009-02-27T18:00:00.000Z"
+                },
+                "location": [
+                    {
+                        "location": {
+                            "reference": "Location/2c3b30b5-39e7-3c88-b345-eed888cc36f0"
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Encounter/5452cafc-449e-3798-a264-5502a074f560"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:2c3b30b5-39e7-3c88-b345-eed888cc36f0",
+            "resource": {
+                "resourceType": "Location",
+                "id": "2c3b30b5-39e7-3c88-b345-eed888cc36f0"
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/2c3b30b5-39e7-3c88-b345-eed888cc36f0"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:ce67676d-faa6-3ac3-8d71-f0a778b99cd0",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "ce67676d-faa6-3ac3-8d71-f0a778b99cd0",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "99999999"
+                    }
+                ],
+                "name": "Community Health and Hospitals",
+                "address": [
+                    {
+                        "use": "work",
+                        "line": [
+                            "1002 Healthcare Drive"
+                        ],
+                        "city": "Portland",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "99123"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "555-555-1002",
+                        "use": "work"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/ce67676d-faa6-3ac3-8d71-f0a778b99cd0"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:5942c17c-61a6-351b-a314-39fb9fc72561",
+            "resource": {
+                "resourceType": "Practitioner",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+                    ]
+                },
+                "id": "5942c17c-61a6-351b-a314-39fb9fc72561",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "99999999"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Seven",
+                        "given": [
+                            "Henry"
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "1002 Healthcare Drive"
+                        ],
+                        "city": "Portland",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "99123"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "555-555-1002",
+                        "use": "work"
+                    }
+                ],
+                "qualification": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "200000000X",
+                                    "display": "Allopathic &amp; Osteopathic Physicians",
+                                    "system": "http://nucc.org/provider-taxonomy"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:f40da2df-7505-315a-9acb-55513a02c37b",
+            "resource": {
+                "resourceType": "Patient",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
+                    ]
+                },
+                "id": "f40da2df-7505-315a-9acb-55513a02c37b",
+                "identifier": [
+                    {
+                        "system": "urn:oid:2.16.840.1.113883.19.5.99999.2",
+                        "value": "998991"
+                    },
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-ssn",
+                        "value": "111-00-2330"
+                    }
+                ],
+                "name": [
+                    {
+                        "use": "usual",
+                        "family": "Jones",
+                        "given": [
+                            "Isabella"
+                        ]
+                    }
+                ],
+                "birthDate": "2005-05-01",
+                "gender": "female",
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+                        "extension": [
+                            {
+                                "url": "detailed",
+                                "valueCoding": {
+                                    "code": "1966-1",
+                                    "display": "Aleut",
+                                    "system": "urn:oid:2.16.840.1.113883.6.238"
+                                }
+                            },
+                            {
+                                "url": "text",
+                                "valueString": "Aleut"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
+                        "extension": [
+                            {
+                                "url": "ombCategory",
+                                "valueCoding": {
+                                    "code": "2186-5",
+                                    "display": "Not Hispanic or Latino",
+                                    "system": "urn:oid:2.16.840.1.113883.6.238"
+                                }
+                            },
+                            {
+                                "url": "text",
+                                "valueString": "Not Hispanic or Latino"
+                            }
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "use": "home",
+                        "line": [
+                            "1357 Amber Drive"
+                        ],
+                        "city": "Beaverton",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "97867"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "(816)276-6909",
+                        "use": "home"
+                    }
+                ],
+                "communication": [
+                    {
+                        "language": {
+                            "coding": [
+                                {
+                                    "system": "urn:ietf:bcp:47",
+                                    "code": "en",
+                                    "display": "English"
+                                }
+                            ]
+                        },
+                        "preferred": true
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:404aabde-037c-3ea6-85cb-d4ceefa1d2c8",
+            "resource": {
+                "resourceType": "RelatedPerson",
+                "id": "404aabde-037c-3ea6-85cb-d4ceefa1d2c8",
+                "relationship": [
+                    {
+                        "coding": [
+                            {
+                                "code": "GRPRN",
+                                "display": "Grandparent",
+                                "system": "urn:oid:2.16.840.1.113883.5.111"
+                            }
+                        ]
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Jones",
+                        "given": [
+                            "Ralph"
+                        ]
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "(816)276-6909",
+                        "use": "home"
+                    }
+                ],
+                "address": [
+                    {
+                        "use": "home",
+                        "line": [
+                            "1357 Amber Drive"
+                        ],
+                        "city": "Beaverton",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "97867"
+                    }
+                ],
+                "patient": {
+                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "RelatedPerson/404aabde-037c-3ea6-85cb-d4ceefa1d2c8"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:723fa027-d1ba-3c50-a31d-01778fba5464",
+            "resource": {
+                "resourceType": "DocumentReference",
+                "id": "723fa027-d1ba-3c50-a31d-01778fba5464",
+                "type": {
+                    "coding": [
+                        {
+                            "code": "28570-0",
+                            "display": "Procedure Note",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "date": "2020-08-31T07:43:34.902Z",
+                "status": "current",
+                "content": [
+                    {
+                        "attachment": {
+                            "contentType": "text/plain",
+                            "data": "H4sIAAAAAAAACu1d6XPiSJb/7PorcpmZ3e4dA5I45aaYoACXmbaBAVwz+6kjkRLQlJAIHa5i/vp9L3WlhLhsXBXVbUd3NJLyePmu/L3Ml9mtv31dm+SJOa5hW+8LckkqEGZptm5Yy/eFx9ltsVkgrkctnZq2xd4Xtswt/K39roX1iq63NZm7Yswj3nYDXz321St/dc0CWTls8b7Q7XVK+Ig1/qtYfEdmhmeyGxL+jR1bY7rvMDK0PfaO3Boms+g6LNAtQvXfJspvcbHfsFgJen5Hug6jHtPJfIuF76kFNFLStS3XNz0gnnx0bH9zTe7vu+/IO/Lne+p63RW1lkzvQcUbokhytSjLRVkhSuVGqd1IKilKNUkiP/2T6dcE3g/tJ17sZ/LndwQa+d9n/r0jPcPVTGqsmXNDZivDJS5db0xGFjBgotlAvGG5xGEbh7kMnjzjiRGdepQwk63hjUs8O/lOaIZ1JaButgrb09nG0KAGhUfNA7lSk2gr6lDNY87/uGTFqOmtePMl0rG2BBtdz01qaQy7ofACqmxAKWyLALGabViaoSNhJu/JJoZp+q7nACcJdcmaQitpcuHtxnZdY26ya+IBaZppWIYG7boayNgxbKi1JZbtkTkjG5P6vGw0EN6YYUHNDLPgEesYlscsHeSfYktAN3APSbiGEdhYz3aSztkTfgp6SVqGXzpzjaUVNAgE+S78hP5BNv/2Lc5F8sUAruFQuGKSbtQmCsAlA2xpHQgPCn/0gWGll+hMsQhGE3XSszUfGyeg/JZ789U13hdWnre5KZe/fPlS+lIp2c6yrEiSXP7Xw/1UW7E1LYJOeSjUQlDrfcF3rJuV2ShC2ZunSvj6RtPpvk+u7mnpb/im0H53heYMgyPIiTtGdebgE9J81UIxrLu2jqqtg1d4nBbK+B59xEAnjm177wtKSa6XmlWpJJdkudJsVuAH9AsOhFmBMxqPur3f7noS/FWloAXs9HFKJthB1O2MAedREYPOvfDxUEdSSYF/FHyT6pH7BKlelNSku7Shvay3+sHeDF38OpupTfC9e1tVS7WSin8wBl5dixg+3bpAVl6lOo43KTIEV/u+cD8aDLuFUFRKs9aQijAJ6IYLA9sGRdI8CIWJnrzdtddr3zK8LUoDvQrMFOTOdjcG+Ar3JsO9VjmoBdXZYsE0dHMz8IrkiZo+4xxRJFWuyyo4ZhC6FI3MWnD3Y1ATuhI0a1g4MuJaSakFjYB7W/p0yYTazCpGqukyb5Biv3sG/0P5hbPo0F/PQS3DIYXCcZhmO/qMOkvmwfNVK/RSE5uz4yrQtVv6mZFBD7wPzmB39w2gKPBQo0GvFKjcVVZRVLWpqvJJlCqcGLGzqa0BU8mUab6DUgyJDwhAXweTho8FpsNDNMgoL6moVCrSfkKqoaaG/d+N0e8WNo6xps6WrOw1OKqFY68FkZI8iUJnakwH1XUkFzh9Ny7wVyBMzwFI0oEvzHXvDYu15UqtQTp8aD0HlK5V3i0T1NWAC+0PjIIwPdtqlflz1CwYens0wcr4K3gLsxyoOmpVW200641WWXgTFAm9Fo72EWwFZpYpNuCGwx1MR6Qi1+tFGfCLb3nADKwM1gNwrIRfSnI0XjQGXqT9OAXiwt+cE2VkxSnsRb0KB/7osuMs9mBS16BeqNHwePNTU67/rDTqxboK3ivmfyjdULeF0d9zWu7ZkpoCEX2waI+7mH10VGvJwBEYBj3dh4K+ai1BllZ74NI5M03aKgfP4ccFXRvmtv13wK1uqxw+BW2VsbHwN9XXMMdyMAO1PyKscAQncXvcxcgZd3kLk6/JQm5cteaG463Sbg5wZk2S4xIgIfSXqBW+K/T9kGn4gTqOwfQTnN6um3/I9hH37jDTWBq273YWALEMjl8EImRJrmTo6K4cYJhBLfKTZVvFLvVWtmlo1wSf3A3TDECeP+/SgEKfRL0RobsTeCw16gnFVBP9uKyi8WRo7JjM9461Wy8pleYunRNon/w3eN5fSN9bAQBD11gErNONSWD8PQ8yBEoUuVkv1jKUwMxH7uAFhQoIRu9hyJb9eqTBNOfoIJzIDrSEvo+T8WSYIe+jA3P2hjpgsSeIQc5BEFysthl0EpFxQSef7+Zf5ugPuvp9zv4kd39hh3/A5aec/jMctaArYx7sxT0m7jHxshNqblZpF3vQyabdLDzk9ZW8FZ0lKKcW1xMfAkVIej8kwr0yPE2Ih9ie4XtZILFVzo5AQJ4cK2vc40V1c2FpIp81vBE+9afjjPX2v2Lwi9Gqu7E/sxM8aV3KiQFCKjpzAxH2Q8qOoYMFA/egsQGA+0i5HD+ZQcr7hwjMEdAAtGU/AZR3Rs4S3OF/BFZwoxFfu2R6N3q875EViBfiCjIcD34JFgQMN1qkQKz5C1kglI3haIwYjP1BWTUTi4G7kRX4q8BfPCyuvYcjnBSSiOyPW9k/QVKCIZJarVbk/0phWJPR5jxnBuE8+WQAslky0gGz8w/4s8AWxrbjgTD0lCnsMYSUGaiyUskxg/1GIOLN8j6xxtIP45xWORMItagP2IE3AxFlBiJVFFVRqlWMLWoR01rUDRZqOnHF3YAo+DsUiURYQpwcFSn8+9fxuRlA0Q7eMG0Y7Arm+GB6HkHt6M14tXVhqqaWG/WbSD5f8EqobhpMzMFURo4ELXmiPyFmyRf8SWHGIX2P1B2HEo85FF1qAhCniGBuuWOWs83H8lNcv9uL5YG2nR6Sd7HCwKv4J64zQhgC7s1JaVcQmsTadaobCTWvWlFqyqmSPtnE38R8iphjybXKaeG2DGthO2saTEX7JC0I89cx+AK5cXhl5U3K31vKolgzMkZIoZlQh0Oo8WSa7BUgggh3OPi6fvAbEQUzA/ixMjbJkn84jUXrXy1eKiIj6eN9ATop7Mws0/E0M1tMx6PHaf/YPIM/QMtq9couZBtHBE9EgnkYNttuGPmE4iNT5kUCC0k+Iq9biAY/P2chBaf2TAfxq33S0nzXsyPwH2tUV3yLdIciE77kwMfnY4DnA708fMdtJLYiEejFLw8ivnMm/u8L+k4RTGKxolShVfEp1AmsM2GasYnChVa0y5d6u7/8pR3Q3n5wOZ9Bg3qOHp6nSxwQ5zaF3e+Ofi9RLRMXVxHj4D4JBGD5oFqVFKUhVyRJhNQoIOr5jhhpTjNwe/80qZ6Ft9/mye81T+YqCI+/3jTmTWPyNCarG60NdeDJ2MD0zRN+AsgzGPb4lNZahJkSglKMu+PjK1LNnHXuuCts8DZseGdbOlhV7uJUGYfYiRri3uYekDb6VIiZHRZ7VXbv9CG+FVgucBif9TDtg3NhtBCY3ht1A6a7zHkyNNbHxJbUGLvjyS4SbVQadbSZ4yscan1XKNPh6KHfI91Zdj/INm3LdjV7s42UOLW/H/LEtL+kd/olNb3Tj4VWxnJ1OB8AmbfbfAsQPM6MzBG4NJ7cRpvCl1TO8dnKGa6PxdDPdoylAeh9Bm6xnVu0VU6VCbVKHEUERo1EVU/h8GksvsJcjWSPdNen73j1sct83X7oFQ/kIgige+/S275VNYRQe9bUdgUUMjHYVzltOS+mS9xieOmq7CGEftom0x6M/qJdob/KxdRydDZcyZ+DrrL7QrgxYHxt95wSrgDz3/G3vU7zoNtMOc78meoqHRLuIvCrgyt2cTZMSa6o8VL/+THgMxmb3cB6qXod1K8Td8D2adg5O2AHJZIDLvBl7LAP+O83B/4dHHjlOQ68MfkoybsO/CMF3bVRMRwACUvD9d689UW89d2bt34db3335q2PemugUAg7eOSSCVXa8d5u2Ljg1TuPs7sgeNFsy83ELd3RcFoga9vWg+f+p2EhXkQI9KSuqDqbN6RirSLVi7KsL4pqs6EWpSZE0ZKkqbS+u7/7kqzoelVRK8Xq3qzocBhRn242jw/0bmMy4HYYm5bDCu1kMzIRQQtL2xZ85lyEUMrCNygUa9m3uGTZno3vSgNmg0MbVuexJSeNsDueISOCcamqspMb2EcDCySO5vhALTCNtcCdo5Fh7pLTzqyXXyo3MjRtMeemFZx/wbn6lmo830WYDwXW1TKeSElm1j1NtMpiV0DLHsmhAogyDg9ThH/8TMUHW98Kr4LTBnGtIPL3HF/DRTgdCwcEYEN4fsZlWpBDkxzU0cmcIZ8RozCepElNEw//mOyJL+jYu8eK3kUntcjIW8EEHTerUQuPyRiWZvp6cFQGt8kiJ3BNWGlZIhC9MWdpMJerQgcePFdoEwnNOzZDTIAJLm8w7nANDu8wrXG+cshM0plO+9PpQ384IzELrzJM5AsompiQdc6JDqXUzEFDL/E0NblZbe6cv0hGknQXnKTouC7MMci/5GxFOIwIc6IBAD85U2f8lJ7tANgCZ5RMHQZQ057gIQBMAyUfB2RuMhCrvSC+9dmyv1iEAZMAwG1/Iavtxg59Dm6brujGRTnZlo4YGETDc7TmvoeHwEzjMwMtS33f2OZ2s6LOmmpbACO88zQpHc33GIH2tZVjWzz4Z2uDppv5k7yn8n+APCh9TShvBoZETbKghom6wrd0n2wT9JSYtuue1uYdMM75TM0cKipcuYHWTrfPf/76V+L6m1Ct85sLrCkanG7QpWW7jJ+as2w0VTq3n9g1CQWCDPQoHo9Ltwb+BoQaT+ueEGeIWi24m7SFjO87QzK6JbNJvzN7XUORpUNnn65SVAE2Qs2b4RFPfugt7FmkLh1+yM1GgydeP9/+UgaXdA3vrKzR7RB4yPa43Mic2xweBwIF1L0VptVLfxEsEBSC6vEjPCewk3/lneL5xA5ObjDhQJ+rPUXwgGv6MzwJMLac7qzlzaP5I7dvvS2s70JlPfOVR6A1WUl/ynYp9gGPyJUcxUW0I+LWTezjE0Q4+ceokFnN7wqcFNUIuZFMEz99Un5O69CZalwtVQ8eGAybjGEEAFFdnlOtKDd0wI+yWis2VQ2PHSvyXGtK6rxGxYrfYaGe97sDWC32RfyeA9kCenlcn1qJAD0Qa+bAMf4+Sft8lhhkWWT4iamjUde7CaSJ3J6bQhIMdk/TQsJh+ByrdWwCTEyyOM15g9r3e4+TPhkMe4NuZzaAyOn1HLiiHnXggvrW1Ea9WVQu5pBzB7vjl2NLH1h6mITu5vhmMui9LxhxEbnQRiSauBpAL1G0qxP4D3E1COgtPBIJOJcSRNGO4X4m2MaToft4LP6QF7PnGC4HCFdwXKMP+ZHucwziqHREv6TPG5VqvdooLjRVLVaVqlakzXq12GAVTadNhTWk9FHsaq1er+3zVLWKIu9A1vh0/AKZZC1foAllkSnJzMpXlsKDCZHt/0mUquiGUhWPBuiHvV4mWJUlpXKKy+NVyFfXuAnuyuj2ItBflasQSfMVqLTSU8MyAd4DgtU8YCXH5CfxUhUcU6ssqN9L/A2AxSFMKokpvpqvqZwHFtOz/PQYWATf1FCiRYxL+KYsCXl4MVUgDy+mMdYlAdErIJz93M/Cq0tgIaVRlRSYxk/A92eDIQi/eDgKSmOvXwUU4fUVivwGir4xKOr1p93JYIxA4RVBUSN/N0yt1arFyiugH2FUO14mr1Cep5kl+ezkC3XJ3LH95coLVm4YsQH7UH6FEjBgfU34UcZ4hc/1N4bF8G4fA9l2zVc8lsyCOiau0rhQyDUobxgmYx+qlkiH6MyjhonX6zBtxYFBsgwIfxZ1guP3GFYDwKIb6nBfiEs/mw2mwXL7DM7PArLAq0Bw9dHgq1C4poRU8ogdW8DriHDzBUbhAoIzYcp2S89ZIJn0R+P+BODmJ2DroPNxOJoOXhFkV6rngGxAHrJ6wYls+jj5CNj6noRjBssZjmb9DBf+tQu7WagzIL9esJZl7MXdG4dBE+0OlyoeX+dF9853VPMyEFmc6Trg1J870QGgPWOiyx0j3mDhbHfmvFcUUT4dIsV/6Ekk1J7UkZhk33H6+OHvBaHVZ4RlV/GlUADG10RswUvdDPVM9h+1/4idQVt0LjdUeS4Va1pDxp3QeXEu6SxvJ3RXNzFwU4rNi+lmF4MoCFm8dI/pmC0vagtcQqpSOVPrtJBtPyrbCduakixVMn3uq3sgdGtUqwjwTmAiItP0po7gAdOEZE34pUZ8nhkfMuSXm/IBY84x59zgNUaGopknMBJmjBcAyM6wP53d9aeDziuixqMzTzZcrRalVwCTyVh3thVjIHdoawMvrkTEhdP6A9OrhTbev6nxy31cptPk1kSA9hsbcBgB3SPrJRl8IjwJwos5enAXwPXnwU2GHeGuprTTnn7o9B72r6ZF4oVAMFw9JIAdBp8Gs/974Y6AfPBSv8RogqY0fa5XKgupWNfATXOHrS6YvM9hH1/w4nwvt3FGiji8XpbX9wCO/x0uhLC1b3KYXJPg/RMi5wssiAnucPDp/rfZVJxZs2mM6V2BnATGE7cN9lEwDkkgeOWl4fk47mlwDxXTw8tKwsDGdsD1irTCW8OO7zUBI8KUsveF1Sn0QOTkiWegupWm0qgfM9VKSakHd09m7XXYHWBWhEt9x3czdjsYziadT/3h6HEqkqbbLvuHT4MzLjFLo1FwXRCLYybITvG4tFkG+xKLr+nXntiB5ZvmrUmfkIuPw19FPlr+OuDvTiFR8jqzbOjjSLlWOdOxgG9TLgCvV8rh/17GXUgyqXUqy/XXwnZmwDbLX9AgOQcsE8LgVI7bQ2f4mMKU57kcpXIeSlRoHcrUakVVh/m+WlFZUVXmlWJNV5tybbGo6ixTVaT/AehywGmk5nAxxKlVqo0TluYwDzubPxe5LPLwsfxwTwbcZ/EN86nvboIBioy6yiRei18OeMdUAzlp2dEXTcynDLTwIB9EPuVcaRQZBqahAiXhxgS5hQo2hI0DSyulk1Szfe5pM01XqF+C7eSo5B87LATsl48gXgAU48WS3qQzCDZeU38Xh46NklzJBYgyWGDjgnFcZmRZbDj1nSXf2es5eGt5HkAcM8sB5010LBEuID5r9S1Cqre46zv8+Jrb281zMfkl8412R7p/b/s22FDNZXyHpEB5uPcqF9p1sl4TTBXEO9T5hkeCv/la7cL2rXiRl+Id7VgTiDfDRF6Hre0nfuE+cS3qMLzsk2hgZ8zZlsiHcGsS20qt7GInjm2auAycR5tSaONtc/wmed3Ae/wMzTeDBcSYQOw/r3Kl0F4BWY6zsg1drPCFOTw5Nby03tymV5sxxe7yO/bnLAxdflno2YtCuXv5l1oSymYBnBPaxNr7bTbysytCz9jIhwbqDZVv5J+9HDQNjXOMxvm2oBvP3EeSF35PhqvpvyvDVX4cw60qarUinZxumWJVetbC7UfQ7DVMSG9G/GbEP7wRV34cI1alag2Y3HiGDeNVWw6eEhHg5Jv5nmq+Z4dz/els8NCZ9Xvkw/1o1CP3o+nrhHZyE0K7/SGcdMGo+fDosuFc3wUd4IfyPpjg0Mi97eYGdA9gwWtqvih4Hjxg6ubsFYPnqrSXxXLx6HL4c5LAwyEdyABH+i0vl6lDmxjh5yBSDFYonpcgFJE0Hfe7g4f+cEpmnV/7r5hzVpH3MrvyKhn3mZHtrAfhPssa3BCZ0c94RUDOskRmPSFcgDib290RyP31jzpUGmetBdVkSb1gsh9Po4hOL2SZnfq4L8VKCwrJBWC8t8K7IjXibtcbz16Dwq8wyvTx/3KTk7f3+10V+b3gsli4Pwwuq6hSQ30mMKNcgfMY9QbJLgHJRtPZt01wreX6UEyTbF4SKeSPawcu2K53WupqKl81vjHcoOFb/F+R0DnMcq77HBAB1ArZ299ACkdzVrJn+dRLJiDlDzdPOMlpl4PCiazipHsOgizkjf4V5sdpsFKT2Xm4JutwSyLv8H5cXym0Bzlx48E6lUJw0CeAQNekvl5fZ7dbTjzj/+0ypWtnHQnKF9vxVOmLq1k+Iakp8C1Z+Jxk4W+EgXZQUC4OCqzph0wafo1tohxE9FJMdB4qOoSLXo6MDmCjXXSUj49ihJSXNvxH8wVnRkM/gC+Qf0xf8No7T29+4c0v/KH9gvJj+oXX28x68wjf9YCRGPlOIRQevNoJdb75JZyryO4W1IonaNf5J9STUe3fnelB3fAE+Skn1D3cWIjOp/ctPbgmg0yYZsMMuCV4CgBzF4NL8jDnUOdtn76jwy/tTd+mmSrRKkfOqBdecdl+9/8ulnHhPIkAAA==",
+                            "hash": "9uhm+YBm7o1GQp0yHODP4Wt9ku4="
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "DocumentReference/723fa027-d1ba-3c50-a31d-01778fba5464"
+            }
+        }
+    ]
+}

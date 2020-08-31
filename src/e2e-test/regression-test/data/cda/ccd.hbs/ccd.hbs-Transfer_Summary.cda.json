@@ -1,0 +1,3881 @@
+{
+    "resourceType": "Bundle",
+    "type": "batch",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:7656751c-ddc8-3f1a-9dc2-7bef5ab59b77",
+            "resource": {
+                "resourceType": "Composition",
+                "id": "7656751c-ddc8-3f1a-9dc2-7bef5ab59b77",
+                "identifier": {
+                    "use": "official",
+                    "value": "04fc2b90-10e0-11e2-892e-0800200c9a66"
+                },
+                "status": "final",
+                "type": {
+                    "coding": [
+                        {
+                            "code": "18761-7",
+                            "display": "Provider Unspecified Transfer Summary",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "date": "2013-09-21T13:00:00.000Z",
+                "title": "Transfer Summary",
+                "confidentiality": "N",
+                "attester": [
+                    {
+                        "mode": "legal",
+                        "time": "2013-09-16T06:36:15.000Z",
+                        "party": {
+                            "reference": "Practitioner/4939e179-a309-30ef-9889-e04751868181"
+                        }
+                    }
+                ],
+                "event": [
+                    {
+                        "period": {
+                            "start": "2013-06-01"
+                        }
+                    }
+                ],
+                "section": [
+                    {
+                        "title": "ALLERGIES AND ADVERSE REACTIONS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">ALLERGIES AND ADVERSE REACTIONS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "48765-2",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "AllergyIntolerance/25fb7d4b-7c18-3fca-a9cd-f0a8e568c36b",
+                                "display": "Penicillin"
+                            },
+                            {
+                                "reference": "AllergyIntolerance/b048b7f1-6735-366a-94a6-a8d93df236a2",
+                                "display": "Codeine"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "ADVANCE DIRECTIVES",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">ADVANCE DIRECTIVES</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "42348-3",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "ASSESSMENT",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">ASSESSMENT</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "51848-0",
+                                    "display": "ASSESSMENT",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "ENCOUNTERS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">ENCOUNTERS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "46240-8",
+                                    "display": "History of encounters",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "Encounter/03fa485e-00c0-3c04-b396-4c30a879d4b5"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "FAMILY HISTORY",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">FAMILY HISTORY</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "10157-6",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "FamilyMemberHistory/038642e7-1bfd-32c0-942c-768986dc1207"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "FUNCTIONAL STATUS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">FUNCTIONAL STATUS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "47420-5",
+                                    "display": "Functional Status",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "Condition/c91e9bfa-26f2-3ef9-b02d-2b272c4136b4"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "GENERAL STATUS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">GENERAL STATUS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "10210-3",
+                                    "display": "GENERAL STATUS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "HISTORY OF PAST MEDICAL/SURGICAL ILLNESS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">HISTORY OF PAST MEDICAL/SURGICAL ILLNESS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "11348-0",
+                                    "display": "HISTORY OF PAST ILLNESS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "HISTORY OF PRESENT ILLNESS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">HISTORY OF PRESENT ILLNESS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "10164-2",
+                                    "display": "HISTORY OF PRESENT ILLNESS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Hospital Course of Care",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Hospital Course of Care</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "8648-8",
+                                    "display": "Hospital Course Narrative",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "Hospital Discharge Diagnosis",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Hospital Discharge Diagnosis</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "C-CDAV2-DDN",
+                                    "display": "Discharge diagnosis narritive",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "IMMUNIZATIONS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">IMMUNIZATIONS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "11369-6",
+                                    "display": "History of immunizations",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "Immunization/60bbd22d-4122-3201-a007-aca16d947015"
+                            },
+                            {
+                                "reference": "Immunization/1da8828a-fbaa-3bcd-9156-58b4b7084909"
+                            },
+                            {
+                                "reference": "Immunization/b38af891-373a-38d6-b2aa-a4bfb52f9947"
+                            },
+                            {
+                                "reference": "Immunization/47627e71-ba37-3b82-b7a6-694aae29af01"
+                            },
+                            {
+                                "reference": "Immunization/4ad2db55-e732-3173-8b74-03139859afbe"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "MEDICAL EQUIPMENT",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">MEDICAL EQUIPMENT</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "46264-8",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "Device/225ef49c-2cde-3947-abb0-7639d4f488a5"
+                            },
+                            {
+                                "reference": "Device/299b3789-b38d-35b0-95b3-d6df78b5fbbc"
+                            },
+                            {
+                                "reference": "Device/103cee90-2a47-3c2b-9a72-e8eda2774d66"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "MENTAL STATUS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">MENTAL STATUS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "10190-7",
+                                    "display": "MENTAL STATUS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "NUTRITION SECTION",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">NUTRITION SECTION</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "61144-2",
+                                    "display": "Diet and Nutrition",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "MEDICATIONS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">MEDICATIONS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "10160-0",
+                                    "display": "HISTORY OF MEDICATION USE",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "MedicationStatement/e16f4c43-5998-3acd-8f4c-b2a67674f009"
+                            },
+                            {
+                                "reference": "MedicationStatement/9179fb86-abaf-391b-89f7-144bc3767fc9"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Insurance Providers",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Insurance Providers</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "48768-6",
+                                    "display": "Payments",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "Coverage/0e7f8596-65e3-398c-a148-b95426608597"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Physical Examination",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Physical Examination</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "29545-1",
+                                    "display": "Physical Findings",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "TREATMENT PLAN",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">TREATMENT PLAN</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "18776-5",
+                                    "display": "Treatment plan",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "CarePlan/ee49af27-12f9-3e07-a772-ef711c366083"
+                            },
+                            {
+                                "reference": "CarePlan/9517c983-05ad-37ec-bdf3-e6967823a7e5"
+                            },
+                            {
+                                "reference": "CarePlan/fae1b0ef-0bbd-3034-be1b-2f7fbba78633"
+                            },
+                            {
+                                "reference": "CarePlan/f713a359-e858-399f-bc8e-9e4fc12a2c77"
+                            },
+                            {
+                                "reference": "CarePlan/03aca872-79d2-3deb-98e8-d67f83e7f3c2"
+                            },
+                            {
+                                "reference": "CarePlan/5de3a5df-5f2f-3088-a76f-698eee9234ef"
+                            },
+                            {
+                                "reference": "CarePlan/e613122f-41a7-34ac-8cb7-2e629e0a16a0"
+                            },
+                            {
+                                "reference": "CarePlan/5e5c1ff7-47d8-3744-9729-6185df2d6a0a"
+                            },
+                            {
+                                "reference": "CarePlan/a54bc423-6ac3-34d0-a115-241d2f1e915e"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "PROBLEMS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">PROBLEMS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "11450-4",
+                                    "display": "PROBLEM LIST",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "Condition/ad005db0-7a55-3328-a132-8925dfc45003"
+                            },
+                            {
+                                "reference": "Condition/0dca758b-551b-3448-b2ad-559eb748b989"
+                            },
+                            {
+                                "reference": "Condition/e9f85894-be65-3c0e-80bf-dfae5bc78364"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "Procedures",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Procedures</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "47519-4",
+                                    "display": "History of Procedures",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "Procedure/d89defe1-34d5-3b3d-9143-5812d662d156"
+                            },
+                            {
+                                "reference": "Procedure/4baf6496-ae17-3220-b00a-fe1c9558f12a"
+                            },
+                            {
+                                "reference": "Procedure/1a3337ff-a0cb-32b1-a360-cc9d48067718"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "REASON FOR REFERRAL",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">REASON FOR REFERRAL</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "42349-1",
+                                    "display": "Reason for Referral ",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "RESULTS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">RESULTS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "30954-2",
+                                    "display": "RESULTS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "DiagnosticReport/5ee91a8e-7884-3b5b-8d35-6a57abada9e7"
+                            },
+                            {
+                                "reference": "DiagnosticReport/4e48b009-dfd8-35a3-9e21-639362aea336"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "REVIEW OF SYSTEMS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">REVIEW OF SYSTEMS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "10187-3",
+                                    "display": "REVIEW OF SYSTEMS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot"
+                    },
+                    {
+                        "title": "SOCIAL HISTORY",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">SOCIAL HISTORY</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "29762-2",
+                                    "display": "Social History",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "Observation/ae2ba977-9d50-358f-a00c-a091b9b0a7d2",
+                                "display": "Alcoholic drinks per day"
+                            },
+                            {
+                                "reference": "Observation/dfd4af1f-bc0c-3440-a98a-36a1bd14d135",
+                                "display": "Tobacco smoking status NHIS"
+                            },
+                            {
+                                "reference": "Observation/7c267153-b9ba-3c3f-b168-c9e934867c0d"
+                            },
+                            {
+                                "reference": "Observation/6563f6b5-7c23-3224-a66f-764d71366f67",
+                                "display": "Personal belief"
+                            },
+                            {
+                                "reference": "Observation/a15cea0d-ed35-3be6-b302-da89893a3a5d",
+                                "display": "Characteristics of residence"
+                            }
+                        ]
+                    },
+                    {
+                        "title": "VITAL SIGNS",
+                        "text": {
+                            "status": "generated",
+                            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">VITAL SIGNS</div>"
+                        },
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "8716-3",
+                                    "display": "VITAL SIGNS",
+                                    "system": "http://loinc.org"
+                                }
+                            ]
+                        },
+                        "mode": "snapshot",
+                        "entry": [
+                            {
+                                "reference": "Observation/ec2f2318-ae87-3c50-b4af-f580ec098f1c",
+                                "display": "Height"
+                            },
+                            {
+                                "reference": "Observation/d66f9a4a-ff15-36a7-bb02-b423383e4344",
+                                "display": "Patient Body Weight - Measured"
+                            },
+                            {
+                                "reference": "Observation/e88bfe1f-c3af-309c-95e9-9727ce5bae54",
+                                "display": "Intravascular Systolic"
+                            },
+                            {
+                                "reference": "Observation/c265b867-4095-3a41-812d-509d7930f02d",
+                                "display": "BP Diastolic"
+                            },
+                            {
+                                "reference": "Observation/77bd88b5-115b-3af5-9aae-0f97a70d7d62",
+                                "display": "Height"
+                            },
+                            {
+                                "reference": "Observation/d3f6967b-cbfb-347d-8bb5-7fca7be7cd66",
+                                "display": "Patient Body Weight - Measured"
+                            },
+                            {
+                                "reference": "Observation/92a587c7-3f04-35fd-9596-20d70cae5d09",
+                                "display": "BP Systolic"
+                            },
+                            {
+                                "reference": "Observation/d80859f6-7092-3973-aee2-b314475e8e4d",
+                                "display": "BP Diastolic"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "custodian": {
+                    "reference": "Organization/b592a2a0-74bc-37af-896b-ff0fbf6aefb6"
+                },
+                "author": [
+                    {
+                        "reference": "Practitioner/4939e179-a309-30ef-9889-e04751868181"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Composition/7656751c-ddc8-3f1a-9dc2-7bef5ab59b77"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:4939e179-a309-30ef-9889-e04751868181",
+            "resource": {
+                "resourceType": "Practitioner",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+                    ]
+                },
+                "id": "4939e179-a309-30ef-9889-e04751868181",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "5555555555"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Primary",
+                        "given": [
+                            "Patricia",
+                            "Patty"
+                        ],
+                        "suffix": [
+                            "M.D."
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "1004 Healthcare Drive"
+                        ],
+                        "city": "Portland",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "99123"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "+1(555)555-1004",
+                        "use": "work"
+                    }
+                ],
+                "qualification": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "207QA0505X",
+                                    "display": "Adult Medicine",
+                                    "system": "http://nucc.org/provider-taxonomy"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/4939e179-a309-30ef-9889-e04751868181"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:b592a2a0-74bc-37af-896b-ff0fbf6aefb6",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "b592a2a0-74bc-37af-896b-ff0fbf6aefb6",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "321CX"
+                    }
+                ],
+                "name": "Good Health HIE",
+                "address": [
+                    {
+                        "use": "work",
+                        "line": [
+                            "1009 Healthcare Drive"
+                        ],
+                        "city": "Portland",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "99123"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "+1(555)555-1009",
+                        "use": "work"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/b592a2a0-74bc-37af-896b-ff0fbf6aefb6"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:2745d583-e3d1-3f88-8b21-7b59adb60779",
+            "resource": {
+                "resourceType": "Patient",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
+                    ]
+                },
+                "id": "2745d583-e3d1-3f88-8b21-7b59adb60779",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-ssn",
+                        "value": "444222222"
+                    }
+                ],
+                "name": [
+                    {
+                        "use": "usual",
+                        "family": "Betterhalf",
+                        "given": [
+                            "Eve"
+                        ]
+                    },
+                    {
+                        "family": "Everywoman",
+                        "given": [
+                            "Eve"
+                        ]
+                    }
+                ],
+                "birthDate": "1945-05-01",
+                "gender": "female",
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+                        "extension": [
+                            {
+                                "url": "ombCategory",
+                                "valueCoding": {
+                                    "code": "2106-3",
+                                    "display": "White",
+                                    "system": "urn:oid:2.16.840.1.113883.6.238"
+                                }
+                            },
+                            {
+                                "url": "ombCategory",
+                                "valueCoding": {
+                                    "code": "2076-8",
+                                    "display": "Hawaiian or Other Pacific Islander",
+                                    "system": "urn:oid:2.16.840.1.113883.6.238"
+                                }
+                            },
+                            {
+                                "url": "text",
+                                "valueString": "Mixed"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
+                        "extension": [
+                            {
+                                "url": "ombCategory",
+                                "valueCoding": {
+                                    "code": "2186-5",
+                                    "display": "Not Hispanic or Latino",
+                                    "system": "urn:oid:2.16.840.1.113883.6.238"
+                                }
+                            },
+                            {
+                                "url": "text",
+                                "valueString": "Not Hispanic or Latino"
+                            }
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "use": "home",
+                        "line": [
+                            "2222 Home Street"
+                        ],
+                        "city": "Beaverton",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "97867"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "+1(555)555-2003",
+                        "use": "home"
+                    }
+                ],
+                "communication": [
+                    {
+                        "language": {
+                            "coding": [
+                                {
+                                    "system": "urn:ietf:bcp:47",
+                                    "code": "eng"
+                                }
+                            ]
+                        },
+                        "preferred": true
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:5fab84f6-27ae-3100-a4be-3785d3a7a76b",
+            "resource": {
+                "resourceType": "RelatedPerson",
+                "id": "5fab84f6-27ae-3100-a4be-3785d3a7a76b",
+                "relationship": [
+                    {
+                        "coding": [
+                            {
+                                "code": "POWATT",
+                                "display": "Power of Attorney",
+                                "system": "urn:oid:2.16.840.1.113883.1.11.19830"
+                            }
+                        ]
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Betterhalf",
+                        "given": [
+                            "Boris",
+                            "Bo"
+                        ]
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "+1(555)555-2008",
+                        "use": "mobile"
+                    }
+                ],
+                "address": [
+                    {
+                        "use": "home",
+                        "line": [
+                            "2222 Home Street"
+                        ],
+                        "city": "Beaverton",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "97867"
+                    }
+                ],
+                "patient": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "RelatedPerson/5fab84f6-27ae-3100-a4be-3785d3a7a76b"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:2c1ce1d4-2a4f-399c-9a09-f79be9c0edb7",
+            "resource": {
+                "resourceType": "AllergyIntolerance",
+                "id": "2c1ce1d4-2a4f-399c-9a09-f79be9c0edb7",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:4adc1020-7b14-11db-9fe1-0800200c9a66"
+                    }
+                ],
+                "clinicalStatus": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+                            "code": "active"
+                        }
+                    ]
+                },
+                "reaction": [
+                    {
+                        "substance": {
+                            "coding": [
+                                {
+                                    "code": "70618",
+                                    "display": "Penicillin",
+                                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+                                }
+                            ]
+                        },
+                        "manifestation": [
+                            {
+                                "coding": [
+                                    {
+                                        "code": "422587007",
+                                        "display": "Nausea",
+                                        "system": "http://snomed.info/sct"
+                                    }
+                                ]
+                            }
+                        ],
+                        "onset": "2008-02-26T16:05:00.000Z"
+                    }
+                ],
+                "onsetDateTime": "1998-05-01",
+                "patient": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "AllergyIntolerance/2c1ce1d4-2a4f-399c-9a09-f79be9c0edb7"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:10a6e5b9-6550-3bc7-844a-69061b0b5a6d",
+            "resource": {
+                "resourceType": "AllergyIntolerance",
+                "id": "10a6e5b9-6550-3bc7-844a-69061b0b5a6d",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:901db0f8-9355-4794-81cd-fd951ef07917"
+                    }
+                ],
+                "clinicalStatus": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+                            "code": "active"
+                        }
+                    ]
+                },
+                "reaction": [
+                    {
+                        "substance": {
+                            "coding": [
+                                {
+                                    "code": "2670",
+                                    "display": "Codeine",
+                                    "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+                                }
+                            ]
+                        },
+                        "manifestation": [
+                            {
+                                "coding": [
+                                    {
+                                        "code": "56018004",
+                                        "display": "Wheezing",
+                                        "system": "http://snomed.info/sct"
+                                    }
+                                ]
+                            }
+                        ],
+                        "severity": "mild"
+                    }
+                ],
+                "patient": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "AllergyIntolerance/10a6e5b9-6550-3bc7-844a-69061b0b5a6d"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:93a30562-b470-3223-bd61-619e3a87e08e",
+            "resource": {
+                "resourceType": "MedicationStatement",
+                "id": "93a30562-b470-3223-bd61-619e3a87e08e",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:cdbd33f0-6cde-11db-9fe1-0800200c9a66"
+                    }
+                ],
+                "status": "active",
+                "dosage": [
+                    {
+                        "doseAndRate": [
+                            {
+                                "doseQuantity": {
+                                    "value": 2
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "medicationReference": {
+                    "reference": "Medication/e8542bc8-91e7-32e4-96a5-7b2e159b8672"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "MedicationStatement/93a30562-b470-3223-bd61-619e3a87e08e"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:e8542bc8-91e7-32e4-96a5-7b2e159b8672",
+            "resource": {
+                "resourceType": "Medication",
+                "id": "e8542bc8-91e7-32e4-96a5-7b2e159b8672",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "573621",
+                            "display": "Proventil 0.09 MG/ACTUAT inhalant solution",
+                            "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Medication/e8542bc8-91e7-32e4-96a5-7b2e159b8672"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:0d3aac13-5767-385c-ace0-2a20a5d2a143",
+            "resource": {
+                "resourceType": "MedicationStatement",
+                "id": "0d3aac13-5767-385c-ace0-2a20a5d2a143",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:6c844c75-aa34-411c-b7bd-5e4a9f206e29"
+                    }
+                ],
+                "status": "active",
+                "dosage": [
+                    {
+                        "doseAndRate": [
+                            {
+                                "doseQuantity": {
+                                    "value": 1
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "medicationReference": {
+                    "reference": "Medication/eaa01790-b0cc-3c1e-bfa1-bce758cbc962"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "MedicationStatement/0d3aac13-5767-385c-ace0-2a20a5d2a143"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:eaa01790-b0cc-3c1e-bfa1-bce758cbc962",
+            "resource": {
+                "resourceType": "Medication",
+                "id": "eaa01790-b0cc-3c1e-bfa1-bce758cbc962",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "197380",
+                            "display": "Atenolol 25 MG Oral Tablet",
+                            "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Medication/eaa01790-b0cc-3c1e-bfa1-bce758cbc962"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:e4b5a412-4bad-33fc-91aa-ebc767a97cd8",
+            "resource": {
+                "resourceType": "Condition",
+                "id": "e4b5a412-4bad-33fc-91aa-ebc767a97cd8",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:ab1791b0-5c71-11db-b0de-0800200c9a66"
+                    }
+                ],
+                "code": {
+                    "coding": [
+                        {
+                            "code": "93870000",
+                            "display": "malignant neoplasm of liver (disorder)",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "onsetDateTime": "2013-07-03",
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Condition/e4b5a412-4bad-33fc-91aa-ebc767a97cd8"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:83b44a02-fdf9-3db6-b4cc-f376f53aeef6",
+            "resource": {
+                "resourceType": "Condition",
+                "id": "83b44a02-fdf9-3db6-b4cc-f376f53aeef6",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:11d088a8-b957-401c-8ee0-3bd20a772fc0"
+                    }
+                ],
+                "code": {
+                    "coding": [
+                        {
+                            "code": "29857009",
+                            "display": "Chest pain",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "onsetDateTime": "2007-04-14",
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Condition/83b44a02-fdf9-3db6-b4cc-f376f53aeef6"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:9397b897-4ebc-342f-a98d-13a9abce8cd4",
+            "resource": {
+                "resourceType": "Condition",
+                "id": "9397b897-4ebc-342f-a98d-13a9abce8cd4",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:4991db40-4c4f-41e8-9146-50c12d716424"
+                    }
+                ],
+                "code": {
+                    "coding": [
+                        {
+                            "code": "194828000",
+                            "display": "Angina",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "onsetDateTime": "2007-04-17",
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Condition/9397b897-4ebc-342f-a98d-13a9abce8cd4"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:bfd9fefb-7b4a-304d-b539-3f3c487b1249",
+            "resource": {
+                "resourceType": "Condition",
+                "id": "bfd9fefb-7b4a-304d-b539-3f3c487b1249",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:10506b4d-c30a-4220-8bec-97bff9568fd1"
+                    }
+                ],
+                "code": {
+                    "coding": [
+                        {
+                            "code": "233604007",
+                            "display": "Pneumonia",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "onsetDateTime": "1998-03-10",
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Condition/bfd9fefb-7b4a-304d-b539-3f3c487b1249"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:b193253f-8da0-3001-a1b0-56b24b462773",
+            "resource": {
+                "resourceType": "DiagnosticReport",
+                "id": "b193253f-8da0-3001-a1b0-56b24b462773",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:7d5a02b0-67a4-11db-bd13-0800200c9a66"
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "57021-8",
+                            "display": "CBC W Auto Differential panel in Blood",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectivePeriod": {
+                    "start": "2013-03-11T16:30:00.000Z",
+                    "end": "2013-03-11T16:30:00.000Z"
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "result": [
+                    {
+                        "reference": "Observation/944f3bdc-d6ae-376d-a957-cc7cb322e519"
+                    },
+                    {
+                        "reference": "Observation/418518fc-5b7d-3354-92f7-066ab0ea02ea"
+                    },
+                    {
+                        "reference": "Observation/e1c756bd-a9d3-3723-95d1-4b318f9a0d4c"
+                    },
+                    {
+                        "reference": "Observation/fc37a995-02b2-382c-9244-402f3328538c"
+                    },
+                    {
+                        "reference": "Observation/7f4b5481-2d05-3e66-a1da-e1c2aaa68483"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "DiagnosticReport/b193253f-8da0-3001-a1b0-56b24b462773"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:944f3bdc-d6ae-376d-a957-cc7cb322e519",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "944f3bdc-d6ae-376d-a957-cc7cb322e519",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:107c2dc0-67a5-11db-bd13-0800200c9a66"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "laboratory"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "718-7",
+                            "display": "Hemoglobin",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-03-11T16:30:00.000Z",
+                "valueQuantity": {
+                    "value": 13.2,
+                    "unit": "g/dL"
+                },
+                "referenceRange": [
+                    {
+                        "low": {
+                            "value": 12,
+                            "unit": "g/dL"
+                        },
+                        "high": {
+                            "value": 15.5,
+                            "unit": "g/dL"
+                        }
+                    }
+                ],
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "N",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "performer": [
+                    {
+                        "reference": "Practitioner/7b28babc-fd6e-3540-b98f-2b6a0901138d"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/944f3bdc-d6ae-376d-a957-cc7cb322e519"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:418518fc-5b7d-3354-92f7-066ab0ea02ea",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "418518fc-5b7d-3354-92f7-066ab0ea02ea",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:a69b3d60-2ffd-4440-958b-72b3335ff35f"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "laboratory"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "6690-2",
+                            "display": "Leukocytes",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-03-11T16:30:00.000Z",
+                "valueQuantity": {
+                    "value": 6.7,
+                    "unit": "10*9/L"
+                },
+                "referenceRange": [
+                    {
+                        "low": {
+                            "value": 4.3,
+                            "unit": "10*9/L"
+                        },
+                        "high": {
+                            "value": 10.8,
+                            "unit": "10*9/L"
+                        }
+                    }
+                ],
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "N",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "performer": [
+                    {
+                        "reference": "Practitioner/7b28babc-fd6e-3540-b98f-2b6a0901138d"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/418518fc-5b7d-3354-92f7-066ab0ea02ea"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:e1c756bd-a9d3-3723-95d1-4b318f9a0d4c",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "e1c756bd-a9d3-3723-95d1-4b318f9a0d4c",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:ef5c1c58-4665-4556-a8e8-6e720d82f572"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "laboratory"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "777-3",
+                            "display": "Platelets",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-03-11T16:30:00.000Z",
+                "valueQuantity": {
+                    "value": 123,
+                    "unit": "10*9/L"
+                },
+                "referenceRange": [
+                    {
+                        "low": {
+                            "value": 150,
+                            "unit": "10*9/L"
+                        },
+                        "high": {
+                            "value": 350,
+                            "unit": "10*9/L"
+                        }
+                    }
+                ],
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "LX",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "performer": [
+                    {
+                        "reference": "Practitioner/7b28babc-fd6e-3540-b98f-2b6a0901138d"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/e1c756bd-a9d3-3723-95d1-4b318f9a0d4c"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:fc37a995-02b2-382c-9244-402f3328538c",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "fc37a995-02b2-382c-9244-402f3328538c",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:7c0704bb-9c40-41b5-9c7d-26b2d59e234f"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "laboratory"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "4544-3",
+                            "display": "Hematocrit",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-03-11T16:30:00.000Z",
+                "valueQuantity": {
+                    "value": 35.3,
+                    "unit": "%"
+                },
+                "referenceRange": [
+                    {
+                        "low": {
+                            "value": 34.9,
+                            "unit": "%"
+                        },
+                        "high": {
+                            "value": 44.5,
+                            "unit": "%"
+                        }
+                    }
+                ],
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "LX",
+                                "display": "below low threshold",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "performer": [
+                    {
+                        "reference": "Practitioner/7b28babc-fd6e-3540-b98f-2b6a0901138d"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/fc37a995-02b2-382c-9244-402f3328538c"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:7f4b5481-2d05-3e66-a1da-e1c2aaa68483",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "7f4b5481-2d05-3e66-a1da-e1c2aaa68483",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:bccd6fc9-0c7f-455e-8616-923ed0d04d09"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "laboratory"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "789-8",
+                            "display": "Erythrocytes",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-03-11T16:30:00.000Z",
+                "valueQuantity": {
+                    "value": 4.21,
+                    "unit": "10*12/L"
+                },
+                "referenceRange": [
+                    {
+                        "low": {
+                            "value": 3.9,
+                            "unit": "10*12/L"
+                        },
+                        "high": {
+                            "value": 5.03,
+                            "unit": "10*12/L"
+                        }
+                    }
+                ],
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "N",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "performer": [
+                    {
+                        "reference": "Practitioner/7b28babc-fd6e-3540-b98f-2b6a0901138d"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/7f4b5481-2d05-3e66-a1da-e1c2aaa68483"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:218585b9-ed08-375b-8b15-ab8035b61d50",
+            "resource": {
+                "resourceType": "DiagnosticReport",
+                "id": "218585b9-ed08-375b-8b15-ab8035b61d50",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:122ed3ae-6d9e-43d0-bfa2-434ea34b1426"
+                    }
+                ],
+                "status": "unknown",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "166312007",
+                            "display": "Blood chemistry test",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "effectivePeriod": {
+                    "start": "2008-03-20T17:30:00.000Z",
+                    "end": "2008-03-20T17:30:00.000Z"
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "result": [
+                    {
+                        "reference": "Observation/6e9597b4-24e1-36d0-9c63-1b4208108b3f"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "DiagnosticReport/218585b9-ed08-375b-8b15-ab8035b61d50"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:6e9597b4-24e1-36d0-9c63-1b4208108b3f",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "6e9597b4-24e1-36d0-9c63-1b4208108b3f",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:aed821af-3330-4138-97f0-e84dfe5f3c35"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "laboratory"
+                            }
+                        ]
+                    }
+                ],
+                "status": "unknown",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "3094-0",
+                            "display": "Urea nitrogen, Serum",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2008-03-20T17:30:00.000Z",
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "N",
+                                "display": "normal",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/6e9597b4-24e1-36d0-9c63-1b4208108b3f"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:7ba37464-7000-34af-be2a-29e781f11d8e",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "7ba37464-7000-34af-be2a-29e781f11d8e",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:9b56c25d-9104-45ee-9fa4-e0f3afaa01c1"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "social-history"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "74013-4",
+                            "display": "Alcoholic drinks per day",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-03-12",
+                "valueQuantity": {
+                    "value": 1
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/7ba37464-7000-34af-be2a-29e781f11d8e"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:dee20b2e-7761-365b-9451-cc82d9cad8a9",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "dee20b2e-7761-365b-9451-cc82d9cad8a9",
+                "identifier": [
+                    {
+                        "system": "urn:oid:2.16.840.1.113883.19",
+                        "value": "123456789"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "social-history"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "72166-2",
+                            "display": "Tobacco smoking status NHIS",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-06-21",
+                "valueCodeableConcept": {
+                    "coding": [
+                        {
+                            "code": "8517006",
+                            "display": "Former smoker",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/dee20b2e-7761-365b-9451-cc82d9cad8a9"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:61df9cf6-4bb5-3f2d-a31e-921ec5e681f4",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "61df9cf6-4bb5-3f2d-a31e-921ec5e681f4",
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "social-history"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "ASSERTION",
+                            "system": "urn:oid:2.16.840.1.113883.5.4"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-03-12",
+                "valueCodeableConcept": {
+                    "coding": [
+                        {
+                            "code": "422615001",
+                            "display": "caregiver difficulty providing physical care",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/61df9cf6-4bb5-3f2d-a31e-921ec5e681f4"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:842ed91d-5620-3a70-8d74-de134748fb67",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "842ed91d-5620-3a70-8d74-de134748fb67",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:37f76c51-6411-4e1d-8a37-957fd49d2cef"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "social-history"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "75281-6",
+                            "display": "Personal belief",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-03-12",
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/842ed91d-5620-3a70-8d74-de134748fb67"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:68903f38-80f6-305d-b0dd-3b10200613bd",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "68903f38-80f6-305d-b0dd-3b10200613bd",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:37f76c51-6411-4e1d-8a37-957fd49d2ceg"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "social-history"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "75274-1",
+                            "display": "Characteristics of residence",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-03-12",
+                "valueCodeableConcept": {
+                    "coding": [
+                        {
+                            "code": "308899009",
+                            "display": "unsatisfactory living conditions (finding)",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/68903f38-80f6-305d-b0dd-3b10200613bd"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:8d70b851-7856-36c2-8df0-d17dec9898fe",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "8d70b851-7856-36c2-8df0-d17dec9898fe",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:ed9589fd-fda0-41f7-a3d0-dc537554f5c2"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "vital-signs"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "8302-2",
+                            "display": "Height",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2012-09-10",
+                "valueQuantity": {
+                    "value": 177,
+                    "unit": "cm"
+                },
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "N",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/8d70b851-7856-36c2-8df0-d17dec9898fe"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:89a2fc22-8c36-37c1-86b5-a410f4f191c9",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "89a2fc22-8c36-37c1-86b5-a410f4f191c9",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:f4e729e2-a97f-4a7e-8e23-c92f9b6b55cf"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "vital-signs"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "3141-9",
+                            "display": "Patient Body Weight - Measured",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-02-12",
+                "valueQuantity": {
+                    "value": 86,
+                    "unit": "kg"
+                },
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "N",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/89a2fc22-8c36-37c1-86b5-a410f4f191c9"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:5a74fd95-c6ef-3257-9c71-fcf2835b5eb0",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "5a74fd95-c6ef-3257-9c71-fcf2835b5eb0",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:a0e39c70-9674-4b2a-9837-cdf74200d8d5"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "vital-signs"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "8480-6",
+                            "display": "Intravascular Systolic",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-08-01",
+                "valueQuantity": {
+                    "value": 132,
+                    "unit": "mm[Hg]"
+                },
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "N",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/5a74fd95-c6ef-3257-9c71-fcf2835b5eb0"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:b888d6af-c786-380e-8368-feb3719a596e",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "b888d6af-c786-380e-8368-feb3719a596e",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:1c2748b7-e440-41ba-bc01-dde97d84a036"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "vital-signs"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "8462-4",
+                            "display": "BP Diastolic",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2012-09-10",
+                "valueQuantity": {
+                    "value": 88,
+                    "unit": "mm[Hg]"
+                },
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "N",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/b888d6af-c786-380e-8368-feb3719a596e"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:23851cce-28a3-3dd4-8c28-4917d8cdfd07",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "23851cce-28a3-3dd4-8c28-4917d8cdfd07",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:05c047cd-28c3-41cd-be6c-56f8cc0c3f2f"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "vital-signs"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "8302-2",
+                            "display": "Height",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2011-09-01",
+                "valueQuantity": {
+                    "value": 177,
+                    "unit": "cm"
+                },
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "N",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/23851cce-28a3-3dd4-8c28-4917d8cdfd07"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:7bcb5a43-2246-3107-a7e1-2bf9dc7e9928",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "7bcb5a43-2246-3107-a7e1-2bf9dc7e9928",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:21b0f3d5-7d07-4f4f-ad7e-c33dc2ca3835"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "vital-signs"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "3141-9",
+                            "display": "Patient Body Weight - Measured",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2011-09-01",
+                "valueQuantity": {
+                    "value": 88,
+                    "unit": "kg"
+                },
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "N",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/7bcb5a43-2246-3107-a7e1-2bf9dc7e9928"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:eb53bd93-b10b-3a9c-9853-09cbe363ca65",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "eb53bd93-b10b-3a9c-9853-09cbe363ca65",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:b046c35a-59c7-4215-ae09-9a8409a30b21"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "vital-signs"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "8480-6",
+                            "display": "BP Systolic",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2011-09-01",
+                "valueQuantity": {
+                    "value": 128,
+                    "unit": "mm[Hg]"
+                },
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "N",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/eb53bd93-b10b-3a9c-9853-09cbe363ca65"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:bf7a9d31-0918-3321-9512-15ce4baf1285",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "bf7a9d31-0918-3321-9512-15ce4baf1285",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:44f54e66-fb4b-4ee5-9ced-9574ef307a23"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "vital-signs"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "8462-4",
+                            "display": "BP Diastolic",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2011-09-01",
+                "valueQuantity": {
+                    "value": 80,
+                    "unit": "mm[Hg]"
+                },
+                "interpretation": [
+                    {
+                        "coding": [
+                            {
+                                "code": "N",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/bf7a9d31-0918-3321-9512-15ce4baf1285"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:9b03ba69-a9f0-3668-8fbd-27c6dbbd049b",
+            "resource": {
+                "resourceType": "Procedure",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure"
+                    ]
+                },
+                "id": "9b03ba69-a9f0-3668-8fbd-27c6dbbd049b",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:d68b7e32-7810-4f5b-9cc2-acd54b0fd85d"
+                    }
+                ],
+                "status": "completed",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "274025005",
+                            "display": "Colonic polypectomy",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "performedDateTime": "2011-02-15",
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "performer": [
+                    {
+                        "actor": {
+                            "reference": "Organization/d75ea4ed-14c0-3fc1-9f9c-3bfb7041870c"
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Procedure/9b03ba69-a9f0-3668-8fbd-27c6dbbd049b"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:d75ea4ed-14c0-3fc1-9f9c-3bfb7041870c",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "d75ea4ed-14c0-3fc1-9f9c-3bfb7041870c",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:c2ee9ee9-ae31-4628-a919-fec1cbb58686"
+                    }
+                ],
+                "name": "Good Health Clinic",
+                "address": [
+                    {
+                        "line": [
+                            "17 Daws Rd."
+                        ],
+                        "city": "Blue Bell",
+                        "state": "MA",
+                        "country": "US",
+                        "postalCode": "02368"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/d75ea4ed-14c0-3fc1-9f9c-3bfb7041870c"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:b4033326-5c3a-3609-851c-149cf6fd26e7",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "b4033326-5c3a-3609-851c-149cf6fd26e7",
+                "identifier": [
+                    {
+                        "system": "urn:oid:2.16.840.1.113883.19",
+                        "value": "123456789"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "procedure"
+                            }
+                        ]
+                    }
+                ],
+                "status": "unknown",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "274025005",
+                            "display": "Colonic polypectomy",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2011-02-03",
+                "bodySite": {
+                    "coding": [
+                        {
+                            "code": "416949008",
+                            "display": "Abdomen and pelvis",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/b4033326-5c3a-3609-851c-149cf6fd26e7"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:03fa485e-00c0-3c04-b396-4c30a879d4b5",
+            "resource": {
+                "resourceType": "Encounter",
+                "id": "03fa485e-00c0-3c04-b396-4c30a879d4b5",
+                "status": "unknown",
+                "class": {
+                    "code": "AMB",
+                    "display": "Ambulatory",
+                    "system": "urn:oid:2.16.840.1.113883.5.4"
+                },
+                "type": [
+                    {
+                        "coding": [
+                            {
+                                "code": "99241",
+                                "display": "Office consultation - 15 minutes",
+                                "system": "urn:oid:2.16.840.1.113883.6.12"
+                            }
+                        ]
+                    }
+                ],
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:2a620155-9d11-439e-92b3-5d9815ff4de8"
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "participant": [
+                    {
+                        "individual": {
+                            "reference": "Practitioner/undefined"
+                        }
+                    }
+                ],
+                "location": [
+                    {
+                        "location": {
+                            "reference": "Location/2cee07b7-74d4-3c85-83f7-de7053755816"
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Encounter/03fa485e-00c0-3c04-b396-4c30a879d4b5"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:",
+            "resource": {
+                "resourceType": "Practitioner",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+                    ]
+                },
+                "name": [
+                    {
+                        "family": "Assigned",
+                        "given": [
+                            "Amanda"
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "102 Health Drive"
+                        ],
+                        "city": "Ann Arbor",
+                        "state": "MI",
+                        "country": "US",
+                        "postalCode": "99099"
+                    }
+                ],
+                "qualification": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "59058001",
+                                    "display": "General Physician",
+                                    "system": "http://snomed.info/sct"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:2cee07b7-74d4-3c85-83f7-de7053755816",
+            "resource": {
+                "resourceType": "Location",
+                "id": "2cee07b7-74d4-3c85-83f7-de7053755816",
+                "name": "Good Health Clinic",
+                "address": {
+                    "line": [
+                        "17 Daws Rd."
+                    ],
+                    "city": "Blue Bell",
+                    "state": "MA",
+                    "country": "US",
+                    "postalCode": "02368"
+                },
+                "type": [
+                    {
+                        "coding": [
+                            {
+                                "code": "1060-3",
+                                "display": "Inpatient medical ward",
+                                "system": "urn:oid:2.16.840.1.113883.6.259"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/2cee07b7-74d4-3c85-83f7-de7053755816"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:60bbd22d-4122-3201-a007-aca16d947015",
+            "resource": {
+                "resourceType": "Immunization",
+                "id": "60bbd22d-4122-3201-a007-aca16d947015",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:e6f1ba43-c0ed-4b9b-9f12-f435d8ad8f92"
+                    }
+                ],
+                "occurrenceDateTime": "1999-11",
+                "vaccineCode": {
+                    "coding": [
+                        {
+                            "code": "88",
+                            "display": "Influenza virus vaccine",
+                            "system": "http://hl7.org/fhir/sid/cvx"
+                        }
+                    ]
+                },
+                "status": "completed",
+                "route": {
+                    "coding": [
+                        {
+                            "code": "C28161",
+                            "display": "Intramuscular injection",
+                            "system": "urn:oid:2.16.840.1.113883.3.26.1.1"
+                        }
+                    ]
+                },
+                "patient": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Immunization/60bbd22d-4122-3201-a007-aca16d947015"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:1da8828a-fbaa-3bcd-9156-58b4b7084909",
+            "resource": {
+                "resourceType": "Immunization",
+                "id": "1da8828a-fbaa-3bcd-9156-58b4b7084909",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:e6f1ba43-c0ed-4b9b-9f12-f435d8ad8f92"
+                    }
+                ],
+                "occurrenceDateTime": "1998-12-15",
+                "vaccineCode": {
+                    "coding": [
+                        {
+                            "code": "88",
+                            "display": "Influenza virus vaccine",
+                            "system": "http://hl7.org/fhir/sid/cvx"
+                        }
+                    ]
+                },
+                "status": "completed",
+                "route": {
+                    "coding": [
+                        {
+                            "code": "C28161",
+                            "display": "Intramuscular injection",
+                            "system": "urn:oid:2.16.840.1.113883.3.26.1.1"
+                        }
+                    ]
+                },
+                "patient": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Immunization/1da8828a-fbaa-3bcd-9156-58b4b7084909"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:b38af891-373a-38d6-b2aa-a4bfb52f9947",
+            "resource": {
+                "resourceType": "Immunization",
+                "id": "b38af891-373a-38d6-b2aa-a4bfb52f9947",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:e6f1ba43-c0ed-4b9b-9f12-f435d8ad8f92"
+                    }
+                ],
+                "occurrenceDateTime": "1998-12-15",
+                "vaccineCode": {
+                    "coding": [
+                        {
+                            "code": "33",
+                            "display": "Pneumococcal polysaccharide vaccine",
+                            "system": "http://hl7.org/fhir/sid/cvx"
+                        }
+                    ]
+                },
+                "status": "completed",
+                "route": {
+                    "coding": [
+                        {
+                            "code": "C28161",
+                            "display": "Intramuscular injection",
+                            "system": "urn:oid:2.16.840.1.113883.3.26.1.1"
+                        }
+                    ]
+                },
+                "patient": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Immunization/b38af891-373a-38d6-b2aa-a4bfb52f9947"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:47627e71-ba37-3b82-b7a6-694aae29af01",
+            "resource": {
+                "resourceType": "Immunization",
+                "id": "47627e71-ba37-3b82-b7a6-694aae29af01",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:e6f1ba43-c0ed-4b9b-9f12-f435d8ad8f92"
+                    }
+                ],
+                "statusReason": {
+                    "coding": [
+                        {
+                            "code": "PATOBJ",
+                            "display": "Patient Objection",
+                            "system": "urn:oid:2.16.840.1.113883.5.8"
+                        }
+                    ]
+                },
+                "occurrenceDateTime": "1998-12-15",
+                "vaccineCode": {
+                    "coding": [
+                        {
+                            "code": "103",
+                            "display": "Tetanus and diphtheria toxoids - preservative free",
+                            "system": "http://hl7.org/fhir/sid/cvx"
+                        }
+                    ]
+                },
+                "status": "completed",
+                "route": {
+                    "coding": [
+                        {
+                            "code": "C28161",
+                            "display": "Intramuscular injection",
+                            "system": "urn:oid:2.16.840.1.113883.3.26.1.1"
+                        }
+                    ]
+                },
+                "patient": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Immunization/47627e71-ba37-3b82-b7a6-694aae29af01"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:4ad2db55-e732-3173-8b74-03139859afbe",
+            "resource": {
+                "resourceType": "Immunization",
+                "id": "4ad2db55-e732-3173-8b74-03139859afbe",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:de10790f-1496-4719-8fe6-f1b87b6219f7"
+                    }
+                ],
+                "occurrenceDateTime": "2013-08-01",
+                "vaccineCode": {
+                    "coding": [
+                        {
+                            "code": "45",
+                            "display": "Hepatitis B vaccine",
+                            "system": "http://hl7.org/fhir/sid/cvx"
+                        }
+                    ]
+                },
+                "status": "completed",
+                "route": {
+                    "coding": [
+                        {
+                            "code": "C28161",
+                            "display": "Intramuscular injection",
+                            "system": "urn:oid:2.16.840.1.113883.3.26.1.1"
+                        }
+                    ]
+                },
+                "patient": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Immunization/4ad2db55-e732-3173-8b74-03139859afbe"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:8eb197bc-3489-3a21-ba5a-997b786fbf51",
+            "resource": {
+                "resourceType": "FamilyMemberHistory",
+                "id": "8eb197bc-3489-3a21-ba5a-997b786fbf51",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:d42ebf70-5c89-11db-b0de-0855200c9a66"
+                    }
+                ],
+                "status": "completed",
+                "relationship": {
+                    "coding": [
+                        {
+                            "code": "9947008",
+                            "display": "Biological father",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "sex": {
+                    "coding": [
+                        {
+                            "code": "M",
+                            "display": "Male",
+                            "system": "urn:oid:2.16.840.1.113883.1.11.1"
+                        }
+                    ]
+                },
+                "bornString": "1910",
+                "condition": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "22298006",
+                                    "display": "Myocardial infarction",
+                                    "system": "http://snomed.info/sct"
+                                }
+                            ]
+                        },
+                        "contributedToDeath": true,
+                        "onsetAge": {
+                            "value": 57,
+                            "system": "http://unitsofmeasure.org",
+                            "code": "a"
+                        }
+                    },
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "44054006",
+                                    "display": "Diabetes mellitus type 2",
+                                    "system": "http://snomed.info/sct"
+                                }
+                            ]
+                        },
+                        "onsetAge": {
+                            "value": 40,
+                            "system": "http://unitsofmeasure.org",
+                            "code": "a"
+                        }
+                    }
+                ],
+                "patient": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "FamilyMemberHistory/8eb197bc-3489-3a21-ba5a-997b786fbf51"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:61f7bb74-8bd9-3fef-a734-5d9c01a1c39b",
+            "resource": {
+                "resourceType": "Consent",
+                "id": "61f7bb74-8bd9-3fef-a734-5d9c01a1c39b",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:af6ebdf2-d996-11e2-a5b8-f23c91aec05e"
+                    }
+                ],
+                "status": "active",
+                "scope": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/consentscope",
+                            "code": "adr"
+                        }
+                    ]
+                },
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "code": "45473-6",
+                                "system": "http://loinc.org"
+                            }
+                        ]
+                    }
+                ],
+                "dateTime": "2011-02-19",
+                "provision": {
+                    "code": [
+                        {
+                            "coding": [
+                                {
+                                    "code": "304253006",
+                                    "display": "Do not resuscitate",
+                                    "system": "http://snomed.info/sct"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                "patient": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "sourceReference": {
+                    "reference": "DocumentReference/0913b609-6f9b-3d6b-9a1c-8e69fb9414f6"
+                },
+                "performer": [
+                    {
+                        "reference": "Practitioner/4533ef76-e935-3802-8cb7-6a076afafc08"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Consent/61f7bb74-8bd9-3fef-a734-5d9c01a1c39b"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:0913b609-6f9b-3d6b-9a1c-8e69fb9414f6",
+            "resource": {
+                "resourceType": "DocumentReference",
+                "id": "0913b609-6f9b-3d6b-9a1c-8e69fb9414f6",
+                "status": "current",
+                "content": [
+                    {
+                        "attachment": {
+                            "contentType": "application/pdf",
+                            "url": "AdvanceDirective.b50b7910.pdf"
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "DocumentReference/0913b609-6f9b-3d6b-9a1c-8e69fb9414f6"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:4533ef76-e935-3802-8cb7-6a076afafc08",
+            "resource": {
+                "resourceType": "Practitioner",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+                    ]
+                },
+                "id": "4533ef76-e935-3802-8cb7-6a076afafc08",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:20cf14fb-b65c-4c8c-a54d-b0cca834c18c"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Nightingale",
+                        "given": [
+                            "Nurse"
+                        ],
+                        "suffix": [
+                            "RN"
+                        ]
+                    }
+                ],
+                "qualification": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "163W00000X",
+                                    "display": "Registered nurse",
+                                    "system": "http://nucc.org/provider-taxonomy"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/4533ef76-e935-3802-8cb7-6a076afafc08"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:706ccc3d-c0a0-3533-9f7e-b1571c63ede2",
+            "resource": {
+                "resourceType": "Device",
+                "id": "706ccc3d-c0a0-3533-9f7e-b1571c63ede2",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:3e414708-0e61-4d48-8863-484a2d473a02"
+                    }
+                ],
+                "type": {
+                    "coding": [
+                        {
+                            "code": "40388003",
+                            "display": "Implant",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Device/706ccc3d-c0a0-3533-9f7e-b1571c63ede2"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:7616e8d0-7adc-3d70-8d91-a8de1cf5c60b",
+            "resource": {
+                "resourceType": "Device",
+                "id": "7616e8d0-7adc-3d70-8d91-a8de1cf5c60b",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:39b5f1b4-a8e1-4ad7-8849-0deab10c97b1"
+                    }
+                ],
+                "type": {
+                    "coding": [
+                        {
+                            "code": "14106009",
+                            "display": "cardiac pacemaker, device (physical object)",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "manufacturer": "Good Health Durable Medical Equipment"
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Device/7616e8d0-7adc-3d70-8d91-a8de1cf5c60b"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:16dbbbbb-6d53-376c-ae74-cec0e0c98be9",
+            "resource": {
+                "resourceType": "Device",
+                "id": "16dbbbbb-6d53-376c-ae74-cec0e0c98be9",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:39b5f1b4-a8e1-4ad7-8849-0deab10c97b1"
+                    }
+                ],
+                "type": {
+                    "coding": [
+                        {
+                            "code": "303406003",
+                            "display": "upper gastrointestinal prosthesis (physical object)",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "manufacturer": "Good Health Durable Medical Equipment"
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Device/16dbbbbb-6d53-376c-ae74-cec0e0c98be9"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:f5c08613-b1b3-36b3-8e09-1dee059c5678",
+            "resource": {
+                "resourceType": "Device",
+                "id": "f5c08613-b1b3-36b3-8e09-1dee059c5678",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:cf75f5be-1da0-4256-8276-94b7fc73f9f9"
+                    }
+                ],
+                "type": {
+                    "coding": [
+                        {
+                            "code": "87405001",
+                            "display": "cane",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "manufacturer": "Good Health Durable Medical Equipment"
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Device/f5c08613-b1b3-36b3-8e09-1dee059c5678"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:93071ead-008e-35d1-bd15-02ce06afff13",
+            "resource": {
+                "resourceType": "Procedure",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure"
+                    ]
+                },
+                "id": "93071ead-008e-35d1-bd15-02ce06afff13",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:d5b614bd-01ce-410d-8726-e1fd01dcc72a"
+                    }
+                ],
+                "status": "completed",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "103716009",
+                            "display": "Stent Placement",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "performedDateTime": "2013-05-12",
+                "bodySite": [
+                    {
+                        "coding": [
+                            {
+                                "code": "28273000",
+                                "display": "bile duct",
+                                "system": "http://snomed.info/sct"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "performer": [
+                    {
+                        "actor": {
+                            "reference": "Organization/8d8751fd-3baa-3525-a506-7464ec4687f4"
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Procedure/93071ead-008e-35d1-bd15-02ce06afff13"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:8d8751fd-3baa-3525-a506-7464ec4687f4",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "8d8751fd-3baa-3525-a506-7464ec4687f4",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:2.16.840.1.113883.19.5"
+                    }
+                ],
+                "name": "Community Health and Hospitals",
+                "address": [
+                    {
+                        "line": [
+                            "1003 Health Care Drive"
+                        ],
+                        "city": "Ann Arbor",
+                        "state": "MI",
+                        "country": "US",
+                        "postalCode": "02368"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "+1(555)-555-5005",
+                        "use": "work"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/8d8751fd-3baa-3525-a506-7464ec4687f4"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:5ba91e07-1ddb-39c2-8765-dc3b3996502a",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "5ba91e07-1ddb-39c2-8765-dc3b3996502a",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:c12ecaaf-53f8-4593-8f79-359aeaa3948b"
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "75275-8",
+                            "display": "Cognitive function",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-03-11",
+                "valueCodeableConcept": {
+                    "coding": [
+                        {
+                            "code": "11163003",
+                            "display": "Intact",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "performer": [
+                    {
+                        "reference": "Practitioner/d276aed6-83a7-313b-b45b-d59f2aafe9ad"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/5ba91e07-1ddb-39c2-8765-dc3b3996502a"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:d276aed6-83a7-313b-b45b-d59f2aafe9ad",
+            "resource": {
+                "resourceType": "Practitioner",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+                    ]
+                },
+                "id": "d276aed6-83a7-313b-b45b-d59f2aafe9ad",
+                "identifier": [
+                    {
+                        "system": "urn:oid:2.16.840.1.113883.19.5",
+                        "value": "KP00017"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Amanda",
+                        "given": [
+                            "Assigned"
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "1003 Health Care Drive"
+                        ],
+                        "city": "Ann Arbor",
+                        "state": "MI",
+                        "country": "US",
+                        "postalCode": "02368"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "+1(555)555-1003",
+                        "use": "work"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/d276aed6-83a7-313b-b45b-d59f2aafe9ad"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:eea4d885-96e6-3d2e-9c9e-9d5b29754eea",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "eea4d885-96e6-3d2e-9c9e-9d5b29754eea",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:c6b5a04b-2bf4-49d1-8336-636a3813df0a"
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "75275-8",
+                            "display": "Cognitive function",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-03-11",
+                "valueCodeableConcept": {
+                    "coding": [
+                        {
+                            "code": "61372001",
+                            "display": "Aggressive behavior",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "performer": [
+                    {
+                        "reference": "Practitioner/d276aed6-83a7-313b-b45b-d59f2aafe9ad"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/eea4d885-96e6-3d2e-9c9e-9d5b29754eea"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:769fec4f-6551-39e5-aa9b-f7bce8f7a83d",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "769fec4f-6551-39e5-aa9b-f7bce8f7a83d",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:c6b5a04b-2bf4-49d1-8336-636a3813df0a"
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "75275-8",
+                            "display": "Cognitive function",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-03-11",
+                "valueCodeableConcept": {
+                    "coding": [
+                        {
+                            "code": "286569004",
+                            "display": "difficulty understanding own emotions",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "performer": [
+                    {
+                        "reference": "Practitioner/d276aed6-83a7-313b-b45b-d59f2aafe9ad"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/769fec4f-6551-39e5-aa9b-f7bce8f7a83d"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:0a13e8e0-008f-3d52-b865-490bd50345ae",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "0a13e8e0-008f-3d52-b865-490bd50345ae",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:c6b5a04b-2bf4-49d1-8336-636a3813df0a"
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "75275-8",
+                            "display": "Cognitive function",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-03-11",
+                "valueCodeableConcept": {
+                    "coding": [
+                        {
+                            "code": "288760009",
+                            "display": "difficulty communicating thoughts",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "performer": [
+                    {
+                        "reference": "Practitioner/d276aed6-83a7-313b-b45b-d59f2aafe9ad"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/0a13e8e0-008f-3d52-b865-490bd50345ae"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:ca141695-b2d7-3ca0-a86d-20780f710424",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "ca141695-b2d7-3ca0-a86d-20780f710424",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:c12ecaaf-53f8-4593-8f79-359aeaa3948b"
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "75305-3",
+                            "display": "Nutritional status",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-05-12",
+                "valueCodeableConcept": {
+                    "coding": [
+                        {
+                            "code": "248324001",
+                            "display": "well nourished",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/ca141695-b2d7-3ca0-a86d-20780f710424"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:27fdc752-b876-324b-a530-225b15a9315a",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "27fdc752-b876-324b-a530-225b15a9315a",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:ab1791b0-5c71-11db-b0de-0800200c9a66"
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "75303-8",
+                            "display": "Nutrition assessment",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-05-12",
+                "valueCodeableConcept": {
+                    "coding": [
+                        {
+                            "code": "386619000",
+                            "display": "low sodium diet (finding)",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "performer": [
+                    {
+                        "reference": "Practitioner/4939e179-a309-30ef-9889-e04751868181"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/27fdc752-b876-324b-a530-225b15a9315a"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:bf566c0e-2909-3db0-95a3-ba8c9c235429",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "bf566c0e-2909-3db0-95a3-ba8c9c235429",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:ab1791b0-5c71-11db-b0de-0800200c9a66"
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "75303-8",
+                            "display": "Nutrition assessment",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2013-05-12",
+                "valueCodeableConcept": {
+                    "coding": [
+                        {
+                            "code": "430186007",
+                            "display": "excessive dietary carbohydrate intake(finding)",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
+                },
+                "subject": {
+                    "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779"
+                },
+                "performer": [
+                    {
+                        "reference": "Practitioner/4939e179-a309-30ef-9889-e04751868181"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/bf566c0e-2909-3db0-95a3-ba8c9c235429"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:12a84366-312d-3dcf-a5ef-f6c2f15ddf61",
+            "resource": {
+                "resourceType": "Coverage",
+                "id": "12a84366-312d-3dcf-a5ef-f6c2f15ddf61",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:3e676a50-7aac-11db-9fe1-0800200c9a66"
+                    }
+                ],
+                "status": "active",
+                "relationship": {
+                    "coding": [
+                        {
+                            "code": "SELF",
+                            "system": "urn:oid:2.16.840.1.113883.5.110"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Coverage/12a84366-312d-3dcf-a5ef-f6c2f15ddf61"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:7e790879-ce94-3ff4-b0e3-5df48fda517b",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "7e790879-ce94-3ff4-b0e3-5df48fda517b",
+                "name": "Good Health Insurance"
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/7e790879-ce94-3ff4-b0e3-5df48fda517b"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:eef572d1-6a5c-3a42-b3a4-c535972bd5ae",
+            "resource": {
+                "resourceType": "DocumentReference",
+                "id": "eef572d1-6a5c-3a42-b3a4-c535972bd5ae",
+                "type": {
+                    "coding": [
+                        {
+                            "code": "18761-7",
+                            "display": "Provider Unspecified Transfer Summary",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "date": "2020-08-31T07:43:35.515Z",
+                "status": "current",
+                "content": [
+                    {
+                        "attachment": {
+                            "contentType": "text/plain",
+                            "data": "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",
+                            "hash": "BE/h5iPuSK5CdKdRf3OokzxrPwE="
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "DocumentReference/eef572d1-6a5c-3a42-b3a4-c535972bd5ae"
+            }
+        }
+    ]
+}
