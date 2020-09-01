@@ -732,8 +732,7 @@ module.exports.external = [
         name: 'generateUUID',
         description: 'Generates a guid based on a URL: generateUUID url',
         func: function (urlNamespace) {
-            const content = ''.concat(urlNamespace).replace(/(\r|\n|\r\n|\\r|\\n|\\r\\n)/gm, '');
-            return uuidv3(content, uuidv3.URL);
+            return uuidv3(''.concat(urlNamespace), uuidv3.URL);
         }
     },
     {
