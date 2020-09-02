@@ -1,0 +1,33 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Medication",
+        "id":"{{ID}}",
+        "ingredient":
+        [
+            {
+                "strength":
+                {
+                    "numerator":
+                    {
+                        "value":"{{RXO-18}}",
+                        {{#if RXO-19-1}},
+                            "unit":"{{RXO-19}}",
+                        {{/if}},
+                    },
+                    "denominator":
+                    {
+                        "value":"{{RXO-25}}",
+                        {{#if RXO-26-1}},
+                            "unit":"{{RXO-26}}",
+                        {{/if}},
+                    },
+                },
+            },
+        ],
+    },
+    "request":{
+        "method":"POST",
+        "url":"Medication",
+    },
+},

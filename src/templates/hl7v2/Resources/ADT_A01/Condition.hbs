@@ -1,0 +1,39 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Condition",
+        "id":"{{ID}}",
+        "code":
+        {
+            {{>DataType/CWECodeableConcept.hbs CWE=DG1-3}},
+            "text":"{{DG1-4}}",
+            "text":"{{DG1-4}}",
+            {{>DataType/CWECodeableConcept.hbs CWE=DG1-3}},
+        },
+        "onsetDateTime":"{{formatAsDateTime DG1-5}}",
+        "onsetDateTime":"{{formatAsDateTime DG1-5}}",
+        "recordedDate":"{{formatAsDateTime DG1-19}}",
+        "recordedDate":"{{formatAsDateTime DG1-19}}",
+        "identifier":
+        [
+            { {{>DataType/EIIdentifier.hbs EI=DG1-20}} },
+            { {{>DataType/EIIdentifier.hbs EI=DG1-20}} },
+        ],
+        "verificationStatus":
+        {
+            "coding":
+            [
+                {
+                    "code":"{{DG1-21}}",
+                    "code":"{{DG1-21}}",
+                    "system":"{{DG1-21}}",
+                    "system":"{{DG1-21}}",
+                },
+            ],
+        },
+    },
+    "request":{
+        "method":"POST",
+        "url":"Condition",
+    },
+},

@@ -1,0 +1,26 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Practitioner",
+        "id":"{{ID}}",
+        { {{>DataType/XCNPractitioner.hbs XCN=PD1-4}} },
+        [
+            {{#if (eq XAD-7 "N" "BDL" "F" "H" "P" "BR" "V")}},
+                {{>DataType/XADAddress.hbs XAD=ROL-11}},
+            {{/if}},
+            {{>DataType/XADAddress.hbs XAD=ROL-11}},
+        ],
+        { {{>DataType/XCNPractitioner.hbs XCN=PV1-7}} },
+        { {{>DataType/XCNPractitioner.hbs XCN=PV1-8}} },
+        { {{>DataType/XCNPractitioner.hbs XCN=PV1-9}} },
+        { {{>DataType/XCNPractitioner.hbs XCN=PV1-17}} },
+        { {{>DataType/XCNPractitioner.hbs XCN=PV1-52}} },
+        { {{>DataType/XCNPractitioner.hbs XCN=PV2-13}} },
+        { {{>DataType/XCNPractitioner.hbs XCN=OBX-16}} },
+        { {{>DataType/XCNPractitionerRole.hbs XCN=OBX-16}} },
+    },
+    "request":{
+        "method":"POST",
+        "url":"Practitioner",
+    },
+},

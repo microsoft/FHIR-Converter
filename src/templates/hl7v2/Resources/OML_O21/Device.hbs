@@ -1,0 +1,18 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Device",
+        "id":"{{ID}}",
+        {{#if (and MSH-3 MSH-24)}},
+            {{>DataType/HDDevice.hbs HD=MSH-3}},
+        {{/if}},
+        "identifier":
+        [
+            { {{>DataType/EIIdentifier.hbs EI=OBX-18}} },
+        ],
+        },
+        "request":{
+            "method":"POST",
+            "url":"Device",
+        },
+    },

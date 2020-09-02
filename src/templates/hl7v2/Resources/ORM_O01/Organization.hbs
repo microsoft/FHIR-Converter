@@ -1,0 +1,32 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Organization",
+        "id":"{{ID}}",
+        {{>DataType/HDOrganization.hbs HD=MSH-4}},
+        "address":
+        [
+            {
+                "country":{{>DataType/_string.hbs mapping="CodeSystem/Countries.hbs" inCode=MSH-17 }},
+            },
+            {{>DataType/XADAddress.hbs XAD=ORC-22}},
+        ],
+        {{>DataType/XONOrganization.hbs XON=MSH-22}},
+        {{>DataType/XONOrganization.hbs XON=MSH-23}},
+        {{#if (not MSH-22)}},
+            {{>DataType/HDOrganization.hbs HD=MSH-4}},
+        {{/if}},
+        {{>DataType/XONOrganization.hbs XON=MSH-22}},
+        {{>DataType/XONOrganization.hbs XON=PD1-3}},
+        {{>DataType/XONOrganization.hbs XON=ORC-21}},
+        "telecom":
+        [
+            { {{>DataType/XTNContactPoint.hbs XTN=ORC-23}} },
+        ],
+        {{>DataType/CWEOrganization.hbs CWE=ORC-17}},
+    },
+    "request":{
+        "method":"POST",
+        "url":"Organization",
+    },
+},

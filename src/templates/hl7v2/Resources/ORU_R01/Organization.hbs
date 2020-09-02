@@ -1,0 +1,70 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Organization",
+        "id":"{{ID}}",
+        {{>DataType/HDOrganization.hbs HD=MSH-4}},
+        "address":
+        [
+            {
+                "country":{{>DataType/_string.hbs mapping="CodeSystem/Countries.hbs" inCode=MSH-17 }},
+            },
+            {{>DataType/XADAddress.hbs XAD=OBX-24}},
+            {{#if OBX-25}},
+                {{>DataType/XADAddress.hbs XAD=OBX-24}},
+            {{/if}},
+            {{>DataType/XADAddress.hbs XAD=OBX-24}},
+            {{#if OBX-25}},
+                {{>DataType/XADAddress.hbs XAD=OBX-24}},
+            {{/if}},
+            {{>DataType/XADAddress.hbs XAD=ORC-22}},
+        ],
+        {{>DataType/XONOrganization.hbs XON=MSH-22}},
+        {{>DataType/XONOrganization.hbs XON=MSH-23}},
+        {{#if (not MSH-22)}},
+            {{>DataType/HDOrganization.hbs HD=MSH-4}},
+        {{/if}},
+        {{>DataType/XONOrganization.hbs XON=MSH-22}},
+        {{>DataType/XONOrganization.hbs XON=PD1-3}},
+        "type":
+        {
+            {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/OrganizationUnitType.hbs" CWE=PRT-7}},
+        },
+        {{>DataType/XONOrganization.hbs XON=PRT-8}},
+        {{>DataType/XONOrganization.hbs XON=NK1-13}},
+        "contact":
+        [
+            {
+                "name":
+                {
+                    {{>DataType/XPNHumanName.hbs XPN=NK1-30}},
+                },
+                "telecom":
+                [
+                    { {{>DataType/XTNContactPoint.hbs XTN=NK1-31}} },
+                ],
+                "address":
+                {
+                    {{>DataType/XADAddress.hbs XAD=NK1-32}},
+                },
+            },
+        ],
+        {{>DataType/XONOrganization.hbs XON=OBX-23}},
+        {{#if OBX-25}},
+            {{>DataType/XONOrganization.hbs XON=OBX-23}},
+        {{/if}},
+        {{>DataType/XONOrganization.hbs XON=OBX-23}},
+        {{#if OBX-25}},
+            {{>DataType/XONOrganization.hbs XON=OBX-23}},
+        {{/if}},
+        {{>DataType/XONOrganization.hbs XON=ORC-21}},
+        "telecom":
+        [
+            { {{>DataType/XTNContactPoint.hbs XTN=ORC-23}} },
+        ],
+    },
+    "request":{
+        "method":"POST",
+        "url":"Organization",
+    },
+},

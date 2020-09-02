@@ -1,0 +1,16 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ID}}",
+        {{>DataType/PLLocation.hbs PL=PV1-3}},
+        {{>DataType/PLLocation.hbs PL=PV1-6}},
+        { {{>DataType/PL.hbs PL=PV1-42}} },
+        { {{>DataType/PL.hbs PL=PV1-43}} },
+        { {{>DataType/PL.hbs PL=PV2-1}} },
+    },
+    "request":{
+        "method":"POST",
+        "url":"Location",
+    },
+},

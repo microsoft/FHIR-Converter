@@ -1,0 +1,18 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "PractitionerRole",
+        "id":"{{ID}}",
+        {{>DataType/NDLPractitionerRole.hbs NDL=OBR-32}},
+        {{>DataType/NDLPractitionerRole.hbs NDL=OBR-34}},
+        {{>DataType/NDLPractitionerRole.hbs NDL=OBR-35}},
+        "code":
+        {
+        },
+        {{>DataType/XCNPractitionerRole.hbs XCN=OBX-25}},
+    },
+    "request":{
+        "method":"POST",
+        "url":"PractitionerRole",
+    },
+},

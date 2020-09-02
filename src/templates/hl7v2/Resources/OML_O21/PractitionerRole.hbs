@@ -1,0 +1,19 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "PractitionerRole",
+        "id":"{{ID}}",
+        "practitioner":
+        {
+            {{>DataType/XCNPractitioner.hbs XCN=ORC-12}},
+        },
+        "code":
+        {
+        },
+        {{>DataType/XCNPractitionerRole.hbs XCN=OBX-25}},
+    },
+    "request":{
+        "method":"POST",
+        "url":"PractitionerRole",
+    },
+},

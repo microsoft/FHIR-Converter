@@ -1,0 +1,20 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Specimen",
+        "id":"{{ID}}",
+        "receivedTime":"{{formatAsDateTime OBR-13}}",
+        "receivedTime":"{{formatAsDateTime OBR-14}}",
+        "receivedTime":"{{formatAsDateTime OBR-14}}",
+        {{>DataType/CMSpecimen_Source.hbs CM=OBR-15}},
+        "note":
+        [
+            { {{>DataType/CWEAnnotation.hbs CWE=OBR-39}} },
+        ],
+        {{>DataType/CMSpecimen_Source.hbs CM=OBR-15}},
+    },
+    "request":{
+        "method":"POST",
+        "url":"Specimen",
+    },
+},
