@@ -292,22 +292,22 @@ describe('Handlebars helpers', function () {
         assert(validator.isUUID(getHelper('generateUUID').func('https://localhost/blah')));
     });
 
-    it('generateUUIDV2 should return a guid', function () {
+    it('generateUUIDV2 should return a GUID', function () {
         assert(validator.isUUID(getHelper('generateUUIDV2').func('https://localhost/blah')));
     });
 
-    it('generateUUIDV2 should return the same guid for same URL', function () {
+    it('generateUUIDV2 should return the same GUID for same URL', function () {
         const f = getHelper('generateUUIDV2').func;
         assert.strictEqual(f('https://localhost/blah'), f('https://localhost/blah'));
     });
 
-    it('generateUUIDV2 should return different guids for different URLs', function () {
+    it('generateUUIDV2 should return different GUIDs for different URLs', function () {
         const f = getHelper('generateUUIDV2').func;
         // if we really find a md5 crash, it will be better :)
         assert.notEqual(f('https://localhost/blahblah'), f('https://localhost/foobar'));
     });
 
-    it('generateUUIDV2 should return the same guid for same URL with different newlines', function () {
+    it('generateUUIDV2 should return the same GUID for same URL with different newlines', function () {
         const f = getHelper('generateUUIDV2').func;
         // url will not contain newline character, but sometimes the generateUUID will be feed with a whole object.
         const inputs = [
