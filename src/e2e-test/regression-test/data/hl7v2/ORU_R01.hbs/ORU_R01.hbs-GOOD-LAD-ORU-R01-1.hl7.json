@@ -1,0 +1,3904 @@
+{
+    "resourceType": "Bundle",
+    "type": "transaction",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:14e9acb3-1d1a-35f2-b50a-a77d1415931a",
+            "resource": {
+                "resourceType": "Patient",
+                "id": "14e9acb3-1d1a-35f2-b50a-a77d1415931a",
+                "identifier": [
+                    {
+                        "value": "JQ4988"
+                    },
+                    {
+                        "value": "108512373"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "SAMPLES",
+                        "given": [
+                            "JUNIOR"
+                        ]
+                    }
+                ],
+                "birthDate": "1948-01-10",
+                "gender": "male",
+                "address": [
+                    {
+                        "line": [
+                            "******"
+                        ]
+                    }
+                ]
+            },
+            "request": {
+                "method": "POST",
+                "url": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:4cfe8d6d-3fc8-3e41-b921-f204be18db31",
+            "resource": {
+                "resourceType": "Encounter",
+                "id": "4cfe8d6d-3fc8-3e41-b921-f204be18db31",
+                "status": "unknown",
+                "location": [
+                    {
+                        "status": "active"
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Encounter/4cfe8d6d-3fc8-3e41-b921-f204be18db31"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:5c658bf4-165d-3807-aed0-c5af4ac6aac5",
+            "resource": {
+                "resourceType": "DiagnosticReport",
+                "id": "5c658bf4-165d-3807-aed0-c5af4ac6aac5",
+                "identifier": [
+                    {
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "FILL",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "value": "108512373"
+                    }
+                ],
+                "code": {
+                    "coding": [
+                        {
+                            "code": "CHEM",
+                            "display": "——-* CHEMISTRY *——–"
+                        }
+                    ]
+                },
+                "issued": "2010-07-23T16:34:00.000Z",
+                "status": "partial",
+                "encounter": {
+                    "reference": "Encounter/4cfe8d6d-3fc8-3e41-b921-f204be18db31"
+                },
+                "result": [
+                    {
+                        "reference": "Observation/40ddd91f-cd4b-311c-8821-5c3b9374e469"
+                    },
+                    {
+                        "reference": "Observation/3db7ba26-1af2-326d-832c-5d53fa135443"
+                    },
+                    {
+                        "reference": "Observation/7b61a9f4-b15d-30b3-9165-9936cd2f2c11"
+                    },
+                    {
+                        "reference": "Observation/8f33fb6b-3bda-360a-8391-e6e5911b9301"
+                    },
+                    {
+                        "reference": "Observation/f31c6b8d-21e2-307b-806d-1042b12f8770"
+                    },
+                    {
+                        "reference": "Observation/0421b725-81b3-36af-a408-c02fa19b7c3c"
+                    },
+                    {
+                        "reference": "Observation/24d79578-18fe-36e9-bf33-69706c0ed825"
+                    },
+                    {
+                        "reference": "Observation/e0cae62b-355e-322a-ae2e-1f13c1f513e1"
+                    },
+                    {
+                        "reference": "Observation/6eb10db4-431c-359a-aa95-a9048f77c312"
+                    },
+                    {
+                        "reference": "Observation/a92117ff-6056-324d-816c-3562173bd6b4"
+                    },
+                    {
+                        "reference": "Observation/8280890e-28b0-35a1-92e0-5dff3807bf65"
+                    },
+                    {
+                        "reference": "Observation/9e509492-8b5d-3f0f-92f4-1072fa546b51"
+                    },
+                    {
+                        "reference": "Observation/ad6fe98a-fd95-3c4e-8d68-69a325606838"
+                    },
+                    {
+                        "reference": "Observation/c3c1cf57-6400-3190-8717-bcc409d84b51"
+                    },
+                    {
+                        "reference": "Observation/583aaf48-923f-3233-9d31-df2132962973"
+                    },
+                    {
+                        "reference": "Observation/9391307c-50c5-31d2-a54a-00071cfb309d"
+                    },
+                    {
+                        "reference": "Observation/d02b7db1-64c7-3b44-9062-55441d7874a9"
+                    },
+                    {
+                        "reference": "Observation/2dbebc6d-29a0-35da-b8b3-2ab3571e5ca0"
+                    },
+                    {
+                        "reference": "Observation/8e48e5db-e80f-374f-a973-44da7b012dc8"
+                    },
+                    {
+                        "reference": "Observation/e0ccc338-f9a8-314e-97b1-5f30a920a372"
+                    },
+                    {
+                        "reference": "Observation/359a3db9-aa0b-35c6-9ebb-2334503c3d45"
+                    },
+                    {
+                        "reference": "Observation/5fb0b4d7-d2fe-3afb-a872-dd5a0ac23c55"
+                    },
+                    {
+                        "reference": "Observation/fef2713a-6b3b-386b-af87-83dff0905ce3"
+                    }
+                ]
+            },
+            "request": {
+                "method": "POST",
+                "url": "DiagnosticReport/5c658bf4-165d-3807-aed0-c5af4ac6aac5"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:40ddd91f-cd4b-311c-8821-5c3b9374e469",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "40ddd91f-cd4b-311c-8821-5c3b9374e469",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0135–4",
+                            "display": "TotalProtein"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "7.3",
+                    "code": "gm/dl"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0135–4",
+                                    "display": "TotalProtein"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "7.3",
+                            "code": "gm/dl"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "5.9–8.4"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/40ddd91f-cd4b-311c-8821-5c3b9374e469"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:3db7ba26-1af2-326d-832c-5d53fa135443",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "3db7ba26-1af2-326d-832c-5d53fa135443",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0033–1",
+                            "display": "Albumin"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "3.9",
+                    "code": "gm/dl"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0033–1",
+                                    "display": "Albumin"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "3.9",
+                            "code": "gm/dl"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "3.2–5.2"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/3db7ba26-1af2-326d-832c-5d53fa135443"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:7b61a9f4-b15d-30b3-9165-9936cd2f2c11",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "7b61a9f4-b15d-30b3-9165-9936cd2f2c11",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1753–3",
+                            "display": "Globulin"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "3.4",
+                    "code": "gm/dL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1753–3",
+                                    "display": "Globulin"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "3.4",
+                            "code": "gm/dL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "1.7–3.7"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/7b61a9f4-b15d-30b3-9165-9936cd2f2c11"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:8f33fb6b-3bda-360a-8391-e6e5911b9301",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "8f33fb6b-3bda-360a-8391-e6e5911b9301",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0641–1",
+                            "display": "A/G Ratio"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "1.1"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0641–1",
+                                    "display": "A/G Ratio"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "1.1"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "1.1–2.9"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/8f33fb6b-3bda-360a-8391-e6e5911b9301"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:f31c6b8d-21e2-307b-806d-1042b12f8770",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "f31c6b8d-21e2-307b-806d-1042b12f8770",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1976–0",
+                            "display": "Glucose"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "296",
+                    "code": "mg/dL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1976–0",
+                                    "display": "Glucose"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "296",
+                            "code": "mg/dL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "70–99"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/f31c6b8d-21e2-307b-806d-1042b12f8770"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:0421b725-81b3-36af-a408-c02fa19b7c3c",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "0421b725-81b3-36af-a408-c02fa19b7c3c",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0148–7",
+                            "display": "Sodium"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "134",
+                    "code": "mmol/L"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0148–7",
+                                    "display": "Sodium"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "134",
+                            "code": "mmol/L"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "133–145"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/0421b725-81b3-36af-a408-c02fa19b7c3c"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:24d79578-18fe-36e9-bf33-69706c0ed825",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "24d79578-18fe-36e9-bf33-69706c0ed825",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0129–7",
+                            "display": "Potassium"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "4.3",
+                    "code": "mmol/L"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0129–7",
+                                    "display": "Potassium"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "4.3",
+                            "code": "mmol/L"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "3.3–5.3"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/24d79578-18fe-36e9-bf33-69706c0ed825"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:e0cae62b-355e-322a-ae2e-1f13c1f513e1",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "e0cae62b-355e-322a-ae2e-1f13c1f513e1",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0057–0",
+                            "display": "Chloride"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "96",
+                    "code": "mmol/L"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0057–0",
+                                    "display": "Chloride"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "96",
+                            "code": "mmol/L"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "96–108"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/e0cae62b-355e-322a-ae2e-1f13c1f513e1"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:6eb10db4-431c-359a-aa95-a9048f77c312",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "6eb10db4-431c-359a-aa95-a9048f77c312",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0052–1",
+                            "display": "CO2"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "24",
+                    "code": "mmol/L"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0052–1",
+                                    "display": "CO2"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "24",
+                            "code": "mmol/L"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "21–29"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/6eb10db4-431c-359a-aa95-a9048f77c312"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:a92117ff-6056-324d-816c-3562173bd6b4",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "a92117ff-6056-324d-816c-3562173bd6b4",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0049–7",
+                            "display": "BUN"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "17",
+                    "code": "mg/dl"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0049–7",
+                                    "display": "BUN"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "17",
+                            "code": "mg/dl"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "7–25"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/a92117ff-6056-324d-816c-3562173bd6b4"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:8280890e-28b0-35a1-92e0-5dff3807bf65",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "8280890e-28b0-35a1-92e0-5dff3807bf65",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0070–3",
+                            "display": "Creatinine"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "1.1",
+                    "code": "mg/dl"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0070–3",
+                                    "display": "Creatinine"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "1.1",
+                            "code": "mg/dl"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0.6–1.3"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/8280890e-28b0-35a1-92e0-5dff3807bf65"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:9e509492-8b5d-3f0f-92f4-1072fa546b51",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "9e509492-8b5d-3f0f-92f4-1072fa546b51",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "090013–4",
+                            "display": "e–GFR"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "70"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "090013–4",
+                                    "display": "e–GFR"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "70"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "&gt;60 mL/min/1.73m2"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/9e509492-8b5d-3f0f-92f4-1072fa546b51"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:ad6fe98a-fd95-3c4e-8d68-69a325606838",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "ad6fe98a-fd95-3c4e-8d68-69a325606838",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1427–4",
+                            "display": "BUN/CreatRatio"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "15.5"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1427–4",
+                                    "display": "BUN/CreatRatio"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "15.5"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "10–28"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/ad6fe98a-fd95-3c4e-8d68-69a325606838"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:c3c1cf57-6400-3190-8717-bcc409d84b51",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "c3c1cf57-6400-3190-8717-bcc409d84b51",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0050–5",
+                            "display": "Calcium"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "8.9",
+                    "code": "mg/dl"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0050–5",
+                                    "display": "Calcium"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "8.9",
+                            "code": "mg/dl"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "8.4–10.4"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/c3c1cf57-6400-3190-8717-bcc409d84b51"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:583aaf48-923f-3233-9d31-df2132962973",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "583aaf48-923f-3233-9d31-df2132962973",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0157–8",
+                            "display": "UricAcid"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "6.2",
+                    "code": "mg/dl"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0157–8",
+                                    "display": "UricAcid"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "6.2",
+                            "code": "mg/dl"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "2.4–7.0"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/583aaf48-923f-3233-9d31-df2132962973"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:9391307c-50c5-31d2-a54a-00071cfb309d",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "9391307c-50c5-31d2-a54a-00071cfb309d",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0114–9",
+                            "display": "Iron"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "87",
+                    "code": "mcg/dl"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0114–9",
+                                    "display": "Iron"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "87",
+                            "code": "mcg/dl"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "30–160"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/9391307c-50c5-31d2-a54a-00071cfb309d"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:d02b7db1-64c7-3b44-9062-55441d7874a9",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "d02b7db1-64c7-3b44-9062-55441d7874a9",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0043–0",
+                            "display": "Bilirubin,Total"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "0.6",
+                    "code": "mg/dl"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0043–0",
+                                    "display": "Bilirubin,Total"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "0.6",
+                            "code": "mg/dl"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0.1–1.0"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/d02b7db1-64c7-3b44-9062-55441d7874a9"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:2dbebc6d-29a0-35da-b8b3-2ab3571e5ca0",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "2dbebc6d-29a0-35da-b8b3-2ab3571e5ca0",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0117–2",
+                            "display": "LDH"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "190",
+                    "code": "u/l"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0117–2",
+                                    "display": "LDH"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "190",
+                            "code": "u/l"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "94–250"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/2dbebc6d-29a0-35da-b8b3-2ab3571e5ca0"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:8e48e5db-e80f-374f-a973-44da7b012dc8",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "8e48e5db-e80f-374f-a973-44da7b012dc8",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0185–9",
+                            "display": "AlkPhos"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "63",
+                    "code": "u/l"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0185–9",
+                                    "display": "AlkPhos"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "63",
+                            "code": "u/l"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "39–120"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/8e48e5db-e80f-374f-a973-44da7b012dc8"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:e0ccc338-f9a8-314e-97b1-5f30a920a372",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "e0ccc338-f9a8-314e-97b1-5f30a920a372",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0146–1",
+                            "display": "AST (SGOT)"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "33",
+                    "code": "u/l"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0146–1",
+                                    "display": "AST (SGOT)"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "33",
+                            "code": "u/l"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0–37"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/e0ccc338-f9a8-314e-97b1-5f30a920a372"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:359a3db9-aa0b-35c6-9ebb-2334503c3d45",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "359a3db9-aa0b-35c6-9ebb-2334503c3d45",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0127–1",
+                            "display": "Phosphorous"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "2.8",
+                    "code": "mg/dl"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0127–1",
+                                    "display": "Phosphorous"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "2.8",
+                            "code": "mg/dl"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "2.6–4.5"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/359a3db9-aa0b-35c6-9ebb-2334503c3d45"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:5fb0b4d7-d2fe-3afb-a872-dd5a0ac23c55",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "5fb0b4d7-d2fe-3afb-a872-dd5a0ac23c55",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0147–9",
+                            "display": "ALT (SGPT)"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "55",
+                    "code": "u/L"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0147–9",
+                                    "display": "ALT (SGPT)"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "55",
+                            "code": "u/L"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0–40"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/5fb0b4d7-d2fe-3afb-a872-dd5a0ac23c55"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:fef2713a-6b3b-386b-af87-83dff0905ce3",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "fef2713a-6b3b-386b-af87-83dff0905ce3",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0093–5",
+                            "display": "G–GTP"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "33",
+                    "code": "u/L"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0093–5",
+                                    "display": "G–GTP"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "33",
+                            "code": "u/L"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "7–51"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/fef2713a-6b3b-386b-af87-83dff0905ce3"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:edf47dd5-0789-3d6d-b0a9-48fe0531c750",
+            "resource": {
+                "resourceType": "DiagnosticReport",
+                "id": "edf47dd5-0789-3d6d-b0a9-48fe0531c750",
+                "identifier": [
+                    {
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "FILL",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "value": "108512373"
+                    }
+                ],
+                "code": {
+                    "coding": [
+                        {
+                            "code": "CARD",
+                            "display": "-* CARDIOVASCULAR/LIPIDS *–"
+                        }
+                    ]
+                },
+                "issued": "2010-07-23T16:34:00.000Z",
+                "status": "partial",
+                "encounter": {
+                    "reference": "Encounter/4cfe8d6d-3fc8-3e41-b921-f204be18db31"
+                },
+                "result": [
+                    {
+                        "reference": "Observation/b45ab360-00d5-33cb-8cfb-f4d19b4bdbca"
+                    },
+                    {
+                        "reference": "Observation/04053cdc-03dd-3930-bfff-f593d041c668"
+                    },
+                    {
+                        "reference": "Observation/737233f1-13c1-399f-84e1-c5be2446ae92"
+                    },
+                    {
+                        "reference": "Observation/c58dceb8-2040-3ace-bd2d-141f08db3118"
+                    }
+                ]
+            },
+            "request": {
+                "method": "POST",
+                "url": "DiagnosticReport/edf47dd5-0789-3d6d-b0a9-48fe0531c750"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:b45ab360-00d5-33cb-8cfb-f4d19b4bdbca",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "b45ab360-00d5-33cb-8cfb-f4d19b4bdbca",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0058–8",
+                            "display": "Cholesterol"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "124",
+                    "code": "mg/dl"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0058–8",
+                                    "display": "Cholesterol"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "124",
+                            "code": "mg/dl"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "&lt;200"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/b45ab360-00d5-33cb-8cfb-f4d19b4bdbca"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:04053cdc-03dd-3930-bfff-f593d041c668",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "04053cdc-03dd-3930-bfff-f593d041c668",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0155–2",
+                            "display": "Triglycerides"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "73",
+                    "code": "mg/dl"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0155–2",
+                                    "display": "Triglycerides"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "73",
+                            "code": "mg/dl"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "&lt;151"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/04053cdc-03dd-3930-bfff-f593d041c668"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:737233f1-13c1-399f-84e1-c5be2446ae92",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "737233f1-13c1-399f-84e1-c5be2446ae92",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0059–6",
+                            "display": "HDL CHOL.,DIRECT"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "39",
+                    "code": "mg/dl"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0059–6",
+                                    "display": "HDL CHOL.,DIRECT"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "39",
+                            "code": "mg/dl"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "&gt;40"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/737233f1-13c1-399f-84e1-c5be2446ae92"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:c58dceb8-2040-3ace-bd2d-141f08db3118",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "c58dceb8-2040-3ace-bd2d-141f08db3118",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1764–0",
+                            "display": "HDL as% of Cholesterol"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "31",
+                    "code": "%"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1764–0",
+                                    "display": "HDL as% of Cholesterol"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "31",
+                            "code": "%"
+                        }
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/c58dceb8-2040-3ace-bd2d-141f08db3118"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:45b0ba1e-82cf-3e64-a3fd-aa976af03e9c",
+            "resource": {
+                "resourceType": "DiagnosticReport",
+                "id": "45b0ba1e-82cf-3e64-a3fd-aa976af03e9c",
+                "identifier": [
+                    {
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "FILL",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "value": "108512373"
+                    }
+                ],
+                "code": {
+                    "coding": [
+                        {
+                            "code": "HEMA",
+                            "display": "——* HEMATOLOGY *——–"
+                        }
+                    ]
+                },
+                "issued": "2010-07-23T16:34:00.000Z",
+                "status": "partial",
+                "encounter": {
+                    "reference": "Encounter/4cfe8d6d-3fc8-3e41-b921-f204be18db31"
+                },
+                "result": [
+                    {
+                        "reference": "Observation/76fb85f3-9260-368a-9a64-b6144db60ae8"
+                    },
+                    {
+                        "reference": "Observation/0f82f9c8-c29e-3243-b385-04dac78c68d3"
+                    },
+                    {
+                        "reference": "Observation/acdd6f09-7409-379d-892b-bf16a0d581e9"
+                    },
+                    {
+                        "reference": "Observation/49658dc2-52f1-3075-8e8d-5af7843ff83a"
+                    },
+                    {
+                        "reference": "Observation/9ddc4d95-f823-3355-a730-8696f73bd814"
+                    },
+                    {
+                        "reference": "Observation/6853aec6-d682-39a4-87ed-f5b7a37eb9de"
+                    },
+                    {
+                        "reference": "Observation/8c34c15a-3b88-36e8-a42d-0fd153b25a34"
+                    },
+                    {
+                        "reference": "Observation/90bf6395-bf6f-31d1-bc58-cc933509d30f"
+                    },
+                    {
+                        "reference": "Observation/b45a8804-1883-3f73-9073-0829e0f0df40"
+                    },
+                    {
+                        "reference": "Observation/1b4f36e7-bd81-32cd-ae98-f59e89143560"
+                    },
+                    {
+                        "reference": "Observation/2e495430-ab58-3760-bb48-7e9ec70a9db3"
+                    },
+                    {
+                        "reference": "Observation/79fb9021-c7da-3fb8-b7c6-bf157e34c2d0"
+                    },
+                    {
+                        "reference": "Observation/a893bbd1-a305-3554-910f-546cc43b883e"
+                    },
+                    {
+                        "reference": "Observation/dbc3f2b3-72ac-33ef-b67e-e5e30acbbee2"
+                    },
+                    {
+                        "reference": "Observation/79cc8cc9-bc44-314a-b1a3-93ee839528a4"
+                    },
+                    {
+                        "reference": "Observation/95fc648f-e37f-34c2-8914-0bad3cdf8692"
+                    },
+                    {
+                        "reference": "Observation/63baf412-b30f-3553-972e-0dea86b46900"
+                    },
+                    {
+                        "reference": "Observation/82bda656-82f9-31e4-aca3-8f65fa773dd5"
+                    },
+                    {
+                        "reference": "Observation/07b575bd-223c-3de3-b78b-699fb60e113d"
+                    },
+                    {
+                        "reference": "Observation/5d09ffda-d318-3f68-84dc-f14deb854637"
+                    },
+                    {
+                        "reference": "Observation/522bff5a-fc33-3604-b4b0-c14e151e41bc"
+                    }
+                ]
+            },
+            "request": {
+                "method": "POST",
+                "url": "DiagnosticReport/45b0ba1e-82cf-3e64-a3fd-aa976af03e9c"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:76fb85f3-9260-368a-9a64-b6144db60ae8",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "76fb85f3-9260-368a-9a64-b6144db60ae8",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1497–7",
+                            "display": "WBC"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "6.61",
+                    "code": "x10(3)/uL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1497–7",
+                                    "display": "WBC"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "6.61",
+                            "code": "x10(3)/uL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "3.40–11.80"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/76fb85f3-9260-368a-9a64-b6144db60ae8"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:0f82f9c8-c29e-3243-b385-04dac78c68d3",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "0f82f9c8-c29e-3243-b385-04dac78c68d3",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1498–5",
+                            "display": "RBC"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "4.56",
+                    "code": "x10(6)/uL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1498–5",
+                                    "display": "RBC"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "4.56",
+                            "code": "x10(6)/uL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "4.20–5.90"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/0f82f9c8-c29e-3243-b385-04dac78c68d3"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:acdd6f09-7409-379d-892b-bf16a0d581e9",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "acdd6f09-7409-379d-892b-bf16a0d581e9",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1499–3",
+                            "display": "HGB"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "13.6",
+                    "code": "gm/dL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1499–3",
+                                    "display": "HGB"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "13.6",
+                            "code": "gm/dL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "12.3–17.0"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/acdd6f09-7409-379d-892b-bf16a0d581e9"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:49658dc2-52f1-3075-8e8d-5af7843ff83a",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "49658dc2-52f1-3075-8e8d-5af7843ff83a",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0019–0",
+                            "display": "HCT"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "39.9",
+                    "code": "%"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0019–0",
+                                    "display": "HCT"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "39.9",
+                            "code": "%"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "39.3–52.5"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/49658dc2-52f1-3075-8e8d-5af7843ff83a"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:9ddc4d95-f823-3355-a730-8696f73bd814",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "9ddc4d95-f823-3355-a730-8696f73bd814",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1503–2",
+                            "display": "MCV"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "87.5",
+                    "code": "fL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1503–2",
+                                    "display": "MCV"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "87.5",
+                            "code": "fL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "80.0–100.0"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/9ddc4d95-f823-3355-a730-8696f73bd814"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:6853aec6-d682-39a4-87ed-f5b7a37eb9de",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "6853aec6-d682-39a4-87ed-f5b7a37eb9de",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1504–0",
+                            "display": "MCH"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "29.8",
+                    "code": "pg"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1504–0",
+                                    "display": "MCH"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "29.8",
+                            "code": "pg"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "25.0–34.1"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/6853aec6-d682-39a4-87ed-f5b7a37eb9de"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:8c34c15a-3b88-36e8-a42d-0fd153b25a34",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "8c34c15a-3b88-36e8-a42d-0fd153b25a34",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1502–4",
+                            "display": "MCHC"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "34.1",
+                    "code": "gm/dL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1502–4",
+                                    "display": "MCHC"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "34.1",
+                            "code": "gm/dL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "29.0–35.0"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/8c34c15a-3b88-36e8-a42d-0fd153b25a34"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:90bf6395-bf6f-31d1-bc58-cc933509d30f",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "90bf6395-bf6f-31d1-bc58-cc933509d30f",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1598–2",
+                            "display": "RDW"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "14.1",
+                    "code": "%"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1598–2",
+                                    "display": "RDW"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "14.1",
+                            "code": "%"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "10.9–16.9"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/90bf6395-bf6f-31d1-bc58-cc933509d30f"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:b45a8804-1883-3f73-9073-0829e0f0df40",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "b45a8804-1883-3f73-9073-0829e0f0df40",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1505–7",
+                            "display": "POLYS"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "58.8",
+                    "code": "%"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1505–7",
+                                    "display": "POLYS"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "58.8",
+                            "code": "%"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "36.0–78.0"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/b45a8804-1883-3f73-9073-0829e0f0df40"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:1b4f36e7-bd81-32cd-ae98-f59e89143560",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "1b4f36e7-bd81-32cd-ae98-f59e89143560",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "3176–5",
+                            "display": "POLYS, ABS. COUNT"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "3.89",
+                    "code": "x10(3)/uL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "3176–5",
+                                    "display": "POLYS, ABS. COUNT"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "3.89",
+                            "code": "x10(3)/uL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "1.22–9.20"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/1b4f36e7-bd81-32cd-ae98-f59e89143560"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:2e495430-ab58-3760-bb48-7e9ec70a9db3",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "2e495430-ab58-3760-bb48-7e9ec70a9db3",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1507–3",
+                            "display": "LYMPHS"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "31.0",
+                    "code": "%"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1507–3",
+                                    "display": "LYMPHS"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "31.0",
+                            "code": "%"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "12.0–48.0"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/2e495430-ab58-3760-bb48-7e9ec70a9db3"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:79fb9021-c7da-3fb8-b7c6-bf157e34c2d0",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "79fb9021-c7da-3fb8-b7c6-bf157e34c2d0",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "3177–3",
+                            "display": "LYMPHS, ABS. COUNT"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "2.05",
+                    "code": "x10(3)/uL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "3177–3",
+                                    "display": "LYMPHS, ABS. COUNT"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "2.05",
+                            "code": "x10(3)/uL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0.41–5.66"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/79fb9021-c7da-3fb8-b7c6-bf157e34c2d0"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:a893bbd1-a305-3554-910f-546cc43b883e",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "a893bbd1-a305-3554-910f-546cc43b883e",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1511–5",
+                            "display": "MONOS"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "7.7",
+                    "code": "%"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1511–5",
+                                    "display": "MONOS"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "7.7",
+                            "code": "%"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0.0–13.0"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/a893bbd1-a305-3554-910f-546cc43b883e"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:dbc3f2b3-72ac-33ef-b67e-e5e30acbbee2",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "dbc3f2b3-72ac-33ef-b67e-e5e30acbbee2",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "3180–7",
+                            "display": "MONOS, ABS. COUNT"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "0.51",
+                    "code": "x10(3)/uL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "3180–7",
+                                    "display": "MONOS, ABS. COUNT"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "0.51",
+                            "code": "x10(3)/uL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0.17–1.42"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/dbc3f2b3-72ac-33ef-b67e-e5e30acbbee2"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:79cc8cc9-bc44-314a-b1a3-93ee839528a4",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "79cc8cc9-bc44-314a-b1a3-93ee839528a4",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1509–9",
+                            "display": "EOS"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "2.0",
+                    "code": "%"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1509–9",
+                                    "display": "EOS"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "2.0",
+                            "code": "%"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0.0–8.0"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/79cc8cc9-bc44-314a-b1a3-93ee839528a4"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:95fc648f-e37f-34c2-8914-0bad3cdf8692",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "95fc648f-e37f-34c2-8914-0bad3cdf8692",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "3178–1",
+                            "display": "EOS, ABS. COUNT"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "0.13",
+                    "code": "x10(3)/uL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "3178–1",
+                                    "display": "EOS, ABS. COUNT"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "0.13",
+                            "code": "x10(3)/uL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0.03–0.94"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/95fc648f-e37f-34c2-8914-0bad3cdf8692"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:63baf412-b30f-3553-972e-0dea86b46900",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "63baf412-b30f-3553-972e-0dea86b46900",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1510–7",
+                            "display": "BASOS"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "0.3",
+                    "code": "%"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1510–7",
+                                    "display": "BASOS"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "0.3",
+                            "code": "%"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0.0–2.0"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/63baf412-b30f-3553-972e-0dea86b46900"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:82bda656-82f9-31e4-aca3-8f65fa773dd5",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "82bda656-82f9-31e4-aca3-8f65fa773dd5",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "3179–9",
+                            "display": "BASOS, ABS. COUNT"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "0.02",
+                    "code": "x10(3)/uL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "3179–9",
+                                    "display": "BASOS, ABS. COUNT"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "0.02",
+                            "code": "x10(3)/uL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0.00–0.24"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/82bda656-82f9-31e4-aca3-8f65fa773dd5"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:07b575bd-223c-3de3-b78b-699fb60e113d",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "07b575bd-223c-3de3-b78b-699fb60e113d",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "270053–2",
+                            "display": "IMMATURE GRANULOCYTES"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "0.2",
+                    "code": "%"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "270053–2",
+                                    "display": "IMMATURE GRANULOCYTES"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "0.2",
+                            "code": "%"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0.0–0.5"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/07b575bd-223c-3de3-b78b-699fb60e113d"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:5d09ffda-d318-3f68-84dc-f14deb854637",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "5d09ffda-d318-3f68-84dc-f14deb854637",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0128–9",
+                            "display": "PLATELET COUNT"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "191",
+                    "code": "x10(3)/uL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0128–9",
+                                    "display": "PLATELET COUNT"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "191",
+                            "code": "x10(3)/uL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "144–400"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/5d09ffda-d318-3f68-84dc-f14deb854637"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:522bff5a-fc33-3604-b4b0-c14e151e41bc",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "522bff5a-fc33-3604-b4b0-c14e151e41bc",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "400053–5",
+                            "display": "MPV"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "10.6",
+                    "code": "fL"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "400053–5",
+                                    "display": "MPV"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "10.6",
+                            "code": "fL"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "8.2–11.9"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/522bff5a-fc33-3604-b4b0-c14e151e41bc"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:745d352f-eedb-3ffc-ac8b-b846b8626331",
+            "resource": {
+                "resourceType": "DiagnosticReport",
+                "id": "745d352f-eedb-3ffc-ac8b-b846b8626331",
+                "identifier": [
+                    {
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "FILL",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "value": "108512373"
+                    }
+                ],
+                "code": {
+                    "coding": [
+                        {
+                            "code": "URIN",
+                            "display": "——* URINALYSIS *——–"
+                        }
+                    ]
+                },
+                "issued": "2010-07-23T16:34:00.000Z",
+                "status": "partial",
+                "encounter": {
+                    "reference": "Encounter/4cfe8d6d-3fc8-3e41-b921-f204be18db31"
+                },
+                "result": [
+                    {
+                        "reference": "Observation/f1a45fad-30e4-3eda-b34e-bc42f3658c46"
+                    },
+                    {
+                        "reference": "Observation/f10794a8-d7a7-38e7-a1ba-a49205f1f405"
+                    },
+                    {
+                        "reference": "Observation/1f13776b-919b-3b8b-b7de-c58d2f6d5099"
+                    },
+                    {
+                        "reference": "Observation/485a129d-ea49-3ddb-bfbd-17c065eaf3ee"
+                    },
+                    {
+                        "reference": "Observation/ea72a77b-7d77-3d92-a682-99863f72bda1"
+                    },
+                    {
+                        "reference": "Observation/ae1eed93-84dc-34e2-a175-76de72f8674e"
+                    },
+                    {
+                        "reference": "Observation/350034fd-ae5e-30da-9f94-59e76b18eb2c"
+                    },
+                    {
+                        "reference": "Observation/1bc11e95-04db-3217-9435-245007e3e669"
+                    },
+                    {
+                        "reference": "Observation/4a69b654-d380-359b-bea0-2f37ffab4848"
+                    },
+                    {
+                        "reference": "Observation/22cd308f-bafb-3402-af43-3fec84ec2b10"
+                    },
+                    {
+                        "reference": "Observation/ea317b43-1cdc-3c74-af93-fd7fa3bc6b46"
+                    },
+                    {
+                        "reference": "Observation/b19e22e7-4934-3d81-8ba8-d7cd2a15606c"
+                    },
+                    {
+                        "reference": "Observation/1af8eae2-0fe4-3a9a-9e12-8d815a62a45d"
+                    },
+                    {
+                        "reference": "Observation/c2d5cce2-7b73-327b-b35d-fea4983d63d2"
+                    },
+                    {
+                        "reference": "Observation/71a36cd8-0535-3569-a9f2-d260d165cf2a"
+                    },
+                    {
+                        "reference": "Observation/45404d53-3def-361b-8294-e5aa41de5cde"
+                    },
+                    {
+                        "reference": "Observation/d7c91f3a-b27d-3066-8ed6-9854e96b8b38"
+                    },
+                    {
+                        "reference": "Observation/40e3093f-45f7-354c-91d5-c41e5bfb087b"
+                    },
+                    {
+                        "reference": "Observation/f09b6eda-9cc3-37a1-a1f6-d8508afc9c32"
+                    },
+                    {
+                        "reference": "Observation/16f2bba6-6c41-375e-9da2-57e0b8cd3d81"
+                    },
+                    {
+                        "reference": "Observation/9977f798-636a-3d41-abf2-71f48d8bef8d"
+                    }
+                ]
+            },
+            "request": {
+                "method": "POST",
+                "url": "DiagnosticReport/745d352f-eedb-3ffc-ac8b-b846b8626331"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:f1a45fad-30e4-3eda-b34e-bc42f3658c46",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "f1a45fad-30e4-3eda-b34e-bc42f3658c46",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "6315–6",
+                            "display": "Color"
+                        }
+                    ]
+                },
+                "valueString": "YELLOW",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "6315–6",
+                                    "display": "Color"
+                                }
+                            ]
+                        },
+                        "valueString": "YELLOW",
+                        "referenceRange": [
+                            {
+                                "text": "YELLOW, STRAW, AMBER"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/f1a45fad-30e4-3eda-b34e-bc42f3658c46"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:f10794a8-d7a7-38e7-a1ba-a49205f1f405",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "f10794a8-d7a7-38e7-a1ba-a49205f1f405",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "6316–4",
+                            "display": "Character"
+                        }
+                    ]
+                },
+                "valueString": "CLEAR",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "6316–4",
+                                    "display": "Character"
+                                }
+                            ]
+                        },
+                        "valueString": "CLEAR",
+                        "referenceRange": [
+                            {
+                                "text": "CLEAR"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/f10794a8-d7a7-38e7-a1ba-a49205f1f405"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:1f13776b-919b-3b8b-b7de-c58d2f6d5099",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "1f13776b-919b-3b8b-b7de-c58d2f6d5099",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1520–6",
+                            "display": "SpecificGravity URN"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "1.030"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1520–6",
+                                    "display": "SpecificGravity URN"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "1.030"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "1.003–1.030"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/1f13776b-919b-3b8b-b7de-c58d2f6d5099"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:485a129d-ea49-3ddb-bfbd-17c065eaf3ee",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "485a129d-ea49-3ddb-bfbd-17c065eaf3ee",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1521–4",
+                            "display": "pH Urine"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "5.5"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1521–4",
+                                    "display": "pH Urine"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "5.5"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "5.0–8.0"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/485a129d-ea49-3ddb-bfbd-17c065eaf3ee"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:ea72a77b-7d77-3d92-a682-99863f72bda1",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "ea72a77b-7d77-3d92-a682-99863f72bda1",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1522–2",
+                            "display": "Protein,Urine"
+                        }
+                    ]
+                },
+                "valueString": "NEGATIVE",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1522–2",
+                                    "display": "Protein,Urine"
+                                }
+                            ]
+                        },
+                        "valueString": "NEGATIVE",
+                        "referenceRange": [
+                            {
+                                "text": "NEGATIVE"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/ea72a77b-7d77-3d92-a682-99863f72bda1"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:ae1eed93-84dc-34e2-a175-76de72f8674e",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "ae1eed93-84dc-34e2-a175-76de72f8674e",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1523–0",
+                            "display": "Glucose,Urine"
+                        }
+                    ]
+                },
+                "valueString": "3+,&gt;&#x3D;1000 mg/dL",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1523–0",
+                                    "display": "Glucose,Urine"
+                                }
+                            ]
+                        },
+                        "valueString": "3+,&gt;&#x3D;1000 mg/dL",
+                        "referenceRange": [
+                            {
+                                "text": "NEGATIVE"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/ae1eed93-84dc-34e2-a175-76de72f8674e"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:350034fd-ae5e-30da-9f94-59e76b18eb2c",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "350034fd-ae5e-30da-9f94-59e76b18eb2c",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1524–8",
+                            "display": "Ketone,Urine"
+                        }
+                    ]
+                },
+                "valueString": "NEGATIVE",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1524–8",
+                                    "display": "Ketone,Urine"
+                                }
+                            ]
+                        },
+                        "valueString": "NEGATIVE",
+                        "referenceRange": [
+                            {
+                                "text": "NEGATIVE"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/350034fd-ae5e-30da-9f94-59e76b18eb2c"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:1bc11e95-04db-3217-9435-245007e3e669",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "1bc11e95-04db-3217-9435-245007e3e669",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1525–5",
+                            "display": "UrobilinogenUrine"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "1.0",
+                    "code": "Units"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1525–5",
+                                    "display": "UrobilinogenUrine"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "1.0",
+                            "code": "Units"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0.2–1.0"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/1bc11e95-04db-3217-9435-245007e3e669"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:4a69b654-d380-359b-bea0-2f37ffab4848",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "4a69b654-d380-359b-bea0-2f37ffab4848",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1526–3",
+                            "display": "Bilirubin,Urine"
+                        }
+                    ]
+                },
+                "valueString": "NEGATIVE",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1526–3",
+                                    "display": "Bilirubin,Urine"
+                                }
+                            ]
+                        },
+                        "valueString": "NEGATIVE",
+                        "referenceRange": [
+                            {
+                                "text": "NEGATIVE"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/4a69b654-d380-359b-bea0-2f37ffab4848"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:22cd308f-bafb-3402-af43-3fec84ec2b10",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "22cd308f-bafb-3402-af43-3fec84ec2b10",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1527–1",
+                            "display": "Blood,Urine"
+                        }
+                    ]
+                },
+                "valueString": "NEGATIVE",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1527–1",
+                                    "display": "Blood,Urine"
+                                }
+                            ]
+                        },
+                        "valueString": "NEGATIVE",
+                        "referenceRange": [
+                            {
+                                "text": "NEGATIVE"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/22cd308f-bafb-3402-af43-3fec84ec2b10"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:ea317b43-1cdc-3c74-af93-fd7fa3bc6b46",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "ea317b43-1cdc-3c74-af93-fd7fa3bc6b46",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1528–9",
+                            "display": "NitritesUrine"
+                        }
+                    ]
+                },
+                "valueString": "NEGATIVE",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1528–9",
+                                    "display": "NitritesUrine"
+                                }
+                            ]
+                        },
+                        "valueString": "NEGATIVE",
+                        "referenceRange": [
+                            {
+                                "text": "NEGATIVE"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/ea317b43-1cdc-3c74-af93-fd7fa3bc6b46"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:b19e22e7-4934-3d81-8ba8-d7cd2a15606c",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "b19e22e7-4934-3d81-8ba8-d7cd2a15606c",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "6311–5",
+                            "display": "LeukocyteEsterase"
+                        }
+                    ]
+                },
+                "valueString": "NEGATIVE",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "6311–5",
+                                    "display": "LeukocyteEsterase"
+                                }
+                            ]
+                        },
+                        "valueString": "NEGATIVE",
+                        "referenceRange": [
+                            {
+                                "text": "NEGATIVE"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/b19e22e7-4934-3d81-8ba8-d7cd2a15606c"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:1af8eae2-0fe4-3a9a-9e12-8d815a62a45d",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "1af8eae2-0fe4-3a9a-9e12-8d815a62a45d",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1529–7",
+                            "display": "CrystalsUrine"
+                        }
+                    ]
+                },
+                "valueString": "NONE",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1529–7",
+                                    "display": "CrystalsUrine"
+                                }
+                            ]
+                        },
+                        "valueString": "NONE",
+                        "referenceRange": [
+                            {
+                                "text": "NONE"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/1af8eae2-0fe4-3a9a-9e12-8d815a62a45d"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:c2d5cce2-7b73-327b-b35d-fea4983d63d2",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "c2d5cce2-7b73-327b-b35d-fea4983d63d2",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "2135–2",
+                            "display": "CrystalAmt.Urine"
+                        }
+                    ]
+                },
+                "valueString": "NONE",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "2135–2",
+                                    "display": "CrystalAmt.Urine"
+                                }
+                            ]
+                        },
+                        "valueString": "NONE",
+                        "referenceRange": [
+                            {
+                                "text": "NONE"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/c2d5cce2-7b73-327b-b35d-fea4983d63d2"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:71a36cd8-0535-3569-a9f2-d260d165cf2a",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "71a36cd8-0535-3569-a9f2-d260d165cf2a",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1534–7",
+                            "display": "WBC,Urine"
+                        }
+                    ]
+                },
+                "valueString": "0–4",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1534–7",
+                                    "display": "WBC,Urine"
+                                }
+                            ]
+                        },
+                        "valueString": "0–4",
+                        "referenceRange": [
+                            {
+                                "text": "0–4"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/71a36cd8-0535-3569-a9f2-d260d165cf2a"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:45404d53-3def-361b-8294-e5aa41de5cde",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "45404d53-3def-361b-8294-e5aa41de5cde",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1535–4",
+                            "display": "RBC,Urine"
+                        }
+                    ]
+                },
+                "valueString": "0–3",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1535–4",
+                                    "display": "RBC,Urine"
+                                }
+                            ]
+                        },
+                        "valueString": "0–3",
+                        "referenceRange": [
+                            {
+                                "text": "0–3"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/45404d53-3def-361b-8294-e5aa41de5cde"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:d7c91f3a-b27d-3066-8ed6-9854e96b8b38",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "d7c91f3a-b27d-3066-8ed6-9854e96b8b38",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1546–1",
+                            "display": "EpithelialCells,Ur"
+                        }
+                    ]
+                },
+                "valueString": "FEW",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1546–1",
+                                    "display": "EpithelialCells,Ur"
+                                }
+                            ]
+                        },
+                        "valueString": "FEW",
+                        "referenceRange": [
+                            {
+                                "text": "FEW"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/d7c91f3a-b27d-3066-8ed6-9854e96b8b38"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:40e3093f-45f7-354c-91d5-c41e5bfb087b",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "40e3093f-45f7-354c-91d5-c41e5bfb087b",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1545–3",
+                            "display": "Cast,Hyaline,Urine"
+                        }
+                    ]
+                },
+                "valueString": "NONE SEEN",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1545–3",
+                                    "display": "Cast,Hyaline,Urine"
+                                }
+                            ]
+                        },
+                        "valueString": "NONE SEEN",
+                        "referenceRange": [
+                            {
+                                "text": "0–4"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/40e3093f-45f7-354c-91d5-c41e5bfb087b"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:f09b6eda-9cc3-37a1-a1f6-d8508afc9c32",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "f09b6eda-9cc3-37a1-a1f6-d8508afc9c32",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1547–9",
+                            "display": "Cast,Granular,Urin"
+                        }
+                    ]
+                },
+                "valueString": "NONE SEEN",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1547–9",
+                                    "display": "Cast,Granular,Urin"
+                                }
+                            ]
+                        },
+                        "valueString": "NONE SEEN",
+                        "referenceRange": [
+                            {
+                                "text": "0–1"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/f09b6eda-9cc3-37a1-a1f6-d8508afc9c32"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:16f2bba6-6c41-375e-9da2-57e0b8cd3d81",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "16f2bba6-6c41-375e-9da2-57e0b8cd3d81",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1543–8",
+                            "display": "Cast, RBC,Urine"
+                        }
+                    ]
+                },
+                "valueString": "NONE SEEN",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1543–8",
+                                    "display": "Cast, RBC,Urine"
+                                }
+                            ]
+                        },
+                        "valueString": "NONE SEEN",
+                        "referenceRange": [
+                            {
+                                "text": "0–1"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/16f2bba6-6c41-375e-9da2-57e0b8cd3d81"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:9977f798-636a-3d41-abf2-71f48d8bef8d",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "9977f798-636a-3d41-abf2-71f48d8bef8d",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "1549–5",
+                            "display": "Bacteria,Urine"
+                        }
+                    ]
+                },
+                "valueString": "NONE",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "1549–5",
+                                    "display": "Bacteria,Urine"
+                                }
+                            ]
+                        },
+                        "valueString": "NONE",
+                        "referenceRange": [
+                            {
+                                "text": "FEW"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/9977f798-636a-3d41-abf2-71f48d8bef8d"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:40cf16c3-5363-3af0-bd7d-2f586b723dc7",
+            "resource": {
+                "resourceType": "DiagnosticReport",
+                "id": "40cf16c3-5363-3af0-bd7d-2f586b723dc7",
+                "identifier": [
+                    {
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "FILL",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "value": "108512373"
+                    }
+                ],
+                "code": {
+                    "coding": [
+                        {
+                            "code": "MISC",
+                            "display": "—–* MISCELLANEOUS *——"
+                        }
+                    ]
+                },
+                "issued": "2010-07-23T16:34:00.000Z",
+                "status": "partial",
+                "encounter": {
+                    "reference": "Encounter/4cfe8d6d-3fc8-3e41-b921-f204be18db31"
+                },
+                "result": [
+                    {
+                        "reference": "Observation/f52664bb-e576-3b4e-bdd4-7bf9db50f028"
+                    },
+                    {
+                        "reference": "Observation/b6dd99f2-88e8-377b-ad8f-18fb05dc4259"
+                    },
+                    {
+                        "reference": "Observation/5d4820dd-c5e2-3f10-9da5-70ca62c64cb7"
+                    },
+                    {
+                        "reference": "Observation/3c26a0b0-10f3-3cd6-a273-38bc8eb7cba1"
+                    },
+                    {
+                        "reference": "Observation/ebb08d68-0fcc-392a-af00-7886d63ed1da"
+                    }
+                ]
+            },
+            "request": {
+                "method": "POST",
+                "url": "DiagnosticReport/40cf16c3-5363-3af0-bd7d-2f586b723dc7"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:f52664bb-e576-3b4e-bdd4-7bf9db50f028",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "f52664bb-e576-3b4e-bdd4-7bf9db50f028",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0153–7",
+                            "display": "TSH"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "1.930"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0153–7",
+                                    "display": "TSH"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "1.930"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "0.27–4.2 uIU/mL"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/f52664bb-e576-3b4e-bdd4-7bf9db50f028"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:b6dd99f2-88e8-377b-ad8f-18fb05dc4259",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "b6dd99f2-88e8-377b-ad8f-18fb05dc4259",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0151–1",
+                            "display": "THYROXINE(T4)"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "9.3"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0151–1",
+                                    "display": "THYROXINE(T4)"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "9.3"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "4.5–12.0 ug/dL"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/b6dd99f2-88e8-377b-ad8f-18fb05dc4259"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:5d4820dd-c5e2-3f10-9da5-70ca62c64cb7",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "5d4820dd-c5e2-3f10-9da5-70ca62c64cb7",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0152–9",
+                            "display": "T3 UPTAKE"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "29.7"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0152–9",
+                                    "display": "T3 UPTAKE"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "29.7"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "24.3–39.0%"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/5d4820dd-c5e2-3f10-9da5-70ca62c64cb7"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:3c26a0b0-10f3-3cd6-a273-38bc8eb7cba1",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "3c26a0b0-10f3-3cd6-a273-38bc8eb7cba1",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0666–8",
+                            "display": "FREE T4 INDEX"
+                        }
+                    ]
+                },
+                "valueQuantity": {
+                    "value": "2.8"
+                },
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0666–8",
+                                    "display": "FREE T4 INDEX"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": "2.8"
+                        },
+                        "referenceRange": [
+                            {
+                                "text": "1.1–4.5"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/3c26a0b0-10f3-3cd6-a273-38bc8eb7cba1"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:ebb08d68-0fcc-392a-af00-7886d63ed1da",
+            "resource": {
+                "resourceType": "Observation",
+                "id": "ebb08d68-0fcc-392a-af00-7886d63ed1da",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "0142–0",
+                            "display": "RPR"
+                        }
+                    ]
+                },
+                "valueString": "NON–REACT",
+                "status": "final",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "0142–0",
+                                    "display": "RPR"
+                                }
+                            ]
+                        },
+                        "valueString": "NON–REACT",
+                        "referenceRange": [
+                            {
+                                "text": "NON–REACTIVE"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/14e9acb3-1d1a-35f2-b50a-a77d1415931a"
+                }
+            },
+            "request": {
+                "method": "POST",
+                "url": "Observation/ebb08d68-0fcc-392a-af00-7886d63ed1da"
+            }
+        }
+    ]
+}
