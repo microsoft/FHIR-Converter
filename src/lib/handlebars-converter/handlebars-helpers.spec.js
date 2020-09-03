@@ -292,6 +292,37 @@ describe('Handlebars helpers', function () {
         assert(validator.isUUID(getHelper('generateUUID').func('https://localhost/blah')));
     });
 
+    it('generateUUIDV2 should return a guid', function () {
+        assert(validator.isUUID(getHelper('generateUUIDV2').func('https://localhost/blah')));
+    });
+
+    it('generateUUIDV2 should return the same guid for same URL', function () {
+        const f = getHelper('generateUUIDV2').func;
+        assert.strictEqual(f('https://localhost/blah'), f('https://localhost/blah'));
+    });
+
+    it('generateUUIDV2 should return different guids for different URLs', function () {
+        const f = getHelper('generateUUIDV2').func;
+        // if we really find a md5 crash, it will be better :)
+        assert.notEqual(f('https://localhost/blahblah'), f('https://localhost/foobar'));
+    });
+
+    it('generateUUIDV2 should return the same guid for same URL with different newlines', function () {
+        const f = getHelper('generateUUIDV2').func;
+        // url will not contain newline character, but sometimes the generateUUID will be feed with a whole object.
+        const inputs = [
+            [ 'https://loc\ralhost/blah', 'https://loca\nlhost/blah' ],
+            [ 'https://local\rhost/blah', 'https://localhost/blah' ],
+            [ 'https://localhost\r\n/blah', 'https://localhost/blah' ],
+            [ 'https://localho\\rst/blah', 'https://localh\\nost/blah' ],
+            [ 'https://localho\\rst/blah', 'https://localhost/blah' ],
+            [ 'https://loca\r\nlhost/blah', 'https://localhost/blah' ]
+        ];
+        for (const input of inputs) {
+            assert.strictEqual(f(input[0]), f(input[1]));
+        }
+    });
+
     it('addHyphensSSN adds hyphens when passed 9 digits', function () {
         assert.strictEqual('123-45-6789', getHelper('addHyphensSSN').func('123456789'));
     });

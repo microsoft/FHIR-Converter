@@ -77,7 +77,9 @@ describe('Regression test interceptors - ExtraDynamicFieldInterceptor', () => {
         const interceptor = new interceptors.ExtraDynamicFieldInterceptor(null);
         const expect = dataNormal();
         const result = interceptor.handle(dataNormal());
+        expect['entry'][0]['fullUrl'] = 'removed';
         expect['entry'][0]['resource']['date'] = 'removed';
+        expect['entry'][0]['resource']['id'] = 'removed';
 
         assert.deepStrictEqual(result, expect);
     });
@@ -96,7 +98,9 @@ describe('Regression test interceptors - ExtraDynamicFieldInterceptor', () => {
         const interceptor = new interceptors.ExtraDynamicFieldInterceptor(innerInterceptor);
         const expect = dataNormal();
         const result = interceptor.handle(dataNormal());
+        expect['entry'][0]['fullUrl'] = 'removed';
         expect['entry'][0]['resource']['date'] = 'removed';
+        expect['entry'][0]['resource']['id'] = 'removed';
 
         assert.deepStrictEqual(result, expect);
     });
