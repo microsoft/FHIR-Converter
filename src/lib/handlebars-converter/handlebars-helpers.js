@@ -736,6 +736,14 @@ module.exports.external = [
         }
     },
     {
+        name: 'generateUUIDV2',
+        description: 'Generates a guid based on a URL: generateUUID url, Keep the results consistent across platforms, regardless of the platform\'s newline characters',
+        func: function (urlNamespace) {
+            const content = ''.concat(urlNamespace).replace(/(\r|\n|\r\n|\\r|\\n|\\r\\n)/gm, '');
+            return uuidv3(content, uuidv3.URL);
+        }
+    },
+    {
         name: 'addHyphensSSN',
         description: 'Adds hyphens to a SSN without hyphens: addHyphensSSN SSN',
         func: function (ssn) {
