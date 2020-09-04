@@ -102,7 +102,6 @@ The open-source release includes a set of helper functions to assist with templa
 |-|-|-|
 | assert | Fails with message if predicate is false | **assert** ***predicate message*** |
 | evaluate | Returns template result object | **evaluate** ***templatePath inObj*** |
-| generateUUID | Generates a guid based on a URL | **generateUUID** ***url***
+| generateUUID | Generates a GUID based on a URL. *Sometimes it will also be invoked with a message object argument*. It may generate different ids if the source file is read from different platforms, because although semantics are the same, the source files may contain different newline characters. </br></br> Here comes an example, the result of `generateUUID '<ClinicalDocument>\n    <section>...'` and the result of `generateUUID '<ClinicalDocument>\r\n    <section>...'` are not equal | **generateUUID** ***url*** |
+| generateUUIDV2 | Generates a consistent GUID based on a URL. *Sometimes it will also be invoked with a message object argument*. If the input contains any platform related newline characters, such as `\n` or `\r`, the generated GUID will also be consistent by removing these characters. </br></br> Here comes an example, the result of `generateUUIDV2 '<ClinicalDocument>\n    <section>...'` and the result of `generateUUIDV2 '<ClinicalDocument>\r\n    <section>...'` are exactly equal | **generateUUIDV2** **url** |
 | addHyphensSSN | Adds hyphens to an SSN without hyphens | **addHyphensSSN** ***SSN*** |
-
-
