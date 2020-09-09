@@ -90,12 +90,12 @@
         {{/if}},
         "meta":
         {
-            "lastUpdated":"{{PID-33}}",
+            "lastUpdated":"{{formatAsDateTime PID-33}}",
         },
         "active":{{>DataType/_boolean.hbs mapping="CodeSystem/RegistryStatus.hbs" inCode=PD1-16 }},
     },
     "request":{
         "method":"POST",
-        "url":"Patient",
+        "url":"Patient/{{ID}}",
     },
 },
