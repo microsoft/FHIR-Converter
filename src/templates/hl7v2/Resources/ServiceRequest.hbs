@@ -4,14 +4,15 @@
         "resourceType": "ServiceRequest",
         "id":"{{ID}}",
         {{#if ORC-1}},
-            "order",
+            "intent":"order",
         {{/if}},
         {{#if (eq OBR-11 "G")}},
-            "reflex-order",
+            "intent":"reflex-order",
         {{/if}},
         {{#if (ne OBR-11 "G")}},
-            "order",
+            "intent":"order",
         {{/if}},
+        "identifier":
         [
             {
                 {{#if (not OBR-2)}},
@@ -91,16 +92,19 @@
             { {{>DataType/EIIdentifier.hbs EI=OBR-53}} },
         ],
         {{#if ORC-1}},
-            "{{formatAsDateTime ORC-9}}",
+            "authoredOn":"{{formatAsDateTime ORC-9}}",
         {{/if}},
-        "{{formatAsDateTime ORC-15}}",
-        "{{formatAsDateTime OBR-6}}",
+        "occurrenceDateTime":"{{formatAsDateTime ORC-15}}",
+        "occurrenceDateTime":"{{formatAsDateTime OBR-6}}",
+        "locationCode":
         [
             { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/OrderType.hbs" CWE=ORC-29}} },
         ],
+        "quantityQuantity":
         {
             {{>DataType/CQ.hbs CQ=TQ1-2}},
         },
+        "occurrenceTiming":
         {
             "repeat":
             {
@@ -117,11 +121,13 @@
                 "count":"{{TQ1-14}}",
             },
         },
-        "{{TQ1-9}}",
-        {{>DataType/_code.hbs mapping="CodeSystem/Priority.hbs" inCode=OBR-5 }},
+        "priority":"{{TQ1-9}}",
+        "priority":{{>DataType/_code.hbs mapping="CodeSystem/Priority.hbs" inCode=OBR-5 }},
+        "code":
         {
             {{>DataType/CWECodeableConcept.hbs CWE=OBR-4}},
         },
+        "reasonCode":
         [
             { {{>DataType/CWECodeableConcept.hbs CWE=OBR-31}} },
         ],
