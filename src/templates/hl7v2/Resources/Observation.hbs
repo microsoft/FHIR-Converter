@@ -81,15 +81,12 @@
             { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/InterpretationCode.hbs" CWE=OBX-8}} },
         ],
         "status":{{>DataType/_string.hbs mapping="CodeSystem/ObservationStatus.hbs" inCode=OBX-11 }},
-        "status":{{>DataType/_string.hbs mapping="CodeSystem/ObservationStatus.hbs" inCode=OBX-11 }},
-        "effectiveDateTime":"{{formatAsDateTime OBX-14}}",
         "effectiveDateTime":"{{formatAsDateTime OBX-14}}",
         "method":
         {
         },
         "bodySite":
         {
-            {{>DataType/CWECodeableConcept.hbs CWE=OBX-20}},
             {{>DataType/CWECodeableConcept.hbs CWE=OBX-20}},
         },
         "identifier":
@@ -104,14 +101,10 @@
                             {{#if OBX-21}},
                                 "code":"FILL",
                             {{/if}},
-                            {{#if OBX-21}},
-                                "code":"FILL",
-                            {{/if}},
                         },
                     ],
                 },
             },
-            { {{>DataType/EIIdentifier.hbs EI=OBX-21}} },
         ],
         "component":
         [
@@ -123,6 +116,7 @@
                 "valueQuantity":
                 {
                     {{#if (eq OBX-2 "NM")}},
+                        "value":"{{OBX-5}}",
                     {{/if}},
                     {{#if (eq OBX-2 "SN")}},
                         {{>DataType/CWEQuantity.hbs CWE=OBX-6}},

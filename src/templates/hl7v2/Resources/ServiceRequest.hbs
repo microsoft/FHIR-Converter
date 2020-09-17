@@ -91,6 +91,7 @@
             { {{>DataType/EIIdentifier.hbs EI=OBR-3}} },
             { {{>DataType/EIIdentifier.hbs EI=OBR-53}} },
         ],
+        "status":{{>DataType/_code.hbs mapping="CodeSystem/OrderStatus.hbs" inCode=ORC-5 }},
         {{#if ORC-1}},
             "authoredOn":"{{formatAsDateTime ORC-9}}",
         {{/if}},
@@ -131,9 +132,9 @@
         [
             { {{>DataType/CWECodeableConcept.hbs CWE=OBR-31}} },
         ],
-        },
-        "request":{
-            "method":"POST",
-            "url":"ServiceRequest/{{ID}}",
-        },
     },
+    "request":{
+        "method":"POST",
+        "url":"ServiceRequest/{{ID}}",
+    },
+},

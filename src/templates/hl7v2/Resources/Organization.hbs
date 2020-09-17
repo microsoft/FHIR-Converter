@@ -14,10 +14,6 @@
             {{#if OBX-25}},
                 { {{>DataType/XAD.hbs XAD=OBX-24}} },
             {{/if}},
-            { {{>DataType/XAD.hbs XAD=OBX-24}} },
-            {{#if OBX-25}},
-                { {{>DataType/XAD.hbs XAD=OBX-24}} },
-            {{/if}},
             { {{>DataType/XAD.hbs XAD=ORC-22}} },
         ],
         {{#if (not MSH-21)}},
@@ -42,11 +38,10 @@
                 },
             },
         ],
-        {{>DataType/XONOrganization.hbs XON=ROL-14}},
         "type":
-        {
-            {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/OrganizationUnitType.hbs" CWE=PRT-7}},
-        },
+        [
+            { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/OrganizationUnitType.hbs" CWE=PRT-7}} },
+        ],
         {{>DataType/XONOrganization.hbs XON=PRT-8}},
         "telecom":
         [

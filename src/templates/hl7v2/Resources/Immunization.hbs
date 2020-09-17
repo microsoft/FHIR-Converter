@@ -78,9 +78,9 @@
             {{>DataType/CWECodeableConcept.hbs CWE=RXA-18}},
         },
         "reasonCode":
-        {
-            {{>DataType/CWECodeableConcept.hbs CWE=RXA-19}},
-        },
+        [
+            { {{>DataType/CWECodeableConcept.hbs CWE=RXA-19}} },
+        ],
         "status":{{>DataType/_code.hbs mapping="CodeSystem/CompletionStatus.hbs" inCode=RXA-20 }},
         {{#if (eq RXA-21 "D")}},
             "status":"entered-in-error",

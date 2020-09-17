@@ -8,9 +8,11 @@
             {
                 {{>DataType/CX.hbs CX=PID-2}},
             },
-            {
-                {{>DataType/CX.hbs CX=PID-3}},
-            },
+            {{#each (getFieldRepeats PID-3)}},
+                {
+                    {{>DataType/CX.hbs CX=this}},
+                },
+            {{/each}},
             {
                 {{>DataType/CX.hbs CX=PID-4}},
             },
@@ -18,9 +20,21 @@
                 "value":"{{PID-19}}",
                 "type":
                 {
-                    {{#if PID-19}},
-                    {{/if}},
+                    "coding":
+                    [
+                        {
+                            {{#if PID-19}},
+                                "code":"SS",
+                            {{/if}},
+                            {{#if PID-19}},
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                            {{/if}},
+                        },
+                    ],
                 },
+                {{#if PID-19}},
+                    "system":"http://hl7.org/fhir/sid/us-ssn",
+                {{/if}},
             },
             {
                 {{>DataType/DLN.hbs DLN=PID-20}},
@@ -48,31 +62,37 @@
         ],
         "telecom":
         [
-            {
-                {{>DataType/XTN.hbs XTN=PID-13}},
-                {{#if PID-13}},
-                    "use":"home",
-                {{/if}},
-            },
-            {
-                {{>DataType/XTN.hbs XTN=PID-14}},
-                {{#if PID-14}},
-                    "use":"work",
-                {{/if}},
-            },
-            {
-                {{>DataType/XTN.hbs XTN=PID-40}},
-            },
+            {{#each (getFieldRepeats PID-13)}},
+                {
+                    {{>DataType/XTN.hbs XTN=this}},
+                    {{#if PID-13}},
+                        "use":"home",
+                    {{/if}},
+                },
+            {{/each}},
+            {{#each (getFieldRepeats PID-14)}},
+                {
+                    {{>DataType/XTN.hbs XTN=this}},
+                    {{#if PID-14}},
+                        "use":"work",
+                    {{/if}},
+                },
+            {{/each}},
+            {{#each (getFieldRepeats PID-40)}},
+                {
+                    {{>DataType/XTN.hbs XTN=this}},
+                },
+            {{/each}},
         ],
         "communication":
         [
             {
                 "language":
-                [
-                    { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Language.hbs" CWE=PID-15}} },
-                ],
+                {
+                    {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Language.hbs" CWE=PID-15}},
+                },
                 {{#if PID-15}},
-                    "preferred":"true",
+                    "preferred":true,
                 {{/if}},
             },
         ],

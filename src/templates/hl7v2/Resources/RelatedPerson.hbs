@@ -5,6 +5,7 @@
         "id":"{{ID}}",
         "identifier":
         [
+            { {{>DataType/CX.hbs CX=PID-21}} },
             { {{>DataType/EIIdentifier.hbs EI=ROL-1}} },
             {
                 {{>DataType/PLN.hbs PLN=PRT-24}},
@@ -43,9 +44,11 @@
         "telecom":
         [
             { {{>DataType/XTN.hbs XTN=ROL-12}} },
-            {
-                {{>DataType/XTN.hbs XTN=NK1-5}},
-            },
+            {{#each (getFieldRepeats NK1-5)}},
+                {
+                    {{>DataType/XTN.hbs XTN=this}},
+                },
+            {{/each}},
             {
                 {{>DataType/XTN.hbs XTN=NK1-6}},
                 {{#if NK1-6}},
@@ -74,9 +77,9 @@
         [
             {
                 "language":
-                [
-                    { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Language.hbs" CWE=NK1-20}} },
-                ],
+                {
+                    {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Language.hbs" CWE=NK1-20}},
+                },
             },
         ],
         {{>DataType/XCNRelatedPerson.hbs XCN=PRT-5}},

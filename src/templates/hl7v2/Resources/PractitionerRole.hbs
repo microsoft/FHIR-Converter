@@ -12,10 +12,11 @@
             },
         ],
         "code":
-        {
-            {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Role.hbs" CWE=ROL-3}},
-            {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Participation.hbs" CWE=PRT-4}},
-        },
+        [
+            { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Role.hbs" CWE=ROL-3}} },
+            { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Participation.hbs" CWE=ROL-4}} },
+            { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Participation.hbs" CWE=PRT-4}} },
+        ],
         {{>DataType/XCNPractitionerRole.hbs XCN=ROL-4}},
         "period":
         {
@@ -27,17 +28,15 @@
         "telecom":
         [
             { {{>DataType/XTN.hbs XTN=ROL-12}} },
-            { {{>DataType/XTN.hbs XTN=ROL-12}} },
             { {{>DataType/XTN.hbs XTN=PRT-15}} },
         ],
         {{>DataType/XCNPractitionerRole.hbs XCN=ROL-4}},
         {{>DataType/XCNPractitionerRole.hbs XCN=OBX-25}},
-        {{>DataType/XCNPractitionerRole.hbs XCN=OBX-25}},
         {{>DataType/XCNPractitionerRole.hbs XCN=PRT-5}},
         "specialty":
-        {
-            {{>DataType/CWECodeableConcept.hbs CWE=PRT-6}},
-        },
+        [
+            { {{>DataType/CWECodeableConcept.hbs CWE=PRT-6}} },
+        ],
         {{>DataType/XCNPractitionerRole.hbs XCN=ORC-12}},
         {{>DataType/NDLPractitionerRole.hbs NDL=OBR-32}},
         {{>DataType/NDLPractitionerRole.hbs NDL=OBR-34}},
