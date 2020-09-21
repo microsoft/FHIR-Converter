@@ -521,7 +521,7 @@ $(document).ready(function () {
     });
 
     $('#refresh-button').on('click', function () {
-        convertMessage();
+        convertData();
     });
 
     $("#new-branch-modal").on('show.bs.modal', function () {
