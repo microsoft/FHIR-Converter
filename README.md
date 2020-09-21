@@ -25,7 +25,7 @@ FHIR® is the registered trademark of HL7 and is used with the permission of HL7
 
 ## Deploying the FHIR Converter
 
-The FHIR Converter can be deployed to Azure to run locally.
+The FHIR Converter can be deployed to Azure or run locally.
 
 ### Deploy to Azure
 
