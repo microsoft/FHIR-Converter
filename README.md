@@ -2,46 +2,50 @@
 
 ![Node.js CI](https://github.com/microsoft/FHIR-Converter/workflows/Node.js%20CI/badge.svg?branch=master)
 
-For Healthcare IT teams and solution architects who want to integrate clinical data currently in different formats, the FHIR® Converter is an open source project that enables the conversion of legacy formatted health data to FHIR, expanding the use cases for health data and enabling interoperability.  
+FHIR® Converter is an open source project that enables the conversion of health data from legacy format to FHIR. Currently it supports HL7v2, and CCDA, to FHIR conversion.
 
-The FHIR Converter transforms HL7 v2 messages and CDA documents into FHIR bundles using templates that define the mappings between the two data formats. Leveraging the FHIR Converter, organizations can customize or create their own mapping templates based on their HL7 v2 or C-CDA implementation and transform them into FHIR bundles. These FHIR bundles are returned for further data manipulation or can be immediately persisted into a FHIR server, such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/). The FHIR Converter released to open source on Thursday March 6th, 2020 with support for HL7 v2 to FHIR conversion. On Friday June 12th, 2020, C-CDA to FHIR conversion was added to the OSS FHIR Converter.
+The Converter makes use of templates that define the mappings between different data formats. The templates are written in [Handlebars](https://handlebarsjs.com/) templating language and make use of custom [helper functions](docs/helper-functions-summary.md), which make it easy to work with HL7v2 messages, and CCDA documents.
 
-The open-source FHIR Converter consists of the following functionality:
+Templates for HL7v2, and CCDA, to FHIR conversion come pre-installed with the Converter. HL7v2 to FHIR templates are based on the [spreadsheet](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk/edit#gid=0) created by the HL7 [2-To-FHIR project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project). If needed, you can create new, or modify existing templates by following this document, and deploy those to meet your specific conversion requirements.
 
-1. A set of starting templates, leveraging [handlebars](https://handlebarsjs.com/), to translate HL7 v2 messages or CDA documents into FHIR bundles.
-1. A set of sample data to accompany the released templates.
-1. A collection of APIs to convert data real time and assist in the template management and creation.
-1. A Web UI editor to modify and create templates and test single data conversion to FHIR bundles.
+FHIR converter runs as a REST web service and can be deployed on-prem or in the cloud. It takes raw data as input and converts it to FHIR bundles. These bundles can be persisted to a FHIR server such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/). 
+
+The FHIR Converter consists of the following components:
+
+1. [Conversion APIs](docs/api-summary.md) for converting data in request-response mode
+1. Pre-installed [set of templates](src/templates) for HL7v2 and CDA to FHIR conversion.
+1. [Sample data](src/sample-data) for testing purpose.
+1. A [Browser based editor](docs/web-ui-summary.md) to modify, create, and test templates.
+1. [Template management APIs](docs/api-summary.md) to manage the templates
+1. An embedded git server as another way to manage the templates
+
+The FHIR Converter released to open source on Thursday March 6th, 2020 with support for HL7 v2 to FHIR conversion. On Friday June 12th, 2020, C-CDA to FHIR conversion was added to the OSS FHIR Converter.
 
 FHIR® is the registered trademark of HL7 and is used with the permission of HL7. Use of the FHIR trademark does not constitute endorsement of this product by HL7.
 
-## Deploy the FHIR Converter
+## Deploying the FHIR Converter
 
-The source code is available to be deployed in any manner you would like. The FHIR Converter can be run on-prem or in the cloud. To deploy the FHIR Converter, there are two key pieces of functionality. One is a web server (node.js) and the other is a persistence layer for the templates. To assist with easy deployment we have included two options below, one through Azure and one which will deploy locally. If you choose to deploy from another mechanism then the two options below, you will need to setup the storage for the templates.
+The FHIR Converter can be deployed to Azure or run locally.
 
 ### Deploy to Azure
 
-To deploy in Azure, you will need to have a subscription in Azure. If you do not have an Azure subscription, you can start [here](https://azure.microsoft.com/free/).
+To deploy in Azure, you need an Azure subscription. If you do not have an Azure subscription, you can start [here](https://azure.microsoft.com/free/).
 
-Once you have your subscription, click the link below:
+Once you have your subscription, click the link below. Note the service name as well as the API key you provide during the deployment process.
 
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FMicrosoft%2FFHIR-Converter%2Fmaster%2Fdeploy%2Fdefault-azuredeploy.json" target="_blank">
     <img src="https://azuredeploy.net/deploybutton.png"/>
 </a>
 
-Note that the Service Name will be included in the URL you will use to access the application. In addition, the API Key is automatically generated when you deploy the App Service but you can change this to another value if you want.
+Once it is deployed, you can access the UI and the service at [https://<SERVICE_NAME>.azurewebsites.net](https://SERVICE_NAME.azurewebsites.net). 
 
-Once deployment is complete, you can go to the newly created App Service to see the details. Here you will get the URL to access your FHIR Converter (https://\<SERVICE NAME>.azurewebsites.net). 
-
-If you need to find your API Key again or change the value take the following steps:
+If you need to view or edit your API Key later, take the following steps:
 
 1. Navigate to your App Service
 1. Under Settings, select Configuration
-1. You will see CONVERSION_API_KEYS listed here. You can view the key and edit from this location.
+1. You will see CONVERSION_API_KEYS listed here.
 
-### Deploy locally
-
-Follow these steps to deploy a local copy of the FHIR Converter
+### Deploy on-prem
 
 Make sure that you have Node.js >=10.10.0 < 11.0 installed
 
@@ -52,27 +56,29 @@ npm install
 npm start
 ```
 
-Once this completes, you can access Web UI locally at http://localhost:2019/
+Once this completes, you can access the UI and the service at http://localhost:2019/
 
-## Getting started
+## Using the FHIR Converter
 
-Now that you have deployed the FHIR Converter, you can get started with using the functionality. You will need to provide your API key when accessing service for the first time. We have included several documents to help you with template creation and management, understanding data conversion and some general summary guides that include functionality overview.
+HL7v2 to FHIR, and CCDA to FHIR conversion templates come pre-installed on the FHIR converter. You can test the default conversion behavior of the service either by using the [UI](docs/web-ui-summary.md), or the [API](docs/web-ui-summary.md). In case the default templates do not meet your requirements, you can modify the templates by following [How to create templates](docs/template-creation-how-to-guide.md) document.
 
-If you are ready to start modifying and creating your own templates, check out the [how to create templates guide](docs/template-creation-how-to-guide.md) as the first place to start.
+### Sample pipeline using FHIR converter
 
-Once you have your template complete, check out our [health architectures](https://github.com/microsoft/health-architectures/tree/master/HL7Conversion) which describe how to leverage the FHIR Converter in an end to end scenario.
+Visit the Microsoft health architectures github page to see a [sample](https://github.com/microsoft/health-architectures/tree/master/HL7Conversion) pipeline that leverages the FHIR Converter in an end to end scenario.
 
-## Documentation
+## Reference documentation
 
-### Template creation and management details
 
-* [How to create templates guide](docs/template-creation-how-to-guide.md)
+### Data conversion
+
+* [Using conversion API](docs/convert-data-concept.md)
+
+### Template creation and management
+
+* [How to create templates](docs/template-creation-how-to-guide.md)
 * [Partial template conceptual guide](docs/partial-template-concept.md)
 * [Examples of using helper functions](docs/using-helpers-concept.md)
 
-### Data conversion details
-
-* [Converting data conceptual guide](docs/convert-data-concept.md)
 
 ### Additional resources
 
@@ -80,7 +86,7 @@ Once you have your template complete, check out our [health architectures](https
 * [Helper function summary](docs/helper-functions-summary.md)
 * [Web UI summary](docs/web-ui-summary.md)
 
-### Known issues
+## Known issues
 There is a known issue that the v1.0.0 converter UI gets auto-updated to v2.0.0 and the v1.0.0 templates are no longer visible in the UI. You can follow [these steps](docs/web-ui-auto-update-issue.md) to resolve this issue.
 
 ## External resources
