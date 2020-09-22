@@ -732,6 +732,9 @@ module.exports.external = [
         name: 'generateUUID',
         description: 'Generates a guid based on a URL: generateUUID url',
         func: function (urlNamespace) {
+            if (urlNamespace === undefined || urlNamespace === null) {
+                throw Error(`Invalid argument: ${urlNamespace}`);
+            }
             return uuidv3(''.concat(urlNamespace), uuidv3.URL);
         }
     },
@@ -739,6 +742,9 @@ module.exports.external = [
         name: 'generateUUIDV2',
         description: 'Generates a guid based on a URL: generateUUID url, Keep the results consistent across platforms, regardless of the platform\'s newline characters',
         func: function (urlNamespace) {
+            if (urlNamespace === undefined || urlNamespace === null) {
+                throw Error(`Invalid argument: ${urlNamespace}`);
+            }
             const content = ''.concat(urlNamespace).replace(/(\r|\n|\r\n|\\r|\\n|\\r\\n)/gm, '');
             return uuidv3(content, uuidv3.URL);
         }
