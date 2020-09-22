@@ -1557,11 +1557,16 @@ describe('POST /api/convert/hl7v2/:template (with stored template)', function ()
     });
 
     it('should return 200 OK with valid message and existing template', function (done) {
+        const sourceData = [
+            'MSH|^~\\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||',
+            'PID|1||10006579^^^1^MR^1||DUCK^DONALD^D||19241010|M||1|111 DUCK ST^^FOWL^CA^999990000^^M|1|8885551212|8885551212|1|2||40007716^^^AccMgr^VN^1|123121234|||||||||||NO',
+            'PV1|1|I|PREOP^101^1^1^^^S|3|||37^DISNEY^WALT^^^^^^AccMgr^^^^CI|||01||||1|||37^DISNEY^WALT^^^^^^AccMgr^^^^CI|2|40007716^^^AccMgr^VN|4|||||||||||||||||||1||G|||20050110045253||||||'
+        ];
         supertest(app)
             .post("/api/convert/hl7v2/ADT_A01.hbs")
             .set(API_KEY_HEADER, apiKeys[0])
             .set('Content-Type', 'text/plain')
-            .send("MSH|^~\\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||")
+            .send(sourceData.join('\n'))
             .expect(200)
             .end(function (err) {
                 if (err) {

@@ -79,26 +79,6 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:4cfe8d6d-3fc8-3e41-b921-f204be18db31",
-            "resource": {
-                "resourceType": "Encounter",
-                "id": "4cfe8d6d-3fc8-3e41-b921-f204be18db31",
-                "status": "unknown",
-                "location": [
-                    {
-                        "status": "active"
-                    }
-                ],
-                "subject": {
-                    "reference": "Patient/64bac34e-e611-3549-848b-89416176aa0b"
-                }
-            },
-            "request": {
-                "method": "PUT",
-                "url": "Encounter/4cfe8d6d-3fc8-3e41-b921-f204be18db31"
-            }
-        },
-        {
             "fullUrl": "urn:uuid:243d2e3e-1d5f-3b2c-bea9-43234ec7d1d4",
             "resource": {
                 "resourceType": "DiagnosticReport",
@@ -131,9 +111,6 @@
                     ]
                 },
                 "status": "final",
-                "encounter": {
-                    "reference": "Encounter/4cfe8d6d-3fc8-3e41-b921-f204be18db31"
-                },
                 "result": [
                     {
                         "reference": "Observation/9723b15e-a597-30d6-9baa-e6ce8e1d5519"
@@ -505,9 +482,6 @@
                             "system": "LN"
                         }
                     ]
-                },
-                "encounter": {
-                    "reference": "Encounter/4cfe8d6d-3fc8-3e41-b921-f204be18db31"
                 },
                 "result": [
                     {
