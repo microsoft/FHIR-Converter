@@ -323,18 +323,6 @@ describe('Handlebars helpers', function () {
         }
     });
 
-    it ('generateUUID should throw runtime exception when given undefined or null arguments', function () {
-        var f = getHelper('generateUUID').func;
-        const inputs = [ undefined, null ];
-        for (const input of inputs) {
-            const error = {
-                name: 'Error',
-                message: `Invalid argument: ${input}`
-            };
-            assert.throws(() => f(input), error);
-        }
-    });
-
     it ('generateUUIDV2 should throw runtime exception when given undefined or null arguments', function () {
         var f = getHelper('generateUUIDV2').func;
         const inputs = [ undefined, null ];
