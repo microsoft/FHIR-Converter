@@ -59,13 +59,13 @@
                         {{>References/Condition/subject.hbs ID=(generateUUID DG1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
                     {{/if}},
 
-                    {{#if PV1}},
+                    {{#if ../../PV1}},
                         {{>References/Encounter/diagnosis.condition.hbs ID=(generateUUID ../../PV1) REF=(concat 'Condition/' (generateUUID DG1Instance))}},
                     {{/if}},
 
                 {{/each}}
             {{/with}} 
-    
+
         {{/with}}
     ] 
 }
