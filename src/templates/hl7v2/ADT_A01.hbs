@@ -9,21 +9,36 @@
             {{/if}},
 
             {{#if PV1}},
+ 
                 {{>Resources/Encounter.hbs PV1=PV1 PV2=PV2 ID=(generateUUID PV1)}},
-                {{>References/Encounter/subject.hbs ID=(generateUUID PV1) REF=(concat 'Patient/' (generateUUID PID-3-1))}},
+
+                {{#if PID-3-1}},
+                    {{>References/Encounter/subject.hbs ID=(generateUUID PV1) REF=(concat 'Patient/' (generateUUID PID-3-1))}},
+                {{/if}},
+ 
             {{/if}},
 
             {{#if PR1}},
+ 
                 {{>Resources/Procedure.hbs PR1=PR1 ID=(generateUUID PR1)}},
-                {{>References/Procedure/subject.hbs ID=(generateUUID PR1) REF=(concat 'Patient/' (generateUUID PID-3-1))}},
+
+                {{#if PID-3-1}},
+                    {{>References/Procedure/subject.hbs ID=(generateUUID PR1) REF=(concat 'Patient/' (generateUUID PID-3-1))}},
+                {{/if}},
+ 
             {{/if}},
 
             {{#with (getSegmentLists ../msg.v2 'NK1')}}
                 {{#each NK1 as |NK1Instance|}}
 
                     {{#if NK1Instance}},
+ 
                         {{>Resources/RelatedPerson.hbs NK1=NK1Instance ID=(generateUUID NK1Instance)}},
-                        {{>References/RelatedPerson/patient.hbs ID=(generateUUID NK1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
+ 
+                        {{#if ../../PID-3-1}},
+                            {{>References/RelatedPerson/patient.hbs ID=(generateUUID NK1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
+                        {{/if}},
+ 
                     {{/if}},
 
                 {{/each}}
@@ -33,8 +48,13 @@
                 {{#each OBX as |OBXInstance|}}
 
                     {{#if OBXInstance}},
+
                         {{>Resources/Observation.hbs OBX=OBXInstance ID=(generateUUID OBXInstance)}},
-                        {{>References/Observation/subject.hbs ID=(generateUUID OBXInstance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
+
+                        {{#if ../../PID-3-1}},
+                            {{>References/Observation/subject.hbs ID=(generateUUID OBXInstance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
+                        {{/if}},
+
                     {{/if}},
 
                 {{/each}}
@@ -44,8 +64,13 @@
                 {{#each AL1 as |AL1Instance|}}
 
                     {{#if AL1Instance}},
+
                         {{>Resources/AllergyIntolerance.hbs AL1=AL1 ID=(generateUUID AL1Instance)}},
-                        {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID AL1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
+
+                        {{#if ../../PID-3-1}},
+                            {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID AL1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
+                        {{/if}},
+
                     {{/if}},
 
                 {{/each}}
@@ -55,12 +80,17 @@
                 {{#each DG1 as |DG1Instance|}}
 
                     {{#if DG1Instance}},
-                        {{>Resources/Condition.hbs DG1=DG1Instance ID=(generateUUID DG1Instance)}},
-                        {{>References/Condition/subject.hbs ID=(generateUUID DG1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
-                    {{/if}},
 
-                    {{#if ../../PV1}},
-                        {{>References/Encounter/diagnosis.condition.hbs ID=(generateUUID ../../PV1) REF=(concat 'Condition/' (generateUUID DG1Instance))}},
+                        {{>Resources/Condition.hbs DG1=DG1Instance ID=(generateUUID DG1Instance)}},
+
+                        {{#if ../../PID-3-1}},
+                            {{>References/Condition/subject.hbs ID=(generateUUID DG1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
+                        {{/if}},
+
+                        {{#if ../../PV1}},
+                            {{>References/Encounter/diagnosis.condition.hbs ID=(generateUUID ../../PV1) REF=(concat 'Condition/' (generateUUID DG1Instance))}},
+                        {{/if}},
+
                     {{/if}},
 
                 {{/each}}
