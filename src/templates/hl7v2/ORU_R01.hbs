@@ -21,14 +21,10 @@
             {{#with (getSegmentLists ../msg.v2 'NK1')}}
                 {{#each NK1 as |NK1Instance|}}
 
-                    {{#if NK1Instance}},
+                    {{>Resources/RelatedPerson.hbs NK1=NK1Instance ID=(generateUUID NK1Instance)}},
 
-                        {{>Resources/RelatedPerson.hbs NK1=NK1Instance ID=(generateUUID NK1Instance)}},
-
-                        {{#if ../../PID-3-1}},
-                            {{>References/RelatedPerson/patient.hbs ID=(generateUUID NK1Instance) REF=(concat 'Patient/' (generateUUID  ../../PID-3-1))}},
-                        {{/if}},
-
+                    {{#if ../../PID-3-1}},
+                        {{>References/RelatedPerson/patient.hbs ID=(generateUUID NK1Instance) REF=(concat 'Patient/' (generateUUID  ../../PID-3-1))}},
                     {{/if}},
 
                 {{/each}}
@@ -37,30 +33,20 @@
             {{#with (getSegmentLists ../msg.v2 'OBR')}}
                 {{#each OBR as |OBRInstance|}}
 
-                    {{#if OBRInstance}},
+                    {{>Resources/DiagnosticReport.hbs OBR=OBRInstance ID=(generateUUID (concat "DiagnosticReport" OBRInstance))}},
 
-                        {{>Resources/DiagnosticReport.hbs OBR=OBRInstance ID=(generateUUID (concat "DiagnosticReport" OBRInstance))}},
-
-                        {{#if ../../PV1}},
-                            {{>References/DiagnosticReport/encounter.hbs ID=(generateUUID (concat "DiagnosticReport" OBRInstance)) REF=(concat 'Encounter/' (generateUUID ../../PV1))}},
-                        {{/if}},
-
+                    {{#if ../../PV1}},
+                        {{>References/DiagnosticReport/encounter.hbs ID=(generateUUID (concat "DiagnosticReport" OBRInstance)) REF=(concat 'Encounter/' (generateUUID ../../PV1))}},
                     {{/if}},
 
                     {{#with (getRelatedSegmentList ../../../msg.v2 'OBR' OBRInstance-1 'OBX')}}
                         {{#each OBX as |OBXInstance|}}
 
-                            {{#if OBXInstance}},
-                                {{>Resources/Observation.hbs OBX=OBXInstance ID=(generateUUID (concat "Observation" OBXInstance))}},
+                            {{>Resources/Observation.hbs OBX=OBXInstance ID=(generateUUID (concat "Observation" OBXInstance))}},
+                            {{>References/DiagnosticReport/result.hbs ID=(generateUUID (concat "DiagnosticReport" OBRInstance)) REF=(concat 'Observation/' (generateUUID (concat "Observation" OBXInstance)))}},
 
-                                {{#if ../../../../PID-3-1}},
-                                    {{>References/Observation/subject.hbs ID=(generateUUID (concat "Observation" OBXInstance)) REF=(concat 'Patient/' (generateUUID  ../../../../PID-3-1))}},
-                                {{/if}},
-
-                                {{#if OBRInstance}},
-                                    {{>References/DiagnosticReport/result.hbs ID=(generateUUID (concat "DiagnosticReport" OBRInstance)) REF=(concat 'Observation/' (generateUUID (concat "Observation" OBXInstance)))}},
-                                {{/if}},
-
+                            {{#if ../../../../PID-3-1}},
+                                {{>References/Observation/subject.hbs ID=(generateUUID (concat "Observation" OBXInstance)) REF=(concat 'Patient/' (generateUUID  ../../../../PID-3-1))}},
                             {{/if}},
 
                         {{/each}}
@@ -69,15 +55,8 @@
                     {{#with (getRelatedSegmentList ../../../msg.v2 'OBR' OBRInstance-1 'SPM')}}
                         {{#each SPM as |SPMInstance|}}
 
-                            {{#if SPMInstance}},
-
-                                {{>Resources/Specimen.hbs SPM=SPMInstance ID=(generateUUID (concat "Specimen" SPMInstance))}},
-
-                                {{#if OBRInstance}},
-                                    {{>References/DiagnosticReport/specimen.hbs ID=(generateUUID (concat "DiagnosticReport" OBRInstance)) REF=(concat 'Specimen/' (generateUUID (concat "Specimen" SPMInstance)))}},
-                                {{/if}},
-
-                            {{/if}},
+                            {{>Resources/Specimen.hbs SPM=SPMInstance ID=(generateUUID (concat "Specimen" SPMInstance))}},
+                            {{>References/DiagnosticReport/specimen.hbs ID=(generateUUID (concat "DiagnosticReport" OBRInstance)) REF=(concat 'Specimen/' (generateUUID (concat "Specimen" SPMInstance)))}},
 
                         {{/each}}
                     {{/with}}

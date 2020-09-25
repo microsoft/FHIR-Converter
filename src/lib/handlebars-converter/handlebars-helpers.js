@@ -18,7 +18,7 @@ var getSegmentListsInternal = function (msg, ...segmentIds) {
     for (var s = 0; s < segmentIds.length - 1; s++) { //-1 because segmentsIds includes the full message at the end
         var segOut = [];
         for (var i = 0; i < msg.meta.length; i++) {
-            if (msg.meta[i] == segmentIds[s]) {
+            if (msg.meta[i] == segmentIds[s] && !!msg.data[i]) {
                 segOut.push(msg.data[i]);
             }
         }

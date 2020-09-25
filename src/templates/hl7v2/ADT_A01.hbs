@@ -31,30 +31,22 @@
             {{#with (getSegmentLists ../msg.v2 'NK1')}}
                 {{#each NK1 as |NK1Instance|}}
 
-                    {{#if NK1Instance}},
- 
-                        {{>Resources/RelatedPerson.hbs NK1=NK1Instance ID=(generateUUID NK1Instance)}},
- 
-                        {{#if ../../PID-3-1}},
-                            {{>References/RelatedPerson/patient.hbs ID=(generateUUID NK1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
-                        {{/if}},
- 
-                    {{/if}},
+                    {{>Resources/RelatedPerson.hbs NK1=NK1Instance ID=(generateUUID NK1Instance)}},
 
+                    {{#if ../../PID-3-1}},
+                        {{>References/RelatedPerson/patient.hbs ID=(generateUUID NK1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
+                    {{/if}},
+ 
                 {{/each}}
             {{/with}} 	
 
             {{#with (getSegmentLists ../msg.v2 'OBX')}}
                 {{#each OBX as |OBXInstance|}}
 
-                    {{#if OBXInstance}},
+                    {{>Resources/Observation.hbs OBX=OBXInstance ID=(generateUUID OBXInstance)}},
 
-                        {{>Resources/Observation.hbs OBX=OBXInstance ID=(generateUUID OBXInstance)}},
-
-                        {{#if ../../PID-3-1}},
-                            {{>References/Observation/subject.hbs ID=(generateUUID OBXInstance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
-                        {{/if}},
-
+                    {{#if ../../PID-3-1}},
+                        {{>References/Observation/subject.hbs ID=(generateUUID OBXInstance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
                     {{/if}},
 
                 {{/each}}
@@ -63,14 +55,10 @@
             {{#with (getSegmentLists ../msg.v2 'AL1')}}
                 {{#each AL1 as |AL1Instance|}}
 
-                    {{#if AL1Instance}},
+                    {{>Resources/AllergyIntolerance.hbs AL1=AL1 ID=(generateUUID AL1Instance)}},
 
-                        {{>Resources/AllergyIntolerance.hbs AL1=AL1 ID=(generateUUID AL1Instance)}},
-
-                        {{#if ../../PID-3-1}},
-                            {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID AL1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
-                        {{/if}},
-
+                    {{#if ../../PID-3-1}},
+                        {{>References/AllergyIntolerance/patient.hbs ID=(generateUUID AL1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
                     {{/if}},
 
                 {{/each}}
@@ -79,18 +67,14 @@
             {{#with (getSegmentLists ../msg.v2 'DG1')}}
                 {{#each DG1 as |DG1Instance|}}
 
-                    {{#if DG1Instance}},
+                    {{>Resources/Condition.hbs DG1=DG1Instance ID=(generateUUID DG1Instance)}},
 
-                        {{>Resources/Condition.hbs DG1=DG1Instance ID=(generateUUID DG1Instance)}},
+                    {{#if ../../PID-3-1}},
+                        {{>References/Condition/subject.hbs ID=(generateUUID DG1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
+                    {{/if}},
 
-                        {{#if ../../PID-3-1}},
-                            {{>References/Condition/subject.hbs ID=(generateUUID DG1Instance) REF=(concat 'Patient/' (generateUUID ../../PID-3-1))}},
-                        {{/if}},
-
-                        {{#if ../../PV1}},
-                            {{>References/Encounter/diagnosis.condition.hbs ID=(generateUUID ../../PV1) REF=(concat 'Condition/' (generateUUID DG1Instance))}},
-                        {{/if}},
-
+                    {{#if ../../PV1}},
+                        {{>References/Encounter/diagnosis.condition.hbs ID=(generateUUID ../../PV1) REF=(concat 'Condition/' (generateUUID DG1Instance))}},
                     {{/if}},
 
                 {{/each}}
