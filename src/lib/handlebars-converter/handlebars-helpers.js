@@ -644,7 +644,9 @@ module.exports.external = [
 
                 if (childIndex > -1) {
                     do {
-                        segOut.push(msg.data[childIndex]);
+                        if (!!msg.data[childIndex]) {
+                            segOut.push(msg.data[childIndex]);
+                        }
                         childIndex++;
                     } while (childIndex < msg.meta.length && msg.meta[childIndex] == childSegment);
                 }
