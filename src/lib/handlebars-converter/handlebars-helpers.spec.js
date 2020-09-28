@@ -323,6 +323,18 @@ describe('Handlebars helpers', function () {
         }
     });
 
+    it ('generateUUIDV2 should throw runtime exception when given undefined or null arguments', function () {
+        var f = getHelper('generateUUIDV2').func;
+        const inputs = [ undefined, null ];
+        for (const input of inputs) {
+            const error = {
+                name: 'Error',
+                message: `Invalid argument: ${input}`
+            };
+            assert.throws(() => f(input), error);
+        }
+    });
+
     it('addHyphensSSN adds hyphens when passed 9 digits', function () {
         assert.strictEqual('123-45-6789', getHelper('addHyphensSSN').func('123456789'));
     });

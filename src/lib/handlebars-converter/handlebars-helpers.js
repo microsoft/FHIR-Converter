@@ -18,7 +18,7 @@ var getSegmentListsInternal = function (msg, ...segmentIds) {
     for (var s = 0; s < segmentIds.length - 1; s++) { //-1 because segmentsIds includes the full message at the end
         var segOut = [];
         for (var i = 0; i < msg.meta.length; i++) {
-            if (msg.meta[i] == segmentIds[s]) {
+            if (msg.meta[i] == segmentIds[s] && !!msg.data[i]) {
                 segOut.push(msg.data[i]);
             }
         }
@@ -644,7 +644,9 @@ module.exports.external = [
 
                 if (childIndex > -1) {
                     do {
-                        segOut.push(msg.data[childIndex]);
+                        if (msg.data[childIndex]) {
+                            segOut.push(msg.data[childIndex]);
+                        }
                         childIndex++;
                     } while (childIndex < msg.meta.length && msg.meta[childIndex] == childSegment);
                 }
@@ -739,6 +741,9 @@ module.exports.external = [
         name: 'generateUUIDV2',
         description: 'Generates a guid based on a URL: generateUUID url, Keep the results consistent across platforms, regardless of the platform\'s newline characters',
         func: function (urlNamespace) {
+            if (urlNamespace === undefined || urlNamespace === null) {
+                throw Error(`Invalid argument: ${urlNamespace}`);
+            }
             const content = ''.concat(urlNamespace).replace(/(\r|\n|\r\n|\\r|\\n|\\r\\n)/gm, '');
             return uuidv3(content, uuidv3.URL);
         }
