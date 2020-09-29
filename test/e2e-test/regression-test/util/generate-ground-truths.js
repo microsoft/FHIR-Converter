@@ -6,9 +6,9 @@
 const path  = require('path');
 const fs = require('fs-extra');
 const cases = require('../config');
-const WorkerPool = require('../../../lib/workers/workerPool');
+const WorkerPool = require('../../../../src/lib/workers/workerPool');
 const utils = require('./utils');
-const constants = require('../../../lib/constants/constants');
+const constants = require('../../../../src/lib/constants/constants');
 
 const truthsExist = basePath => {
     const cdaPath = path.join(basePath, 'cda');
@@ -61,7 +61,7 @@ const main = basePath => {
                     fulfill(prompt);
                 }
                 else {
-                    const workerPath = path.join(__dirname, '../../../lib/workers/worker.js');
+                    const workerPath = path.join(__dirname, '../../../../src/lib/workers/worker.js');
                     const workerPool = new WorkerPool(workerPath, require('os').cpus().length);
                     const cdaPromises = generateTruths(workerPool, basePath, 'cda', cases.cdaCases);
                     const hl7v2Promises = generateTruths(workerPool, basePath, 'hl7v2', cases.hl7v2Cases);

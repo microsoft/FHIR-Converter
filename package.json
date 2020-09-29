@@ -10,10 +10,10 @@
     "test": "nyc node --experimental-worker node_modules/mocha/bin/_mocha --reporter-options configFile=mocha.config.json --exit",
     "build": "npm install",
     "pretest": "node --experimental-worker src/init-service.js",
-    "posttest": "eslint src/**/*.js",
+    "posttest": "eslint {src,test}/**/*.js",
     "prestart": "node --experimental-worker src/init-service.js",
     "start": "node --experimental-worker src/index.js",
-    "eslint": "eslint src/**/*.js"
+    "eslint": "eslint {src,test}/**/*.js"
   },
   "eslintConfig": {
     "env": {
@@ -57,7 +57,7 @@
     "functions": 90,
     "branches": 90,
     "include": [
-      "src/**/*.js"
+      "@(src|test)/**/*.js"
     ],
     "exclude": [
       "**/*.spec.js",
@@ -72,7 +72,7 @@
   },
   "mocha": {
     "reporter": "mocha-multi-reporters",
-    "spec": "src/**/*.spec.js",
+    "spec": "@(src|test)/**/*.spec.js",
     "slow": 100,
     "reporterOptions": {
       "reporterEnabled": "spec, blahblah",

@@ -7,8 +7,8 @@ const supertest = require('supertest');
 const express = require('express');
 const fs = require("fs");
 const path  = require('path');
-const routes = require('../../routes');
-const constants = require('../../lib/constants/constants');
+const routes = require('../../../src/routes');
+const constants = require('../../../src/lib/constants/constants');
 const cases = require('./config');
 const utils = require('./util/utils');
 

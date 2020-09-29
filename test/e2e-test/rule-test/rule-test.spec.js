@@ -7,10 +7,10 @@ const supertest = require('supertest');
 const express = require('express');
 var fs = require("fs");
 var path  = require('path');
-var constants = require('../../lib/constants/constants');
+var constants = require('../../../src/lib/constants/constants');
 const API_KEY_HEADER = "X-MS-CONVERSION-API-KEY";
 const apiKeys = ['123', '456'];
-var app = require("../../routes")(express());
+var app = require("../../../src/routes")(express());
 
 // load testcases
 var cdaTestcases = require('./config/testcases-cda');
