@@ -671,22 +671,27 @@ module.exports = function (app) {
     *     consumes:
     *       - text/plain
     *     parameters:
-     *       - name: conversion
-     *         description: Conversion task
-     *         in: body
-     *         required: true
-     *         schema:
-     *           type: object
-     *           properties:
-     *             templateBase64:
-     *               type: string
-     *             srcDataBase64:
-     *               type: string
-     *             templatesOverrideBase64:
-     *               type: string
-     *           required:
-     *             - templateBase64
-     *             - srcDataBase64
+    *       - name: srcDataType
+    *         description: Data type of the source (e.g. 'hl7v2', 'cda')
+    *         in: path
+    *         required: true
+    *         type: string
+    *       - name: conversion
+    *         description: Conversion task
+    *         in: body
+    *         required: true
+    *         schema:
+    *           type: object
+    *           properties:
+    *             templateBase64:
+    *               type: string
+    *             srcDataBase64:
+    *               type: string
+    *             templatesOverrideBase64:
+    *               type: string
+    *           required:
+    *             - templateBase64
+    *             - srcDataBase64
     *       - name: api-version
     *         in: query
     *         description: API version to use.
@@ -726,7 +731,7 @@ module.exports = function (app) {
 
     /**
     * @swagger
-    * /api/convert/{template}:
+    * /api/convert/{srcDataType}/{template}:
     *   post:
     *     description: Converts given data to FHIR using template
     *     produces:
@@ -734,6 +739,11 @@ module.exports = function (app) {
     *     consumes:
     *       - text/plain
     *     parameters:
+    *       - name: srcDataType
+    *         description: Data type of the source (e.g. 'hl7v2', 'cda')
+    *         in: path
+    *         required: true
+    *         type: string
     *       - name: template
     *         description: Name of a specific template
     *         in: path
