@@ -27,7 +27,10 @@ class ExtraDynamicFieldInterceptor extends Interceptor {
     constructor (next) {
         super(next);
         this.__placeholder = 'removed';
-        this.__removeUUIDResourceTypes = [ 'DocumentReference', 'Composition', 'Immunization', 'MedicationStatement' ];
+        this.__removeUUIDResourceTypes = [
+            'DocumentReference', 'Composition', 'Immunization', 'MedicationStatement',
+            'Condition', 'Observation'
+        ];
     }
 
     handle (data) {
