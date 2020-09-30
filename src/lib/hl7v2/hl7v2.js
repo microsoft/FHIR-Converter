@@ -98,15 +98,14 @@ function parseHL7v2(msg) {
                     }
                     else {
                         var ocomps = CoverageArray.makeCoverageArray();
-
+                        var reps = fields[f].split(repetitionSeparator);
                         createComponents(ocomps,
-                            fields[f],
+                            reps[0],
                             fieldSeparator,
                             componentSeparator,
                             subcomponentSeparator,
                             repetitionSeparator);
-
-                        var reps = fields[f].split(repetitionSeparator);
+                        
                         for (var repId = 0; repId < reps.length; repId++) {
                             let repIdArr = [];
                             createComponents(repIdArr,

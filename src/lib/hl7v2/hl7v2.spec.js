@@ -58,6 +58,20 @@ describe('hl7v2', function () {
             .then(() => assert.fail())
             .catch(() => done());
     });
+
+    var overlapTests = [
+        { "message": "MSH|^~\\&|||||20190502121659.069-0700\nNK1|||||(130) 724-0433^PRN^PH^^^431^2780404~(330) 274-8214^ORN^PH^^^330^2748214", "result": 7 },
+        { "message": "MSH|^~\\&|||||20190502121659.069-0700\nNK1|||||~(330) 274-8214^ORN^PH^^^330^2748214", "result": 1 }
+    ];
+    overlapTests.forEach(overlapTest =>{
+        it('should return correct correct components without overlapping repetitions', function (done) {
+            new hl7().parseSrcData(overlapTest.message)
+                .then((out) => {
+                    done(assert.equal(out.v2.data[1][4].length, overlapTest.result) && assert.equal(out.v2.data[1][4].repeats.length, 2));
+                })
+                .catch(() => assert.fail());
+        });
+    });
 });
 
 describe('hl7.parseCoverageReport', function () {
