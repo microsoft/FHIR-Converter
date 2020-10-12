@@ -109,8 +109,9 @@ function convertData() {
         var outputLines = [];
 
         if (dataEditor.getValue() && dataEditor.getValue() !== "") {
-            // eslint-disable-next-line no-control-regex
-            reqBody.srcDataBase64 = btoa(dataEditor.getValue().replace(/[^\x00-\x7F]/g, "")); //TODO
+            // The following way can convert utf8 string to base64 string.
+            //   Ref: https://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array/18729931
+            reqBody.srcDataBase64 = btoa(unescape(encodeURIComponent(dataEditor.getValue())));
         }
         else {
             return;
