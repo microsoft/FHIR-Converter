@@ -56,7 +56,7 @@ describe('E2E test - FHIR data validation', function () {
                 .expect(200)
                 .expect(response => {
                     t.testRules.every( testRule =>{
-                        var result = testRule(response.body.fhirResource);
+                        var result = testRule(requestJson, response.body.fhirResource);
                         if (result.valid === false) {
                             throw new Error(testRule.name + " validation failed.\n" + result.errorMessage);
                         }

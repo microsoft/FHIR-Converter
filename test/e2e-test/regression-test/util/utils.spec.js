@@ -4,21 +4,8 @@
 // -------------------------------------------------------------------------------------------------
 
 const assert = require('assert');
+const commonUtils = require('../../util/utils');
 const utils = require('./utils');
-
-const createDeepObject = (depth, rand) => {
-    const origin = { 'extra-property': 'extra-value' };
-    let current = origin;
-    for (let i = 0; i < depth; ++ i) {
-        current[`property-${i}`] = {
-            [`extra-property-${i}`]: `extra-value`,
-            [`property-${i}`]: { }
-        };
-        current = current[`property-${i}`];
-    }
-    current[`property-inner`] = `value-${rand ? Math.random() : 'inner'}`;
-    return origin;
-};
 
 const testData = () => ({
     "resourceType": "Bundle",
@@ -90,9 +77,9 @@ describe('Regression test testUtils - getGroundTruthFileName', () => {
 describe('Regression test testUtils - compareContent', () => {
     it ('should compare correctly when given equal parameters deeper than threshold', () => {
         const parameters = [
-            [ createDeepObject(100, false), createDeepObject(100, false) ],
-            [ createDeepObject(128, false), createDeepObject(128, false) ],
-            [ createDeepObject(256, false), createDeepObject(256, false) ]
+            [ commonUtils.createDeepObject(100, false), commonUtils.createDeepObject(100, false) ],
+            [ commonUtils.createDeepObject(128, false), commonUtils.createDeepObject(128, false) ],
+            [ commonUtils.createDeepObject(256, false), commonUtils.createDeepObject(256, false) ]
         ];
         for (const parameter of parameters) {
             assert.ok(utils.compareContent(...parameter.map(JSON.stringify)));
@@ -127,9 +114,9 @@ describe('Regression test testUtils - compareContent', () => {
     });
     it ('should throw error when given unequal parameters deeper than threshold', () => {
         const parameters = [
-            [ createDeepObject(100, true), createDeepObject(100, true) ],
-            [ createDeepObject(128, true), createDeepObject(128, true) ],
-            [ createDeepObject(256, true), createDeepObject(256, true) ]
+            [ commonUtils.createDeepObject(100, true), commonUtils.createDeepObject(100, true) ],
+            [ commonUtils.createDeepObject(128, true), commonUtils.createDeepObject(128, true) ],
+            [ commonUtils.createDeepObject(256, true), commonUtils.createDeepObject(256, true) ]
         ];
         const expectError = {
             name: 'Error',

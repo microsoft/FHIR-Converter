@@ -6,37 +6,44 @@
 var testUtils = require('./utils');
 var fhirModule = require('fhir');
 var fhir = new fhirModule.Fhir();
+const _ = require('lodash');
 
-var response = function(status, message=''){
-    return { valid: status, errorMessage: message};
+const MAX_REVEAL_DEPTH = 100;
+const NON_COMPARE_PROPERTY = new Set([
+    'resourceType', 'type', 'fullUrl', 'id', 'method', 'url', 'reference', 'system', 'code', 'display',
+    'gender', 'use', 'preferred', 'status'
+]);
+
+var response = function(status, message='', reqJson=null, resJson=null) {
+    return { valid: status, errorMessage: message, reqJson, resJson };
 };
 
-var fhirR4Validation =  function(resJson){
+var fhirR4Validation =  function(reqJson, resJson){
     var result = fhir.validate(resJson);
     if (!result.valid)
         return response(false, JSON.stringify(result, null, "\t"));
-    return response(true);
+    return response(true, '', reqJson, resJson);
 };
 
-var onePatient = function(resJson){
+var onePatient = function(reqJson, resJson){
     var resources = fhir.evaluate(resJson, 'Bundle.entry.resource.resourceType');
     var patientCount = testUtils.countOccurences(resources,'Patient');
     if( patientCount !== 1)
         return response(false, 'The bundle contains ' + patientCount + ' Patient resources');
     else
-        return response(true);
+        return response(true, '', reqJson, resJson);
 };
 
-var noDefaultGuid = function(resJson){
+var noDefaultGuid = function(reqJson, resJson){
     var ids = fhir.evaluate(resJson, 'Bundle.entry.resource.id');
     var defaultGuidCount = testUtils.countOccurences(ids, testUtils.defaultGuid);
     if(defaultGuidCount >= 1)
         return response(false, 'The bundle contains ' + defaultGuidCount + ' default Guid(s) ' + testUtils.defaultGuid);
     else
-        return response(true);
+        return response(true, '', reqJson, resJson);
 };
 
-var noSameGuid = function(resJson){
+var noSameGuid = function(reqJson, resJson){
     var resources = fhir.evaluate(resJson, 'Bundle.entry.resource');
     var ids = [];
     for(var index in resources){
@@ -46,13 +53,57 @@ var noSameGuid = function(resJson){
     if(duplicates.length !== 0)
         return response(false, 'The bundle contains some duplicate Guids: ' + duplicates.toString());
     else
-        return response(true);
+        return response(true, '', reqJson, resJson);
+};
+
+const __revealObjectValues = (target, object, level) => {
+    if (level >= MAX_REVEAL_DEPTH) {
+        throw new Error('Reveal depth exceeds limit.');
+    }
+    if (_.isObject(object)) {
+        const keys = Object.keys(object).filter(key => !NON_COMPARE_PROPERTY.has(key));
+        return keys.every(key => __revealObjectValues(target, object[key], level + 1));
+    }
+    else {
+        const value = object.toString();
+        // specially treate datetime data type
+        const dateTimeRegex = /^[1-9]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])(\s+)?T?((20|21|22|23|[0-1]\d):[0-5]\d(:[0-5]\d)?)?.*$/;
+        if (dateTimeRegex.test(value)) {
+            return true;
+        }
+        return target.includes(value);
+    }
+};
+
+/**
+ * Every required property value appeared in conversion result should also appear in origin data.
+ * Some special data type should be treated separately (for example, "DataTime", since it has been processed by helper function).
+ * TODO: But there are many property values are extended from mapping table's explicit attribute, so there need a better way.
+ */
+const backwardValueReveal = (reqJson, resJson) => {
+    try {
+        const flag = __revealObjectValues(JSON.stringify(reqJson), resJson, 0);
+        const message = flag ? '' : 'Some properties can\'t be found in the origin data.';
+        return response(flag, message, reqJson, resJson);
+    }
+    catch (error) {
+        return response(false, error.toString(), reqJson, resJson);
+    }
+};
+
+/**
+ * Use officially recommended validator to validate resources.
+ */
+const officialValidator = (reqJson, resJson) => {
+    return response(true, '', reqJson, resJson);
 };
 
 module.exports = {
-    fhirR4Validation: fhirR4Validation,
-    onePatient: onePatient,
-    noDefaultGuid: noDefaultGuid,
-    noSameGuid: noSameGuid
+    fhirR4Validation,
+    onePatient,
+    noDefaultGuid,
+    noSameGuid,
+    backwardValueReveal,
+    officialValidator
 };
 

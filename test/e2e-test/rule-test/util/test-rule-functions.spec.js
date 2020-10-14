@@ -7,6 +7,7 @@ var assert = require('assert');
 var testRules = require('./test-rule-functions');
 var fs = require('fs');
 var path  = require('path');
+const commonUtils = require('../../util/utils');
 
 var onePatientBundle = {
     "resourceType": "Bundle",
@@ -156,44 +157,89 @@ describe('testRule', function () {
 
     it('Rule fhirR4Validation should return a object with valid status and empty string when the bundle is a standard FHIR R4 data', function () {
         var resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR R4/sample1.json')));
-        assert.strictEqual(testRules.fhirR4Validation(resJson).valid, true);
-        assert.strictEqual(testRules.fhirR4Validation(resJson).errorMessage, '');
+        assert.strictEqual(testRules.fhirR4Validation(null, resJson).valid, true);
+        assert.strictEqual(testRules.fhirR4Validation(null, resJson).errorMessage, '');
     });
 
     it('Rule fhirR4Validation should return a object with invalid status and error message when the bundle is not a standard FHIR R4 data', function () {
-        assert.strictEqual(testRules.fhirR4Validation(onePatientBundle).valid, false);
-        assert.strictEqual(JSON.parse(testRules.fhirR4Validation(onePatientBundle).errorMessage).valid, false);
+        assert.strictEqual(testRules.fhirR4Validation(null, onePatientBundle).valid, false);
+        assert.strictEqual(JSON.parse(testRules.fhirR4Validation(null, onePatientBundle).errorMessage).valid, false);
     });
 
     it('Rule onePatient should return a object with valid status and empty string when there is one Patient resourse', function () {
-        assert.strictEqual(testRules.onePatient(onePatientBundle).valid, true);
-        assert.strictEqual(testRules.onePatient(onePatientBundle).errorMessage, '');
+        assert.strictEqual(testRules.onePatient(null, onePatientBundle).valid, true);
+        assert.strictEqual(testRules.onePatient(null, onePatientBundle).errorMessage, '');
     });
 
     it('Rule onePatient should return a object with invalid status and error message when there are more than one Patient resourse', function () {
-        assert.strictEqual(testRules.onePatient(twoPatientSameGuidBundle).valid, false);
-        assert.strictEqual(testRules.onePatient(twoPatientSameGuidBundle).errorMessage, 'The bundle contains 2 Patient resources');
+        assert.strictEqual(testRules.onePatient(null, twoPatientSameGuidBundle).valid, false);
+        assert.strictEqual(testRules.onePatient(null, twoPatientSameGuidBundle).errorMessage, 'The bundle contains 2 Patient resources');
     });
 
     it('Rule noDefaultGuid should return a object with valid status and empty string when there is no default Guid', function () {
-        assert.strictEqual(testRules.noDefaultGuid(onePatientBundle).valid, true);
-        assert.strictEqual(testRules.noDefaultGuid(onePatientBundle).errorMessage, '');
+        assert.strictEqual(testRules.noDefaultGuid(null, onePatientBundle).valid, true);
+        assert.strictEqual(testRules.noDefaultGuid(null, onePatientBundle).errorMessage, '');
     });
 
     it('Rule noDefaultGuid should return a object with invalid status and error message when there is default Guid', function () {
-        assert.strictEqual(testRules.noDefaultGuid(defaultGuidBundle).valid, false);
-        assert.strictEqual(testRules.noDefaultGuid(defaultGuidBundle).errorMessage, 'The bundle contains 1 default Guid(s) 4cfe8d6d-3fc8-3e41-b921-f204be18db31');
+        assert.strictEqual(testRules.noDefaultGuid(null, defaultGuidBundle).valid, false);
+        assert.strictEqual(testRules.noDefaultGuid(null, defaultGuidBundle).errorMessage, 'The bundle contains 1 default Guid(s) 4cfe8d6d-3fc8-3e41-b921-f204be18db31');
     });
 
     it('Rule noSameGuid should return a object with valid status and empty string when there is no duplicate Guid', function () {
-        assert.strictEqual(testRules.noSameGuid(onePatientBundle).valid, true);
-        assert.strictEqual(testRules.noSameGuid(onePatientBundle).errorMessage, '');
-        assert.strictEqual(testRules.noSameGuid(patientEncounterSameGuidBundle).valid, true);
-        assert.strictEqual(testRules.noSameGuid(patientEncounterSameGuidBundle).errorMessage, '');
+        assert.strictEqual(testRules.noSameGuid(null, onePatientBundle).valid, true);
+        assert.strictEqual(testRules.noSameGuid(null, onePatientBundle).errorMessage, '');
+        assert.strictEqual(testRules.noSameGuid(null, patientEncounterSameGuidBundle).valid, true);
+        assert.strictEqual(testRules.noSameGuid(null, patientEncounterSameGuidBundle).errorMessage, '');
     });
 
     it('Rule noSameGuid should return a object with invalid status and error message when there are duplicate Guids', function () {
-        assert.strictEqual(testRules.noSameGuid(twoPatientSameGuidBundle).valid, false);
-        assert.strictEqual(testRules.noSameGuid(twoPatientSameGuidBundle).errorMessage, 'The bundle contains some duplicate Guids: Patient/2745d583-e3d1-3f88-8b21-7b59adb60779');
+        assert.strictEqual(testRules.noSameGuid(null, twoPatientSameGuidBundle).valid, false);
+        assert.strictEqual(testRules.noSameGuid(null, twoPatientSameGuidBundle).errorMessage, 'The bundle contains some duplicate Guids: Patient/2745d583-e3d1-3f88-8b21-7b59adb60779');
+    });
+
+    it('Rule backwardValueReveal should return an object with valid status and empty string when all the values can be traced.', () => {
+        const input = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR R4/sample2.json')));
+        const reqJson = {
+            templateBase64: null,
+            srcDataBase64: null,
+            messagev2: input.sourceData
+        };
+        const resJson = input.conversionResult;
+        assert.ok(testRules.backwardValueReveal(reqJson, resJson).valid);
+    });
+
+    it('Rule backwardValueReveal should return an object with invalid status and error message when some values can\'t be traced.', () => {
+        const input = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR R4/sample2.json')));
+        const reqJson = {
+            templateBase64: null,
+            srcDataBase64: null,
+            messagev2: input.sourceData
+        };
+        const resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR R4/sample1.json')));
+        const result = testRules.backwardValueReveal(reqJson, resJson);
+        
+        assert.strictEqual(result.valid, false);
+        assert.strictEqual(result.errorMessage, 'Some properties can\'t be found in the origin data.');
+    });
+
+    it('Rule backwardValueReveal should return an object with invalid status and error message when the resource is too deep.', () => {
+        const reqJson = {
+            templateBase64: null,
+            srcDataBase64: null,
+            messagev2: commonUtils.createDeepObject(128, false)
+        };
+        const resJson = commonUtils.createDeepObject(128, true);
+        const result = testRules.backwardValueReveal(reqJson, resJson);
+        
+        assert.strictEqual(result.valid, false);
+        assert.strictEqual(result.errorMessage, 'Error: Reveal depth exceeds limit.');
+    });
+
+    it('Rule officialValidator should return an object with valid status and empty string when the resource is valid.', () => {
+        assert.ok(testRules.officialValidator(null, null).valid);
+    });
+
+    it('Rule officialValidator should return an object with invalid status and error message when the resource is invalid.', () => {
     });
 });
