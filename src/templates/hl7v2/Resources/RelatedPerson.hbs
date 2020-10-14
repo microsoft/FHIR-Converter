@@ -5,7 +5,9 @@
         "id":"{{ID}}",
         "identifier":
         [
-            { {{>DataType/CX.hbs CX=PID-21}} },
+            {{#each (getFieldRepeats PID-21)}}
+                { {{>DataType/CX.hbs CX=this}} },
+            {{/each}}
             { {{>DataType/EIIdentifier.hbs EI=ROL-1}} },
             {
                 {{>DataType/PLN.hbs PLN=PRT-24}},
@@ -20,7 +22,9 @@
             },
             { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/Participation.hbs" CWE=PRT-4}} },
         ],
-        {{>DataType/XCNRelatedPerson.hbs XCN=ROL-4}},
+        {{#each (getFieldRepeats ROL-4)}}
+            {{>DataType/XCNRelatedPerson.hbs XCN=this}},
+        {{/each}}
         "period":
         {
             "start":"{{formatAsDateTime ROL-5}}",
@@ -32,31 +36,45 @@
         },
         "address":
         [
-            { {{>DataType/XAD.hbs XAD=ROL-11}} },
+            {{#each (getFieldRepeats ROL-11)}}
+                { {{>DataType/XAD.hbs XAD=this}} },
+            {{/each}}
             {
-                {{>DataType/XAD.hbs XAD=NK1-4}},
+                {{#each (getFieldRepeats NK1-4)}}
+                    {{>DataType/XAD.hbs XAD=this}},
+                {{/each}}
             },
             {
-                {{>DataType/XAD.hbs XAD=NK1-32}},
+                {{#each (getFieldRepeats NK1-32)}}
+                    {{>DataType/XAD.hbs XAD=this}},
+                {{/each}}
             },
-            { {{>DataType/XAD.hbs XAD=PRT-14}} },
+            {{#each (getFieldRepeats PRT-14)}}
+                { {{>DataType/XAD.hbs XAD=this}} },
+            {{/each}}
         ],
         "telecom":
         [
-            { {{>DataType/XTN.hbs XTN=ROL-12}} },
-            {{#each (getFieldRepeats NK1-5)}},
-                {
-                    {{>DataType/XTN.hbs XTN=this}},
-                },
-            {{/each}},
+            {{#each (getFieldRepeats ROL-12)}}
+                { {{>DataType/XTN.hbs XTN=this}} },
+            {{/each}}
             {
-                {{>DataType/XTN.hbs XTN=NK1-6}},
+                {{#each (getFieldRepeats NK1-5)}}
+                    {{>DataType/XTN.hbs XTN=this}},
+                {{/each}}
+            },
+            {
+                {{#each (getFieldRepeats NK1-6)}}
+                    {{>DataType/XTN.hbs XTN=this}},
+                {{/each}}
                 {{#if NK1-6}},
                     "use":"work",
                 {{/if}},
             },
             {
-                {{>DataType/XTN.hbs XTN=NK1-31}},
+                {{#each (getFieldRepeats NK1-31)}}
+                    {{>DataType/XTN.hbs XTN=this}},
+                {{/each}}
             },
             {
                 {{>DataType/XTN.hbs XTN=NK1-40}},
@@ -64,12 +82,18 @@
             {
                 {{>DataType/XTN.hbs XTN=NK1-41}},
             },
-            { {{>DataType/XTN.hbs XTN=PRT-15}} },
+            {{#each (getFieldRepeats PRT-15)}}
+                { {{>DataType/XTN.hbs XTN=this}} },
+            {{/each}}
         ],
         "name":
         [
-            { {{>DataType/XPN.hbs XPN=NK1-2}} },
-            { {{>DataType/XPN.hbs XPN=NK1-30}} },
+            {{#each (getFieldRepeats NK1-2)}}
+                { {{>DataType/XPN.hbs XPN=this}} },
+            {{/each}}
+            {{#each (getFieldRepeats NK1-30)}}
+                { {{>DataType/XPN.hbs XPN=this}} },
+            {{/each}}
         ],
         "gender":{{>DataType/_string.hbs mapping="CodeSystem/Gender.hbs" inCode=NK1-15 }},
         "birthDate":"{{addHyphensDate NK1-16}}",
@@ -82,10 +106,12 @@
                 },
             },
         ],
-        {{>DataType/XCNRelatedPerson.hbs XCN=PRT-5}},
+        {{#each (getFieldRepeats PRT-5)}}
+            {{>DataType/XCNRelatedPerson.hbs XCN=this}},
+        {{/each}}
     },
     "request":{
-        "method":"POST",
+        "method":"PUT",
         "url":"RelatedPerson/{{ID}}",
     },
 },

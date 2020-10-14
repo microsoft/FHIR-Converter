@@ -8,11 +8,11 @@
             {
                 {{>DataType/CX.hbs CX=PID-2}},
             },
-            {{#each (getFieldRepeats PID-3)}},
-                {
+            {
+                {{#each (getFieldRepeats PID-3)}}
                     {{>DataType/CX.hbs CX=this}},
-                },
-            {{/each}},
+                {{/each}}
+            },
             {
                 {{>DataType/CX.hbs CX=PID-4}},
             },
@@ -43,7 +43,9 @@
         "name":
         [
             {
-                {{>DataType/XPN.hbs XPN=PID-5}},
+                {{#each (getFieldRepeats PID-5)}}
+                    {{>DataType/XPN.hbs XPN=this}},
+                {{/each}}
             },
             {
                 {{>DataType/XPN.hbs XPN=PID-9}},
@@ -54,7 +56,9 @@
         "address":
         [
             {
-                {{>DataType/XAD.hbs XAD=PID-11}},
+                {{#each (getFieldRepeats PID-11)}}
+                    {{>DataType/XAD.hbs XAD=this}},
+                {{/each}}
             },
             {
                 "district":"{{PID-12}}",
@@ -62,27 +66,27 @@
         ],
         "telecom":
         [
-            {{#each (getFieldRepeats PID-13)}},
-                {
+            {
+                {{#each (getFieldRepeats PID-13)}}
                     {{>DataType/XTN.hbs XTN=this}},
-                    {{#if PID-13}},
-                        "use":"home",
-                    {{/if}},
-                },
-            {{/each}},
-            {{#each (getFieldRepeats PID-14)}},
-                {
+                {{/each}}
+                {{#if PID-13}},
+                    "use":"home",
+                {{/if}},
+            },
+            {
+                {{#each (getFieldRepeats PID-14)}}
                     {{>DataType/XTN.hbs XTN=this}},
-                    {{#if PID-14}},
-                        "use":"work",
-                    {{/if}},
-                },
-            {{/each}},
-            {{#each (getFieldRepeats PID-40)}},
-                {
+                {{/each}}
+                {{#if PID-14}},
+                    "use":"work",
+                {{/if}},
+            },
+            {
+                {{#each (getFieldRepeats PID-40)}}
                     {{>DataType/XTN.hbs XTN=this}},
-                },
-            {{/each}},
+                {{/each}}
+            },
         ],
         "communication":
         [
@@ -118,19 +122,27 @@
             {
                 "name":
                 {
-                    {{>DataType/XPN.hbs XPN=NK1-2}},
+                    {{#each (getFieldRepeats NK1-2)}}
+                        {{>DataType/XPN.hbs XPN=this}},
+                    {{/each}}
                 },
                 "address":
                 {
-                    {{>DataType/XAD.hbs XAD=NK1-4}},
+                    {{#each (getFieldRepeats NK1-4)}}
+                        {{>DataType/XAD.hbs XAD=this}},
+                    {{/each}}
                 },
                 "telecom":
                 [
                     {
-                        {{>DataType/XTN.hbs XTN=NK1-5}},
+                        {{#each (getFieldRepeats NK1-5)}}
+                            {{>DataType/XTN.hbs XTN=this}},
+                        {{/each}}
                     },
                     {
-                        {{>DataType/XTN.hbs XTN=NK1-6}},
+                        {{#each (getFieldRepeats NK1-6)}}
+                            {{>DataType/XTN.hbs XTN=this}},
+                        {{/each}}
                     },
                     {
                         {{>DataType/XTN.hbs XTN=NK1-40}},
@@ -153,7 +165,7 @@
         ],
     },
     "request":{
-        "method":"POST",
+        "method":"PUT",
         "url":"Patient/{{ID}}",
     },
 },

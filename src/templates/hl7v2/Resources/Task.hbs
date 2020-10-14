@@ -26,12 +26,14 @@
                 },
             ],
         },
-        {{>DataType/TQTask.hbs TQ=ORC-7}},
+        {{#each (getFieldRepeats ORC-7)}}
+            {{>DataType/TQTask.hbs TQ=this}},
+        {{/each}}
         "authoredOn":"{{formatAsDateTime ORC-9}}",
         "lastModified":"{{formatAsDateTime ORC-9}}",
     },
     "request":{
-        "method":"POST",
+        "method":"PUT",
         "url":"Task/{{ID}}",
     },
 },

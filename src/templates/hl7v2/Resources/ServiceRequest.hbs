@@ -89,7 +89,9 @@
                 { {{>DataType/EIIdentifier.hbs EI=OBR-2}} },
             {{/if}},
             { {{>DataType/EIIdentifier.hbs EI=OBR-3}} },
-            { {{>DataType/EIIdentifier.hbs EI=OBR-53}} },
+            {{#each (getFieldRepeats OBR-53)}}
+                { {{>DataType/EIIdentifier.hbs EI=this}} },
+            {{/each}}
         ],
         "status":{{>DataType/_code.hbs mapping="CodeSystem/OrderStatus.hbs" inCode=ORC-5 }},
         {{#if ORC-1}},
@@ -122,7 +124,9 @@
                 "count":"{{TQ1-14}}",
             },
         },
-        "priority":"{{TQ1-9}}",
+        {{#each (getFieldRepeats TQ1-9)}}
+            "priority":"{{this}}",
+        {{/each}}
         "priority":{{>DataType/_code.hbs mapping="CodeSystem/Priority.hbs" inCode=OBR-5 }},
         "code":
         {
@@ -130,11 +134,13 @@
         },
         "reasonCode":
         [
-            { {{>DataType/CWECodeableConcept.hbs CWE=OBR-31}} },
+            {{#each (getFieldRepeats OBR-31)}}
+                { {{>DataType/CWECodeableConcept.hbs CWE=this}} },
+            {{/each}}
         ],
     },
     "request":{
-        "method":"POST",
+        "method":"PUT",
         "url":"ServiceRequest/{{ID}}",
     },
 },

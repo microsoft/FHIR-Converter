@@ -6,22 +6,32 @@
         {{>DataType/PL.hbs PL=ROL-13}},
         {{>DataType/PL.hbs PL=PV1-3}},
         {{>DataType/PL.hbs PL=PV1-6}},
-        {{>DataType/PL.hbs PL=PR1-23}},
-        {{>DataType/PL.hbs PL=PRT-9}},
-        {{>DataType/XONLocation.hbs XON=ORC-21}},
+        {{#each (getFieldRepeats PR1-23)}}
+            {{>DataType/PL.hbs PL=this}},
+        {{/each}}
+        {{#each (getFieldRepeats PRT-9)}}
+            {{>DataType/PL.hbs PL=this}},
+        {{/each}}
+        {{#each (getFieldRepeats ORC-21)}}
+            {{>DataType/XONLocation.hbs XON=this}},
+        {{/each}}
         "address":
         {
-            {{>DataType/XAD.hbs XAD=ORC-22}},
+            {{#each (getFieldRepeats ORC-22)}}
+                {{>DataType/XAD.hbs XAD=this}},
+            {{/each}}
             {{>DataType/XAD.hbs XAD=RXA-28}},
         },
         "telecom":
         [
-            { {{>DataType/XTN.hbs XTN=ORC-23}} },
+            {{#each (getFieldRepeats ORC-23)}}
+                { {{>DataType/XTN.hbs XTN=this}} },
+            {{/each}}
         ],
         {{>DataType/PL.hbs PL=RXA-27}},
     },
     "request":{
-        "method":"POST",
+        "method":"PUT",
         "url":"Location/{{ID}}",
     },
 },

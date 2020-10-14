@@ -8,7 +8,7 @@
             {{>DataType/CWECoding.hbs mapping="CodeSystem/EncounterClass.hbs" CWE=PV1-2}},
         },
         {{#if (not PV1-45)}},
-            "status":{{>DataType/_string.hbs mapping="CodeSystem/EncounterType.hbs" inCode=PV1-2 }},
+            "status":"unknown",
         {{/if}},
         {{#if PV1-45}},
             "status":"finished",
@@ -229,7 +229,7 @@
         },
     },
     "request":{
-        "method":"POST",
+        "method":"PUT",
         "url":"Encounter/{{ID}}",
     },
 },

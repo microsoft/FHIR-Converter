@@ -8,15 +8,21 @@
         "receivedTime":"{{formatAsDateTime OBR-13}}",
         "note":
         [
+            {{#each (getFieldRepeats OBR-39)}}
+            {{/each}}
         ],
         "identifier":
         [
             {
                 {{>DataType/EIPIdentifier.hbs EIP=SPM-2}},
             },
-            { {{>DataType/EIPIdentifier.hbs EIP=SPM-3}} },
+            {{#each (getFieldRepeats SPM-3)}}
+                { {{>DataType/EIPIdentifier.hbs EIP=this}} },
+            {{/each}}
             {
-                {{>DataType/CX.hbs CX=SPM-31}},
+                {{#each (getFieldRepeats SPM-31)}}
+                    {{>DataType/CX.hbs CX=this}},
+                {{/each}}
             },
             {
                 {{>DataType/EIIdentifier.hbs EI=SPM-32}},
@@ -42,7 +48,9 @@
             {
                 "additiveCodeableConcept":
                 {
-                    {{>DataType/CWECodeableConcept.hbs CWE=SPM-6}},
+                    {{#each (getFieldRepeats SPM-6)}}
+                        {{>DataType/CWECodeableConcept.hbs CWE=this}},
+                    {{/each}}
                 },
                 "type":
                 {
@@ -69,15 +77,19 @@
         "status":{{>DataType/_string.hbs mapping="CodeSystem/SpecimenAvailability.hbs" inCode=SPM-20 }},
         "condition":
         [
-            { {{>DataType/CWECodeableConcept.hbs CWE=SPM-24}} },
+            {{#each (getFieldRepeats SPM-24)}}
+                { {{>DataType/CWECodeableConcept.hbs CWE=this}} },
+            {{/each}}
         ],
         "accessionIdentifier":
         {
-            {{>DataType/CX.hbs CX=SPM-30}},
+            {{#each (getFieldRepeats SPM-30)}}
+                {{>DataType/CX.hbs CX=this}},
+            {{/each}}
         },
     },
     "request":{
-        "method":"POST",
+        "method":"PUT",
         "url":"Specimen/{{ID}}",
     },
 },

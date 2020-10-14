@@ -14,7 +14,9 @@
                 "manifestation":
                 [
                     {
-                        "text":"{{AL1-5}}",
+                        {{#each (getFieldRepeats AL1-5)}}
+                            "text":"{{this}}",
+                        {{/each}}
                     },
                 ],
             },
@@ -22,7 +24,7 @@
         "onsetDateTime":"{{formatAsDateTime AL1-6}}",
     },
     "request":{
-        "method":"POST",
+        "method":"PUT",
         "url":"AllergyIntolerance/{{ID}}",
     },
 },
