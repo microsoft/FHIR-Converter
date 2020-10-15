@@ -14,7 +14,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set Up Java Environment
-      run: sudo apt install openjdk-8-jre-headless
+      run: sudo apt install openjdk-8-jre
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
