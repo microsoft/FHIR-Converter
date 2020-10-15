@@ -7,6 +7,11 @@ var testUtils = require('./utils');
 var fhirModule = require('fhir');
 var fhir = new fhirModule.Fhir();
 const _ = require('lodash');
+const path = require('path');
+const { v4: uuidv4 } = require('uuid');
+const fs = require('fs');
+const fsExtra = require('fs-extra');
+const systemExec = require('child_process').execSync;
 
 const MAX_REVEAL_DEPTH = 100;
 const NON_COMPARE_PROPERTY = new Set([
@@ -95,7 +100,38 @@ const backwardValueReveal = (reqJson, resJson) => {
  * Use officially recommended validator to validate resources.
  */
 const officialValidator = (reqJson, resJson) => {
-    return response(true, '', reqJson, resJson);
+    const javaExistCommand = 'java --version';
+    const validatorPath = path.join(__dirname, '../lib/validator_cli.jar');
+    const resourceFolder = path.join(__dirname, '../test-samples/tmp');
+    const resourcePath = path.join(resourceFolder, `${uuidv4().replace(/-/g, '')}.json`);
+    const command = `java -jar ${validatorPath} ${resourcePath} -version 4.0.1 -ig http://hl7.org/fhir/us/core`;
+
+    fsExtra.ensureDirSync(resourceFolder);
+    fsExtra.writeFileSync(resourcePath, JSON.stringify(resJson, null, 4));
+
+    try {
+        systemExec(javaExistCommand);
+    }
+    catch (error) {
+        fs.unlinkSync(resourcePath);
+        return response(false, error.toString(), reqJson, resJson);
+    }
+
+    let results = [], buffer = null;
+    try {
+        buffer = systemExec(command);
+    }
+    catch (error) {
+        buffer = error.output[1];
+    }
+    const lines = buffer.toString().split(/[\n|\r|\r\n]/);
+    results = results.concat(lines.map(line => line.trim()).filter(line => line.includes('Error')));
+    if (results && results.length > 0) {
+        fs.unlinkSync(resourcePath);
+        return response(false, results.join('\n'), reqJson, resJson);
+    }
+    fs.unlinkSync(resourcePath);
+    return response(true);
 };
 
 module.exports = {
