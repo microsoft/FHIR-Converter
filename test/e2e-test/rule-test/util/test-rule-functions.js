@@ -100,7 +100,7 @@ const backwardValueReveal = (reqJson, resJson) => {
  * Use officially recommended validator to validate resources.
  */
 const officialValidator = (reqJson, resJson) => {
-    const javaExistCommand = 'java --version';
+    const javaExistCommand = 'java -XshowSettings:properties -version';
     const validatorPath = path.join(__dirname, '../lib/validator_cli.jar');
     const resourceFolder = path.join(__dirname, '../test-samples/tmp');
     const resourcePath = path.join(resourceFolder, `${uuidv4().replace(/-/g, '')}.json`);
