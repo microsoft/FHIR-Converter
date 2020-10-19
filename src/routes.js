@@ -726,8 +726,8 @@ module.exports = function (app) {
     *         description: Unauthorized
     */
     app.post('/api/convert/:srcDataType', function (req, res) {
-        const retUnusedSegments = req.query.unusedSegments || false;
-        const retInvalidAcces = req.query.invalidAccess || false;
+        const retUnusedSegments = req.query.unusedSegments ? req.query.unusedSegments == 'true' : false;
+        const retInvalidAcces = req.query.invalidAccess ? req.query.invalidAccess == 'true' : false;
         workerPool.exec({
             'type': '/api/convert/:srcDataType',
             'srcDataType': req.params.srcDataType,
@@ -810,8 +810,8 @@ module.exports = function (app) {
     *         description: Template not found
     */
     app.post('/api/convert/:srcDataType/:template(*)', function (req, res) {
-        const retUnusedSegments = req.query.unusedSegments || false;
-        const retInvalidAcces = req.query.invalidAccess || false;
+        const retUnusedSegments = req.query.unusedSegments ? req.query.unusedSegments == 'true' : false;
+        const retInvalidAcces = req.query.invalidAccess ? req.query.invalidAccess == 'true' : false;
         workerPool.exec({
             'type': '/api/convert/:srcDataType/:template',
             'srcData': req.body.toString(),
