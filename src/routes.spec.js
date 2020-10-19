@@ -836,7 +836,6 @@ describe('POST /api/convert/hl7v2 (inline conversion)', function () {
             });
     });
 
-
     it('should return 400 Bad Request when given a payload without a message', function (done) {
         supertest(app)
             .post("/api/convert/hl7v2")
@@ -945,11 +944,11 @@ describe('POST /api/convert/hl7v2 (inline conversion)', function () {
             });
     });
 
-    it('should return 200 OK with detailed report for valid message with valid template', function (done) {
+    it('should return 200 OK with detailed report for valid message with valid template and report fields declaration', function (done) {
         //Message: MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||
         //Template: {}
         supertest(app)
-            .post("/api/convert/hl7v2")
+            .post("/api/convert/hl7v2?unusedSegments=true&invalidAccess=true")
             .set(API_KEY_HEADER, apiKeys[0])
             .send({ templateBase64: "e30=", srcDataBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=", templatesOverrideBase64: "e30=" })
             .expect(200, {
@@ -1036,6 +1035,149 @@ describe('POST /api/convert/hl7v2 (inline conversion)', function () {
                         "line": 0,
                         "type": "MSH"
                     }],
+                'invalidAccess': []
+            })
+            .end(function (err) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    done();
+                }
+            });
+    });
+
+    it('should return 200 OK without detailed report for valid message with valid template', function (done) {
+        //Message: MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||
+        //Template: {}
+        supertest(app)
+            .post("/api/convert/hl7v2")
+            .set(API_KEY_HEADER, apiKeys[0])
+            .send({ templateBase64: "e30=", srcDataBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=", templatesOverrideBase64: "e30=" })
+            .expect(200, {
+                'fhirResource': {}
+            })
+            .end(function (err) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    done();
+                }
+            });
+    });
+
+    it('should return 200 OK with single detailed report(unusedSegments) for valid message with valid template and single report field declaration', function (done) {
+        //Message: MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||
+        //Template: {}
+        supertest(app)
+            .post("/api/convert/hl7v2?unusedSegments=true")
+            .set(API_KEY_HEADER, apiKeys[0])
+            .send({ templateBase64: "e30=", srcDataBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=", templatesOverrideBase64: "e30=" })
+            .expect(200, {
+                'fhirResource': {},
+                'unusedSegments': [
+                    {
+                        "field": [
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "AccMgr"
+                                    }
+
+                                ],
+                                "index": 2
+                            },
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "1"
+                                    }
+
+                                ],
+                                "index": 3
+                            },
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "20050110045504"
+                                    }
+
+                                ],
+                                "index": 6
+                            },
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "ADT"
+                                    },
+                                    {
+                                        "index": 1,
+                                        "value": "A01"
+                                    }
+
+
+                                ],
+                                "index": 8
+                            },
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "599102"
+                                    }
+
+                                ],
+                                "index": 9
+                            },
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "P"
+                                    }
+
+                                ],
+                                "index": 10
+                            },
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "2.3"
+                                    }
+
+                                ],
+                                "index": 11
+                            }
+                        ],
+                        "line": 0,
+                        "type": "MSH"
+                    }]
+            })
+            .end(function (err) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    done();
+                }
+            });
+    });
+
+    it('should return 200 OK with single detailed report(invalidAccess) for valid message with valid template and single report field declaration', function (done) {
+        //Message: MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||
+        //Template: {}
+        supertest(app)
+            .post("/api/convert/hl7v2?invalidAccess=true")
+            .set(API_KEY_HEADER, apiKeys[0])
+            .send({ templateBase64: "e30=", srcDataBase64: "TVNIfF5+XCZ8QWNjTWdyfDF8fHwyMDA1MDExMDA0NTUwNHx8QURUXkEwMXw1OTkxMDJ8UHwyLjN8fHw=", templatesOverrideBase64: "e30=" })
+            .expect(200, {
+                'fhirResource': {},
                 'invalidAccess': []
             })
             .end(function (err) {
@@ -1568,6 +1710,110 @@ describe('POST /api/convert/hl7v2/:template (with stored template)', function ()
             .set('Content-Type', 'text/plain')
             .send(sourceData.join('\n'))
             .expect(200)
+            .end(function (err) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    done();
+                }
+            });
+    });
+
+    it('should return 200 OK and detailed reports with valid message and existing template and reports fields declaration', function (done) {
+        supertest(app)
+            .post("/api/convert/hl7v2/ADT_A01.hbs?unusedSegments=true&invalidAcces=true")
+            .set(API_KEY_HEADER, apiKeys[0])
+            .set('Content-Type', 'text/plain')
+            .send('MSH|^~\\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||')
+            .expect(200, {
+                'fhirResource': {
+                    "resourceType": "Bundle",
+                    "type": "transaction"
+                },
+                'unusedSegments': [
+                    {
+                        "field": [
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "AccMgr"
+                                    }
+
+                                ],
+                                "index": 2
+                            },
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "1"
+                                    }
+
+                                ],
+                                "index": 3
+                            },
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "20050110045504"
+                                    }
+
+                                ],
+                                "index": 6
+                            },
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "ADT"
+                                    },
+                                    {
+                                        "index": 1,
+                                        "value": "A01"
+                                    }
+
+
+                                ],
+                                "index": 8
+                            },
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "599102"
+                                    }
+
+                                ],
+                                "index": 9
+                            },
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "P"
+                                    }
+
+                                ],
+                                "index": 10
+                            },
+                            {
+                                "component": [
+                                    {
+                                        "index": 0,
+                                        "value": "2.3"
+                                    }
+
+                                ],
+                                "index": 11
+                            }
+                        ],
+                        "line": 0,
+                        "type": "MSH"
+                    }]
+            })
             .end(function (err) {
                 if (err) {
                     done(err);
