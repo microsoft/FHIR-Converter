@@ -155,13 +155,13 @@ var defaultGuidBundle = {
 
 describe('testRule', function () {
 
-    it('Rule fhirR4Validation should return a object with valid status and empty string when the bundle is a standard FHIR R4 data', function () {
-        var resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR R4/sample1.json')));
+    it('Rule fhirR4Validation should return a object with valid status and empty string when the bundle is a standard FHIR-R4 data', function () {
+        var resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample1.json')));
         assert.strictEqual(testRules.fhirR4Validation(null, resJson).valid, true);
         assert.strictEqual(testRules.fhirR4Validation(null, resJson).errorMessage, '');
     });
 
-    it('Rule fhirR4Validation should return a object with invalid status and error message when the bundle is not a standard FHIR R4 data', function () {
+    it('Rule fhirR4Validation should return a object with invalid status and error message when the bundle is not a standard FHIR-R4 data', function () {
         assert.strictEqual(testRules.fhirR4Validation(null, onePatientBundle).valid, false);
         assert.strictEqual(JSON.parse(testRules.fhirR4Validation(null, onePatientBundle).errorMessage).valid, false);
     });
@@ -199,7 +199,7 @@ describe('testRule', function () {
     });
 
     it('Rule backwardValueReveal should return an object with valid status and empty string when all the values can be traced.', () => {
-        const input = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR R4/sample2.json')));
+        const input = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample2.json')));
         const reqJson = {
             templateBase64: null,
             srcDataBase64: null,
@@ -210,13 +210,13 @@ describe('testRule', function () {
     });
 
     it('Rule backwardValueReveal should return an object with invalid status and error message when some values can\'t be traced.', () => {
-        const input = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR R4/sample2.json')));
+        const input = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample2.json')));
         const reqJson = {
             templateBase64: null,
             srcDataBase64: null,
             messagev2: input.sourceData
         };
-        const resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR R4/sample1.json')));
+        const resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample1.json')));
         const result = testRules.backwardValueReveal(reqJson, resJson);
         
         assert.strictEqual(result.valid, false);
@@ -238,13 +238,13 @@ describe('testRule', function () {
 
     it('Rule officialValidator should return an object with valid status and empty string when the resource is valid.', () => {
         const reqJson = null;
-        const resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR R4/sample3-right.json')));
+        const resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample3-right.json')));
         assert.ok(testRules.officialValidator(reqJson, resJson).valid);
     }).timeout(60000);
 
     it('Rule officialValidator should return an object with invalid status and error message when the resource is invalid.', () => {
         const reqJson = null;
-        const resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR R4/sample3-wrong.json')));
+        const resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample3-wrong.json')));
         const result = testRules.officialValidator(reqJson, resJson);
 
         const errorMessage = "Error @ Bundle.entry[1].resource.ofType(Practitioner) (line 57, col26) : Profile http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner, Element 'Bundle.entry[1].resource.ofType(Practitioner).identifier': minimum required = 1, but only found 0\nError @ Bundle.entry[1].resource.ofType(Practitioner) (line 57, col26) : Profile http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner, Element 'Bundle.entry[1].resource.ofType(Practitioner).name': minimum required = 1, but only found 0";
