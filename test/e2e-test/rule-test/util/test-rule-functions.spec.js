@@ -198,7 +198,7 @@ describe('testRule', function () {
         assert.strictEqual(testRules.noSameGuid(null, twoPatientSameGuidBundle).errorMessage, 'The bundle contains some duplicate Guids: Patient/2745d583-e3d1-3f88-8b21-7b59adb60779');
     });
 
-    it('Rule backwardValueReveal should return an object with valid status and empty string when all the values can be traced.', () => {
+    it('Rule originValueReveal should return an object with valid status and empty string when all the values can be traced.', () => {
         const input = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample2.json')));
         const reqJson = {
             templateBase64: null,
@@ -206,10 +206,10 @@ describe('testRule', function () {
             messagev2: input.sourceData
         };
         const resJson = input.conversionResult;
-        assert.ok(testRules.backwardValueReveal(reqJson, resJson).valid);
+        assert.ok(testRules.originValueReveal(reqJson, resJson).valid);
     });
 
-    it('Rule backwardValueReveal should return an object with invalid status and error message when some values can\'t be traced.', () => {
+    it('Rule originValueReveal should return an object with invalid status and error message when some values can\'t be traced.', () => {
         const input = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample2.json')));
         const reqJson = {
             templateBase64: null,
@@ -217,20 +217,20 @@ describe('testRule', function () {
             messagev2: input.sourceData
         };
         const resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample1.json')));
-        const result = testRules.backwardValueReveal(reqJson, resJson);
+        const result = testRules.originValueReveal(reqJson, resJson);
         
         assert.strictEqual(result.valid, false);
         assert.strictEqual(result.errorMessage, 'Some properties can\'t be found in the origin data.');
     });
 
-    it('Rule backwardValueReveal should return an object with invalid status and error message when the resource is too deep.', () => {
+    it('Rule originValueReveal should return an object with invalid status and error message when the resource is too deep.', () => {
         const reqJson = {
             templateBase64: null,
             srcDataBase64: null,
             messagev2: commonUtils.createDeepObject(128, false)
         };
         const resJson = commonUtils.createDeepObject(128, true);
-        const result = testRules.backwardValueReveal(reqJson, resJson);
+        const result = testRules.originValueReveal(reqJson, resJson);
         
         assert.strictEqual(result.valid, false);
         assert.strictEqual(result.errorMessage, 'Error: Reveal depth exceeds limit.');

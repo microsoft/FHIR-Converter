@@ -85,7 +85,7 @@ const __revealObjectValues = (target, object, level) => {
  * Some special data type should be treated separately (for example, "DataTime", since it has been processed by helper function).
  * TODO: But there are many property values are extended from mapping table's explicit attribute, so there need a better way.
  */
-const backwardValueReveal = (reqJson, resJson) => {
+const originValueReveal = (reqJson, resJson) => {
     try {
         const flag = __revealObjectValues(JSON.stringify(reqJson), resJson, 0);
         const message = flag ? '' : 'Some properties can\'t be found in the origin data.';
@@ -100,7 +100,7 @@ const backwardValueReveal = (reqJson, resJson) => {
  * Use officially recommended validator to validate resources.
  */
 const officialValidator = (reqJson, resJson) => {
-    const javaExistCommand = 'java -XshowSettings:properties -version';
+    const javaExistCommand = 'java -version';
     const validatorPath = path.join(__dirname, '../lib/validator_cli.jar');
     const resourceFolder = path.join(__dirname, '../test-samples/tmp');
     const resourcePath = path.join(resourceFolder, `${uuidv4().replace(/-/g, '')}.json`);
@@ -139,7 +139,7 @@ module.exports = {
     onePatient,
     noDefaultGuid,
     noSameGuid,
-    backwardValueReveal,
+    originValueReveal,
     officialValidator
 };
 
