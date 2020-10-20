@@ -102,9 +102,10 @@ const originValueReveal = (reqJson, resJson) => {
 const officialValidator = (reqJson, resJson) => {
     const javaExistCommand = 'java -version';
     const validatorPath = path.join(__dirname, '../lib/validator_cli.jar');
+    const specPath = 'http://hl7.org/fhir/us/core';
     const resourceFolder = path.join(__dirname, '../test-samples/tmp');
     const resourcePath = path.join(resourceFolder, `${uuidv4().replace(/-/g, '')}.json`);
-    const command = `java -jar ${validatorPath} ${resourcePath} -version 4.0.1 -ig http://hl7.org/fhir/us/core`;
+    const command = `java -jar ${validatorPath} ${resourcePath} -version 4.0.1 -ig ${specPath} -tx n/a`;
 
     fsExtra.ensureDirSync(resourceFolder);
     fsExtra.writeFileSync(resourcePath, JSON.stringify(resJson, null, 4));
@@ -142,4 +143,3 @@ module.exports = {
     originValueReveal,
     officialValidator
 };
-
