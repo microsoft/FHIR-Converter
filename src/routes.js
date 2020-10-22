@@ -702,6 +702,16 @@ module.exports = function (app) {
     *         description: 'API key'
     *         required: false
     *         type: string
+    *       - name: unusedSegments
+    *         in: query
+    *         description: 'Flag about whether to return the "unusedSegments", only used in web portal'
+    *         required: false
+    *         type: bool
+    *       - name: invalidAccess
+    *         in: query
+    *         description: 'Flag about whether to return the "invalidAccess", only used in web portal'
+    *         required: false
+    *         type: bool
     *       - name: X-MS-CONVERSION-API-KEY
     *         in: header
     *         description: 'API key'
@@ -716,6 +726,8 @@ module.exports = function (app) {
     *         description: Unauthorized
     */
     app.post('/api/convert/:srcDataType', function (req, res) {
+        const retUnusedSegments = req.query.unusedSegments == 'true';
+        const retInvalidAcces = req.query.invalidAccess == 'true';
         workerPool.exec({
             'type': '/api/convert/:srcDataType',
             'srcDataType': req.params.srcDataType,
@@ -723,8 +735,15 @@ module.exports = function (app) {
             'templateBase64': req.body.templateBase64,
             'templatesOverrideBase64': req.body.templatesOverrideBase64
         }).then((result) => {
+            const resultMessage = result.resultMsg;
+            if (!retUnusedSegments) {
+                delete resultMessage['unusedSegments'];
+            }
+            if (!retInvalidAcces) {
+                delete resultMessage['invalidAccess'];
+            }
             res.status(result.status);
-            res.json(result.resultMsg);
+            res.json(resultMessage);
             return;
         });
     });
@@ -765,6 +784,16 @@ module.exports = function (app) {
     *         description: 'API key'
     *         required: false
     *         type: string
+    *       - name: unusedSegments
+    *         in: query
+    *         description: 'Flag about whether to return the "unusedSegments", only used in web portal'
+    *         required: false
+    *         type: bool
+    *       - name: invalidAccess
+    *         in: query
+    *         description: 'Flag about whether to return the "invalidAccess", only used in web portal'
+    *         required: false
+    *         type: bool
     *       - name: X-MS-CONVERSION-API-KEY
     *         in: header
     *         description: 'API key'
@@ -781,14 +810,23 @@ module.exports = function (app) {
     *         description: Template not found
     */
     app.post('/api/convert/:srcDataType/:template(*)', function (req, res) {
+        const retUnusedSegments = req.query.unusedSegments == 'true';
+        const retInvalidAcces = req.query.invalidAccess == 'true';
         workerPool.exec({
             'type': '/api/convert/:srcDataType/:template',
             'srcData': req.body.toString(),
             'srcDataType': req.params.srcDataType,
             'templateName': req.params.template
         }).then((result) => {
+            const resultMessage = result.resultMsg;
+            if (!retUnusedSegments) {
+                delete resultMessage['unusedSegments'];
+            }
+            if (!retInvalidAcces) {
+                delete resultMessage['invalidAccess'];
+            }
             res.status(result.status);
-            res.json(result.resultMsg);
+            res.json(resultMessage);
             return;
         });
     });

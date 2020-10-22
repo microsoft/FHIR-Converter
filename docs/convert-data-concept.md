@@ -8,8 +8,21 @@ To convert your data leveraging the API, there are two different POST calls you 
 
 | Function | Syntax                    | Details                                         |
 |----------|---------------------------|-------------------------------------------------|
-|POST      |/api/convert/{srcDataType} |Takes data, and temporary templates as input and outputs FHIR data after applying the templates on the data. The entry-point template is passed base64-encoded in templateBase64 parameter, whereas other overriding templates are passed in the templatesOverrideBase64 parameter.  templatesOverrideBase64 is a base64-encoded json object containing map between the template name and the template content.|
-|POST      |/api/convert/{template}    |Takes data and converts to FHIR using the {template} that is stored on the server.|
+|POST      |/api/convert/{srcDataType} |Takes data, and temporary templates as input and outputs FHIR data after applying the templates on the data. The entry-point template is passed base64-encoded in templateBase64 parameter, whereas other overriding templates are passed in the templatesOverrideBase64 parameter.  templatesOverrideBase64 is a base64-encoded json object containing map between the template name and the template content. You can also set `unusedSegments` and `invalidAccess` parameters in the query string to fetch UI-related segments.|
+|POST      |/api/convert/{template}    |Takes data and converts to FHIR using the {template} that is stored on the server. You can also set `unusedSegments` and `invalidAccess` parameters in the query string to fetch UI-related segments.|
+
+### Examples
+1. `/api/convert/hl7v2/ADT_A01.hbs`
+    * Convert given source data(inside post body) with *HL7V2* type and *ADT_A01.hbs* template, the response will only contain a *fhirResource* property.
+
+2. `/api/convert/hl7v2/ADT_A01.hbs?unusedSegments=true`
+    * Convert given source data(inside post body) with *HL7V2* type and *ADT_A01.hbs* template, the response will contain both *fhirResource* and *unusedSegments* properties.
+
+3. `/api/convert/hl7v2/ADT_A01.hbs?invalidAccess=true`
+    * Convert given source data(inside post body) with *HL7V2* type and *ADT_A01.hbs* template, the response will contain both *fhirResource* and *invalidAccess* properties.
+
+4. `/api/convert/hl7v2/ADT_A01.hbs?unusedSegments=true&invalidAccess=true`
+    * Convert given source data(inside post body) with *HL7V2* type and *ADT_A01.hbs* template, the response will contain all the *fhirResource*, *unusedSegments* and *invalidAccess* properties.
 
 ## HL7 v2 Conversion output
 
@@ -18,8 +31,8 @@ Each time an HL7 v2 message is converted using the APIs, there are three pieces 
 | Section | Details | Use Case |
 |-|-|-|
 | **fhirResource** | The FHIR bundle for the converted HL7 v2 message | The fhirResource is the FHIR bundle that you can do further manipulation on or persist directly in a FHIR server
-| **unusedSegments** | A list of segments that the template didn’t look at that were present in the message. In the Web UI, these are the segments that were underlined in red dots (...) | You can use the details returned in this section to see if there were any required segments that weren't processed. In this way, you can ensure that you don't store a FHIR bundle that is missing key information from the HL7 v2 message |
-| **invalidAccess** | A list of segments the template tried to access that didn’t exist in the incoming HL7 v2 message | The invalidAccess section allows you to do post-processing on the FHIR bundle to ensure that the incoming HL7 v2 messages that was processed didn't have any major issues. For example, you may want to reject or investigate any message that is missing the Patient Identifier |
+| **unusedSegments** | **Returns only when there is a `unusedSegments=true` parameter in query string**. A list of segments that the template didn’t look at that were present in the message. In the Web UI, these are the segments that were underlined in red dots (...) | You can use the details returned in this section to see if there were any required segments that weren't processed. In this way, you can ensure that you don't store a FHIR bundle that is missing key information from the HL7 v2 message |
+| **invalidAccess** | **Returns only when there is a `invalidAccess=true` parameter in query string**. A list of segments the template tried to access that didn’t exist in the incoming HL7 v2 message | The invalidAccess section allows you to do post-processing on the FHIR bundle to ensure that the incoming HL7 v2 messages that was processed didn't have any major issues. For example, you may want to reject or investigate any message that is missing the Patient Identifier |
 
 ### Examples
 

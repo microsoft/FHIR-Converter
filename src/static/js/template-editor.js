@@ -57,7 +57,8 @@ function getUrl(endpoint, fileName) {
 }
 
 function getDataTypeSpecificUrl(endpoint, fileName) {
-    return '/api/' + endpoint + '/' + currentDataType + (fileName ? '/' + fileName : '');
+    const baseUrl = `/api/${endpoint}/${currentDataType}${fileName ? '/' + fileName : ''}`;
+    return `${baseUrl}?unusedSegments=true&invalidAccess=true`;
 }
 
 function checkApiKey(successFunc, errorFunc) {
