@@ -21,11 +21,21 @@
                 {{#if (eq PV1-2-1 "P")}},
                     "status":"planned",
                 {{/if}},
+                {{#if PV1-3}},
+                    "location":
+                    {
+                        "reference": "Location/{{generateUUID PV1-3}}",
+                    }
+                {{/if}}
             },
             {
                 {{#if PV1-6}},
                     "status":"completed",
-                {{/if}},
+                    "location":
+                    {
+                        "reference": "Location/{{generateUUID PV1-6}}",
+                    }
+                {{/if}}
             },
         ],
         "type":
