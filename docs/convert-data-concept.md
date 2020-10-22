@@ -9,7 +9,7 @@ To convert your data leveraging the API, there are two different POST calls you 
 | Function | Syntax                    | Details                                         |
 |----------|---------------------------|-------------------------------------------------|
 |POST      |/api/convert/{srcDataType} |Takes data, and temporary templates as input and outputs FHIR data after applying the templates on the data. The entry-point template is passed base64-encoded in templateBase64 parameter, whereas other overriding templates are passed in the templatesOverrideBase64 parameter.  templatesOverrideBase64 is a base64-encoded json object containing map between the template name and the template content. You can also set `unusedSegments` and `invalidAccess` parameters in the query string to fetch UI-related segments.|
-|POST      |/api/convert/{srcDataType}/{template}    |Takes data and converts to FHIR using the {template} that is stored on the server. You can also set `unusedSegments` and `invalidAccess` parameters in the query string to fetch UI-related segments.|
+|POST      |/api/convert/{template}    |Takes data and converts to FHIR using the {template} that is stored on the server. You can also set `unusedSegments` and `invalidAccess` parameters in the query string to fetch UI-related segments.|
 
 ### Examples
 1. `/api/convert/hl7v2/ADT_A01.hbs`
