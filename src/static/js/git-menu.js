@@ -8,8 +8,8 @@ function loadGitMenu() {
         $.getJSON('/api/templates/git/branches?code=' + getApiKey(), function (branches) {
             $("#git-dropdown").html('');
             if (status.length > 0) {
-                $("#git-dropdown").append("<a class=\"dropdown-item commit-link\" href=\"#\">Commit changes</a>");
-                $("#git-dropdown").on('click', 'a.commit-link', function () {
+                $("#git-dropdown").append("<a class=\"dropdown-item commit-link\" href=\"#\">Commit changes</a>").on('click', 'a.commit-link', function () 
+                {
                     commitChanges();
                 });
             } else {
