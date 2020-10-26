@@ -11,6 +11,13 @@
             {{#if PV1}},
 
                 {{>Resources/Encounter.hbs PV1=PV1 PV2=PV2 ID=(generateUUID PV1)}},
+                
+                {{#if PV1-3}},
+                    {{>Resources/Location.hbs PL=PV1-3 ID=(generateUUID PV1-3)}},
+                {{/if}},
+                {{#if PV1-6}},
+                    {{>Resources/Location.hbs PL=PV1-6 ID=(generateUUID PV1-6)}},
+                {{/if}},
 
                 {{#if PID-3-1}},
                     {{>References/Encounter/subject.hbs ID=(generateUUID PV1) REF=(concat 'Patient/' (generateUUID PID-3-1))}},
