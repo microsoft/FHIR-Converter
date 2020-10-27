@@ -71,15 +71,23 @@
         {
             {{>DataType/CWECodeableConcept.hbs CWE=RXA-5}},
         },
-        "lotNumber":"{{RXA-15}}",
-        "expirationDate":"{{addHyphensDate RXA-16}}",
+        {{#each (getFieldRepeats RXA-15)}}
+            "lotNumber":"{{this}}",
+        {{/each}}
+        {{#each (getFieldRepeats RXA-16)}}
+            "expirationDate":"{{addHyphensDate this}}",
+        {{/each}}
         "statusReason":
         {
-            {{>DataType/CWECodeableConcept.hbs CWE=RXA-18}},
+            {{#each (getFieldRepeats RXA-18)}}
+                {{>DataType/CWECodeableConcept.hbs CWE=this}},
+            {{/each}}
         },
         "reasonCode":
         [
-            { {{>DataType/CWECodeableConcept.hbs CWE=RXA-19}} },
+            {{#each (getFieldRepeats RXA-19)}}
+                { {{>DataType/CWECodeableConcept.hbs CWE=this}} },
+            {{/each}}
         ],
         "status":{{>DataType/_code.hbs mapping="CodeSystem/CompletionStatus.hbs" inCode=RXA-20 }},
         {{#if (eq RXA-21 "D")}},

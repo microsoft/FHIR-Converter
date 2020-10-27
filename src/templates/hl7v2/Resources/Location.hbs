@@ -3,16 +3,21 @@
     "resource":{
         "resourceType": "Location",
         "id":"{{ID}}",
-        {{>DataType/PL.hbs PL=PL}},
-        {{>DataType/XONLocation.hbs XON=ORC-21}},
+        {{#each (getFieldRepeats PL)}}
+            {{>DataType/PL.hbs PL=this}},
+        {{/each}}
         "address":
         {
-            {{>DataType/XAD.hbs XAD=ORC-22}},
+            {{#each (getFieldRepeats ORC-22)}}
+                {{>DataType/XAD.hbs XAD=this}},
+            {{/each}}
             {{>DataType/XAD.hbs XAD=RXA-28}},
         },
         "telecom":
         [
-            { {{>DataType/XTN.hbs XTN=ORC-23}} },
+            {{#each (getFieldRepeats ORC-23)}}
+                { {{>DataType/XTN.hbs XTN=this}} },
+            {{/each}}
         ],
         {{>DataType/PL.hbs PL=RXA-27}},
     },

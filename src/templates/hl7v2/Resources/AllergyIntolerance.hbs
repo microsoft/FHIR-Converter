@@ -14,7 +14,9 @@
                 "manifestation":
                 [
                     {
-                        "text":"{{AL1-5}}",
+                        {{#each (getFieldRepeats AL1-5)}}
+                            "text":"{{this}}",
+                        {{/each}}
                     },
                 ],
             },

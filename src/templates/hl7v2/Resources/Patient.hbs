@@ -37,7 +37,9 @@
         "name":
         [
             {
-                {{>DataType/XPN.hbs XPN=PID-5}},
+                {{#each (getFieldRepeats PID-5)}}
+                    {{>DataType/XPN.hbs XPN=this}},
+                {{/each}}
             },
             {
                 {{>DataType/XPN.hbs XPN=PID-9}},
@@ -48,7 +50,9 @@
         "address":
         [
             {
-                {{>DataType/XAD.hbs XAD=PID-11}},
+                {{#each (getFieldRepeats PID-11)}}
+                    {{>DataType/XAD.hbs XAD=this}},
+                {{/each}}
             },
             {
                 "district":"{{PID-12}}",
@@ -56,25 +60,23 @@
         ],
         "telecom":
         [
-            {{#each (getFieldRepeats PID-13)}}
             {
-                {{>DataType/XTN.hbs XTN=this}},
+                {{#each (getFieldRepeats PID-13)}}
+                    {{>DataType/XTN.hbs XTN=this}},
+                {{/each}}
                 "use":"home",
             },
-            {{/each}}
-
-            {{#each (getFieldRepeats PID-14)}}
             {
-                {{>DataType/XTN.hbs XTN=this}},
+                {{#each (getFieldRepeats PID-14)}}
+                    {{>DataType/XTN.hbs XTN=this}},
+                {{/each}}
                 "use":"work",
             },
-            {{/each}}
-            
-            {{#each (getFieldRepeats PID-40)}}
             {
-                {{>DataType/XTN.hbs XTN=this}},
+                {{#each (getFieldRepeats PID-40)}}
+                    {{>DataType/XTN.hbs XTN=this}},
+                {{/each}}
             },
-            {{/each}}
         ],
         "communication":
         [
@@ -110,19 +112,27 @@
             {
                 "name":
                 {
-                    {{>DataType/XPN.hbs XPN=NK1-2}},
+                    {{#each (getFieldRepeats NK1-2)}}
+                        {{>DataType/XPN.hbs XPN=this}},
+                    {{/each}}
                 },
                 "address":
                 {
-                    {{>DataType/XAD.hbs XAD=NK1-4}},
+                    {{#each (getFieldRepeats NK1-4)}}
+                        {{>DataType/XAD.hbs XAD=this}},
+                    {{/each}}
                 },
                 "telecom":
                 [
                     {
-                        {{>DataType/XTN.hbs XTN=NK1-5}},
+                        {{#each (getFieldRepeats NK1-5)}}
+                            {{>DataType/XTN.hbs XTN=this}},
+                        {{/each}}
                     },
                     {
-                        {{>DataType/XTN.hbs XTN=NK1-6}},
+                        {{#each (getFieldRepeats NK1-6)}}
+                            {{>DataType/XTN.hbs XTN=this}},
+                        {{/each}}
                     },
                     {
                         {{>DataType/XTN.hbs XTN=NK1-40}},

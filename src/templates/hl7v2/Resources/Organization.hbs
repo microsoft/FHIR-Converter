@@ -14,7 +14,9 @@
             {{#if OBX-25}},
                 { {{>DataType/XAD.hbs XAD=OBX-24}} },
             {{/if}},
-            { {{>DataType/XAD.hbs XAD=ORC-22}} },
+            {{#each (getFieldRepeats ORC-22)}}
+                { {{>DataType/XAD.hbs XAD=this}} },
+            {{/each}}
         ],
         {{#if (not MSH-21)}},
             {{>DataType/HDOrganization.hbs HD=MSH-4}},
@@ -26,15 +28,21 @@
             {
                 "name":
                 {
-                    {{>DataType/XPN.hbs XPN=NK1-30}},
+                    {{#each (getFieldRepeats NK1-30)}}
+                        {{>DataType/XPN.hbs XPN=this}},
+                    {{/each}}
                 },
                 "telecom":
                 [
-                    { {{>DataType/XTN.hbs XTN=NK1-31}} },
+                    {{#each (getFieldRepeats NK1-31)}}
+                        { {{>DataType/XTN.hbs XTN=this}} },
+                    {{/each}}
                 ],
                 "address":
                 {
-                    {{>DataType/XAD.hbs XAD=NK1-32}},
+                    {{#each (getFieldRepeats NK1-32)}}
+                        {{>DataType/XAD.hbs XAD=this}},
+                    {{/each}}
                 },
             },
         ],
@@ -42,12 +50,18 @@
         [
             { {{>DataType/CWECodeableConcept.hbs mapping="CodeSystem/OrganizationUnitType.hbs" CWE=PRT-7}} },
         ],
-        {{>DataType/XONOrganization.hbs XON=PRT-8}},
+        {{#each (getFieldRepeats PRT-8)}}
+            {{>DataType/XONOrganization.hbs XON=this}},
+        {{/each}}
         "telecom":
         [
-            { {{>DataType/XTN.hbs XTN=ORC-23}} },
+            {{#each (getFieldRepeats ORC-23)}}
+                { {{>DataType/XTN.hbs XTN=this}} },
+            {{/each}}
         ],
-        {{>DataType/CWEOrganization.hbs CWE=RXA-17}},
+        {{#each (getFieldRepeats RXA-17)}}
+            {{>DataType/CWEOrganization.hbs CWE=this}},
+        {{/each}}
     },
     "request":{
         "method":"PUT",
