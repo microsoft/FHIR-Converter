@@ -36,6 +36,12 @@
         [
             { {{>DataType/EIIdentifier.hbs EI=PR1-19}} },
         ],
+        {{#if PR1-23}},
+            "location":
+            {
+                "reference": "Location/{{generateUUID PR1-23}}",
+            }
+        {{/if}},
     },
     "request":{
         "method":"PUT",

@@ -91,7 +91,10 @@
                 "status": "unknown",
                 "location": [
                     {
-                        "status": "active"
+                        "status": "active",
+                        "location": {
+                            "reference": "Location/5f49ca69-cbda-3b30-8480-fa750dfee4a2"
+                        }
                     }
                 ],
                 "hospitalization": {
@@ -171,6 +174,25 @@
             "request": {
                 "method": "PUT",
                 "url": "Encounter/14693cea-02b9-3743-9010-fa549107ea68"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:5f49ca69-cbda-3b30-8480-fa750dfee4a2",
+            "resource": {
+                "resourceType": "Location",
+                "id": "5f49ca69-cbda-3b30-8480-fa750dfee4a2",
+                "mode": "instance",
+                "physicalType": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/location-physical-type"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/5f49ca69-cbda-3b30-8480-fa750dfee4a2"
             }
         },
         {

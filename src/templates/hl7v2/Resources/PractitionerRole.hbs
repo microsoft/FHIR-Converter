@@ -34,6 +34,12 @@
         [
             { {{>DataType/CWECodeableConcept.hbs CWE=PRT-6}} },
         ],
+        {{#if ROL-13}},
+            "location":
+            {
+                "reference": "Location/{{generateUUID ROL-13}}",
+            }
+        {{/if}},
         {{>DataType/XCNPractitionerRole.hbs XCN=ORC-12}},
         {{>DataType/NDLPractitionerRole.hbs NDL=OBR-32}},
         {{>DataType/NDLPractitionerRole.hbs NDL=OBR-34}},
