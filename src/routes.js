@@ -524,11 +524,13 @@ module.exports = function (app) {
      *         description: The file name
      *         required: true
      *         in: path
+     *         type: string
      *       - name: template
      *         description: The conversion template
      *         in: body
      *         required: true
-     *         type: string
+     *         schema:
+     *           type: string
      *       - name: code
      *         in: query
      *         description: 'API key'
