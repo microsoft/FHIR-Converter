@@ -1,14 +1,14 @@
 # FHIR Converter
 
 FHIR Converter is an open source project that enables the conversion of health data from legacy format to FHIR.
-It could be powered by two engines: [Handlebars](https://handlebarsjs.com/) and [DotLiquid](https://github.com/dotliquid/dotliquid).
+It could be powered by two engines: [Handlebars](https://handlebarsjs.com/) and [DotLiquid](http://dotliquidmarkup.org).
 This page mainly discusses the DotLiquid one.
-For the Handlebars one, please refer to the [Handlebars branch](#TBD).
+For the Handlebars one, please refer to the [Handlebars branch](https://github.com/microsoft/FHIR-Converter/tree/handlebars).
 
 Currently FHIR Converter with DotLiquid engine supports HL7 v2 to FHIR conversion.
 
 The Converter makes use of templates that define the mappings between different data formats.
-The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](#TBD), which make it easy with work with HL7 v2 messages.
+The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/FiltersSummary.md), which make it easy with work with HL7 v2 messages.
 
 Templates for HL7 v2 to FHIR conversion are attached with the Converter.
 HL7v2 to FHIR templates are based on the [spreadsheet](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk/edit#gid=0) created by the HL7 [2-To-FHIR project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project).
@@ -21,8 +21,8 @@ These bundles can be persisted to a FHIR server such as the [Azure API for FHIR]
 FHIR Converter with DotLiquid engine consists of the following components:
 
 1. A command-line tool for converting data.
-2. [Templates](#TBD) for HL7 v2 to FHIR conversion.
-3. [Sample data](#TBD) for testing purpose.
+2. [Templates](data/Templates) for HL7 v2 to FHIR conversion.
+3. [Sample data](data/SampleData) for testing purpose.
 
 ## Using the FHIR Converter
 
@@ -52,11 +52,11 @@ Example usage to convert HL7 v2 messages to FHIR resources in a folder:
 ```
 
 ## Reference documentation
-- [Filters summary](#TBD)
-- [Partial template concept](#TBD)
+- [Filters summary](docs/FiltersSummary.md)
+- [Partial template concept](docs/SnippetConcept.md)
 
 ## External resources
-- [DotLiquid documentation](https://github.com/dotliquid/dotliquid/wiki)
+- [DotLiquid wiki](https://github.com/dotliquid/dotliquid/wiki)
 - [HL7 Community 2-To-FHIR-Project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project)
  
 ## Contributing
