@@ -1,0 +1,19 @@
+﻿{
+    {% if inCode == '1' -%}
+    "code" : "EM",
+    "display" : "emergency",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-ActPriority",
+    {% elsif inCode == '2' -%}
+    "code" : "UR",
+    "display" : "urgent",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-ActPriority",
+    {% elsif inCode == '3' -%}
+    "code" : "EL",
+    "display" : "elective",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-ActPriority",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

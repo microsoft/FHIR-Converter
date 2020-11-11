@@ -1,0 +1,27 @@
+﻿{
+    {% if inCode == 'A' -%}
+    "code" : "POST",
+    "display" : "Create",
+    "system" : "",
+    {% elsif inCode == 'D' -%}
+    "code" : "DELETE",
+    "display" : "Delete",
+    "system" : "",
+    {% elsif inCode == 'U' -%}
+    "code" : "PUT",
+    "display" : "Update/Replace",
+    "system" : "",
+    {% elsif inCode == 'U' -%}
+    "code" : "PATCH",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'X' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

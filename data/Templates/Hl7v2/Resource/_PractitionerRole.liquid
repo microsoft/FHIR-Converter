@@ -1,0 +1,49 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "PractitionerRole",
+        "id":"{{ ID }}",
+        {% include 'DataType/XCNPractitionerRole' with XCN: PD1.4 -%}
+        "identifier":
+        [
+            { {% include 'DataType/EIIdentifier' with EI: ROL.1 -%} },
+            {
+                {% include 'DataType/PLN' with PLN: PRT.24 -%}
+            },
+        ],
+        "code":
+        [
+            { {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/Role', CWE: ROL.3 -%} },
+            { {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/Participation', CWE: ROL.4 -%} },
+            { {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/Participation', CWE: PRT.4 -%} },
+        ],
+        {% include 'DataType/XCNPractitionerRole' with XCN: ROL.4 -%}
+        "period":
+        {
+            "start":"{{ ROL.5.Value | format_as_date_time }}",
+            "start":"{{ PRT.11.Value | format_as_date_time }}",
+            "end":"{{ ROL.6.Value | format_as_date_time }}",
+            "end":"{{ PRT.12.Value | format_as_date_time }}",
+        },
+        "telecom":
+        [
+            { {% include 'DataType/XTN' with XTN: ROL.12 -%} },
+            { {% include 'DataType/XTN' with XTN: PRT.15 -%} },
+        ],
+        {% include 'DataType/XCNPractitionerRole' with XCN: ROL.4 -%}
+        {% include 'DataType/XCNPractitionerRole' with XCN: OBX.25 -%}
+        {% include 'DataType/XCNPractitionerRole' with XCN: PRT.5 -%}
+        "specialty":
+        [
+            { {% include 'DataType/CWECodeableConcept' with CWE: PRT.6 -%} },
+        ],
+        {% include 'DataType/XCNPractitionerRole' with XCN: ORC.12 -%}
+        {% include 'DataType/NDLPractitionerRole' with NDL: OBR.32 -%}
+        {% include 'DataType/NDLPractitionerRole' with NDL: OBR.34 -%}
+        {% include 'DataType/NDLPractitionerRole' with NDL: OBR.35 -%}
+    },
+    "request":{
+        "method":"PUT",
+        "url":"PractitionerRole/{{ ID }}",
+    },
+},

@@ -1,0 +1,56 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Organization",
+        "id":"{{ ID }}",
+        {% include 'DataType/HDOrganization' with HD: MSH.4 -%}
+        {% include 'DataType/HDMSH_6' with HD: MSH.6 -%}
+        "address":
+        [
+            {
+                "country":"{{ MSH.17.Value | get_property: 'CodeSystem/Countries', 'code' }}",
+            },
+            { {% include 'DataType/XAD' with XAD: OBX.24 -%} },
+            {% if OBX.25 -%}
+            { {% include 'DataType/XAD' with XAD: OBX.24 -%} },
+            {% endif -%}
+            { {% include 'DataType/XAD' with XAD: ORC.22 -%} },
+        ],
+        {% if MSH.21 == null -%}
+        {% include 'DataType/HDOrganization' with HD: MSH.4 -%}
+        {% endif -%}
+        {% include 'DataType/HDOrganization' with HD: MSH.22 -%}
+        {% include 'DataType/XONOrganization' with XON: ROL.14 -%}
+        "contact":
+        [
+            {
+                "name":
+                {
+                    {% include 'DataType/XPN' with XPN: NK1.30 -%}
+                },
+                "telecom":
+                [
+                    { {% include 'DataType/XTN' with XTN: NK1.31 -%} },
+                ],
+                "address":
+                {
+                    {% include 'DataType/XAD' with XAD: NK1.32 -%}
+                },
+            },
+        ],
+        "type":
+        [
+            { {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/OrganizationUnitType', CWE: PRT.7 -%} },
+        ],
+        {% include 'DataType/XONOrganization' with XON: PRT.8 -%}
+        "telecom":
+        [
+            { {% include 'DataType/XTN' with XTN: ORC.23 -%} },
+        ],
+        {% include 'DataType/CWEOrganization' with CWE: RXA.17 -%}
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Organization/{{ ID }}",
+    },
+},

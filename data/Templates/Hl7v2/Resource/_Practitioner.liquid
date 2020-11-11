@@ -1,0 +1,27 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Practitioner",
+        "id":"{{ ID }}",
+        "address":
+        [
+            { {% include 'DataType/XAD' with XAD: ROL.11 -%} },
+            { {% include 'DataType/XAD' with XAD: PRT.14 -%} },
+            { {% include 'DataType/XAD' with XAD: ORC.24 -%} },
+        ],
+        {% include 'DataType/XCNPractitionerRole' with XCN: OBX.16 -%}
+        {% include 'DataType/XCNPractitioner' with XCN: DG1.16 -%}
+        {% include 'DataType/XCNPractitioner' with XCN: PR1.8 -%}
+        {% include 'DataType/XCNPractitioner' with XCN: PR1.11 -%}
+        {% include 'DataType/XCNPractitioner' with XCN: PR1.12 -%}
+        {% include 'DataType/XCNPractitioner' with XCN: ORC.10 -%}
+        {% include 'DataType/XCNPractitioner' with XCN: ORC.11 -%}
+        {% include 'DataType/XCNPractitioner' with XCN: ORC.12 -%}
+        {% include 'DataType/XCNPractitioner' with XCN: NTE.5 -%}
+        {% include 'DataType/XCNPractitioner' with XCN: RXA.10 -%}
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Practitioner/{{ ID }}",
+    },
+},

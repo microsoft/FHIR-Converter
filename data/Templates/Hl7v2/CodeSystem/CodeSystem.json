@@ -1,0 +1,3157 @@
+{
+    "Mapping": {
+        "CodeSystem/EncounterType": {
+            "C": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }, 
+            "B": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }, 
+            "E": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }, 
+            "I": {
+                "code": "unknown", 
+                "display": "", 
+                "system": ""
+            }, 
+            "O": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }, 
+            "N": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "planned", 
+                "display": "", 
+                "system": ""
+            }, 
+            "R": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/UniversalIDType": {
+            "x500": {
+                "code": "x500", 
+                "display": "An X.500 directory name", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "DNS": {
+                "code": "DNS", 
+                "display": "An Internet host name, in accordance with RFC 1035; or an IP address. Either in ASCII or as integers, with periods between components (\u201cdotted\u201d notation).", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "CLIP": {
+                "code": "CLIP", 
+                "display": "Clinical laboratory Improvement Program. Allows for the ability to designate organization identifier as a \u201cCLIP\u201d assigned number (for labs). Used by US Department of Defense.", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "HL7": {
+                "code": "HL7", 
+                "display": "HL7 registration schemes", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "Random": {
+                "code": "Random", 
+                "display": "Usually a base64 encoded string of random bits. Note: Random IDs are typically used for instance identifiers, rather than an identifier of an Assigning Authority that issues instance identifiers", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "URI": {
+                "code": "URI", 
+                "display": "Uniform Resource Identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "x400": {
+                "code": "x400", 
+                "display": "An X.400 MHS identifier. Recommended format is in accordance with RFC 1649", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "ISO": {
+                "code": "ISO", 
+                "display": "An International Standards Organization Object Identifier (OID), in accordance with ISO/IEC 8824. Formatted as decimal digits separated by periods; recommended limit of 64 characters", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "HCD": {
+                "code": "HCD", 
+                "display": "The CEN Healthcare Coding Scheme Designator", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "CLIA": {
+                "code": "CLIA", 
+                "display": "Clinical Laboratory Improvement Amendments. Allows for the ability to designate organization identifier as a \u201cCLIA\u201d assigned number (for labs)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "EUI64": {
+                "code": "EUI64", 
+                "display": "IEEE 64-bit Extended Unique Identifier is comprised of a 24-bit company identifier and a 40-bit instance identifier. The value shall be formatted as 16 ASCII HEX digits, for example, \u201cAABBCC1122334455\u201d. The 24-bit company identifier, formally known as Organizationally Unique Identifier (OUI-24), is guaranteed to be globally unique. The 40-bit extensions are assigned by manufacturers. This identifier is often used in equipment interfaces (e.g., \u201cMAC\u201d address format for IPv4 & IPv6). [See http://standards.ieee.org/regauth/oui/tutorials/EUI64.html for a detailed explanation of the format.]", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "GUID": {
+                "code": "GUID", 
+                "display": "Same as UUID.", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "UUID": {
+                "code": "UUID", 
+                "display": "The DCE Universal Unique Identifier, in accordance with RFC 4122. Recommended format is 32 hexadecimal digits separated by hyphens, in the digit grouping 8-4-4-4-12", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }
+        }, 
+        "CodeSystem/ModeofArrival": {
+            "A": {
+                "code": "A", 
+                "display": "Ambulance", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }, 
+            "C": {
+                "code": "C", 
+                "display": "Car", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "On foot", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }, 
+            "H": {
+                "code": "H", 
+                "display": "Helicopter", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }, 
+            "O": {
+                "code": "O", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }, 
+            "P": {
+                "code": "P", 
+                "display": "Public Transport", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Unknown", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }
+        }, 
+        "CodeSystem/Religion": {}, 
+        "CodeSystem/AccessRestrictionValue": {
+            "JurisCUI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "LOC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAROACD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OPTIN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PersNSI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "42CFRPart2CD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "42CFRPart2": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PersPI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRPUBLICHEALTH": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRLEGALOBL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DEM": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAConsentCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SMD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgLDS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DRG": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgIP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OPTOUTE": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JurisUUI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JurisPI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIV": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NO": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRCONSENT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgDEID": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRVITALINTEREST": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAConsent": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "IMPLIEDD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JurisNSI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAAuth": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgPI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JurisIP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAResearchAuthCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgCUI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRCONTRACT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "COMMONRULE": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "STD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JurisDEID": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAPsyNotes": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GRANTORCHOICE": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRRESEARCH": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "EMRGONLY": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PersIP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAANOPP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRResearchCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "Title38Section7332": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRPUBLICINTEREST": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "IMPLIED": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRHLTHSOCSY": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgNSI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRLEGALCLAIM": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JurisLDS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAAuthCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OPTINR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAROA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OO": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ALL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgUUI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NOCONSENT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PersDEID": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OPTOUT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PersLDS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NOPP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OIC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CompoundResearchCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PSY": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRLEGITINTEREST": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OOS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OOC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OIS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAASelfPay": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/EncounterPriority": {
+            "1": {
+                "code": "EM", 
+                "display": "emergency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActPriority"
+            }, 
+            "3": {
+                "code": "EL", 
+                "display": "elective", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActPriority"
+            }, 
+            "2": {
+                "code": "UR", 
+                "display": "urgent", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActPriority"
+            }
+        }, 
+        "CodeSystem/AddressType": {
+            "C": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "B": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "BA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "F": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "BDL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "V": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "M": {
+                "code": "postal", 
+                "display": "Postal", 
+                "system": "http://hl7.org/fhir/address-type"
+            }, 
+            "BI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "O": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "N": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "S": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SH": {
+                "code": "postal", 
+                "display": "Postal", 
+                "system": "http://hl7.org/fhir/address-type"
+            }, 
+            "BR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "H": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RH": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "TM": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "L": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/OrderType": {
+            "I": {
+                "code": "HOSP", 
+                "display": "Hospital", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "O": {
+                "code": "OF", 
+                "display": "Outpatient facility", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }
+        }, 
+        "CodeSystem/ValueType": {
+            "EIP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DIN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SNM": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "FT": {
+                "code": "valueString", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DTN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DTM": {
+                "code": "valueDateTime", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RFR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JCC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CCP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "VH": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CNN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "FC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ERL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DT": {
+                "code": "valueDateTime", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ST": {
+                "code": "valueString", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DR": {
+                "code": "valuePeriod", 
+                "display": "", 
+                "system": ""
+            }, 
+            "LA1": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "XPN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NM": {
+                "code": "valueInteger or valueQuantity", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PPN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PTA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RMC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "TM": {
+                "code": "valueTime", 
+                "display": "", 
+                "system": ""
+            }, 
+            "LA2": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "TX": {
+                "code": "valueString", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PIP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NR": {
+                "code": "valueRange", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SCV": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SPD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "QIP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "XAD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "QSC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "EI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NDL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ICD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DLD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "AUI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ED": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "IS": {
+                "code": "valueCodeableConcept", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CF": {
+                "code": "valueCodeableConcept", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DLN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DDI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CX": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SRT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DLT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CSU": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "XTN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GTS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CWE": {
+                "code": "valueCodeableConcept", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RPT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "WVS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "UVC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PRL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "VID": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MO": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MOP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "XCN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "VR": {
+                "code": "valueRange", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CNE": {
+                "code": "valueCodeableConcept", 
+                "display": "", 
+                "system": ""
+            }, 
+            "WVI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SN": {
+                "code": "valueInteger, valueRange or valueRatio", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OSP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MOC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PLN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "XON": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MSG": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/CollectionMethodModifier": {
+            "R": {
+                "code": "COOL", 
+                "display": "Cool", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            }, 
+            "F": {
+                "code": "FROZ", 
+                "display": "Frozen", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            }
+        }, 
+        "CodeSystem/Operation": {
+            "A": {
+                "code": "POST", 
+                "display": "Create", 
+                "system": ""
+            }, 
+            "X": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "PATCH", 
+                "display": "", 
+                "system": ""
+            }, 
+            "D": {
+                "code": "DELETE", 
+                "display": "Delete", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/ReadmissionIndicator": {
+            "R": {
+                "code": "R", 
+                "display": "Re-admission", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0092"
+            }
+        }, 
+        "CodeSystem/CodeSystemUrl": {
+            "I9": {
+                "system": "http://hl7.org/fhir/sid/icd-9-cm"
+            }, 
+            "LN": {
+                "system": "http://loinc.org"
+            }, 
+            "SNM": {
+                "system": "http://snomed.info/sct"
+            }, 
+            "I10": {
+                "system": "http://hl7.org/fhir/sid/icd-10"
+            }
+        }, 
+        "CodeSystem/SpecimenAvailability": {
+            "Y": {
+                "code": "available", 
+                "display": "Available", 
+                "system": "http://hl7.org/fhir/specimen-status"
+            }, 
+            "N": {
+                "code": "unavailable", 
+                "display": "Unavailable", 
+                "system": "http://hl7.org/fhir/specimen-status"
+            }
+        }, 
+        "CodeSystem/SecurityLabelHandlingInstructions": {}, 
+        "CodeSystem/Yes_No": {
+            "Y": {
+                "code": "true", 
+                "display": "", 
+                "system": ""
+            }, 
+            "N": {
+                "code": "false", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/Language": {}, 
+        "CodeSystem/OrderStatus": {
+            "RP": {
+                "code": "revoked", 
+                "display": "Revoked", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "CM": {
+                "code": "completed", 
+                "display": "Completed", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "IP": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "CA": {
+                "code": "revoked", 
+                "display": "Revoked", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "DC": {
+                "code": "revoked", 
+                "display": "Revoked", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "SC": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "HD": {
+                "code": "on-hold", 
+                "display": "On Hold", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "ER": {
+                "code": "entered-in-error", 
+                "display": "Entered in Error", 
+                "system": "http://hl7.org/fhir/request-status"
+            }
+        }, 
+        "CodeSystem/Relationship": {
+            "EXF": {
+                "code": "EXT", 
+                "display": "extended family member", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "SIS": {
+                "code": "SIS", 
+                "display": "sister", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "PAR": {
+                "code": "PRN", 
+                "display": "parent", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "OAD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "EMC": {
+                "code": "C", 
+                "display": "Emergency Contact", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "DOM": {
+                "code": "SIGOTHR", 
+                "display": "significant other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "DEP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "C": {
+                "code": "C", 
+                "display": "Emergency Contact", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "SIB": {
+                "code": "SIB", 
+                "display": "sibling", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "FND": {
+                "code": "FRND", 
+                "display": "unrelated friend", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "EMR": {
+                "code": "E", 
+                "display": "Employer", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "E": {
+                "code": "E", 
+                "display": "Employer", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "S": {
+                "code": "S", 
+                "display": "State Agency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "NCH": {
+                "code": "NCHILD", 
+                "display": "natural child", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "OWN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SCH": {
+                "code": "STPCHLD", 
+                "display": "step child", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "ASC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "I": {
+                "code": "I", 
+                "display": "Insurance Company", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "SPO": {
+                "code": "SPS", 
+                "display": "spouse", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "FCH": {
+                "code": "CHLDFOST", 
+                "display": "foster child", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "SEL": {
+                "code": "ONESELF", 
+                "display": "self", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "CGV": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "WRD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CHD": {
+                "code": "CHILD", 
+                "display": "child", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "GRP": {
+                "code": "GRPRN", 
+                "display": "grandparent", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "Federal Agency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "TRA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GCH": {
+                "code": "GRNDCHILD", 
+                "display": "grandchild", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "O": {
+                "code": "O", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "N": {
+                "code": "N", 
+                "display": "Next-of-Kin", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "GRD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Unknown", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "FTH": {
+                "code": "FTH", 
+                "display": "father", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "UNK": {
+                "code": "U", 
+                "display": "Unknown", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "OTH": {
+                "code": "O", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "NON": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "EME": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MTH": {
+                "code": "MTH", 
+                "display": "mother", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "BRO": {
+                "code": "BRO", 
+                "display": "brother", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "MGR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/Priority": {
+            "A": {
+                "code": "asap", 
+                "display": "ASAP", 
+                "system": "http://hl7.org/fhir/request-priority"
+            }, 
+            "C": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PRN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "S": {
+                "code": "stat", 
+                "display": "STAT", 
+                "system": "http://hl7.org/fhir/request-priority"
+            }, 
+            "R": {
+                "code": "routine", 
+                "display": "Routine", 
+                "system": "http://hl7.org/fhir/request-priority"
+            }, 
+            "T": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/Countries": {}, 
+        "CodeSystem/NameType": {
+            "BAD": {
+                "code": "old", 
+                "display": "Old", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "MSK": {
+                "code": "anonymous", 
+                "display": "Anonymous", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "REL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "TEMP": {
+                "code": "temp", 
+                "display": "Temp", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "NB": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NOUSE": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "A": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "C": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "B": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "D": {
+                "code": "usual", 
+                "display": "Usual", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "F": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "I": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "K": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "M": {
+                "code": "maiden", 
+                "display": "Maiden", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "L": {
+                "code": "official", 
+                "display": "Official", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "N": {
+                "code": "nickname", 
+                "display": "Nickname", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "P": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "S": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "R": {
+                "code": "official", 
+                "display": "Official", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "U": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "T": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NAV": {
+                "code": "temp", 
+                "display": "temp", 
+                "system": "http://hl7.org/fhir/name-use"
+            }
+        }, 
+        "CodeSystem/SegmentActionCode": {
+            "A": {
+                "code": "POST", 
+                "display": "Create", 
+                "system": ""
+            }, 
+            "X": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "PATCH", 
+                "display": "", 
+                "system": ""
+            }, 
+            "D": {
+                "code": "DELETE", 
+                "display": "Delete", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/PreferredMethodofContact": {
+            "C": {
+                "code": "C", 
+                "display": "Cellular Phone Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0185"
+            }, 
+            "B": {
+                "code": "B", 
+                "display": "Beeper Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0185"
+            }, 
+            "E": {
+                "code": "E", 
+                "display": "E-Mail Address (for backward compatibility)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0185"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "FAX Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0185"
+            }, 
+            "H": {
+                "code": "H", 
+                "display": "Home Phone Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0185"
+            }, 
+            "O": {
+                "code": "O", 
+                "display": "Office Phone Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0185"
+            }
+        }, 
+        "CodeSystem/AdmissionType": {
+            "A": {
+                "code": "A", 
+                "display": "Accident", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }, 
+            "C": {
+                "code": "C", 
+                "display": "Elective", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }, 
+            "E": {
+                "code": "E", 
+                "display": "Emergency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }, 
+            "L": {
+                "code": "L", 
+                "display": "Labor and Delivery", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }, 
+            "N": {
+                "code": "N", 
+                "display": "Newborn (Birth in healthcare facility)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }, 
+            "R": {
+                "code": "R", 
+                "display": "Routine", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Urgent", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }
+        }, 
+        "CodeSystem/ContactRole": {
+            "C": {
+                "code": "C", 
+                "display": "Emergency Contact", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "E": {
+                "code": "E", 
+                "display": "Employer", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "Federal Agency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "I": {
+                "code": "I", 
+                "display": "Insurance Company", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "O": {
+                "code": "O", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "N": {
+                "code": "N", 
+                "display": "Next-of-Kin", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "S": {
+                "code": "S", 
+                "display": "State Agency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Unknown", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }
+        }, 
+        "CodeSystem/DurationUnit": {}, 
+        "CodeSystem/AllergyType": {
+            "AA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }, 
+            "MA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }, 
+            "MC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "LA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }, 
+            "EA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }, 
+            "DA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }, 
+            "FA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }, 
+            "PA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }
+        }, 
+        "CodeSystem/Role": {
+            "DP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RP": {
+                "code": "REF", 
+                "display": "referrer", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+            }, 
+            "VPS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "TR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "TN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "FHCP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MDIR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PH": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RO": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "AD": {
+                "code": "ADM", 
+                "display": "admitter", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+            }, 
+            "AI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "IP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "VP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "AP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "VTS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "AT": {
+                "code": "ATND", 
+                "display": "attender", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+            }, 
+            "CP": {
+                "code": "CON", 
+                "display": "consultant", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+            }, 
+            "CLP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "EP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PI": {
+                "code": "translator", 
+                "display": "Translator", 
+                "system": "http://terminology.hl7.org/CodeSystem/participant-type"
+            }, 
+            "OP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/ConsentStatus": {
+            "A": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/consent-state-codes"
+            }, 
+            "B": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "L": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/consent-state-codes"
+            }, 
+            "P": {
+                "code": "proposed", 
+                "display": "Proposed", 
+                "system": "http://hl7.org/fhir/consent-state-codes"
+            }, 
+            "R": {
+                "code": "rejected", 
+                "display": "Rejected", 
+                "system": "http://hl7.org/fhir/consent-state-codes"
+            }, 
+            "X": {
+                "code": "inactive", 
+                "display": "Inactivated", 
+                "system": "http://hl7.org/fhir/consent-state-codes"
+            }
+        }, 
+        "CodeSystem/StudentStatus": {
+            "P": {
+                "code": "P", 
+                "display": "Part-time student", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0231"
+            }, 
+            "N": {
+                "code": "N", 
+                "display": "Not a student", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0231"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "Full-time student", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0231"
+            }
+        }, 
+        "CodeSystem/Acknowledgements": {
+            "ER": {
+                "code": "on-error", 
+                "display": "Error/reject conditions only", 
+                "system": "http://hl7.org/fhir/messageheader-response-request"
+            }, 
+            "AL": {
+                "code": "always", 
+                "display": "Always", 
+                "system": "http://hl7.org/fhir/messageheader-response-request"
+            }, 
+            "SU": {
+                "code": "on-success", 
+                "display": "Successful completion only", 
+                "system": "http://hl7.org/fhir/messageheader-response-request"
+            }, 
+            "NE": {
+                "code": "never", 
+                "display": "Never", 
+                "system": "http://hl7.org/fhir/messageheader-response-request"
+            }
+        }, 
+        "CodeSystem/CompletionStatus": {
+            "RE": {
+                "code": "not-done", 
+                "display": "Not Done", 
+                "system": "http://hl7.org/fhir/event-status"
+            }, 
+            "CP": {
+                "code": "completed", 
+                "display": "Completed", 
+                "system": "http://hl7.org/fhir/event-status"
+            }, 
+            "PA": {
+                "code": "completed", 
+                "display": "Completed", 
+                "system": "http://hl7.org/fhir/event-status"
+            }, 
+            "NA": {
+                "code": "not-done", 
+                "display": "Not Done", 
+                "system": "http://hl7.org/fhir/event-status"
+            }
+        }, 
+        "CodeSystem/OrganizationUnitType": {
+            "H": {
+                "code": "H", 
+                "display": "Home", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }, 
+            "O": {
+                "code": "O", 
+                "display": "Office", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }, 
+            "1": {
+                "code": "1", 
+                "display": "Hospital", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }, 
+            "3": {
+                "code": "3", 
+                "display": "Long Term Care", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }, 
+            "2": {
+                "code": "2", 
+                "display": "Physician Clinic", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }, 
+            "5": {
+                "code": "5", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }, 
+            "4": {
+                "code": "4", 
+                "display": "Acute Care", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }
+        }, 
+        "CodeSystem/TelecomUseCode": {
+            "PRN": {
+                "code": "home", 
+                "display": "Home", 
+                "system": "http://hl7.org/fhir/contact-point-use"
+            }, 
+            "BPN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ORN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "WPN": {
+                "code": "work", 
+                "display": "Work", 
+                "system": "http://hl7.org/fhir/contact-point-use"
+            }, 
+            "VHN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PRS": {
+                "code": "mobile", 
+                "display": "Mobile", 
+                "system": "http://hl7.org/fhir/contact-point-use"
+            }, 
+            "EMR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NET": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ASN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/InterpretationCode": {
+            "AA": {
+                "code": "AA", 
+                "display": "Critical abnormal", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "TOX": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "W": {
+                "code": "W", 
+                "display": "Worse", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "CAR": {
+                "code": "CAR", 
+                "display": "Carrier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "DET": {
+                "code": "DET", 
+                "display": "Detected", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "HU": {
+                "code": "HU", 
+                "display": "Significantly high", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "HH": {
+                "code": "HH", 
+                "display": "Critical high", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "QCF": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "EXP": {
+                "code": "EXP", 
+                "display": "Expected", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "HM": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "null": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RR": {
+                "code": "RR", 
+                "display": "Reactive", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "LL": {
+                "code": "LL", 
+                "display": "Critical low", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "ND": {
+                "code": "ND", 
+                "display": "Not detected", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "POS": {
+                "code": "POS", 
+                "display": "Positive", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "LU": {
+                "code": "LU", 
+                "display": "Significantly low", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "NEG": {
+                "code": "NEG", 
+                "display": "Negative", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "NR": {
+                "code": "NR", 
+                "display": "Non-reactive", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "NS": {
+                "code": "NS", 
+                "display": "Non-susceptible", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "A": {
+                "code": "A", 
+                "display": "Abnormal", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "AC": {
+                "code": "AC", 
+                "display": "Anti-complementary substances present", 
+                "system": "Get the pattern/value"
+            }, 
+            "B": {
+                "code": "B", 
+                "display": "Better", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "E": {
+                "code": "E", 
+                "display": "Equivocal", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "D": {
+                "code": "D", 
+                "display": "Significant change down", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "I": {
+                "code": "I", 
+                "display": "Intermediate", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "H": {
+                "code": "H", 
+                "display": "High", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "L": {
+                "code": "L", 
+                "display": "Low", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "N": {
+                "code": "N", 
+                "display": "Normal", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "S": {
+                "code": "S", 
+                "display": "Susceptible", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "R": {
+                "code": "R", 
+                "display": "Resistant", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Significant change up", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "EX": {
+                "code": "EX", 
+                "display": "outside threshold", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "OBX": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "IE": {
+                "code": "IE", 
+                "display": "Insufficient evidence", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "WR": {
+                "code": "WR", 
+                "display": "Weakly reactive", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "SDD": {
+                "code": "SDD", 
+                "display": "Susceptible-dose dependent", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "VS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NCL": {
+                "code": "NCL", 
+                "display": "No CLSI defined breakpoint", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "MS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "IND": {
+                "code": "IND", 
+                "display": "Indeterminate", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "UNE": {
+                "code": "UNE", 
+                "display": "Unexpected", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }
+        }, 
+        "CodeSystem/ObservationStatus": {
+            "A": {
+                "code": "ammended", 
+                "display": "Ammended", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "C": {
+                "code": "corrected", 
+                "display": "Corrected", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "B": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "D": {
+                "code": "entered-in-error", 
+                "display": "Entered in Error", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "F": {
+                "code": "final", 
+                "display": "Final", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "I": {
+                "code": "", 
+                "display": "Registered", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "O": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "N": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "preliminary", 
+                "display": "Preliminary", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "S": {
+                "code": "preliminary", 
+                "display": "Preliminary", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "R": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "W": {
+                "code": "entered-in-error", 
+                "display": "Entered in Error", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "V": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "X": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/AccessRestrictionReasonCode": {}, 
+        "CodeSystem/AllergyCategory": {
+            "AA": {
+                "code": "environment", 
+                "display": "Environment", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-category"
+            }, 
+            "MA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "LA": {
+                "code": "environment", 
+                "display": "Environment", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-category"
+            }, 
+            "EA": {
+                "code": "environment", 
+                "display": "Environment", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-category"
+            }, 
+            "DA": {
+                "code": "medication", 
+                "display": "Medication", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-category"
+            }, 
+            "FA": {
+                "code": "food", 
+                "display": "Food", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-category"
+            }, 
+            "PA": {
+                "code": "environment", 
+                "display": "Environment", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-category"
+            }
+        }, 
+        "CodeSystem/NameAssemblyOrder": {
+            "G": {
+                "code": "G", 
+                "display": "Prefix Given Family Suffix", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0444"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "Prefix Family Given Suffix", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0444"
+            }
+        }, 
+        "CodeSystem/MaritalStatus": {
+            "A": {
+                "code": "L", 
+                "display": "Legally Separated", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "C": {
+                "code": "C", 
+                "display": "Common Law", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "B": {
+                "code": "U", 
+                "display": "unmarried", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "E": {
+                "code": "L", 
+                "display": "Legally Separated", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "D": {
+                "code": "D", 
+                "display": "Divorced", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "G": {
+                "code": "T", 
+                "display": "Domestic partner", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "I": {
+                "code": "I", 
+                "display": "Interlocutory", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "M": {
+                "code": "M", 
+                "display": "Married", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "O": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "N": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "T", 
+                "display": "Domestic partner", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "S": {
+                "code": "S", 
+                "display": "Never Married", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "R": {
+                "code": "T", 
+                "display": "Domestic partner", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "U": {
+                "code": "UNK", 
+                "display": "unknown", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-NullFlavor"
+            }, 
+            "T": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "W": {
+                "code": "W", 
+                "display": "Widowed", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }
+        }, 
+        "CodeSystem/Gender": {
+            "A": {
+                "code": "other", 
+                "display": "Other", 
+                "system": "http://hl7.org/fhir/administrative-gender"
+            }, 
+            "F": {
+                "code": "female", 
+                "display": "Female", 
+                "system": "http://hl7.org/fhir/administrative-gender"
+            }, 
+            "M": {
+                "code": "male", 
+                "display": "Male", 
+                "system": "http://hl7.org/fhir/administrative-gender"
+            }, 
+            "O": {
+                "code": "other", 
+                "display": "Other", 
+                "system": "http://hl7.org/fhir/administrative-gender"
+            }, 
+            "N": {
+                "code": "other", 
+                "display": "Other", 
+                "system": "http://hl7.org/fhir/administrative-gender"
+            }, 
+            "U": {
+                "code": "unknown", 
+                "display": "Unknown", 
+                "system": "http://hl7.org/fhir/administrative-gender"
+            }
+        }, 
+        "CodeSystem/ConfidentialityClassification": {}, 
+        "CodeSystem/EncounterClass": {
+            "C": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "B": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "E": {
+                "code": "EMER", 
+                "display": "emergency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+            }, 
+            "I": {
+                "code": "IMP", 
+                "display": "inpatient encounter", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+            }, 
+            "O": {
+                "code": "AMB", 
+                "display": "ambulatory", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+            }, 
+            "N": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "PRENC", 
+                "display": "pre-admission", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+            }, 
+            "R": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/LivingWill": {
+            "Y": {
+                "code": "Y", 
+                "display": "Yes, patient has a living will", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0315"
+            }, 
+            "I": {
+                "code": "I", 
+                "display": "No, patient does not have a living will but information was provided", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0315"
+            }, 
+            "N": {
+                "code": "N", 
+                "display": "No, patient does not have a living will and no information was provided", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0315"
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Unknown", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0315"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "Yes, patient has a living will but it is not on file", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0315"
+            }
+        }, 
+        "CodeSystem/ResultStatus": {
+            "A": {
+                "code": "partial", 
+                "display": "Partial", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "C": {
+                "code": "corrected", 
+                "display": "Corrected", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "F": {
+                "code": "final", 
+                "display": "Final", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "I": {
+                "code": "registered", 
+                "display": "Registered", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "O": {
+                "code": "registered", 
+                "display": "Registered", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "P": {
+                "code": "preliminary", 
+                "display": "Preliminary", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "S": {
+                "code": "registered", 
+                "display": "Registered", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "R": {
+                "code": "partial", 
+                "display": "Partial", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "Y": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "X": {
+                "code": "cancelled", 
+                "display": "Cancelled", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "Z": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/ConsentRelationship": {
+            "3": {
+                "code": "N", 
+                "display": "Next-of-Kin", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "2": {
+                "code": "PRN", 
+                "display": "Parent", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "5": {
+                "code": "O", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "4": {
+                "code": "O", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }
+        }, 
+        "CodeSystem/IDType": {
+            "WC": {
+                "code": "WC", 
+                "display": "WIC identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "BA": {
+                "code": "BA", 
+                "display": "Bank Account Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "BC": {
+                "code": "BC", 
+                "display": "Bank Card Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "BR": {
+                "code": "BR", 
+                "display": "Birth registry number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "SID": {
+                "code": "SID", 
+                "display": "Specimen ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "CONM": {
+                "code": "CONM", 
+                "display": "Change of Name Document", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PRC": {
+                "code": "PRC", 
+                "display": "Permanent Resident Card Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PC": {
+                "code": "PC", 
+                "display": "Parole Card", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PRN": {
+                "code": "PRN", 
+                "display": "Provider number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "TAX": {
+                "code": "TAX", 
+                "display": "Tax ID number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "RN": {
+                "code": "RN", 
+                "display": "Registered Nurse Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "XX": {
+                "code": "XX", 
+                "display": "Organization identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "RI": {
+                "code": "RI", 
+                "display": "Resource identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MRT": {
+                "code": "MRT", 
+                "display": "Temporary Medical Record Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "APRN": {
+                "code": "APRN", 
+                "display": "Advanced Practice Registered Nurse number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "LACSN": {
+                "code": "LACSN", 
+                "display": "Laboratory Accession ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "TPR": {
+                "code": "TPR", 
+                "display": "Temporary Permanent Resident (Canada)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "GN": {
+                "code": "GN", 
+                "display": "Guarantor external identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "GL": {
+                "code": "GL", 
+                "display": "General ledger number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "GI": {
+                "code": "GI", 
+                "display": "Guarantor internal identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NII": {
+                "code": "NII", 
+                "display": "National Insurance Organization Identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NPI": {
+                "code": "NPI", 
+                "display": "National provider identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "OD": {
+                "code": "OD", 
+                "display": "Optometrist license number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "SP": {
+                "code": "SP", 
+                "display": "Study Permit", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "WP": {
+                "code": "WP", 
+                "display": "Work Permit", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PCN": {
+                "code": "PCN", 
+                "display": "Penitentiary/correctional institution Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DEA": {
+                "code": "DEA", 
+                "display": "Drug Enforcement Administration registration number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PT": {
+                "code": "PT", 
+                "display": "Patient external identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "BRN": {
+                "code": "BRN", 
+                "display": "Breed Registry Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "AMA": {
+                "code": "AMA", 
+                "display": "American Medical Association Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NNxxx": {
+                "code": "NNxxx", 
+                "display": "National Person Identifier where the xxx is the ISO table 3166 3-character (alphabetic) country code", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PA": {
+                "code": "PA", 
+                "display": "Physician Assistant number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PE": {
+                "code": "PE", 
+                "display": "Living Subject Enterprise Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PI": {
+                "code": "PI", 
+                "display": "Patient internal identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PN": {
+                "code": "PN", 
+                "display": "Person number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "EN": {
+                "code": "EN", 
+                "display": "Employer number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "EI": {
+                "code": "EI", 
+                "display": "Employee number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DDS": {
+                "code": "DDS", 
+                "display": "Dentist license number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "AND": {
+                "code": "AND", 
+                "display": "Account number debitor", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MD": {
+                "code": "MD", 
+                "display": "Medical License number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MA": {
+                "code": "MA", 
+                "display": "Patient Medicaid number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "RR": {
+                "code": "RR", 
+                "display": "Railroad Retirement number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MC": {
+                "code": "MC", 
+                "display": "Patient\u2019s Medicare number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "ANC": {
+                "code": "ANC", 
+                "display": "Account number Creditor", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MI": {
+                "code": "MI", 
+                "display": "Military ID number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "ANT": {
+                "code": "ANT", 
+                "display": "Temporary Account Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "ANON": {
+                "code": "ANON", 
+                "display": "Anonymous identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MS": {
+                "code": "MS", 
+                "display": "MasterCard", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MR": {
+                "code": "MR", 
+                "display": "Medical record number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "IND": {
+                "code": "IND", 
+                "display": "Indigenous/Aboriginal", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "UPIN": {
+                "code": "UPIN", 
+                "display": "Medicare/CMS (formerly HCFA)\u2019s Universal Physician Identification numbers", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PEN": {
+                "code": "PEN", 
+                "display": "Pension Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "BCT": {
+                "code": "BCT", 
+                "display": "Birth Certificate", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "FI": {
+                "code": "FI", 
+                "display": "Facility ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NH": {
+                "code": "NH", 
+                "display": "National Health Plan Identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NI": {
+                "code": "NI", 
+                "display": "National unique individual identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "RRI": {
+                "code": "RRI", 
+                "display": "Regional registry ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NE": {
+                "code": "NE", 
+                "display": "National employer identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "LANR": {
+                "code": "LANR", 
+                "display": "Lifelong physician number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NP": {
+                "code": "NP", 
+                "display": "Nurse practitioner number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "RRP": {
+                "code": "RRP", 
+                "display": "Railroad Retirement Provider", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "CC": {
+                "code": "CC", 
+                "display": "Cost Center number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "CZ": {
+                "code": "CZ", 
+                "display": "Citizenship Card", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "CY": {
+                "code": "CY", 
+                "display": "County number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DFN": {
+                "code": "DFN", 
+                "display": "Drug Furnishing or prescriptive authority Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "SS": {
+                "code": "SS", 
+                "display": "Social Security number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "SR": {
+                "code": "SR", 
+                "display": "State registry ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MB": {
+                "code": "MB", 
+                "display": "Member Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PPIN": {
+                "code": "PPIN", 
+                "display": "Medicare/CMS Performing Provider Identification Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NIIP": {
+                "code": "NIIP", 
+                "display": "National Insurance Payor Identifier (Payor)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "SN": {
+                "code": "SN", 
+                "display": "Subscriber Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "SL": {
+                "code": "SL", 
+                "display": "State license", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DN": {
+                "code": "DN", 
+                "display": "Doctor number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DO": {
+                "code": "DO", 
+                "display": "Osteopathic License number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DL": {
+                "code": "DL", 
+                "display": "Driver\u2019s license number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "BSNR": {
+                "code": "BSNR", 
+                "display": "Primary physician office number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DI": {
+                "code": "DI", 
+                "display": "Diner\u2019s Club card", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "JHN": {
+                "code": "JHN", 
+                "display": "Jurisdictional health number (Canada)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "HC": {
+                "code": "HC", 
+                "display": "Health Card Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DPM": {
+                "code": "DPM", 
+                "display": "Podiatrist license number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DR": {
+                "code": "DR", 
+                "display": "Donor Registration Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DS": {
+                "code": "DS", 
+                "display": "Discover Card", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DP": {
+                "code": "DP", 
+                "display": "Diplomatic Passport", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "USID": {
+                "code": "USID", 
+                "display": "Unique Specimen ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "LN": {
+                "code": "LN", 
+                "display": "License number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "ASID": {
+                "code": "ASID", 
+                "display": "Ancestor Specimen ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PPN": {
+                "code": "PPN", 
+                "display": "Passport number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "LI": {
+                "code": "LI", 
+                "display": "Labor and industries number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "TN": {
+                "code": "TN", 
+                "display": "Treaty Number/ (Canada)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "ACSN": {
+                "code": "ACSN", 
+                "display": "Accession ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "LR": {
+                "code": "LR", 
+                "display": "Local Registry ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "RPH": {
+                "code": "RPH", 
+                "display": "Pharmacist license number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NBSNR": {
+                "code": "NBSNR", 
+                "display": "Secondary physician office number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "AM": {
+                "code": "AM", 
+                "display": "American Express", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "VN": {
+                "code": "VN", 
+                "display": "Visit number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "AN": {
+                "code": "AN", 
+                "display": "Account number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "VP": {
+                "code": "VP", 
+                "display": "Visitor Permit", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "VS": {
+                "code": "VS", 
+                "display": "VISA", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Unspecified identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "ESN": {
+                "code": "ESN", 
+                "display": "Staff Enterprise Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "WCN": {
+                "code": "WCN", 
+                "display": "Workers\u2019 Comp Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MCN": {
+                "code": "MCN", 
+                "display": "Microchip Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MCD": {
+                "code": "MCD", 
+                "display": "Practitioner Medicaid number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NCT": {
+                "code": "NCT", 
+                "display": "Naturalization Certificate", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PNT": {
+                "code": "PNT", 
+                "display": "Temporary Living Subject Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "QA": {
+                "code": "QA", 
+                "display": "QA number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MCT": {
+                "code": "MCT", 
+                "display": "Marriage Certificate", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MCR": {
+                "code": "MCR", 
+                "display": "Practitioner Medicare number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }
+        }, 
+        "CodeSystem/RegistryStatus": {
+            "A": {
+                "code": "true", 
+                "display": "", 
+                "system": ""
+            }, 
+            "I": {
+                "code": "false", 
+                "display": "", 
+                "system": ""
+            }, 
+            "M": {
+                "code": "false", 
+                "display": "", 
+                "system": ""
+            }, 
+            "L": {
+                "code": "false", 
+                "display": "", 
+                "system": ""
+            }, 
+            "O": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "false", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }
+    }
+}

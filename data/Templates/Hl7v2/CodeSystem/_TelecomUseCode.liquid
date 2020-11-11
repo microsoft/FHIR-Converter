@@ -1,0 +1,43 @@
+﻿{
+    {% if inCode == 'PRN' -%}
+    "code" : "home",
+    "display" : "Home",
+    "system" : "http://hl7.org/fhir/contact-point-use",
+    {% elsif inCode == 'ORN' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'WPN' -%}
+    "code" : "work",
+    "display" : "Work",
+    "system" : "http://hl7.org/fhir/contact-point-use",
+    {% elsif inCode == 'VHN' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'ASN' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'EMR' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'NET' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'BPN' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'PRS' -%}
+    "code" : "mobile",
+    "display" : "Mobile",
+    "system" : "http://hl7.org/fhir/contact-point-use",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

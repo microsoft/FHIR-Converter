@@ -1,0 +1,37 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Task",
+        "id":"{{ ID }}",
+        {% if ORC.1 -%}
+        "status":"requested",
+        {% endif -%}
+        {% if ORC.1 -%}
+        "status":"cancelled",
+        {% endif -%}
+        {% if ORC.1 -%}
+        "intent":"order",
+        {% endif -%}
+        "code":
+        {
+            "coding":
+            [
+                {
+                    {% if ORC.1 -%}
+                    "code":"fulfill",
+                    {% endif -%}
+                    {% if ORC.1 -%}
+                    "system":"http://hl7.org/fhir/CodeSystem/task-code",
+                    {% endif -%}
+                },
+            ],
+        },
+        {% include 'DataType/TQTask' with TQ: ORC.7 -%}
+        "authoredOn":"{{ ORC.9.Value | format_as_date_time }}",
+        "lastModified":"{{ ORC.9.Value | format_as_date_time }}",
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Task/{{ ID }}",
+    },
+},

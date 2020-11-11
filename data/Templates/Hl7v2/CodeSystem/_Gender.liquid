@@ -1,0 +1,31 @@
+﻿{
+    {% if inCode == 'F' -%}
+    "code" : "female",
+    "display" : "Female",
+    "system" : "http://hl7.org/fhir/administrative-gender",
+    {% elsif inCode == 'M' -%}
+    "code" : "male",
+    "display" : "Male",
+    "system" : "http://hl7.org/fhir/administrative-gender",
+    {% elsif inCode == 'O' -%}
+    "code" : "other",
+    "display" : "Other",
+    "system" : "http://hl7.org/fhir/administrative-gender",
+    {% elsif inCode == 'U' -%}
+    "code" : "unknown",
+    "display" : "Unknown",
+    "system" : "http://hl7.org/fhir/administrative-gender",
+    {% elsif inCode == 'A' -%}
+    "code" : "other",
+    "display" : "Other",
+    "system" : "http://hl7.org/fhir/administrative-gender",
+    {% elsif inCode == 'N' -%}
+    "code" : "other",
+    "display" : "Other",
+    "system" : "http://hl7.org/fhir/administrative-gender",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

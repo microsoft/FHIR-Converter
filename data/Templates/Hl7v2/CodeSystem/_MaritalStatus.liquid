@@ -1,0 +1,75 @@
+﻿{
+    {% if inCode == 'A' -%}
+    "code" : "L",
+    "display" : "Legally Separated",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    {% elsif inCode == 'D' -%}
+    "code" : "D",
+    "display" : "Divorced",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    {% elsif inCode == 'M' -%}
+    "code" : "M",
+    "display" : "Married",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    {% elsif inCode == 'S' -%}
+    "code" : "S",
+    "display" : "Never Married",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    {% elsif inCode == 'W' -%}
+    "code" : "W",
+    "display" : "Widowed",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    {% elsif inCode == 'C' -%}
+    "code" : "C",
+    "display" : "Common Law",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    {% elsif inCode == 'G' -%}
+    "code" : "T",
+    "display" : "Domestic partner",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    {% elsif inCode == 'P' -%}
+    "code" : "T",
+    "display" : "Domestic partner",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    {% elsif inCode == 'R' -%}
+    "code" : "T",
+    "display" : "Domestic partner",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    {% elsif inCode == 'E' -%}
+    "code" : "L",
+    "display" : "Legally Separated",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    {% elsif inCode == 'N' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'I' -%}
+    "code" : "I",
+    "display" : "Interlocutory",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    {% elsif inCode == 'B' -%}
+    "code" : "U",
+    "display" : "unmarried",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    {% elsif inCode == 'U' -%}
+    "code" : "UNK",
+    "display" : "unknown",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+    {% elsif inCode == 'O' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'T' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == '' -%}
+    "code" : "P",
+    "display" : "Polygamous",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

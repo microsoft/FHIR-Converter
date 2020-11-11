@@ -1,0 +1,16 @@
+﻿"value":"{{ CX.1.Value }}",
+"type":
+{
+    "coding":
+    [
+        {
+            "code":"{{ CX.5.Value | get_property: 'CodeSystem/IDType', 'code' }}",
+            "system":"{{ CX.5.Value | get_property: 'CodeSystem/IDType', 'system' }}",
+        },
+    ],
+},
+"period":
+{
+    "start":"{{ CX.7.Value | format_as_date_time }}",
+    "end":"{{ CX.8.Value | format_as_date_time }}",
+},

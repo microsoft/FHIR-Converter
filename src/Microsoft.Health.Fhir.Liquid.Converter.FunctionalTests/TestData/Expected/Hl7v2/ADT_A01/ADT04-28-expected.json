@@ -1,0 +1,178 @@
+﻿{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:383c0727-d4ff-3837-8d9e-85d32f1a6040",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "383c0727-d4ff-3837-8d9e-85d32f1a6040",
+        "identifier": [
+          {
+            "value": "0000000001"
+          },
+          {
+            "value": "e167267c-16c9-4fe3-96ae-9cff5703e90a"
+          },
+          {
+            "value": "a1d4ee8aba494ca"
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "SS"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn",
+            "value": "101-01-0001"
+          }
+        ],
+        "name": [
+          {
+            "family": "Bixby",
+            "given": [
+              "Timothy",
+              "Paul"
+            ]
+          }
+        ],
+        "birthDate": "2008-01-06",
+        "gender": "male",
+        "address": [
+          {
+            "line": [
+              "4762 Hickory Street"
+            ],
+            "city": "Monroe",
+            "state": "WI",
+            "postalCode": "53566",
+            "country": "US"
+          },
+          {
+            "district": "Green"
+          }
+        ],
+        "telecom": [
+          {
+            "value": "8088675301",
+            "use": "home"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Patient/383c0727-d4ff-3837-8d9e-85d32f1a6040"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:8fdb08f3-fcd2-3f46-8b6f-807cc7a4fcee",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "8fdb08f3-fcd2-3f46-8b6f-807cc7a4fcee",
+        "class": {
+          "code": "IMP",
+          "display": "inpatient encounter",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "status": "unknown",
+        "location": [
+          {
+            "status": "active"
+          }
+        ],
+        "participant": [
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ATND",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                    "display": "attender"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "REF",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+                  }
+                ],
+                "text": "referrer"
+              }
+            ]
+          }
+        ],
+        "identifier": [
+          {
+            "value": "1234",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ],
+              "text": "visit number"
+            }
+          }
+        ],
+        "period": {
+          "start": "2018-10-17T22:28:05.000Z"
+        },
+        "subject": {
+          "reference": "Patient/383c0727-d4ff-3837-8d9e-85d32f1a6040"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/8fdb08f3-fcd2-3f46-8b6f-807cc7a4fcee"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5689b33e-737b-3861-a930-6555a0b7307b",
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "5689b33e-737b-3861-a930-6555a0b7307b",
+        "address": [
+          {
+            "line": [
+              "4762 Hickory Street"
+            ],
+            "city": "Monroe",
+            "state": "WI",
+            "postalCode": "53566",
+            "country": "US"
+          }
+        ],
+        "telecom": [
+          {
+            "value": "+19189368865"
+          }
+        ],
+        "name": [
+          {
+            "family": "Bixby",
+            "given": [
+              "Barbara"
+            ]
+          }
+        ],
+        "patient": {
+          "reference": "Patient/383c0727-d4ff-3837-8d9e-85d32f1a6040"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "RelatedPerson/5689b33e-737b-3861-a930-6555a0b7307b"
+      }
+    }
+  ]
+}

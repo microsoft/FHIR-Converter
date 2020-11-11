@@ -1,0 +1,20 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Account",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            { {% include 'DataType/CX' with CX: PID.18 -%} },
+        ],
+        "subject":
+        [
+            {% if PID.18 -%}
+            {% endif -%}
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Account/{{ ID }}",
+    },
+},

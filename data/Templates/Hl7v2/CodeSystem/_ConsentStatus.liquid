@@ -1,0 +1,31 @@
+﻿{
+    {% if inCode == 'A' -%}
+    "code" : "active",
+    "display" : "Active",
+    "system" : "http://hl7.org/fhir/consent-state-codes",
+    {% elsif inCode == 'L' -%}
+    "code" : "active",
+    "display" : "Active",
+    "system" : "http://hl7.org/fhir/consent-state-codes",
+    {% elsif inCode == 'R' -%}
+    "code" : "rejected",
+    "display" : "Rejected",
+    "system" : "http://hl7.org/fhir/consent-state-codes",
+    {% elsif inCode == 'P' -%}
+    "code" : "proposed",
+    "display" : "Proposed",
+    "system" : "http://hl7.org/fhir/consent-state-codes",
+    {% elsif inCode == 'X' -%}
+    "code" : "inactive",
+    "display" : "Inactivated",
+    "system" : "http://hl7.org/fhir/consent-state-codes",
+    {% elsif inCode == 'B' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

@@ -1,0 +1,261 @@
+﻿{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:08241c67-f415-37d1-8af9-856a0c78f6f8",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "08241c67-f415-37d1-8af9-856a0c78f6f8",
+        "identifier": [
+          {
+            "value": "123456789",
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            }
+          }
+        ],
+        "name": [
+          {
+            "family": "BROS",
+            "given": [
+              "MARIO"
+            ]
+          }
+        ],
+        "birthDate": "1985-01-01",
+        "gender": "male",
+        "address": [
+          {
+            "line": [
+              "123 FAKE STREET",
+              "MARIO LUIGI BROS PLACE"
+            ],
+            "city": "TOADSTOOL KINGDOM",
+            "state": "NES",
+            "postalCode": "A1B2C3",
+            "country": "JP"
+          },
+          {
+            "district": "1234"
+          }
+        ],
+        "telecom": [
+          {
+            "value": "(555)555-0123",
+            "use": "home"
+          },
+          {
+            "value": "(555)555-0124",
+            "use": "home"
+          }
+        ],
+        "maritalStatus": {
+          "coding": [
+            {
+              "code": "S",
+              "display": "Never Married",
+              "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }
+          ]
+        },
+        "multipleBirthInteger": "0",
+        "deceasedBoolean": "false"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Patient/08241c67-f415-37d1-8af9-856a0c78f6f8"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4c85649c-bbba-3342-bf5f-776bcf1212d6",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "4c85649c-bbba-3342-bf5f-776bcf1212d6",
+        "class": {
+          "code": "AMB",
+          "display": "ambulatory",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "status": "unknown",
+        "location": [
+          {
+            "status": "active"
+          },
+          {
+            "status": "completed"
+          }
+        ],
+        "participant": [
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ATND",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                    "display": "attender"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "REF",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+                  }
+                ],
+                "text": "referrer"
+              }
+            ]
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ADM",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+                  }
+                ],
+                "text": "admitter"
+              }
+            ]
+          }
+        ],
+        "serviceType": {
+          "coding": [
+            {
+              "code": "CRD"
+            }
+          ]
+        },
+        "identifier": [
+          {
+            "value": "0123456789",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ],
+              "text": "visit number"
+            }
+          }
+        ],
+        "period": {
+          "start": "2001-01-01T00:00:00.000Z"
+        },
+        "subject": {
+          "reference": "Patient/08241c67-f415-37d1-8af9-856a0c78f6f8"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/4c85649c-bbba-3342-bf5f-776bcf1212d6"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:065ecb74-c25e-3a45-9c31-98a925cec365",
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "065ecb74-c25e-3a45-9c31-98a925cec365",
+        "address": [
+          {
+            "line": [
+              "ANOTHER CASTLE"
+            ],
+            "city": "TOADSTOOL KINGDOM",
+            "state": "NES",
+            "country": "JP"
+          }
+        ],
+        "telecom": [
+          {
+            "value": "(123)555-1234"
+          },
+          {
+            "value": "(123)555-2345",
+            "use": "work"
+          }
+        ],
+        "name": [
+          {
+            "family": "PEACH",
+            "given": [
+              "PRINCESS"
+            ]
+          }
+        ],
+        "patient": {
+          "reference": "Patient/08241c67-f415-37d1-8af9-856a0c78f6f8"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "RelatedPerson/065ecb74-c25e-3a45-9c31-98a925cec365"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b8f6d160-6d54-3eee-a49f-0c16ad7bef9b",
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "b8f6d160-6d54-3eee-a49f-0c16ad7bef9b",
+        "relationship": [
+          {
+            "coding": [
+              {
+                "code": "C",
+                "display": "Emergency Contact",
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+              }
+            ]
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "YET ANOTHER CASTLE"
+            ],
+            "city": "TOADSTOOL KINGDOM",
+            "state": "NES",
+            "country": "JP"
+          }
+        ],
+        "telecom": [
+          {
+            "value": "(123)555-3456"
+          },
+          {
+            "value": "(123)555-4567",
+            "use": "work"
+          }
+        ],
+        "name": [
+          {
+            "family": "TOADSTOOL",
+            "given": [
+              "PRINCESS"
+            ]
+          }
+        ],
+        "patient": {
+          "reference": "Patient/08241c67-f415-37d1-8af9-856a0c78f6f8"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "RelatedPerson/b8f6d160-6d54-3eee-a49f-0c16ad7bef9b"
+      }
+    }
+  ]
+}

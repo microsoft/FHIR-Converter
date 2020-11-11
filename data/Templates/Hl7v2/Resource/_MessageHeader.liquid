@@ -1,0 +1,35 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "MessageHeader",
+        "id":"{{ ID }}",
+        "source":
+        {
+            {% include 'DataType/HDMSH_3' with HD: MSH.3 -%}
+            "endpoint":"{{ MSH.24.Value }}",
+            "version":"{{ SFT.2.Value }}",
+            "software":"{{ SFT.3.Value }}",
+        },
+        "destination":
+        [
+            {
+                {% include 'DataType/HDMSH_5' with HD: MSH.5 -%}
+            },
+        ],
+        "meta":
+        {
+            "security":
+            [
+            ],
+            "tag":
+            [
+                { {% include 'DataType/PT' with PT: MSH.11 -%} },
+            ],
+        },
+        "language":"{{ MSH.19.Value | get_property: 'CodeSystem/Language', 'code' }}",
+    },
+    "request":{
+        "method":"PUT",
+        "url":"MessageHeader/{{ ID }}",
+    },
+},

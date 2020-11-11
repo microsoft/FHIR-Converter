@@ -1,0 +1,23 @@
+﻿"quantityQuantity":
+{
+    "value":"{{ TQ.1.1 }}",
+},
+"occurrenceTiming":
+{
+    "code":
+    {
+    },
+    "repeat":
+    {
+        "timeOfDay":
+        [
+            "{{ TQ.2.2 }}",
+        ],
+        "boundsPeriod":
+        {
+            "start":"{{ TQ.4.Value | format_as_date_time }}",
+            "end":"{{ TQ.5.Value | format_as_date_time }}",
+        },
+        "count":"{{ TQ.12.Value }}",
+    },
+},

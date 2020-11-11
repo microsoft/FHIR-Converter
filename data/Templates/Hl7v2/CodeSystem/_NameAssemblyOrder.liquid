@@ -1,0 +1,15 @@
+﻿{
+    {% if inCode == 'G' -%}
+    "code" : "G",
+    "display" : "Prefix Given Family Suffix",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0444",
+    {% elsif inCode == 'F' -%}
+    "code" : "F",
+    "display" : "Prefix Family Given Suffix",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0444",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

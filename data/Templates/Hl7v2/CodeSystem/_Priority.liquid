@@ -1,0 +1,59 @@
+﻿{
+    {% if inCode == 'S' -%}
+    "code" : "stat",
+    "display" : "STAT",
+    "system" : "http://hl7.org/fhir/request-priority",
+    {% elsif inCode == 'A' -%}
+    "code" : "asap",
+    "display" : "ASAP",
+    "system" : "http://hl7.org/fhir/request-priority",
+    {% elsif inCode == 'R' -%}
+    "code" : "routine",
+    "display" : "Routine",
+    "system" : "http://hl7.org/fhir/request-priority",
+    {% elsif inCode == 'P' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'C' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'T' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'TS<integer>' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'TM<integer>' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'TH<integer>' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'TD<integer>' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'TW<integer>' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'TL<integer>' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'PRN' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

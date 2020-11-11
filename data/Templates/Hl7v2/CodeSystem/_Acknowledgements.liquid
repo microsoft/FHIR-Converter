@@ -1,0 +1,23 @@
+﻿{
+    {% if inCode == 'AL' -%}
+    "code" : "always",
+    "display" : "Always",
+    "system" : "http://hl7.org/fhir/messageheader-response-request",
+    {% elsif inCode == 'NE' -%}
+    "code" : "never",
+    "display" : "Never",
+    "system" : "http://hl7.org/fhir/messageheader-response-request",
+    {% elsif inCode == 'ER' -%}
+    "code" : "on-error",
+    "display" : "Error/reject conditions only",
+    "system" : "http://hl7.org/fhir/messageheader-response-request",
+    {% elsif inCode == 'SU' -%}
+    "code" : "on-success",
+    "display" : "Successful completion only",
+    "system" : "http://hl7.org/fhir/messageheader-response-request",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

@@ -1,0 +1,115 @@
+﻿{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:bcb7b8d9-a605-30e7-85ab-66711f255c43",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "bcb7b8d9-a605-30e7-85ab-66711f255c43",
+        "identifier": [
+          {
+            "value": "MRN12345",
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            }
+          }
+        ],
+        "name": [
+          {
+            "family": "Doe",
+            "given": [
+              "Jane"
+            ]
+          }
+        ],
+        "birthDate": "1978-01-01",
+        "gender": "female"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Patient/bcb7b8d9-a605-30e7-85ab-66711f255c43"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:d4bba038-39a3-3261-9f8e-ca096c49832b",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "d4bba038-39a3-3261-9f8e-ca096c49832b",
+        "class": {
+          "code": "EMER",
+          "display": "emergency",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "status": "unknown",
+        "location": [
+          {
+            "status": "active"
+          }
+        ],
+        "participant": [
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ATND",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                    "display": "attender"
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "period": {
+          "start": "2019-05-02T07:00:00.000Z"
+        },
+        "subject": {
+          "reference": "Patient/bcb7b8d9-a605-30e7-85ab-66711f255c43"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/d4bba038-39a3-3261-9f8e-ca096c49832b"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b095ef1d-fb9d-30e0-afa7-0d21cf86cf31",
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "b095ef1d-fb9d-30e0-afa7-0d21cf86cf31",
+        "telecom": [
+          {
+            "value": "(130) 724-0433",
+            "use": "home"
+          },
+          {
+            "value": "(330) 274-8214"
+          }
+        ],
+        "name": [
+          {
+            "family": "JOHNSON",
+            "given": [
+              "CONWAY"
+            ],
+            "use": "official"
+          }
+        ],
+        "patient": {
+          "reference": "Patient/bcb7b8d9-a605-30e7-85ab-66711f255c43"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "RelatedPerson/b095ef1d-fb9d-30e0-afa7-0d21cf86cf31"
+      }
+    }
+  ]
+}

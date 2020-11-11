@@ -1,0 +1,100 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "DiagnosticReport",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {
+                {% include 'DataType/EIIdentifier' with EI: ORC.2 -%}
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            {% if ORC.2 -%}
+                            "code":"PLAC",
+                            {% endif -%}
+                            {% if OBR.2 -%}
+                            "code":"PLAC",
+                            {% endif -%}
+                            {% if OBR.3 -%}
+                            "code":"FILL",
+                            {% endif -%}
+                            {% if ORC.2 -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                            {% endif -%}
+                            {% if OBR.2 -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                            {% endif -%}
+                            {% if OBR.3 -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                            {% endif -%}
+                        },
+                    ],
+                },
+            },
+            {
+                {% include 'DataType/EIIdentifier' with EI: ORC.3 -%}
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            {% if ORC.3 -%}
+                            "code":"FILL",
+                            {% endif -%}
+                            {% if ORC.3 -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                            {% endif -%}
+                        },
+                    ],
+                },
+            },
+            {
+                {% include 'DataType/EIIdentifier' with EI: ORC.4 -%}
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            {% if ORC.4 -%}
+                            "code":"PGN",
+                            {% endif -%}
+                            {% if ORC.4 -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                            {% endif -%}
+                        },
+                    ],
+                },
+            },
+            { {% include 'DataType/EIIdentifier' with EI: OBR.2 -%} },
+            { {% include 'DataType/EIIdentifier' with EI: OBR.3 -%} },
+        ],
+        "effectiveDateTime":"{{ ORC.9.Value | format_as_date_time }}",
+        {% if OBR.8 == null -%}
+        "effectiveDateTime":"{{ OBR.7.Value | format_as_date_time }}",
+        {% endif -%}
+        "code":
+        {
+            {% include 'DataType/CWECodeableConcept' with CWE: OBR.4 -%}
+        },
+        "effectivePeriod":
+        {
+            {% if OBR.8 -%}
+            "start":"{{ OBR.7.Value | format_as_date_time }}",
+            {% endif -%}
+            "end":"{{ OBR.8.Value | format_as_date_time }}",
+        },
+        "issued":"{{ OBR.22.Value | format_as_date_time }}",
+        "category":
+        [
+            { {% include 'DataType/CWECodeableConcept' with CWE: OBR.24 -%} },
+        ],
+        "status":"{{ OBR.25.Value | get_property: 'CodeSystem/ResultStatus', 'code' }}",
+    },
+    "request":{
+        "method":"PUT",
+        "url":"DiagnosticReport/{{ ID }}",
+    },
+},

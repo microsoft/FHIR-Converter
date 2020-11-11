@@ -1,0 +1,20 @@
+﻿"name":"{{ XON.1.Value }}",
+"identifier":
+[
+    {
+        "value":"{{ XON.3.Value }}",
+        "value":"{{ XON.10.Value }}",
+        "type":
+        {
+            "coding":
+            [
+                {
+                    "code":"{{ XON.7.Value }}",
+                    {% if XON.7 -%}
+                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                    {% endif -%}
+                },
+            ],
+        },
+    },
+],

@@ -1,0 +1,15 @@
+﻿{
+    {% if inCode == 'I' -%}
+    "code" : "HOSP",
+    "display" : "Hospital",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    {% elsif inCode == 'O' -%}
+    "code" : "OF",
+    "display" : "Outpatient facility",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

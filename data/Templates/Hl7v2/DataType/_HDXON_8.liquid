@@ -1,0 +1,23 @@
+﻿"name":"{{ HD.1.Value }}",
+"identifier":
+[
+    {
+        {% if HD.3.Value == "ISO" or HD.3.Value == "UUID" -%}
+        "value":"{{ HD.2.Value }}",
+        {% endif -%}
+    },
+],
+"physicalType":
+{
+    "coding":
+    [
+        {
+            {% if HD.2 -%}
+            "code":"si",
+            {% endif -%}
+            {% if HD.2 -%}
+            "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+            {% endif -%}
+        },
+    ],
+},

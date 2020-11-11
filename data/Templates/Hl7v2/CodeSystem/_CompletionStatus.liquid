@@ -1,0 +1,23 @@
+﻿{
+    {% if inCode == 'CP' -%}
+    "code" : "completed",
+    "display" : "Completed",
+    "system" : "http://hl7.org/fhir/event-status",
+    {% elsif inCode == 'RE' -%}
+    "code" : "not-done",
+    "display" : "Not Done",
+    "system" : "http://hl7.org/fhir/event-status",
+    {% elsif inCode == 'NA' -%}
+    "code" : "not-done",
+    "display" : "Not Done",
+    "system" : "http://hl7.org/fhir/event-status",
+    {% elsif inCode == 'PA' -%}
+    "code" : "completed",
+    "display" : "Completed",
+    "system" : "http://hl7.org/fhir/event-status",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

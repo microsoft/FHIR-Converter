@@ -1,0 +1,44 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Procedure",
+        "id":"{{ ID }}",
+        "code":
+        {
+            {% if PR1.3.9 == null -%}
+            "text":"{{ PR1.4.Value }}",
+            {% endif -%}
+        },
+        {% if PR1.7 == null -%}
+        "performedDateTime":"{{ PR1.5.Value | format_as_date_time }}",
+        {% endif -%}
+        {% if PR1.7 and PR1.5.5 == null -%}
+        "performedDateTime":"{{ PR1.5.Value | format_as_date_time }}",
+        {% endif -%}
+        "performedPeriod":
+        {
+            {% if PR1.7 and PR1.5.5 -%}
+            "start":"{{ PR1.5.Value | format_as_date_time }}",
+            {% endif -%}
+            {% if PR1.5.5.Value -%}
+            "end":Procedure.performedPeriod.start+PR1-7,
+            {% endif -%}
+        },
+        "category":
+        {
+            {% include 'DataType/CWECodeableConcept' with CWE: PR1.6 -%}
+        },
+        "reasonCode":
+        [
+            { {% include 'DataType/CWECodeableConcept' with CWE: PR1.15 -%} },
+        ],
+        "identifier":
+        [
+            { {% include 'DataType/EIIdentifier' with EI: PR1.19 -%} },
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Procedure/{{ ID }}",
+    },
+},

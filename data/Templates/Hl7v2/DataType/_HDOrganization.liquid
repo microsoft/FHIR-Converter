@@ -1,0 +1,12 @@
+﻿"identifier":
+[
+    {
+        "value":"{{ HD.1.Value }}",
+    },
+    {
+        "value":"{{ HD.2.Value }}",
+        {% if HD.3 -%}
+        "system":"{{ "urn:ietf:rfc:3986" | get_property: 'CodeSystem/UniversalIDType', 'system' }}",
+        {% endif -%}
+    },
+],

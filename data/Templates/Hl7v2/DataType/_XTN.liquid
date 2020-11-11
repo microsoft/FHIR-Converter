@@ -1,0 +1,10 @@
+﻿"value":"{{ XTN.1.Value }}",
+{% if XTN.1 -%}
+    "use":"{{ XTN.2.Value | get_property: 'CodeSystem/TelecomUseCode', 'code' }}",
+{% endif -%}
+"period":
+{
+    "start":"{{ XTN.13.Value | format_as_date_time }}",
+    "end":"{{ XTN.14.Value | format_as_date_time }}"
+},
+"rank":"{{ XTN.18.Value }}",

@@ -1,0 +1,44 @@
+﻿"identifier":
+[
+    {
+        "value":"{{ XCN.1.Value }}",
+        "type":
+        {
+            "coding":
+            [
+                {
+                    "code":"{{ XCN.13.Value | get_property: 'CodeSystem/IDType', 'code' }}",
+                },
+            ],
+        },
+    },
+],
+"name":
+[
+    {
+        "family":"{{ XCN.2.1 }}",
+        "given":
+        [
+            "{{ XCN.3.Value }}",
+            "{{ XCN.4.Value }}",
+        ],
+        "suffix":
+        [
+            "{{ XCN.5.Value }}",
+            "{{ XCN.7.Value }}",
+            "{{ XCN.21.Value }}",
+        ],
+        "prefix":
+        [
+            "{{ XCN.6.Value }}",
+        ],
+        "use":"{{ XCN.10.Value | get_property: 'CodeSystem/NameType', 'code' }}",
+        "period":
+        {
+            "start":"{{ XCN.17.1 | format_as_date_time }}",
+            "start":"{{ XCN.19.Value | format_as_date_time }}",
+            "end":"{{ XCN.17.2 | format_as_date_time }}",
+            "end":"{{ XCN.20.Value | format_as_date_time }}",
+        },
+    },
+],

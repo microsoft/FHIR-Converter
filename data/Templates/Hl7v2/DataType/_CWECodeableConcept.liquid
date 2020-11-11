@@ -1,0 +1,43 @@
+﻿"coding":
+[
+    {
+    	{% if mapping -%}
+			"code":"{{ CWE.1.Value | get_property: mapping, 'code' }}",
+			"display":"{{ CWE.1.Value | get_property: mapping, 'display' }}",
+			"system":"{{ CWE.1.Value | get_property: mapping, 'system' }}",
+			"version":"{{ CWE.1.Value | get_property: mapping, 'version' }}",
+		{% else -%}
+            "code":"{{ CWE.1.Value }}",
+            "display":"{{ CWE.2.Value }}",
+            "system":"{{ CWE.3.Value }}",
+            "version":"{{ CWE.7.Value }}",
+        {% endif -%}
+    },
+    {
+        {% if mapping -%}
+			"code":"{{ CWE.4.Value | get_property: mapping, 'code' }}",
+			"display":"{{ CWE.4.Value | get_property: mapping, 'display' }}",
+			"system":"{{ CWE.4.Value | get_property: mapping, 'system' }}",
+			"version":"{{ CWE.4.Value | get_property: mapping, 'version' }}",
+		{% else -%}
+            "code":"{{ CWE.4.Value }}",
+            "display":"{{ CWE.5.Value }}",
+            "system":"{{ CWE.6.Value }}",
+            "version":"{{ CWE.8.Value }}",
+        {% endif -%}
+    },
+    {
+        {% if mapping -%}
+			"code":"{{ CWE.10.Value | get_property: mapping, 'code' }}",
+			"display":"{{ CWE.10.Value | get_property: mapping, 'display' }}",
+			"system":"{{ CWE.10.Value | get_property: mapping, 'system' }}",
+			"version":"{{ CWE.10.Value | get_property: mapping, 'version' }}",
+        {% else -%}
+            "code":"{{ CWE.10.Value }}",
+            "display":"{{ CWE.11.Value }}",
+            "system":"{{ CWE.12.Value }}",
+            "version":"{{ CWE.13.Value }}",
+        {% endif -%}
+    },
+],
+"text":"{{ CWE.9.Value }}",

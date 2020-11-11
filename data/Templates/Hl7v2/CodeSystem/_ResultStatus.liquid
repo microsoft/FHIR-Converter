@@ -1,0 +1,51 @@
+﻿{
+    {% if inCode == 'O' -%}
+    "code" : "registered",
+    "display" : "Registered",
+    "system" : "http://hl7.org/fhir/diagnostic-report-status",
+    {% elsif inCode == 'I' -%}
+    "code" : "registered",
+    "display" : "Registered",
+    "system" : "http://hl7.org/fhir/diagnostic-report-status",
+    {% elsif inCode == 'S' -%}
+    "code" : "registered",
+    "display" : "Registered",
+    "system" : "http://hl7.org/fhir/diagnostic-report-status",
+    {% elsif inCode == 'A' -%}
+    "code" : "partial",
+    "display" : "Partial",
+    "system" : "http://hl7.org/fhir/diagnostic-report-status",
+    {% elsif inCode == 'P' -%}
+    "code" : "preliminary",
+    "display" : "Preliminary",
+    "system" : "http://hl7.org/fhir/diagnostic-report-status",
+    {% elsif inCode == 'C' -%}
+    "code" : "corrected",
+    "display" : "Corrected",
+    "system" : "http://hl7.org/fhir/diagnostic-report-status",
+    {% elsif inCode == 'R' -%}
+    "code" : "partial",
+    "display" : "Partial",
+    "system" : "http://hl7.org/fhir/diagnostic-report-status",
+    {% elsif inCode == 'F' -%}
+    "code" : "final",
+    "display" : "Final",
+    "system" : "http://hl7.org/fhir/diagnostic-report-status",
+    {% elsif inCode == 'X' -%}
+    "code" : "cancelled",
+    "display" : "Cancelled",
+    "system" : "http://hl7.org/fhir/diagnostic-report-status",
+    {% elsif inCode == 'Y' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'Z' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

@@ -1,0 +1,39 @@
+﻿{
+    {% if inCode == 'DA' -%}
+    "code" : "medication",
+    "display" : "Medication",
+    "system" : "http://hl7.org/fhir/allergy-intolerance-category",
+    {% elsif inCode == 'FA' -%}
+    "code" : "food",
+    "display" : "Food",
+    "system" : "http://hl7.org/fhir/allergy-intolerance-category",
+    {% elsif inCode == 'MA' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'MC' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'EA' -%}
+    "code" : "environment",
+    "display" : "Environment",
+    "system" : "http://hl7.org/fhir/allergy-intolerance-category",
+    {% elsif inCode == 'AA' -%}
+    "code" : "environment",
+    "display" : "Environment",
+    "system" : "http://hl7.org/fhir/allergy-intolerance-category",
+    {% elsif inCode == 'PA' -%}
+    "code" : "environment",
+    "display" : "Environment",
+    "system" : "http://hl7.org/fhir/allergy-intolerance-category",
+    {% elsif inCode == 'LA' -%}
+    "code" : "environment",
+    "display" : "Environment",
+    "system" : "http://hl7.org/fhir/allergy-intolerance-category",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

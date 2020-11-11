@@ -1,0 +1,103 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Provenance",
+        "id":"{{ ID }}",
+        "agent":
+        [
+            {
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            {% if MSH.21 == null -%}
+                            "code":"author",
+                            {% endif -%}
+                            {% if MSH.22 -%}
+                            "code":"author",
+                            {% endif -%}
+                            {% if ORC.10 -%}
+                            "code":"enterer",
+                            {% endif -%}
+                            {% if MSH.21 == null -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                            {% endif -%}
+                            {% if MSH.22 -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                            {% endif -%}
+                            {% if ORC.10 -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                            {% endif -%}
+                        },
+                    ],
+                },
+            },
+            {
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            {% if ORC.11 -%}
+                            "code":"verifier",
+                            {% endif -%}
+                            {% if ORC.11 -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                            {% endif -%}
+                        },
+                    ],
+                },
+            },
+            {
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            {% if ORC.12 -%}
+                            "code":"author",
+                            {% endif -%}
+                            {% if ORC.12 -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                            {% endif -%}
+                        },
+                    ],
+                },
+            },
+        ],
+        "recorded":"{{ MSH.7.Value | format_as_date_time }}",
+        "recorded":"{{ ORC.9.Value | format_as_date_time }}",
+        "activity":
+        {
+            "coding":
+            [
+                {
+                    {% if ORC.1.Value == "NW" -%}
+                    "code":"CREATE",
+                    {% endif -%}
+                    {% if ORC.1.Value == "SC" -%}
+                    "code":"UPDATE",
+                    {% endif -%}
+                    {% if ORC.1.Value == "OC" or ORC.1.Value == "CA" -%}
+                    "code":"DELETE",
+                    {% endif -%}
+                    {% if ORC.1.Value == "NW" -%}
+                    "system":"http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+                    {% endif -%}
+                    {% if ORC.1.Value == "SC" -%}
+                    "system":"http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+                    {% endif -%}
+                    {% if ORC.1.Value == "OC" or ORC.1.Value == "CA" -%}
+                    "system":"http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+                    {% endif -%}
+                },
+            ],
+        },
+        "occurredDateTime":"{{ ORC.9.Value | format_as_date_time }}",
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Provenance/{{ ID }}",
+    },
+},

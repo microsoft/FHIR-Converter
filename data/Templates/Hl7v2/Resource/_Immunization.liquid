@@ -1,0 +1,101 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Immunization",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {
+                {% include 'DataType/EIIdentifier' with EI: ORC.2 -%}
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            {% if ORC.2 -%}
+                            "code":"PLAC",
+                            {% endif -%}
+                            {% if ORC.2 -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                            {% endif -%}
+                        },
+                    ],
+                },
+            },
+            {
+                {% include 'DataType/EIIdentifier' with EI: ORC.3 -%}
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            {% if ORC.3 -%}
+                            "code":"FILL",
+                            {% endif -%}
+                            {% if ORC.3 -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                            {% endif -%}
+                        },
+                    ],
+                },
+            },
+        ],
+        "recorded":"{{ ORC.9.Value | format_as_date_time }}",
+        "performer":
+        [
+            {
+                "function":
+                {
+                    "coding":
+                    [
+                        {
+                            {% if ORC.12 -%}
+                            "code":"OP",
+                            {% endif -%}
+                            {% if RXA.10 -%}
+                            "code":"AP",
+                            {% endif -%}
+                            {% if ORC.12 -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/v2-0443",
+                            {% endif -%}
+                            {% if RXA.10 -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/v2-0443",
+                            {% endif -%}
+                        },
+                    ],
+                },
+            },
+        ],
+        "occurrenceDateTime":"{{ RXA.3.Value | format_as_date_time }}",
+        "vaccineCode":
+        {
+            {% include 'DataType/CWECodeableConcept' with CWE: RXA.5 -%}
+        },
+        "lotNumber":"{{ RXA.15.Value }}",
+        "expirationDate":"{{ RXA.16.Value | add_hyphens_date }}",
+        "statusReason":
+        {
+            {% include 'DataType/CWECodeableConcept' with CWE: RXA.18 -%}
+        },
+        "reasonCode":
+        [
+            { {% include 'DataType/CWECodeableConcept' with CWE: RXA.19 -%} },
+        ],
+        "status":"{{ RXA.20.Value | get_property: 'CodeSystem/CompletionStatus', 'code' }}",
+        {% if RXA.21.Value == "D" -%}
+        "status":"entered-in-error",
+        {% endif -%}
+        "route":
+        {
+            {% include 'DataType/CWECodeableConcept' with CWE: RXR.1 -%}
+        },
+        "site":
+        {
+            {% include 'DataType/CWECodeableConcept' with CWE: RXR.2 -%}
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Immunization/{{ ID }}",
+    },
+},

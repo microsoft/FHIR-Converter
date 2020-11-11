@@ -1,0 +1,28 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "AllergyIntolerance",
+        "id":"{{ ID }}",
+        "type":"{{ AL1.2.Value | get_property: 'CodeSystem/AllergyType', 'code' }}",
+        "code":
+        {
+            {% include 'DataType/CWECodeableConcept' with CWE: AL1.3 -%}
+        },
+        "reaction":
+        [
+            {
+                "manifestation":
+                [
+                    {
+                        "text":"{{ AL1.5.Value }}",
+                    },
+                ],
+            },
+        ],
+        "onsetDateTime":"{{ AL1.6.Value | format_as_date_time }}",
+    },
+    "request":{
+        "method":"PUT",
+        "url":"AllergyIntolerance/{{ ID }}",
+    },
+},

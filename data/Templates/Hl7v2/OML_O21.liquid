@@ -1,0 +1,97 @@
+﻿{
+    "resourceType": "Bundle",
+    "type": "transaction",
+    "entry": [
+        {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|ORC' -%}
+        
+        {% if firstSegments.PID.3.1 -%}
+            {% assign patientId = firstSegments.PID.3.1.Value | generate_uuid -%}
+            {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
+        {% endif -%}
+
+        {% if patientId -%}
+            {% include 'Resource/Patient' with PID: firstSegments.PID, PD1: firstSegments.PD1, NK1: firstSegments.NK1, ID: patientId -%}
+        {% endif -%}
+
+        {% if firstSegments.PV1 -%}
+            {% assign pv1Id = firstSegments.PV1 | generate_uuid -%}
+            {% assign fullPv1Id = pv1Id | prepend: 'Encounter/' -%}
+            {% include 'Resource/Encounter' with PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: pv1Id -%}
+            {% if fullPatientId -%}
+                {% include 'Reference/Encounter/Subject' with ID: pv1Id, REF: fullPatientId -%}
+            {% endif -%}
+        {% endif -%}
+        
+        {% assign al1SegmentLists = hl7v2Data | get_segment_lists: 'AL1' -%}
+        {% for al1Segment in al1SegmentLists.AL1 -%}
+            {% assign al1Id = al1Segment | generate_uuid -%}
+            {% include 'Resource/AllergyIntolerance' with AL1: al1Segment, ID: al1Id -%}
+            {% if fullPatientId -%}
+                {% include 'Reference/AllergyIntolerance/Patient' with ID: al1Id, REF: fullPatientId -%}
+            {% endif -%}
+        {% endfor -%}
+
+        {% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
+        {% for nk1Segment in nk1SegmentLists.NK1 -%}
+            {% assign nk1Id = nk1Segment | generate_uuid -%}
+            {% include 'Resource/RelatedPerson' with NK1: nk1Segment, ID: nk1Id -%}
+            {% if fullPatientId -%}
+                {% include 'Reference/RelatedPerson/Patient' with ID: nk1Id, REF: fullPatientId -%}
+            {% endif -%}
+        {% endfor -%}
+
+        {% assign orcSegmentLists = hl7v2Data | get_segment_lists: 'ORC' -%}
+        {% for orcSegment in orcSegmentLists.ORC -%}
+            {% assign serviceOrcId = orcSegment.Value | prepend: 'ServiceRequest' | generate_uuid -%}
+            {% assign fullServiceOrcId = serviceOrcId | prepend: 'ServiceRequest/' -%}
+            {% assign provenanceOrcId = orcSegment.Value | prepend: 'Provenance' | generate_uuid -%}
+            {% include 'Resource/ServiceRequest' with ORC: orcSegment, ID: serviceOrcId -%}
+            {% include 'Reference/Provenance/Target' with ID: provenanceOrcId, REF: fullServiceOrcId -%}
+            {% include 'Resource/Provenance' with ORC: orcSegment, ID: provenanceOrcId -%}
+            {% if fullPatientId -%}
+                {% include 'Reference/ServiceRequest/Subject' with ID: serviceOrcId, REF: fullPatientId -%}
+            {% endif -%}
+            
+            {% assign tq1SegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'TQ1' -%}
+            {% for tq1Segment in tq1SegmentLists.TQ1 -%}
+                {% include 'Resource/ServiceRequest' with TQ1: tq1Segment, ID: serviceOrcId -%}
+            {% endfor -%}
+
+            {% assign obrSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'OBR' -%}
+            {% for obrSegment in obrSegmentLists.OBR -%}
+                {% include 'Resource/ServiceRequest' with OBR: obrSegment, ID: serviceOrcId -%}
+            {% endfor -%}
+
+            {% assign obxSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'OBX' -%}
+            {% for obxSegment in obxSegmentLists.OBX -%}
+                {% assign observationObxId = obxSegment.Value | prepend: 'Observation' | generate_uuid -%}
+                {% assign fullObservationObxId = observationObxId | prepend: 'Observation/' -%}
+                {% include 'Resource/Observation' with OBX: obxSegment, ID: observationObxId -%}
+                {% include 'Reference/ServiceRequest/SupportingInfo' with ID: serviceOrcId, REF: fullObservationObxId -%}
+                {% if fullPatientId -%}
+                    {% include 'Reference/Observation/Subject' with ID: observationObxId, REF: fullPatientId -%}
+                {% endif -%}
+            {% endfor -%}
+
+            {% assign dg1SegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'DG1' -%}
+            {% for dg1Segment in dg1SegmentLists.DG1 -%}
+                {% assign dg1Id = dg1Segment | generate_uuid -%}
+                {% assign fullDg1Id = dg1Id | prepend: 'Condition/' -%}
+                {% include 'Resource/Condition' with DG1: obxSegment, ID: dg1Id -%}
+                {% include 'Reference/ServiceRequest/ReasonReference' with ID: serviceOrcId, REF: fullDg1Id -%}
+                {% if fullPatientId -%}
+                    {% include 'Reference/Condition/Subject' with ID: dg1Id, REF: fullPatientId -%}
+                {% endif -%}
+            {% endfor -%}
+
+            {% assign spmSegmentLists = hl7v2Data | get_segment_lists: 'SPM' -%}
+            {% for spmSegment in spmSegmentLists.SPM -%}
+                {% assign spmId = spmSegment.Value | prepend: 'Specimen' | generate_uuid -%}
+                {% assign fullSpmId = spmId | prepend: 'Specimen/' -%}
+                {% include 'Resource/Specimen' with SPM: spmSegment, ID: spmId -%}
+                {% include 'Reference/ServiceRequest/Specimen' with ID: serviceOrcId, REF: fullSpmId -%}
+            {% endfor -%}
+
+        {% endfor -%}
+    ] 
+}

@@ -1,0 +1,17 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Bundle",
+        "id":"{{ ID }}",
+        {% if MSH.7 -%}
+        "timestamp":MSH.7.Value,
+        {% endif -%}
+        {% if MSH.10 -%}
+        "type":"message",
+        {% endif -%}
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Bundle/{{ ID }}",
+    },
+},

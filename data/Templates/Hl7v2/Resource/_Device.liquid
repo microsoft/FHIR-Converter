@@ -1,0 +1,20 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Device",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            { {% include 'DataType/EIIdentifier' with EI: OBX.18 -%} },
+            { {% include 'DataType/EIIdentifier' with EI: PRT.10 -%} },
+        ],
+        "manufactureDate":"{{ PRT.17.Value | format_as_date_time }}",
+        "expirationDate":"{{ PRT.18.Value | format_as_date_time }}",
+        "lotNumber":"{{ PRT.19.Value }}",
+        "serialNumber":"{{ PRT.20.Value }}",
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Device/{{ ID }}",
+    },
+},

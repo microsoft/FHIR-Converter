@@ -1,0 +1,11 @@
+﻿{% if mapping -%}
+	"code":"{{ CWE.1.Value | get_property: mapping, 'code' }}",
+    "display":"{{ CWE.1.Value | get_property: mapping, 'display' }}",
+    "system":"{{ CWE.1.Value | get_property: mapping, 'system' }}",
+    "version":"{{ CWE.1.Value | get_property: mapping, 'version' }}",
+{% else -%}
+    "code":"{{ CWE.1.Value }}",
+    "display":"{{ CWE.2.Value }}",
+    "system":"{{ CWE.3.Value }}",
+    "version":"{{ CWE.7.Value }}",
+{% endif -%}

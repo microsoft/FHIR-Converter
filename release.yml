@@ -1,0 +1,67 @@
+name: $(Date:yyyyMMdd)$(Rev:.r)
+
+trigger:
+- master
+- refs/heads/master
+pr: ['master']
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  testProjects: "**/*Tests/*.csproj"
+  publishProject: "**/*Tool/*.csproj"
+  buildConfiguration: 'Release'
+  major: 1
+  minor: 0
+  bulidnum: $[counter(format('{0}.{1}',variables['major'],variables['minor']), 100)]
+  revision: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
+  version: $(major).$(minor).$(bulidnum).$(revision)
+
+
+steps:
+- script: echo $(version)
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet build'
+  inputs:
+    command: build
+    projects: '$(solution)'
+    arguments: '--configuration $(buildConfiguration) /p:Version=$(version)'
+        
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet test'
+  inputs:
+    command: test
+    projects: '$(testProjects)'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --no-build'
+    
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet publish'
+  inputs:
+    command: 'publish'
+    projects: '$(publishProject)'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-build'
+    publishWebProjects: false
+    zipAfterPublish: True
+      
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet pack nugets'
+  inputs:
+    command: pack
+    configuration: '$(buildConfiguration)'
+    packDirectory: '$(Build.ArtifactStagingDirectory)/nupkgs'
+    versioningScheme: 'byEnvVar'
+    versionEnvVar: 'nuget_version'
+    nobuild: true
+    zipAfterPublish: true
+  env:
+    nuget_version: $(major).$(minor).$(Build.BuildNumber)
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+
+- task: PublishBuildArtifacts@1
+  displayName: 'publish binary artifacts'
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'FhirConverterBuild'

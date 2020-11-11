@@ -1,0 +1,27 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ ID }}",
+        {% include 'DataType/PL' with PL: ROL.13 -%}
+        {% include 'DataType/PL' with PL: PV1.3 -%}
+        {% include 'DataType/PL' with PL: PV1.6 -%}
+        {% include 'DataType/PL' with PL: PR1.23 -%}
+        {% include 'DataType/PL' with PL: PRT.9 -%}
+        {% include 'DataType/XONLocation' with XON: ORC.21 -%}
+        "address":
+        {
+            {% include 'DataType/XAD' with XAD: ORC.22 -%}
+            {% include 'DataType/XAD' with XAD: RXA.28 -%}
+        },
+        "telecom":
+        [
+            { {% include 'DataType/XTN' with XTN: ORC.23 -%} },
+        ],
+        {% include 'DataType/PL' with PL: RXA.27 -%}
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ ID }}",
+    },
+},
