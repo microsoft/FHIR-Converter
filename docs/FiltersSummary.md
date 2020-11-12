@@ -1,10 +1,13 @@
 # Filters
 
-By default, DotLiquid provides a set of [standard filters](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers#standard-filters) to assist template creation.
+
+⚠ **This document applies to the Liquid engine. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/handlebars) link for the documentation of Handlebars engine.**
+
+By default, Liquid provides a set of [standard filters](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers#standard-filters) to assist template creation.
 Besides these filters, FHIR Converter also provides some other filters that are useful in conversion, which are listed below.
 If these filters do not meet your needs, you can also write your own filters.
 
-## Hl7 v2 specific filters
+### Hl7 v2 specific filters
 | Filter | Description | Syntax |
 |-|-|-|
 | get_first_segments | Returns first instance of the segments | `{% assign result = hl7v2Data | get_first_segments: 'segment1|segment2|...' -%}` |
@@ -13,7 +16,7 @@ If these filters do not meet your needs, you can also write your own filters.
 | get_parent_segment | Given a child segment name and overall message index, returns the first matched parent segment | `{% assign result = hl7v2Data | get_parent_segment: 'childSegmentName', 3, 'parentSegmentName' -%}` |
 | has_segments | Checks if HL7 v2 message has segments | `{% assign result = hl7v2Data | has_segments: 'segment1|segment2|...' -%}` | 
 
-## String Filters
+### String Filters
 | Filter | Description | Syntax |
 |-|-|-|
 | char_at | Returns char at position index | `{{ 'foo' | char_at: 0 }} #=> 'f'` |
@@ -21,7 +24,7 @@ If these filters do not meet your needs, you can also write your own filters.
 | escape_special_chars | Returns string with special chars escaped | `{{ '\E' | escape_special_chars }} #=> '\\E'` |
 | unescape_special_chars | Returns string after removing escaping of special char | `{{ '\\E' | unescape_special_chars }} #=> '\E'` |
 
-## Math filters
+### Math filters
 | Filter | Description | Syntax |
 |-|-|-|
 | is_nan | Checks if the object is not a number | `{{ true | is_nan }} #=> true` |
@@ -32,13 +35,13 @@ If these filters do not meet your needs, you can also write your own filters.
 | truncate_number | Returns the integer part of a number by removing any fractional digits | `{{ -34.53 | truncate_number }} #=> -34` |
 | divide | Divides first number by the second number and return a double | `{{ 5 | divide: 2 }} #=> 2.5` | 
 
-## DateTime filters
+### DateTime filters
 | Filter | Description | Syntax |
 |-|-|-|
 | add_hyphens_date | Adds hyphens to a date without hyphens | `{{ PID.7.Value | add_hyphens_date }}` |
 | format_as_date_time | Convert an YYYYMMDDHHmmssSSS string, e.g. 20040629175400000 to dateTime format, e.g. 2004-06-29T17:54:00.000z | `{{ PID.29.Value | format_as_date_time }}` |
 
-## Miscellaneous filters
+### Miscellaneous filters
 | Filter | Description | Syntax |
 |-|-|-|
 | get_property | Returns a specific property of code system with mapping file | `{{ PID.8.Value | get_property: 'CodeSystem/Gender', 'code' }}` |
