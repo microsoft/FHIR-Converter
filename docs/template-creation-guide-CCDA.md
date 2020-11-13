@@ -1,3 +1,5 @@
+⚠ **This document applies to the Handlebars engine. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/dotliquid) link for the documentation of Liquid engine.** <br></br>
+
 # C-CDA template creation
 
 In this how-to-guide, we will cover how to create templates for converting C-CDA documents into FHIR bundles. For more general guidance on creating templates, see the [Template Creation Guide](template-creation-how-to-guide.md). The C-CDA templates included in this release were generated based on the C-CDA and FHIR specifications and validated with customer examples.

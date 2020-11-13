@@ -1,3 +1,5 @@
+⚠ **This document applies to the Handlebars engine. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/dotliquid) link for the documentation of Liquid engine.** <br></br>
+
 # Using helpers
 
 Helper functions are a useful tool when creating templates. In the following sections, we have given some example of how to use the included helper functions for the FHIR Converter. You can see the full list of included helper functions [here](helper-functions-summary.md).
