@@ -9,6 +9,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 {
     public interface IFhirConverter
     {
-        public string Convert(string data, string entryTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
+        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
     }
 }

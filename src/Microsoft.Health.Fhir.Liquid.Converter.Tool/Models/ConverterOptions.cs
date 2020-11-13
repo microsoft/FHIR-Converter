@@ -13,8 +13,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
         [Option('d', "TemplateDirectory", Required = true, HelpText = "Root directory of templates")]
         public string TemplateDirectory { get; set; }
 
-        [Option('e', "EntryTemplate", Required = true, HelpText = "Name of entry template")]
-        public string EntryTemplate { get; set; }
+        [Option('r', "RootTemplate", Required = true, HelpText = "Name of root template")]
+        public string RootTemplate { get; set; }
 
         [Option('c', "InputDataContent", Required = false, HelpText = "Input data content. Please specify OutputDataFile to get the results.")]
         public string InputDataContent { get; set; }

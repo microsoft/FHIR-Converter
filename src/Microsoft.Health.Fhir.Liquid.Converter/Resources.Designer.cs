@@ -160,20 +160,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Entry template should not be nul or empty..
-        /// </summary>
-        internal static string NullOrEmptyEntryTemplate {
-            get {
-                return ResourceManager.GetString("NullOrEmptyEntryTemplate", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The input data should not be null or empty..
         /// </summary>
         internal static string NullOrEmptyInput {
             get {
                 return ResourceManager.GetString("NullOrEmptyInput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Root template should not be null or empty..
+        /// </summary>
+        internal static string NullOrEmptyRootTemplate {
+            get {
+                return ResourceManager.GetString("NullOrEmptyRootTemplate", resourceCulture);
             }
         }
         

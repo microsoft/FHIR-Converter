@@ -56,7 +56,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 var dataType = GetDataTypes(options.TemplateDirectory);
                 var dataProcessor = CreateDataProcessor(dataType);
                 var templateProvider = CreateTemplateProvider(dataType, options.TemplateDirectory);
-                var resultString = dataProcessor.Convert(options.InputDataContent, options.EntryTemplate, templateProvider);
+                var resultString = dataProcessor.Convert(options.InputDataContent, options.RootTemplate, templateProvider);
                 var result = new ConverterResult(ProcessStatus.OK, resultString);
                 WriteOutputFile(options.OutputDataFile, JsonConvert.SerializeObject(result, Formatting.Indented));
                 Logger.LogInformation("Process completed");
@@ -83,7 +83,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 {
                     try
                     {
-                        var result = dataProcessor.Convert(File.ReadAllText(file), options.EntryTemplate, templateProvider);
+                        var result = dataProcessor.Convert(File.ReadAllText(file), options.RootTemplate, templateProvider);
                         var outputFileDirectory = Path.Join(options.OutputDataFolder, Path.GetRelativePath(options.InputDataFolder, Path.GetDirectoryName(file)));
                         var outputFilePath = Path.Join(outputFileDirectory, Path.GetFileNameWithoutExtension(file) + ".json");
                         WriteOutputFile(outputFilePath, result);

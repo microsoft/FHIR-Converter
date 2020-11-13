@@ -46,7 +46,7 @@ Here are the parameters that the tool accepts:
 | Option | Name | Optionality | Default | Description |
 | ----- | ----- | ----- |----- |----- |
 | -d | TemplateDirectory | Required | | Root directory of templates. |
-| -e | EntryTemplate | Required | | Name of root template. |
+| -r | RootTemplate | Required | | Name of root template. |
 | -c | InputDataContent | Optional| | Input data content. Specify OutputDataFile to get the results. |
 | -f | OutputDataFile | Optional | | Output data file. |
 | -i | InputDataFolder | Optional | | Input data folder. Specify OutputDataFolder to get the results.. |

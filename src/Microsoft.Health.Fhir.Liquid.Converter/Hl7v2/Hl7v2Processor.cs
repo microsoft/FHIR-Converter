@@ -25,11 +25,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             _settings = processorSettings;
         }
 
-        public string Convert(string data, string entryTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
-            if (string.IsNullOrEmpty(entryTemplate))
+            if (string.IsNullOrEmpty(rootTemplate))
             {
-                throw new RenderException(FhirConverterErrorCode.NullOrEmptyEntryTemplate, Resources.NullOrEmptyEntryTemplate);
+                throw new RenderException(FhirConverterErrorCode.NullOrEmptyRootTemplate, Resources.NullOrEmptyRootTemplate);
             }
 
             if (templateProvider == null)
@@ -37,10 +37,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                 throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
             }
 
-            var template = templateProvider.GetTemplate(entryTemplate);
+            var template = templateProvider.GetTemplate(rootTemplate);
             if (template == null)
             {
-                throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, entryTemplate));
+                throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
             }
 
             var context = CreateContext(templateProvider, data);

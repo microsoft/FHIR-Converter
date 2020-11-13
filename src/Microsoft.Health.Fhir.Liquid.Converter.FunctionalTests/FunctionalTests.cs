@@ -91,14 +91,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             Assert.True(exception.InnerException is DotLiquid.Exceptions.StackLevelException);
         }
 
-        private void TestByTemplate(string inputFile, string expectedFile, string entryTemplate)
+        private void TestByTemplate(string inputFile, string expectedFile, string rootTemplate)
         {
             var hl7v2Processor = new Hl7v2Processor();
             var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\..\..\data\Templates\Hl7v2");
 
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
-            var actualContent = hl7v2Processor.Convert(inputContent, entryTemplate, new Hl7v2TemplateProvider(templateDirectory));
+            var actualContent = hl7v2Processor.Convert(inputContent, rootTemplate, new Hl7v2TemplateProvider(templateDirectory));
 
             // Remove ID
             var regex = new Regex(@"(?<=(""urn:uuid:|""|/))([A-Za-z0-9\-]{36})(?="")");
