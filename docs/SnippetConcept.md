@@ -1,5 +1,7 @@
 # Snippet Concept
 
+⚠ **This document applies to the Liquid engine. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/handlebars) link for the documentation of Handlebars engine.**
+
 Snippets are a helpful tool when creating templates in the FHIR Converter.
 Leveraging snippets allows you to reference them in multiple templates in the future, preventing you from having to rewrite the same code over again.
 Within the FHIR converter release, there are four types of snippets: **Resource**, **Reference**, **Data Type** and **Code System**.
