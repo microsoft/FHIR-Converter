@@ -1,3 +1,5 @@
+⚠ **This document applies to the Handlebars engine. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/dotliquid) link for the documentation of Liquid engine.** <br></br>
+
 # Web UI Summary
 
 To edit templates, the open-source release includes a web UI. You can toggle between the HL7 v2 to FHIR editor and the C-CDA to FHIR editor:

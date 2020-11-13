@@ -1,3 +1,5 @@
+⚠ **This document applies to the Handlebars engine. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/dotliquid) link for the documentation of Liquid engine.** <br></br>
+
 # HL7 v2 template creation
 
 In this how-to-guide, we will cover how to create templates for converting HL7 v2 messages into FHIR bundles. For more general guidance on creating templates, see the [Template Creation Guide](template-creation-how-to-guide.md).

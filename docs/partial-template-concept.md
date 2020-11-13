@@ -1,3 +1,5 @@
+⚠ **This document applies to the Handlebars engine. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/dotliquid) link for the documentation of Liquid engine.** <br></br>
+
 # Partial Template Concept
 
 Partial templates are a helpful tool when creating templates in the FHIR Converter. Leveraging partial templates allows you to reference them in multiple templates in the future, preventing you from having to rewrite the same code over again. Within the FHIR converter release, there are seven types of partial templates: **Resources**, **References**, **Data Type**, **Code Systems**, **Sections**, **Utils** and **Value Set**. The following sections will describe the purpose of each category of released partial templates and give you things to consider when you’re creating your own partial templates.

@@ -1,3 +1,5 @@
+⚠ **This document applies to the Handlebars engine. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/dotliquid) link for the documentation of Liquid engine.** <br></br>
+
 # Helper Functions
 
 The open-source release includes a set of helper functions to assist with template creation. The current list of available helper functions is below. If these do not meet your needs, you can also write your own helper functions. Some of the helper functions are used by both the HL7 v2 to FHIR and C-CDA to FHIR implementation, while others are specific to data type.
