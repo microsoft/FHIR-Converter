@@ -16,6 +16,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 {
@@ -30,6 +31,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         private static readonly Hl7v2TemplateProvider _hl7TemplateProvider = new Hl7v2TemplateProvider(_hl7TemplateFolder);
 
         private static readonly int _maxRevealDepth = 1 << 7;
+
+        private readonly ITestOutputHelper _output;
+
+        public RuleBasedTests(ITestOutputHelper output)
+        {
+            this._output = output;
+        }
 
         public static IEnumerable<object[]> GetHL7V2Cases()
         {
@@ -131,6 +139,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             var command = $"-jar {validatorPath} {resultPath} -version 4.0.1 -ig {specPath} -tx n/a";
             (bool status, string message) = await ExecuteCommand(command);
             Assert.False(status, "Currently the templates are still under development. By default we turn off this validator.");
+            if (!status)
+            {
+                _output.WriteLine(message);
+            }
 
             Directory.Delete(resultFolder, true);
         }
