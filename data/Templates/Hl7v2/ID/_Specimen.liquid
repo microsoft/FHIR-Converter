@@ -1,0 +1,14 @@
+{% if SPM.2.1.1 and SPM.2.1.2 -%}
+{% capture segment -%}{{SPM.2.1.1}},{{SPM.2.1.2}}{% endcapture -%}
+{% capture input -%}{{segment | generate_id_input: 'Specimen', false, baseId}}{% endcapture -%}
+{% elsif SPM.2.1.1 and SPM.2.1.3 -%}
+{% capture segment -%}{{SPM.2.1.1}},{{SPM.2.1.3}}{% endcapture -%}
+{% capture input -%}{{segment | generate_id_input: 'Specimen', false, baseId}}{% endcapture -%}
+{% elsif SPM.2.1 -%}
+{% capture input -%}{{SPM.2.1.Value | generate_id_input: 'Specimen', false, baseId}}{% endcapture -%}
+{% elsif SPM.2 -%}
+{% capture input -%}{{SPM.2.Value | generate_id_input: 'Specimen', false, baseId}}{% endcapture -%}
+{% else -%}
+{% capture input -%}{{SPM.Value | generate_id_input: 'Specimen', false, baseId}}{% endcapture -%}
+{% endif -%}
+{{ input | generate_uuid }}

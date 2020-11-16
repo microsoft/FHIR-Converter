@@ -1,0 +1,7 @@
+﻿{% if AL1.2 and AL1.3 and AL1.4 and AL1.5 -%}
+{% capture segment -%}{{AL1.2.Value}},{{AL1.3.Value}},{{AL1.4.Value}},{{AL1.5.Value}}{% endcapture -%}
+{% capture input -%}{{segment | generate_id_input: 'AllergyIntolerance', true, baseId}}{% endcapture -%}
+{% else -%}
+{% capture input -%}{{AL1.Value | generate_id_input: 'AllergyIntolerance', true, baseId}}{% endcapture -%}
+{% endif -%}
+{{ input | generate_uuid }}

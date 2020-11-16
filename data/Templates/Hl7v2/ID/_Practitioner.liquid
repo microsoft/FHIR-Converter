@@ -1,0 +1,19 @@
+{% if CNN -%}
+{% if CNN.1 and CNN.9 -%}
+{% capture segment -%}{{CNN.1.Value}},{{CNN.9.Value}}{% endcapture -%}
+{% capture input -%}{{segment | generate_id_input: 'Practitioner', false}}{% endcapture -%}
+{% elsif CNN.1 and CNN.10 -%}
+{% capture segment -%}{{CNN.1.Value}},{{CNN.10.Value}}{% endcapture -%}
+{% capture input -%}{{segment | generate_id_input: 'Practitioner', false}}{% endcapture -%}
+{% else -%}
+{% capture input -%}{{CNN.Value | generate_id_input: 'Practitioner', false}}{% endcapture -%}
+{% endif -%}
+{% elsif XCN -%}
+{% if XCN.1 and XCN.9 -%}
+{% capture segment -%}{{XCN.1.Value}},{{XCN.9.Value}}{% endcapture -%}
+{% capture input -%}{{segment | generate_id_input: 'Practitioner', false}}{% endcapture -%}
+{% else -%}
+{% capture input -%}{{XCN.Value | generate_id_input: 'Practitioner', false}}{% endcapture -%}
+{% endif -%}
+{% endif -%}
+{{ input | generate_uuid }}

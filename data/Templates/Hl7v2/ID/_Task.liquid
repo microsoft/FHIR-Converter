@@ -1,0 +1,12 @@
+{% if ORC.2.1 and ORC.2.2 -%}
+{% capture segment -%}{{ORC.2.1.Value}},{{ORC.2.2.Value}}{% endcapture -%}
+{% capture input -%}{{segment | generate_id_input: 'Task', false, baseId}}{% endcapture -%}
+{% elsif ORC.2.1 and ORC.2.3 -%}
+{% capture segment -%}{{ORC.2.1.Value}},{{ORC.2.3.Value}}{% endcapture -%}
+{% capture input -%}{{segment | generate_id_input: 'Task', false, baseId}}{% endcapture -%}
+{% elsif ORC.2 -%}
+{% capture input -%}{{ORC.2.Value | generate_id_input: 'Task', false, baseId}}{% endcapture -%}
+{% else ORC -%}
+{% capture input -%}{{ORC.Value | generate_id_input: 'Task', false, baseId}}{% endcapture -%}
+{% endif -%}
+{{ input | generate_uuid }}

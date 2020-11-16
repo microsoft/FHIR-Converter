@@ -1,0 +1,12 @@
+{% if NDL -%}
+{% capture segment -%}{{NDL.1.Value}},{{NDL.4.Value}},{{NDL.5.Value}},{{NDL.6.Value}},{{NDL.7.Value}},{{NDL.8.Value}},{{NDL.9.Value}},{{NDL.10.Value}},{{NDL.11.Value}}{% endcapture -%}
+{% capture input -%}{{segment | generate_id_input: 'PractitionerRole', false}}{% endcapture -%}
+{% elsif XCN -%}
+{% if XCN.1 and XCN.9 -%}
+{% capture segment -%}{{XCN.1.Value}},{{XCN.9.Value}}{% endcapture -%}
+{% capture input -%}{{segment | generate_id_input: 'PractitionerRole', false}}{% endcapture -%}
+{% else -%}
+{% capture input -%}{{XCN.Value | generate_id_input: 'PractitionerRole', false}}{% endcapture -%}
+{% endif -%}
+{% endif -%}
+{{ input | generate_uuid }}

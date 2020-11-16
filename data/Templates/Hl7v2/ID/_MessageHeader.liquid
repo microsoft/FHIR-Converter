@@ -1,0 +1,7 @@
+{% if MSH.3 and MSH.4 and MSH.10 %}
+{% capture segment -%}{{MSH.3.Value}},{{MSH.4.Value}},{{MSH.10.Value}}{% endcapture -%}
+{% capture input -%}{{segment | generate_id_input: 'MessageHeader', false}}{% endcapture -%}
+{% else -%}
+{% capture input -%}{{MSH.Value | generate_id_input: 'MessageHeader', false}}{% endcapture -%}
+{% endif -%}
+{{ input | generate_uuid }}

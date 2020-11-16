@@ -1,0 +1,12 @@
+{% if type == 'First' -%}
+{% capture segment -%}{{PID.3.Repeats[0].1.Value}},{{PID.3.Repeats[0].4.Value}}{% endcapture -%}
+{% capture input -%}{{segment | generate_id_input: 'Patient', false}}{% endcapture -%}
+{% elsif type == 'AssigningAuthority' -%}
+{% for p in PID.3.Repeats -%}
+{% if p.4.Value == authority -%}
+{% capture segment -%}{{p.1.Value}},{{p.4.Value}}{% endcapture -%}
+{% capture input -%}{{segment | generate_id_input: 'Patient', false}}{% endcapture -%}
+{% endif -%}
+{% endfor -%}
+{% endif -%}
+{{ input | generate_uuid }}

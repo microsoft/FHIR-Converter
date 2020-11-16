@@ -47,6 +47,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return memberToken?.Value<string>();
         }
 
+        public static string GenerateIdInput(string segment, string resourceType, bool isBaseIdRequired, string baseId = null)
+        {
+            if (string.IsNullOrEmpty(segment) || string.IsNullOrEmpty(resourceType) || (isBaseIdRequired && string.IsNullOrEmpty(baseId)))
+            {
+                throw new DataFormatException(FhirConverterErrorCode.InvalidIdGenerationInput, Resources.InvalidIdGenerationInput);
+            }
+
+            return baseId != null ? $"{baseId}_{resourceType}_{segment}" : $"{resourceType}_{segment}";
+        }
+
         public static string GenerateUUID(object input)
         {
             if (input is string)

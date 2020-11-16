@@ -1,0 +1,16 @@
+{% if TQ1 -%}
+{% capture input -%}{{TQ1.Value | generate_id_input: 'ServiceRequest', true, baseId}}{% endcapture -%}
+{% elsif ORC -%}
+{% if ORC.2 -% -%}
+{% capture input -%}{{ORC.2.Value | generate_id_input: 'ServiceRequest', true, baseId}}{% endcapture -%}
+{% else -%}
+{% capture input -%}{{ORC.Value | generate_id_input: 'ServiceRequest', true, baseId}}{% endcapture -%}
+{% endif -%}
+{% elsif OBR -%}
+{% if OBR.2 -%}
+{% capture input -%}{{OBR.2.Value | generate_id_input: 'ServiceRequest', true, baseId}}{% endcapture -%}
+{% else -%}
+{% capture input -%}{{OBR.Value | generate_id_input: 'ServiceRequest', true, baseId}}{% endcapture -%}
+{% endif -%}
+{% endif -%}
+{{ input | generate_uuid }}

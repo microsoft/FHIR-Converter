@@ -80,9 +80,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         [Theory]
         [MemberData(nameof(GetInvalidDataForGenerateUuid))]
-        public void GivenInvalidData_WhenGenerateUuid_CorrectResultShouldBeReturned(object input)
+        public void GivenInvalidData_WhenGenerateUuid_ExceptionShouldBeThrown(object input)
         {
             var exception = Assert.Throws<DataFormatException>(() => Filters.GenerateUUID(input));
+            Assert.Equal(FhirConverterErrorCode.InvalidIdGenerationInput, exception.FhirConverterErrorCode);
+        }
+
+        [Fact]
+        public void GenerateIdInputTest()
+        {
+            Assert.Equal("Patient_PATID1234,ADT1", Filters.GenerateIdInput("PATID1234,ADT1", "Patient", false));
+            Assert.Equal("5002eb07-c460-7112-6574-50303ae3b4a6_Encounter_0123456789", Filters.GenerateIdInput("0123456789", "Encounter", false, "5002eb07-c460-7112-6574-50303ae3b4a6"));
+            Assert.Equal("bab5ca58-f272-4c06-4b3f-f9661e45a22b_RelatedPerson_NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", Filters.GenerateIdInput("NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", "RelatedPerson", true, "bab5ca58-f272-4c06-4b3f-f9661e45a22b"));
+
+            var exception = Assert.Throws<DataFormatException>(() => Filters.GenerateIdInput("NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", "RelatedPerson", true, null));
             Assert.Equal(FhirConverterErrorCode.InvalidIdGenerationInput, exception.FhirConverterErrorCode);
         }
     }

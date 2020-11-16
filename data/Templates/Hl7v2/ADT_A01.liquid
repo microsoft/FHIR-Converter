@@ -1,16 +1,18 @@
 ﻿{
     "resourceType": "Bundle",
     "type": "transaction",
+    {% capture bundleId -%}{% include 'ID/Bundle' with Data: hl7v2Data -%}{% endcapture -%}
+    "id": "{{bundleId}}}",
     "entry": [
         {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|PR1|AVR' -%}
         
         {% if firstSegments.PID.3.1 -%}
-            {% assign patientId = firstSegments.PID.3.1.Value | generate_uuid -%}
+            {% capture patientId -%}{% include 'ID/Patient' with PID: firstSegments.PID, type: 'First' -%}{% endcapture -%}
             {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
         {% endif -%}
         
         {% if firstSegments.PV1 -%}
-            {% assign pv1Id = firstSegments.PV1 | generate_uuid -%}
+            {% capture pv1Id -%}{% include 'ID/Encounter' with PV1: firstSegments.PV1, baseId: patientId -%}{% endcapture -%}
         {% endif -%}
         
         {% if patientId -%}
@@ -25,7 +27,7 @@
         {% endif -%}
 
         {% if firstSegments.PR1 -%}
-            {% assign pr1Id = firstSegments.PR1 | generate_uuid -%}
+            {% capture pr1Id -%}{% include 'ID/Procedure' with PR1: firstSegments.PR1, baseId: patientId -%}{% endcapture -%}
             {% include 'Resource/Procedure' with PR1: firstSegments.PR1, ID: pr1Id -%}
             {% if fullPatientId -%}
                 {% include 'Reference/Procedure/Subject' with ID: pr1Id, REF: fullPatientId -%}
@@ -34,7 +36,7 @@
         
         {% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
         {% for nk1Segment in nk1SegmentLists.NK1 -%}
-            {% assign nk1Id = nk1Segment | generate_uuid -%}
+            {% capture nk1Id -%}{% include 'ID/RelatedPerson' with NK1: nk1Segment, baseId: patientId -%}{% endcapture -%}
             {% include 'Resource/RelatedPerson' with NK1: nk1Segment, ID: nk1Id -%}
             {% if fullPatientId -%}
                 {% include 'Reference/RelatedPerson/Patient' with ID: nk1Id, REF: fullPatientId -%}
@@ -43,7 +45,7 @@
 
         {% assign obxSegmentLists = hl7v2Data | get_segment_lists: 'OBX' -%}
         {% for obxSegment in obxSegmentLists.OBX -%}
-            {% assign obxId = obxSegment | generate_uuid -%}
+            {% capture obxId -%}{% include 'ID/Observation' with OBX: obxSegment, baseId: patientId -%}{% endcapture -%}
             {% include 'Resource/Observation' with OBX: obxSegment, ID: obxId -%}
             {% if fullPatientId -%}
                 {% include 'Reference/Observation/Subject' with ID: obxId, REF: fullPatientId -%}
@@ -52,7 +54,7 @@
 
         {% assign al1SegmentLists = hl7v2Data | get_segment_lists: 'AL1' -%}
         {% for al1Segment in al1SegmentLists.AL1 -%}
-            {% assign al1Id = al1Segment | generate_uuid -%}
+            {% capture al1Id -%}{% include 'ID/AllergyIntolerance' with AL1: al1Segment, baseId: patientId -%}{% endcapture -%}
             {% include 'Resource/AllergyIntolerance' with AL1: al1Segment, ID: al1Id -%}
             {% if fullPatientId -%}
                 {% include 'Reference/AllergyIntolerance/Patient' with ID: al1Id, REF: fullPatientId -%}
@@ -61,7 +63,7 @@
 
         {% assign dg1SegmentLists = hl7v2Data | get_segment_lists: 'DG1' -%}
         {% for dg1Segment in dg1SegmentLists.DG1 -%}
-            {% assign dg1Id = dg1Segment | generate_uuid -%}
+            {% capture dg1Id -%}{% include 'ID/Condition' with DG1: dg1Segment, baseId: patientId -%}{% endcapture -%}
             {% assign fullDg1Id = dg1Id | prepend: 'Condition/' -%}
             {% include 'Resource/Condition' with DG1: dg1Segment, ID: dg1Id -%}
             {% if fullPatientId -%}
