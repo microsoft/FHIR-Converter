@@ -90,12 +90,12 @@ SPM|1|||119297000^BLD^SCT^^^^^^Blood|||||||||||||20110103143428-0800
 
             var templateProvider = new Hl7v2TemplateProvider(templateSet);
 
-            // Null, empty or nonexistent entry template
+            // Null, empty or nonexistent root template
             var exception = Assert.Throws<RenderException>(() => processor.Convert(TestData, null, templateProvider));
-            Assert.Equal(FhirConverterErrorCode.NullOrEmptyEntryTemplate, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.NullOrEmptyRootTemplate, exception.FhirConverterErrorCode);
 
             exception = Assert.Throws<RenderException>(() => processor.Convert(TestData, string.Empty, templateProvider));
-            Assert.Equal(FhirConverterErrorCode.NullOrEmptyEntryTemplate, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.NullOrEmptyRootTemplate, exception.FhirConverterErrorCode);
 
             exception = Assert.Throws<RenderException>(() => processor.Convert(TestData, "NonExistentTemplateName", templateProvider));
             Assert.Equal(FhirConverterErrorCode.TemplateNotFound, exception.FhirConverterErrorCode);

@@ -42,6 +42,7 @@ RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical 
             Assert.Equal(@"ORC|RE|4422^NIST-AA-IZ-2|13696^NIST-AA-IZ-2|||||||7824^Jackson^Lily^Suzanne^^^^^NIST-PI-1^L^^^PRN||654^Thomas^Wilma^Elizabeth^^^^^NIST-PI-1^L^^^MD|||||NISTEHRFAC^NISTEHRFacility^HL70362|", segments["ORC"].Value);
             Assert.True(!segments.ContainsKey("PV1"));
 
+            // Hl7v2Data and segment id content could not be null
             Assert.Throws<NullReferenceException>(() => Filters.GetFirstSegments(null, "PID"));
             Assert.Throws<NullReferenceException>(() => Filters.GetFirstSegments(new Hl7v2Data(), null));
         }
@@ -60,6 +61,7 @@ RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical 
             Assert.Equal(4, segments["OBX"].Count);
             Assert.True(!segments.ContainsKey("PV1"));
 
+            // Hl7v2Data and segment id content could not be null
             Assert.Throws<NullReferenceException>(() => Filters.GetSegmentLists(null, "PID"));
             Assert.Throws<NullReferenceException>(() => Filters.GetSegmentLists(new Hl7v2Data(), null));
         }
@@ -82,6 +84,7 @@ RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical 
             var pidSegments = Filters.GetRelatedSegmentList(data, orcSegment, "FOO");
             Assert.True(!pidSegments.ContainsKey("FOO"));
 
+            // Hl7v2Data could not be null
             Assert.Throws<NullReferenceException>(() => Filters.GetRelatedSegmentList(null, null, null));
         }
 
@@ -96,6 +99,7 @@ RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical 
 
             Assert.Empty(Filters.GetParentSegment(data, "OBX", 4, "FOO"));
 
+            // Hl7v2Data could not be null
             Assert.Throws<NullReferenceException>(() => Filters.GetParentSegment(null, "OBX", 3, "RXA"));
         }
 
@@ -110,6 +114,7 @@ RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical 
             Assert.True(Filters.HasSegments(data, "PID|ORC|OBX"));
             Assert.False(Filters.HasSegments(data, "PID|ORC|OBX||"));
 
+            // Hl7v2Data and segment id content could not be null
             Assert.Throws<NullReferenceException>(() => Filters.HasSegments(null, "PID"));
             Assert.Throws<NullReferenceException>(() => Filters.HasSegments(new Hl7v2Data(), null));
         }

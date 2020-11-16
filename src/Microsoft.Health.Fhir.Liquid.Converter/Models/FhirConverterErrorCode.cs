@@ -34,7 +34,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
         // RenderException
         TemplateRenderingError = 1401,
         PropertyNotFound = 1402,
-        NullOrEmptyEntryTemplate = 1403,
+        NullOrEmptyRootTemplate = 1403,
         NullTemplateProvider = 1404,
         TemplateNotFound = 1405,
 

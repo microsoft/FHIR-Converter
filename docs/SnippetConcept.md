@@ -65,7 +65,7 @@ The reference ensures that when the condition resource is created, there is a re
 },
 ```
 
-When this template is called in the entry template, you must specify the values for **ID** and **REF**.
+When this template is called in the root template, you must specify the values for **ID** and **REF**.
 Below is the example in the ADT_A01 template, where a reference template is included.
 
 ```
