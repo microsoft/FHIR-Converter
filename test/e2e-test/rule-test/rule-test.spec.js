@@ -71,6 +71,6 @@ describe('E2E test - FHIR data validation', function () {
                         done();
                     }
                 });
-        }).timeout(10000);
+        }).timeout(30000);
     });
 });
