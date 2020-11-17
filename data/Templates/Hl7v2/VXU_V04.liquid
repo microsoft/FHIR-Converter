@@ -13,6 +13,17 @@
         {% if firstSegments.PV1 -%}
             {% assign pv1Id = firstSegments.PV1 | generate_uuid -%}
             {% include 'Resource/Encounter' with PV1: firstSegments.PV1, ID: pv1Id -%}
+            
+            {% if firstSegments.PV1.3 -%}
+                {% assign plId = firstSegments.PV1.3 | generate_uuid -%}
+                {% include 'Resource/Location' with PL: firstSegments.PV1.3, ID: plId -%}
+            {% endif -%}
+
+            {% if firstSegments.PV1.6 -%}
+                {% assign plId = firstSegments.PV1.6 | generate_uuid -%}
+                {% include 'Resource/Location' with PL: firstSegments.PV1.6, ID: plId -%}
+            {% endif -%}
+
             {% if fullPatientId -%}
                 {% include 'Reference/Encounter/Subject' with ID: pv1Id, REF: fullPatientId -%}
             {% endif %}
