@@ -30,6 +30,14 @@
             { {% include 'DataType/XTN' with XTN: ROL.12 -%} },
             { {% include 'DataType/XTN' with XTN: PRT.15 -%} },
         ],
+        "location":
+        [
+            {
+                {% if ROL.13 -%}
+                "reference":"Location/{{generateUUID ROL-13}}",
+                {% endif -%}
+            },
+        ],
         {% include 'DataType/XCNPractitionerRole' with XCN: ROL.4 -%}
         {% include 'DataType/XCNPractitionerRole' with XCN: OBX.25 -%}
         {% include 'DataType/XCNPractitionerRole' with XCN: PRT.5 -%}
