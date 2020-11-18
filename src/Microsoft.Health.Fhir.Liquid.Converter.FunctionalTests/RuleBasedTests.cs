@@ -15,8 +15,6 @@ using System.Threading.Tasks;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using NHapi.Base.Parser;
-using NHapi.Base.validation.impl;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -66,22 +64,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         public static IEnumerable<object[]> GetCCDACases()
         {
             return new List<object[]>();
-        }
-
-        [Theory]
-        [MemberData(nameof(GetHL7V2Cases))]
-        public async Task CheckSampleData(string templateName, string samplePath)
-        {
-            var sampleContent = await File.ReadAllTextAsync(samplePath, Encoding.UTF8);
-            var parser = new PipeParser();
-            parser.ValidationContext = new DefaultValidation();
-
-            var exception = Record.Exception(() =>
-            {
-                var message = parser.Parse(sampleContent);
-                Assert.False(string.IsNullOrEmpty(message.Version));
-            });
-            Assert.Null(exception);
         }
 
         [Theory]
