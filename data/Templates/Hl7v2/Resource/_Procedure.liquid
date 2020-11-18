@@ -36,6 +36,12 @@
         [
             { {% include 'DataType/EIIdentifier' with EI: PR1.19 -%} },
         ],
+        "location":
+        {
+            {% if PR1.23 -%}
+            "reference":"Location/{{generateUUID PR1-23}}",
+            {% endif -%}
+        },
     },
     "request":{
         "method":"PUT",

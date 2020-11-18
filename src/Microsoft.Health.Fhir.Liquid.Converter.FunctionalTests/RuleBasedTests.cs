@@ -217,7 +217,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             private static readonly HashSet<string> _explicitProps = new HashSet<string>
             {
                 "resourceType", "type", "fullUrl", "id", "method", "url", "reference", "system",
-                "code", "display", "gender", "use", "preferred", "status",
+                "code", "display", "gender", "use", "preferred", "status", "mode",
             };
 
             private static readonly HashSet<string> _explicitValues = new HashSet<string>

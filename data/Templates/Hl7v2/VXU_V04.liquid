@@ -7,15 +7,23 @@
         {% if firstSegments.PID.3.1 -%}
             {% assign patientId = firstSegments.PID.3.1.Value | generate_uuid -%}
             {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
-        {% endif -%}
-        
-        {% if patientId -%}
             {% include 'Resource/Patient' with PID: firstSegments.PID, PD1: firstSegments.PD1, NK1: firstSegments.NK1, ID: patientId -%}
         {% endif -%}
-
+        
         {% if firstSegments.PV1 -%}
             {% assign pv1Id = firstSegments.PV1 | generate_uuid -%}
             {% include 'Resource/Encounter' with PV1: firstSegments.PV1, ID: pv1Id -%}
+            
+            {% if firstSegments.PV1.3 -%}
+                {% assign plId = firstSegments.PV1.3 | generate_uuid -%}
+                {% include 'Resource/Location' with PL: firstSegments.PV1.3, ID: plId -%}
+            {% endif -%}
+
+            {% if firstSegments.PV1.6 -%}
+                {% assign plId = firstSegments.PV1.6 | generate_uuid -%}
+                {% include 'Resource/Location' with PL: firstSegments.PV1.6, ID: plId -%}
+            {% endif -%}
+
             {% if fullPatientId -%}
                 {% include 'Reference/Encounter/Subject' with ID: pv1Id, REF: fullPatientId -%}
             {% endif %}
