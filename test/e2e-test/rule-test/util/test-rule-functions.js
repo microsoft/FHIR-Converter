@@ -16,7 +16,7 @@ const systemExec = require('child_process').execSync;
 const MAX_REVEAL_DEPTH = 100;
 const NON_COMPARE_PROPERTY = new Set([
     'resourceType', 'type', 'fullUrl', 'id', 'method', 'url', 'reference', 'system', 'code', 'display',
-    'gender', 'use', 'preferred', 'status'
+    'gender', 'use', 'preferred', 'status', 'mode'
 ]);
 
 var response = function(status, message='', reqJson=null, resJson=null) {
@@ -98,6 +98,7 @@ const originValueReveal = (reqJson, resJson) => {
 
 /**
  * Use officially recommended validator to validate resources.
+ * !!Currently the templates are still under development. By default we turn off this validator.
  */
 const officialValidator = (reqJson, resJson) => {
     const javaExistCommand = 'java -version';

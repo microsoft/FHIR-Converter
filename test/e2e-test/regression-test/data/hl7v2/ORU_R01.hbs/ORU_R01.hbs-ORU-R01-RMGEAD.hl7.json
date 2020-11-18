@@ -10,6 +10,20 @@
                 "identifier": [
                     {
                         "value": "555-44-4444"
+                    },
+                    {
+                        "value": "67-A4335",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "DL"
+                                }
+                            ]
+                        },
+                        "system": "OH",
+                        "period": {
+                            "end": "2003-05-20"
+                        }
                     }
                 ],
                 "name": [
@@ -28,7 +42,20 @@
                     {
                         "line": [
                             "153 FERNWOOD DR."
-                        ]
+                        ],
+                        "city": "STATESVILLE",
+                        "state": "OH",
+                        "postalCode": "35292"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "value": "(206)3345232",
+                        "use": "home"
+                    },
+                    {
+                        "value": "(206)752-121",
+                        "use": "work"
                     }
                 ]
             },
@@ -38,10 +65,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:15c8296a-7ee6-35b3-ac8f-656604bb2612",
+            "fullUrl": "urn:uuid:6416213d-b637-35d6-bdab-946c5551bc2d",
             "resource": {
                 "resourceType": "DiagnosticReport",
-                "id": "15c8296a-7ee6-35b3-ac8f-656604bb2612",
+                "id": "6416213d-b637-35d6-bdab-946c5551bc2d",
                 "identifier": [
                     {
                         "type": {
@@ -69,22 +96,23 @@
                         }
                     ]
                 },
+                "status": "final",
                 "result": [
                     {
-                        "reference": "Observation/4f8b8fe0-a89f-3067-9c11-d64f842262e5"
+                        "reference": "Observation/c87d6d3e-3df7-334c-a666-ee8c5b6df021"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "DiagnosticReport/15c8296a-7ee6-35b3-ac8f-656604bb2612"
+                "url": "DiagnosticReport/6416213d-b637-35d6-bdab-946c5551bc2d"
             }
         },
         {
-            "fullUrl": "urn:uuid:4f8b8fe0-a89f-3067-9c11-d64f842262e5",
+            "fullUrl": "urn:uuid:c87d6d3e-3df7-334c-a666-ee8c5b6df021",
             "resource": {
                 "resourceType": "Observation",
-                "id": "4f8b8fe0-a89f-3067-9c11-d64f842262e5",
+                "id": "c87d6d3e-3df7-334c-a666-ee8c5b6df021",
                 "code": {
                     "coding": [
                         {
@@ -113,6 +141,7 @@
                         ]
                     }
                 ],
+                "status": "final",
                 "component": [
                     {
                         "code": {
@@ -156,7 +185,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/4f8b8fe0-a89f-3067-9c11-d64f842262e5"
+                "url": "Observation/c87d6d3e-3df7-334c-a666-ee8c5b6df021"
             }
         }
     ]

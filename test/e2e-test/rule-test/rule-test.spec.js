@@ -13,8 +13,8 @@ const apiKeys = ['123', '456'];
 var app = require("../../../src/routes")(express());
 
 // load testcases
-var cdaTestcases = require('./config/testcases-cda');
-var hl7v2Testcases = require('./config/testcases-hl7v2');
+var cdaTestcases = require('./config/testcases-cda')();
+var hl7v2Testcases = require('./config/testcases-hl7v2')();
 var opTests = cdaTestcases.concat(hl7v2Testcases);
 
 describe('E2E test - FHIR data validation', function () {
