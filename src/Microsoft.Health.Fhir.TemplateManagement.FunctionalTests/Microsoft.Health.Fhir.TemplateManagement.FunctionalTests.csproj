@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests\TestData\Expected\Hl7v2\ADT_A01\ADT01-23-expected.json" Link="TestData\Expected\Hl7v2\ADT_A01\ADT01-23-expected.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests\TestData\Expected\Hl7v2\OML_O21\MDHHS-OML-O21-1-expected.json" Link="TestData\Expected\Hl7v2\OML_O21\MDHHS-OML-O21-1-expected.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests\TestData\Expected\Hl7v2\ORU_R01\LAB-ORU-1-expected.json" Link="TestData\Expected\Hl7v2\ORU_R01\LAB-ORU-1-expected.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests\TestData\Expected\Hl7v2\VXU_V04\IZ_1_1.1_Admin_Child_Max_Message-expected.json" Link="TestData\Expected\Hl7v2\VXU_V04\IZ_1_1.1_Admin_Child_Max_Message-expected.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.0-preview-20201020-06" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Health.Fhir.TemplateManagement\Microsoft.Health.Fhir.TemplateManagement.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DefaultTemplates.tar.gz">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="TestData\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TestData\Expected\Hl7v2\ADT_A01\" />
+    <Folder Include="TestData\Expected\Hl7v2\OML_O21\" />
+    <Folder Include="TestData\Expected\Hl7v2\ORU_R01\" />
+    <Folder Include="TestData\Expected\Hl7v2\VXU_V04\" />
+  </ItemGroup>
+</Project>
