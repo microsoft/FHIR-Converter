@@ -61,7 +61,7 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'publish binary artifacts'
   inputs:
-    pathtoPublish: '$(Build.BinariesDirectory)/tool' 
+    pathToPublish: '$(Build.BinariesDirectory)/tool' 
     artifactName: 'FhirConverterBuild'
 
 - task: PublishBuildArtifacts@1
