@@ -1,9 +1,9 @@
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
-- master
-- refs/heads/master
-pr: ['master']
+- dotliquid
+- refs/heads/dotliquid
+pr: ['dotliquid']
 
 pool:
   vmImage: 'windows-latest'
@@ -34,14 +34,16 @@ steps:
   inputs:
     command: test
     projects: '$(testProjects)'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage" --no-build'
+    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+    nobuild: true
     
 - task: DotNetCoreCLI@2
   displayName: 'dotnet publish'
   inputs:
     command: 'publish'
     projects: '$(publishProject)'
-    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory) --no-build'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.BinariesDirectory)/tool'
+    nobuild: true
     publishWebProjects: false
     zipAfterPublish: True
       
@@ -54,10 +56,17 @@ steps:
       --configuration $(buildConfiguration)
       --output $(Build.ArtifactStagingDirectory)/nupkgs
       --no-build
-      -p:NuspecProperties="version=$(major).$(minor).$(Build.BuildNumber)"
+      -p:NuspecProperties="version=$(version)"
 
 - task: PublishBuildArtifacts@1
   displayName: 'publish binary artifacts'
   inputs:
-    pathtoPublish: '$(Build.ArtifactStagingDirectory)' 
+    pathtoPublish: '$(Build.BinariesDirectory)/tool' 
     artifactName: 'FhirConverterBuild'
+
+- task: PublishBuildArtifacts@1
+  displayName: 'publish nuget artifacts'
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)/nupkgs'
+    artifactName: 'nuget'
+    publishLocation: 'container'
