@@ -76,7 +76,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         public void GivenAnInvalidTemplate_WhenConverting_ExceptionsShouldBeThrown()
         {
             var hl7v2Processor = new Hl7v2Processor();
-            var templateSet = new List<Dictionary<string, Template>>
+            var templateCollection = new List<Dictionary<string, Template>>
             {
                 new Dictionary<string, Template>
                 {
@@ -84,7 +84,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 },
             };
 
-            var exception = Assert.Throws<RenderException>(() => hl7v2Processor.Convert(@"MSH|^~\&|", "template", new Hl7v2TemplateProvider(templateSet)));
+            var exception = Assert.Throws<RenderException>(() => hl7v2Processor.Convert(@"MSH|^~\&|", "template", new Hl7v2TemplateProvider(templateCollection)));
             Assert.True(exception.InnerException is DotLiquid.Exceptions.StackLevelException);
         }
     }
