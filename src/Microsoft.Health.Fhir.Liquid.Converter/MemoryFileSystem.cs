@@ -14,7 +14,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 {
     public class MemoryFileSystem : ITemplateFileSystem
     {
-        protected List<Dictionary<string, Template>> TemplateSets { get; set; } = new List<Dictionary<string, Template>>();
+        protected List<Dictionary<string, Template>> TemplateCollection { get; set; } = new List<Dictionary<string, Template>>();
 
         public string ReadTemplateFile(Context context, string templateName)
         {
@@ -39,11 +39,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return null;
             }
 
-            foreach (var templateSet in TemplateSets)
+            foreach (var templates in TemplateCollection)
             {
-                if (templateSet != null && templateSet.ContainsKey(templateName))
+                if (templates != null && templates.ContainsKey(templateName))
                 {
-                    return templateSet[templateName];
+                    return templates[templateName];
                 }
             }
 

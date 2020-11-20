@@ -60,10 +60,10 @@ SPM|1|||119297000^BLD^SCT^^^^^^Blood|||||||||||||20110103143428-0800
         }
 
         [Fact]
-        public void GivenAValidTemplateSet_WhenConvert_CorrectResultShouldBeReturned()
+        public void GivenAValidTemplateCollection_WhenConvert_CorrectResultShouldBeReturned()
         {
             var processor = new Hl7v2Processor();
-            var templateSet = new List<Dictionary<string, Template>>
+            var templateCollection = new List<Dictionary<string, Template>>
             {
                 new Dictionary<string, Template>
                 {
@@ -71,7 +71,7 @@ SPM|1|||119297000^BLD^SCT^^^^^^Blood|||||||||||||20110103143428-0800
                 },
             };
 
-            var templateProvider = new Hl7v2TemplateProvider(templateSet);
+            var templateProvider = new Hl7v2TemplateProvider(templateCollection);
             var result = processor.Convert(TestData, "TemplateName", templateProvider);
             Assert.True(result.Length > 0);
         }
@@ -80,7 +80,7 @@ SPM|1|||119297000^BLD^SCT^^^^^^Blood|||||||||||||20110103143428-0800
         public void GivenInvalidTemplateProviderOrName_WhenConvert_ExceptionsShouldBeThrown()
         {
             var processor = new Hl7v2Processor();
-            var templateSet = new List<Dictionary<string, Template>>
+            var templateCollection = new List<Dictionary<string, Template>>
             {
                 new Dictionary<string, Template>
                 {
@@ -88,7 +88,7 @@ SPM|1|||119297000^BLD^SCT^^^^^^Blood|||||||||||||20110103143428-0800
                 },
             };
 
-            var templateProvider = new Hl7v2TemplateProvider(templateSet);
+            var templateProvider = new Hl7v2TemplateProvider(templateCollection);
 
             // Null, empty or nonexistent root template
             var exception = Assert.Throws<RenderException>(() => processor.Convert(TestData, null, templateProvider));

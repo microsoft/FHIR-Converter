@@ -16,9 +16,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
     public class MemoryFileSystemTests
     {
         [Fact]
-        public void GivenAValidTemplateSet_WhenGetTemplate_CorrectResultShouldBeReturned()
+        public void GivenAValidTemplateCollection_WhenGetTemplate_CorrectResultShouldBeReturned()
         {
-            var templateSet = new List<Dictionary<string, Template>>
+            var templateCollection = new List<Dictionary<string, Template>>
             {
                 new Dictionary<string, Template>
                 {
@@ -26,15 +26,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
                 },
             };
 
-            var templateProvider = new Hl7v2TemplateProvider(templateSet);
+            var templateProvider = new Hl7v2TemplateProvider(templateCollection);
             Assert.Equal("hello world", templateProvider.GetTemplate("template1").Render());
             Assert.Null(templateProvider.GetTemplate("template2"));
         }
 
         [Fact]
-        public void GivenTwoValidTemplateSets_WhenGetTemplate_CorrectResultShouldBeReturned()
+        public void GivenTwoValidTemplateCollection_WhenGetTemplate_CorrectResultShouldBeReturned()
         {
-            var templateSets = new List<Dictionary<string, Template>>
+            var templateCollection = new List<Dictionary<string, Template>>
             {
                 new Dictionary<string, Template>
                 {
@@ -55,7 +55,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
                 },
             };
 
-            var templateProvider = new Hl7v2TemplateProvider(templateSets);
+            var templateProvider = new Hl7v2TemplateProvider(templateCollection);
             Assert.Null(templateProvider.GetTemplate("template1"));
             Assert.Equal("template2 updated in customized layer", templateProvider.GetTemplate("template2").Render());
             Assert.Equal("template3 added in base layer", templateProvider.GetTemplate("template3").Render());
@@ -63,9 +63,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
         }
 
         [Fact]
-        public void GivenAValidTemplateSet_WhenGetTemplateWithContext_CorrectResultShouldBeReturned()
+        public void GivenAValidTemplateCollection_WhenGetTemplateWithContext_CorrectResultShouldBeReturned()
         {
-            var templateSet = new List<Dictionary<string, Template>>
+            var templateCollection = new List<Dictionary<string, Template>>
             {
                 new Dictionary<string, Template>
                 {
@@ -73,7 +73,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
                 },
             };
 
-            var templateProvider = new Hl7v2TemplateProvider(templateSet);
+            var templateProvider = new Hl7v2TemplateProvider(templateCollection);
             var context = new Context(CultureInfo.InvariantCulture);
             context["template1"] = "template1";
             context["template2"] = "template2";
@@ -83,9 +83,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
         }
 
         [Fact]
-        public void GivenTwoValidTemplateSets_WhenGetTemplateWithContext_CorrectResultShouldBeReturned()
+        public void GivenTwoValidtTemplateCollection_WhenGetTemplateWithContext_CorrectResultShouldBeReturned()
         {
-            var templateSets = new List<Dictionary<string, Template>>
+            var templateCollection = new List<Dictionary<string, Template>>
             {
                 new Dictionary<string, Template>
                 {
@@ -106,7 +106,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
                 },
             };
 
-            var templateProvider = new Hl7v2TemplateProvider(templateSets);
+            var templateProvider = new Hl7v2TemplateProvider(templateCollection);
             var context = new Context(CultureInfo.InvariantCulture);
             context["'folder/template1'"] = "folder/template1";
             context["template2"] = "template2";
@@ -120,9 +120,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
         }
 
         [Fact]
-        public void GivenAValidTemplateSet_WhenReadTemplateWithContext_ExceptionShouldBeThrown()
+        public void GivenAValidTemplateCollection_WhenReadTemplateWithContext_ExceptionShouldBeThrown()
         {
-            var templateSet = new List<Dictionary<string, Template>>
+            var templateCollection = new List<Dictionary<string, Template>>
             {
                 new Dictionary<string, Template>
                 {
@@ -130,7 +130,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
                 },
             };
 
-            var templateProvider = new Hl7v2TemplateProvider(templateSet);
+            var templateProvider = new Hl7v2TemplateProvider(templateCollection);
             var context = new Context(CultureInfo.InvariantCulture);
             context["hello"] = "hello";
             Assert.Throws<NotImplementedException>(() => templateProvider.ReadTemplateFile(context, "hello"));
