@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
@@ -139,6 +140,19 @@ SPM|1|||119297000^BLD^SCT^^^^^^Blood|||||||||||||20110103143428-0800
             processor = new Hl7v2Processor(settings);
             result = processor.Convert(TestData, "ORU_R01", templateProvider);
             Assert.True(result.Length > 0);
+        }
+
+        [Fact]
+        public void GivenCancellationToken_WhenConvert_CorrectResultsShouldBeReturned()
+        {
+            var processor = new Hl7v2Processor();
+            var templateProvider = new Hl7v2TemplateProvider(@"..\..\..\..\..\data\Templates\Hl7v2");
+            var cts = new CancellationTokenSource();
+            var result = processor.Convert(TestData, "ORU_R01", templateProvider, cts.Token);
+            Assert.True(result.Length > 0);
+
+            cts.Cancel();
+            Assert.Throws<OperationCanceledException>(() => processor.Convert(TestData, "ORU_R01", templateProvider, cts.Token));
         }
     }
 }
