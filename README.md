@@ -14,7 +14,7 @@ The following table compares the two converter engines:
 | **Template language** | [Handlebars](https://handlebarsjs.com/) | [Liquid](https://shopify.github.io/liquid/) |
 | **Template authoring tool** | 1. Text editor <br> 2. Self-hosted web-app | 1. Text editor <br> 2. *VS Code extension**|
 | **Supported conversions** | 1. HL7v2 to FHIR <br> 2. CCDA to FHIR | 1. HL7 v2 to FHIR <br> 2. *CCDA to FHIR** |
-| **Available as** | 1. Self-deployed web service <br> (on-prem or on Azure)| 1. Command line tool <br> 2. *$data-convert operation of Azure API for FHIR** <br> 3. *$data-convert operation on  FHIR Server for Azure**|
+| **Available as** | 1. Self-deployed web service <br> (on-prem or on Azure)| 1. Command line tool <br> 2. *$convert-data operation of Azure API for FHIR** <br> 3. *$convert-data operation on  FHIR Server for Azure**|
 **Available in Azure FHIR servers** | No | *Yes** |
 
 **To be released soon.*
