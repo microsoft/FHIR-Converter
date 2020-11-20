@@ -19,7 +19,6 @@ variables:
   revision: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
   version: $(major).$(minor).$(bulidnum).$(revision)
 
-
 steps:
 - script: echo $(version)
 
@@ -28,7 +27,7 @@ steps:
   inputs:
     command: build
     projects: '$(solution)'
-    arguments: '--configuration $(buildConfiguration) /p:Version=$(version)'
+    arguments: '--configuration $(buildConfiguration) -p:Version=$(version)'
         
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test'
@@ -49,16 +48,13 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: 'dotnet pack nugets'
   inputs:
-    command: pack
-    configuration: '$(buildConfiguration)'
-    packDirectory: '$(Build.ArtifactStagingDirectory)/nupkgs'
-    versioningScheme: 'byEnvVar'
-    versionEnvVar: 'nuget_version'
-    nobuild: true
-    zipAfterPublish: true
-  env:
-    nuget_version: $(major).$(minor).$(Build.BuildNumber)
-  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+    command: custom
+    custom: pack
+    arguments: >
+      --configuration $(buildConfiguration)
+      --output $(Build.ArtifactStagingDirectory)/nupkgs
+      --no-build
+      -p:NuspecProperties="version=$(major).$(minor).$(Build.BuildNumber)"
 
 - task: PublishBuildArtifacts@1
   displayName: 'publish binary artifacts'
