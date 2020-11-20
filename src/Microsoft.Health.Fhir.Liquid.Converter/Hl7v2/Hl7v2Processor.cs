@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.OutputProcessor;
@@ -47,6 +48,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             var rawResult = RenderTemplates(template, context);
             var result = PostProcessor.Process(rawResult);
             return result.ToString(Formatting.Indented);
+        }
+
+        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, CancellationToken cancellationToken, TraceInfo traceInfo = null)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Convert(data, rootTemplate, templateProvider, traceInfo);
         }
 
         private Context CreateContext(ITemplateProvider templateProvider, string data)
