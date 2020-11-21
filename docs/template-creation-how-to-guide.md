@@ -4,7 +4,7 @@ In this how-to guide, we will cover some of the basics around creating templates
 
 ## Prerequisites
 
-Before starting to create a template, ensure that you have deployed the GitHub code and have a local repository of the existing templates. As part of the code, we have included an optional web editor to assist with modifying and creating templates. You can choose to use this web editor or another code editor. For a high level overview of the features for the web UI, see the [web UI summary](web-ui-summary).
+Before starting to create a template, ensure that you have deployed the GitHub code and have a local repository of the existing templates. As part of the code, we have included an optional web editor to assist with modifying and creating templates. You can choose to use this web editor or another code editor. For a high level overview of the features for the web UI, see the [web UI summary](web-ui-summary.md).
 
 ## Getting started with templates
 
@@ -25,9 +25,9 @@ To get started updating/creating templates:
 
 4. Once you are done editing, make sure to hit save. Your template will now be available to be called by the API for real time data conversion.
 
-For step by step instructions for how to get started updating/creating HL7 v2 templates, see the [HL7v2 Template Creation](HL7v2_template_creation.md).
+For step by step instructions for how to get started updating/creating HL7 v2 templates, see the [HL7v2 Template Creation](template-creation-guide-HL7v2.md).
 
-For step by step instructions for how to get started updating/creating C-CDA templates, see the [C-CDA Template Creation](CCDA_template_creation.md).
+For step by step instructions for how to get started updating/creating C-CDA templates, see the [C-CDA Template Creation](template-creation-guide-CCDA.md).
 
 ### Creating Template best practices
 
