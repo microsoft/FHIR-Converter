@@ -37,7 +37,8 @@ var dataTemplateSplit;
 
 var dataTypeMappings = {
     'HL7v2': 'hl7v2',
-    'CDA': 'cda'
+    'CDA': 'cda',
+    'Redox': 'redox'
 };
 
 function getSettings() {
@@ -385,6 +386,22 @@ function changeDataType(dataType) {
 
                 dataEditor.setOption("mode", "text/html");
                 break;
+            case 'Redox':
+                $('#editor-wrapper').removeClass('vertical-content');
+
+                // Create splits for editor areas
+                templateOutputSplit = Split(['.template-area', '.output-area'], {
+                    gutterSize: 5,
+                    sizes: [50, 50]
+                });
+
+                dataTemplateSplit = Split(['.msg-area', '.editor-area'], {
+                    gutterSize: 5,
+                    sizes: [30, 70]
+                });
+
+                dataEditor.setOption("mode", "text/html");
+                break;
         }
     }
 }
@@ -493,14 +510,14 @@ $(document).ready(function () {
         $('#settings-modal-alert').hide();
     });
 
-    // We will not allow the API key modal to be closed if the API key is wrong. 
+    // We will not allow the API key modal to be closed if the API key is wrong.
     $("#settings-modal").on('hidden.bs.modal', function () {
         if (uncheckedApiKey) {
             checkApiKey(undefined, function () { $('#settings-modal').modal('show'); });
         }
     });
 
-    // API Key save button 
+    // API Key save button
     $('#settings-save-button').on('click', function () {
         var settings = getSettings();
         var changesColorTheme = false;
