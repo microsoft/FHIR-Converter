@@ -85,10 +85,16 @@
         "status": "unknown",
         "location": [
           {
-            "status": "active"
+            "status": "active",
+            "location": {
+              "reference": "Location/86917139-7233-3549-b705-61dc90a7b167"
+            }
           },
           {
-            "status": "completed"
+            "status": "completed",
+            "location": {
+              "reference": "Location/61d04c35-72bb-3770-967a-9507b068fb52"
+            }
           }
         ],
         "participant": [
@@ -162,6 +168,36 @@
       "request": {
         "method": "PUT",
         "url": "Encounter/4c85649c-bbba-3342-bf5f-776bcf1212d6"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:86917139-7233-3549-b705-61dc90a7b167",
+      "resource": {
+        "resourceType": "Location",
+        "id": "86917139-7233-3549-b705-61dc90a7b167",
+        "mode": "instance",
+        "physicalType": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/location-physical-type"
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/86917139-7233-3549-b705-61dc90a7b167"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:61d04c35-72bb-3770-967a-9507b068fb52",
+      "resource": {
+        "resourceType": "Location",
+        "id": "61d04c35-72bb-3770-967a-9507b068fb52"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/61d04c35-72bb-3770-967a-9507b068fb52"
       }
     },
     {

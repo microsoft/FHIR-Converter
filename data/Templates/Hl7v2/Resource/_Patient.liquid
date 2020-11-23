@@ -17,16 +17,17 @@
                 {% include 'DataType/CX' with CX: PID.4 -%}
             },
             {
+                "value":"{{ PID.19.Value }}",
                 "type":
                 {
                     "coding":
                     [
                         {
                             {% if PID.19 -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                            "code":"SS",
                             {% endif -%}
                             {% if PID.19 -%}
-                            "code":"SS",
+                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
                             {% endif -%}
                         },
                     ],
@@ -34,7 +35,6 @@
                 {% if PID.19 -%}
                 "system":"http://hl7.org/fhir/sid/us-ssn",
                 {% endif -%}
-                "value":"{{ PID.19.Value }}",
             },
             {
                 {% include 'DataType/DLN' with DLN: PID.20 -%}
@@ -126,9 +126,11 @@
                 },
                 "telecom":
                 [
+                    {% for n in NK1.5.Repeats -%}
                     {
-                        {% include 'DataType/XTN' with XTN: NK1.5 -%}
+                        {% include 'DataType/XTN' with XTN: n -%}
                     },
+                    {% endfor -%}
                     {
                         {% include 'DataType/XTN' with XTN: NK1.6 -%}
                     },

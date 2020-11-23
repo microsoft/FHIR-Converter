@@ -19,12 +19,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 
         public Hl7v2TemplateProvider(string templateDirectory)
         {
-            TemplateSets = LoadTemplates(templateDirectory);
+            TemplateCollection = LoadTemplates(templateDirectory);
         }
 
-        public Hl7v2TemplateProvider(List<Dictionary<string, Template>> templateSets)
+        public Hl7v2TemplateProvider(List<Dictionary<string, Template>> templateCollection)
         {
-            TemplateSets = templateSets;
+            TemplateCollection = templateCollection;
         }
 
         public List<Dictionary<string, Template>> LoadTemplates(string templateDirectory)

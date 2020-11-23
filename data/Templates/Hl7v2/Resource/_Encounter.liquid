@@ -16,6 +16,12 @@
         "location":
         [
             {
+                "location":
+                {
+                    {% if PV1.3 -%}
+                    "reference":"Location/{{generateUUID PV1-3}}",
+                    {% endif -%}
+                },
                 {% if PV1.2.1.Value != "P" -%}
                 "status":"active",
                 {% endif -%}
@@ -24,6 +30,12 @@
                 {% endif -%}
             },
             {
+                "location":
+                {
+                    {% if PV1.6 -%}
+                    "reference":"Location/{{generateUUID PV1-6}}",
+                    {% endif -%}
+                },
                 {% if PV1.6 -%}
                 "status":"completed",
                 {% endif -%}

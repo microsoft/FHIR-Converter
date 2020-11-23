@@ -7,8 +7,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
 {
     public class Metadata
     {
-        public string Version { get; set; }
-
         public string Type { get; set; }
     }
 }
