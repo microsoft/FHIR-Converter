@@ -1,19 +1,19 @@
-FROM node:10
+#########################################
+### Base Image                         ##
+#########################################
+FROM node:10 AS build
+ARG version=v2.1.0
+RUN git clone --depth=1 --branch ${version} https://github.com/microsoft/FHIR-Converter.git /app
+WORKDIR /app
+RUN npm install --only=production --no-fund --no-optional --no-audit
 
-# Create app directory
-WORKDIR /usr/src/app
-
-# Install app dependencies
-# Copy package.json first for package install
-COPY package*.json ./
-
-# Lay down packages as separate layer
-RUN apt remove imagemagick* -y && apt remove libmagick* -y && apt autoremove -y && apt-get update && apt-get upgrade -y &&  npm install
-
-# Bundle app source
-COPY . .
-
-RUN ["chmod", "+x", "/usr/src/app/deploy/webapp.sh"]
-
+#########################################
+### Prod Image                         ##
+#########################################
+FROM node:10-slim
+RUN  apt-get update && apt install libcurl4-gnutls-dev -y && apt autoremove -y
+COPY --from=build /app /app
+WORKDIR /app
+RUN ["chmod", "+x", "/app/deploy/webapp.sh"]
 EXPOSE 2019
 CMD [ "npm", "start" ]
