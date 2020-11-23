@@ -1,4 +1,5 @@
-﻿{% if NK1 -%}
+﻿{% assign input = '' -%}
+{% if NK1 -%}
 {% if NK1.12.1 and NK1.12.4 -%}
 {% capture segment -%}{{NK1.12.1.Value}},{{NK1.12.4.Value}}{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}

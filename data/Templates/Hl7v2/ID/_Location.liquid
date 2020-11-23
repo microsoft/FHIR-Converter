@@ -1,3 +1,4 @@
+{% assign input = '' -%}
 {% if PL -%}
 {% if PL.10 -%}
 {% capture input -%}{{PL.10.Value | generate_id_input: 'Location', false}}{% endcapture -%}

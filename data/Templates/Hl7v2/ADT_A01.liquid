@@ -15,6 +15,17 @@
         {% capture encounterId -%}{% include 'ID/Encounter' with PV1: firstSegments.PV1, baseId: patientId -%}{% endcapture -%}
         {% if encounterId != '' -%}
             {% include 'Resource/Encounter' with PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
+
+            {% capture locationId -%}{% include 'ID/Location' with PL: firstSegments.PV1.3 -%}{% endcapture -%}
+            {% if locationId != '' -%}
+                {% include 'Resource/Location' with PL: firstSegments.PV1.3, ID: locationId -%}
+            {% endif -%}
+
+            {% capture locationId -%}{% include 'ID/Location' with PL: firstSegments.PV1.6 -%}{% endcapture -%}
+            {% if locationId != '' -%}
+                {% include 'Resource/Location' with PL: firstSegments.PV1.6, ID: locationId -%}
+            {% endif -%}
+
             {% if patientId != '' -%}
                 {% include 'Reference/Encounter/Subject' with ID: encounterId, REF: fullPatientId -%}
             {% endif -%}
@@ -23,6 +34,12 @@
         {% capture procedureId -%}{% include 'ID/Procedure' with PR1: firstSegments.PR1, baseId: patientId -%}{% endcapture -%}
         {% if procedureId != '' -%}
             {% include 'Resource/Procedure' with PR1: firstSegments.PR1, ID: procedureId -%}
+
+            {% capture locationId -%}{% include 'ID/Location' with PL: firstSegments.PR1.23 -%}{% endcapture -%}
+            {% if locationId != '' -%}
+                {% include 'Resource/Location' with PL: firstSegments.PR1.23, ID: locationId -%}
+            {% endif -%}
+
             {% if patientId != '' -%}
                 {% include 'Reference/Procedure/Subject' with ID: procedureId, REF: fullPatientId -%}
             {% endif -%}

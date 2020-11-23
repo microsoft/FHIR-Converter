@@ -1,3 +1,4 @@
+{% assign input = '' -%}
 {% if NDL -%}
 {% capture segment -%}{{NDL.1.Value}},{{NDL.4.Value}},{{NDL.5.Value}},{{NDL.6.Value}},{{NDL.7.Value}},{{NDL.8.Value}},{{NDL.9.Value}},{{NDL.10.Value}},{{NDL.11.Value}}{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'PractitionerRole', false}}{% endcapture -%}

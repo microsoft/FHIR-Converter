@@ -1,4 +1,5 @@
-﻿{% if ORC -%}
+﻿{% assign input = '' -%}
+{% if ORC -%}
 {% if ORC.2.1 and ORC.2.2 -%}
 {% capture segment -%}{{ORC.2.1.Value}},{{ORC.2.2.Value}}{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'Immunization', true, baseId}}{% endcapture -%}

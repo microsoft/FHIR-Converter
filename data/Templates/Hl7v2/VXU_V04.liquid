@@ -15,6 +15,17 @@
         {% capture encounterId -%}{% include 'ID/Encounter' with PV1: firstSegments.PV1, baseId: patientId -%}{% endcapture -%}
         {% if encounterId != '' -%}
             {% include 'Resource/Encounter' with PV1: firstSegments.PV1, ID: encounterId -%}
+
+            {% capture locationId -%}{% include 'ID/Location' with PL: firstSegments.PV1.3 -%}{% endcapture -%}
+            {% if locationId != '' -%}
+                {% include 'Resource/Location' with PL: firstSegments.PV1.3, ID: locationId -%}
+            {% endif -%}
+
+            {% capture locationId -%}{% include 'ID/Location' with PL: firstSegments.PV1.6 -%}{% endcapture -%}
+            {% if locationId != '' -%}
+                {% include 'Resource/Location' with PL: firstSegments.PV1.6, ID: locationId -%}
+            {% endif -%}
+            
             {% if patientId != '' -%}
                 {% include 'Reference/Encounter/Subject' with ID: encounterId, REF: fullPatientId -%}
             {% endif %}

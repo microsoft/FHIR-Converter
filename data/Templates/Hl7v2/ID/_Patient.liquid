@@ -1,3 +1,4 @@
+{% assign input = '' -%}
 {% if type == 'First' -%}
 {% capture segment -%}{{PID.3.Repeats[0].1.Value}},{{PID.3.Repeats[0].4.Value}}{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'Patient', false}}{% endcapture -%}

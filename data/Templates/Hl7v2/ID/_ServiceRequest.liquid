@@ -1,3 +1,4 @@
+{% assign input = '' -%}
 {% if TQ1 -%}
 {% capture input -%}{{TQ1.Value | generate_id_input: 'ServiceRequest', true, baseId}}{% endcapture -%}
 {% elsif ORC -%}

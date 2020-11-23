@@ -16,6 +16,17 @@
         {% if encounterId != '' -%}
             {% assign fullEncounterId = encounterId | prepend: 'Encounter/' -%}
             {% include 'Resource/Encounter' with PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
+
+            {% capture locationId -%}{% include 'ID/Location' with PL: firstSegments.PV1.3 -%}{% endcapture -%}
+            {% if locationId != '' -%}
+                {% include 'Resource/Location' with PL: firstSegments.PV1.3, ID: locationId -%}
+            {% endif -%}
+
+            {% capture locationId -%}{% include 'ID/Location' with PL: firstSegments.PV1.6 -%}{% endcapture -%}
+            {% if locationId != '' -%}
+                {% include 'Resource/Location' with PL: firstSegments.PV1.6, ID: locationId -%}
+            {% endif -%}
+
             {% if patientId != '' -%}
                 {% include 'Reference/Encounter/Subject' with ID: encounterId, REF: fullPatientId -%}
             {% endif -%}
