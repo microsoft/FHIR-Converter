@@ -63,6 +63,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                 timeout: timeout,
                 formatProvider: CultureInfo.InvariantCulture);
 
+            context["EncodingCharacters"] = hl7v2Data.EncodingCharacters;
+
             // Load code system mapping
             var codeSystemMapping = templateProvider.GetTemplate("CodeSystem/CodeSystem");
             if (codeSystemMapping?.Root?.NodeList?.First() != null)

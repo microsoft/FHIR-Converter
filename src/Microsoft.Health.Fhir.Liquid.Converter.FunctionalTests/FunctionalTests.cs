@@ -64,6 +64,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             var regex = new Regex(@"(?<=(""urn:uuid:|""|/))([A-Za-z0-9\-]{36})(?="")");
             expectedContent = regex.Replace(expectedContent, string.Empty);
             actualContent = regex.Replace(actualContent, string.Empty);
+            expectedContent = expectedContent.Replace(@"""id"": """",", string.Empty);
+            actualContent = actualContent.Replace(@"""id"": """",", string.Empty);
 
             // Normalize time zone
             JsonSerializer serializer = new JsonSerializer { DateTimeZoneHandling = DateTimeZoneHandling.Utc };

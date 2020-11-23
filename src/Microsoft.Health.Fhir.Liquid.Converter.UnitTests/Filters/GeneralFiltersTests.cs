@@ -17,17 +17,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
     {
         public static IEnumerable<object[]> GetValidDataForGenerateUuid()
         {
+            yield return new object[] { null, null };
+            yield return new object[] { string.Empty, string.Empty };
             yield return new object[] { "MRN12345", "e7ce584a-acf4-7cf0-5b4e-d4961c8123e2" };
-            yield return new object[] { new Hl7v2Segment("PV1||E|||||12345^Johnson^Peter|||||||||||||||||||||||||||||||||||||201905020700", new List<Hl7v2Field>()), "5444ae8e-0aa2-a3bc-8da0-2af8cef0335d" };
-        }
-
-        public static IEnumerable<object[]> GetInvalidDataForGenerateUuid()
-        {
-            yield return new object[] { 123 };
-            yield return new object[] { true };
-            yield return new object[] { null };
-            yield return new object[] { string.Empty };
-            yield return new object[] { new Hl7v2Component(null, new List<string>()) };
         }
 
         [Fact]
@@ -73,27 +65,36 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         [Theory]
         [MemberData(nameof(GetValidDataForGenerateUuid))]
-        public void GivenValidData_WhenGenerateUuid_CorrectResultShouldBeReturned(object input, string expected)
+        public void GivenValidData_WhenGenerateUuid_CorrectResultShouldBeReturned(string input, string expected)
         {
             Assert.Equal(expected, Filters.GenerateUUID(input));
-        }
-
-        [Theory]
-        [MemberData(nameof(GetInvalidDataForGenerateUuid))]
-        public void GivenInvalidData_WhenGenerateUuid_ExceptionShouldBeThrown(object input)
-        {
-            var exception = Assert.Throws<DataFormatException>(() => Filters.GenerateUUID(input));
-            Assert.Equal(FhirConverterErrorCode.InvalidIdGenerationInput, exception.FhirConverterErrorCode);
         }
 
         [Fact]
         public void GenerateIdInputTest()
         {
-            Assert.Equal("Patient_PATID1234,ADT1", Filters.GenerateIdInput("PATID1234,ADT1", "Patient", false));
-            Assert.Equal("5002eb07-c460-7112-6574-50303ae3b4a6_Encounter_0123456789", Filters.GenerateIdInput("0123456789", "Encounter", false, "5002eb07-c460-7112-6574-50303ae3b4a6"));
-            Assert.Equal("bab5ca58-f272-4c06-4b3f-f9661e45a22b_RelatedPerson_NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", Filters.GenerateIdInput("NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", "RelatedPerson", true, "bab5ca58-f272-4c06-4b3f-f9661e45a22b"));
+            var context = new Context(CultureInfo.InvariantCulture);
+            context["EncodingCharacters"] = new Hl7v2EncodingCharacters();
 
-            var exception = Assert.Throws<DataFormatException>(() => Filters.GenerateIdInput("NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", "RelatedPerson", true, null));
+            Assert.Equal(
+                "Patient_PATID1234,ADT1",
+                Filters.GenerateIdInput(context, "PATID1234,ADT1", "Patient", false));
+            Assert.Equal(
+                "5002eb07-c460-7112-6574-50303ae3b4a6_Encounter_0123456789",
+                Filters.GenerateIdInput(context, "0123456789", "Encounter", false, "5002eb07-c460-7112-6574-50303ae3b4a6"));
+            Assert.Equal(
+                "bab5ca58-f272-4c06-4b3f-f9661e45a22b_RelatedPerson_NK1,1,DUCK,HUEY,SO,3583 DUCK RD,,FOWL,CA,999990000,8885552222,,Y,,,,,,,,,,,,,, ",
+                Filters.GenerateIdInput(context, "NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", "RelatedPerson", true, "bab5ca58-f272-4c06-4b3f-f9661e45a22b"));
+
+            // Bundle
+            var message = @"MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3||| 
+EVN|A01|20050110045502||||| ";
+            Assert.Equal(
+                @"Bundle_MSH,,,,,,AccMgr,1,,,20050110045504,,ADT,A01,599102,P,2.3,,, ,EVN,A01,20050110045502,,,,, ",
+                Filters.GenerateIdInput(context, message, "Bundle", false));
+
+            // Base ID required but not provided
+            var exception = Assert.Throws<DataFormatException>(() => Filters.GenerateIdInput(context, "NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", "RelatedPerson", true, null));
             Assert.Equal(FhirConverterErrorCode.InvalidIdGenerationInput, exception.FhirConverterErrorCode);
         }
     }

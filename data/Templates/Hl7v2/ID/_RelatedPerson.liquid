@@ -6,7 +6,7 @@
 {% capture input -%}{{NK1.Value | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
 {% endif -%}
 {% elsif PID -%}
-{% if PID.21 -%}
+{% if PID.21.1 and PID.21.4 -%}
 {% capture segment -%}{{PID.21.1.Value}},{{PID.21.4.Value}}{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
 {% else -%}

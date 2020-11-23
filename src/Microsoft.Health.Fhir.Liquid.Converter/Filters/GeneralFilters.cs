@@ -6,8 +6,10 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
+using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.InputProcessor;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Newtonsoft.Json.Linq;
@@ -19,6 +21,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     /// </summary>
     public partial class Filters
     {
+        private static readonly Regex SegmentSeparatorsRegex = new Regex("\r\n|\r|\n");
+
         public static string GetProperty(Context context, string originalCode, string mapping, string property)
         {
             if (string.IsNullOrEmpty(originalCode) || string.IsNullOrEmpty(mapping) || string.IsNullOrEmpty(property))
@@ -47,37 +51,28 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return memberToken?.Value<string>();
         }
 
-        public static string GenerateIdInput(string segment, string resourceType, bool isBaseIdRequired, string baseId = null)
+        public static string GenerateIdInput(Context context, string segment, string resourceType, bool isBaseIdRequired, string baseId = null)
         {
-            if (string.IsNullOrEmpty(segment) || string.IsNullOrEmpty(resourceType) || (isBaseIdRequired && string.IsNullOrEmpty(baseId)))
+            if (string.IsNullOrEmpty(segment))
+            {
+                return segment;
+            }
+
+            if (string.IsNullOrEmpty(resourceType) || (isBaseIdRequired && string.IsNullOrEmpty(baseId)))
             {
                 throw new DataFormatException(FhirConverterErrorCode.InvalidIdGenerationInput, Resources.InvalidIdGenerationInput);
             }
 
-            return baseId != null ? $"{baseId}_{resourceType}_{segment}" : $"{resourceType}_{segment}";
+            var input = baseId != null ? $"{baseId}_{resourceType}_{segment}" : $"{resourceType}_{segment}";
+            var encodingCharacters = (Hl7v2EncodingCharacters)context["EncodingCharacters"];
+            return NormalizeIdInput(input, encodingCharacters);
         }
 
-        public static string GenerateUUID(object input)
-        {
-            if (input is string)
-            {
-                return GenerateUuidFromString((string)input);
-            }
-            else if (input is Hl7v2Segment || input is Hl7v2Field || input is Hl7v2Component)
-            {
-                return GenerateUuidFromString(input.GetType().GetProperty("Value").GetValue(input, null)?.ToString());
-            }
-            else
-            {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidIdGenerationInput, Resources.InvalidIdGenerationInput);
-            }
-        }
-
-        private static string GenerateUuidFromString(string input)
+        public static string GenerateUUID(string input)
         {
             if (string.IsNullOrEmpty(input))
             {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidIdGenerationInput, Resources.InvalidIdGenerationInput);
+                return input;
             }
 
             var bytes = Encoding.UTF8.GetBytes(input);
@@ -86,6 +81,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             var guid = new byte[16];
             Array.Copy(hash, 0, guid, 0, 16);
             return new Guid(guid).ToString();
+        }
+
+        private static string NormalizeIdInput(string input, Hl7v2EncodingCharacters encodingCharacters)
+        {
+            // Replace encoding characters
+            var separators = $"{encodingCharacters.ComponentSeparator}{encodingCharacters.RepetitionSeparator}{encodingCharacters.EscapeCharacter}{encodingCharacters.SubcomponentSeparator}";
+            var result = input.Replace(separators, ",,,,");
+            result = SegmentSeparatorsRegex.Replace(result, ",");
+            result = result.Replace(encodingCharacters.FieldSeparator, ',')
+                .Replace(encodingCharacters.ComponentSeparator, ',')
+                .Replace(encodingCharacters.SubcomponentSeparator, ',')
+                .Replace(encodingCharacters.RepetitionSeparator, ',');
+
+            return SpecialCharProcessor.Escape(Hl7v2EscapeSequenceProcessor.Unescape(result, encodingCharacters));
         }
     }
 }

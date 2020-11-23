@@ -3,9 +3,11 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using DotLiquid;
+
 namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
 {
-    public class Hl7v2EncodingCharacters
+    public class Hl7v2EncodingCharacters : Drop
     {
         public char FieldSeparator { get; set; } = '|';
 

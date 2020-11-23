@@ -1,8 +1,6 @@
 {% if PV1.19.1 and PV1.19.4 -%}
 {% capture segment -%}{{PV1.19.1.Value}},{{PV1.19.4.Value}}{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'Encounter', false, baseId}}{% endcapture -%}
-{% elsif PV1.19 -%}
-{% capture input -%}{{PV1.19.Value | generate_id_input: 'Encounter', false, baseId}}{% endcapture -%}
 {% else -%}
 {% capture input -%}{{PV1.Value | generate_id_input: 'Encounter', false, baseId}}{% endcapture -%}
 {% endif -%}

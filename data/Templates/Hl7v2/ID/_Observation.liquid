@@ -4,11 +4,9 @@
 {% if OBX.21.1 and OBX.21.2 -%}
 {% capture segment -%}{{OBX.21.1.Value}},{{OBX.21.2.Value}}{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'Observation', false, baseId}}{% endcapture -%}
-{% elsif OBX.21.1 and OBX.21.3 -%}
-{% capture segment -%}{{OBX.21.1.Value}},{{OBX.21.3.Value}}{% endcapture -%}
+{% elsif OBX.21.3 and OBX.21.4 -%}
+{% capture segment -%}{{OBX.21.3.Value}},{{OBX.21.4.Value}}{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'Observation', false, baseId}}{% endcapture -%}
-{% elsif OBX.21 -%}
-{% capture input -%}{{OBX.21.Value | generate_id_input: 'Observation', false, baseId}}{% endcapture -%}
 {% else -%}
 {% capture input -%}{{OBX.Value | generate_id_input: 'Observation', false, baseId}}{% endcapture -%}
 {% endif -%}

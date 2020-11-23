@@ -2,75 +2,77 @@
     "resourceType": "Bundle",
     "type": "transaction",
     {% capture bundleId -%}{% include 'ID/Bundle' with Data: hl7v2Data -%}{% endcapture -%}
-    "id": "{{bundleId}}}",
+    "id": "{{bundleId}}",
     "entry": [
         {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|PR1|AVR' -%}
         
-        {% if firstSegments.PID.3.1 -%}
-            {% capture patientId -%}{% include 'ID/Patient' with PID: firstSegments.PID, type: 'First' -%}{% endcapture -%}
+        {% capture patientId -%}{% include 'ID/Patient' with PID: firstSegments.PID, type: 'First' -%}{% endcapture -%}
+        {% if patientId != '' -%}
             {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
-        {% endif -%}
-        
-        {% if firstSegments.PV1 -%}
-            {% capture pv1Id -%}{% include 'ID/Encounter' with PV1: firstSegments.PV1, baseId: patientId -%}{% endcapture -%}
-        {% endif -%}
-        
-        {% if patientId -%}
             {% include 'Resource/Patient' with PID: firstSegments.PID, PD1: firstSegments.PD1, NK1: firstSegments.NK1, ID: patientId -%}
         {% endif -%}
 
-        {% if pv1Id -%}
-            {% include 'Resource/Encounter' with PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: pv1Id -%}
-            {% if fullPatientId -%}
-                {% include 'Reference/Encounter/Subject' with ID: pv1Id, REF: fullPatientId -%}
+        {% capture encounterId -%}{% include 'ID/Encounter' with PV1: firstSegments.PV1, baseId: patientId -%}{% endcapture -%}
+        {% if encounterId != '' -%}
+            {% include 'Resource/Encounter' with PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
+            {% if patientId != '' -%}
+                {% include 'Reference/Encounter/Subject' with ID: encounterId, REF: fullPatientId -%}
             {% endif -%}
         {% endif -%}
 
-        {% if firstSegments.PR1 -%}
-            {% capture pr1Id -%}{% include 'ID/Procedure' with PR1: firstSegments.PR1, baseId: patientId -%}{% endcapture -%}
-            {% include 'Resource/Procedure' with PR1: firstSegments.PR1, ID: pr1Id -%}
-            {% if fullPatientId -%}
-                {% include 'Reference/Procedure/Subject' with ID: pr1Id, REF: fullPatientId -%}
+        {% capture procedureId -%}{% include 'ID/Procedure' with PR1: firstSegments.PR1, baseId: patientId -%}{% endcapture -%}
+        {% if procedureId != '' -%}
+            {% include 'Resource/Procedure' with PR1: firstSegments.PR1, ID: procedureId -%}
+            {% if patientId != '' -%}
+                {% include 'Reference/Procedure/Subject' with ID: procedureId, REF: fullPatientId -%}
             {% endif -%}
         {% endif -%}
         
         {% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
         {% for nk1Segment in nk1SegmentLists.NK1 -%}
-            {% capture nk1Id -%}{% include 'ID/RelatedPerson' with NK1: nk1Segment, baseId: patientId -%}{% endcapture -%}
-            {% include 'Resource/RelatedPerson' with NK1: nk1Segment, ID: nk1Id -%}
-            {% if fullPatientId -%}
-                {% include 'Reference/RelatedPerson/Patient' with ID: nk1Id, REF: fullPatientId -%}
+            {% capture relatedPersonId -%}{% include 'ID/RelatedPerson' with NK1: nk1Segment, baseId: patientId -%}{% endcapture -%}
+            {% if relatedPersonId != '' -%}
+                {% include 'Resource/RelatedPerson' with NK1: nk1Segment, ID: relatedPersonId -%}
+                {% if patientId != '' -%}
+                    {% include 'Reference/RelatedPerson/Patient' with ID: relatedPersonId, REF: fullPatientId -%}
+                {% endif -%}
             {% endif -%}
         {% endfor -%}
 
         {% assign obxSegmentLists = hl7v2Data | get_segment_lists: 'OBX' -%}
         {% for obxSegment in obxSegmentLists.OBX -%}
-            {% capture obxId -%}{% include 'ID/Observation' with OBX: obxSegment, baseId: patientId -%}{% endcapture -%}
-            {% include 'Resource/Observation' with OBX: obxSegment, ID: obxId -%}
-            {% if fullPatientId -%}
-                {% include 'Reference/Observation/Subject' with ID: obxId, REF: fullPatientId -%}
+            {% capture observationId -%}{% include 'ID/Observation' with OBX: obxSegment, baseId: patientId -%}{% endcapture -%}
+            {% if observationId != '' -%}
+                {% include 'Resource/Observation' with OBX: obxSegment, ID: observationId -%}
+                {% if patientId != '' -%}
+                    {% include 'Reference/Observation/Subject' with ID: observationId, REF: fullPatientId -%}
+                {% endif -%}
             {% endif -%}
         {% endfor -%}
 
         {% assign al1SegmentLists = hl7v2Data | get_segment_lists: 'AL1' -%}
         {% for al1Segment in al1SegmentLists.AL1 -%}
-            {% capture al1Id -%}{% include 'ID/AllergyIntolerance' with AL1: al1Segment, baseId: patientId -%}{% endcapture -%}
-            {% include 'Resource/AllergyIntolerance' with AL1: al1Segment, ID: al1Id -%}
-            {% if fullPatientId -%}
-                {% include 'Reference/AllergyIntolerance/Patient' with ID: al1Id, REF: fullPatientId -%}
+            {% capture allergyIntoleranceId -%}{% include 'ID/AllergyIntolerance' with AL1: al1Segment, baseId: patientId -%}{% endcapture -%}
+            {% if allergyIntoleranceId != '' -%}
+                {% include 'Resource/AllergyIntolerance' with AL1: al1Segment, ID: allergyIntoleranceId -%}
+                {% if patientId != '' -%}
+                    {% include 'Reference/AllergyIntolerance/Patient' with ID: allergyIntoleranceId, REF: fullPatientId -%}
+                {% endif -%}
             {% endif -%}
         {% endfor -%}
 
         {% assign dg1SegmentLists = hl7v2Data | get_segment_lists: 'DG1' -%}
         {% for dg1Segment in dg1SegmentLists.DG1 -%}
-            {% capture dg1Id -%}{% include 'ID/Condition' with DG1: dg1Segment, baseId: patientId -%}{% endcapture -%}
-            {% assign fullDg1Id = dg1Id | prepend: 'Condition/' -%}
-            {% include 'Resource/Condition' with DG1: dg1Segment, ID: dg1Id -%}
-            {% if fullPatientId -%}
-                {% include 'Reference/Condition/Subject' with ID: dg1Id, REF: fullPatientId -%}
-            {% endif -%}
-            {% if pv1Id -%}
-                {% include 'Reference/Encounter/Diagnosis_Condition' with ID: pv1Id, REF: fullDg1Id -%}
+            {% capture conditionId -%}{% include 'ID/Condition' with DG1: dg1Segment, baseId: patientId -%}{% endcapture -%}
+            {% if conditionId != '' -%}
+                {% assign fullConditionId = conditionId | prepend: 'Condition/' -%}
+                {% include 'Resource/Condition' with DG1: dg1Segment, ID: conditionId -%}
+                {% if patientId != '' -%}
+                    {% include 'Reference/Condition/Subject' with ID: conditionId, REF: fullPatientId -%}
+                {% endif -%}
+                {% if encounterId != '' -%}
+                    {% include 'Reference/Encounter/Diagnosis_Condition' with ID: encounterId, REF: fullConditionId -%}
+                {% endif -%}
             {% endif -%}
         {% endfor -%}
     ] 

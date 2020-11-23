@@ -2,11 +2,9 @@
 {% if ORC.2.1 and ORC.2.2 -%}
 {% capture segment -%}{{ORC.2.1.Value}},{{ORC.2.2.Value}}{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'Immunization', true, baseId}}{% endcapture -%}
-{% elsif ORC.2.1 and ORC.2.3 -%}
-{% capture segment -%}{{ORC.2.1.Value}},{{ORC.2.3.Value}}{% endcapture -%}
+{% elsif ORC.2.3 and ORC.2.4 -%}
+{% capture segment -%}{{ORC.2.3.Value}},{{ORC.2.4.Value}}{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'Immunization', true, baseId}}{% endcapture -%}
-{% elsif ORC.2 -%}
-{% capture input -%}{{ORC.2.Value | generate_id_input: 'Immunization', true, baseId}}{% endcapture -%}
 {% else -%}
 {% capture input -%}{{ORC.Value | generate_id_input: 'Immunization', true, baseId}}{% endcapture -%}
 {% endif -%}
