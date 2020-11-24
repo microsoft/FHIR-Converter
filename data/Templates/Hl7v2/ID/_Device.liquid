@@ -1,7 +1,7 @@
 {% if HD.1 and HD.2 -%}
 {% capture segment -%}{{HD.1.Value}},{{HD.2.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'Device', false}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{HD.Value | generate_id_input: 'Device', false}}{% endcapture -%}
+{% capture segment -%}{{HD.Value}}{% endcapture -%}
 {% endif -%}
+{% capture input -%}{{segment | generate_id_input: 'Device', false}}{% endcapture -%}
 {{ input | generate_uuid }}

@@ -1,21 +1,20 @@
-{% assign input = '' -%}
+{% assign segment = '' -%}
 {% if NTE -%}
-{% capture input -%}{{NTE.Value | generate_id_input: 'Observation', false, baseId}}{% endcapture -%}
+{% capture segment -%}{{NTE.Value}}{% endcapture -%}
 {% elsif OBX -%}
 {% if OBX.21.1 and OBX.21.2 -%}
 {% capture segment -%}{{OBX.21.1.Value}},{{OBX.21.2.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'Observation', false, baseId}}{% endcapture -%}
 {% elsif OBX.21.3 and OBX.21.4 -%}
 {% capture segment -%}{{OBX.21.3.Value}},{{OBX.21.4.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'Observation', false, baseId}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{OBX.Value | generate_id_input: 'Observation', false, baseId}}{% endcapture -%}
+{% capture segment -%}{{OBX.Value}}{% endcapture -%}
 {% endif -%}
 {% elsif PID -%}
 {% if PID.22 -%}
-{% capture input -%}{{PID.22.Value | generate_id_input: 'Observation', false, baseId}}{% endcapture -%}
+{% capture segment -%}{{PID.22.Value}}{% endcapture -%}
 {% elsif PID.10 -%}
-{% capture input -%}{{PID.10.Value | generate_id_input: 'Observation', false, baseId}}{% endcapture -%}
+{% capture segment -%}{{PID.10.Value}}{% endcapture -%}
 {% endif -%}
 {% endif -%}
+{% capture input -%}{{segment | generate_id_input: 'Observation', false, baseId}}{% endcapture -%}
 {{ input | generate_uuid }}

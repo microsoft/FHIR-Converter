@@ -1,10 +1,9 @@
 ﻿{% if DG1.3 and DG1.5 -%}
 {% capture segment -%}{{DG1.3.Value}},{{DG1.5.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'Condition', true, baseId}}{% endcapture -%}
 {% elsif DG1.3 and DG1.19 -%}
 {% capture segment -%}{{DG1.3.Value}},{{DG1.19.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'Condition', true, baseId}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{DG1.Value | generate_id_input: 'Condition', true, baseId}}{% endcapture -%}
+{% capture segment -%}{{DG1.Value}}{% endcapture -%}
 {% endif -%}
+{% capture input -%}{{segment | generate_id_input: 'Condition', true, baseId}}{% endcapture -%}
 {{ input | generate_uuid }}

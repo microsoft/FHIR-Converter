@@ -1,7 +1,7 @@
 {% if CX.1 and CX.4 -%}
 {% capture segment -%}{{CX.1.Value}},{{CX.4.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'Account', false}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{CX.Value | generate_id_input: 'Account', false}}{% endcapture -%}
+{% capture segment -%}{{CX.Value}}{% endcapture -%}
 {% endif -%}
+{% capture input -%}{{segment | generate_id_input: 'Account', false}}{% endcapture -%}
 {{ input | generate_uuid }}

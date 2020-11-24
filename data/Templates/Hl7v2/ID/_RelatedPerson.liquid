@@ -1,31 +1,28 @@
-﻿{% assign input = '' -%}
+﻿{% assign segment = '' -%}
 {% if NK1 -%}
 {% if NK1.12.1 and NK1.12.4 -%}
 {% capture segment -%}{{NK1.12.1.Value}},{{NK1.12.4.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{NK1.Value | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
+{% capture segment -%}{{NK1.Value}}{% endcapture -%}
 {% endif -%}
 {% elsif PID -%}
 {% if PID.21.1 and PID.21.4 -%}
 {% capture segment -%}{{PID.21.1.Value}},{{PID.21.4.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{PID.6.Value | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
+{% capture segment -%}{{PID.6.Value}}{% endcapture -%}
 {% endif -%}
 {% elsif PRT -%}
 {% if PRT.5.1 and PRT.5.9 -%}
 {% capture segment -%}{{PRT.5.1.Value}},{{PRT.5.9.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{PRT.Value | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
+{% capture segment -%}{{PRT.Value}}{% endcapture -%}
 {% endif -%}
 {% elsif ROL %}
 {% if ROL.4.1 and ROL.4.9 -%}
 {% capture segment -%}{{ROL.4.1.Value}},{{ROL.4.9.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{ROL.Value | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
+{% capture segment -%}{{ROL.Value}}{% endcapture -%}
 {% endif -%}
 {% endif -%}
+{% capture input -%}{{segment | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
 {{ input | generate_uuid }}

@@ -1,15 +1,14 @@
-﻿{% assign input = '' -%}
+﻿{% assign segment = '' -%}
 {% if ORC -%}
 {% if ORC.2.1 and ORC.2.2 -%}
 {% capture segment -%}{{ORC.2.1.Value}},{{ORC.2.2.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'Immunization', true, baseId}}{% endcapture -%}
 {% elsif ORC.2.3 and ORC.2.4 -%}
 {% capture segment -%}{{ORC.2.3.Value}},{{ORC.2.4.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'Immunization', true, baseId}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{ORC.Value | generate_id_input: 'Immunization', true, baseId}}{% endcapture -%}
+{% capture segment -%}{{ORC.Value}}{% endcapture -%}
 {% endif -%}
 {% elsif RXA -%}
-{% capture input -%}{{RXA.Value | generate_id_input: 'Immunization', true, baseId}}{% endcapture -%}
+{% capture segment -%}{{RXA.Value}}{% endcapture -%}
 {% endif -%}
+{% capture input -%}{{segment | generate_id_input: 'Immunization', true, baseId}}{% endcapture -%}
 {{ input | generate_uuid }}

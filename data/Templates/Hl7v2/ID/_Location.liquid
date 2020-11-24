@@ -1,25 +1,24 @@
-{% assign input = '' -%}
+{% assign segment = '' -%}
 {% if PL -%}
 {% if PL.10 -%}
-{% capture input -%}{{PL.10.Value | generate_id_input: 'Location', false}}{% endcapture -%}
+{% capture segment -%}{{PL.10.Value}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{PL.Value | generate_id_input: 'Location', false}}{% endcapture -%}
+{% capture segment -%}{{PL.Value}}{% endcapture -%}
 {% endif -%}
 {% elsif XON -%}
 {% if XON.10 -%}
-{% capture input -%}{{XON.10.Value | generate_id_input: 'Location', false}}{% endcapture -%}
+{% capture segment -%}{{XON.10.Value}}{% endcapture -%}
 {% elsif XON.3 and XON.6 -%}
 {% capture segment -%}{{XON.3.Value}},{{XON.6.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'Location', false}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{XON.Value | generate_id_input: 'Location', false}}{% endcapture -%}
+{% capture segment -%}{{XON.Value}}{% endcapture -%}
 {% endif -%}
 {% elsif HD -%}
 {% if HD.1 and HD.2 -%}
 {% capture segment -%}{{HD.1.Value}},{{HD.2.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'Location', false}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{HD.Value | generate_id_input: 'Location', false}}{% endcapture -%}
+{% capture segment -%}{{HD.Value}}{% endcapture -%}
 {% endif -%}
 {% endif -%}
+{% capture input -%}{{segment | generate_id_input: 'Location', false}}{% endcapture -%}
 {{ input | generate_uuid }}

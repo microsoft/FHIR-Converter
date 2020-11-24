@@ -1,23 +1,20 @@
-{% assign input = '' -%}
+{% assign segment = '' -%}
 {% if OBR -%}
 {% if OBR.2.1 and OBR.2.2 -%}
 {% capture segment -%}{{OBR.2.1.Value}},{{OBR.2.2.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'DiagnosticReport', false, baseId}}{% endcapture -%}
 {% elsif OBR.2.3 and OBR.2.4 -%}
 {% capture segment -%}{{OBR.2.3.Value}},{{OBR.2.4.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'DiagnosticReport', false, baseId}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{OBR.Value | generate_id_input: 'DiagnosticReport', false, baseId}}{% endcapture -%}
+{% capture segment -%}{{OBR.Value}}{% endcapture -%}
 {% endif -%}
 {% elsif ORC -%}
 {% if ORC.2.1 and ORC.2.2 -%}
 {% capture segment -%}{{ORC.2.1.Value}},{{ORC.2.2.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'DiagnosticReport', false, baseId}}{% endcapture -%}
 {% elsif ORC.2.3 and ORC.2.4 -%}
 {% capture segment -%}{{ORC.2.3.Value}},{{ORC.2.4.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'DiagnosticReport', false, baseId}}{% endcapture -%}
 {% else -%}
-{% capture input -%}{{ORC.Value | generate_id_input: 'DiagnosticReport', false, baseId}}{% endcapture -%}
+{% capture segment -%}{{ORC.Value}}{% endcapture -%}
 {% endif -%}
 {% endif -%}
+{% capture input -%}{{segment | generate_id_input: 'DiagnosticReport', false, baseId}}{% endcapture -%}
 {{ input | generate_uuid }}
