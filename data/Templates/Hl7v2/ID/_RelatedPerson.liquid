@@ -14,14 +14,14 @@
 {% capture input -%}{{PID.6.Value | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
 {% endif -%}
 {% elsif PRT -%}
-{% if PRT.5 -%}
+{% if PRT.5.1 and PRT.5.9 -%}
 {% capture segment -%}{{PRT.5.1.Value}},{{PRT.5.9.Value}}{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
 {% else -%}
 {% capture input -%}{{PRT.Value | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
 {% endif -%}
 {% elsif ROL %}
-{% if ROL.4 -%}
+{% if ROL.4.1 and ROL.4.9 -%}
 {% capture segment -%}{{ROL.4.1.Value}},{{ROL.4.9.Value}}{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'RelatedPerson', true, baseId}}{% endcapture -%}
 {% else -%}

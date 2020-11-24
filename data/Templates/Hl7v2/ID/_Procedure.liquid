@@ -1,2 +1,2 @@
-﻿{% assign input = PR1.Value | generate_id_input: 'Procedure', true, baseId -%}
+﻿{% capture input -%}{{PR1.Value | generate_id_input: 'Procedure', true, baseId}}{% endcapture -%}
 {{ input | generate_uuid }}
