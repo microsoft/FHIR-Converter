@@ -45,11 +45,22 @@ steps:
     arguments: '--configuration $(buildConfiguration) --output $(Build.BinariesDirectory)/tool'
     nobuild: true
     publishWebProjects: false
-    zipAfterPublish: True
+    zipAfterPublish: true
+
+- task: DotNetCoreCLI@2
+  displayName: 'dotnet publish'
+  inputs:
+    command: 'publish'
+    projects: '$(publishProject)'
+    arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/tool --runtime win-x64'
+    nobuild: true
+    publishWebProjects: false
+    zipAfterPublish: false
 
 - task: ArchiveFiles@2
   inputs:
     rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2'
+    includeRootFolder: false
     archiveType: 'tar'
     tarCompression: 'gz'
     archiveFile: '$(Build.SourcesDirectory)/bin/DefaultTemplates.tar.gz'
