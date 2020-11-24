@@ -1,18 +1,11 @@
 {% assign segment = '' -%}
-{% if CNN -%}
-{% if CNN.1 and CNN.9 -%}
-{% capture segment -%}{{CNN.1.Value}},{{CNN.9.Value}}{% endcapture -%}
-{% elsif CNN.1 and CNN.10 -%}
-{% capture segment -%}{{CNN.1.Value}},{{CNN.10.Value}}{% endcapture -%}
-{% else -%}
-{% capture segment -%}{{CNN.Value}}{% endcapture -%}
+{% capture segment -%}
+{% if CNN.1 and CNN.9 -%}{{CNN.1.Value}},{{CNN.9.Value}}
+{% elsif CNN.1 and CNN.10 -%}{{CNN.1.Value}},{{CNN.10.Value}}
+{% elsif CNN -%}{{CNN.Value}}
+{% elsif XCN.1 and XCN.9 -%}{{XCN.1.Value}},{{XCN.9.Value}}
+{% elsif XCN -%}{{XCN.Value}}
 {% endif -%}
-{% elsif XCN -%}
-{% if XCN.1 and XCN.9 -%}
-{% capture segment -%}{{XCN.1.Value}},{{XCN.9.Value}}{% endcapture -%}
-{% else -%}
-{% capture segment -%}{{XCN.Value}}{% endcapture -%}
-{% endif -%}
-{% endif -%}
+{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'Practitioner', false}}{% endcapture -%}
 {{ input | generate_uuid }}

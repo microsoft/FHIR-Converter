@@ -1,7 +1,8 @@
-{% if CX.1 and CX.4 -%}
-{% capture segment -%}{{CX.1.Value}},{{CX.4.Value}}{% endcapture -%}
-{% else -%}
-{% capture segment -%}{{CX.Value}}{% endcapture -%}
+{% assign segment = '' -%}
+{% capture segment -%}
+{% if CX.1 and CX.4 -%}{{CX.1.Value}},{{CX.4.Value}}
+{% elsif CX -%}{{CX.Value}}
 {% endif -%}
+{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'Account', false}}{% endcapture -%}
 {{ input | generate_uuid }}

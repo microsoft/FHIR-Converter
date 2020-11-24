@@ -1,24 +1,13 @@
 {% assign segment = '' -%}
-{% if XON -%}
-{% if XON.10 -%}
-{% capture segment -%}{{XON.10.Value}}{% endcapture -%}
-{% elsif XON.3 and XON.6 -%}
-{% capture segment -%}{{XON.3.Value}},{{XON.6.Value}}{% endcapture -%}
-{% else -%}
-{% capture segment -%}{{XON.Value}}{% endcapture -%}
+{% capture segment -%}
+{% if XON.10 -%}{{XON.10.Value}}
+{% elsif XON.3 and XON.6 -%}{{XON.3.Value}},{{XON.6.Value}}
+{% elsif XON -%}{{XON.Value}}
+{% elsif CWE.1 and CWE.3 -%}{{CWE.1.Value}},{{CWE.3.Value}}
+{% elsif CWE -%}{{CWE.Value}}
+{% elsif HD.1 and HD.2 -%}{{HD.1.Value}},{{HD.2.Value}}
+{% elsif HD -%}{{HD.Value}}
 {% endif -%}
-{% elsif CWE -%}
-{% if CWE.1 and CWE.3 -%}
-{% capture segment -%}{{CWE.1.Value}},{{CWE.3.Value}}{% endcapture -%}
-{% else -%}
-{% capture segment -%}{{CWE.Value}}{% endcapture -%}
-{% endif -%}
-{% elsif HD -%}
-{% if HD.1 and HD.2 -%}
-{% capture segment -%}{{HD.1.Value}},{{HD.2.Value}}{% endcapture -%}
-{% else -%}
-{% capture segment -%}{{HD.Value}}{% endcapture -%}
-{% endif -%}
-{% endif -%}
+{% endcapture -%}
 {% capture input -%}{{segment | generate_id_input: 'Organization', false}}{% endcapture -%}
 {{ input | generate_uuid }}
