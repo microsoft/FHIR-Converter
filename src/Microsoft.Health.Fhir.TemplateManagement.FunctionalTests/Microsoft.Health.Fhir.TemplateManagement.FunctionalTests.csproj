@@ -36,6 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="DefaultTemplates.tar.gz">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -51,12 +54,6 @@
 
   <ItemGroup>
     <None Include="..\Microsoft.Health.Fhir.TemplateManagement.UnitTests\DefaultTemplates.tar.gz" Link="DefaultTemplates.tar.gz">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="DefaultTemplates.tar.gz">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
