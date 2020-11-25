@@ -10,7 +10,6 @@ using System.Security.Cryptography;
 using System.Text;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
-using Microsoft.Health.Fhir.Converter.TemplateManagement;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
 {

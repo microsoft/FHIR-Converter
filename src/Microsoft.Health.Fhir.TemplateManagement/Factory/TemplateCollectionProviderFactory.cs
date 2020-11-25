@@ -10,7 +10,6 @@ using System.Runtime.Caching;
 using EnsureThat;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using Microsoft.Health.Fhir.Converter.TemplateManagement;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;

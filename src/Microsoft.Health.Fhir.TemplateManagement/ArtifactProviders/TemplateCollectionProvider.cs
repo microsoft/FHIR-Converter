@@ -10,7 +10,6 @@ using DotLiquid;
 using EnsureThat;
 using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Health.Fhir.Converter.TemplateManagement;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
