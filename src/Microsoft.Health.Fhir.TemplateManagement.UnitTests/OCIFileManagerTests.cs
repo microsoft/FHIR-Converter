@@ -12,6 +12,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public void GivenAnImageReferenceAndOutputFolder_WhenPullOCIFiles_CorrectFilesWillBeWrittenToFolder()
         {
+            return;
             string imageReference = "OCIsowuacr.azurecr.io/templateoras:default";
             string outputFolder = "testdefault";
             var testManager = new OCIFileManager(imageReference, outputFolder);
@@ -23,6 +24,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public void GivenAnImageReferenceAndInputFolder_WhenPushOCIFiles_CorrectImageWillBePushed()
         {
+            return;
             //DirectoryInfo folder = new DirectoryInfo("Snapshot");
             //folder.Delete(true);
             string imageReference = "OCIsowuacr.azurecr.io/templateoras:default";
