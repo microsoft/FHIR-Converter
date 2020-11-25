@@ -16,7 +16,7 @@
         [
             {
                 {% if OBR.2 == null -%}
-                {% include 'DataType/EIIdentifier' with EI: ORC.2 -%}
+                {% include 'DataType/EIIdentifier' EI: ORC.2 -%}
                 {% endif -%}
                 "type":
                 {
@@ -52,7 +52,7 @@
                 },
             },
             {
-                {% include 'DataType/EIIdentifier' with EI: ORC.3 -%}
+                {% include 'DataType/EIIdentifier' EI: ORC.3 -%}
                 "type":
                 {
                     "coding":
@@ -69,7 +69,7 @@
                 },
             },
             {
-                {% include 'DataType/EIIdentifier' with EI: ORC.4 -%}
+                {% include 'DataType/EIIdentifier' EI: ORC.4 -%}
                 "type":
                 {
                     "coding":
@@ -86,10 +86,10 @@
                 },
             },
             {% if OBR.2 -%}
-            { {% include 'DataType/EIIdentifier' with EI: OBR.2 -%} },
+            { {% include 'DataType/EIIdentifier' EI: OBR.2 -%} },
             {% endif -%}
-            { {% include 'DataType/EIIdentifier' with EI: OBR.3 -%} },
-            { {% include 'DataType/EIIdentifier' with EI: OBR.53 -%} },
+            { {% include 'DataType/EIIdentifier' EI: OBR.3 -%} },
+            { {% include 'DataType/EIIdentifier' EI: OBR.53 -%} },
         ],
         "status":"{{ ORC.5.Value | get_property: 'CodeSystem/OrderStatus', 'code' }}",
         {% if ORC.1.Value -%}
@@ -99,11 +99,11 @@
         "occurrenceDateTime":"{{ OBR.6.Value | format_as_date_time }}",
         "locationCode":
         [
-            { {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/OrderType', CWE: ORC.29 -%} },
+            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/OrderType', CWE: ORC.29 -%} },
         ],
         "quantityQuantity":
         {
-            {% include 'DataType/CQ' with CQ: TQ1.2 -%}
+            {% include 'DataType/CQ' CQ: TQ1.2 -%}
         },
         "occurrenceTiming":
         {
@@ -111,14 +111,14 @@
             {
                 "boundsDuration":
                 {
-                    {% include 'DataType/CQ' with CQ: TQ1.6 -%}
+                    {% include 'DataType/CQ' CQ: TQ1.6 -%}
                 },
                 "boundsPeriod":
                 {
                     "start":"{{ TQ1.7.Value | format_as_date_time }}",
                     "end":"{{ TQ1.8.Value | format_as_date_time }}",
                 },
-                {% include 'DataType/CQServiceRequestduration' with CQ: TQ1.13 -%}
+                {% include 'DataType/CQServiceRequestduration' CQ: TQ1.13 -%}
                 "count":"{{ TQ1.14.Value }}",
             },
         },
@@ -126,11 +126,11 @@
         "priority":"{{ OBR.5.Value | get_property: 'CodeSystem/Priority', 'code' }}",
         "code":
         {
-            {% include 'DataType/CWECodeableConcept' with CWE: OBR.4 -%}
+            {% include 'DataType/CWECodeableConcept' CWE: OBR.4 -%}
         },
         "reasonCode":
         [
-            { {% include 'DataType/CWECodeableConcept' with CWE: OBR.31 -%} },
+            { {% include 'DataType/CWECodeableConcept' CWE: OBR.31 -%} },
         ],
     },
     "request":{

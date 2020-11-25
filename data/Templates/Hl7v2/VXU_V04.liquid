@@ -1,70 +1,70 @@
 ﻿{
     "resourceType": "Bundle",
     "type": "transaction",
-    {% capture bundleId -%}{% include 'ID/Bundle' with Data: hl7v2Data -%}{% endcapture -%}
+    {% evaluate bundleId using 'ID/Bundle' Data: hl7v2Data -%}
     "id": "{{bundleId}}",
     "entry": [
         {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|ORC' -%}
         
-        {% capture patientId -%}{% include 'ID/Patient' with PID: firstSegments.PID, type: 'First' -%}{% endcapture -%}
+        {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
         {% if patientId != '' -%}
             {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
-            {% include 'Resource/Patient' with PID: firstSegments.PID, PD1: firstSegments.PD1, NK1: firstSegments.NK1, ID: patientId -%}
+            {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, NK1: firstSegments.NK1, ID: patientId -%}
         {% endif -%}
         
-        {% capture encounterId -%}{% include 'ID/Encounter' with PV1: firstSegments.PV1, baseId: patientId -%}{% endcapture -%}
+        {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
         {% if encounterId != '' -%}
-            {% include 'Resource/Encounter' with PV1: firstSegments.PV1, ID: encounterId -%}
+            {% include 'Resource/Encounter' PV1: firstSegments.PV1, ID: encounterId -%}
 
-            {% capture locationId -%}{% include 'ID/Location' with PL: firstSegments.PV1.3 -%}{% endcapture -%}
+            {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.3 -%}
             {% if locationId != '' -%}
-                {% include 'Resource/Location' with PL: firstSegments.PV1.3, ID: locationId -%}
+                {% include 'Resource/Location' PL: firstSegments.PV1.3, ID: locationId -%}
             {% endif -%}
 
-            {% capture locationId -%}{% include 'ID/Location' with PL: firstSegments.PV1.6 -%}{% endcapture -%}
+            {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.6 -%}
             {% if locationId != '' -%}
-                {% include 'Resource/Location' with PL: firstSegments.PV1.6, ID: locationId -%}
+                {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId -%}
             {% endif -%}
             
             {% if patientId != '' -%}
-                {% include 'Reference/Encounter/Subject' with ID: encounterId, REF: fullPatientId -%}
+                {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
             {% endif %}
         {% endif -%}
         
         {% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
         {% for nk1Segment in nk1SegmentLists.NK1 -%}
-            {% capture relatedPersonId -%}{% include 'ID/RelatedPerson' with NK1: nk1Segment, baseId: patientId -%}{% endcapture -%}
+            {% evaluate relatedPersonId using 'ID/RelatedPerson' NK1: nk1Segment, baseId: patientId -%}
             {% if relatedPersonId != '' -%}
-                {% include 'Resource/RelatedPerson' with NK1: nk1Segment, ID: relatedPersonId -%}
+                {% include 'Resource/RelatedPerson' NK1: nk1Segment, ID: relatedPersonId -%}
                 {% if patientId != '' -%}
-                    {% include 'Reference/RelatedPerson/Patient' with ID: relatedPersonId, REF: fullPatientId -%}
+                    {% include 'Reference/RelatedPerson/Patient' ID: relatedPersonId, REF: fullPatientId -%}
                 {% endif -%}
             {% endif -%}
         {% endfor -%}
 
         {% assign orcSegmentLists = hl7v2Data | get_segment_lists: 'ORC' -%}
         {% for orcSegment in orcSegmentLists.ORC -%}
-            {% capture immunizationId -%}{% include 'ID/Immunization' with ORC: orcSegment, baseId: patientId -%}{% endcapture -%}
+            {% evaluate immunizationId using 'ID/Immunization' ORC: orcSegment, baseId: patientId -%}
             {% if immunizationId != '' -%}
                 {% assign fullImmunizationId = immunizationId | prepend: 'Immunization/' -%}
-                {% include 'Resource/Immunization' with ORC: orcSegment, ID: immunizationId -%}
+                {% include 'Resource/Immunization' ORC: orcSegment, ID: immunizationId -%}
                 {% if patientId != '' -%}
-                    {% include 'Reference/Immunization/Patient' with ID: immunizationId, REF: fullPatientId -%}
+                    {% include 'Reference/Immunization/Patient' ID: immunizationId, REF: fullPatientId -%}
                 {% endif -%}
             {% endif -%}
 
             {% assign rxaSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'RXA' -%}
             {% for rxaSegment in rxaSegmentLists.RXA -%}
-                {% include 'Resource/Immunization' with RXA: rxaSegment, ID: immunizationId -%}
+                {% include 'Resource/Immunization' RXA: rxaSegment, ID: immunizationId -%}
 
                 {% assign obxSegmentLists = hl7v2Data | get_related_segment_list: rxaSegment, 'OBX' -%}
                 {% for obxSegment in obxSegmentLists.OBX -%}
-                    {% capture observationId -%}{% include 'ID/Observation' with OBX: obxSegment, baseId: patientId -%}{% endcapture -%}
+                    {% evaluate observationId using 'ID/Observation' OBX: obxSegment, baseId: patientId -%}
                     {% if observationId != '' -%}
-                        {% include 'Resource/Observation' with OBX: obxSegment, ID: observationId -%}
-                        {% include 'Reference/Observation/PartOf' with ID: observationId, REF: fullImmunizationId -%}
+                        {% include 'Resource/Observation' OBX: obxSegment, ID: observationId -%}
+                        {% include 'Reference/Observation/PartOf' ID: observationId, REF: fullImmunizationId -%}
                         {% if patientId != '' -%}
-                            {% include 'Reference/Observation/Subject' with ID: observationId, REF: fullPatientId -%}
+                            {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
                         {% endif -%}
                     {% endif -%}
                 {% endfor -%}

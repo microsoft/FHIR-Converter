@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using DotLiquid;
+using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.OutputProcessor;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -24,6 +25,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
         public Hl7v2Processor(ProcessorSettings processorSettings = null)
         {
             _settings = processorSettings;
+            Template.RegisterTag<Evaluate>("evaluate");
         }
 
         public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)

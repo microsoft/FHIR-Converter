@@ -6,7 +6,7 @@
         "type":"{{ AL1.2.Value | get_property: 'CodeSystem/AllergyType', 'code' }}",
         "code":
         {
-            {% include 'DataType/CWECodeableConcept' with CWE: AL1.3 -%}
+            {% include 'DataType/CWECodeableConcept' CWE: AL1.3 -%}
         },
         "reaction":
         [

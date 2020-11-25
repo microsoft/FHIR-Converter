@@ -10,7 +10,7 @@ using DotLiquid.FileSystems;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter
+namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 {
     public class MemoryFileSystem : ITemplateFileSystem
     {

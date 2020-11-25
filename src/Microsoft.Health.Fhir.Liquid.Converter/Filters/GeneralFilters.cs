@@ -21,7 +21,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     /// </summary>
     public partial class Filters
     {
-        private static readonly Regex SegmentSeparatorsRegex = new Regex("\r\n|\r|\n");
+        private static readonly Regex SegmentSeparatorsRegex = new Regex(@"\s+\r\n|\r|\n");
 
         public static string GetProperty(Context context, string originalCode, string mapping, string property)
         {
@@ -53,9 +53,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static string GenerateIdInput(Context context, string segment, string resourceType, bool isBaseIdRequired, string baseId = null)
         {
-            if (string.IsNullOrEmpty(segment))
+            if (string.IsNullOrWhiteSpace(segment))
             {
-                return segment;
+                return null;
             }
 
             if (string.IsNullOrEmpty(resourceType) || (isBaseIdRequired && string.IsNullOrEmpty(baseId)))
@@ -63,16 +63,27 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 throw new DataFormatException(FhirConverterErrorCode.InvalidIdGenerationInput, Resources.InvalidIdGenerationInput);
             }
 
-            var input = baseId != null ? $"{baseId}_{resourceType}_{segment}" : $"{resourceType}_{segment}";
+            // Normalize encoding characters
             var encodingCharacters = (Hl7v2EncodingCharacters)context["EncodingCharacters"];
-            return NormalizeIdInput(input, encodingCharacters);
+            var separators = $"{encodingCharacters.ComponentSeparator}{encodingCharacters.RepetitionSeparator}{encodingCharacters.EscapeCharacter}{encodingCharacters.SubcomponentSeparator}";
+            var formattedSegment = segment.Trim().Replace(separators, ",,,,");
+
+            formattedSegment = SegmentSeparatorsRegex.Replace(formattedSegment, ",");
+            formattedSegment = formattedSegment.Replace(encodingCharacters.FieldSeparator, ',')
+                .Replace(encodingCharacters.ComponentSeparator, ',')
+                .Replace(encodingCharacters.SubcomponentSeparator, ',')
+                .Replace(encodingCharacters.RepetitionSeparator, ',');
+
+            formattedSegment = SpecialCharProcessor.Escape(Hl7v2EscapeSequenceProcessor.Unescape(formattedSegment, encodingCharacters));
+
+            return baseId != null ? $"{baseId}_{resourceType}_{formattedSegment}" : $"{resourceType}_{formattedSegment}";
         }
 
         public static string GenerateUUID(string input)
         {
             if (string.IsNullOrEmpty(input))
             {
-                return input;
+                return null;
             }
 
             var bytes = Encoding.UTF8.GetBytes(input);
@@ -81,20 +92,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             var guid = new byte[16];
             Array.Copy(hash, 0, guid, 0, 16);
             return new Guid(guid).ToString();
-        }
-
-        private static string NormalizeIdInput(string input, Hl7v2EncodingCharacters encodingCharacters)
-        {
-            // Replace encoding characters
-            var separators = $"{encodingCharacters.ComponentSeparator}{encodingCharacters.RepetitionSeparator}{encodingCharacters.EscapeCharacter}{encodingCharacters.SubcomponentSeparator}";
-            var result = input.Replace(separators, ",,,,");
-            result = SegmentSeparatorsRegex.Replace(result, ",");
-            result = result.Replace(encodingCharacters.FieldSeparator, ',')
-                .Replace(encodingCharacters.ComponentSeparator, ',')
-                .Replace(encodingCharacters.SubcomponentSeparator, ',')
-                .Replace(encodingCharacters.RepetitionSeparator, ',');
-
-            return SpecialCharProcessor.Escape(Hl7v2EscapeSequenceProcessor.Unescape(result, encodingCharacters));
         }
     }
 }

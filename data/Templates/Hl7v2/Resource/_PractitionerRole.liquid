@@ -3,21 +3,21 @@
     "resource":{
         "resourceType": "PractitionerRole",
         "id":"{{ ID }}",
-        {% include 'DataType/XCNPractitionerRole' with XCN: PD1.4 -%}
+        {% include 'DataType/XCNPractitionerRole' XCN: PD1.4 -%}
         "identifier":
         [
-            { {% include 'DataType/EIIdentifier' with EI: ROL.1 -%} },
+            { {% include 'DataType/EIIdentifier' EI: ROL.1 -%} },
             {
-                {% include 'DataType/PLN' with PLN: PRT.24 -%}
+                {% include 'DataType/PLN' PLN: PRT.24 -%}
             },
         ],
         "code":
         [
-            { {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/Role', CWE: ROL.3 -%} },
-            { {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/Participation', CWE: ROL.4 -%} },
-            { {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/Participation', CWE: PRT.4 -%} },
+            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Role', CWE: ROL.3 -%} },
+            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: ROL.4 -%} },
+            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: PRT.4 -%} },
         ],
-        {% include 'DataType/XCNPractitionerRole' with XCN: ROL.4 -%}
+        {% include 'DataType/XCNPractitionerRole' XCN: ROL.4 -%}
         "period":
         {
             "start":"{{ ROL.5.Value | format_as_date_time }}",
@@ -27,8 +27,8 @@
         },
         "telecom":
         [
-            { {% include 'DataType/XTN' with XTN: ROL.12 -%} },
-            { {% include 'DataType/XTN' with XTN: PRT.15 -%} },
+            { {% include 'DataType/XTN' XTN: ROL.12 -%} },
+            { {% include 'DataType/XTN' XTN: PRT.15 -%} },
         ],
         "location":
         [
@@ -38,17 +38,17 @@
                 {% endif -%}
             },
         ],
-        {% include 'DataType/XCNPractitionerRole' with XCN: ROL.4 -%}
-        {% include 'DataType/XCNPractitionerRole' with XCN: OBX.25 -%}
-        {% include 'DataType/XCNPractitionerRole' with XCN: PRT.5 -%}
+        {% include 'DataType/XCNPractitionerRole' XCN: ROL.4 -%}
+        {% include 'DataType/XCNPractitionerRole' XCN: OBX.25 -%}
+        {% include 'DataType/XCNPractitionerRole' XCN: PRT.5 -%}
         "specialty":
         [
-            { {% include 'DataType/CWECodeableConcept' with CWE: PRT.6 -%} },
+            { {% include 'DataType/CWECodeableConcept' CWE: PRT.6 -%} },
         ],
-        {% include 'DataType/XCNPractitionerRole' with XCN: ORC.12 -%}
-        {% include 'DataType/NDLPractitionerRole' with NDL: OBR.32 -%}
-        {% include 'DataType/NDLPractitionerRole' with NDL: OBR.34 -%}
-        {% include 'DataType/NDLPractitionerRole' with NDL: OBR.35 -%}
+        {% include 'DataType/XCNPractitionerRole' XCN: ORC.12 -%}
+        {% include 'DataType/NDLPractitionerRole' NDL: OBR.32 -%}
+        {% include 'DataType/NDLPractitionerRole' NDL: OBR.34 -%}
+        {% include 'DataType/NDLPractitionerRole' NDL: OBR.35 -%}
     },
     "request":{
         "method":"PUT",
