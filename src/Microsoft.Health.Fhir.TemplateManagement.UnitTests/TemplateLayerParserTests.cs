@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using DotLiquid;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
@@ -34,9 +35,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         public void GivenArtifactLayer_WhenParseArtifactLayerToTemplateLayer_ACorrectTemplateLayerShouldBeReturned(string filePath, int expectedTemplatesCounts)
         {
             var content = File.ReadAllBytes(filePath);
-            var testArtifactLayer = new ArtifactLayer() { Content = content, Digest = StreamUtility.CalculateDigestFromSha256(File.ReadAllBytes(filePath)) };
+            var testArtifactLayer = new OCIArtifactLayer() { Content = content, Digest = StreamUtility.CalculateDigestFromSha256(File.ReadAllBytes(filePath)) };
             var templateLayer = TemplateLayerParser.ParseArtifactsLayerToTemplateLayer(testArtifactLayer);
-            Assert.Equal(expectedTemplatesCounts, ((Dictionary<string, Template>)templateLayer.Content).Count());
+            Assert.Equal(expectedTemplatesCounts, (templateLayer.TemplateContent).Count());
             Assert.Equal(testArtifactLayer.Digest, templateLayer.Digest);
         }
 
@@ -52,11 +53,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public void GivenStringContent_WhenParseToTemplates_CorrectTemplatesShouldBeReturn()
         {
-            var content = new Dictionary<string, string>
+            var content = new Dictionary<string, byte[]>
             {
-                { "ADT_A01.liquid", "a" },
-                { "Resource/_Patient.liquid", "b" },
-                { @"Resource\_Encounter.liquid", "c" },
+                { "ADT_A01.liquid", Encoding.UTF8.GetBytes("a") },
+                { "Resource/_Patient.liquid", Encoding.UTF8.GetBytes("b") },
+                { @"Resource\_Encounter.liquid", Encoding.UTF8.GetBytes("c") },
             };
             var parsedTemplates = TemplateLayerParser.ParseToTemplates(content);
             Assert.Equal("a", parsedTemplates["ADT_A01"].Render());
@@ -75,11 +76,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public void GivenRawBytes_WhenParseRawBytesToTemplates_IfTemplateParseFailed_ExceptionShouldBeThrown()
         {
-            var content = new Dictionary<string, string>
+            var content = new Dictionary<string, byte[]>
             {
-                { "ADT_A01.liquid", "{{" },
-                { "Resource/_Patient.liquid", ".." },
-                { @"Resource\_Encounter.liquid", "c_" },
+                { "ADT_A01.liquid", Encoding.UTF8.GetBytes("{{") },
+                { "Resource/_Patient.liquid", Encoding.UTF8.GetBytes("..") },
+                { @"Resource\_Encounter.liquid", Encoding.UTF8.GetBytes("c_") },
             };
             Assert.Throws<TemplateParseException>(() => TemplateLayerParser.ParseToTemplates(content));
         }

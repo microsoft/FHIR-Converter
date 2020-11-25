@@ -81,7 +81,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             _templateCollectionProvider = new TemplateCollectionProvider(imageInfo, MockClient, _cache, _defaultConfig);
             TemplateLayer templateLayer = (TemplateLayer)await _templateCollectionProvider.GetLayerAsync(layerDigest);
-            Assert.Equal(expectedCounts, ((Dictionary<string, Template>)templateLayer.Content).Count());
+            Assert.Equal(expectedCounts, (templateLayer.TemplateContent).Count());
         }
 
         [Theory]
@@ -124,7 +124,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var newTemplateCollectionProvider = new TemplateCollectionProvider(imageInfo, _emptyClient, _cache, _defaultConfig);
             TemplateLayer templateLayer = (TemplateLayer)await newTemplateCollectionProvider.GetLayerAsync(layerDigest);
-            Assert.Equal(expectedCounts, ((Dictionary<string, Template>)templateLayer.Content).Count());
+            Assert.Equal(expectedCounts, (templateLayer.TemplateContent).Count());
         }
 
         [Theory]

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
@@ -17,21 +18,21 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 {
     public static class TemplateLayerParser
     {
-        public static TemplateLayer ParseArtifactsLayerToTemplateLayer(ArtifactLayer artifactsLayer)
+        public static TemplateLayer ParseArtifactsLayerToTemplateLayer(OCIArtifactLayer artifactsLayer)
         {
             TemplateLayer oneTemplateLayer = new TemplateLayer();
             var artifacts = DecompressRawBytesContent((byte[])artifactsLayer.Content);
             var parsedTemplate = ParseToTemplates(artifacts);
 
-            oneTemplateLayer.Content = parsedTemplate;
+            oneTemplateLayer.TemplateContent = parsedTemplate;
             oneTemplateLayer.Digest = artifactsLayer.Digest;
             oneTemplateLayer.Size = artifacts.Sum(x => x.Value == null ? 0 : x.Value.Length);
             return oneTemplateLayer;
         }
 
-        public static Dictionary<string, string> DecompressRawBytesContent(byte[] rawBytes)
+        public static Dictionary<string, byte[]> DecompressRawBytesContent(byte[] rawBytes)
         {
-            Dictionary<string, string> artifacts;
+            Dictionary<string, byte[]> artifacts;
             try
             {
                 artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(rawBytes));
@@ -43,11 +44,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             }
         }
 
-        public static Dictionary<string, Template> ParseToTemplates(Dictionary<string, string> content)
+        public static Dictionary<string, Template> ParseToTemplates(Dictionary<string, byte[]> content)
         {
+            var contentString = new Dictionary<string, string> { };
+            foreach (var item in content)
+            {
+                contentString.Add(item.Key, item.Value == null ? null : Encoding.UTF8.GetString(item.Value));
+            }
+
             try
             {
-                var parsedTemplate = TemplateUtility.ParseHl7v2Templates(content);
+                var parsedTemplate = TemplateUtility.ParseHl7v2Templates(contentString);
                 return parsedTemplate;
             }
             catch (Exception ex)

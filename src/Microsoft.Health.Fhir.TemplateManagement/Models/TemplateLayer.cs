@@ -4,15 +4,19 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using DotLiquid;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
-    public class TemplateLayer : ArtifactLayer
+    public class TemplateLayer : OCIArtifactLayer
     {
+        public Dictionary<string, Template> TemplateContent { get; set; }
+
         public static TemplateLayer ReadFromFile(string filePath)
         {
             try
@@ -20,7 +24,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
                 TemplateLayer templateLayer = new TemplateLayer();
                 var rawBytes = File.ReadAllBytes(filePath);
                 var artifacts = TemplateLayerParser.DecompressRawBytesContent(rawBytes);
-                templateLayer.Content = TemplateLayerParser.ParseToTemplates(artifacts);
+                templateLayer.TemplateContent = TemplateLayerParser.ParseToTemplates(artifacts);
                 templateLayer.Digest = StreamUtility.CalculateDigestFromSha256(File.ReadAllBytes(filePath));
                 templateLayer.Size = artifacts.Sum(x => x.Value.Length);
                 return templateLayer;

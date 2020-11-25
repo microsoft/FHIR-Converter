@@ -3,7 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-namespace Microsoft.Health.Fhir.Converter.TemplateManagement
+namespace Microsoft.Health.Fhir.TemplateManagement
 {
     internal static class Constants
     {
@@ -17,5 +17,11 @@ namespace Microsoft.Health.Fhir.Converter.TemplateManagement
         internal const string WhiteoutsLabel = ".wh.";
 
         internal const long ManifestObjectSizeInByte = 10000;
+
+        internal const string ImageLayersFolder = ".ImageLayers";
+
+        internal const string BaseLayerFolder = ".Snapshot";
+
+        internal const string OverlayMetadataFile = "digest.json";
     }
 }

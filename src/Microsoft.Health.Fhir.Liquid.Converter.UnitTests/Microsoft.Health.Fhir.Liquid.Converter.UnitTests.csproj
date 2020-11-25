@@ -23,4 +23,10 @@
     <ProjectReference Include="..\Microsoft.Health.Fhir.Liquid.Converter\Microsoft.Health.Fhir.Liquid.Converter.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="DefaultTemplates.tar.gz">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

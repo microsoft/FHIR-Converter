@@ -1,0 +1,144 @@
+﻿// -------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
+// -------------------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Microsoft.Health.Fhir.TemplateManagement.Models;
+
+namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
+{
+    public class OverlayFileSystem : IOverlayFileSystem
+    {
+
+        private readonly string _workingFolder;
+        private readonly string _workingImageLayerFolder;
+        private readonly string _workingBaseLayerFolder;
+
+        public OverlayFileSystem(string workingFolder)
+        {
+            _workingFolder = workingFolder;
+            _workingImageLayerFolder = Path.Combine(workingFolder, Constants.ImageLayersFolder);
+            _workingBaseLayerFolder = Path.Combine(workingFolder, Constants.BaseLayerFolder);
+        }
+
+        public void WriteMergedOCIFileLayer(OCIFileLayer oneLayer)
+        {
+            if (!Directory.Exists(_workingFolder))
+            {
+                Directory.CreateDirectory(_workingFolder);
+            }
+
+            foreach (var oneFile in oneLayer.FileContent)
+            {
+                var directory = Path.GetDirectoryName(Path.Combine(_workingFolder, oneFile.Key));
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
+                File.WriteAllBytes(Path.Combine(_workingFolder, oneFile.Key), oneFile.Value);
+            }
+        }
+
+        public OCIFileLayer ReadMergedOCIFileLayer()
+        {
+            var filePaths = Directory.EnumerateFiles(_workingFolder, "*.*", SearchOption.AllDirectories);
+            Dictionary<string, byte[]> fileContent = new Dictionary<string, byte[]>() { };
+            foreach (var oneFile in filePaths)
+            {
+                if (!Path.GetRelativePath(_workingFolder, oneFile).Contains(Constants.ImageLayersFolder)
+                    && !Path.GetRelativePath(_workingFolder, oneFile).Contains(Constants.BaseLayerFolder))
+                {
+                    fileContent.Add(Path.GetRelativePath(_workingFolder, oneFile), File.ReadAllBytes(oneFile));
+                }
+            }
+
+            OCIFileLayer fileLayer = new OCIFileLayer() { FileContent = fileContent };
+            return fileLayer;
+        }
+
+        public List<OCIArtifactLayer> ReadImageLayers()
+        {
+            if (!Directory.Exists(_workingImageLayerFolder))
+            {
+                return null;
+            }
+
+            return ReadOCIArtifactLayers(_workingImageLayerFolder);
+        }
+
+        public List<OCIArtifactLayer> ReadBaseLayers()
+        {
+            if (!Directory.Exists(_workingBaseLayerFolder))
+            {
+                return null;
+            }
+
+            return ReadOCIArtifactLayers(_workingBaseLayerFolder);
+        }
+
+        private List<OCIArtifactLayer> ReadOCIArtifactLayers(string folder)
+        {
+            var result = new List<OCIArtifactLayer>();
+            var layersPath = Directory.EnumerateFiles(folder, "*.tar.gz", SearchOption.AllDirectories);
+            if (layersPath.Count() == 0)
+            {
+                return null;
+            }
+
+            foreach (var tarGzFile in layersPath)
+            {
+                var artifactLayer = OCIArtifactLayer.ReadOCIArtifactLayer(tarGzFile);
+                if (artifactLayer != null)
+                {
+                    result.Add(artifactLayer);
+                }
+            }
+
+            return result;
+        }
+
+        public void WriteImageLayers(List<OCIArtifactLayer> imageLayers)
+        {
+            ClearFolder(_workingImageLayerFolder);
+            foreach (var layer in imageLayers)
+            {
+                OCIArtifactLayer.WriteOCIArtifactLayer(layer, _workingImageLayerFolder);
+            }
+        }
+
+        public void WriteBaseLayers(List<OCIArtifactLayer> layers)
+        {
+            ClearFolder(_workingBaseLayerFolder);
+            foreach (var layer in layers)
+            {
+                OCIArtifactLayer.WriteOCIArtifactLayer(layer, _workingBaseLayerFolder);
+            }
+        }
+
+        public void ClearImageLayerFolder()
+        {
+            ClearFolder(_workingImageLayerFolder);
+        }
+
+        public void ClearBaseLayerFolder()
+        {
+            ClearFolder(_workingBaseLayerFolder);
+        }
+
+        private void ClearFolder(string directory)
+        {
+            if (!Directory.Exists(directory))
+            {
+                return;
+            }
+
+            DirectoryInfo folder = new DirectoryInfo(directory);
+            folder.Delete(true);
+        }
+    }
+}

@@ -43,7 +43,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
             var compressedStream = new MemoryStream(rawBytes);
             var artifacts = StreamUtility.DecompressTarGzStream(compressedStream);
 
-            Dictionary<string, string> expectedFile = new Dictionary<string, string> { };
+            Dictionary<string, byte[]> expectedFile = new Dictionary<string, byte[]> { };
             var expectedFiles = Directory.EnumerateFiles(_decompressedFileFolder, "*.*", SearchOption.AllDirectories);
             foreach (var oneExpectedFile in expectedFiles)
             {
@@ -53,7 +53,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
                 }
                 else
                 {
-                    expectedFile.Add(Path.GetRelativePath(_decompressedFileFolder, oneExpectedFile), File.ReadAllText(oneExpectedFile));
+                    expectedFile.Add(Path.GetRelativePath(_decompressedFileFolder, oneExpectedFile), File.ReadAllBytes(oneExpectedFile));
                 }
             }
 
@@ -78,10 +78,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
             Assert.Equal(expectedDigest, digest);
         }
 
-        private void CompareTwoDictionary(Dictionary<string, string> result, Dictionary<string, string> expected)
+        private void CompareTwoDictionary(Dictionary<string, byte[]> result, Dictionary<string, byte[]> expected)
         {
-            Assert.Empty(result.Except(expected));
-
             foreach (var element in expected)
             {
                 Assert.Equal(result[element.Key], element.Value);
