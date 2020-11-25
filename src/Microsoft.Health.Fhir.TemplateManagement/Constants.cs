@@ -3,7 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-namespace Microsoft.Health.Fhir.Converter.TemplateManagement
+namespace Microsoft.Health.Fhir.TemplateManagement
 {
     internal static class Constants
     {

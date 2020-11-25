@@ -4,7 +4,6 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using Microsoft.Health.Fhir.Converter.TemplateManagement;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models

@@ -51,4 +51,10 @@
     <Folder Include="TestData\Expected\Hl7v2\ORU_R01\" />
     <Folder Include="TestData\Expected\Hl7v2\VXU_V04\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\Microsoft.Health.Fhir.TemplateManagement.UnitTests\DefaultTemplates.tar.gz" Link="DefaultTemplates.tar.gz">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
