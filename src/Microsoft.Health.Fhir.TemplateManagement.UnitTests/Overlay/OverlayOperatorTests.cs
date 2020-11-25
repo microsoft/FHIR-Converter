@@ -91,7 +91,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             var overlayFs = new OverlayFileSystem("TestData/UserFolder");
             overlayFs.ClearImageLayerFolder();
             Directory.CreateDirectory("TestData/UserFolder/.image/base");
-            File.Copy("TestData/Snapshot/baselayer.tar.gz", "TestData/UserFolder/.image/base/defaultlayer.tar.gz");
+            File.Copy("TestData/Snapshot/baselayer.tar.gz", "TestData/UserFolder/.image/base/defaultlayer.tar.gz", true);
 
             var fileLayer = overlayFs.ReadMergedOCIFileLayer();
             var baseLayers = overlayFs.ReadBaseLayers();

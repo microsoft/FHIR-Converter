@@ -17,9 +17,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         [MemberData(nameof(GetValidImageReference))]
         public void GivenAValidImageReference_WhenPushImageUseOras_ImageWillBePushed(string imageReference)
         {
-            return;
             Directory.CreateDirectory("TestData/.image/layers");
-            File.Copy("TestData/TarGzFiles/baseLayer.tar.gz", "TestData/.image/layers/baseLayer.tar.gz");
+            File.Copy("TestData/TarGzFiles/baseLayer.tar.gz", "TestData/.image/layers/baseLayer.tar.gz", true);
             OrasClient orasClient = new OrasClient(imageReference, "TestData");
             var output = orasClient.PushImage();
             ClearFolder("TestData/.image/layers");
@@ -29,7 +28,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         [MemberData(nameof(GetValidImageReference))]
         public void GivenAValidImageReference_WhenPullImageUseOras_ImageWillBePulled(string imageReference)
         {
-            return;
             ClearFolder("TestTemplates/.ImageLayers");
             OrasClient orasClient = new OrasClient(imageReference, "TestTemplates");
             var output = orasClient.PullImage();

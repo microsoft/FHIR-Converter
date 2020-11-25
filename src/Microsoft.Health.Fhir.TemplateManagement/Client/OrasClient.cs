@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
-using Microsoft.Health.Fhir.TemplateManagement;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
@@ -32,15 +30,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
         public string PullImage()
         {
             string command = $"pull  {_imageReference} -o {WorkingImageLayerFolder}";
-            var output = OrasExecution(command);
+            var output = OrasExecution(command, Directory.GetCurrentDirectory());
             return output;
         }
 
         public string PushImage()
         {
-            //var realRunningPath = Directory.GetCurrentDirectory();
-            //Directory.SetCurrentDirectory(Path.Combine(realRunningPath, WorkingImageLayerFolder));
-            var filePathToPush = Directory.EnumerateFiles(".", "*.tar.gz", SearchOption.AllDirectories);
+            var filePathToPush = Directory.EnumerateFiles(WorkingImageLayerFolder, "*.tar.gz", SearchOption.AllDirectories);
 
             if (filePathToPush == null || filePathToPush.Count() == 0)
             {
@@ -50,16 +46,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             string command = $"push {_imageReference}";
             foreach (var filePath in filePathToPush)
             {
-                command += $" {Path.GetRelativePath(".", filePath)}";
+                command += $" {Path.GetRelativePath(WorkingImageLayerFolder, filePath)}";
             }
 
-            var output = OrasExecution(command);
-            //Directory.SetCurrentDirectory(realRunningPath);
+            var output = OrasExecution(command, Path.Combine(Directory.GetCurrentDirectory(), WorkingImageLayerFolder));
             return output;
         }
 
-        private string OrasExecution(string command)
+        private string OrasExecution(string command, string workingDirectory)
         {
+
             Process process = new Process
             {
                 StartInfo = new ProcessStartInfo(Path.Combine(AppContext.BaseDirectory, "oras.exe")),
@@ -69,6 +65,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.WorkingDirectory = workingDirectory;
             process.Start();
 
             StreamReader outputStreamReader = process.StandardOutput;
