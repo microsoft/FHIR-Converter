@@ -20,7 +20,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         // Sha256 digest of the layer.
         public string Digest { get; set; }
 
-        public virtual int SequenceNumber { get; set; }
+        public int SequenceNumber { get; set; }
 
         // Content of the layer.
         public virtual byte[] Content { get; set; }
@@ -37,7 +37,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
                 return;
             }
 
-            File.WriteAllBytes(Path.Combine(directory, layer.FileName), layer.Content);
+            File.WriteAllBytes(Path.Combine(directory, Path.GetFileName(layer.FileName)), layer.Content);
         }
 
         public static OCIArtifactLayer ReadOCIArtifactLayer(string path)

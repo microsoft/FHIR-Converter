@@ -3,11 +3,11 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using Microsoft.Health.Fhir.TemplateManagement.Models;
-using Microsoft.Health.Fhir.TemplateManagement.Overlay;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Overlay;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
@@ -48,13 +48,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         {
             string layerPath = "TestData/TarGzFiles/userV1.tar.gz";
             var layer = new OCIArtifactLayer() { SequenceNumber = 2, Content = File.ReadAllBytes(layerPath), FileName = "userV1.tar.gz" };
-            string workingFolder = "TestData/userFolder";
-            ClearFolder(Path.Combine(workingFolder, ".ImageLayers"));
+            string workingFolder = "TestData/testImageLayer";
+            ClearFolder(workingFolder);
             var overlayFs = new OverlayFileSystem(workingFolder);
             overlayFs.WriteImageLayers(new List<OCIArtifactLayer>() { layer });
-
-            var filePaths = Directory.EnumerateFiles(Path.Combine(workingFolder, ".ImageLayers"), "*.*", SearchOption.AllDirectories);
+            var filePaths = Directory.EnumerateFiles(Path.Combine(workingFolder, ".image/layers"), "*.*", SearchOption.AllDirectories);
             Assert.Single(filePaths);
+            ClearFolder(workingFolder);
         }
 
         private void ClearFolder(string path)

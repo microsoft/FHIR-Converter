@@ -18,9 +18,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         internal const long ManifestObjectSizeInByte = 10000;
 
-        internal const string ImageLayersFolder = ".ImageLayers";
+        internal const string HiddenImageFolder = ".image";
 
-        internal const string BaseLayerFolder = ".Snapshot";
+        internal const string HiddenLayersFolder = ".image/layers";
+
+        internal const string HiddenBaseLayerFolder = ".image/base";
 
         internal const string OverlayMetadataFile = "digest.json";
     }

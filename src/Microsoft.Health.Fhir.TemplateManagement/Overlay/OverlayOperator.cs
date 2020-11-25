@@ -155,8 +155,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
             if (editFlag)
             {
-                var mataJson = new OverlayMetadata() { SequenceNumber = buildNumber, FileDigests = diffLayerFileDigest };
-                var metaContent = JsonConvert.SerializeObject(mataJson);
+                var metaJson = new OverlayMetadata() { SequenceNumber = buildNumber, FileDigests = diffLayerFileDigest };
+                var metaContent = JsonConvert.SerializeObject(metaJson);
                 diffLayerFiles.Add(Constants.OverlayMetadataFile, Encoding.UTF8.GetBytes(metaContent));
                 return new OCIFileLayer() { FileContent = diffLayerFiles, SequenceNumber = buildNumber, FileName = $"layer{buildNumber}.tar.gz" };
             }

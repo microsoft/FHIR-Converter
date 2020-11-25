@@ -1,4 +1,9 @@
-﻿using System.Collections.Generic;
+﻿// -------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
+// -------------------------------------------------------------------------------------------------
+
+using System.Collections.Generic;
 using System.Linq;
 using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
@@ -15,7 +20,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         public OCIFileManager(string imageReference, string workingFolder)
         {
-
             EnsureArg.IsNotNull(imageReference);
             EnsureArg.IsNotNull(workingFolder);
 
@@ -46,12 +50,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             _overlayFS.WriteMergedOCIFileLayer(mergedFileLayer);
         }
 
-        public void PackOCIImage()
+        public void PackOCIImage(bool ignoreBaseLayers = false)
         {
             var mergedLayer = _overlayFS.ReadMergedOCIFileLayer();
-            var baseLayers = _overlayFS.ReadBaseLayers();
-            var snapshotLayer = GenerateSnapshotLayer(baseLayers);
+            List<OCIArtifactLayer> baseLayers = null;
+            if (!ignoreBaseLayers)
+            {
+                baseLayers = _overlayFS.ReadBaseLayers();
+            }
 
+            var snapshotLayer = GenerateSnapshotLayer(baseLayers);
             var diffLayer = _overlayOperator.GenerateDiffLayer(mergedLayer, snapshotLayer);
             var diffArtifactLayer = _overlayOperator.ArchiveOCIFileLayer(diffLayer);
             var allLayers = new List<OCIArtifactLayer>() { };
@@ -61,7 +69,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
                 allLayers.Add(diffArtifactLayer);
             }
 
-            allLayers.AddRange(baseLayers ?? new List<OCIArtifactLayer>() );
+            allLayers.AddRange(baseLayers ?? new List<OCIArtifactLayer>());
 
             _overlayFS.WriteImageLayers(allLayers);
         }
@@ -72,14 +80,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             return orasOutput;
         }
 
-        private OCIFileLayer GenerateSnapshotLayer(List<OCIArtifactLayer> snapshotLayers)
+        private OCIFileLayer GenerateSnapshotLayer(List<OCIArtifactLayer> baseLayers)
         {
-            if (snapshotLayers == null)
+            if (baseLayers == null)
             {
                 return null;
             }
 
-            var fileLayers = _overlayOperator.ExtractOCIFileLayers(snapshotLayers);
+            var fileLayers = _overlayOperator.ExtractOCIFileLayers(baseLayers);
             var sortedFileLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
             var mergedFileLayer = _overlayOperator.MergeOCIFileLayers(sortedFileLayers);
             return mergedFileLayer;

@@ -17,11 +17,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         [MemberData(nameof(GetValidImageReference))]
         public void GivenAValidImageReference_WhenPushImageUseOras_ImageWillBePushed(string imageReference)
         {
-            Directory.CreateDirectory("TestData/.ImageLayers");
-            File.Copy("TestData/TarGzFiles/baseLayer.tar.gz", "TestData/.ImageLayers/baseLayer.tar.gz");
+            Directory.CreateDirectory("TestData/.image/layers");
+            File.Copy("TestData/TarGzFiles/baseLayer.tar.gz", "TestData/.image/layers/baseLayer.tar.gz");
             OrasClient orasClient = new OrasClient(imageReference, "TestData");
             var output = orasClient.PushImage();
-            ClearFolder("TestData/.ImageLayers/");
+            ClearFolder("TestData/.image/layers");
         }
 
         [Theory]

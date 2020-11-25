@@ -21,8 +21,24 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         public OverlayFileSystem(string workingFolder)
         {
             _workingFolder = workingFolder;
-            _workingImageLayerFolder = Path.Combine(workingFolder, Constants.ImageLayersFolder);
-            _workingBaseLayerFolder = Path.Combine(workingFolder, Constants.BaseLayerFolder);
+            _workingImageLayerFolder = Path.Combine(workingFolder, Constants.HiddenLayersFolder);
+            _workingBaseLayerFolder = Path.Combine(workingFolder, Constants.HiddenBaseLayerFolder);
+        }
+
+        public OCIFileLayer ReadMergedOCIFileLayer()
+        {
+            var filePaths = Directory.EnumerateFiles(_workingFolder, "*.*", SearchOption.AllDirectories);
+            Dictionary<string, byte[]> fileContent = new Dictionary<string, byte[]>() { };
+            foreach (var oneFile in filePaths)
+            {
+                if (!Path.GetRelativePath(_workingFolder, oneFile).Contains(Constants.HiddenImageFolder))
+                {
+                    fileContent.Add(Path.GetRelativePath(_workingFolder, oneFile), File.ReadAllBytes(oneFile));
+                }
+            }
+
+            OCIFileLayer fileLayer = new OCIFileLayer() { FileContent = fileContent };
+            return fileLayer;
         }
 
         public void WriteMergedOCIFileLayer(OCIFileLayer oneLayer)
@@ -44,23 +60,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
         }
 
-        public OCIFileLayer ReadMergedOCIFileLayer()
-        {
-            var filePaths = Directory.EnumerateFiles(_workingFolder, "*.*", SearchOption.AllDirectories);
-            Dictionary<string, byte[]> fileContent = new Dictionary<string, byte[]>() { };
-            foreach (var oneFile in filePaths)
-            {
-                if (!Path.GetRelativePath(_workingFolder, oneFile).Contains(Constants.ImageLayersFolder)
-                    && !Path.GetRelativePath(_workingFolder, oneFile).Contains(Constants.BaseLayerFolder))
-                {
-                    fileContent.Add(Path.GetRelativePath(_workingFolder, oneFile), File.ReadAllBytes(oneFile));
-                }
-            }
-
-            OCIFileLayer fileLayer = new OCIFileLayer() { FileContent = fileContent };
-            return fileLayer;
-        }
-
         public List<OCIArtifactLayer> ReadImageLayers()
         {
             if (!Directory.Exists(_workingImageLayerFolder))
@@ -71,6 +70,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return ReadOCIArtifactLayers(_workingImageLayerFolder);
         }
 
+        public void WriteImageLayers(List<OCIArtifactLayer> imageLayers)
+        {
+            ClearFolder(_workingImageLayerFolder);
+            foreach (var layer in imageLayers)
+            {
+                OCIArtifactLayer.WriteOCIArtifactLayer(layer, _workingImageLayerFolder);
+            }
+        }
+
         public List<OCIArtifactLayer> ReadBaseLayers()
         {
             if (!Directory.Exists(_workingBaseLayerFolder))
@@ -79,36 +87,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
 
             return ReadOCIArtifactLayers(_workingBaseLayerFolder);
-        }
-
-        private List<OCIArtifactLayer> ReadOCIArtifactLayers(string folder)
-        {
-            var result = new List<OCIArtifactLayer>();
-            var layersPath = Directory.EnumerateFiles(folder, "*.tar.gz", SearchOption.AllDirectories);
-            if (layersPath.Count() == 0)
-            {
-                return null;
-            }
-
-            foreach (var tarGzFile in layersPath)
-            {
-                var artifactLayer = OCIArtifactLayer.ReadOCIArtifactLayer(tarGzFile);
-                if (artifactLayer != null)
-                {
-                    result.Add(artifactLayer);
-                }
-            }
-
-            return result;
-        }
-
-        public void WriteImageLayers(List<OCIArtifactLayer> imageLayers)
-        {
-            ClearFolder(_workingImageLayerFolder);
-            foreach (var layer in imageLayers)
-            {
-                OCIArtifactLayer.WriteOCIArtifactLayer(layer, _workingImageLayerFolder);
-            }
         }
 
         public void WriteBaseLayers(List<OCIArtifactLayer> layers)
@@ -139,6 +117,27 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
             DirectoryInfo folder = new DirectoryInfo(directory);
             folder.Delete(true);
+        }
+
+        private List<OCIArtifactLayer> ReadOCIArtifactLayers(string folder)
+        {
+            var result = new List<OCIArtifactLayer>();
+            var layersPath = Directory.EnumerateFiles(folder, "*.tar.gz", SearchOption.AllDirectories);
+            if (layersPath.Count() == 0)
+            {
+                return null;
+            }
+
+            foreach (var tarGzFile in layersPath)
+            {
+                var artifactLayer = OCIArtifactLayer.ReadOCIArtifactLayer(tarGzFile);
+                if (artifactLayer != null)
+                {
+                    result.Add(artifactLayer);
+                }
+            }
+
+            return result;
         }
     }
 }

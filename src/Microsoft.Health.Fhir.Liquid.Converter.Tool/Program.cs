@@ -14,13 +14,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
     {
         public static void Main(string[] args)
         {
-            var parseResult = Parser.Default.ParseArguments<ConverterOptions>(args);
+            var parseResult = Parser.Default.ParseArguments<ConverterOptions, PullTemplateOptions, PushTemplateOptions>(args);
             parseResult
-                .WithParsed(options => ConverterLogicHandler.Convert(options))
+                .WithParsed<ConverterOptions>(options => ConverterLogicHandler.Convert(options))
+                .WithParsed<PullTemplateOptions>(options => TemplateLogicHandler.Pull(options))
+                .WithParsed<PushTemplateOptions>(options => TemplateLogicHandler.Push(options))
                 .WithNotParsed((errors) => HandleOptionsParseError(parseResult));
         }
 
-        private static void HandleOptionsParseError(ParserResult<ConverterOptions> parseResult)
+        private static void HandleOptionsParseError(ParserResult<object> parseResult)
         {
             var usageText = HelpText.RenderUsageText(parseResult);
             Console.WriteLine(usageText);
