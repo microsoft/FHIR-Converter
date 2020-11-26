@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using DotLiquid;
-using DotLiquid.Exceptions;
 using DotLiquid.FileSystems;
 using DotLiquid.Util;
 
@@ -16,7 +15,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 {
     public class Evaluate : Tag
     {
-        private static readonly Regex Syntax = R.B(@"({0}+)\s+(?:using)\s+({1}+)", DotLiquid.Liquid.VariableSignature, DotLiquid.Liquid.QuotedFragment);
+        private static readonly Regex Syntax = R.B(@"({0}+)\s+(?:using)\s+({1}+)", DotLiquid.Liquid.VariableSignature, DotLiquid.Liquid.QuotedString);
 
         private string _to;
         private string _templateName;
@@ -34,7 +33,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
             else
             {
-                throw new SyntaxException(Resources.EvaluateTagSyntaxError);
+                throw new DotLiquid.Exceptions.SyntaxException(Resources.EvaluateTagSyntaxError);
             }
 
             base.Initialize(tagName, markup, tokens);

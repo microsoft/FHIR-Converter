@@ -5,7 +5,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using DotLiquid.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -49,7 +48,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
             var templates = new Dictionary<string, string> { { "ADT_A01.liquid", "{{" } };
             var exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseHl7v2Templates(templates));
             Assert.Equal(FhirConverterErrorCode.TemplateSyntaxError, exception.FhirConverterErrorCode);
-            Assert.True(exception.InnerException is SyntaxException);
+            Assert.True(exception.InnerException is DotLiquid.Exceptions.SyntaxException);
 
             // Invalid JSON
             templates = new Dictionary<string, string> { { "CodeSystem/CodeSystem.json", @"{""a""" } };

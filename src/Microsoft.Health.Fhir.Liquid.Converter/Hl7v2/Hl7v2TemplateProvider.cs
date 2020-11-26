@@ -18,6 +18,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
     {
         private const string TemplateFileExtension = ".liquid";
 
+        // Register "evaluate" tag in static constructor
+        static Hl7v2TemplateProvider()
+        {
+            Template.RegisterTag<Evaluate>("evaluate");
+        }
+
         public Hl7v2TemplateProvider(string templateDirectory)
         {
             TemplateCollection = LoadTemplates(templateDirectory);

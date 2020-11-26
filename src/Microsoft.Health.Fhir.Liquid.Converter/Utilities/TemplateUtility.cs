@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using DotLiquid;
-using DotLiquid.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -77,7 +76,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             {
                 return Template.Parse(content);
             }
-            catch (SyntaxException ex)
+            catch (DotLiquid.Exceptions.SyntaxException ex)
             {
                 throw new ConverterInitializeException(FhirConverterErrorCode.TemplateSyntaxError, string.Format(Resources.TemplateSyntaxError, templateName, ex.Message), ex);
             }
