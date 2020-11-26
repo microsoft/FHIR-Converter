@@ -239,5 +239,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("TemplateSyntaxError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time out when rendering templates..
+        /// </summary>
+        internal static string TimeoutError {
+            get {
+                return ResourceManager.GetString("TimeoutError", resourceCulture);
+            }
+        }
     }
 }

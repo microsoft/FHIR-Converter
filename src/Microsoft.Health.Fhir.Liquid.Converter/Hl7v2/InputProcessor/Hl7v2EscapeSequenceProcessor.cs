@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.InputProcessor
         {
             if (input.Length % 2 != 1)
             {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidHexadecimalNumber, string.Format(Resources.InvalidHexadecimalNumber, input.Substring(1)));
+                throw new DataParseException(FhirConverterErrorCode.InvalidHexadecimalNumber, string.Format(Resources.InvalidHexadecimalNumber, input.Substring(1)));
             }
 
             string result = string.Empty;

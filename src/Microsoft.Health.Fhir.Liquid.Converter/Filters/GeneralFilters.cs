@@ -59,7 +59,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
             else
             {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidIdGenerationInput, Resources.InvalidIdGenerationInput);
+                throw new RenderException(FhirConverterErrorCode.InvalidIdGenerationInput, Resources.InvalidIdGenerationInput);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             if (string.IsNullOrEmpty(input))
             {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidIdGenerationInput, Resources.InvalidIdGenerationInput);
+                throw new RenderException(FhirConverterErrorCode.InvalidIdGenerationInput, Resources.InvalidIdGenerationInput);
             }
 
             var bytes = Encoding.UTF8.GetBytes(input);

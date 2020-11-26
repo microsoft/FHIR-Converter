@@ -30,7 +30,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
             Assert.Equal(FhirConverterErrorCode.InputParsingError, exception.FhirConverterErrorCode);
 
             var innerException = exception.InnerException as FhirConverterException;
-            Assert.True(innerException is DataFormatException);
+            Assert.True(innerException is DataParseException);
             Assert.Equal(FhirConverterErrorCode.NullOrEmptyInput, innerException.FhirConverterErrorCode);
         }
 

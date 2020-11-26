@@ -27,7 +27,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             var matches = DateTimeRegex.Matches(input);
             if (matches.Count != 1)
             {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
+                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
             }
 
             var groups = matches[0].Groups;
@@ -44,7 +44,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             var matches = DateTimeRegex.Matches(input);
             if (matches.Count != 1)
             {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
+                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
             }
 
             var groups = matches[0].Groups;
@@ -84,7 +84,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
             catch (Exception)
             {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
+                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
             }
         }
 
@@ -104,7 +104,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
             catch (Exception)
             {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
+                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
             }
         }
     }

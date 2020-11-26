@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DotLiquid;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter
+namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 {
     public class SafeList<T> : IIndexable, ILiquidizable
         where T : class

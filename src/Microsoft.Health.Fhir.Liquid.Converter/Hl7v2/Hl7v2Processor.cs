@@ -90,6 +90,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                 template.MakeThreadSafe();
                 return template.Render(new RenderParameters(CultureInfo.InvariantCulture) { Context = context });
             }
+            catch (TimeoutException ex)
+            {
+                throw new RenderException(FhirConverterErrorCode.TimeoutError, Resources.TimeoutError, ex);
+            }
+            catch (RenderException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateRenderingError, string.Format(Resources.TemplateRenderingError, ex.Message), ex);
