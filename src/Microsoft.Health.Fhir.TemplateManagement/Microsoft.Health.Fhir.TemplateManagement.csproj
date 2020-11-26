@@ -6,13 +6,6 @@
     <IsPackable>true</IsPackable>
     <NuspecFile>Microsoft.Health.Fhir.Liquid.Converter.nuspec</NuspecFile>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Content Include="..\..\data\DefaultTemplates.tar.gz" Pack="true">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <PackageCopyToOutput>true</PackageCopyToOutput>
-    </Content>
-  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Ensure.That" Version="9.2.0" />

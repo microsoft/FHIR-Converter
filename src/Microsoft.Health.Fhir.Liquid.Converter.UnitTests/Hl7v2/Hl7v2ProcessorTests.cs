@@ -128,7 +128,7 @@ SPM|1|||119297000^BLD^SCT^^^^^^Blood|||||||||||||20110103143428-0800
 
             processor = new Hl7v2Processor(settings);
             var exception = Assert.Throws<RenderException>(() => processor.Convert(TestData, "ORU_R01", templateProvider));
-            Assert.Equal(FhirConverterErrorCode.TemplateRenderingError, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.TimeoutError, exception.FhirConverterErrorCode);
             Assert.True(exception.InnerException is TimeoutException);
 
             // Negative time out ProcessorSettings: no time out
