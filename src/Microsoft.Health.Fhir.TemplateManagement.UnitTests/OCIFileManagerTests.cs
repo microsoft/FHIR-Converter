@@ -29,7 +29,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string inputFolder = "TestData/UserFolder";
             var testManager = new OCIFileManager(imageReference, inputFolder);
             testManager.PackOCIImage();
-            var output = testManager.PushOCIImage();
+            testManager.PushOCIImage();
         }
     }
 }

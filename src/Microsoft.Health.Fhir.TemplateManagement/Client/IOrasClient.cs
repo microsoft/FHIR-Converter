@@ -9,8 +9,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
     public interface IOrasClient
     {
-        public string PullImage();
+        void PullImage();
 
-        public string PushImage();
+        void PushImage();
     }
 }

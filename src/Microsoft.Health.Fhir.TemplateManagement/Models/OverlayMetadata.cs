@@ -9,8 +9,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 {
     public class OverlayMetadata
     {
-        public string Type { get; set; }
-
         public int SequenceNumber { get; set; } = -1;
 
         public Dictionary<string, string> FileDigests { get; set; }

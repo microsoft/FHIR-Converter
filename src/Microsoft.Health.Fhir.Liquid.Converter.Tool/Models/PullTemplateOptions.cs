@@ -10,7 +10,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
     [Verb("pull", HelpText = "Pull template image to registry")]
     public class PullTemplateOptions
     {
-        [Value(0, Required = true, HelpText = "Image reference: < >/<imageName>:<imageTag>")]
+        [Value(0, Required = true, HelpText = "Image reference: <registry>/<imageName>:<imageTag>")]
         public string ImageReference { get; set; }
 
         [Option('o', "OutputTemplateFolder", Required = false, Default = ".", HelpText = "Output template folder")]

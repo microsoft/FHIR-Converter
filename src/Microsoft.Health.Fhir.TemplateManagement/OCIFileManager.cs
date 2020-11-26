@@ -28,11 +28,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             _overlayOperator = new OverlayOperator();
         }
 
-        public string PullOCIImage()
+        public void PullOCIImage()
         {
             _overlayFS.ClearImageLayerFolder();
-            var orasOutput = _orasClient.PullImage();
-            return orasOutput;
+            _orasClient.PullImage();
         }
 
         public void UnpackOCIImage()
@@ -69,15 +68,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement
                 allLayers.Add(diffArtifactLayer);
             }
 
-            allLayers.AddRange(baseLayers ?? new List<OCIArtifactLayer>());
+            if (baseLayers != null)
+            {
+                allLayers.AddRange(baseLayers);
+            }
 
             _overlayFS.WriteImageLayers(allLayers);
         }
 
-        public string PushOCIImage()
+        public void PushOCIImage()
         {
-            var orasOutput = _orasClient.PushImage();
-            return orasOutput;
+            _orasClient.PushImage();
         }
 
         private OCIFileLayer GenerateSnapshotLayer(List<OCIArtifactLayer> baseLayers)

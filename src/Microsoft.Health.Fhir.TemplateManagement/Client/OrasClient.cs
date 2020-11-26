@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
@@ -19,24 +20,26 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
     {
         private readonly string _imageReference;
 
-        public string WorkingImageLayerFolder { get; }
+        private readonly string _workingImageLayerFolder;
 
         public OrasClient(string imageReference, string workingFolder)
         {
+            EnsureArg.IsNotNull(imageReference, nameof(imageReference));
+            EnsureArg.IsNotNull(workingFolder, nameof(workingFolder));
+
             _imageReference = imageReference;
-            WorkingImageLayerFolder = Path.Combine(workingFolder, Constants.HiddenLayersFolder);
+            _workingImageLayerFolder = Path.Combine(workingFolder, Constants.HiddenLayersFolder);
         }
 
-        public string PullImage()
+        public void PullImage()
         {
-            string command = $"pull  {_imageReference} -o {WorkingImageLayerFolder}";
-            var output = OrasExecution(command, Directory.GetCurrentDirectory());
-            return output;
+            string command = $"pull  {_imageReference} -o {_workingImageLayerFolder}";
+            OrasExecution(command, Directory.GetCurrentDirectory());
         }
 
-        public string PushImage()
+        public void PushImage()
         {
-            var filePathToPush = Directory.EnumerateFiles(WorkingImageLayerFolder, "*.tar.gz", SearchOption.AllDirectories);
+            var filePathToPush = Directory.EnumerateFiles(_workingImageLayerFolder, "*.tar.gz", SearchOption.AllDirectories);
 
             if (filePathToPush == null || filePathToPush.Count() == 0)
             {
@@ -46,14 +49,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             string command = $"push {_imageReference}";
             foreach (var filePath in filePathToPush)
             {
-                command += $" {Path.GetRelativePath(WorkingImageLayerFolder, filePath)}";
+                command += $" {Path.GetRelativePath(_workingImageLayerFolder, filePath)}";
             }
 
-            var output = OrasExecution(command, Path.Combine(Directory.GetCurrentDirectory(), WorkingImageLayerFolder));
-            return output;
+            OrasExecution(command, Path.Combine(Directory.GetCurrentDirectory(), _workingImageLayerFolder));
         }
 
-        private string OrasExecution(string command, string workingDirectory)
+        private void OrasExecution(string command, string workingDirectory)
         {
 
             Process process = new Process
@@ -62,25 +64,19 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             };
 
             process.StartInfo.Arguments = command;
-            process.StartInfo.UseShellExecute = false;
-            process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.RedirectStandardError = true;
             process.StartInfo.WorkingDirectory = workingDirectory;
             process.Start();
 
-            StreamReader outputStreamReader = process.StandardOutput;
             StreamReader errStreamReader = process.StandardError;
             process.WaitForExit(60000);
             if (process.HasExited)
             {
-                string output = outputStreamReader.ReadToEnd();
                 string error = errStreamReader.ReadToEnd();
                 if (!string.IsNullOrEmpty(error))
                 {
                     throw new OrasException(error);
                 }
-
-                return output;
             }
             else
             {

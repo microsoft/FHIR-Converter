@@ -1,7 +1,12 @@
-﻿using Microsoft.Health.Fhir.TemplateManagement.Client;
-using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
+﻿// -------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
+// -------------------------------------------------------------------------------------------------
+
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Health.Fhir.TemplateManagement.Client;
+using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
@@ -24,7 +29,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             OrasClient orasClient = new OrasClient(imageReference, "TestData");
             try
             {
-                var output = orasClient.PushImage();
+                orasClient.PushImage();
             }
             catch (TemplateManagementException ex)
             {
@@ -46,7 +51,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             OrasClient orasClient = new OrasClient(imageReference, "TestTemplates");
             try
             {
-                var output = orasClient.PullImage();
+                orasClient.PullImage();
             }
             catch (TemplateManagementException ex)
             {

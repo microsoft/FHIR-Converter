@@ -11,15 +11,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
 {
     internal static class TemplateLogicHandler
     {
-        internal static void Pull(object options)
+        internal static void Pull(PullTemplateOptions options)
         {
             try
             {
-                OCIFileManager fileManager = new OCIFileManager(((PullTemplateOptions)options).ImageReference, ((PullTemplateOptions)options).OutputTemplateFolder);
-                string output = fileManager.PullOCIImage();
+                OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.OutputTemplateFolder);
+                fileManager.PullOCIImage();
                 fileManager.UnpackOCIImage();
                 Console.WriteLine("Succeed!");
-                Console.WriteLine(output);
             }
             catch (Exception ex)
             {
@@ -27,15 +26,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             }
         }
 
-        internal static void Push(object options)
+        internal static void Push(PushTemplateOptions options)
         {
             try
             {
-                OCIFileManager fileManager = new OCIFileManager(((PushTemplateOptions)options).ImageReference, ((PushTemplateOptions)options).InputTemplateFolder);
-                fileManager.PackOCIImage(((PushTemplateOptions)options).BuildNewBaseLayer);
-                string output = fileManager.PushOCIImage();
+                OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.InputTemplateFolder);
+                fileManager.PackOCIImage(options.BuildNewBaseLayer);
+                fileManager.PushOCIImage();
                 Console.WriteLine("Succeed!");
-                Console.WriteLine(output);
             }
             catch (Exception ex)
             {

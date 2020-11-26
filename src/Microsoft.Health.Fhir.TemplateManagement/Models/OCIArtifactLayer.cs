@@ -20,6 +20,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         // Sha256 digest of the layer.
         public string Digest { get; set; }
 
+        // Sequence number of the layer.
         public int SequenceNumber { get; set; }
 
         // Content of the layer.
@@ -27,14 +28,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public static void WriteOCIArtifactLayer(OCIArtifactLayer layer, string directory)
         {
+            if (layer == null || layer.Content == null)
+            {
+                return;
+            }
+
             if (!Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
-            }
-
-            if (layer == null)
-            {
-                return;
             }
 
             File.WriteAllBytes(Path.Combine(directory, Path.GetFileName(layer.FileName)), layer.Content);
