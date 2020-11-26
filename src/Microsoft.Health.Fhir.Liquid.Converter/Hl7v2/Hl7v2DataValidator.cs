@@ -19,35 +19,35 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
         {
             if (string.IsNullOrEmpty(headerSegment))
             {
-                throw new DataFormatException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
+                throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
             }
 
             if (headerSegment.Length < HeaderSegmentId.Length)
             {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidHl7v2Message, string.Format(Resources.InvalidHl7v2Message, headerSegment));
+                throw new DataParseException(FhirConverterErrorCode.InvalidHl7v2Message, string.Format(Resources.InvalidHl7v2Message, headerSegment));
             }
 
             var segmentId = headerSegment.Substring(0, HeaderSegmentId.Length);
             if (!string.Equals(segmentId, HeaderSegmentId, StringComparison.InvariantCultureIgnoreCase))
             {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidHl7v2Message, string.Format(Resources.InvalidHl7v2Message, segmentId));
+                throw new DataParseException(FhirConverterErrorCode.InvalidHl7v2Message, string.Format(Resources.InvalidHl7v2Message, segmentId));
             }
 
             if (headerSegment.Length < 8)
             {
-                throw new DataFormatException(FhirConverterErrorCode.MissingHl7v2Separators, Resources.MissingHl7v2Separators);
+                throw new DataParseException(FhirConverterErrorCode.MissingHl7v2Separators, Resources.MissingHl7v2Separators);
             }
 
             var separators = headerSegment.Substring(HeaderSegmentId.Length, 5);
             if (separators.Distinct().Count() != separators.Length)
             {
-                throw new DataFormatException(FhirConverterErrorCode.DuplicateHl7v2Separators, Resources.DuplicateHl7v2Separators);
+                throw new DataParseException(FhirConverterErrorCode.DuplicateHl7v2Separators, Resources.DuplicateHl7v2Separators);
             }
 
             var escapeCharacter = headerSegment[6];
             if (!escapeCharacter.Equals(EscapeCharacter))
             {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidHl7v2EscapeCharacter, Resources.InvalidHl7v2EscapeCharacter);
+                throw new DataParseException(FhirConverterErrorCode.InvalidHl7v2EscapeCharacter, Resources.InvalidHl7v2EscapeCharacter);
             }
         }
     }

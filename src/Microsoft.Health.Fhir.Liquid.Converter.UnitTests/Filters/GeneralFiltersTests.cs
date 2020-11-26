@@ -82,7 +82,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         [MemberData(nameof(GetInvalidDataForGenerateUuid))]
         public void GivenInvalidData_WhenGenerateUuid_CorrectResultShouldBeReturned(object input)
         {
-            var exception = Assert.Throws<DataFormatException>(() => Filters.GenerateUUID(input));
+            var exception = Assert.Throws<RenderException>(() => Filters.GenerateUUID(input));
             Assert.Equal(FhirConverterErrorCode.InvalidIdGenerationInput, exception.FhirConverterErrorCode);
         }
     }

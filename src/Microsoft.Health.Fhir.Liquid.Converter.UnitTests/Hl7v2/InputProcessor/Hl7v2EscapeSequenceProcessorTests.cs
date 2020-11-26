@@ -45,7 +45,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2.InputProcessor
         [Fact]
         public void GivenAnInvalidHexadecimalNumber_WhenUnescape_ExceptionsShouldBeThrown()
         {
-            var exception = Assert.Throws<DataFormatException>(() => Hl7v2EscapeSequenceProcessor.Unescape(@"\X656\n", EncodingCharacters));
+            var exception = Assert.Throws<DataParseException>(() => Hl7v2EscapeSequenceProcessor.Unescape(@"\X656\n", EncodingCharacters));
             Assert.Equal(FhirConverterErrorCode.InvalidHexadecimalNumber, exception.FhirConverterErrorCode);
             Assert.Equal("The hexadecimal number is invalid: 656.", exception.Message);
         }

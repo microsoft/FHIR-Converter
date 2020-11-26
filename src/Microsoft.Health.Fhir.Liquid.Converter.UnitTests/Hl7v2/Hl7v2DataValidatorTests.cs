@@ -25,7 +25,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
         [MemberData(nameof(GetIncompleteHeader))]
         public void GivenIncompleteHeader_WhenParse_ExceptionsShouldBeThrown(string input)
         {
-            var exception = Assert.Throws<DataFormatException>(() => _validator.ValidateMessageHeader(input));
+            var exception = Assert.Throws<DataParseException>(() => _validator.ValidateMessageHeader(input));
             var segmentId = input.Length < 3 ? input : input.Substring(0, 3);
             Assert.Equal($"The HL7 v2 message is invalid, first segment id = {segmentId}.", exception.Message);
         }
@@ -33,21 +33,21 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
         [Fact]
         public void GivenIncompleteSeparators_WhenParse_ExceptionsShouldBeThrown()
         {
-            var exception = Assert.Throws<DataFormatException>(() => _validator.ValidateMessageHeader(@"MSH|||"));
+            var exception = Assert.Throws<DataParseException>(() => _validator.ValidateMessageHeader(@"MSH|||"));
             Assert.Equal("MSH segment misses separators.", exception.Message);
         }
 
         [Fact]
         public void GivenDuplicateSeparators_WhenParse_ExceptionsShouldBeThrown()
         {
-            var exception = Assert.Throws<DataFormatException>(() => _validator.ValidateMessageHeader(@"MSH|^~^#|"));
+            var exception = Assert.Throws<DataParseException>(() => _validator.ValidateMessageHeader(@"MSH|^~^#|"));
             Assert.Equal("MSH segment contains duplicate separators.", exception.Message);
         }
 
         [Fact]
         public void GivenInvalidEsacpeCharacter_WhenParse_ExceptionsShouldBeThrown()
         {
-            var exception = Assert.Throws<DataFormatException>(() => _validator.ValidateMessageHeader(@"MSH|^~#&|NES|NINTENDO|"));
+            var exception = Assert.Throws<DataParseException>(() => _validator.ValidateMessageHeader(@"MSH|^~#&|NES|NINTENDO|"));
             Assert.Equal("Escape character should be backslash.", exception.Message);
         }
     }
