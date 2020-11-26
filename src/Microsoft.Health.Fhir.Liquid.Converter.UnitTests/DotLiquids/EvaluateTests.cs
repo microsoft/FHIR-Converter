@@ -6,13 +6,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
 {
-    [Collection("EvaluateTestCollection")]
     public class EvaluateTests
     {
         public static IEnumerable<object[]> GetValidEvaluateTemplateContents()
