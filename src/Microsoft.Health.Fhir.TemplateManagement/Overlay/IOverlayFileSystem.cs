@@ -10,20 +10,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
     public interface IOverlayFileSystem
     {
-        public OCIFileLayer ReadMergedOCIFileLayer();
+        OCIFileLayer ReadMergedOCIFileLayer();
 
-        public void WriteMergedOCIFileLayer(OCIFileLayer oneLayer);
+        void WriteMergedOCIFileLayer(OCIFileLayer oneLayer);
 
-        public List<OCIArtifactLayer> ReadImageLayers();
+        List<OCIArtifactLayer> ReadImageLayers();
 
-        public void WriteImageLayers(List<OCIArtifactLayer> imageLayers);
+        void WriteImageLayers(List<OCIArtifactLayer> imageLayers);
 
-        public List<OCIArtifactLayer> ReadBaseLayers();
+        List<OCIArtifactLayer> ReadBaseLayers();
 
-        public void WriteBaseLayers(List<OCIArtifactLayer> layers);
+        void WriteBaseLayers(List<OCIArtifactLayer> layers);
 
-        public void ClearImageLayerFolder();
+        void ClearImageLayerFolder();
 
-        public void ClearBaseLayerFolder();
+        void ClearBaseLayerFolder();
     }
 }

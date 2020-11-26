@@ -15,14 +15,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// </summary>
         /// <param name="artifactLayer">One OCIArtifactLayer</param>
         /// <returns>One OCIFileLayer</returns>
-        public OCIFileLayer ExtractOCIFileLayer(OCIArtifactLayer artifactLayer);
+        OCIFileLayer ExtractOCIFileLayer(OCIArtifactLayer artifactLayer);
 
         /// <summary>
         /// Extract List of OCIArtifactLayers to a list of OCIFileLayers
         /// </summary>
         /// <param name="artifactLayers">List of OCIArtifactLayers</param>
         /// <returns>List of OCIFileLayers</returns>
-        public List<OCIFileLayer> ExtractOCIFileLayers(List<OCIArtifactLayer> artifactLayers);
+        List<OCIFileLayer> ExtractOCIFileLayers(List<OCIArtifactLayer> artifactLayers);
 
         /// <summary>
         /// Sort OCIFileLayers by build number.
@@ -41,7 +41,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// </summary>
         /// <param name="sortedLayers">List of sorted OCIFileLayers</param>
         /// <returns>One Merged OCIFileLayer.</returns>
-        public OCIFileLayer MergeOCIFileLayers(List<OCIFileLayer> sortedLayers);
+        OCIFileLayer MergeOCIFileLayers(List<OCIFileLayer> sortedLayers);
 
         /// <summary>
         /// Generate diff OCIFileLayer by comprare two OCIArtifactLayers.
@@ -49,10 +49,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// <param name="fileLayer">source OCIFileLayer</param>
         /// <param name="snapshotLayer">target OCIFileLayer</param>
         /// <returns>The diff layer.</returns>
-        public OCIFileLayer GenerateDiffLayer(OCIFileLayer fileLayer, OCIFileLayer snapshotLayer);
+        OCIFileLayer GenerateDiffLayer(OCIFileLayer fileLayer, OCIFileLayer snapshotLayer);
 
-        public OCIArtifactLayer ArchiveOCIFileLayer(OCIFileLayer fileLayer);
+        OCIArtifactLayer ArchiveOCIFileLayer(OCIFileLayer fileLayer);
 
-        public List<OCIArtifactLayer> ArchiveOCIFileLayers(List<OCIFileLayer> fileLayers);
+        List<OCIArtifactLayer> ArchiveOCIFileLayers(List<OCIFileLayer> fileLayers);
     }
 }

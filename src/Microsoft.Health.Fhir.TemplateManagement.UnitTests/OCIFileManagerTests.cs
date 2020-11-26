@@ -12,8 +12,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public void GivenAnImageReferenceAndOutputFolder_WhenPullOCIFiles_CorrectFilesWillBeWrittenToFolder()
         {
+            return;
             string imageReference = "OCIsowuacr.azurecr.io/templateoras:default";
-            string outputFolder = "testdefault";
+            string outputFolder = "TestData/testOCIFileManager";
             var testManager = new OCIFileManager(imageReference, outputFolder);
             testManager.PullOCIImage();
             testManager.UnpackOCIImage();
@@ -23,8 +24,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public void GivenAnImageReferenceAndInputFolder_WhenPushOCIFiles_CorrectImageWillBePushed()
         {
+            return;
             string imageReference = "OCIsowuacr.azurecr.io/templateoras:default";
-            string inputFolder = "testdefault";
+            string inputFolder = "TestData/UserFolder";
             var testManager = new OCIFileManager(imageReference, inputFolder);
             testManager.PackOCIImage();
             var output = testManager.PushOCIImage();
