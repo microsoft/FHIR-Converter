@@ -104,7 +104,7 @@ EVN|A01|20050110045502||||| ";
             Assert.Null(Filters.GenerateIdInput(context, " \n", "Location", false));
 
             // Base ID required but not provided
-            var exception = Assert.Throws<DataFormatException>(() => Filters.GenerateIdInput(context, "NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", "RelatedPerson", true, null));
+            var exception = Assert.Throws<RenderException>(() => Filters.GenerateIdInput(context, "NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", "RelatedPerson", true, null));
             Assert.Equal(FhirConverterErrorCode.InvalidIdGenerationInput, exception.FhirConverterErrorCode);
         }
     }
