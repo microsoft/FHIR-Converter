@@ -59,6 +59,23 @@ Example usage to convert HL7 v2 messages to FHIR resources in a folder:
 >.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe -d myTemplateDirectory -e ADT_A01 -i myInputDataFolder -o myOutputDataFolder
 ```
 
+### ID generation
+
+The Converter provides a set of ID generation [templates](data/Templates/Hl7v2/ID) to help generate FHIR resource IDs from HL7 v2 messages.
+
+An ID generation template does 3 things: 1) extract identifiers from input segment or field; 2) combine the identifers with resource type and base ID (optional) as hash seed; 3) compute hash as output ID.
+
+The Converter introduces a concept of "base resource/base ID".
+Base resources are independent entities, like Patient, Organization, Device, etc, whose IDs are defined as base ID.
+Base IDs could be used to generate IDs for other resources that relate to them.
+It helps enrich the input for hash and thus reduce ID collision.
+For example, a Patient ID is used as part of hash input for an AllergyIntolerance ID, as this resource is closely related with a specific patient.
+
+Below is an example where an AllergyIntolerance ID is generated, using `ID/AllergyIntolerance` template, AL1 segment and patient ID as its base ID.
+```
+{% evaluate allergyIntoleranceId using 'ID/AllergyIntolerance' AL1: al1Segment, baseId: patientId -%}
+```
+
 ## Reference documentation
 - [Filters summary](docs/FiltersSummary.md)
 - [Snippet concept](docs/SnippetConcept.md)
