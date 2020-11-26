@@ -81,7 +81,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static string GenerateUUID(string input)
         {
-            if (string.IsNullOrEmpty(input))
+            if (string.IsNullOrWhiteSpace(input))
             {
                 return null;
             }

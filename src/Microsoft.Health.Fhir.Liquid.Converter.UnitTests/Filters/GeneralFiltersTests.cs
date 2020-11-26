@@ -19,6 +19,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         {
             yield return new object[] { null, null };
             yield return new object[] { string.Empty, null };
+            yield return new object[] { "  \n", null };
             yield return new object[] { "MRN12345", "e7ce584a-acf4-7cf0-5b4e-d4961c8123e2" };
         }
 
