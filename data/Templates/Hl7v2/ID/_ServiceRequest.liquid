@@ -1,5 +1,5 @@
-{% assign segment = '' -%}
-{% capture segment -%}
+{% assign identifiers = null -%}
+{% capture identifiers -%}
 {% if TQ1 -%}{{TQ1.Value}}
 {% elsif ORC.2.1 and ORC.2.2 -%}{{ORC.2.1.Value}},{{ORC.2.2.Value}}
 {% elsif ORC.2.3 and ORC.2.4 -%}{{ORC.2.3.Value}},{{ORC.2.4.Value}}
@@ -9,5 +9,4 @@
 {% elsif OBR -%}{{OBR.Value}}
 {% endif -%}
 {% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'ServiceRequest', true, baseId}}{% endcapture -%}
-{{ input | generate_uuid }}
+{{ identifiers | generate_id_input: 'ServiceRequest', true, baseId | generate_uuid }}

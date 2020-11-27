@@ -5,27 +5,27 @@
         {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|NK1|PV1|PV2' -%}
         
         {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
-        {% if patientId != '' -%}
+        {% if patientId -%}
             {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
             {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, NK1: firstSegments.NK1, ID: patientId -%}
         {% endif -%}
 
         {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
-        {% if encounterId != '' -%}
+        {% if encounterId -%}
             {% assign fullEncounterId = encounterId | prepend: 'Encounter/' -%}
             {% include 'Resource/Encounter' PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
 
             {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.3 -%}
-            {% if locationId != '' -%}
+            {% if locationId -%}
                 {% include 'Resource/Location' PL: firstSegments.PV1.3, ID: locationId -%}
             {% endif -%}
 
             {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.6 -%}
-            {% if locationId != '' -%}
+            {% if locationId -%}
                 {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId -%}
             {% endif -%}
             
-            {% if patientId != '' -%}
+            {% if patientId -%}
                 {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
             {% endif -%}
         {% endif -%}
@@ -33,9 +33,9 @@
         {% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
         {% for nk1Segment in nk1SegmentLists.NK1 -%}
             {% evaluate relatedPersonId using 'ID/RelatedPerson' NK1: nk1Segment, baseId: patientId -%}
-            {% if relatedPersonId != '' -%}
+            {% if relatedPersonId -%}
                 {% include 'Resource/RelatedPerson' NK1: nk1Segment, ID: relatedPersonId -%}
-                {% if patientId != '' -%}
+                {% if patientId -%}
                     {% include 'Reference/RelatedPerson/Patient' ID: relatedPersonId, REF: fullPatientId -%}
                 {% endif -%}
             {% endif -%}
@@ -44,9 +44,9 @@
         {% assign obrSegmentLists = hl7v2Data | get_segment_lists: 'OBR' -%}
         {% for obrSegment in obrSegmentLists.OBR -%}
             {% evaluate diagnosticId using 'ID/DiagnosticReport' OBR: obrSegment, baseId: patientId -%}
-            {% if diagnosticId != '' -%}
+            {% if diagnosticId -%}
                 {% include 'Resource/DiagnosticReport' OBR: obrSegment, ID: diagnosticId -%}
-                {% if encounterId != '' -%}
+                {% if encounterId -%}
                     {% include 'Reference/DiagnosticReport/Encounter' ID: diagnosticId, REF: fullEncounterId -%}
                 {% endif -%}
             {% endif -%}
@@ -54,11 +54,11 @@
             {% assign obxSegmentLists = hl7v2Data | get_related_segment_list: obrSegment, 'OBX' -%}
             {% for obxSegment in obxSegmentLists.OBX -%}
                 {% evaluate observationId using 'ID/Observation' OBX: obxSegment, baseId: patientId -%}
-                {% if observationId != '' -%}
+                {% if observationId -%}
                     {% assign fullObservationId = observationId | prepend: 'Observation/' -%}
                     {% include 'Resource/Observation' OBX: obxSegment, ID: observationId -%}
                     {% include 'Reference/DiagnosticReport/Result' ID: diagnosticId, REF: fullObservationId -%}
-                    {% if patientId != '' -%}
+                    {% if patientId -%}
                         {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
                     {% endif -%}
                 {% endif -%}
@@ -67,7 +67,7 @@
             {% assign spmSegmentLists = hl7v2Data | get_related_segment_list: obrSegment, 'SPM' -%}
             {% for spmSegment in spmSegmentLists.SPM -%}
                 {% evaluate specimenId using 'ID/Specimen' SPM: spmSegment, baseId: patientId -%}
-                {% if specimenId != '' -%}
+                {% if specimenId -%}
                     {% assign fullSpecimenId = specimenId | prepend: 'Specimen/' -%}
                     {% include 'Resource/Specimen' SPM: spmSegment, ID: specimenId -%}
                     {% include 'Reference/DiagnosticReport/Specimen' ID: diagnosticId, REF: fullSpecimenId -%}

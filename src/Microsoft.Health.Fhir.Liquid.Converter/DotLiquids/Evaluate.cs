@@ -47,6 +47,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
         public override void Render(Context context, TextWriter result)
         {
             var templateFileSystem = context.Registers["file_system"] as ITemplateFileSystem;
+            if (templateFileSystem == null)
+            {
+                throw new FileSystemException(Resources.TemplateFileSystemNotFound);
+            }
+
             var partial = templateFileSystem.GetTemplate(context, _templateName);
 
             context.Stack(() =>
@@ -56,7 +61,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                     context[keyValue.Key] = context[keyValue.Value];
                 }
 
-                context.Scopes.Last()[_to] = partial.Render(RenderParameters.FromContext(context, result.FormatProvider));
+                var content = partial.Render(RenderParameters.FromContext(context, result.FormatProvider)).Trim();
+                context.Scopes.Last()[_to] = string.IsNullOrEmpty(content) ? null : content;
             });
         }
     }

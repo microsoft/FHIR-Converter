@@ -1,5 +1,5 @@
-{% assign segment = '' -%}
-{% capture segment -%}
+{% assign identifiers = null -%}
+{% capture identifiers -%}
 {% if NTE -%}{{NTE.Value}}
 {% elsif OBX.21.1 and OBX.21.2 -%}{{OBX.21.1.Value}},{{OBX.21.2.Value}}
 {% elsif OBX.21.3 and OBX.21.4 -%}{{OBX.21.3.Value}},{{OBX.21.4.Value}}
@@ -8,5 +8,4 @@
 {% elsif PID.10 -%}{{PID.10.Value}}
 {% endif -%}
 {% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'Observation', false, baseId}}{% endcapture -%}
-{{ input | generate_uuid }}
+{{ identifiers | generate_id_input: 'Observation', false, baseId | generate_uuid }}

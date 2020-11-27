@@ -1,5 +1,5 @@
-{% assign segment = '' -%}
-{% capture segment -%}
+{% assign identifiers = null -%}
+{% capture identifiers -%}
 {% if OBR.2.1 and OBR.2.2 -%}{{OBR.2.1.Value}},{{OBR.2.2.Value}}
 {% elsif OBR.2.3 and OBR.2.4 -%}{{OBR.2.3.Value}},{{OBR.2.4.Value}}
 {% elsif OBR -%}{{OBR.Value}}
@@ -8,5 +8,4 @@
 {% elsif ORC -%}{{ORC.Value}}
 {% endif -%}
 {% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'DiagnosticReport', false, baseId}}{% endcapture -%}
-{{ input | generate_uuid }}
+{{ identifiers | generate_id_input: 'DiagnosticReport', false, baseId | generate_uuid }}

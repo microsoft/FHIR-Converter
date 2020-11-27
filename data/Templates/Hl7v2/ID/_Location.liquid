@@ -1,5 +1,5 @@
-{% assign segment = '' -%}
-{% capture segment -%}
+{% assign identifiers = null -%}
+{% capture identifiers -%}
 {% if PL.10 -%}{{PL.10.Value}}
 {% elsif PL -%}{{PL.Value}}
 {% elsif XON.10 -%}{{XON.10.Value}}
@@ -9,5 +9,4 @@
 {% elsif HD -%}{{HD.Value}}
 {% endif -%}
 {% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'Location', false}}{% endcapture -%}
-{{ input | generate_uuid }}
+{{ identifiers | generate_id_input: 'Location', false | generate_uuid }}

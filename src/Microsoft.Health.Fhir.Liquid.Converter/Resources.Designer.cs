@@ -205,6 +205,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Template file system not found..
+        /// </summary>
+        internal static string TemplateFileSystemNotFound {
+            get {
+                return ResourceManager.GetString("TemplateFileSystemNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Template folder not found: {0}..
         /// </summary>
         internal static string TemplateFolderNotFound {

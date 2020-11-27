@@ -70,8 +70,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         public void GivenInvalidSnippet_WhenRender_ExceptionsShouldBeThrown()
         {
             var templateProvider = new Hl7v2TemplateProvider(@"..\..\..\..\..\data\Templates\Hl7v2");
-            var template = Template.Parse(@"{% evaluate bundleId using 'ID/Foo' Data: hl7v2Data -%}");
+
+            // No template file system
+            var template = Template.Parse(@"{% evaluate bundleId using 'ID/Bundle' Data: hl7v2Data -%}");
             var context = new Context(
+                environments: new List<Hash>(),
+                outerScope: new Hash(),
+                registers: new Hash(),
+                errorsOutputMode: ErrorsOutputMode.Rethrow,
+                maxIterations: 0,
+                timeout: 0,
+                formatProvider: CultureInfo.InvariantCulture);
+            Assert.Throws<FileSystemException>(() => template.Render(new RenderParameters(CultureInfo.InvariantCulture) { Context = context }));
+
+            // Valid template file system but no such template
+            template = Template.Parse(@"{% evaluate bundleId using 'ID/Foo' Data: hl7v2Data -%}");
+            context = new Context(
                 environments: new List<Hash>(),
                 outerScope: new Hash(),
                 registers: Hash.FromAnonymousObject(new { file_system = templateProvider }),
@@ -79,7 +93,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 maxIterations: 0,
                 timeout: 0,
                 formatProvider: CultureInfo.InvariantCulture);
-
             Assert.Throws<Exceptions.RenderException>(() => template.Render(new RenderParameters(CultureInfo.InvariantCulture) { Context = context }));
         }
     }

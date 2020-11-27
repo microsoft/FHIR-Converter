@@ -1,4 +1,3 @@
-﻿{% assign segment = '' -%}
-{% capture segment -%}{{AL1.2.Value}},{{AL1.3.Value}},{{AL1.4.Value}},{{AL1.5.Value}}{% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'AllergyIntolerance', true, baseId}}{% endcapture -%}
-{{ input | generate_uuid }}
+﻿{% assign identifiers = null -%}
+{% capture identifiers -%}{{AL1.2.Value}},{{AL1.3.Value}},{{AL1.4.Value}},{{AL1.5.Value}}{% endcapture -%}
+{{ identifiers | generate_id_input: 'AllergyIntolerance', true, baseId | generate_uuid }}

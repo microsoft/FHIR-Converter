@@ -1,5 +1,5 @@
-{% assign segment = '' -%}
-{% capture segment -%}
+{% assign identifiers = null -%}
+{% capture identifiers -%}
 {% if CNN.1 and CNN.9 -%}{{CNN.1.Value}},{{CNN.9.Value}}
 {% elsif CNN.1 and CNN.10 -%}{{CNN.1.Value}},{{CNN.10.Value}}
 {% elsif CNN -%}{{CNN.Value}}
@@ -7,5 +7,4 @@
 {% elsif XCN -%}{{XCN.Value}}
 {% endif -%}
 {% endcapture -%}
-{% capture input -%}{{segment | generate_id_input: 'Practitioner', false}}{% endcapture -%}
-{{ input | generate_uuid }}
+{{ identifiers | generate_id_input: 'Practitioner', false | generate_uuid }}
