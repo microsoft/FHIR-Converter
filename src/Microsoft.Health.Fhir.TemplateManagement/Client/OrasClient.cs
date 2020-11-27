@@ -61,6 +61,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 return false;
             }
 
+            // In order to remove image's directory prefix. (e.g. "layers/layer1.tar.gz" --> "layer1.tar.gz"
+            // Change oras working folder into imageLayerFolder
             await OrasExecutionAsync(string.Concat(command, argument), _imageLayerFolder);
             return true;
         }
