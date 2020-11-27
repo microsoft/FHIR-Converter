@@ -79,6 +79,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             process.StartInfo.RedirectStandardError = true;
             process.StartInfo.WorkingDirectory = orasWorkingDirectory;
             process.EnableRaisingEvents = true;
+
+            // Add event to make it async.
             process.Exited += new EventHandler((sender, e) => { eventHandled.TrySetResult(true); });
             try
             {
