@@ -1,8 +1,6 @@
 ﻿{
     "resourceType": "Bundle",
     "type": "transaction",
-    {% evaluate bundleId using 'ID/Bundle' Data: hl7v2Data -%}
-    "id": "{{bundleId}}",
     "entry": [
         {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|ORC' -%}
         

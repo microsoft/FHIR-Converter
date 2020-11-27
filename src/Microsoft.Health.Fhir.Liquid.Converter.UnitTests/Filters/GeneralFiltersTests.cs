@@ -80,32 +80,33 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             // Base resources
             Assert.Equal(
                 "Patient_PATID1234,ADT1",
-                Filters.GenerateIdInput(context, "PATID1234,ADT1", "Patient", false));
+                Filters.GenerateIdInput("PATID1234,ADT1", "Patient", false));
 
             // Base optional resources
             Assert.Equal(
                 "5002eb07-c460-7112-6574-50303ae3b4a6_Encounter_0123456789",
-                Filters.GenerateIdInput(context, "0123456789", "Encounter", false, "5002eb07-c460-7112-6574-50303ae3b4a6"));
+                Filters.GenerateIdInput("0123456789", "Encounter", false, "5002eb07-c460-7112-6574-50303ae3b4a6"));
 
             // Base required resources
             Assert.Equal(
-                "bab5ca58-f272-4c06-4b3f-f9661e45a22b_RelatedPerson_NK1,1,DUCK,HUEY,SO,3583 DUCK RD,,FOWL,CA,999990000,8885552222,,Y,,,,,,,,,,,,,,",
-                Filters.GenerateIdInput(context, "NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", "RelatedPerson", true, "bab5ca58-f272-4c06-4b3f-f9661e45a22b"));
+                "bab5ca58-f272-4c06-4b3f-f9661e45a22b_RelatedPerson_NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y||||||||||||||",
+                Filters.GenerateIdInput("NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", "RelatedPerson", true, "bab5ca58-f272-4c06-4b3f-f9661e45a22b"));
 
             // Bundle
             var message = @"MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3||| 
 EVN|A01|20050110045502||||| ";
             Assert.Equal(
-                @"Bundle_MSH,,,,,,AccMgr,1,,,20050110045504,,ADT,A01,599102,P,2.3,,,,EVN,A01,20050110045502,,,,,",
-                Filters.GenerateIdInput(context, message, "Bundle", false));
+                @"Bundle_MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3||| 
+EVN|A01|20050110045502|||||",
+                Filters.GenerateIdInput(message, "Bundle", false));
 
             // Null, empty or whitespace segment
-            Assert.Null(Filters.GenerateIdInput(context, null, "Location", false));
-            Assert.Null(Filters.GenerateIdInput(context, string.Empty, "Location", false));
-            Assert.Null(Filters.GenerateIdInput(context, " \n", "Location", false));
+            Assert.Null(Filters.GenerateIdInput(null, "Location", false));
+            Assert.Null(Filters.GenerateIdInput(string.Empty, "Location", false));
+            Assert.Null(Filters.GenerateIdInput(" \n", "Location", false));
 
             // Base ID required but not provided
-            var exception = Assert.Throws<RenderException>(() => Filters.GenerateIdInput(context, "NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", "RelatedPerson", true, null));
+            var exception = Assert.Throws<RenderException>(() => Filters.GenerateIdInput("NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", "RelatedPerson", true, null));
             Assert.Equal(FhirConverterErrorCode.InvalidIdGenerationInput, exception.FhirConverterErrorCode);
         }
     }

@@ -14,6 +14,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 {
     public class MemoryFileSystem : ITemplateFileSystem
     {
+        // Register "evaluate" tag in static constructor
+        static MemoryFileSystem()
+        {
+            Template.RegisterTag<Evaluate>("evaluate");
+        }
+
         protected List<Dictionary<string, Template>> TemplateCollection { get; set; } = new List<Dictionary<string, Template>>();
 
         public string ReadTemplateFile(Context context, string templateName)

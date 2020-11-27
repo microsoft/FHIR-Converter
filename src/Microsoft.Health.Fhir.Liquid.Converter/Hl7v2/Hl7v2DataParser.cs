@@ -20,6 +20,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 
         public Hl7v2Data Parse(string message)
         {
+            var result = new Hl7v2Data(message);
             try
             {
                 if (string.IsNullOrEmpty(message))
@@ -27,12 +28,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                     throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
                 }
 
-                var result = new Hl7v2Data(message);
                 var segments = message.Split(SegmentSeparators, StringSplitOptions.RemoveEmptyEntries);
                 _validator.ValidateMessageHeader(segments[0]);
-
                 var encodingCharacters = ParseHl7v2EncodingCharacters(segments[0]);
-                result.EncodingCharacters = encodingCharacters;
 
                 for (var i = 0; i < segments.Length; ++i)
                 {
@@ -41,13 +39,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                     result.Meta.Add(fields.First()?.Value ?? string.Empty);
                     result.Data.Add(segment);
                 }
-
-                return result;
             }
             catch (Exception ex)
             {
                 throw new DataParseException(FhirConverterErrorCode.InputParsingError, string.Format(Resources.InputParsingError, ex.Message), ex);
             }
+
+            return result;
         }
 
         private List<Hl7v2Field> ParseFields(string dataString, Hl7v2EncodingCharacters encodingCharacters, bool isHeaderSegment = false)

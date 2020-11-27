@@ -51,7 +51,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return memberToken?.Value<string>();
         }
 
-        public static string GenerateIdInput(Context context, string segment, string resourceType, bool isBaseIdRequired, string baseId = null)
+        public static string GenerateIdInput(string segment, string resourceType, bool isBaseIdRequired, string baseId = null)
         {
             if (string.IsNullOrWhiteSpace(segment))
             {
@@ -63,20 +63,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 throw new RenderException(FhirConverterErrorCode.InvalidIdGenerationInput, Resources.InvalidIdGenerationInput);
             }
 
-            // Normalize encoding characters
-            var encodingCharacters = (Hl7v2EncodingCharacters)context["EncodingCharacters"];
-            var separators = $"{encodingCharacters.ComponentSeparator}{encodingCharacters.RepetitionSeparator}{encodingCharacters.EscapeCharacter}{encodingCharacters.SubcomponentSeparator}";
-            var formattedSegment = segment.Trim().Replace(separators, ",,,,");
-
-            formattedSegment = SegmentSeparatorsRegex.Replace(formattedSegment, ",");
-            formattedSegment = formattedSegment.Replace(encodingCharacters.FieldSeparator, ',')
-                .Replace(encodingCharacters.ComponentSeparator, ',')
-                .Replace(encodingCharacters.SubcomponentSeparator, ',')
-                .Replace(encodingCharacters.RepetitionSeparator, ',');
-
-            formattedSegment = SpecialCharProcessor.Escape(Hl7v2EscapeSequenceProcessor.Unescape(formattedSegment, encodingCharacters));
-
-            return baseId != null ? $"{baseId}_{resourceType}_{formattedSegment}" : $"{resourceType}_{formattedSegment}";
+            segment = segment.Trim();
+            return baseId != null ? $"{baseId}_{resourceType}_{segment}" : $"{resourceType}_{segment}";
         }
 
         public static string GenerateUUID(string input)
