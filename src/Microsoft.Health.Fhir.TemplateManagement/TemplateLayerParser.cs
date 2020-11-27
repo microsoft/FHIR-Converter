@@ -46,15 +46,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         public static Dictionary<string, Template> ParseToTemplates(Dictionary<string, byte[]> content)
         {
-            var contentString = new Dictionary<string, string> { };
+            var fileContent = new Dictionary<string, string> { };
             foreach (var item in content)
             {
-                contentString.Add(item.Key, item.Value == null ? null : Encoding.UTF8.GetString(item.Value));
+                fileContent.Add(item.Key, item.Value == null ? null : Encoding.UTF8.GetString(item.Value));
             }
 
             try
             {
-                var parsedTemplate = TemplateUtility.ParseHl7v2Templates(contentString);
+                var parsedTemplate = TemplateUtility.ParseHl7v2Templates(fileContent);
                 return parsedTemplate;
             }
             catch (Exception ex)

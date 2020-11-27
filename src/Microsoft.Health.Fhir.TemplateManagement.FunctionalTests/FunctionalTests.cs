@@ -41,7 +41,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         public FunctionalTests()
         {
             _containerRegistry = new ContainerRegistry();
-            //_containerRegistryInfo = _containerRegistry.GetTestContainerRegistryInfo();
+            _containerRegistryInfo = _containerRegistry.GetTestContainerRegistryInfo();
             if (_containerRegistryInfo == null)
             {
                 return;

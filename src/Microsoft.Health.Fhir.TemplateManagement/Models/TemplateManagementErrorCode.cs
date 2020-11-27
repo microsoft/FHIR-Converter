@@ -47,5 +47,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         // OrasException
         OrasTimeOut = 3201,
+        OrasProcessFailed = 3202,
     }
 }

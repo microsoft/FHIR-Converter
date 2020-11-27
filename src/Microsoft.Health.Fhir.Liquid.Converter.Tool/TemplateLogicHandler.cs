@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Threading.Tasks;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool.Models;
 using Microsoft.Health.Fhir.TemplateManagement;
 
@@ -11,14 +12,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
 {
     internal static class TemplateLogicHandler
     {
-        internal static void Pull(PullTemplateOptions options)
+        internal static async Task PullAsync(PullTemplateOptions options)
         {
             try
             {
                 OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.OutputTemplateFolder);
-                fileManager.PullOCIImage();
-                fileManager.UnpackOCIImage();
-                Console.WriteLine("Succeed!");
+                if (await fileManager.PullOCIImageAsync())
+                {
+                    fileManager.UnpackOCIImage();
+                    Console.WriteLine("Succeed!");
+                }
             }
             catch (Exception ex)
             {
@@ -26,14 +29,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             }
         }
 
-        internal static void Push(PushTemplateOptions options)
+        internal static async Task PushAsync(PushTemplateOptions options)
         {
             try
             {
                 OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.InputTemplateFolder);
                 fileManager.PackOCIImage(options.BuildNewBaseLayer);
-                fileManager.PushOCIImage();
-                Console.WriteLine("Succeed!");
+                if (await fileManager.PushOCIImageAsync())
+                {
+                    Console.WriteLine("Succeed!");
+                }
             }
             catch (Exception ex)
             {

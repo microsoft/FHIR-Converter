@@ -4,6 +4,8 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.IO;
+using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool.Models;
@@ -12,14 +14,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var parseResult = Parser.Default.ParseArguments<ConverterOptions, PullTemplateOptions, PushTemplateOptions>(args);
-            parseResult
-                .WithParsed<ConverterOptions>(options => ConverterLogicHandler.Convert(options))
-                .WithParsed<PullTemplateOptions>(options => TemplateLogicHandler.Pull(options))
-                .WithParsed<PushTemplateOptions>(options => TemplateLogicHandler.Push(options))
-                .WithNotParsed((errors) => HandleOptionsParseError(parseResult));
+            parseResult.WithParsed<ConverterOptions>(options => ConverterLogicHandler.Convert(options));
+            await parseResult.WithParsedAsync<PullTemplateOptions>(options => TemplateLogicHandler.PullAsync(options));
+            await parseResult.WithParsedAsync<PushTemplateOptions>(options => TemplateLogicHandler.PushAsync(options));
+            parseResult.WithNotParsed((errors) => HandleOptionsParseError(parseResult));
         }
 
         private static void HandleOptionsParseError(ParserResult<object> parseResult)

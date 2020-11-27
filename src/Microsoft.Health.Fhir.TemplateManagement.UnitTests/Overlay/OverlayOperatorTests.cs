@@ -49,10 +49,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
 
             var fileLayers = _overlayOperator.ExtractOCIFileLayers(inputLayers);
             var sortedLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
-            //Assert.Equal("baseLayer.tar.gz", sortedLayers[0].FileName);
-            //Assert.Equal("userV2.tar.gz", sortedLayers[1].FileName);
-            //Assert.Equal("userV1.tar.gz", sortedLayers[2].FileName);
-            //Assert.Equal("testdecompress.tar.gz", sortedLayers[3].FileName);
+            // Assert.Equal("baseLayer.tar.gz", sortedLayers[0].FileName);
+            // Assert.Equal("userV2.tar.gz", sortedLayers[1].FileName);
+            // Assert.Equal("userV1.tar.gz", sortedLayers[2].FileName);
+            // Assert.Equal("testdecompress.tar.gz", sortedLayers[3].FileName);
         }
 
         [Fact]

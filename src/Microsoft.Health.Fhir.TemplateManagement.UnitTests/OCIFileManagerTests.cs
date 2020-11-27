@@ -16,7 +16,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string imageReference = "OCIsowuacr.azurecr.io/templateoras:default";
             string outputFolder = "TestData/testOCIFileManager";
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            testManager.PullOCIImage();
+            testManager.PullOCIImageAsync();
             testManager.UnpackOCIImage();
             //Assert.Equal(818, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
         }
@@ -28,8 +28,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string imageReference = "OCIsowuacr.azurecr.io/templateoras:default";
             string inputFolder = "TestData/UserFolder";
             var testManager = new OCIFileManager(imageReference, inputFolder);
-            testManager.PackOCIImage();
-            testManager.PushOCIImage();
+            testManager.PackOCIImage(true);
+            testManager.PushOCIImageAsync();
         }
     }
 }

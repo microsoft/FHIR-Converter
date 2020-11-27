@@ -4,10 +4,10 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
@@ -20,44 +20,54 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
     {
         private readonly string _imageReference;
 
-        private readonly string _workingImageLayerFolder;
+        private readonly string _imageLayerFolder;
 
-        public OrasClient(string imageReference, string workingFolder)
+        public OrasClient(string imageReference, string imageLayerFolder)
         {
             EnsureArg.IsNotNull(imageReference, nameof(imageReference));
-            EnsureArg.IsNotNull(workingFolder, nameof(workingFolder));
+            EnsureArg.IsNotNull(imageLayerFolder, nameof(imageLayerFolder));
 
             _imageReference = imageReference;
-            _workingImageLayerFolder = Path.Combine(workingFolder, Constants.HiddenLayersFolder);
+            _imageLayerFolder = imageLayerFolder;
         }
 
-        public void PullImage()
+        public async Task<bool> PullImageAsync()
         {
-            string command = $"pull  {_imageReference} -o {_workingImageLayerFolder}";
-            OrasExecution(command, Directory.GetCurrentDirectory());
+            string command = $"pull  {_imageReference} -o {_imageLayerFolder}";
+            await OrasExecutionAsync(command, ".");
+            return true;
         }
 
-        public void PushImage()
+        public async Task<bool> PushImageAsync()
         {
-            var filePathToPush = Directory.EnumerateFiles(_workingImageLayerFolder, "*.tar.gz", SearchOption.AllDirectories);
+            string argument = string.Empty;
+            string command = $"push {_imageReference}";
 
-            if (filePathToPush == null || filePathToPush.Count() == 0)
+            if (!Directory.Exists(_imageLayerFolder))
             {
-                throw new OrasException("No file will be pushed");
+                Console.WriteLine($"No file for push.");
+                return false;
             }
 
-            string command = $"push {_imageReference}";
+            var filePathToPush = Directory.EnumerateFiles(_imageLayerFolder, "*.tar.gz", SearchOption.AllDirectories);
             foreach (var filePath in filePathToPush)
             {
-                command += $" {Path.GetRelativePath(_workingImageLayerFolder, filePath)}";
+                argument += $" {Path.GetRelativePath(_imageLayerFolder, filePath)}";
             }
 
-            OrasExecution(command, Path.Combine(Directory.GetCurrentDirectory(), _workingImageLayerFolder));
+            if (string.IsNullOrEmpty(argument))
+            {
+                Console.WriteLine($"No file for push.");
+                return false;
+            }
+
+            await OrasExecutionAsync(string.Concat(command, argument), _imageLayerFolder);
+            return true;
         }
 
-        private void OrasExecution(string command, string workingDirectory)
+        private async Task OrasExecutionAsync(string command, string orasWorkingDirectory)
         {
-
+            TaskCompletionSource<bool> eventHandled = new TaskCompletionSource<bool>();
             Process process = new Process
             {
                 StartInfo = new ProcessStartInfo(Path.Combine(AppContext.BaseDirectory, "oras.exe")),
@@ -65,11 +75,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             process.StartInfo.Arguments = command;
             process.StartInfo.RedirectStandardError = true;
-            process.StartInfo.WorkingDirectory = workingDirectory;
-            process.Start();
+            process.StartInfo.WorkingDirectory = orasWorkingDirectory;
+            process.EnableRaisingEvents = true;
+            process.Exited += new EventHandler((sender, e) => { eventHandled.TrySetResult(true); });
+            try
+            {
+                process.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, "Oras process failed", ex);
+            }
 
             StreamReader errStreamReader = process.StandardError;
-            process.WaitForExit(60000);
+            await Task.WhenAny(eventHandled.Task, Task.Delay(30000));
             if (process.HasExited)
             {
                 string error = errStreamReader.ReadToEnd();
@@ -83,5 +102,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 throw new OrasException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
             }
         }
+
     }
 }

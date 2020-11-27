@@ -21,15 +21,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
         [Theory]
         [MemberData(nameof(GetValidImageReference))]
-        public void GivenAValidImageReference_WhenPushImageUseOras_ImageWillBePushed(string imageReference)
+        public async System.Threading.Tasks.Task GivenAValidImageReference_WhenPushImageUseOras_ImageWillBePushedAsync(string imageReference)
         {
             return;
             Directory.CreateDirectory("TestData/.image/layers");
             File.Copy("TestData/TarGzFiles/baseLayer.tar.gz", "TestData/.image/layers/baseLayer.tar.gz", true);
-            OrasClient orasClient = new OrasClient(imageReference, "TestData");
+            OrasClient orasClient = new OrasClient(imageReference, "TestData/.image/layers");
             try
             {
-                orasClient.PushImage();
+                await orasClient.PushImageAsync();
             }
             catch (TemplateManagementException ex)
             {
@@ -44,14 +44,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
         [Theory]
         [MemberData(nameof(GetValidImageReference))]
-        public void GivenAValidImageReference_WhenPullImageUseOras_ImageWillBePulled(string imageReference)
+        public async System.Threading.Tasks.Task GivenAValidImageReference_WhenPullImageUseOras_ImageWillBePulledAsync(string imageReference)
         {
             return;
             ClearFolder("TestTemplates/.ImageLayers");
-            OrasClient orasClient = new OrasClient(imageReference, "TestTemplates");
+            OrasClient orasClient = new OrasClient(imageReference, "TestTemplates/.image/layer");
             try
             {
-                orasClient.PullImage();
+                await orasClient.PullImageAsync();
             }
             catch (TemplateManagementException ex)
             {
