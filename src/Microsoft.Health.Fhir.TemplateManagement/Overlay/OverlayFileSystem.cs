@@ -3,10 +3,8 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
@@ -62,11 +60,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         public List<OCIArtifactLayer> ReadImageLayers()
         {
-            if (!Directory.Exists(_workingImageLayerFolder))
-            {
-                return null;
-            }
-
             return ReadOCIArtifactLayers(_workingImageLayerFolder);
         }
 
@@ -81,11 +74,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         public List<OCIArtifactLayer> ReadBaseLayers()
         {
-            if (!Directory.Exists(_workingBaseLayerFolder))
-            {
-                return null;
-            }
-
             return ReadOCIArtifactLayers(_workingBaseLayerFolder);
         }
 
@@ -121,13 +109,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         private List<OCIArtifactLayer> ReadOCIArtifactLayers(string folder)
         {
-            var result = new List<OCIArtifactLayer>();
-            var layersPath = Directory.EnumerateFiles(folder, "*.tar.gz", SearchOption.AllDirectories);
-            if (layersPath.Count() == 0)
+            if (!Directory.Exists(folder))
             {
                 return null;
             }
 
+            var result = new List<OCIArtifactLayer>();
+            var layersPath = Directory.EnumerateFiles(folder, "*.tar.gz", SearchOption.AllDirectories);
             foreach (var tarGzFile in layersPath)
             {
                 var artifactLayer = OCIArtifactLayer.ReadOCIArtifactLayer(tarGzFile);
