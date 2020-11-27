@@ -60,7 +60,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
 
             segment = segment.Trim();
-            return baseId != null ? $"{baseId}_{resourceType}_{segment}" : $"{resourceType}_{segment}";
+            return baseId != null ? $"{resourceType}_{segment}_{baseId}" : $"{resourceType}_{segment}";
         }
 
         public static string GenerateUUID(string input)

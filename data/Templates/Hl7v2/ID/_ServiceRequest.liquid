@@ -1,4 +1,3 @@
-{% assign identifiers = null -%}
 {% capture identifiers -%}
 {% if TQ1 -%}{{TQ1.Value}}
 {% elsif ORC.2.1 and ORC.2.2 -%}{{ORC.2.1.Value}},{{ORC.2.2.Value}}

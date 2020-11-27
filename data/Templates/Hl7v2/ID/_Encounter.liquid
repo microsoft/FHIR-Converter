@@ -1,4 +1,3 @@
-{% assign identifiers = null -%}
 {% capture identifiers -%}
 {% if PV1.19.1 and PV1.19.4 -%}{{PV1.19.1.Value}},{{PV1.19.4.Value}}
 {% elsif PV1 -%}{{PV1.Value}}
