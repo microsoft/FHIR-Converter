@@ -26,10 +26,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             return;
             Directory.CreateDirectory("TestData/.image/layers");
             File.Copy("TestData/TarGzFiles/baseLayer.tar.gz", "TestData/.image/layers/baseLayer.tar.gz", true);
-            OrasClient orasClient = new OrasClient(imageReference, "TestData/.image/layers");
+            OrasClient orasClient = new OrasClient(imageReference);
             try
             {
-                await orasClient.PushImageAsync();
+                await orasClient.PushImageAsync("TestData/.image/layers");
             }
             catch (TemplateManagementException ex)
             {
@@ -48,10 +48,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         {
             return;
             ClearFolder("TestTemplates/.ImageLayers");
-            OrasClient orasClient = new OrasClient(imageReference, "TestTemplates/.image/layer");
+            OrasClient orasClient = new OrasClient(imageReference);
             try
             {
-                await orasClient.PullImageAsync();
+                await orasClient.PullImageAsync("TestTemplates/.image/layer");
             }
             catch (TemplateManagementException ex)
             {

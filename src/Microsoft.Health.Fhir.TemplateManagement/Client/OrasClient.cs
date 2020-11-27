@@ -20,39 +20,35 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
     {
         private readonly string _imageReference;
 
-        private readonly string _imageLayerFolder;
-
-        public OrasClient(string imageReference, string imageLayerFolder)
+        public OrasClient(string imageReference)
         {
             EnsureArg.IsNotNull(imageReference, nameof(imageReference));
-            EnsureArg.IsNotNull(imageLayerFolder, nameof(imageLayerFolder));
 
             _imageReference = imageReference;
-            _imageLayerFolder = imageLayerFolder;
         }
 
-        public async Task<bool> PullImageAsync()
+        public async Task<bool> PullImageAsync(string outputFolder)
         {
-            string command = $"pull  {_imageReference} -o {_imageLayerFolder}";
+            string command = $"pull  {_imageReference} -o {outputFolder}";
             await OrasExecutionAsync(command, ".");
             return true;
         }
 
-        public async Task<bool> PushImageAsync()
+        public async Task<bool> PushImageAsync(string inputFolder)
         {
             string argument = string.Empty;
             string command = $"push {_imageReference}";
 
-            if (!Directory.Exists(_imageLayerFolder))
+            if (!Directory.Exists(inputFolder))
             {
                 Console.WriteLine($"No file for push.");
                 return false;
             }
 
-            var filePathToPush = Directory.EnumerateFiles(_imageLayerFolder, "*.tar.gz", SearchOption.AllDirectories);
+            var filePathToPush = Directory.EnumerateFiles(inputFolder, "*.tar.gz", SearchOption.AllDirectories);
             foreach (var filePath in filePathToPush)
             {
-                argument += $" {Path.GetRelativePath(_imageLayerFolder, filePath)}";
+                argument += $" {Path.GetRelativePath(inputFolder, filePath)}";
             }
 
             if (string.IsNullOrEmpty(argument))
@@ -63,7 +59,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             // In order to remove image's directory prefix. (e.g. "layers/layer1.tar.gz" --> "layer1.tar.gz"
             // Change oras working folder into imageLayerFolder
-            await OrasExecutionAsync(string.Concat(command, argument), _imageLayerFolder);
+            await OrasExecutionAsync(string.Concat(command, argument), inputFolder);
             return true;
         }
 

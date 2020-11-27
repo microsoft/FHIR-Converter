@@ -9,8 +9,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
     public interface IOrasClient
     {
-        Task<bool> PullImageAsync();
+        Task<bool> PullImageAsync(string outputFolder);
 
-        Task<bool> PushImageAsync();
+        Task<bool> PushImageAsync(string inputFolder);
     }
 }

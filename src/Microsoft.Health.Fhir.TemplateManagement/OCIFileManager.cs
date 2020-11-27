@@ -22,10 +22,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         public OCIFileManager(string imageReference, string workingFolder)
         {
-            EnsureArg.IsNotNull(imageReference);
-            EnsureArg.IsNotNull(workingFolder);
-
-            _orasClient = new OrasClient(imageReference, Path.Combine(workingFolder, Constants.HiddenLayersFolder));
+            _orasClient = new OrasClient(imageReference);
             _overlayFS = new OverlayFileSystem(workingFolder);
             _overlayOperator = new OverlayOperator();
         }
@@ -33,7 +30,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         public async Task<bool> PullOCIImageAsync()
         {
             _overlayFS.ClearImageLayerFolder();
-            return await _orasClient.PullImageAsync();
+            return await _orasClient.PullImageAsync(_overlayFS.WorkingImageLayerFolder);
         }
 
         public void UnpackOCIImage()
@@ -80,7 +77,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         public async Task<bool> PushOCIImageAsync()
         {
-            return await _orasClient.PushImageAsync();
+            return await _orasClient.PushImageAsync(_overlayFS.WorkingImageLayerFolder);
         }
 
         private OCIFileLayer GenerateSnapshotLayer(List<OCIArtifactLayer> baseLayers)
