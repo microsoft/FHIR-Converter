@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using DotLiquid;
+using DotLiquid.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Xunit;
 
@@ -62,7 +63,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         public void GivenInvalidEvaluateTemplateContent_WhenParse_ExceptionsShouldBeThrown(string templateContent)
         {
             var templateProvider = new Hl7v2TemplateProvider(@"..\..\..\..\..\data\Templates\Hl7v2");
-            Assert.Throws<DotLiquid.Exceptions.SyntaxException>(() => Template.Parse(templateContent));
+            Assert.Throws<SyntaxException>(() => Template.Parse(templateContent));
         }
 
         [Fact]

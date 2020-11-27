@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using DotLiquid;
+using DotLiquid.Exceptions;
 using DotLiquid.FileSystems;
 using DotLiquid.Util;
 
@@ -33,7 +34,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
             else
             {
-                throw new DotLiquid.Exceptions.SyntaxException(Resources.EvaluateTagSyntaxError);
+                throw new SyntaxException(Resources.EvaluateTagSyntaxError);
             }
 
             base.Initialize(tagName, markup, tokens);

@@ -6,10 +6,8 @@
 using System;
 using System.Security.Cryptography;
 using System.Text;
-using System.Text.RegularExpressions;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.InputProcessor;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Newtonsoft.Json.Linq;
@@ -21,8 +19,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     /// </summary>
     public partial class Filters
     {
-        private static readonly Regex SegmentSeparatorsRegex = new Regex(@"\s+\r\n|\r|\n");
-
         public static string GetProperty(Context context, string originalCode, string mapping, string property)
         {
             if (string.IsNullOrEmpty(originalCode) || string.IsNullOrEmpty(mapping) || string.IsNullOrEmpty(property))
