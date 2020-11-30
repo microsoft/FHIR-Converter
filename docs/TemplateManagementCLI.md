@@ -12,7 +12,7 @@ The command-line tool can be used to pull and push a template collection through
 The oras.exe is packed in our repo, users can directly use it for login as follows.
 
 ```
->.\oras.exe login [registry] -u [username] -p [password]
+>.\oras.exe login <registry> -u <username> -p <password>
 ```
 Users can also follows the [Oras](https://github.com/deislabs/oras) instructure for oras download and login.
 
