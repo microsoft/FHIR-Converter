@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
@@ -94,7 +96,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 string error = errStreamReader.ReadToEnd();
                 if (!string.IsNullOrEmpty(error))
                 {
-                    throw new OrasException(error);
+                    throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, error);
                 }
             }
             else

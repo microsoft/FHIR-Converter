@@ -4,14 +4,30 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.IO;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool.Models;
 using Microsoft.Health.Fhir.TemplateManagement;
+using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
 {
-    internal static class TemplateLogicHandler
+    internal static class TemplateManagementLogicHandler
     {
+        private static readonly ILogger Logger;
+
+        static TemplateManagementLogicHandler()
+        {
+            using var loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddFilter("Microsoft.Health.Fhir.TemplateManagement", LogLevel.Trace)
+                       .AddConsole();
+            });
+            FhirConverterLogging.LoggerFactory = loggerFactory;
+            Logger = FhirConverterLogging.CreateLogger(typeof(TemplateManagementLogicHandler));
+        }
+
         internal static async Task PullAsync(PullTemplateOptions options)
         {
             try
@@ -20,12 +36,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 if (await fileManager.PullOCIImageAsync())
                 {
                     fileManager.UnpackOCIImage();
-                    Console.WriteLine("Succeed!");
+                    Logger.LogInformation($"Succeed to pull templates to {options.OutputTemplateFolder} folder");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error occurred when pull new templates: {ex}");
+                var error = new ConverterError(ex);
+                TextWriter errorWriter = Console.Error;
+                errorWriter.WriteLine(JsonConvert.SerializeObject(error));
             }
         }
 
@@ -37,12 +55,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 fileManager.PackOCIImage(options.BuildNewBaseLayer);
                 if (await fileManager.PushOCIImageAsync())
                 {
-                    Console.WriteLine("Succeed!");
+                    Logger.LogInformation($"Succeed to push new templates to {options.ImageReference}");
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error occurred when push new templates: {ex}");
+                var error = new ConverterError(ex);
+                TextWriter errorWriter = Console.Error;
+                errorWriter.WriteLine(JsonConvert.SerializeObject(error));
             }
         }
     }

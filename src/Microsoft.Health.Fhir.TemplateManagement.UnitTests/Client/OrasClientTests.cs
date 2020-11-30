@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Xunit;
@@ -15,13 +16,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
     {
         public static IEnumerable<object[]> GetValidImageReference()
         {
-            yield return new object[] { "OCIsowuacr.azurecr.io/templateoras:v1" };
-            yield return new object[] { "OCIsowuacr.azurecr.io/templateoras:default" };
+            yield return new object[] { "OCIsowuacr.azurecr.io/templateORAS:v1" };
+            yield return new object[] { "OCIsowuacr.azurecr.io/templateORAS:default" };
         }
 
         [Theory]
         [MemberData(nameof(GetValidImageReference))]
-        public async System.Threading.Tasks.Task GivenAValidImageReference_WhenPushImageUseOras_ImageWillBePushedAsync(string imageReference)
+        public async Task GivenAValidImageReference_WhenPushImageUseOras_ImageWillBePushedAsync(string imageReference)
         {
             return;
             Directory.CreateDirectory("TestData/.image/layers");
@@ -44,7 +45,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
         [Theory]
         [MemberData(nameof(GetValidImageReference))]
-        public async System.Threading.Tasks.Task GivenAValidImageReference_WhenPullImageUseOras_ImageWillBePulledAsync(string imageReference)
+        public async Task GivenAValidImageReference_WhenPullImageUseOras_ImageWillBePulledAsync(string imageReference)
         {
             return;
             ClearFolder("TestTemplates/.ImageLayers");

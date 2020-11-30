@@ -84,7 +84,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             List<string> currentLayerRemovedFiles = new List<string>();
             Dictionary<string, byte[]> mergedFiles = new Dictionary<string, byte[]> { };
 
-            for (var sequenceNumber = sortedLayers.Count() - 1; sequenceNumber >= 0; sequenceNumber--)
+            for (var sequenceNumber = sortedLayers.Count - 1; sequenceNumber >= 0; sequenceNumber--)
             {
                 var oneLayer = sortedLayers[sequenceNumber];
                 var fileContent = oneLayer.FileContent;
