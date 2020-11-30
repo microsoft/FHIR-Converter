@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using EnsureThat;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
@@ -23,9 +24,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
     {
         public OCIFileLayer ExtractOCIFileLayer(OCIArtifactLayer artifactLayer)
         {
-            if (artifactLayer == null)
+            EnsureArg.IsNotNull(artifactLayer, nameof(artifactLayer));
+
+            if (artifactLayer.Content == null)
             {
-                return null;
+                return new OCIFileLayer();
             }
 
             var artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(artifactLayer.Content));
@@ -39,49 +42,33 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 }
                 catch (Exception ex)
                 {
-                    throw new OverlayException(TemplateManagementErrorCode.OverlayMetaJsonNotFound, "overlayMeta.json file invalid", ex);
+                    throw new OverlayException(TemplateManagementErrorCode.OverlayMetaJsonNotFound, $"{Constants.OverlayMetadataFile} file invalid", ex);
                 }
             }
 
             artifacts.Remove(Constants.OverlayMetadataFile);
-            return new OCIFileLayer() { Content = artifactLayer.Content, FileContent = artifacts, FileName = artifactLayer.FileName, SequenceNumber = metaJson == null ? -1 : metaJson.SequenceNumber };
+            return new OCIFileLayer() { Content = artifactLayer.Content, FileContent = artifacts, FileName = artifactLayer.FileName, SequenceNumber = metaJson == null ? -1 : metaJson.SequenceNumber, Digest = artifactLayer.Digest, Size = artifactLayer.Size };
         }
 
         public List<OCIFileLayer> ExtractOCIFileLayers(List<OCIArtifactLayer> artifactLayers)
         {
-            if (artifactLayers == null)
-            {
-                return null;
-            }
+            EnsureArg.IsNotNull(artifactLayers, nameof(artifactLayers));
 
-            var result = new List<OCIFileLayer>();
-            foreach (var layer in artifactLayers)
-            {
-                result.Add(ExtractOCIFileLayer(layer));
-            }
-
-            return result;
+            return artifactLayers.Select(ExtractOCIFileLayer).ToList();
         }
 
         public List<OCIFileLayer> SortOCIFileLayersBySequenceNumber(List<OCIFileLayer> fileLayers)
         {
-            if (fileLayers == null)
-            {
-                return null;
-            }
+            EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
 
-            return fileLayers.OrderBy(layer => layer.SequenceNumber).ToList();
+            return fileLayers.OrderBy(layer => layer.SequenceNumber <= -1 ? int.MaxValue : layer.SequenceNumber).ToList();
         }
 
         public OCIFileLayer MergeOCIFileLayers(List<OCIFileLayer> sortedLayers)
         {
-            if (sortedLayers == null)
-            {
-                return null;
-            }
+            EnsureArg.IsNotNull(sortedLayers, nameof(sortedLayers));
 
             List<string> removedFiles = new List<string>();
-            List<string> currentLayerRemovedFiles = new List<string>();
             Dictionary<string, byte[]> mergedFiles = new Dictionary<string, byte[]> { };
 
             for (var sequenceNumber = sortedLayers.Count - 1; sequenceNumber >= 0; sequenceNumber--)
@@ -92,83 +79,81 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 {
                     if (oneFile.Value == null)
                     {
-                        currentLayerRemovedFiles.Add(oneFile.Key);
+                        removedFiles.Add(oneFile.Key);
                     }
                     else if (!removedFiles.Contains(oneFile.Key) && !mergedFiles.ContainsKey(oneFile.Key))
                     {
                         mergedFiles.Add(oneFile.Key, oneFile.Value);
                     }
                 }
-
-                removedFiles.AddRange(currentLayerRemovedFiles);
-                currentLayerRemovedFiles.Clear();
             }
 
             return new OCIFileLayer() { FileContent = mergedFiles, FileName = "mergedLayer", SequenceNumber = sortedLayers.Count() };
         }
 
-        public OCIFileLayer GenerateDiffLayer(OCIFileLayer fileLayer, OCIFileLayer snapshotLayer)
+        public OCIFileLayer GenerateDiffLayer(OCIFileLayer fileLayer, OCIFileLayer baseLayer = null)
         {
-            Dictionary<string, byte[]> diffLayerFiles = new Dictionary<string, byte[]> { };
-            var snapshotContents = new Dictionary<string, byte[]> { };
-            var fileContents = fileLayer.FileContent;
+            EnsureArg.IsNotNull(fileLayer, nameof(fileLayer));
 
-            bool editFlag = false;
-
-            int buildNumber = 1;
-            if (snapshotLayer != null)
+            int sequenceNumber = 1;
+            var baseContents = new Dictionary<string, byte[]> { };
+            if (baseLayer != null && baseLayer.FileContent != null)
             {
-                snapshotContents = snapshotLayer.FileContent;
-                buildNumber = snapshotLayer.SequenceNumber + 1;
+                baseContents = baseLayer.FileContent;
+                sequenceNumber = baseLayer.SequenceNumber + 1;
+            }
+
+            var diffLayer = new OCIFileLayer() { SequenceNumber = sequenceNumber, FileName = $"layer{sequenceNumber}.tar.gz" };
+            if (fileLayer.FileContent == null)
+            {
+                return diffLayer;
             }
 
             var diffLayerFileDigest = new Dictionary<string, string> { };
-            foreach (var oneFile in fileContents)
+            foreach (var oneFile in fileLayer.FileContent)
             {
                 var fileName = oneFile.Key.Replace("\\", "/");
                 var oneDigest = StreamUtility.CalculateDigestFromSha256(oneFile.Value);
 
                 diffLayerFileDigest.Add(fileName, oneDigest);
-                if (snapshotContents.ContainsKey(fileName))
+                if (baseContents.ContainsKey(fileName))
                 {
-                    if (!string.Equals(StreamUtility.CalculateDigestFromSha256(snapshotContents[fileName]), oneDigest))
+                    if (!string.Equals(StreamUtility.CalculateDigestFromSha256(baseContents[fileName]), oneDigest))
                     {
-                        diffLayerFiles.Add(fileName, oneFile.Value);
-                        editFlag = true;
+                        diffLayer.FileContent.Add(fileName, oneFile.Value);
                     }
 
-                    snapshotContents.Remove(fileName);
+                    baseContents.Remove(fileName);
                 }
                 else
                 {
-                    diffLayerFiles.Add(fileName, oneFile.Value);
-                    editFlag = true;
+                    diffLayer.FileContent.Add(fileName, oneFile.Value);
                 }
             }
 
-            foreach (var removedfile in snapshotContents)
+            foreach (var removedfile in baseContents)
             {
                 var fileName = Path.Combine(Path.GetDirectoryName(removedfile.Key), ".wh." + Path.GetFileName(removedfile.Key));
-                diffLayerFiles.Add(fileName, Encoding.UTF8.GetBytes(string.Empty));
-                editFlag = true;
+                diffLayer.FileContent.Add(fileName, Encoding.UTF8.GetBytes(string.Empty));
             }
 
-            if (editFlag)
+            if (diffLayer.FileContent.Count != 0)
             {
-                var metaJson = new OverlayMetadata() { SequenceNumber = buildNumber, FileDigests = diffLayerFileDigest };
+                var metaJson = new OverlayMetadata() { SequenceNumber = sequenceNumber, FileDigests = diffLayerFileDigest };
                 var metaContent = JsonConvert.SerializeObject(metaJson);
-                diffLayerFiles.Add(Constants.OverlayMetadataFile, Encoding.UTF8.GetBytes(metaContent));
-                return new OCIFileLayer() { FileContent = diffLayerFiles, SequenceNumber = buildNumber, FileName = $"layer{buildNumber}.tar.gz" };
+                diffLayer.FileContent.Add(Constants.OverlayMetadataFile, Encoding.UTF8.GetBytes(metaContent));
             }
 
-            return null;
+            return diffLayer;
         }
 
         public OCIArtifactLayer ArchiveOCIFileLayer(OCIFileLayer fileLayer)
         {
-            if (fileLayer == null)
+            EnsureArg.IsNotNull(fileLayer, nameof(fileLayer));
+
+            if (fileLayer.FileContent.Count == 0)
             {
-                return null;
+                return new OCIArtifactLayer();
             }
 
             var fileContents = fileLayer.FileContent;
@@ -188,19 +173,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         public List<OCIArtifactLayer> ArchiveOCIFileLayers(List<OCIFileLayer> fileLayers)
         {
-            if (fileLayers == null)
-            {
-                return null;
-            }
+            EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
 
-            var result = new List<OCIArtifactLayer>();
-
-            foreach (var layer in fileLayers)
-            {
-                result.Add(ArchiveOCIFileLayer(layer));
-            }
-
-            return result;
+            return fileLayers.Select(ArchiveOCIFileLayer).ToList();
         }
     }
 }

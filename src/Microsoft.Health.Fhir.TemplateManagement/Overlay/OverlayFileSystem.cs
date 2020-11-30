@@ -46,6 +46,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         public void WriteMergedOCIFileLayer(OCIFileLayer oneLayer)
         {
+            EnsureArg.IsNotNull(oneLayer, nameof(oneLayer));
+
             if (!Directory.Exists(WorkingFolder))
             {
                 Directory.CreateDirectory(WorkingFolder);
@@ -70,6 +72,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         public void WriteImageLayers(List<OCIArtifactLayer> imageLayers)
         {
+            EnsureArg.IsNotNull(imageLayers, nameof(imageLayers));
+
             ClearFolder(WorkingImageLayerFolder);
             foreach (var layer in imageLayers)
             {
@@ -84,6 +88,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         public void WriteBaseLayers(List<OCIArtifactLayer> layers)
         {
+            EnsureArg.IsNotNull(layers, nameof(layers));
+
             ClearFolder(WorkingBaseLayerFolder);
             foreach (var layer in layers)
             {
@@ -103,6 +109,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         private void ClearFolder(string directory)
         {
+            EnsureArg.IsNotNull(directory, nameof(directory));
+
             if (!Directory.Exists(directory))
             {
                 return;
@@ -114,9 +122,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         private List<OCIArtifactLayer> ReadOCIArtifactLayers(string folder)
         {
+            EnsureArg.IsNotNull(folder, nameof(folder));
+
             if (!Directory.Exists(folder))
             {
-                return null;
+                return new List<OCIArtifactLayer>();
             }
 
             var result = new List<OCIArtifactLayer>();

@@ -9,6 +9,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
     public class OCIFileLayer : OCIArtifactLayer
     {
-        public Dictionary<string, byte[]> FileContent { get; set; }
+        public Dictionary<string, byte[]> FileContent { get; set; } = new Dictionary<string, byte[]> { };
     }
 }

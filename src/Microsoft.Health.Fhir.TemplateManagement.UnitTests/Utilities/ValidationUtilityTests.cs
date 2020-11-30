@@ -17,8 +17,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
     {
         public static IEnumerable<object[]> GetConsistentBlobContentWithDigest()
         {
-            yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", "sha256:ca1d8cff554ca9d7796500548c968f4985528af2676589de3a719048f266a3bc" };
-            yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", "sha256:fac83d4cd496b0efd76db216568a53e1ff4f9571461deec8835cc4d2e171d063" };
+            yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", "sha256:871b9b857c293d6df8e50ce7ef9f5d67e6fb3ed2926da2485c9ce570c0ce6ac4" };
+            yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", "sha256:4c084996bcc80c70aac0a1bc24b0e44fb8f202f983bb598bc34a2cc974417480" };
         }
 
         public static IEnumerable<object[]> GetInConsistentBlobContentWithDigest()

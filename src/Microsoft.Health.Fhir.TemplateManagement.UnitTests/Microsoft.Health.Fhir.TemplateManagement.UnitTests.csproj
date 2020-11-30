@@ -7,6 +7,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="..\..\data\Templates\Hl7v2\metadata.json" Link="TestData\UserFolder\metadata.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\data\Templates\Hl7v2\ADT_A01.liquid" Link="TestData\UserFolder\ADT_A01.liquid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\data\Templates\Hl7v2\OML_O21.liquid" Link="TestData\UserFolder\OML_O21.liquid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\data\Templates\Hl7v2\ORU_R01.liquid" Link="TestData\UserFolder\ORU_R01.liquid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\data\Templates\Hl7v2\VXU_V04.liquid" Link="TestData\UserFolder\VXU_V04.liquid">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="..\Microsoft.Health.Fhir.TemplateManagement.FunctionalTests\DefaultTemplates.tar.gz" Link="DefaultTemplates.tar.gz">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -32,6 +50,10 @@
     <None Update="TestData\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TestData\UserFolder\" />
   </ItemGroup>
 
 </Project>

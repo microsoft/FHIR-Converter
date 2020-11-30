@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,8 @@ using System.Security.Cryptography;
 using System.Text;
 using ICSharpCode.SharpZipLib.GZip;
 using ICSharpCode.SharpZipLib.Tar;
+using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
+using Microsoft.Health.Fhir.TemplateManagement.Models;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
 {
@@ -17,9 +20,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
     {
         public static Dictionary<string, byte[]> DecompressTarGzStream(Stream sourceStream)
         {
-            using var gzipStream = new GZipInputStream(sourceStream);
-            using var tarIn = new TarInputStream(gzipStream, Encoding.UTF8);
-            return ExtractContents(tarIn);
+            try
+            {
+                using var gzipStream = new GZipInputStream(sourceStream);
+                using var tarIn = new TarInputStream(gzipStream, Encoding.UTF8);
+                return ExtractContents(tarIn);
+            }
+            catch (Exception ex)
+            {
+                throw new ArtifactDecompressException(TemplateManagementErrorCode.DecompressImageFailed, "Decompress image failed.", ex);
+            }
         }
 
         private static Dictionary<string, byte[]> ExtractContents(TarInputStream tarIn)

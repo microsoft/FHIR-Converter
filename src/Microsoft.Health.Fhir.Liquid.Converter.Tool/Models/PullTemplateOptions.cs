@@ -15,5 +15,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
 
         [Option('o', "OutputTemplateFolder", Required = false, Default = ".", HelpText = "Output template folder")]
         public string OutputTemplateFolder { get; set; }
+
+        [Option('f', "ForceOverride", Required = false, Default = false, HelpText = "Output template folder")]
+        public bool ForceOverride { get; set; }
     }
 }

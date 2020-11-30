@@ -21,27 +21,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         public static TemplateLayer ParseArtifactsLayerToTemplateLayer(OCIArtifactLayer artifactsLayer)
         {
             TemplateLayer oneTemplateLayer = new TemplateLayer();
-            var artifacts = DecompressRawBytesContent((byte[])artifactsLayer.Content);
+            var artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(artifactsLayer.Content));
             var parsedTemplate = ParseToTemplates(artifacts);
 
             oneTemplateLayer.TemplateContent = parsedTemplate;
             oneTemplateLayer.Digest = artifactsLayer.Digest;
             oneTemplateLayer.Size = artifacts.Sum(x => x.Value == null ? 0 : x.Value.Length);
             return oneTemplateLayer;
-        }
-
-        public static Dictionary<string, byte[]> DecompressRawBytesContent(byte[] rawBytes)
-        {
-            Dictionary<string, byte[]> artifacts;
-            try
-            {
-                artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(rawBytes));
-                return artifacts;
-            }
-            catch (Exception ex)
-            {
-                throw new ImageDecompressException(TemplateManagementErrorCode.DecompressImageFailed, "Decompress image failed.", ex);
-            }
         }
 
         public static Dictionary<string, Template> ParseToTemplates(Dictionary<string, byte[]> content)

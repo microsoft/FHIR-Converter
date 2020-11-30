@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ICSharpCode.SharpZipLib.GZip;
+using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Xunit;
 
@@ -26,8 +27,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
 
         public static IEnumerable<object[]> GetTarGzFilePathWithCountsOfFiles()
         {
-            yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 815 };
-            yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 769 };
+            yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 814 };
+            yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 768 };
         }
 
         public static IEnumerable<object[]> GetInvalidTarGzFilePath()
@@ -91,7 +92,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
         public void GiveAnInvalidTarGzFilePath_WhenDecompressArtifactsLayer_ExceptionShouldBeThrown(string tarGzPath)
         {
             var artifactsLayer = File.ReadAllBytes(tarGzPath);
-            Assert.Throws<GZipException>(() => StreamUtility.DecompressTarGzStream(new MemoryStream(artifactsLayer)));
+            Assert.Throws<ArtifactDecompressException>(() => StreamUtility.DecompressTarGzStream(new MemoryStream(artifactsLayer)));
         }
     }
 }

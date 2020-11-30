@@ -4,15 +4,12 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
-using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
@@ -90,7 +87,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
 
             StreamReader errStreamReader = process.StandardError;
-            await Task.WhenAny(eventHandled.Task, Task.Delay(30000));
+            await Task.WhenAny(eventHandled.Task, Task.Delay(Constants.TimeOutMilliseconds));
             if (process.HasExited)
             {
                 string error = errStreamReader.ReadToEnd();

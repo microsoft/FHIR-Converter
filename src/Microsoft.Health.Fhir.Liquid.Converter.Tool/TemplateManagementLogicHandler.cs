@@ -16,6 +16,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
     internal static class TemplateManagementLogicHandler
     {
         private static readonly ILogger Logger;
+        private static readonly TextWriter ErrorWriter;
 
         static TemplateManagementLogicHandler()
         {
@@ -26,27 +27,39 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             });
             FhirConverterLogging.LoggerFactory = loggerFactory;
             Logger = FhirConverterLogging.CreateLogger(typeof(TemplateManagementLogicHandler));
+
+            ErrorWriter = Console.Error;
         }
 
         internal static async Task PullAsync(PullTemplateOptions options)
         {
             try
             {
+                if (!options.ForceOverride)
+                {
+                    if (Directory.Exists(options.OutputTemplateFolder) && Directory.GetFileSystemEntries(options.OutputTemplateFolder).Length != 0)
+                    {
+                        Logger.LogError("The Output folder is not empty. If force to override, please add -f in parameters");
+                        return;
+                    }
+                }
+
                 OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.OutputTemplateFolder);
                 if (await fileManager.PullOCIImageAsync())
                 {
                     fileManager.UnpackOCIImage();
                     Logger.LogInformation($"Succeed to pull templates to {options.OutputTemplateFolder} folder");
                 }
-
-                Logger.LogInformation("Pull process complete.");
+                else
+                {
+                    Logger.LogError("Process failed");
+                }
             }
             catch (Exception ex)
             {
                 Logger.LogError("Fail to pull templates.");
                 var error = new ConverterError(ex);
-                TextWriter errorWriter = Console.Error;
-                errorWriter.WriteLine(JsonConvert.SerializeObject(error));
+                ErrorWriter.WriteLine(JsonConvert.SerializeObject(error));
             }
         }
 
@@ -60,8 +73,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 {
                     Logger.LogInformation($"Succeed to push new templates to {options.ImageReference}");
                 }
-
-                Logger.LogInformation("Push process complete.");
+                else
+                {
+                    Logger.LogError("Process failed");
+                }
             }
             catch (Exception ex)
             {

@@ -28,7 +28,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly TemplateCollectionConfiguration _config = new TemplateCollectionConfiguration();
         private readonly IMemoryCache cache = new MemoryCache(new MemoryCacheOptions());
         private readonly string baseLayerTemplatePath = "TestData/TarGzFiles/DefaultTemplates.tar.gz";
-        private readonly string userLayerTemplatePath = "TestData/TarGzFiles/layer2.tar.gz";
+        private readonly string userLayerTemplatePath = "TestData/TarGzFiles/userV2.tar.gz";
         private readonly string invalidTarGzPath = "TestData/TarGzFiles/invalid1.tar.gz";
         private readonly string invalidTemplatePath = "TestData/TarGzFiles/invalidTemplates.tar.gz";
         private readonly string testOneLayerImageReference;
@@ -95,7 +95,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public static IEnumerable<object[]> GetHl7v2DataAndTemplateImageReference()
         {
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\ADT01-23.hl7", "ADT_A01", @"TestData\Expected\Hl7v2\ADT_A01\ADT01-23-expected.json" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\IZ_1_1.1_Admin_Child_Max_Message.hl7", "VXU_V04", @"TestData\Expected\Hl7v2\VXU_V04\IZ_1_1.1_Admin_Child_Max_Message-expected.json" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\LAB-ORU-1.hl7", "ORU_R01", @"TestData\Expected\Hl7v2\ORU_R01\LAB-ORU-1-expected.json" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\MDHHS-OML-O21-1.hl7", "OML_O21", @"TestData\Expected\Hl7v2\OML_O21\MDHHS-OML-O21-1-expected.json" };
@@ -103,7 +102,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public static IEnumerable<object[]> GetHl7v2DataAndTemplateImageReferenceWithoutGivenTemplate()
         {
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\ADT01-23.hl7", "ADT_A01" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\IZ_1_1.1_Admin_Child_Max_Message.hl7", "VXU_V04" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\LAB-ORU-1.hl7", "ORU_R01" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\MDHHS-OML-O21-1.hl7", "OML_O21" };
@@ -166,7 +164,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string imageReference = testInvalidImageReference;
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
             var templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, token);
-            await Assert.ThrowsAsync<ImageDecompressException>(async () => await templateCollectionProvider.GetTemplateCollectionAsync());
+            await Assert.ThrowsAsync<ArtifactDecompressException>(async () => await templateCollectionProvider.GetTemplateCollectionAsync());
         }
 
         [Theory]

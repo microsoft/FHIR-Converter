@@ -36,7 +36,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         public void UnpackOCIImage()
         {
             var rawLayers = _overlayFS.ReadImageLayers();
-            if (rawLayers == null)
+            if (rawLayers.Count == 0)
             {
                 return;
             }
@@ -51,28 +51,22 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         public void PackOCIImage(bool ignoreBaseLayers = false)
         {
             var mergedLayer = _overlayFS.ReadMergedOCIFileLayer();
-            List<OCIArtifactLayer> baseLayers = null;
+            var baseArtifactLayers = new List<OCIArtifactLayer>();
             if (!ignoreBaseLayers)
             {
-                baseLayers = _overlayFS.ReadBaseLayers();
+                baseArtifactLayers = _overlayFS.ReadBaseLayers();
             }
 
-            var snapshotLayer = GenerateSnapshotLayer(baseLayers);
+            var snapshotLayer = GenerateBaseFileLayer(baseArtifactLayers);
             var diffLayer = _overlayOperator.GenerateDiffLayer(mergedLayer, snapshotLayer);
             var diffArtifactLayer = _overlayOperator.ArchiveOCIFileLayer(diffLayer);
-            var allLayers = new List<OCIArtifactLayer>() { };
-
-            if (diffArtifactLayer != null)
+            if (baseArtifactLayers.Count == 0)
             {
-                allLayers.Add(diffArtifactLayer);
+                _overlayFS.WriteBaseLayers(new List<OCIArtifactLayer> { diffArtifactLayer });
             }
 
-            if (baseLayers != null)
-            {
-                allLayers.AddRange(baseLayers);
-            }
-
-            _overlayFS.WriteImageLayers(allLayers);
+            baseArtifactLayers.Add(diffArtifactLayer);
+            _overlayFS.WriteImageLayers(baseArtifactLayers);
         }
 
         public async Task<bool> PushOCIImageAsync()
@@ -80,14 +74,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             return await _orasClient.PushImageAsync(_overlayFS.WorkingImageLayerFolder);
         }
 
-        private OCIFileLayer GenerateSnapshotLayer(List<OCIArtifactLayer> baseLayers)
+        private OCIFileLayer GenerateBaseFileLayer(List<OCIArtifactLayer> baseArtifactLayers)
         {
-            if (baseLayers == null)
+            if (baseArtifactLayers == null)
             {
                 return null;
             }
 
-            var fileLayers = _overlayOperator.ExtractOCIFileLayers(baseLayers);
+            var fileLayers = _overlayOperator.ExtractOCIFileLayers(baseArtifactLayers);
             var sortedFileLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
             var mergedFileLayer = _overlayOperator.MergeOCIFileLayers(sortedFileLayers);
             return mergedFileLayer;

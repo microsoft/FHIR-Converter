@@ -5,7 +5,7 @@
 
 using System.Collections.Generic;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Models
+namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
     public class OverlayMetadata
     {

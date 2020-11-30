@@ -17,7 +17,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 {
     public class TemplateLayerParserTests
     {
-        public static IEnumerable<object[]> GetFilePathForOCIArifact()
+        public static IEnumerable<object[]> GetFilePathForOCIArifactWithFileCounts()
+        {
+            yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 813 };
+            yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 767 };
+            yield return new object[] { "TestData/TarGzFiles/baseLayer.tar.gz", 818 };
+        }
+
+        public static IEnumerable<object[]> GetFilePathForOCIArifactWithTemplateCounts()
         {
             yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 813 };
             yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 767 };
@@ -31,23 +38,23 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(GetFilePathForOCIArifact))]
+        [MemberData(nameof(GetFilePathForOCIArifactWithTemplateCounts))]
         public void GivenArtifactLayer_WhenParseArtifactLayerToTemplateLayer_ACorrectTemplateLayerShouldBeReturned(string filePath, int expectedTemplatesCounts)
         {
             var content = File.ReadAllBytes(filePath);
             var testArtifactLayer = new OCIArtifactLayer() { Content = content, Digest = StreamUtility.CalculateDigestFromSha256(File.ReadAllBytes(filePath)) };
             var templateLayer = TemplateLayerParser.ParseArtifactsLayerToTemplateLayer(testArtifactLayer);
-            Assert.Equal(expectedTemplatesCounts, (templateLayer.TemplateContent).Count());
+            Assert.Equal(expectedTemplatesCounts, templateLayer.TemplateContent.Count());
             Assert.Equal(testArtifactLayer.Digest, templateLayer.Digest);
         }
 
         [Theory]
-        [MemberData(nameof(GetFilePathForOCIArifact))]
+        [MemberData(nameof(GetFilePathForOCIArifactWithFileCounts))]
         public void GivenRawBytes_WhenDecompressRawBytesToStringContent_CorrectArtifactsShouldBeReturned(string filePath, int expectedArtifactCounts)
         {
             var content = File.ReadAllBytes(filePath);
-            var artifacts = TemplateLayerParser.DecompressRawBytesContent(content);
-            Assert.Equal(expectedArtifactCounts + 2, artifacts.Count());
+            var artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(content));
+            Assert.Equal(expectedArtifactCounts + 1, artifacts.Count());
         }
 
         [Fact]
@@ -70,7 +77,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         public void GivenRawBytes_WhenParseRawBytesToTemplates_IfDecompressedFailed_ExceptionShouldBeThrown(string filePath)
         {
             var content = File.ReadAllBytes(filePath);
-            Assert.Throws<ImageDecompressException>(() => TemplateLayerParser.DecompressRawBytesContent(content));
+            Assert.Throws<ArtifactDecompressException>(() => StreamUtility.DecompressTarGzStream(new MemoryStream(content)));
         }
 
         [Fact]

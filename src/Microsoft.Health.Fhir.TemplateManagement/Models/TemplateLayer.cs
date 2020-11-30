@@ -23,7 +23,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
             {
                 TemplateLayer templateLayer = new TemplateLayer();
                 var rawBytes = File.ReadAllBytes(filePath);
-                var artifacts = TemplateLayerParser.DecompressRawBytesContent(rawBytes);
+                var artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(rawBytes));
                 templateLayer.TemplateContent = TemplateLayerParser.ParseToTemplates(artifacts);
                 templateLayer.Digest = StreamUtility.CalculateDigestFromSha256(File.ReadAllBytes(filePath));
                 templateLayer.Size = artifacts.Sum(x => x.Value.Length);

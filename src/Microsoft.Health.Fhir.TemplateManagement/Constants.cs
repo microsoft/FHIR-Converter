@@ -25,5 +25,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         internal const string HiddenBaseLayerFolder = ".image/base";
 
         internal const string OverlayMetadataFile = "digest.json";
+
+        internal const int TimeOutMilliseconds = 30000;
     }
 }
