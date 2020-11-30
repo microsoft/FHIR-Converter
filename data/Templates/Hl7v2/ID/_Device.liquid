@@ -1,0 +1,6 @@
+{% capture identifiers -%}
+{% if HD.1 and HD.2 -%}{{HD.1.Value}},{{HD.2.Value}}
+{% elsif HD -%}{{HD.Value}}
+{% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'Device', false | generate_uuid }}

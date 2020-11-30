@@ -26,7 +26,7 @@
                 },
             ],
         },
-        {% include 'DataType/TQTask' with TQ: ORC.7 -%}
+        {% include 'DataType/TQTask' TQ: ORC.7 -%}
         "authoredOn":"{{ ORC.9.Value | format_as_date_time }}",
         "lastModified":"{{ ORC.9.Value | format_as_date_time }}",
     },

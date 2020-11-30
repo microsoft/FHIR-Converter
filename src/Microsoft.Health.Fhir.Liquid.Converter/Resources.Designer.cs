@@ -70,6 +70,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syntax Error in &apos;evaluate&apos; tag - Valid syntax: evaluate [varaible] using [Template].
+        /// </summary>
+        internal static string EvaluateTagSyntaxError {
+            get {
+                return ResourceManager.GetString("EvaluateTagSyntaxError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The input data could not be parsed correctly: {0}.
         /// </summary>
         internal static string InputParsingError {
@@ -192,6 +201,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         internal static string PropertyNotFound {
             get {
                 return ResourceManager.GetString("PropertyNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template file system not found..
+        /// </summary>
+        internal static string TemplateFileSystemNotFound {
+            get {
+                return ResourceManager.GetString("TemplateFileSystemNotFound", resourceCulture);
             }
         }
         

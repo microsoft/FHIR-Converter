@@ -20,7 +20,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 
         public Hl7v2Data Parse(string message)
         {
-            var result = new Hl7v2Data();
+            var result = new Hl7v2Data(message);
             try
             {
                 if (string.IsNullOrEmpty(message))

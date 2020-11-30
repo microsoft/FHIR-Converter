@@ -12,14 +12,14 @@
         "identifier":
         [
             {
-                {% include 'DataType/EIPIdentifier' with EIP: SPM.2 -%}
+                {% include 'DataType/EIPIdentifier' EIP: SPM.2 -%}
             },
-            { {% include 'DataType/EIPIdentifier' with EIP: SPM.3 -%} },
+            { {% include 'DataType/EIPIdentifier' EIP: SPM.3 -%} },
             {
-                {% include 'DataType/CX' with CX: SPM.31 -%}
+                {% include 'DataType/CX' CX: SPM.31 -%}
             },
             {
-                {% include 'DataType/EIIdentifier' with EI: SPM.32 -%}
+                {% include 'DataType/EIIdentifier' EI: SPM.32 -%}
                 "type":
                 {
                     "coding":
@@ -35,18 +35,18 @@
         ],
         "type":
         {
-            {% include 'DataType/CWECodeableConcept' with CWE: SPM.4 -%}
+            {% include 'DataType/CWECodeableConcept' CWE: SPM.4 -%}
         },
         "container":
         [
             {
                 "additiveCodeableConcept":
                 {
-                    {% include 'DataType/CWECodeableConcept' with CWE: SPM.6 -%}
+                    {% include 'DataType/CWECodeableConcept' CWE: SPM.6 -%}
                 },
                 "type":
                 {
-                    {% include 'DataType/CWECodeableConcept' with CWE: SPM.27 -%}
+                    {% include 'DataType/CWECodeableConcept' CWE: SPM.27 -%}
                 },
             },
         ],
@@ -54,12 +54,12 @@
         {
             "method":
             {
-                {% include 'DataType/CWECodeableConcept' with CWE: SPM.7 -%}
+                {% include 'DataType/CWECodeableConcept' CWE: SPM.7 -%}
             },
             "collectedPeriod":
             {
                 {% if SPM.17.2 -%}
-                {% include 'DataType/DR' with DR: SPM.17 -%}
+                {% include 'DataType/DR' DR: SPM.17 -%}
                 {% endif -%}
             },
             {% if SPM.17.2 == null -%}
@@ -69,11 +69,11 @@
         "status":"{{ SPM.20.Value | get_property: 'CodeSystem/SpecimenAvailability', 'code' }}",
         "condition":
         [
-            { {% include 'DataType/CWECodeableConcept' with CWE: SPM.24 -%} },
+            { {% include 'DataType/CWECodeableConcept' CWE: SPM.24 -%} },
         ],
         "accessionIdentifier":
         {
-            {% include 'DataType/CX' with CX: SPM.30 -%}
+            {% include 'DataType/CX' CX: SPM.30 -%}
         },
     },
     "request":{

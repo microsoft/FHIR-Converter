@@ -5,8 +5,8 @@
         "id":"{{ ID }}",
         "identifier":
         [
-            { {% include 'DataType/EIIdentifier' with EI: OBX.18 -%} },
-            { {% include 'DataType/EIIdentifier' with EI: PRT.10 -%} },
+            { {% include 'DataType/EIIdentifier' EI: OBX.18 -%} },
+            { {% include 'DataType/EIIdentifier' EI: PRT.10 -%} },
         ],
         "manufactureDate":"{{ PRT.17.Value | format_as_date_time }}",
         "expirationDate":"{{ PRT.18.Value | format_as_date_time }}",

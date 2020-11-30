@@ -5,22 +5,22 @@
         "id":"{{ ID }}",
         "identifier":
         [
-            { {% include 'DataType/CX' with CX: PID.21 -%} },
-            { {% include 'DataType/EIIdentifier' with EI: ROL.1 -%} },
+            { {% include 'DataType/CX' CX: PID.21 -%} },
+            { {% include 'DataType/EIIdentifier' EI: ROL.1 -%} },
             {
-                {% include 'DataType/PLN' with PLN: PRT.24 -%}
+                {% include 'DataType/PLN' PLN: PRT.24 -%}
             },
         ],
         "relationship":
         [
-            { {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/Role', CWE: ROL.3 -%} },
-            { {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/Relationship', CWE: NK1.3 -%} },
+            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Role', CWE: ROL.3 -%} },
+            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Relationship', CWE: NK1.3 -%} },
             {
-                {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/Relationship', CWE: NK1.7 -%}
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Relationship', CWE: NK1.7 -%}
             },
-            { {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/Participation', CWE: PRT.4 -%} },
+            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: PRT.4 -%} },
         ],
-        {% include 'DataType/XCNRelatedPerson' with XCN: ROL.4 -%}
+        {% include 'DataType/XCNRelatedPerson' XCN: ROL.4 -%}
         "period":
         {
             "start":"{{ ROL.5.Value | format_as_date_time }}",
@@ -32,44 +32,44 @@
         },
         "address":
         [
-            { {% include 'DataType/XAD' with XAD: ROL.11 -%} },
+            { {% include 'DataType/XAD' XAD: ROL.11 -%} },
             {
-                {% include 'DataType/XAD' with XAD: NK1.4 -%}
+                {% include 'DataType/XAD' XAD: NK1.4 -%}
             },
             {
-                {% include 'DataType/XAD' with XAD: NK1.32 -%}
+                {% include 'DataType/XAD' XAD: NK1.32 -%}
             },
-            { {% include 'DataType/XAD' with XAD: PRT.14 -%} },
+            { {% include 'DataType/XAD' XAD: PRT.14 -%} },
         ],
         "telecom":
         [
-            { {% include 'DataType/XTN' with XTN: ROL.12 -%} },
+            { {% include 'DataType/XTN' XTN: ROL.12 -%} },
             {% for n in NK1.5.Repeats -%}
             {
-                {% include 'DataType/XTN' with XTN: n -%}
+                {% include 'DataType/XTN' XTN: n -%}
             },
             {% endfor -%}
             {
-                {% include 'DataType/XTN' with XTN: NK1.6 -%}
+                {% include 'DataType/XTN' XTN: NK1.6 -%}
                 {% if NK1.6 -%}
                 "use":"work",
                 {% endif -%}
             },
             {
-                {% include 'DataType/XTN' with XTN: NK1.31 -%}
+                {% include 'DataType/XTN' XTN: NK1.31 -%}
             },
             {
-                {% include 'DataType/XTN' with XTN: NK1.40 -%}
+                {% include 'DataType/XTN' XTN: NK1.40 -%}
             },
             {
-                {% include 'DataType/XTN' with XTN: NK1.41 -%}
+                {% include 'DataType/XTN' XTN: NK1.41 -%}
             },
-            { {% include 'DataType/XTN' with XTN: PRT.15 -%} },
+            { {% include 'DataType/XTN' XTN: PRT.15 -%} },
         ],
         "name":
         [
-            { {% include 'DataType/XPN' with XPN: NK1.2 -%} },
-            { {% include 'DataType/XPN' with XPN: NK1.30 -%} },
+            { {% include 'DataType/XPN' XPN: NK1.2 -%} },
+            { {% include 'DataType/XPN' XPN: NK1.30 -%} },
         ],
         "gender":"{{ NK1.15.Value | get_property: 'CodeSystem/Gender', 'code' }}",
         "birthDate":"{{ NK1.16.Value | add_hyphens_date }}",
@@ -78,11 +78,11 @@
             {
                 "language":
                 {
-                    {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/Language', CWE: NK1.20 -%}
+                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Language', CWE: NK1.20 -%}
                 },
             },
         ],
-        {% include 'DataType/XCNRelatedPerson' with XCN: PRT.5 -%}
+        {% include 'DataType/XCNRelatedPerson' XCN: PRT.5 -%}
     },
     "request":{
         "method":"PUT",
