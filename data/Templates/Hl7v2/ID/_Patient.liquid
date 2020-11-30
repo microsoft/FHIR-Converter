@@ -1,0 +1,12 @@
+{% capture identifiers -%}
+{% if type == 'First' -%}{{PID.3.Repeats[0].1.Value}},{{PID.3.Repeats[0].4.Value}}
+{% elsif type == 'AssigningAuthority' -%}
+{% for p in PID.3.Repeats -%}
+{% if p.4.Value == authority -%}
+{{p.1.Value}},{{p.4.Value}}
+{% break -%}
+{% endif -%}
+{% endfor -%}
+{% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'Patient', false | generate_uuid }}

@@ -72,14 +72,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         [MemberData(nameof(GetInvalidDataForAddHyphensDate))]
         public void GivenAnInvalidHl7v2DateTime_WhenAddHyphensDate_ExceptionShouldBeThrown(string input)
         {
-            Assert.Throws<DataFormatException>(() => Filters.AddHyphensDate(input));
+            Assert.Throws<RenderException>(() => Filters.AddHyphensDate(input));
         }
 
         [Theory]
         [MemberData(nameof(GetInvalidDataForFormatAsDateTime))]
         public void GivenAnInvalidHl7v2DateTime_WhenFormatAsDateTime_ExceptionShouldBeThrown(string input)
         {
-            Assert.Throws<DataFormatException>(() => Filters.FormatAsDateTime(input));
+            Assert.Throws<RenderException>(() => Filters.FormatAsDateTime(input));
         }
     }
 }

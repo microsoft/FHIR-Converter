@@ -1,0 +1,2 @@
+﻿{% capture identifiers -%}{{AL1.2.Value}},{{AL1.3.Value}},{{AL1.4.Value}},{{AL1.5.Value}}{% endcapture -%}
+{{ identifiers | generate_id_input: 'AllergyIntolerance', true, baseId | generate_uuid }}

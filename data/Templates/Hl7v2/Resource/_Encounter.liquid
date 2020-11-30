@@ -5,7 +5,7 @@
         "id":"{{ ID }}",
         "class":
         {
-            {% include 'DataType/CWECoding' with mapping: 'CodeSystem/EncounterClass', CWE: PV1.2 -%}
+            {% include 'DataType/CWECoding' mapping: 'CodeSystem/EncounterClass', CWE: PV1.2 -%}
         },
         {% if PV1.45 == null -%}
         "status":"unknown",
@@ -43,29 +43,29 @@
         ],
         "type":
         [
-            { {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/AdmissionType', CWE: PV1.4 -%} },
+            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/AdmissionType', CWE: PV1.4 -%} },
         ],
         "hospitalization":
         {
             "preAdmissionIdentifier":
             {
-                {% include 'DataType/CX' with CX: PV1.5 -%}
+                {% include 'DataType/CX' CX: PV1.5 -%}
             },
             "reAdmission":
             {
-                {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/ReadmissionIndicator', CWE: PV1.13 -%}
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/ReadmissionIndicator', CWE: PV1.13 -%}
             },
             "admitSource":
             {
-                {% include 'DataType/CWECodeableConcept' with CWE: PV1.14 -%}
+                {% include 'DataType/CWECodeableConcept' CWE: PV1.14 -%}
             },
             "dischargeDisposition":
             {
-                {% include 'DataType/CWECodeableConcept' with CWE: PV1.36 -%}
+                {% include 'DataType/CWECodeableConcept' CWE: PV1.36 -%}
             },
             "dietPreference":
             [
-                { {% include 'DataType/CWECodeableConcept' with CWE: PV1.38 -%} },
+                { {% include 'DataType/CWECodeableConcept' CWE: PV1.38 -%} },
             ],
         },
         "participant":
@@ -187,12 +187,12 @@
         ],
         "serviceType":
         {
-            {% include 'DataType/CWECodeableConcept' with CWE: PV1.10 -%}
+            {% include 'DataType/CWECodeableConcept' CWE: PV1.10 -%}
         },
         "identifier":
         [
             {
-                {% include 'DataType/CX' with CX: PV1.19 -%}
+                {% include 'DataType/CX' CX: PV1.19 -%}
                 "type":
                 {
                     "coding":
@@ -209,7 +209,7 @@
                 },
             },
             {
-                {% include 'DataType/CX' with CX: PV1.50 -%}
+                {% include 'DataType/CX' CX: PV1.50 -%}
             },
         ],
         "period":
@@ -219,7 +219,7 @@
         },
         "reasonCode":
         [
-            { {% include 'DataType/CWECodeableConcept' with CWE: PV2.3 -%} },
+            { {% include 'DataType/CWECodeableConcept' CWE: PV2.3 -%} },
         ],
         "length":
         {
@@ -237,7 +237,7 @@
         },
         "priority":
         {
-            {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/EncounterPriority', CWE: PV2.25 -%}
+            {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/EncounterPriority', CWE: PV2.25 -%}
         },
     },
     "request":{

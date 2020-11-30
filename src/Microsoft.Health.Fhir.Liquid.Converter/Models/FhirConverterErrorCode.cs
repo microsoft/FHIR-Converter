@@ -12,34 +12,35 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
     /// </summary>
     public enum FhirConverterErrorCode
     {
-        // DataFormatException
-        NullOrEmptyInput = 1101,
-        InvalidHl7v2Message = 1102,
-        MissingHl7v2Separators = 1103,
-        DuplicateHl7v2Separators = 1104,
-        InvalidHl7v2EscapeCharacter = 1105,
-        InvalidHexadecimalNumber = 1106,
-        InvalidDateTimeFormat = 1107,
-        InvalidIdGenerationInput = 1108,
-
         // InitializeException
-        TemplateFolderNotFound = 1201,
-        TemplateLoadingError = 1202,
-        InvalidCodeSystemMapping = 1203,
-        TemplateSyntaxError = 1204,
+        TemplateFolderNotFound = 1101,
+        TemplateLoadingError = 1102,
+        InvalidCodeSystemMapping = 1103,
+        TemplateSyntaxError = 1104,
 
         // DataParseException
-        InputParsingError = 1301,
+        InputParsingError = 1201,
+        NullOrEmptyInput = 1202,
+        InvalidHl7v2Message = 1203,
+        MissingHl7v2Separators = 1204,
+        DuplicateHl7v2Separators = 1205,
+        InvalidHl7v2EscapeCharacter = 1206,
+
+        // This could be the inner exception of RenderException because it is used in filters
+        InvalidHexadecimalNumber = 1207,
 
         // RenderException
-        TemplateRenderingError = 1401,
-        PropertyNotFound = 1402,
-        NullOrEmptyRootTemplate = 1403,
-        NullTemplateProvider = 1404,
-        TemplateNotFound = 1405,
+        TemplateRenderingError = 1301,
+        PropertyNotFound = 1302,
+        NullOrEmptyRootTemplate = 1303,
+        NullTemplateProvider = 1304,
+        TemplateNotFound = 1305,
+        TimeoutError = 1306,
+        InvalidDateTimeFormat = 1307,
+        InvalidIdGenerationInput = 1308,
 
         // PostprocessException
-        JsonParsingError = 1501,
-        JsonMergingError = 1502,
+        JsonParsingError = 1401,
+        JsonMergingError = 1402,
     }
 }

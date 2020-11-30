@@ -10,11 +10,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
 {
     public class Hl7v2Data : Drop
     {
-        public Hl7v2Data()
+        public Hl7v2Data(string value = null)
         {
+            Value = value;
             Meta = new List<string>();
             Data = new List<Hl7v2Segment>();
         }
+
+        public string Value { get; set; }
 
         public List<string> Meta { get; set; }
 

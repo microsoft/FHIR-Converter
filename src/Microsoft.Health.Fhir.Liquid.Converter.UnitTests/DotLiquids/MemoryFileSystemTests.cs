@@ -11,7 +11,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Xunit;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
+namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
 {
     public class MemoryFileSystemTests
     {

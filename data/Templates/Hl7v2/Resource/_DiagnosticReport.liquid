@@ -6,7 +6,7 @@
         "identifier":
         [
             {
-                {% include 'DataType/EIIdentifier' with EI: ORC.2 -%}
+                {% include 'DataType/EIIdentifier' EI: ORC.2 -%}
                 "type":
                 {
                     "coding":
@@ -35,7 +35,7 @@
                 },
             },
             {
-                {% include 'DataType/EIIdentifier' with EI: ORC.3 -%}
+                {% include 'DataType/EIIdentifier' EI: ORC.3 -%}
                 "type":
                 {
                     "coding":
@@ -52,7 +52,7 @@
                 },
             },
             {
-                {% include 'DataType/EIIdentifier' with EI: ORC.4 -%}
+                {% include 'DataType/EIIdentifier' EI: ORC.4 -%}
                 "type":
                 {
                     "coding":
@@ -68,8 +68,8 @@
                     ],
                 },
             },
-            { {% include 'DataType/EIIdentifier' with EI: OBR.2 -%} },
-            { {% include 'DataType/EIIdentifier' with EI: OBR.3 -%} },
+            { {% include 'DataType/EIIdentifier' EI: OBR.2 -%} },
+            { {% include 'DataType/EIIdentifier' EI: OBR.3 -%} },
         ],
         "effectiveDateTime":"{{ ORC.9.Value | format_as_date_time }}",
         {% if OBR.8 == null -%}
@@ -77,7 +77,7 @@
         {% endif -%}
         "code":
         {
-            {% include 'DataType/CWECodeableConcept' with CWE: OBR.4 -%}
+            {% include 'DataType/CWECodeableConcept' CWE: OBR.4 -%}
         },
         "effectivePeriod":
         {
@@ -89,7 +89,7 @@
         "issued":"{{ OBR.22.Value | format_as_date_time }}",
         "category":
         [
-            { {% include 'DataType/CWECodeableConcept' with CWE: OBR.24 -%} },
+            { {% include 'DataType/CWECodeableConcept' CWE: OBR.24 -%} },
         ],
         "status":"{{ OBR.25.Value | get_property: 'CodeSystem/ResultStatus', 'code' }}",
     },

@@ -120,6 +120,9 @@
   <data name="DuplicateHl7v2Separators" xml:space="preserve">
     <value>MSH segment contains duplicate separators.</value>
   </data>
+  <data name="EvaluateTagSyntaxError" xml:space="preserve">
+    <value>Syntax Error in 'evaluate' tag - Valid syntax: evaluate [output] using [template] [inputs]</value>
+  </data>
   <data name="InputParsingError" xml:space="preserve">
     <value>The input data could not be parsed correctly: {0}</value>
   </data>
@@ -162,6 +165,9 @@
   <data name="PropertyNotFound" xml:space="preserve">
     <value>Property '{0}' not found in {1}.</value>
   </data>
+  <data name="TemplateFileSystemNotFound" xml:space="preserve">
+    <value>Template file system not found.</value>
+  </data>
   <data name="TemplateFolderNotFound" xml:space="preserve">
     <value>Template folder not found: {0}.</value>
   </data>
@@ -176,5 +182,8 @@
   </data>
   <data name="TemplateSyntaxError" xml:space="preserve">
     <value>Syntax error in template '{0}': {1}</value>
+  </data>
+  <data name="TimeoutError" xml:space="preserve">
+    <value>Time out when rendering templates.</value>
   </data>
 </root>

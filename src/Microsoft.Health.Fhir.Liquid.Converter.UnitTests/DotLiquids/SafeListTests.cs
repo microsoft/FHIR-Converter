@@ -3,9 +3,10 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Xunit;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
+namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
 {
     public class SafeListTests
     {

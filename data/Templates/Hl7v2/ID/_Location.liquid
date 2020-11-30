@@ -1,0 +1,11 @@
+{% capture identifiers -%}
+{% if PL.10 -%}{{PL.10.Value}}
+{% elsif PL -%}{{PL.Value}}
+{% elsif XON.10 -%}{{XON.10.Value}}
+{% elsif XON.3 and XON.6 -%}{{XON.3.Value}},{{XON.6.Value}}
+{% elsif XON -%}{{XON.Value}}
+{% elsif HD.1 and HD.2 -%}{{HD.1.Value}},{{HD.2.Value}}
+{% elsif HD -%}{{HD.Value}}
+{% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'Location', false | generate_uuid }}
