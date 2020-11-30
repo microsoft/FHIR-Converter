@@ -71,7 +71,8 @@ Base IDs could be used to generate IDs for other resources that relate to them.
 It helps enrich the input for hash and thus reduce ID collision.
 For example, a Patient ID is used as part of hash input for an AllergyIntolerance ID, as this resource is closely related with a specific patient.
 
-Below is an example where an AllergyIntolerance ID is generated, using `ID/AllergyIntolerance` template, AL1 segment and patient ID as its base ID.
+Below is an example where an AllergyIntolerance ID is generated, using ID/AllergyIntolerance template, AL1 segment and patient ID as its base ID.
+The syntax is `{% evaluate [id] using [template] [variables] -%}`.
 ```
 {% evaluate allergyIntoleranceId using 'ID/AllergyIntolerance' AL1: al1Segment, baseId: patientId -%}
 ```

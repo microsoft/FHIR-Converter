@@ -70,7 +70,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Syntax Error in &apos;evaluate&apos; tag - Valid syntax: evaluate [varaible] using [Template].
+        ///   Looks up a localized string similar to Syntax Error in &apos;evaluate&apos; tag - Valid syntax: evaluate [output] using [template] [inputs].
         /// </summary>
         internal static string EvaluateTagSyntaxError {
             get {
