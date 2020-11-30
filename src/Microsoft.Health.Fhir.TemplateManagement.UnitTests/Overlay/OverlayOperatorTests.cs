@@ -140,7 +140,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             var diffLayers = _overlayOperator.GenerateDiffLayer(fileLayer, baseFileLayer);
 
             File.Delete("TestData/UserFolder/.image/base/defaultlayer.tar.gz");
-            Assert.Equal(814, diffLayers.FileContent.Count());
+            Assert.Equal(818, diffLayers.FileContent.Count());
             Assert.Equal(2, diffLayers.SequenceNumber);
         }
 
