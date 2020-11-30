@@ -6,6 +6,7 @@
 using System;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
 {
@@ -26,7 +27,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
             else
             {
                 ErrorType = exception.GetType().ToString();
-                ErrorCode = exception is FhirConverterException fce ? fce.FhirConverterErrorCode.ToString() : string.Empty;
+                ErrorCode = exception is FhirConverterException fce ? fce.FhirConverterErrorCode.ToString() :
+                    (exception is TemplateManagementException tme ? tme.TemplateManagementErrorCode.ToString() : string.Empty);
                 ErrorMessage = exception.Message;
                 ErrorDetails = exception.ToString();
             }

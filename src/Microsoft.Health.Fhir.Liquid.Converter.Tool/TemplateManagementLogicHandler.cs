@@ -38,9 +38,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                     fileManager.UnpackOCIImage();
                     Logger.LogInformation($"Succeed to pull templates to {options.OutputTemplateFolder} folder");
                 }
+
+                Logger.LogInformation("Pull process complete.");
             }
             catch (Exception ex)
             {
+                Logger.LogError("Fail to pull templates.");
                 var error = new ConverterError(ex);
                 TextWriter errorWriter = Console.Error;
                 errorWriter.WriteLine(JsonConvert.SerializeObject(error));
@@ -57,9 +60,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 {
                     Logger.LogInformation($"Succeed to push new templates to {options.ImageReference}");
                 }
+
+                Logger.LogInformation("Push process complete.");
             }
             catch (Exception ex)
             {
+                Logger.LogError("Fail to push templates.");
                 var error = new ConverterError(ex);
                 TextWriter errorWriter = Console.Error;
                 errorWriter.WriteLine(JsonConvert.SerializeObject(error));
