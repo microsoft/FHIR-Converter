@@ -6,15 +6,15 @@
         "identifier":
         [
             {
-                {% include 'DataType/CX' with CX: PID.2 -%}
+                {% include 'DataType/CX' CX: PID.2 -%}
             },
             {% for p in PID.3.Repeats -%}
             {
-                {% include 'DataType/CX' with CX: p -%}
+                {% include 'DataType/CX' CX: p -%}
             },
             {% endfor -%}
             {
-                {% include 'DataType/CX' with CX: PID.4 -%}
+                {% include 'DataType/CX' CX: PID.4 -%}
             },
             {
                 "value":"{{ PID.19.Value }}",
@@ -37,16 +37,16 @@
                 {% endif -%}
             },
             {
-                {% include 'DataType/DLN' with DLN: PID.20 -%}
+                {% include 'DataType/DLN' DLN: PID.20 -%}
             },
         ],
         "name":
         [
             {
-                {% include 'DataType/XPN' with XPN: PID.5 -%}
+                {% include 'DataType/XPN' XPN: PID.5 -%}
             },
             {
-                {% include 'DataType/XPN' with XPN: PID.9 -%}
+                {% include 'DataType/XPN' XPN: PID.9 -%}
             },
         ],
         "birthDate":"{{ PID.7.Value | add_hyphens_date }}",
@@ -54,7 +54,7 @@
         "address":
         [
             {
-                {% include 'DataType/XAD' with XAD: PID.11 -%}
+                {% include 'DataType/XAD' XAD: PID.11 -%}
             },
             {
                 "district":"{{ PID.12.Value }}",
@@ -64,7 +64,7 @@
         [
             {% for p in PID.13.Repeats -%}
             {
-                {% include 'DataType/XTN' with XTN: p -%}
+                {% include 'DataType/XTN' XTN: p -%}
                 {% if PID.13 -%}
                 "use":"home",
                 {% endif -%}
@@ -72,7 +72,7 @@
             {% endfor -%}
             {% for p in PID.14.Repeats -%}
             {
-                {% include 'DataType/XTN' with XTN: p -%}
+                {% include 'DataType/XTN' XTN: p -%}
                 {% if PID.14 -%}
                 "use":"work",
                 {% endif -%}
@@ -80,7 +80,7 @@
             {% endfor -%}
             {% for p in PID.40.Repeats -%}
             {
-                {% include 'DataType/XTN' with XTN: p -%}
+                {% include 'DataType/XTN' XTN: p -%}
             },
             {% endfor -%}
         ],
@@ -89,7 +89,7 @@
             {
                 "language":
                 {
-                    {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/Language', CWE: PID.15 -%}
+                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Language', CWE: PID.15 -%}
                 },
                 {% if PID.15 -%}
                 "preferred":true,
@@ -98,7 +98,7 @@
         ],
         "maritalStatus":
         {
-            {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/MaritalStatus', CWE: PID.16 -%}
+            {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/MaritalStatus', CWE: PID.16 -%}
         },
         {% if PID.25 == null -%}
         "multipleBirthBoolean":"{{ PID.24.Value | get_property: 'CodeSystem/Yes_No', 'code' }}",
@@ -118,32 +118,32 @@
             {
                 "name":
                 {
-                    {% include 'DataType/XPN' with XPN: NK1.2 -%}
+                    {% include 'DataType/XPN' XPN: NK1.2 -%}
                 },
                 "address":
                 {
-                    {% include 'DataType/XAD' with XAD: NK1.4 -%}
+                    {% include 'DataType/XAD' XAD: NK1.4 -%}
                 },
                 "telecom":
                 [
                     {% for n in NK1.5.Repeats -%}
                     {
-                        {% include 'DataType/XTN' with XTN: n -%}
+                        {% include 'DataType/XTN' XTN: n -%}
                     },
                     {% endfor -%}
                     {
-                        {% include 'DataType/XTN' with XTN: NK1.6 -%}
+                        {% include 'DataType/XTN' XTN: NK1.6 -%}
                     },
                     {
-                        {% include 'DataType/XTN' with XTN: NK1.40 -%}
+                        {% include 'DataType/XTN' XTN: NK1.40 -%}
                     },
                     {
-                        {% include 'DataType/XTN' with XTN: NK1.41 -%}
+                        {% include 'DataType/XTN' XTN: NK1.41 -%}
                     },
                 ],
                 "relationship":
                 [
-                    { {% include 'DataType/CWECodeableConcept' with mapping: 'CodeSystem/ContactRole', CWE: NK1.7 -%} },
+                    { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/ContactRole', CWE: NK1.7 -%} },
                 ],
                 "period":
                 {

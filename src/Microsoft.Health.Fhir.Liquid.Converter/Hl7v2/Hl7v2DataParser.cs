@@ -20,12 +20,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 
         public Hl7v2Data Parse(string message)
         {
-            var result = new Hl7v2Data();
+            var result = new Hl7v2Data(message);
             try
             {
                 if (string.IsNullOrEmpty(message))
                 {
-                    throw new DataFormatException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
+                    throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
                 }
 
                 var segments = message.Split(SegmentSeparators, StringSplitOptions.RemoveEmptyEntries);

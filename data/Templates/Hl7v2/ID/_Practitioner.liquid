@@ -1,0 +1,9 @@
+{% capture identifiers -%}
+{% if CNN.1 and CNN.9 -%}{{CNN.1.Value}},{{CNN.9.Value}}
+{% elsif CNN.1 and CNN.10 -%}{{CNN.1.Value}},{{CNN.10.Value}}
+{% elsif CNN -%}{{CNN.Value}}
+{% elsif XCN.1 and XCN.9 -%}{{XCN.1.Value}},{{XCN.9.Value}}
+{% elsif XCN -%}{{XCN.Value}}
+{% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'Practitioner', false | generate_uuid }}

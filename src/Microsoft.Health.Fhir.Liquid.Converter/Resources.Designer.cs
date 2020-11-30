@@ -70,6 +70,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Syntax Error in &apos;evaluate&apos; tag - Valid syntax: evaluate [varaible] using [Template].
+        /// </summary>
+        internal static string EvaluateTagSyntaxError {
+            get {
+                return ResourceManager.GetString("EvaluateTagSyntaxError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The input data could not be parsed correctly: {0}.
         /// </summary>
         internal static string InputParsingError {
@@ -196,6 +205,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Template file system not found..
+        /// </summary>
+        internal static string TemplateFileSystemNotFound {
+            get {
+                return ResourceManager.GetString("TemplateFileSystemNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Template folder not found: {0}..
         /// </summary>
         internal static string TemplateFolderNotFound {
@@ -237,6 +255,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         internal static string TemplateSyntaxError {
             get {
                 return ResourceManager.GetString("TemplateSyntaxError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Time out when rendering templates..
+        /// </summary>
+        internal static string TimeoutError {
+            get {
+                return ResourceManager.GetString("TimeoutError", resourceCulture);
             }
         }
     }

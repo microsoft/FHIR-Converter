@@ -5,14 +5,14 @@
         "id":"{{ ID }}",
         "code":
         {
-            {% include 'DataType/CWECodeableConcept' with CWE: DG1.3 -%}
+            {% include 'DataType/CWECodeableConcept' CWE: DG1.3 -%}
             "text":"{{ DG1.4.Value }}",
         },
         "onsetDateTime":"{{ DG1.5.Value | format_as_date_time }}",
         "recordedDate":"{{ DG1.19.Value | format_as_date_time }}",
         "identifier":
         [
-            { {% include 'DataType/EIIdentifier' with EI: DG1.20 -%} },
+            { {% include 'DataType/EIIdentifier' EI: DG1.20 -%} },
         ],
         "verificationStatus":
         {

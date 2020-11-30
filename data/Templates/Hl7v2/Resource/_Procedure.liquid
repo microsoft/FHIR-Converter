@@ -26,15 +26,15 @@
         },
         "category":
         {
-            {% include 'DataType/CWECodeableConcept' with CWE: PR1.6 -%}
+            {% include 'DataType/CWECodeableConcept' CWE: PR1.6 -%}
         },
         "reasonCode":
         [
-            { {% include 'DataType/CWECodeableConcept' with CWE: PR1.15 -%} },
+            { {% include 'DataType/CWECodeableConcept' CWE: PR1.15 -%} },
         ],
         "identifier":
         [
-            { {% include 'DataType/EIIdentifier' with EI: PR1.19 -%} },
+            { {% include 'DataType/EIIdentifier' EI: PR1.19 -%} },
         ],
         "location":
         {

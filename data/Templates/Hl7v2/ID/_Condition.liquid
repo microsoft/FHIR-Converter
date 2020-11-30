@@ -1,0 +1,7 @@
+﻿{% capture identifiers -%}
+{% if DG1.3 and DG1.5 -%}{{DG1.3.Value}},{{DG1.5.Value}}
+{% elsif DG1.3 and DG1.19 -%}{{DG1.3.Value}},{{DG1.19.Value}}
+{% elsif DG1 -%}{{DG1.Value}}
+{% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'Condition', true, baseId | generate_uuid }}

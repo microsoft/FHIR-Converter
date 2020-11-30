@@ -1,0 +1,11 @@
+{% capture identifiers -%}
+{% if TQ1 -%}{{TQ1.Value}}
+{% elsif ORC.2.1 and ORC.2.2 -%}{{ORC.2.1.Value}},{{ORC.2.2.Value}}
+{% elsif ORC.2.3 and ORC.2.4 -%}{{ORC.2.3.Value}},{{ORC.2.4.Value}}
+{% elsif ORC -%}{{ORC.Value}}
+{% elsif OBR.2.1 and OBR.2.2 -%}{{OBR.2.1.Value}},{{OBR.2.2.Value}}
+{% elsif OBR.2.3 and OBR.2.4 -%}{{OBR.2.3.Value}},{{OBR.2.4.Value}}
+{% elsif OBR -%}{{OBR.Value}}
+{% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'ServiceRequest', true, baseId | generate_uuid }}

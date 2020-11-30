@@ -1,0 +1,6 @@
+{% capture identifiers -%}
+{% if MSH.3 and MSH.4 and MSH.10 %}{{MSH.3.Value}},{{MSH.4.Value}},{{MSH.10.Value}}
+{% elsif MSH -%}{{MSH.Value}}
+{% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'MessageHeader', false | generate_uuid }}

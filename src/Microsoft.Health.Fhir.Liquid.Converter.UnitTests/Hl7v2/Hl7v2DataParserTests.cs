@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
@@ -30,7 +31,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
             Assert.Equal(FhirConverterErrorCode.InputParsingError, exception.FhirConverterErrorCode);
 
             var innerException = exception.InnerException as FhirConverterException;
-            Assert.True(innerException is DataFormatException);
+            Assert.True(innerException is DataParseException);
             Assert.Equal(FhirConverterErrorCode.NullOrEmptyInput, innerException.FhirConverterErrorCode);
         }
 

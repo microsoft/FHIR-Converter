@@ -6,7 +6,7 @@
         "identifier":
         [
             {
-                {% include 'DataType/EIIdentifier' with EI: ORC.2 -%}
+                {% include 'DataType/EIIdentifier' EI: ORC.2 -%}
                 "type":
                 {
                     "coding":
@@ -23,7 +23,7 @@
                 },
             },
             {
-                {% include 'DataType/EIIdentifier' with EI: ORC.3 -%}
+                {% include 'DataType/EIIdentifier' EI: ORC.3 -%}
                 "type":
                 {
                     "coding":
@@ -69,17 +69,17 @@
         "occurrenceDateTime":"{{ RXA.3.Value | format_as_date_time }}",
         "vaccineCode":
         {
-            {% include 'DataType/CWECodeableConcept' with CWE: RXA.5 -%}
+            {% include 'DataType/CWECodeableConcept' CWE: RXA.5 -%}
         },
         "lotNumber":"{{ RXA.15.Value }}",
         "expirationDate":"{{ RXA.16.Value | add_hyphens_date }}",
         "statusReason":
         {
-            {% include 'DataType/CWECodeableConcept' with CWE: RXA.18 -%}
+            {% include 'DataType/CWECodeableConcept' CWE: RXA.18 -%}
         },
         "reasonCode":
         [
-            { {% include 'DataType/CWECodeableConcept' with CWE: RXA.19 -%} },
+            { {% include 'DataType/CWECodeableConcept' CWE: RXA.19 -%} },
         ],
         "status":"{{ RXA.20.Value | get_property: 'CodeSystem/CompletionStatus', 'code' }}",
         {% if RXA.21.Value == "D" -%}
@@ -87,11 +87,11 @@
         {% endif -%}
         "route":
         {
-            {% include 'DataType/CWECodeableConcept' with CWE: RXR.1 -%}
+            {% include 'DataType/CWECodeableConcept' CWE: RXR.1 -%}
         },
         "site":
         {
-            {% include 'DataType/CWECodeableConcept' with CWE: RXR.2 -%}
+            {% include 'DataType/CWECodeableConcept' CWE: RXR.2 -%}
         },
     },
     "request":{

@@ -10,6 +10,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Exceptions
 {
     public class DataParseException : FhirConverterException
     {
+        public DataParseException(FhirConverterErrorCode fhirConverterErrorCode, string message)
+            : base(fhirConverterErrorCode, message)
+        {
+        }
+
         public DataParseException(FhirConverterErrorCode fhirConverterErrorCode, string message, Exception innerException)
             : base(fhirConverterErrorCode, message, innerException)
         {

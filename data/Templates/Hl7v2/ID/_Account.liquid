@@ -1,0 +1,6 @@
+{% capture identifiers -%}
+{% if CX.1 and CX.4 -%}{{CX.1.Value}},{{CX.4.Value}}
+{% elsif CX -%}{{CX.Value}}
+{% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'Account', false | generate_uuid }}

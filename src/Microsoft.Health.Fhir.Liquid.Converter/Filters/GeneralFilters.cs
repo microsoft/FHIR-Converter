@@ -47,27 +47,27 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return memberToken?.Value<string>();
         }
 
-        public static string GenerateUUID(object input)
+        public static string GenerateIdInput(string segment, string resourceType, bool isBaseIdRequired, string baseId = null)
         {
-            if (input is string)
+            if (string.IsNullOrWhiteSpace(segment))
             {
-                return GenerateUuidFromString((string)input);
+                return null;
             }
-            else if (input is Hl7v2Segment || input is Hl7v2Field || input is Hl7v2Component)
+
+            if (string.IsNullOrEmpty(resourceType) || (isBaseIdRequired && string.IsNullOrEmpty(baseId)))
             {
-                return GenerateUuidFromString(input.GetType().GetProperty("Value").GetValue(input, null)?.ToString());
+                throw new RenderException(FhirConverterErrorCode.InvalidIdGenerationInput, Resources.InvalidIdGenerationInput);
             }
-            else
-            {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidIdGenerationInput, Resources.InvalidIdGenerationInput);
-            }
+
+            segment = segment.Trim();
+            return baseId != null ? $"{resourceType}_{segment}_{baseId}" : $"{resourceType}_{segment}";
         }
 
-        private static string GenerateUuidFromString(string input)
+        public static string GenerateUUID(string input)
         {
-            if (string.IsNullOrEmpty(input))
+            if (string.IsNullOrWhiteSpace(input))
             {
-                throw new DataFormatException(FhirConverterErrorCode.InvalidIdGenerationInput, Resources.InvalidIdGenerationInput);
+                return null;
             }
 
             var bytes = Encoding.UTF8.GetBytes(input);

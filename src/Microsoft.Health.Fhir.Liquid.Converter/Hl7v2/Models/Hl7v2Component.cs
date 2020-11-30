@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using DotLiquid;
+using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
