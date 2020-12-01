@@ -8,16 +8,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DotLiquid;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
@@ -27,7 +25,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string token;
         private readonly TemplateCollectionConfiguration _config = new TemplateCollectionConfiguration();
         private readonly IMemoryCache cache = new MemoryCache(new MemoryCacheOptions());
-        private readonly string baseLayerTemplatePath = "TestData/TarGzFiles/DefaultTemplates.tar.gz";
+        private readonly string baseLayerTemplatePath = "TestData/TarGzFiles/baseLayer.tar.gz";
         private readonly string userLayerTemplatePath = "TestData/TarGzFiles/userV2.tar.gz";
         private readonly string invalidTarGzPath = "TestData/TarGzFiles/invalid1.tar.gz";
         private readonly string invalidTemplatePath = "TestData/TarGzFiles/invalidTemplates.tar.gz";
@@ -71,7 +69,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         private async Task InitMultiLayerImageAsync()
         {
-            List<string> templateFiles = new List<string> { userLayerTemplatePath, baseLayerTemplatePath };
+            List<string> templateFiles = new List<string> { baseLayerTemplatePath, userLayerTemplatePath };
             await _containerRegistry.GenerateTemplateImageAsync(testMultiLayerImageReference, templateFiles);
         }
 
@@ -89,19 +87,21 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public static IEnumerable<object[]> GetValidImageInfoWithTag()
         {
-            yield return new object[] { new List<int> { 817 }, "templatetest", "onelayer" };
-            yield return new object[] { new List<int> { 817, 767 }, "templatetest", "multilayers" };
+            yield return new object[] { new List<int> { 838 }, "templatetest", "onelayer" };
+            yield return new object[] { new List<int> { 767, 838 }, "templatetest", "multilayers" };
         }
 
         public static IEnumerable<object[]> GetHl7v2DataAndTemplateImageReference()
         {
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\IZ_1_1.1_Admin_Child_Max_Message.hl7", "VXU_V04", @"TestData\Expected\Hl7v2\VXU_V04\IZ_1_1.1_Admin_Child_Max_Message-expected.json" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\LAB-ORU-1.hl7", "ORU_R01", @"TestData\Expected\Hl7v2\ORU_R01\LAB-ORU-1-expected.json" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\MDHHS-OML-O21-1.hl7", "OML_O21", @"TestData\Expected\Hl7v2\OML_O21\MDHHS-OML-O21-1-expected.json" };
+            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\ADT01-23.hl7", "ADT_A01"};
+            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\IZ_1_1.1_Admin_Child_Max_Message.hl7", "VXU_V04" };
+            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\LAB-ORU-1.hl7", "ORU_R01" };
+            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\MDHHS-OML-O21-1.hl7", "OML_O21" };
         }
 
         public static IEnumerable<object[]> GetHl7v2DataAndTemplateImageReferenceWithoutGivenTemplate()
         {
+            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\ADT01-23.hl7", "ADT_A01" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\IZ_1_1.1_Admin_Child_Max_Message.hl7", "VXU_V04" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\LAB-ORU-1.hl7", "ORU_R01" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\MDHHS-OML-O21-1.hl7", "OML_O21" };
@@ -235,7 +235,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHl7v2DataAndTemplateImageReference))]
-        public async Task GetTemplateCollectionFromACR_WhenGivenHl7v2DataForConverting__ExpectedFhirResourceShouldBeReturnedAsync(string hl7v2Data, string entryTemplate, string expectedResult)
+        public async Task GetTemplateCollectionFromACR_WhenGivenHl7v2DataForConverting__ExpectedFhirResourceShouldBeReturnedAsync(string hl7v2Data, string entryTemplate)
         {
             if (_containerRegistryInfo == null)
             {
@@ -245,12 +245,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
             var templateCollectionProvider = factory.CreateTemplateCollectionProvider(testOneLayerImageReference, token);
             var templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
-            TestByTemplate(hl7v2Data, expectedResult, entryTemplate, templateCollection);
+            TestByTemplate(hl7v2Data, entryTemplate, templateCollection);
         }
 
         [Theory]
         [MemberData(nameof(GetHl7v2DataAndTemplateImageReferenceWithoutGivenTemplate))]
-        public async Task GetTemplateCollectionFromACR_WhenGivenHl7v2DataForConverting_IfTemplateNotExist_ExeceptionWillBeThrownAsync(string hl7v2Data, string entryTemplate)
+        public async Task GetTemplateCollectionFromACR_WhenGivenHl7v2DataForConverting_IfTemplateNotExist_ExceptionWillBeThrownAsync(string hl7v2Data, string entryTemplate)
         {
             if (_containerRegistryInfo == null)
             {
@@ -259,7 +259,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
             var templateCollectionProvider = factory.CreateTemplateCollectionProvider(testMultiLayerImageReference, token);
-            await Assert.ThrowsAsync<ArgumentNullException>(async () => TestByTemplate(hl7v2Data, null, entryTemplate, await templateCollectionProvider.GetTemplateCollectionAsync()));
+            await Assert.ThrowsAsync<RenderException>(async () => TestByTemplate(hl7v2Data, entryTemplate, await templateCollectionProvider.GetTemplateCollectionAsync()));
         }
 
         [Fact]
@@ -270,7 +270,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
                 return;
             }
 
-            int defaultTemplatesCounts = 817;
+            int defaultTemplatesCounts = 838;
             string imageReference = "MicrosoftHealth/FhirConverter:default";
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
             var templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, string.Empty);
@@ -279,23 +279,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             Assert.Equal(defaultTemplatesCounts, templateCollection.First().Count());
         }
 
-        private void TestByTemplate(string inputFile, string expectedFile, string entryTemplate, List<Dictionary<string, Template>> templateProvider)
+        private void TestByTemplate(string inputFile, string entryTemplate, List<Dictionary<string, Template>> templateProvider)
         {
             var hl7v2Processor = new Hl7v2Processor();
             var inputContent = File.ReadAllText(inputFile);
-            var expectedContent = File.ReadAllText(expectedFile);
             var actualContent = hl7v2Processor.Convert(inputContent, entryTemplate, new Hl7v2TemplateProvider(templateProvider));
 
-            // Remove ID
-            var regex = new Regex(@"(?<=(""urn:uuid:|""|/))([A-Za-z0-9\-]{36})(?="")");
-            expectedContent = regex.Replace(expectedContent, string.Empty);
-            actualContent = regex.Replace(actualContent, string.Empty);
-
-            // Normalize time zone
-            JsonSerializer serializer = new JsonSerializer { DateTimeZoneHandling = DateTimeZoneHandling.Utc };
-            var expectedObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(expectedContent)));
-            var actualObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(actualContent)));
-            Assert.True(JToken.DeepEquals(expectedObject, actualObject));
+            Assert.True(actualContent.Length != 0);
         }
     }
 }
