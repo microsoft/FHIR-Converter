@@ -3,10 +3,9 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
@@ -26,33 +25,30 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         // Content of the layer.
         public virtual byte[] Content { get; set; }
 
-        public static void WriteOCIArtifactLayer(OCIArtifactLayer layer, string directory)
+        public void WriteToFolder(string directory)
         {
-            if (layer == null || layer.Content == null)
+            if (Content == null)
             {
                 return;
             }
 
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
-
-            File.WriteAllBytes(Path.Combine(directory, Path.GetFileName(layer.FileName)), layer.Content);
+            Directory.CreateDirectory(directory);
+            File.WriteAllBytes(Path.Combine(directory, Path.GetFileName(FileName)), Content);
         }
 
-        public static OCIArtifactLayer ReadOCIArtifactLayer(string path)
+        public void ReadFromFolder(string path)
         {
+            EnsureArg.IsNotNull(path, nameof(path));
+
             if (!File.Exists(path))
             {
-                return null;
+                return;
             }
 
-            var artifactLayer = new OCIArtifactLayer() { Content = File.ReadAllBytes(path) };
-            artifactLayer.Digest = StreamUtility.CalculateDigestFromSha256(artifactLayer.Content);
-            artifactLayer.Size = artifactLayer.Content.Length;
-            artifactLayer.FileName = Path.GetFileName(path);
-            return artifactLayer;
+            Content = File.ReadAllBytes(path);
+            Digest = StreamUtility.CalculateDigestFromSha256(Content);
+            Size = Content.Length;
+            FileName = Path.GetFileName(path);
         }
     }
 }

@@ -157,7 +157,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
 
             var fileContents = fileLayer.FileContent;
-            using (Stream stream = File.Open("temp.tar.gz", FileMode.OpenOrCreate, FileAccess.Write))
+            var resultStream = new MemoryStream();
+            using (Stream stream = resultStream)
             using (var tarWriter = new TarWriter(stream, new TarWriterOptions(CompressionType.GZip, true)))
             {
                 foreach (var eachFile in fileContents)
@@ -166,8 +167,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 }
             }
 
-            var resultLayer = new OCIArtifactLayer() { SequenceNumber = fileLayer.SequenceNumber, Content = File.ReadAllBytes("temp.tar.gz"), FileName = fileLayer.FileName };
-            File.Delete("temp.tar.gz");
+            var resultLayer = new OCIArtifactLayer() { SequenceNumber = fileLayer.SequenceNumber, Content = resultStream.ToArray(), FileName = fileLayer.FileName };
             return resultLayer;
         }
 

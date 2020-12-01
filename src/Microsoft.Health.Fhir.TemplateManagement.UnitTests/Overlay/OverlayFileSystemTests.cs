@@ -31,11 +31,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             var testLayer = testlayFs.ReadMergedOCIFileLayer();
 
             string workingFolder = "TestData/workingFolder";
-            if (!Directory.Exists(workingFolder))
-            {
-                Directory.CreateDirectory(workingFolder);
-            }
-
+            Directory.CreateDirectory(workingFolder);
             ClearFolder(workingFolder);
             var overlayFs = new OverlayFileSystem(workingFolder);
             overlayFs.WriteMergedOCIFileLayer(testLayer);

@@ -13,8 +13,6 @@ using Microsoft.Health.Fhir.TemplateManagement.Models;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
-    // Todo need to be async
-
     public class OrasClient : IOrasClient
     {
         private readonly string _imageReference;
@@ -29,7 +27,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
         public async Task<bool> PullImageAsync(string outputFolder)
         {
             string command = $"pull  {_imageReference} -o {outputFolder}";
-            await OrasExecutionAsync(command, ".");
+            await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             return true;
         }
 
@@ -45,6 +43,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
 
             var filePathToPush = Directory.EnumerateFiles(inputFolder, "*.tar.gz", SearchOption.AllDirectories);
+
+            // In order to remove image's directory prefix. (e.g. "layers/layer1.tar.gz" --> "layer1.tar.gz"
+            // Change oras working folder to inputFolder
             foreach (var filePath in filePathToPush)
             {
                 argument += $" {Path.GetRelativePath(inputFolder, filePath)}";
@@ -52,12 +53,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             if (string.IsNullOrEmpty(argument))
             {
-                Console.WriteLine($"No file for push.");
+                Console.WriteLine($"No file to push.");
                 return false;
             }
 
-            // In order to remove image's directory prefix. (e.g. "layers/layer1.tar.gz" --> "layer1.tar.gz"
-            // Change oras working folder into imageLayerFolder
             await OrasExecutionAsync(string.Concat(command, argument), inputFolder);
             return true;
         }
@@ -101,6 +100,5 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 throw new OrasException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
             }
         }
-
     }
 }

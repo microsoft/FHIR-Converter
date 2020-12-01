@@ -39,7 +39,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 {
                     if (Directory.Exists(options.OutputTemplateFolder) && Directory.GetFileSystemEntries(options.OutputTemplateFolder).Length != 0)
                     {
-                        Logger.LogError("The Output folder is not empty. If force to override, please add -f in parameters");
+                        Logger.LogError("The output folder is not empty. If force to override, please add -f in parameters");
                         return;
                     }
                 }
@@ -82,8 +82,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             {
                 Logger.LogError("Fail to push templates.");
                 var error = new ConverterError(ex);
-                TextWriter errorWriter = Console.Error;
-                errorWriter.WriteLine(JsonConvert.SerializeObject(error));
+                ErrorWriter.WriteLine(JsonConvert.SerializeObject(error));
             }
         }
     }

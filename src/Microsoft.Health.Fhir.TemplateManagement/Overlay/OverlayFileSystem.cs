@@ -48,19 +48,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         {
             EnsureArg.IsNotNull(oneLayer, nameof(oneLayer));
 
-            if (!Directory.Exists(WorkingFolder))
-            {
-                Directory.CreateDirectory(WorkingFolder);
-            }
-
+            Directory.CreateDirectory(WorkingFolder);
             foreach (var oneFile in oneLayer.FileContent)
             {
                 var directory = Path.GetDirectoryName(Path.Combine(WorkingFolder, oneFile.Key));
-                if (!Directory.Exists(directory))
-                {
-                    Directory.CreateDirectory(directory);
-                }
-
+                Directory.CreateDirectory(directory);
                 File.WriteAllBytes(Path.Combine(WorkingFolder, oneFile.Key), oneFile.Value);
             }
         }
@@ -77,7 +69,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             ClearFolder(WorkingImageLayerFolder);
             foreach (var layer in imageLayers)
             {
-                OCIArtifactLayer.WriteOCIArtifactLayer(layer, WorkingImageLayerFolder);
+                layer.WriteToFolder(WorkingImageLayerFolder);
             }
         }
 
@@ -93,7 +85,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             ClearFolder(WorkingBaseLayerFolder);
             foreach (var layer in layers)
             {
-                OCIArtifactLayer.WriteOCIArtifactLayer(layer, WorkingBaseLayerFolder);
+                layer.WriteToFolder(WorkingBaseLayerFolder);
             }
         }
 
@@ -133,8 +125,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             var layersPath = Directory.EnumerateFiles(folder, "*.tar.gz", SearchOption.AllDirectories);
             foreach (var tarGzFile in layersPath)
             {
-                var artifactLayer = OCIArtifactLayer.ReadOCIArtifactLayer(tarGzFile);
-                if (artifactLayer != null)
+                var artifactLayer = new OCIArtifactLayer();
+                artifactLayer.ReadFromFolder(tarGzFile);
+                if (artifactLayer.Content != null)
                 {
                     result.Add(artifactLayer);
                 }
