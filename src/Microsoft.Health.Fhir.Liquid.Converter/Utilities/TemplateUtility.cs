@@ -9,6 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using DotLiquid;
 using DotLiquid.Exceptions;
+using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -20,6 +21,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
     {
         private static readonly Regex FormatRegex = new Regex(@"(\\|/)_?");
         private const string TemplateFileExtension = ".liquid";
+
+        // Register "evaluate" tag in before Template.Parse
+        static TemplateUtility()
+        {
+            Template.RegisterTag<Evaluate>("evaluate");
+        }
 
         public static Dictionary<string, Template> ParseHl7v2Templates(Dictionary<string, string> templates)
         {
