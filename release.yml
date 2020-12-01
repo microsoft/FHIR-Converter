@@ -13,7 +13,7 @@ variables:
   testProjects: "**/*Tests/*.csproj"
   publishProject: "**/*Tool/*.csproj"
   buildConfiguration: 'Release'
-  major: 1
+  major: 3
   minor: 0
   bulidnum: $[counter(format('{0}.{1}',variables['major'],variables['minor']), 100)]
   revision: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
