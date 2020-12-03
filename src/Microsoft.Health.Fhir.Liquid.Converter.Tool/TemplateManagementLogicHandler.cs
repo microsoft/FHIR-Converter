@@ -42,8 +42,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                     {
                         ExceptionHandeling(options.ErrorJsonFile, new Exception("The output folder is not empty. If force to override, please add -f in parameters"), "Process Exits: ");
                     }
-
-                    return;
                 }
 
                 OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.OutputTemplateFolder);
