@@ -40,7 +40,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 {
                     if (Directory.Exists(options.OutputTemplateFolder) && Directory.GetFileSystemEntries(options.OutputTemplateFolder).Length != 0)
                     {
-                        ExceptionHandeling(options.ErrorJsonFile, new Exception("The output folder is not empty. If force to override, please add -f in parameters"), "Process Exits: ");
+                        ExceptionHandling(options.ErrorJsonFile, new Exception("The output folder is not empty. If force to override, please add -f in parameters"), "Process Exits: ");
+                        return;
                     }
                 }
 
@@ -52,12 +53,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 }
                 else
                 {
-                    ExceptionHandeling(options.ErrorJsonFile, new TemplateManagementException("Fail to pull templates."), "Process Exits: ");
+                    ExceptionHandling(options.ErrorJsonFile, new TemplateManagementException("Fail to pull templates."), "Process Exits: ");
                 }
             }
             catch (Exception ex)
             {
-                ExceptionHandeling(options.ErrorJsonFile, ex, "Process Exits: Fail to pull templates. ");
+                ExceptionHandling(options.ErrorJsonFile, ex, "Process Exits: Fail to pull templates. ");
             }
         }
 
@@ -67,13 +68,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             {
                 if (!Directory.Exists(options.InputTemplateFolder))
                 {
-                    ExceptionHandeling(options.ErrorJsonFile, new Exception($"Input folder {options.InputTemplateFolder} not exist."), "Process Exits: ");
+                    ExceptionHandling(options.ErrorJsonFile, new Exception($"Input folder {options.InputTemplateFolder} not exist."), "Process Exits: ");
                     return;
                 }
 
                 if (Directory.GetFileSystemEntries(options.InputTemplateFolder).Length == 0)
                 {
-                    ExceptionHandeling(options.ErrorJsonFile, new Exception($"Input folder {options.InputTemplateFolder} is empty."), "Process Exits: ");
+                    ExceptionHandling(options.ErrorJsonFile, new Exception($"Input folder {options.InputTemplateFolder} is empty."), "Process Exits: ");
                     return;
                 }
 
@@ -85,16 +86,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 }
                 else
                 {
-                    ExceptionHandeling(options.ErrorJsonFile, new Exception("Fail to push templates."), "Process Exits: ");
+                    ExceptionHandling(options.ErrorJsonFile, new Exception("Fail to push templates."), "Process Exits: ");
                 }
             }
             catch (Exception ex)
             {
-                ExceptionHandeling(options.ErrorJsonFile, ex, "Process Exits: Fail to push templates. ");
+                ExceptionHandling(options.ErrorJsonFile, ex, "Process Exits: Fail to push templates. ");
             }
         }
 
-        private static void ExceptionHandeling(string errorfolder, Exception ex, string helpMassage = "")
+        private static void ExceptionHandling(string errorfolder, Exception ex, string helpMassage = "")
         {
             if (!string.IsNullOrEmpty(errorfolder))
             {
