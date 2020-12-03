@@ -13,6 +13,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
     public class TemplateLayer : ArtifactLayer
     {
+        private const string EmbeddedTemplatesResource = "DefaultTemplates.tar.gz";
+
         public static TemplateLayer ReadFromFile(string filePath)
         {
             try
@@ -22,6 +24,29 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
                 var artifacts = TemplateLayerParser.DecompressRawBytesContent(rawBytes);
                 templateLayer.Content = TemplateLayerParser.ParseToTemplates(artifacts);
                 templateLayer.Digest = StreamUtility.CalculateDigestFromSha256(File.ReadAllBytes(filePath));
+                templateLayer.Size = artifacts.Sum(x => x.Value.Length);
+                return templateLayer;
+            }
+            catch (Exception ex)
+            {
+                throw new DefaultTemplatesInitializeException(TemplateManagementErrorCode.InitializeDefaultTemplateFailed, $"Load default template from {filePath} failed", ex);
+            }
+        }
+
+        public static TemplateLayer ReadFromEmbeddedResource()
+        {
+            try
+            {
+                var templateAssembly = typeof(TemplateLayer).Assembly;
+                using Stream resourceStream = templateAssembly.GetManifestResourceStream(EmbeddedTemplatesResource);
+                using var stream = new MemoryStream();
+                resourceStream.CopyTo(stream);
+                var rawBytes = stream.ToArray();
+
+                TemplateLayer templateLayer = new TemplateLayer();
+                var artifacts = TemplateLayerParser.DecompressRawBytesContent(rawBytes);
+                templateLayer.Content = TemplateLayerParser.ParseToTemplates(artifacts);
+                templateLayer.Digest = StreamUtility.CalculateDigestFromSha256(rawBytes);
                 templateLayer.Size = artifacts.Sum(x => x.Value.Length);
                 return templateLayer;
             }
