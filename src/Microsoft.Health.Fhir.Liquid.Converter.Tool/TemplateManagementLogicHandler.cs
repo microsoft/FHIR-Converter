@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool.Models;
 using Microsoft.Health.Fhir.TemplateManagement;
+using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
@@ -39,9 +40,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 {
                     if (Directory.Exists(options.OutputTemplateFolder) && Directory.GetFileSystemEntries(options.OutputTemplateFolder).Length != 0)
                     {
-                        Logger.LogError("The output folder is not empty. If force to override, please add -f in parameters");
-                        return;
+                        ExceptionHandeling(options.ErrorJsonFile, new Exception("The output folder is not empty. If force to override, please add -f in parameters"), "Process Exits: ");
                     }
+
+                    return;
                 }
 
                 OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.OutputTemplateFolder);
@@ -52,14 +54,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 }
                 else
                 {
-                    Logger.LogError("Process failed");
+                    ExceptionHandeling(options.ErrorJsonFile, new TemplateManagementException("Fail to pull templates."), "Process Exits: ");
                 }
             }
             catch (Exception ex)
             {
-                Logger.LogError("Fail to pull templates.");
-                var error = new ConverterError(ex);
-                ErrorWriter.WriteLine(JsonConvert.SerializeObject(error));
+                ExceptionHandeling(options.ErrorJsonFile, ex, "Process Exits: Fail to pull templates. ");
             }
         }
 
@@ -67,6 +67,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
         {
             try
             {
+                if (!Directory.Exists(options.InputTemplateFolder))
+                {
+                    ExceptionHandeling(options.ErrorJsonFile, new Exception($"Input folder {options.InputTemplateFolder} not exist."), "Process Exits: ");
+                    return;
+                }
+
+                if (Directory.GetFileSystemEntries(options.InputTemplateFolder).Length == 0)
+                {
+                    ExceptionHandeling(options.ErrorJsonFile, new Exception($"Input folder {options.InputTemplateFolder} is empty."), "Process Exits: ");
+                    return;
+                }
+
                 OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.InputTemplateFolder);
                 fileManager.PackOCIImage(options.BuildNewBaseLayer);
                 if (await fileManager.PushOCIImageAsync())
@@ -75,15 +87,35 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 }
                 else
                 {
-                    Logger.LogError("Process failed");
+                    ExceptionHandeling(options.ErrorJsonFile, new Exception("Fail to push templates."), "Process Exits: ");
                 }
             }
             catch (Exception ex)
             {
-                Logger.LogError("Fail to push templates.");
-                var error = new ConverterError(ex);
-                ErrorWriter.WriteLine(JsonConvert.SerializeObject(error));
+                ExceptionHandeling(options.ErrorJsonFile, ex, "Process Exits: Fail to push templates. ");
             }
+        }
+
+        private static void ExceptionHandeling(string errorfolder, Exception ex, string helpMassage = "")
+        {
+            if (!string.IsNullOrEmpty(errorfolder))
+            {
+                var error = new ConverterError(ex);
+                WriteOutputFile(errorfolder, JsonConvert.SerializeObject(error));
+            }
+
+            ErrorWriter.WriteLine(helpMassage + ex.ToString());
+        }
+
+        private static void WriteOutputFile(string outputFilePath, string content)
+        {
+            var outputFileDirectory = Path.GetDirectoryName(outputFilePath);
+            if (!string.IsNullOrEmpty(outputFileDirectory))
+            {
+                Directory.CreateDirectory(outputFileDirectory);
+            }
+
+            File.WriteAllText(outputFilePath, content);
         }
     }
 }

@@ -13,10 +13,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
         [Value(0, Required = true, HelpText = "Image reference: <registry>/<imageName>:<imageTag> or <registry>/<imageName>@<imageDigest>")]
         public string ImageReference { get; set; }
 
-        [Option('o', "OutputTemplateFolder", Required = false, Default = ".", HelpText = "Output template folder")]
+        [Value(1, Required = true, HelpText = "Output template folder")]
         public string OutputTemplateFolder { get; set; }
 
         [Option('f', "ForceOverride", Required = false, Default = false, HelpText = "Force to override existed files")]
         public bool ForceOverride { get; set; }
+
+        [Option('e', "ErrorJsonFile", Required = false, Default = null, HelpText = "Output error message File.")]
+        public string ErrorJsonFile { get; set; }
     }
 }

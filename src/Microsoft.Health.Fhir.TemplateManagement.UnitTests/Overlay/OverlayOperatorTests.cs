@@ -24,9 +24,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
 
         public static IEnumerable<object[]> GetValidOCIArtifact()
         {
-            yield return new object[] { new OCIArtifactLayer() { FileName = "baseLayer.tar.gz", Content = File.ReadAllBytes("TestData/TarGzFiles/baseLayer.tar.gz"), Size = 100, Digest = "test1" }, 818, 1 };
-            yield return new object[] { new OCIArtifactLayer() { FileName = "userV1.tar.gz", Content = File.ReadAllBytes("TestData/TarGzFiles/userV1.tar.gz"), Size = 100, Digest = "test2" }, 813, 2 };
-            yield return new object[] { new OCIArtifactLayer() { FileName = "userV2.tar.gz", Content = File.ReadAllBytes("TestData/TarGzFiles/userV2.tar.gz"), Size = 100, Digest = "test3" }, 767, 2 };
+            yield return new object[] { new OCIArtifactLayer() { FileName = "testdecompress.tar.gz", Content = File.ReadAllBytes("TestData/TarGzFiles/testdecompress.tar.gz"), Size = 100, Digest = "test1" }, 3, -1 };
+            yield return new object[] { new OCIArtifactLayer() { FileName = "layer1.tar.gz", Content = File.ReadAllBytes("TestData/TarGzFiles/layer1.tar.gz"), Size = 100, Digest = "test2" }, 840, 1 };
+            yield return new object[] { new OCIArtifactLayer() { FileName = "layer2.tar.gz", Content = File.ReadAllBytes("TestData/TarGzFiles/layer2.tar.gz"), Size = 100, Digest = "test3" }, 835, 2 };
         }
 
         [Theory]
@@ -64,7 +64,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         [Fact]
         public void GivenAListOfOCIArtifactLayers_WhenExtractLayers_ListOfOCIFileLayersShouldBeReturned()
         {
-            List<string> artifactFilePath = new List<string>() { "TestData/TarGzFiles/baseLayer.tar.gz", "TestData/TarGzFiles/userV1.tar.gz"};
+            List<string> artifactFilePath = new List<string>() { "TestData/TarGzFiles/baseLayer.tar.gz", "TestData/TarGzFiles/userV1.tar.gz" };
             List<OCIArtifactLayer> inputLayers = new List<OCIArtifactLayer>();
             foreach (var oneFile in artifactFilePath)
             {
@@ -79,7 +79,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         [Fact]
         public void GivenAListOfOCIArtifactLayers_WhenSortLayers_ListOfsortedLayersShouldBeReturned()
         {
-            List<string> artifactFilePath = new List<string>() { "TestData/TarGzFiles/testdecompress.tar.gz", "TestData/TarGzFiles/userV2.tar.gz", "TestData/TarGzFiles/userV1.tar.gz", "TestData/TarGzFiles/baseLayer.tar.gz" };
+            List<string> artifactFilePath = new List<string>() { "TestData/TarGzFiles/testdecompress.tar.gz", "TestData/TarGzFiles/layer2.tar.gz", "TestData/TarGzFiles/layer1.tar.gz" };
             List<OCIArtifactLayer> inputLayers = new List<OCIArtifactLayer>();
             foreach (var oneFile in artifactFilePath)
             {
@@ -89,10 +89,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
 
             var fileLayers = _overlayOperator.ExtractOCIFileLayers(inputLayers);
             var sortedLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
-            Assert.Equal("baseLayer.tar.gz", sortedLayers[0].FileName);
-            Assert.Equal("userV2.tar.gz", sortedLayers[1].FileName);
-            Assert.Equal("userV1.tar.gz", sortedLayers[2].FileName);
-            Assert.Equal("testdecompress.tar.gz", sortedLayers[3].FileName);
+            Assert.Equal("layer1.tar.gz", sortedLayers[0].FileName);
+            Assert.Equal("layer2.tar.gz", sortedLayers[1].FileName);
+            Assert.Equal("testdecompress.tar.gz", sortedLayers[2].FileName);
         }
 
         [Fact]
@@ -112,7 +111,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
 
             // Generate Merged OCIFileLAyers
             var mergedLayer = _overlayOperator.MergeOCIFileLayers(sortedLayers);
-            Assert.Equal(5, mergedLayer.FileContent.Count());
+            Assert.Equal(6, mergedLayer.FileContent.Count());
         }
 
         [Fact]
@@ -140,20 +139,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             var diffLayers = _overlayOperator.GenerateDiffLayer(fileLayer, baseFileLayer);
 
             File.Delete("TestData/UserFolder/.image/base/defaultlayer.tar.gz");
-            Assert.Equal(818, diffLayers.FileContent.Count());
+            Assert.Equal(819, diffLayers.FileContent.Count());
             Assert.Equal(2, diffLayers.SequenceNumber);
         }
 
         [Fact]
         public void GivenAOCIFileLayer_WhenPackLayer_AnOCIArtifactLayerShouldBeReturned()
         {
-            string artifactPath = "TestData/TarGzFiles/baseLayer.tar.gz";
+            string artifactPath = "TestData/TarGzFiles/layer1.tar.gz";
             OCIArtifactLayer inputLayer = new OCIArtifactLayer() { Content = File.ReadAllBytes(artifactPath) };
             var overlayOperator = new OverlayOperator();
             var fileLayer = overlayOperator.ExtractOCIFileLayer(inputLayer);
             var diffLayers = _overlayOperator.GenerateDiffLayer(fileLayer, null);
             var packedLayer = _overlayOperator.ArchiveOCIFileLayer(diffLayers);
-            Assert.Equal(inputLayer.Content.Length, packedLayer.Content.Length);
+            Assert.True(inputLayer.Content.Count() == packedLayer.Content.Count());
         }
 
         [Fact]
@@ -175,12 +174,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             }
 
             var packedLayers = _overlayOperator.ArchiveOCIFileLayers(diffLayers);
-            Assert.Equal(inputLayers[0].Content.Length, packedLayers[0].Content.Length);
+            Assert.Equal(inputLayers.Count, packedLayers.Count);
         }
 
         private OCIFileLayer GenerateBaseFileLayer(OverlayFileSystem overlayFs)
         {
-            var fileLayer = overlayFs.ReadMergedOCIFileLayer();
             var baseLayers = overlayFs.ReadBaseLayers();
 
             var fileLayers = _overlayOperator.ExtractOCIFileLayers(baseLayers);

@@ -93,7 +93,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public static IEnumerable<object[]> GetHl7v2DataAndTemplateImageReference()
         {
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\ADT01-23.hl7", "ADT_A01"};
+            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\ADT01-23.hl7", "ADT_A01" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\IZ_1_1.1_Admin_Child_Max_Message.hl7", "VXU_V04" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\LAB-ORU-1.hl7", "ORU_R01" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\MDHHS-OML-O21-1.hl7", "OML_O21" };

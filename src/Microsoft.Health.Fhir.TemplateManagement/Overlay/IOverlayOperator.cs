@@ -25,12 +25,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         List<OCIFileLayer> ExtractOCIFileLayers(List<OCIArtifactLayer> artifactLayers);
 
         /// <summary>
-        /// Sort OCIFileLayers by build number.
-        /// First read build number from digest.json file.
-        /// Then sort layers by build number.
-        /// If read build number failed, the build number is -1 which will be placed at the end of list.
+        /// Stably sort OCIFileLayers by sequence number.
+        /// If sequence number is -1 , the layer will be placed at the end of list.
         /// </summary>
-        /// <param name="fileLayers">Lsit of OCIFileLayers</param>
+        /// <param name="fileLayers">List of OCIFileLayers</param>
         /// <returns>The sorted list of OCIFileLayers</returns>
         List<OCIFileLayer> SortOCIFileLayersBySequenceNumber(List<OCIFileLayer> fileLayers);
 
@@ -44,15 +42,25 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         OCIFileLayer MergeOCIFileLayers(List<OCIFileLayer> sortedLayers);
 
         /// <summary>
-        /// Generate diff OCIFileLayer by comprare two OCIArtifactLayers.
+        /// Generate diff OCIFileLayer by comparing two OCIArtifactLayers.
         /// </summary>
         /// <param name="fileLayer">source OCIFileLayer</param>
         /// <param name="snapshotLayer">target OCIFileLayer</param>
         /// <returns>The diff layer.</returns>
         OCIFileLayer GenerateDiffLayer(OCIFileLayer fileLayer, OCIFileLayer snapshotLayer);
 
+        /// <summary>
+        /// Archive OCIFileLayer to OCIArtifactLayer by compress file content by gzip mode.
+        /// </summary>
+        /// <param name="fileLayer">One OCIFileLayer</param>
+        /// <returns>One OCIArtifactLayer</returns>
         OCIArtifactLayer ArchiveOCIFileLayer(OCIFileLayer fileLayer);
 
+        /// <summary>
+        /// Archive List of OCIFileLayers to OCIArtifactLayers.
+        /// </summary>
+        /// <param name="fileLayers">List of OCIFileLayer</param>
+        /// <returns>List of OCIArtifactLayer</returns>
         List<OCIArtifactLayer> ArchiveOCIFileLayers(List<OCIFileLayer> fileLayers);
     }
 }

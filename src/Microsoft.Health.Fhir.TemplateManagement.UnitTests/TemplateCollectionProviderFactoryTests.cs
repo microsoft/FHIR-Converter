@@ -84,12 +84,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         private void CreateTarGz(string outputTarFilename, string sourceDirectory)
         {
-            using (FileStream fs = new FileStream(outputTarFilename, FileMode.Create, FileAccess.Write, FileShare.None))
-            using (Stream gzipStream = new GZipOutputStream(fs))
-            using (TarArchive tarArchive = TarArchive.CreateOutputTarArchive(gzipStream))
-            {
-                AddDirectoryFilesToTar(tarArchive, sourceDirectory, true);
-            }
+            using FileStream fs = new FileStream(outputTarFilename, FileMode.Create, FileAccess.Write, FileShare.None);
+            using Stream gzipStream = new GZipOutputStream(fs);
+            using TarArchive tarArchive = TarArchive.CreateOutputTarArchive(gzipStream);
+            AddDirectoryFilesToTar(tarArchive, sourceDirectory, true);
         }
 
         private void AddDirectoryFilesToTar(TarArchive tarArchive, string sourceDirectory, bool recurse)

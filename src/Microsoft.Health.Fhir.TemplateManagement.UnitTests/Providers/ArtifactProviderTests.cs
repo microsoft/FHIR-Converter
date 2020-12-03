@@ -128,8 +128,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             _artifactProvider = new OCIArtifactProvider(imageInfo, MockClient);
             var manifest = await _artifactProvider.GetManifestAsync();
-            File.WriteAllText(expectedManifestPath, JsonConvert.SerializeObject(manifest));
-            //Assert.Equal(File.ReadAllText(expectedManifestPath), JsonConvert.SerializeObject(manifest));
+            Assert.Equal(File.ReadAllText(expectedManifestPath), JsonConvert.SerializeObject(manifest));
         }
 
         [Theory]

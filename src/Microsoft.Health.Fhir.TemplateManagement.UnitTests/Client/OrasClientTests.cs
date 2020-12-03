@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -24,7 +23,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         private readonly string _testMultiLayerImageReference;
         private bool _isOrasValid = true;
 
-
         public OrasClientTests()
         {
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
@@ -33,7 +31,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             PushOneLayerImage();
             PushMultiLayersImage();
         }
-
 
         public static IEnumerable<object[]> GetInvalidReference()
         {

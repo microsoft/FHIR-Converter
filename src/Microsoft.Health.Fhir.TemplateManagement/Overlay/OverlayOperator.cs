@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using EnsureThat;
-using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
@@ -32,7 +31,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
 
             var artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(artifactLayer.Content));
-            var metaBytes = artifacts.GetValueOrDefault(Constants.OverlayMetadataFile);
+            var metaBytes = artifacts.GetValueOrDefault(Constants.OverlayMetaJsonFile);
             OverlayMetadata metaJson = null;
             if (metaBytes != null)
             {
@@ -42,12 +41,19 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 }
                 catch (Exception ex)
                 {
-                    throw new OverlayException(TemplateManagementErrorCode.OverlayMetaJsonNotFound, $"{Constants.OverlayMetadataFile} file invalid", ex);
+                    throw new OverlayException(TemplateManagementErrorCode.OverlayMetaJsonInvalid, $"{Constants.OverlayMetaJsonFile} file invalid.", ex);
                 }
             }
 
-            artifacts.Remove(Constants.OverlayMetadataFile);
-            return new OCIFileLayer() { Content = artifactLayer.Content, FileContent = artifacts, FileName = artifactLayer.FileName, SequenceNumber = metaJson == null ? -1 : metaJson.SequenceNumber, Digest = artifactLayer.Digest, Size = artifactLayer.Size };
+            return new OCIFileLayer()
+            {
+                Content = artifactLayer.Content,
+                FileContent = artifacts,
+                FileName = artifactLayer.FileName,
+                SequenceNumber = metaJson?.SequenceNumber ?? -1,
+                Digest = artifactLayer.Digest,
+                Size = artifactLayer.Size,
+            };
         }
 
         public List<OCIFileLayer> ExtractOCIFileLayers(List<OCIArtifactLayer> artifactLayers)
@@ -112,6 +118,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             var diffLayerFileDigest = new Dictionary<string, string> { };
             foreach (var oneFile in fileLayer.FileContent)
             {
+                if (string.Equals(oneFile.Key, Constants.OverlayMetaJsonFile))
+                {
+                    continue;
+                }
+
                 var fileName = oneFile.Key.Replace("\\", "/");
                 var oneDigest = StreamUtility.CalculateDigestFromSha256(oneFile.Value);
 
@@ -133,6 +144,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
             foreach (var removedfile in baseContents)
             {
+                if (string.Equals(removedfile.Key, Constants.OverlayMetaJsonFile))
+                {
+                    continue;
+                }
+
                 var fileName = Path.Combine(Path.GetDirectoryName(removedfile.Key), ".wh." + Path.GetFileName(removedfile.Key));
                 diffLayer.FileContent.Add(fileName, Encoding.UTF8.GetBytes(string.Empty));
             }
@@ -141,7 +157,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             {
                 var metaJson = new OverlayMetadata() { SequenceNumber = sequenceNumber, FileDigests = diffLayerFileDigest };
                 var metaContent = JsonConvert.SerializeObject(metaJson);
-                diffLayer.FileContent.Add(Constants.OverlayMetadataFile, Encoding.UTF8.GetBytes(metaContent));
+                diffLayer.FileContent.Add(Constants.OverlayMetaJsonFile, Encoding.UTF8.GetBytes(metaContent));
             }
 
             return diffLayer;

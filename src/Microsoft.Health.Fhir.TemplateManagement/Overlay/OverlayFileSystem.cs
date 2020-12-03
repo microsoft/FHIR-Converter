@@ -12,10 +12,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
     public class OverlayFileSystem : IOverlayFileSystem
     {
-
         public OverlayFileSystem(string workingFolder)
         {
-            EnsureArg.IsNotNull(workingFolder, nameof(workingFolder));
+            EnsureArg.IsNotNullOrEmpty(workingFolder, nameof(workingFolder));
 
             WorkingFolder = workingFolder;
             WorkingImageLayerFolder = Path.Combine(workingFolder, Constants.HiddenLayersFolder);
@@ -51,7 +50,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             Directory.CreateDirectory(WorkingFolder);
             foreach (var oneFile in oneLayer.FileContent)
             {
-                var directory = Path.GetDirectoryName(Path.Combine(WorkingFolder, oneFile.Key));
+                var filePath = Path.Combine(WorkingFolder, oneFile.Key);
+                var directory = Path.GetDirectoryName(filePath);
                 Directory.CreateDirectory(directory);
                 File.WriteAllBytes(Path.Combine(WorkingFolder, oneFile.Key), oneFile.Value);
             }
@@ -101,7 +101,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         private void ClearFolder(string directory)
         {
-            EnsureArg.IsNotNull(directory, nameof(directory));
+            EnsureArg.IsNotNullOrEmpty(directory, nameof(directory));
 
             if (!Directory.Exists(directory))
             {
@@ -114,7 +114,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         private List<OCIArtifactLayer> ReadOCIArtifactLayers(string folder)
         {
-            EnsureArg.IsNotNull(folder, nameof(folder));
+            EnsureArg.IsNotNullOrEmpty(folder, nameof(folder));
 
             if (!Directory.Exists(folder))
             {

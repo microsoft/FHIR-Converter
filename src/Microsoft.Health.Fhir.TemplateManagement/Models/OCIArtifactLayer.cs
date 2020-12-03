@@ -3,9 +3,9 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System.IO;
 using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
-using System.IO;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
@@ -27,6 +27,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public void WriteToFolder(string directory)
         {
+            EnsureArg.IsNotNullOrEmpty(directory, nameof(directory));
+
             if (Content == null)
             {
                 return;
@@ -38,7 +40,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public void ReadFromFolder(string path)
         {
-            EnsureArg.IsNotNull(path, nameof(path));
+            EnsureArg.IsNotNullOrEmpty(path, nameof(path));
 
             if (!File.Exists(path))
             {

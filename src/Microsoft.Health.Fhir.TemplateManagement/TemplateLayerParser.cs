@@ -32,14 +32,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         public static Dictionary<string, Template> ParseToTemplates(Dictionary<string, byte[]> content)
         {
-            var fileContent = new Dictionary<string, string> { };
-            foreach (var item in content)
-            {
-                fileContent.Add(item.Key, item.Value == null ? null : Encoding.UTF8.GetString(item.Value));
-            }
-
             try
             {
+                var fileContent = content.ToDictionary(
+                    item => item.Key,
+                    item => item.Value == null ? null : Encoding.UTF8.GetString(item.Value));
                 var parsedTemplate = TemplateUtility.ParseHl7v2Templates(fileContent);
                 return parsedTemplate;
             }

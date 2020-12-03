@@ -8,6 +8,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using EnsureThat;
+using Microsoft.Extensions.Logging;
+using Microsoft.Health.Fhir.Liquid.Converter;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
@@ -16,6 +18,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
     public class OrasClient : IOrasClient
     {
         private readonly string _imageReference;
+
+        private readonly ILogger _logger = TemplateManagementLogging.CreateLogger<OrasClient>();
 
         public OrasClient(string imageReference)
         {
@@ -38,7 +42,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             if (!Directory.Exists(inputFolder))
             {
-                Console.WriteLine($"No file for push.");
+                _logger.LogInformation($"No file for push.");
                 return false;
             }
 
@@ -53,7 +57,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             if (string.IsNullOrEmpty(argument))
             {
-                Console.WriteLine($"No file to push.");
+                _logger.LogInformation($"No file for push.");
                 return false;
             }
 
