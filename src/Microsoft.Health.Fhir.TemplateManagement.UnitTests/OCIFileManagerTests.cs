@@ -15,8 +15,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
     public class OCIFileManagerTests
     {
         private readonly string _containerRegistryServer;
-        private readonly string _baseLayerTemplatePath = "TestData/TarGzFiles/baseLayer.tar.gz";
-        private readonly string _userLayerTemplatePath = "TestData/TarGzFiles/userV1.tar.gz";
+        private readonly string _baseLayerTemplatePath = "TestData/TarGzFiles/layer1.tar.gz";
+        private readonly string _userLayerTemplatePath = "TestData/TarGzFiles/layer2.tar.gz";
         private readonly string _testOneLayerImageReference;
         private readonly string _testMultiLayerImageReference;
         private bool _isOrasValid = true;
@@ -51,7 +51,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             }
 
             string imageReference = _testOneLayerImageReference;
-            string outputFolder = "TestData/test";
+            string outputFolder = "TestData/testOneLayer";
             var testManager = new OCIFileManager(imageReference, outputFolder);
             await testManager.PullOCIImageAsync();
             testManager.UnpackOCIImage();

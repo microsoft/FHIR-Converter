@@ -67,7 +67,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         {
             EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
 
-            return fileLayers.OrderBy(layer => layer.SequenceNumber <= -1 ? int.MaxValue : layer.SequenceNumber).ToList();
+            var sortedLayers = fileLayers.OrderBy(layer => layer.SequenceNumber <= -1 ? int.MaxValue : layer.SequenceNumber).ToList();
+            ValidateSortedLayersBySequenceNumber(sortedLayers);
+            return sortedLayers;
         }
 
         public OCIFileLayer MergeOCIFileLayers(List<OCIFileLayer> sortedLayers)
@@ -192,6 +194,22 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
 
             return fileLayers.Select(ArchiveOCIFileLayer).ToList();
+        }
+
+        private void ValidateSortedLayersBySequenceNumber(List<OCIFileLayer> sortedLayers)
+        {
+            for (var index = 1; index <= sortedLayers.Count(); index++)
+            {
+                if (index == sortedLayers.Count() && sortedLayers[index - 1].SequenceNumber == -1)
+                {
+                    continue;
+                }
+
+                if (sortedLayers[index - 1].SequenceNumber != index)
+                {
+                    throw new OverlayException(TemplateManagementErrorCode.SortLayersFailed, "Some layer's sequence number are invalid. Layers could not be sorted and merged.");
+                }
+            }
         }
     }
 }

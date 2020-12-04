@@ -83,9 +83,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             EnsureArg.IsNotNull(layers, nameof(layers));
 
             ClearFolder(WorkingBaseLayerFolder);
-            foreach (var layer in layers)
+            for (var index = 1; index <= layers.Count; index++)
             {
-                layer.WriteToFolder(WorkingBaseLayerFolder);
+                if (layers[index - 1].SequenceNumber == index)
+                {
+                    layers[index - 1].WriteToFolder(WorkingBaseLayerFolder);
+                }
             }
         }
 

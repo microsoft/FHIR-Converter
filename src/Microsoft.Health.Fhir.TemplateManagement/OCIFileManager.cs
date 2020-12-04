@@ -76,7 +76,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         private OCIFileLayer GenerateBaseFileLayer(List<OCIArtifactLayer> baseArtifactLayers)
         {
-            if (baseArtifactLayers == null)
+            if (baseArtifactLayers == null || baseArtifactLayers.Count == 0)
             {
                 return null;
             }
