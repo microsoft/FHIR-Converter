@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
@@ -29,14 +30,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         public OCIFileLayer ReadMergedOCIFileLayer()
         {
-            var filePaths = Directory.EnumerateFiles(WorkingFolder, "*.*", SearchOption.AllDirectories);
+            var filePaths = Directory.EnumerateFiles(WorkingFolder, "*.*", SearchOption.AllDirectories)
+                .Where(f => !string.Equals(GetTopDirectoryPath(Path.GetRelativePath(WorkingFolder, f)), Constants.HiddenImageFolder));
+
             Dictionary<string, byte[]> fileContent = new Dictionary<string, byte[]>() { };
             foreach (var oneFile in filePaths)
             {
-                if (!Path.GetRelativePath(WorkingFolder, oneFile).Contains(Constants.HiddenImageFolder))
-                {
-                    fileContent.Add(Path.GetRelativePath(WorkingFolder, oneFile), File.ReadAllBytes(oneFile));
-                }
+                fileContent.Add(Path.GetRelativePath(WorkingFolder, oneFile), File.ReadAllBytes(oneFile));
             }
 
             OCIFileLayer fileLayer = new OCIFileLayer() { FileContent = fileContent };
@@ -137,6 +137,18 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
 
             return result;
+        }
+
+        private string GetTopDirectoryPath(string path)
+        {
+            if (string.IsNullOrEmpty(Path.GetDirectoryName(path)))
+            {
+                return path;
+            }
+            else
+            {
+                return GetTopDirectoryPath(Path.GetDirectoryName(path));
+            }
         }
     }
 }
