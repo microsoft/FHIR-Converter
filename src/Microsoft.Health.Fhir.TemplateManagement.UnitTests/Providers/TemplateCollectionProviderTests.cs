@@ -29,8 +29,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         public TemplateCollectionProviderTests()
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefaultTemplates.tar.gz");
-            TemplateLayer defaultTempalteLayer = TemplateLayer.ReadFromFile(path);
+            TemplateLayer defaultTempalteLayer = TemplateLayer.ReadFromEmbeddedResource();
             _cache.Set(ImageInfo.DefaultTemplateImageReference, defaultTempalteLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
 
             PushLargeSizeManifest();
@@ -190,7 +189,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var newTemplateCollectionProvider = new TemplateCollectionProvider(imageInfo, _emptyClient, _cache, _defaultConfig);
             var templateCollection = await newTemplateCollectionProvider.GetTemplateCollectionAsync();
-            Assert.Equal(817, templateCollection.First().Count());
+            Assert.Equal(838, templateCollection.First().Count());
         }
 
         [Fact]

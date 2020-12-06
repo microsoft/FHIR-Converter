@@ -59,12 +59,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             return new TemplateCollectionProvider(imageInfo, client, _templateCache, _configuration);
         }
 
-        public void InitDefaultTemplates(string path = null)
+        public void InitDefaultTemplates()
         {
-            path ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Constants.DefaultTemplatePath);
-            TemplateLayer defaultTemplateLayer = TemplateLayer.ReadFromFile(path);
+            TemplateLayer defaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource();
             _templateCache.Set(ImageInfo.DefaultTemplateImageReference, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
-            _templateCache.Set(StreamUtility.CalculateDigestFromSha256(File.ReadAllBytes(path)), defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
+            _templateCache.Set(defaultTemplateLayer.Digest, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
         }
     }
 }

@@ -23,5 +23,15 @@
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Health.Fhir.Liquid.Converter\Microsoft.Health.Fhir.Liquid.Converter.csproj" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="$(solutionDir)bin/DefaultTemplates.tar.gz">
+      <Link>DefaultTemplates.tar.gz</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="mkdir $(solutionDir)bin&#xD;&#xA;tar -zcvf $(solutionDir)bin/DefaultTemplates.tar.gz -C $(SolutionDir)data/Templates/Hl7v2 ." />
+  </Target>
 
 </Project>
