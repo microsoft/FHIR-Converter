@@ -5,7 +5,10 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
+using ICSharpCode.SharpZipLib.GZip;
+using ICSharpCode.SharpZipLib.Tar;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
@@ -17,6 +20,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 {
     public class TemplateCollectionProviderFactoryTests
     {
+        private readonly string templateFolder = @"..\..\..\..\..\data\Templates\Hl7v2";
         private readonly TemplateCollectionConfiguration _config = new TemplateCollectionConfiguration();
         private readonly string _token = "Basic FakeToken";
         private readonly IMemoryCache _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 100000000 });
@@ -59,6 +63,33 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
             Assert.Throws<ContainerRegistryAuthenticationException>(() => factory.CreateProvider(imageReference, string.Empty));
             Assert.Throws<ContainerRegistryAuthenticationException>(() => factory.CreateProvider(imageReference, string.Empty));
+        }
+
+        private void CreateTarGz(string outputTarFilename, string sourceDirectory)
+        {
+            using FileStream fs = new FileStream(outputTarFilename, FileMode.Create, FileAccess.Write, FileShare.None);
+            using Stream gzipStream = new GZipOutputStream(fs);
+            using TarArchive tarArchive = TarArchive.CreateOutputTarArchive(gzipStream);
+            AddDirectoryFilesToTar(tarArchive, sourceDirectory, true);
+        }
+
+        private void AddDirectoryFilesToTar(TarArchive tarArchive, string sourceDirectory, bool recurse)
+        {
+            if (recurse)
+            {
+                string[] directories = Directory.GetDirectories(sourceDirectory);
+                foreach (string directory in directories)
+                {
+                    AddDirectoryFilesToTar(tarArchive, directory, recurse);
+                }
+            }
+
+            string[] filenames = Directory.GetFiles(sourceDirectory);
+            foreach (string filename in filenames)
+            {
+                TarEntry tarEntry = TarEntry.CreateEntryFromFile(filename);
+                tarArchive.WriteEntry(tarEntry, true);
+            }
         }
     }
 }

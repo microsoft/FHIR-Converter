@@ -44,9 +44,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         public static new IEnumerable<object[]> GetValidLayerInfo()
         {
-            yield return new object[] { "mockregistry/testimagename:v1", "sha256:ceda57333d3ab258176e6f5095f8c348994bc9f30a2db226980f223c62410d03", 817 };
-            yield return new object[] { "mockregistry/testimagename:v1", "sha256:fac83d4cd496b0efd76db216568a53e1ff4f9571461deec8835cc4d2e171d063", 767 };
-            yield return new object[] { "mockregistry/testimagename:v1", "sha256:ca1d8cff554ca9d7796500548c968f4985528af2676589de3a719048f266a3bc", 813 };
+            yield return new object[] { "mockregistry/testimagename:v1", "sha256:4c084996bcc80c70aac0a1bc24b0e44fb8f202f983bb598bc34a2cc974417480", 767 };
+            yield return new object[] { "mockregistry/testimagename:v1", "sha256:871b9b857c293d6df8e50ce7ef9f5d67e6fb3ed2926da2485c9ce570c0ce6ac4", 813 };
+            yield return new object[] { "mockregistry/testimagename:v1", "sha256:86ab65f5fb50b9b94d6283dadd3e108e539c94b4e6b57146158506b0e19769b8", 817 };
         }
 
         public static new IEnumerable<object[]> GetImageInfoForArtifact()
@@ -54,9 +54,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             yield return new object[] { "mockregistry/testimagename:v1", new List<int> { 813, 817 } };
             yield return new object[] { "mockregistry/testimagename:v2", new List<int> { 767, 817 } };
             yield return new object[] { "mockregistry/testimagename:default", new List<int> { 817 } };
-            yield return new object[] { "mockregistry/testimagename@sha256:cbd40a123aea6ef53c6608ad42ebed5c2befe2a7f8923142c04beed0d52c54d3", new List<int> { 813, 817 } };
-            yield return new object[] { "mockregistry/testimagename@sha256:150caa8cc8f56008ef19b021888fb40e4160a20ed25762aab785ec3524c04c5e", new List<int> { 767, 817 } };
-            yield return new object[] { "mockregistry/testimagename@sha256:204f03ecad424e408dcf28747add065edf9f1bfcf44da5f4edded841818337d2", new List<int> { 817 } };
+            yield return new object[] { "mockregistry/testimagename@sha256:ba9c764587ae875bc955498d8d347aa9e4c9f3e072c7907d778e53340b249df7", new List<int> { 813, 817 } };
+            yield return new object[] { "mockregistry/testimagename@sha256:7d6cfa607d8eaa95b4ef48248693f9faa01b65e0be550d238c61051e54078a5f", new List<int> { 767, 817 } };
+            yield return new object[] { "mockregistry/testimagename@sha256:41e3b808c19715765a5f8c63f3c306deac861490c5cd450d062eb2f64501413b", new List<int> { 817 } };
         }
 
         public static IEnumerable<object[]> GetManifestInfoWithTag()
@@ -80,7 +80,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             _templateCollectionProvider = new TemplateCollectionProvider(imageInfo, MockClient, _cache, _defaultConfig);
             TemplateLayer templateLayer = (TemplateLayer)await _templateCollectionProvider.GetLayerAsync(layerDigest);
-            Assert.Equal(expectedCounts, ((Dictionary<string, Template>)templateLayer.Content).Count());
+            Assert.Equal(expectedCounts, templateLayer.TemplateContent.Count());
         }
 
         [Theory]
@@ -123,7 +123,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var newTemplateCollectionProvider = new TemplateCollectionProvider(imageInfo, _emptyClient, _cache, _defaultConfig);
             TemplateLayer templateLayer = (TemplateLayer)await newTemplateCollectionProvider.GetLayerAsync(layerDigest);
-            Assert.Equal(expectedCounts, ((Dictionary<string, Template>)templateLayer.Content).Count());
+            Assert.Equal(expectedCounts, (templateLayer.TemplateContent).Count());
         }
 
         [Theory]

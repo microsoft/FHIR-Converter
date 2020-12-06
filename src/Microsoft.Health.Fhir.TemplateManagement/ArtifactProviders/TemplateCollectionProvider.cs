@@ -46,9 +46,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
             for (var layerNumber = templateLayers.Count - 1; layerNumber >= 0; layerNumber--)
             {
-                if (templateLayers[layerNumber] is TemplateLayer templateLayer && templateLayer.Content is Dictionary<string, Template> templates)
+                if (templateLayers[layerNumber] is TemplateLayer templateLayer)
                 {
-                    result.Add(templates);
+                    result.Add(templateLayer.TemplateContent);
 
                     // The first layer is base layer. Others are user layers.
                     // Add base layer to long expiration cache.
@@ -90,7 +90,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             return manifestInfo;
         }
 
-        public override async Task<ArtifactLayer> GetLayerAsync(string layerDigest, CancellationToken cancellationToken = default)
+        public override async Task<OCIArtifactLayer> GetLayerAsync(string layerDigest, CancellationToken cancellationToken = default)
         {
             EnsureArg.IsNotNull(layerDigest, nameof(layerDigest));
 
@@ -98,7 +98,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             if (oneTemplateLayer == null)
             {
                 var artifactsLayer = await base.GetLayerAsync(layerDigest, cancellationToken);
-                oneTemplateLayer = TemplateLayerParser.ParseArtifactsLayerToTemplateLayer(artifactsLayer as ArtifactLayer);
+                oneTemplateLayer = TemplateLayerParser.ParseArtifactsLayerToTemplateLayer(artifactsLayer as OCIArtifactLayer);
             }
 
             return oneTemplateLayer;
@@ -106,9 +106,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
         private List<Dictionary<string, Template>> GetTemplateCollectionFromDefaultTemplates()
         {
-            if ((_templateCache.Get(ImageInfo.DefaultTemplateImageReference) is TemplateLayer oneTemplateLayer) && (oneTemplateLayer.Content is Dictionary<string, Template> templateCollection))
+            if (_templateCache.Get(ImageInfo.DefaultTemplateImageReference) is TemplateLayer oneTemplateLayer)
             {
-                return new List<Dictionary<string, Template>> { templateCollection };
+                return new List<Dictionary<string, Template>> { oneTemplateLayer.TemplateContent };
             }
 
             throw new DefaultTemplatesInitializeException(TemplateManagementErrorCode.InitializeDefaultTemplateFailed, "Default templates not found.");

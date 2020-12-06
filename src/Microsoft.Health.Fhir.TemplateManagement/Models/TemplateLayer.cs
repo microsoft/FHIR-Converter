@@ -4,16 +4,20 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using DotLiquid;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
-    public class TemplateLayer : ArtifactLayer
+    public class TemplateLayer : OCIArtifactLayer
     {
+        public Dictionary<string, Template> TemplateContent { get; set; }
+
         public static TemplateLayer ReadFromEmbeddedResource()
         {
             try
@@ -22,12 +26,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
                 using Stream resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(defaultTemplateResourceName);
                 using var stream = new MemoryStream();
                 resourceStream.CopyTo(stream);
-                var rawBytes = stream.ToArray();
+                var resourceBytes = stream.ToArray();
 
+                stream.Position = 0;
                 TemplateLayer templateLayer = new TemplateLayer();
-                var artifacts = TemplateLayerParser.DecompressRawBytesContent(rawBytes);
-                templateLayer.Content = TemplateLayerParser.ParseToTemplates(artifacts);
-                templateLayer.Digest = StreamUtility.CalculateDigestFromSha256(rawBytes);
+                var artifacts = StreamUtility.DecompressTarGzStream(stream);
+                templateLayer.TemplateContent = TemplateLayerParser.ParseToTemplates(artifacts);
+                templateLayer.Digest = StreamUtility.CalculateDigestFromSha256(resourceBytes);
                 templateLayer.Size = artifacts.Sum(x => x.Value.Length);
                 return templateLayer;
             }
