@@ -38,7 +38,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="mkdir ../../bin&#xD;&#xA;tar -zcvf ../../bin/DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
+    <Exec Command="mkdir ../../bin &amp; tar -zcvf ../../bin/DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
   </Target>
 
 </Project>
