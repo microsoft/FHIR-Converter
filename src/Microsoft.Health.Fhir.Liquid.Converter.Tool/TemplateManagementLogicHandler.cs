@@ -32,7 +32,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             ErrorWriter = Console.Error;
         }
 
-        internal static async Task PullAsync(PullTemplateOptions options)
+        internal static async Task<int> PullAsync(PullTemplateOptions options)
         {
             try
             {
@@ -40,8 +40,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 {
                     if (Directory.Exists(options.OutputTemplateFolder) && Directory.GetFileSystemEntries(options.OutputTemplateFolder).Length != 0)
                     {
-                        ExceptionHandling(options.ErrorJsonFile, new Exception("The output folder is not empty. If force to override, please add -f in parameters"), "Process Exits: ");
-                        return;
+                        return ExceptionHandling(options.ErrorJsonFile, new Exception("The output folder is not empty. If force to override, please add -f in parameters"), "Process Exits: ");
                     }
                 }
 
@@ -53,29 +52,29 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 }
                 else
                 {
-                    ExceptionHandling(options.ErrorJsonFile, new TemplateManagementException("Fail to pull templates."), "Process Exits: ");
+                    return ExceptionHandling(options.ErrorJsonFile, new TemplateManagementException("Fail to pull templates."), "Process Exits: ");
                 }
+
+                return 0;
             }
             catch (Exception ex)
             {
-                ExceptionHandling(options.ErrorJsonFile, ex, "Process Exits: Fail to pull templates. ");
+                return ExceptionHandling(options.ErrorJsonFile, ex, "Process Exits: Fail to pull templates. ");
             }
         }
 
-        internal static async Task PushAsync(PushTemplateOptions options)
+        internal static async Task<int> PushAsync(PushTemplateOptions options)
         {
             try
             {
                 if (!Directory.Exists(options.InputTemplateFolder))
                 {
-                    ExceptionHandling(options.ErrorJsonFile, new Exception($"Input folder {options.InputTemplateFolder} not exist."), "Process Exits: ");
-                    return;
+                    return ExceptionHandling(options.ErrorJsonFile, new Exception($"Input folder {options.InputTemplateFolder} not exist."), "Process Exits: ");
                 }
 
                 if (Directory.GetFileSystemEntries(options.InputTemplateFolder).Length == 0)
                 {
-                    ExceptionHandling(options.ErrorJsonFile, new Exception($"Input folder {options.InputTemplateFolder} is empty."), "Process Exits: ");
-                    return;
+                    return ExceptionHandling(options.ErrorJsonFile, new Exception($"Input folder {options.InputTemplateFolder} is empty."), "Process Exits: ");
                 }
 
                 OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.InputTemplateFolder);
@@ -86,16 +85,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 }
                 else
                 {
-                    ExceptionHandling(options.ErrorJsonFile, new Exception("Fail to push templates."), "Process Exits: ");
+                    return ExceptionHandling(options.ErrorJsonFile, new Exception("Fail to push templates."), "Process Exits: ");
                 }
+
+                return 0;
             }
             catch (Exception ex)
             {
-                ExceptionHandling(options.ErrorJsonFile, ex, "Process Exits: Fail to push templates. ");
+                return ExceptionHandling(options.ErrorJsonFile, ex, "Process Exits: Fail to push templates. ");
             }
         }
 
-        private static void ExceptionHandling(string errorfolder, Exception ex, string helpMassage = "")
+        private static int ExceptionHandling(string errorfolder, Exception ex, string helpMassage = "")
         {
             if (!string.IsNullOrEmpty(errorfolder))
             {
@@ -104,6 +105,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             }
 
             ErrorWriter.WriteLine(helpMassage + ex.ToString());
+            return -1;
         }
 
         private static void WriteOutputFile(string outputFilePath, string content)
