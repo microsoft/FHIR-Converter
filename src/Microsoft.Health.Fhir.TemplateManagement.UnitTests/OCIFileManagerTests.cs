@@ -24,8 +24,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         public OCIFileManagerTests()
         {
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
-            _testOneLayerImageReference = _containerRegistryServer + "/templatetest:v1";
-            _testMultiLayerImageReference = _containerRegistryServer + "/templatetest:v2";
+            _testOneLayerImageReference = _containerRegistryServer + "/templatetest:one";
+            _testMultiLayerImageReference = _containerRegistryServer + "/templatetest:multi";
             PushOneLayerImage();
             PushMultiLayersImage();
         }
