@@ -69,13 +69,13 @@ stages:
         includeRootFolder: false
         archiveType: 'tar'
         tarCompression: 'gz'
-        archiveFile: '$(Build.SourcesDirectory)/bin/Templates/DefaultTemplates.tar.gz'
+        archiveFile: '$(Build.SourcesDirectory)/data/Templates/DefaultTemplates.tar.gz'
 
     - task: CopyFiles@2
       displayName: 'copy DefaultTemplates to artifacts'
       inputs:
-        sourceFolder: '$(Build.SourcesDirectory)/bin/Templates'
-        targetFolder: '$(Build.ArtifactStagingDirectory)/data/Templates'
+        sourceFolder: '$(Build.SourcesDirectory)/data'
+        targetFolder: '$(Build.ArtifactStagingDirectory)/data'
 
     - task: DotNetCoreCLI@2
       displayName: 'dotnet pack nugets'
