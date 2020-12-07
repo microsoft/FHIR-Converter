@@ -3,7 +3,6 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 trigger:
 - dotliquid
 - refs/heads/dotliquid
-- qiwjin/*
 pr: ['dotliquid']
 
 
@@ -70,13 +69,13 @@ stages:
         includeRootFolder: false
         archiveType: 'tar'
         tarCompression: 'gz'
-        archiveFile: '$(Build.SourcesDirectory)/bin/DefaultTemplates.tar.gz'
+        archiveFile: '$(Build.SourcesDirectory)/bin/Templates/DefaultTemplates.tar.gz'
 
     - task: CopyFiles@2
       displayName: 'copy DefaultTemplates to artifacts'
       inputs:
-        sourceFolder: '$(Build.SourcesDirectory)/bin/DefaultTemplates.tar.gz'
-        targetFolder: '$(Build.ArtifactStagingDirectory)/data/DefaultTemplates.tar.gz'
+        sourceFolder: '$(Build.SourcesDirectory)/bin/Templates'
+        targetFolder: '$(Build.ArtifactStagingDirectory)/data/Templates'
 
     - task: DotNetCoreCLI@2
       displayName: 'dotnet pack nugets'
@@ -171,9 +170,6 @@ stages:
       inputs:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
-
-
-        
     - script: echo push nuget and image
 
 
