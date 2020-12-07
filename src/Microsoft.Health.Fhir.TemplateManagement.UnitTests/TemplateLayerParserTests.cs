@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using DotLiquid;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
@@ -16,7 +17,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 {
     public class TemplateLayerParserTests
     {
-        public static IEnumerable<object[]> GetFilePathForOCIArifact()
+        public static IEnumerable<object[]> GetFilePathForOCIArifactWithFileCounts()
+        {
+            yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 813 };
+            yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 767 };
+            yield return new object[] { "TestData/TarGzFiles/baseLayer.tar.gz", 818 };
+        }
+
+        public static IEnumerable<object[]> GetFilePathForOCIArifactWithTemplateCounts()
         {
             yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 813 };
             yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 767 };
@@ -30,33 +38,33 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(GetFilePathForOCIArifact))]
+        [MemberData(nameof(GetFilePathForOCIArifactWithTemplateCounts))]
         public void GivenArtifactLayer_WhenParseArtifactLayerToTemplateLayer_ACorrectTemplateLayerShouldBeReturned(string filePath, int expectedTemplatesCounts)
         {
             var content = File.ReadAllBytes(filePath);
-            var testArtifactLayer = new ArtifactLayer() { Content = content, Digest = StreamUtility.CalculateDigestFromSha256(File.ReadAllBytes(filePath)) };
+            var testArtifactLayer = new OCIArtifactLayer() { Content = content, Digest = StreamUtility.CalculateDigestFromSha256(File.ReadAllBytes(filePath)) };
             var templateLayer = TemplateLayerParser.ParseArtifactsLayerToTemplateLayer(testArtifactLayer);
-            Assert.Equal(expectedTemplatesCounts, ((Dictionary<string, Template>)templateLayer.Content).Count());
+            Assert.Equal(expectedTemplatesCounts, templateLayer.TemplateContent.Count());
             Assert.Equal(testArtifactLayer.Digest, templateLayer.Digest);
         }
 
         [Theory]
-        [MemberData(nameof(GetFilePathForOCIArifact))]
+        [MemberData(nameof(GetFilePathForOCIArifactWithFileCounts))]
         public void GivenRawBytes_WhenDecompressRawBytesToStringContent_CorrectArtifactsShouldBeReturned(string filePath, int expectedArtifactCounts)
         {
             var content = File.ReadAllBytes(filePath);
-            var artifacts = TemplateLayerParser.DecompressRawBytesContent(content);
-            Assert.Equal(expectedArtifactCounts + 2, artifacts.Count());
+            var artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(content));
+            Assert.Equal(expectedArtifactCounts + 1, artifacts.Count());
         }
 
         [Fact]
         public void GivenStringContent_WhenParseToTemplates_CorrectTemplatesShouldBeReturn()
         {
-            var content = new Dictionary<string, string>
+            var content = new Dictionary<string, byte[]>
             {
-                { "ADT_A01.liquid", "a" },
-                { "Resource/_Patient.liquid", "b" },
-                { @"Resource\_Encounter.liquid", "c" },
+                { "ADT_A01.liquid", Encoding.UTF8.GetBytes("a") },
+                { "Resource/_Patient.liquid", Encoding.UTF8.GetBytes("b") },
+                { @"Resource\_Encounter.liquid", Encoding.UTF8.GetBytes("c") },
             };
             var parsedTemplates = TemplateLayerParser.ParseToTemplates(content);
             Assert.Equal("a", parsedTemplates["ADT_A01"].Render());
@@ -69,17 +77,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         public void GivenRawBytes_WhenParseRawBytesToTemplates_IfDecompressedFailed_ExceptionShouldBeThrown(string filePath)
         {
             var content = File.ReadAllBytes(filePath);
-            Assert.Throws<ImageDecompressException>(() => TemplateLayerParser.DecompressRawBytesContent(content));
+            Assert.Throws<ArtifactDecompressException>(() => StreamUtility.DecompressTarGzStream(new MemoryStream(content)));
         }
 
         [Fact]
         public void GivenRawBytes_WhenParseRawBytesToTemplates_IfTemplateParseFailed_ExceptionShouldBeThrown()
         {
-            var content = new Dictionary<string, string>
+            var content = new Dictionary<string, byte[]>
             {
-                { "ADT_A01.liquid", "{{" },
-                { "Resource/_Patient.liquid", ".." },
-                { @"Resource\_Encounter.liquid", "c_" },
+                { "ADT_A01.liquid", Encoding.UTF8.GetBytes("{{") },
+                { "Resource/_Patient.liquid", Encoding.UTF8.GetBytes("..") },
+                { @"Resource\_Encounter.liquid", Encoding.UTF8.GetBytes("c_") },
             };
             Assert.Throws<TemplateParseException>(() => TemplateLayerParser.ParseToTemplates(content));
         }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ICSharpCode.SharpZipLib.GZip;
+using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Xunit;
 
@@ -26,8 +27,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
 
         public static IEnumerable<object[]> GetTarGzFilePathWithCountsOfFiles()
         {
-            yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 815 };
-            yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 769 };
+            yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 814 };
+            yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 768 };
         }
 
         public static IEnumerable<object[]> GetInvalidTarGzFilePath()
@@ -43,7 +44,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
             var compressedStream = new MemoryStream(rawBytes);
             var artifacts = StreamUtility.DecompressTarGzStream(compressedStream);
 
-            Dictionary<string, string> expectedFile = new Dictionary<string, string> { };
+            Dictionary<string, byte[]> expectedFile = new Dictionary<string, byte[]> { };
             var expectedFiles = Directory.EnumerateFiles(_decompressedFileFolder, "*.*", SearchOption.AllDirectories);
             foreach (var oneExpectedFile in expectedFiles)
             {
@@ -53,7 +54,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
                 }
                 else
                 {
-                    expectedFile.Add(Path.GetRelativePath(_decompressedFileFolder, oneExpectedFile), File.ReadAllText(oneExpectedFile));
+                    expectedFile.Add(Path.GetRelativePath(_decompressedFileFolder, oneExpectedFile), File.ReadAllBytes(oneExpectedFile));
                 }
             }
 
@@ -78,10 +79,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
             Assert.Equal(expectedDigest, digest);
         }
 
-        private void CompareTwoDictionary(Dictionary<string, string> result, Dictionary<string, string> expected)
+        private void CompareTwoDictionary(Dictionary<string, byte[]> result, Dictionary<string, byte[]> expected)
         {
-            Assert.Empty(result.Except(expected));
-
             foreach (var element in expected)
             {
                 Assert.Equal(result[element.Key], element.Value);
@@ -93,7 +92,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
         public void GiveAnInvalidTarGzFilePath_WhenDecompressArtifactsLayer_ExceptionShouldBeThrown(string tarGzPath)
         {
             var artifactsLayer = File.ReadAllBytes(tarGzPath);
-            Assert.Throws<GZipException>(() => StreamUtility.DecompressTarGzStream(new MemoryStream(artifactsLayer)));
+            Assert.Throws<ArtifactDecompressException>(() => StreamUtility.DecompressTarGzStream(new MemoryStream(artifactsLayer)));
         }
     }
 }
