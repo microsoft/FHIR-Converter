@@ -36,7 +36,6 @@ stages:
         arguments: '--configuration $(buildConfiguration) -p:Version=$(version)'
             
     - task: DotNetCoreCLI@2
-      enabled: false
       displayName: 'dotnet test'
       inputs:
         command: test
@@ -56,7 +55,6 @@ stages:
         zipAfterPublish: false
 
     - task: DotNetCoreCLI@2
-      enabled: false
       displayName: 'publish functional tests'
       inputs:
         command: 'publish'
@@ -65,13 +63,6 @@ stages:
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: false
-
-    - task: CopyFiles@2
-      displayName: 'copy data to artifacts'
-      enabled: false
-      inputs:
-        sourceFolder: '$(Build.SourcesDirectory)/data'
-        targetFolder: '$(Build.ArtifactStagingDirectory)/data'
 
     - task: ArchiveFiles@2
       inputs:
@@ -83,7 +74,6 @@ stages:
 
     - task: CopyFiles@2
       displayName: 'copy DefaultTemplates to artifacts'
-      enabled: false
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)/bin/DefaultTemplates.tar.gz'
         targetFolder: '$(Build.ArtifactStagingDirectory)/data/DefaultTemplates.tar.gz'
@@ -95,14 +85,14 @@ stages:
         custom: pack
         arguments: >
           --configuration $(buildConfiguration)
-          --output $(Build.ArtifactStagingDirectory)/nupkgs
+          --output $(Build.BinariesDirectory)/nupkgs
           --no-build
           -p:NuspecProperties="version=$(version)"
     
     - task: PublishBuildArtifacts@1
       displayName: 'publish nuget artifacts'
       inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)/nupkgs'
+        pathToPublish: '$(Build.BinariesDirectory)/nupkgs'
         artifactName: 'nuget'
         publishLocation: 'container'     
     
