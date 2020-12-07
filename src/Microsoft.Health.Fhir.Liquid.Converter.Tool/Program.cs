@@ -4,12 +4,9 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
-using Microsoft.Build.Execution;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool.Models;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
@@ -18,7 +15,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
     {
         public static async Task<int> Main(string[] args)
         {
-            args = "pull localhost:5000/test:test test".Split();
             var parseResult = Parser.Default.ParseArguments<ConverterOptions, PullTemplateOptions, PushTemplateOptions>(args);
             int resultCode = 0;
             parseResult.WithParsed<ConverterOptions>(options => ConverterLogicHandler.Convert(options));

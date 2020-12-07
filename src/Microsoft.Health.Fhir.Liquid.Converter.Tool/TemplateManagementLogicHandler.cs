@@ -6,32 +6,13 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool.Models;
 using Microsoft.Health.Fhir.TemplateManagement;
-using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
-using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
 {
     internal static class TemplateManagementLogicHandler
     {
-        private static readonly ILogger Logger;
-        private static readonly TextWriter ErrorWriter;
-
-        static TemplateManagementLogicHandler()
-        {
-            using var loggerFactory = LoggerFactory.Create(builder =>
-            {
-                builder.AddFilter("Microsoft.Health.Fhir.TemplateManagement", LogLevel.Trace)
-                       .AddConsole();
-            });
-            FhirConverterLogging.LoggerFactory = loggerFactory;
-            Logger = FhirConverterLogging.CreateLogger(typeof(TemplateManagementLogicHandler));
-
-            ErrorWriter = Console.Error;
-        }
-
         internal static async Task<int> PullAsync(PullTemplateOptions options)
         {
             try
@@ -40,7 +21,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 {
                     if (Directory.Exists(options.OutputTemplateFolder) && Directory.GetFileSystemEntries(options.OutputTemplateFolder).Length != 0)
                     {
-                        return ExceptionHandling(options.ErrorJsonFile, new Exception("The output folder is not empty. If force to override, please add -f in parameters"), "Process Exits: ");
+                        Console.Error.WriteLine($"Fail to pull templates: The output folder is not empty. If force to override, please add -f in parameters");
                     }
                 }
 
@@ -48,19 +29,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 if (await fileManager.PullOCIImageAsync())
                 {
                     fileManager.UnpackOCIImage();
-                    Logger.LogInformation($"Succeed to pull templates to {options.OutputTemplateFolder} folder");
+                    Console.WriteLine($"Succeed to pull templates to {options.OutputTemplateFolder} folder");
+                    return 0;
                 }
                 else
                 {
-                    return ExceptionHandling(options.ErrorJsonFile, new TemplateManagementException("Fail to pull templates."), "Process Exits: ");
+                    Console.Error.WriteLine($"Fail to pull templates.");
                 }
-
-                return 0;
             }
             catch (Exception ex)
             {
-                return ExceptionHandling(options.ErrorJsonFile, ex, "Process Exits: Fail to pull templates. ");
+                Console.Error.WriteLine($"Process Exits: Fail to pull templates. {ex.Message} ");
             }
+
+            return -1;
         }
 
         internal static async Task<int> PushAsync(PushTemplateOptions options)
@@ -69,54 +51,32 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             {
                 if (!Directory.Exists(options.InputTemplateFolder))
                 {
-                    return ExceptionHandling(options.ErrorJsonFile, new Exception($"Input folder {options.InputTemplateFolder} not exist."), "Process Exits: ");
+                    Console.Error.WriteLine($"Process Exits: Input folder {options.InputTemplateFolder} not exist.");
                 }
 
                 if (Directory.GetFileSystemEntries(options.InputTemplateFolder).Length == 0)
                 {
-                    return ExceptionHandling(options.ErrorJsonFile, new Exception($"Input folder {options.InputTemplateFolder} is empty."), "Process Exits: ");
+                    Console.Error.WriteLine($"Process Exits: Input folder {options.InputTemplateFolder} is empty.");
                 }
 
                 OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.InputTemplateFolder);
                 fileManager.PackOCIImage(options.BuildNewBaseLayer);
                 if (await fileManager.PushOCIImageAsync())
                 {
-                    Logger.LogInformation($"Succeed to push new templates to {options.ImageReference}");
+                    Console.WriteLine($"Succeed to push new templates to {options.ImageReference}");
+                    return 0;
                 }
                 else
                 {
-                    return ExceptionHandling(options.ErrorJsonFile, new Exception("Fail to push templates."), "Process Exits: ");
+                    Console.Error.WriteLine("Process Exits: Fail to push templates.");
                 }
-
-                return 0;
             }
             catch (Exception ex)
             {
-                return ExceptionHandling(options.ErrorJsonFile, ex, "Process Exits: Fail to push templates. ");
-            }
-        }
-
-        private static int ExceptionHandling(string errorfolder, Exception ex, string helpMassage = "")
-        {
-            if (!string.IsNullOrEmpty(errorfolder))
-            {
-                var error = new ConverterError(ex);
-                WriteOutputFile(errorfolder, JsonConvert.SerializeObject(error));
+                Console.Error.WriteLine($"Process Exits: Fail to push templates. {ex.Message} ");
             }
 
-            ErrorWriter.WriteLine(helpMassage + ex.ToString());
             return -1;
-        }
-
-        private static void WriteOutputFile(string outputFilePath, string content)
-        {
-            var outputFileDirectory = Path.GetDirectoryName(outputFilePath);
-            if (!string.IsNullOrEmpty(outputFileDirectory))
-            {
-                Directory.CreateDirectory(outputFileDirectory);
-            }
-
-            File.WriteAllText(outputFilePath, content);
         }
     }
 }
