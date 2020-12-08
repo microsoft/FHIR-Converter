@@ -29,9 +29,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
         protected ImageInfo ImageInfo { get; }
 
-        public virtual async Task<List<ArtifactLayer>> GetOCIArtifactAsync(CancellationToken cancellationToken = default)
+        public virtual async Task<List<OCIArtifactLayer>> GetOCIArtifactAsync(CancellationToken cancellationToken = default)
         {
-            var artifactsResult = new List<ArtifactLayer>();
+            var artifactsResult = new List<OCIArtifactLayer>();
             cancellationToken.ThrowIfCancellationRequested();
             var manifest = await GetManifestAsync(cancellationToken);
             var layersInfo = manifest.Layers;
@@ -53,13 +53,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             return manifestInfo;
         }
 
-        public virtual async Task<ArtifactLayer> GetLayerAsync(string layerDigest, CancellationToken cancellationToken = default)
+        public virtual async Task<OCIArtifactLayer> GetLayerAsync(string layerDigest, CancellationToken cancellationToken = default)
         {
             EnsureArg.IsNotNull(layerDigest, nameof(layerDigest));
 
             cancellationToken.ThrowIfCancellationRequested();
             var rawBytes = await _client.PullBlobAsBytesAcync(ImageInfo.ImageName, layerDigest, cancellationToken);
-            ArtifactLayer artifactsLayer = new ArtifactLayer()
+            OCIArtifactLayer artifactsLayer = new OCIArtifactLayer()
             {
                 Content = rawBytes,
                 Digest = layerDigest,
