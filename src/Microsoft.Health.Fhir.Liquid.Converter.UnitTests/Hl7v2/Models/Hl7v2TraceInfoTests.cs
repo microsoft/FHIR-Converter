@@ -53,7 +53,7 @@ PID|1||10006579^^^1^MR^1||DUCK^DONALD^D||19241010|M||1|111 DUCK ST^^FOWL^CA^9999
 
             // Valid Hl7v2Data after render
             var processor = new Hl7v2Processor();
-            var templateProvider = new Hl7v2TemplateProvider(@"..\..\..\..\..\data\Templates\Hl7v2");
+            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
             _ = processor.Convert(content, "ADT_A01", templateProvider, traceInfo);
             Assert.Equal(2, traceInfo.UnusedSegments.Count);
 

@@ -57,10 +57,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 var dataType = GetDataTypes(options.TemplateDirectory);
                 var dataProcessor = CreateDataProcessor(dataType);
                 var templateProvider = CreateTemplateProvider(dataType, options.TemplateDirectory);
-                var traceInfo = CreateTraceInfo(dataType);
+                var traceInfo = CreateTraceInfo(dataType, options.IsTraceInfo);
                 var resultString = dataProcessor.Convert(options.InputDataContent, options.RootTemplate, templateProvider, traceInfo);
                 var result = new ConverterResult(ProcessStatus.OK, resultString, traceInfo);
-                WriteOutputFile(options.OutputDataFile, JsonConvert.SerializeObject(result, Formatting.Indented));
+                WriteOutputFile(options.OutputDataFile, JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
                 Logger.LogInformation("Process completed");
             }
             catch (Exception ex)
@@ -85,10 +85,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 {
                     try
                     {
-                        var result = dataProcessor.Convert(File.ReadAllText(file), options.RootTemplate, templateProvider);
+                        var traceInfo = CreateTraceInfo(dataType, options.IsTraceInfo);
+                        var resultString = dataProcessor.Convert(File.ReadAllText(file), options.RootTemplate, templateProvider, traceInfo);
+                        var result = new ConverterResult(ProcessStatus.OK, resultString, traceInfo);
                         var outputFileDirectory = Path.Join(options.OutputDataFolder, Path.GetRelativePath(options.InputDataFolder, Path.GetDirectoryName(file)));
                         var outputFilePath = Path.Join(outputFileDirectory, Path.GetFileNameWithoutExtension(file) + ".json");
-                        WriteOutputFile(outputFilePath, result);
+                        WriteOutputFile(outputFilePath, JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
                         succeededCount++;
                     }
                     catch (Exception ex)
@@ -153,9 +155,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported");
         }
 
-        private static TraceInfo CreateTraceInfo(DataType dataType)
+        private static TraceInfo CreateTraceInfo(DataType dataType, bool isTraceInfo)
         {
-            return dataType == DataType.Hl7v2 ? new Hl7v2TraceInfo() : new TraceInfo();
+            return isTraceInfo ? (dataType == DataType.Hl7v2 ? new Hl7v2TraceInfo() : new TraceInfo()) : null;
         }
 
         private static List<string> GetInputFiles(DataType dataType, string inputDataFolder)

@@ -41,7 +41,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         public void GivenValidEvaluateTemplateContent_WhenParseAndRender_CorrectResultShouldBeReturned(string templateContent)
         {
             // Template should be parsed correctly
-            var templateProvider = new Hl7v2TemplateProvider(@"..\..\..\..\..\data\Templates\Hl7v2");
+            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
             var template = Template.Parse(templateContent);
             Assert.True(template.Root.NodeList.Count > 0);
 
@@ -62,14 +62,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [MemberData(nameof(GetInvalidEvaluateTemplateContents))]
         public void GivenInvalidEvaluateTemplateContent_WhenParse_ExceptionsShouldBeThrown(string templateContent)
         {
-            var templateProvider = new Hl7v2TemplateProvider(@"..\..\..\..\..\data\Templates\Hl7v2");
+            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
             Assert.Throws<SyntaxException>(() => Template.Parse(templateContent));
         }
 
         [Fact]
         public void GivenInvalidSnippet_WhenRender_ExceptionsShouldBeThrown()
         {
-            var templateProvider = new Hl7v2TemplateProvider(@"..\..\..\..\..\data\Templates\Hl7v2");
+            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
 
             // No template file system
             var template = Template.Parse(@"{% evaluate bundleId using 'ID/Bundle' Data: hl7v2Data -%}");
