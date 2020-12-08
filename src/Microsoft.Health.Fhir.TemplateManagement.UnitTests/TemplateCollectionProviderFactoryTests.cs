@@ -65,6 +65,23 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             Assert.Throws<ContainerRegistryAuthenticationException>(() => factory.CreateProvider(imageReference, string.Empty));
         }
 
+        [Fact]
+        public void GivenAWrongDefaultTemplatePath_WhenInitDefaultTemplate_ExceptionWillBeThrown()
+        {
+            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
+            Assert.Throws<DefaultTemplatesInitializeException>(() => factory.InitDefaultTemplates("WrongPath"));
+        }
+
+        [Fact]
+        public void GiveNewDefaultTemplateTarGzFile_WhenInitDefaultTemplate_DefaultTemplatesWillBeInit()
+        {
+            string imageReference = "MicrosoftHealth/FhirConverter:default";
+            CreateTarGz("NewDefaultTemplates.tar.gz", templateFolder);
+            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
+            factory.InitDefaultTemplates("NewDefaultTemplates.tar.gz");
+            Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
+        }
+
         private void CreateTarGz(string outputTarFilename, string sourceDirectory)
         {
             using FileStream fs = new FileStream(outputTarFilename, FileMode.Create, FileAccess.Write, FileShare.None);

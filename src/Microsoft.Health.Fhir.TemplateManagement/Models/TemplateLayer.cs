@@ -24,15 +24,38 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
             {
                 var defaultTemplateResourceName = $"{typeof(Constants).Namespace}.{Constants.DefaultTemplatePath}";
                 using Stream resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(defaultTemplateResourceName);
-                using var stream = new MemoryStream();
-                resourceStream.CopyTo(stream);
-                var resourceBytes = stream.ToArray();
+                return ReadFromStream(resourceStream);
+            }
+            catch (Exception ex)
+            {
+                throw new DefaultTemplatesInitializeException(TemplateManagementErrorCode.InitializeDefaultTemplateFailed, $"Load default template failed.", ex);
+            }
+        }
 
+        public static TemplateLayer ReadFromFile(string filePath)
+        {
+            try
+            {
+                using Stream fielStream = File.OpenRead(filePath);
+                return ReadFromStream(fielStream);
+            }
+            catch (Exception ex)
+            {
+                throw new DefaultTemplatesInitializeException(TemplateManagementErrorCode.InitializeDefaultTemplateFailed, $"Load default template failed.", ex);
+            }
+        }
+
+        private static TemplateLayer ReadFromStream(Stream stream)
+        {
+            try
+            {
+                var digest = StreamUtility.CalculateDigestFromSha256(stream);
                 stream.Position = 0;
+
                 TemplateLayer templateLayer = new TemplateLayer();
                 var artifacts = StreamUtility.DecompressTarGzStream(stream);
                 templateLayer.TemplateContent = TemplateLayerParser.ParseToTemplates(artifacts);
-                templateLayer.Digest = StreamUtility.CalculateDigestFromSha256(resourceBytes);
+                templateLayer.Digest = digest;
                 templateLayer.Size = artifacts.Sum(x => x.Value.Length);
                 return templateLayer;
             }

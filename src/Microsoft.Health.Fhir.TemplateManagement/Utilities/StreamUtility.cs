@@ -74,5 +74,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
             hashedValue += string.Join(string.Empty, hashedStrings);
             return hashedValue;
         }
+
+        public static string CalculateDigestFromSha256(Stream stream)
+        {
+            using SHA256 mySHA256 = SHA256.Create();
+            string hashedValue = "sha256:";
+            byte[] hashData = mySHA256.ComputeHash(stream);
+            string[] hashedStrings = hashData.Select(x => string.Format("{0,2:x2}", x)).ToArray();
+            hashedValue += string.Join(string.Empty, hashedStrings);
+            return hashedValue;
+        }
+
     }
 }
