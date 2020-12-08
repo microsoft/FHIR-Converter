@@ -63,7 +63,7 @@ stages:
         arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin'
         nobuild: true
         publishWebProjects: false
-        zipAfterPublish: false
+        zipAfterPublish: true
 
     - task: DotNetCoreCLI@2
       displayName: 'publish functional tests'
