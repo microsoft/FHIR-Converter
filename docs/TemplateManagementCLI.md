@@ -49,8 +49,8 @@ To push a template collection, the command is:
 push <ImageReference> InputTemplateFolder [ -n | --NewBaseLayer]
 ```
 | Value | index |Optionality |  Description |
-| ----- | ----- | ----- |----- |----- |
-| ImageReference |0| Required |  Image reference: \<Registry>\/\<Name> \[:\<Tag>]  <br /> Note: Image name should be lowcase.|
+| ----- | ----- | ----- |----- |
+| ImageReference |0| Required |  Image reference: \<Registry>\/\<Name> \[:\<Tag>]  (Image name should be lowcase.)|
 |InputTemplateFolder | 1 |Required |Input template folder. |
 
 | Option | Name | Optionality | Default | Description |
@@ -82,7 +82,7 @@ pull <ImageReference> <OutputTemplateFolder> [ -f | --ForceOverride]
 ```
 
 | Value | index |Optionality |  Description |
-| ----- | ----- | ----- |----- |----- |
+| ----- | ----- | ----- |----- |
 | ImageReference |0| Required |  Image reference: \<Registry>\/\<Name>\[ @\<Digest>] \| :\<Tag> \] |
 |OutputTemplateFolder | 1 |Required | Output template folder. |
 
