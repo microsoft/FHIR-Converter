@@ -1,8 +1,8 @@
 Template Management is a tool to manage template files which is used in FHIR dotliquid converter engine. Template manager organizes template files in template image and allows pull and push operations. 
 
-Template image is a layer based structure similar to docker image and uses overlayfs concept to organize templates.
+Template image is a layer based structure similar to docker image and uses [overlayfs](https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html?highlight=overlayfs) concept to organize templates.
 
-For user's templates, we use two layers image structure to organize template collection: base layer and user layer (The user layer could be extended to multi-layers in the future if necessary). Base layer packs official published templates and user layer packs all modified templates from users. Each layer will be compressed into "*.tar.gz" file before pushing to ACR.
+For custom templates, we use two layers image structure to organize template collection: base layer and user layer (The user layer could be extended to multi-layers in the future if necessary). Base layer packs official published templates and user layer packs all modified templates from users. Each layer will be compressed into "*.tar.gz" file before pushing to ACR.
 # Using Template Management CLI
 
 The command-line tool can be used to pull and push a template collection through remote registry (Now we only support Azure Container Registry). 
@@ -35,12 +35,11 @@ After signing in to the Azure CLI with your identity, use the Azure CLI command 
 ```
 * Oras Login
 
-The oras tool oras.exe is packed in our repo, users can directly use it for login as follows.
+The [oras](https://github.com/deislabs/oras) tool oras.exe is packed in our repo, users can directly use it for login as follows.
 
 ```
 >.\oras.exe login <registry> -u <username> -p <password>
 ```
-Users can also follow the [Oras](https://github.com/deislabs/oras) instruction for oras downloading and login.
 
 ## Push
 To push a template collection, the command is: 
