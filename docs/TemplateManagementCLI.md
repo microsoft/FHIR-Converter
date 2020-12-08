@@ -5,10 +5,37 @@ Template image is a layer based structure similar to docker image and uses overl
 For user's templates, we use two layers image structure to organize template collection: base layer and user layer (The user layer could be extended to multi-layers in the future if necessary). Base layer packs official published templates and user layer packs all modified templates from users. Each layer will be compressed into "*.tar.gz" file before pushing to ACR.
 # Using Template Management CLI
 
-The command-line tool can be used to pull and push a template collection through remote registry (Now we only support Azure Container Registry). Before pull & push operations, oras login is required.
+The command-line tool can be used to pull and push a template collection through remote registry (Now we only support Azure Container Registry). 
 
-## Oras Login
-The oras.exe is packed in our repo, users can directly use it for login as follows.
+## Prerequisites
+* Azure container registry - Create a container registry in your Azure subscription. For example, use the [Azure portal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) or the [Azure CLI](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-azure-cli).
+
+* Azure Active Directory service principal (optional) - If using service principal's identity for authentication, you need to create a [service principal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal) to access your registry. Ensure that the service principal is assigned a role such as AcrPush so that it has permissions to push and pull artifacts.
+
+* Azure CLI (optional) - To use an individual identity, you need a local installation of the Azure CLI. Version 2.0.71 or later is recommended. Run az --version to find the version. If you need to install or upgrade, see [Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
+
+* Docker (optional) - To use an individual identity, you must also have Docker installed locally, to authenticate with the registry. Docker provides packages that easily configure Docker on any [macOS](https://docs.docker.com/docker-for-mac/), [Windows](https://docs.docker.com/docker-for-windows/), or [Linux](https://docs.docker.com/engine/install/) system.
+## Authentication
+
+Before pull & push operations, azure authentication is required for private registries. Customers can directly use individual login with Azure AD throw [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli) or use identity (individual identity or Azure AD [service principal identity](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal)) to sign in the registry. 
+
+### Login Using Azure CLI
+
+After signing in to the Azure CLI with your identity, use the Azure CLI command az acr login to access the registry.
+```
+> az acr login --name <registry>
+```
+
+### Login Using Identity (individual or service principal indentity)
+
+* Docker login
+
+```
+> docker login <registry> -u <username> -p <password>
+```
+* Oras Login
+
+The oras tool oras.exe is packed in our repo, users can directly use it for login as follows.
 
 ```
 >.\oras.exe login <registry> -u <username> -p <password>
@@ -16,7 +43,7 @@ The oras.exe is packed in our repo, users can directly use it for login as follo
 Users can also follow the [Oras](https://github.com/deislabs/oras) instruction for oras downloading and login.
 
 ## Push
-In push operation, the command is: 
+To push a template collection, the command is: 
 
 ```
 push <ImageReference> InputTemplateFolder [ -n | --NewBaseLayer]
@@ -36,7 +63,7 @@ Example usage to push a collection of templates to ACR image from a folder:
 >.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe push testacr.azurecr.io/templatetest:default myInputFolder
 ```
 
-When pushing templates, all files except files in hidden image folder ("/.image/") will be packed as new template image. If the folder is unpacked from a previous template image, our tool will pack all user modified files into the user layer and then push all layers to ACR (The base layer is stores in hidden folder "/.image/"). If customers using -n as parameter, all templates will be packed together and be pushed as one layer to ACR.
+When pushing templates, all files except files in hidden image folder ("./.image/") will be packed as new template image. If the folder is unpacked from a previous template image, our tool will pack all user modified files into the user layer and then push all layers to ACR (The base layer is stores in hidden folder "./.image/"). If customers using -n as parameter, all templates will be packed together and be pushed as one layer to ACR.
 
 After successfully pushing an image, relevant information including layers' digests and image digest will output to users. Here is an output example, users should remember the image digest which exactly index an image:
 
@@ -48,7 +75,7 @@ Digest: sha256:412ea84f1bb1a9d98345efb7b427ba89616ec29ac332d543eff9a2161ca12a58
 ```
 
 ## Pull 
-In pull operation, the command is 
+For pull operation, the command is 
 
 ```
 pull <ImageReference> <OutputTemplateFolder> [ -f | --ForceOverride]
