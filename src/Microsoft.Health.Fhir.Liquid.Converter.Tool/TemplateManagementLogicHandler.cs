@@ -22,6 +22,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                     if (Directory.Exists(options.OutputTemplateFolder) && Directory.GetFileSystemEntries(options.OutputTemplateFolder).Length != 0)
                     {
                         Console.Error.WriteLine($"Fail to pull templates: The output folder is not empty. If force to override, please add -f in parameters");
+                        return -1;
                     }
                 }
 
@@ -52,11 +53,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 if (!Directory.Exists(options.InputTemplateFolder))
                 {
                     Console.Error.WriteLine($"Process Exits: Input folder {options.InputTemplateFolder} not exist.");
+                    return -1;
                 }
 
                 if (Directory.GetFileSystemEntries(options.InputTemplateFolder).Length == 0)
                 {
                     Console.Error.WriteLine($"Process Exits: Input folder {options.InputTemplateFolder} is empty.");
+                    return -1;
                 }
 
                 OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.InputTemplateFolder);
