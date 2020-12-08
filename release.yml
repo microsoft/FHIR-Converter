@@ -54,6 +54,16 @@ stages:
         zipAfterPublish: false
 
     - task: DotNetCoreCLI@2
+      displayName: 'publish github release bin'
+      inputs:
+        command: 'publish'
+        projects: '$(publishProject)'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin'
+        nobuild: true
+        publishWebProjects: false
+        zipAfterPublish: false
+
+    - task: DotNetCoreCLI@2
       displayName: 'publish functional tests'
       inputs:
         command: 'publish'
@@ -171,6 +181,19 @@ stages:
       inputs:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
+
+    - task: GithubRelease@0 
+      displayName: 'Create GitHub Release'      
+      inputs:
+        gitHubConnection: qiwjin
+        repositoryName: qiwjin/FHIR-Converter
+        isDraft: true
+        tagSource: manual
+        tag: $(Build.BuildNumber)      
+        assets: |
+          $(Build.DefaultWorkingDirectory)/bin/**
+          $(Build.DefaultWorkingDirectory)/data/Templates/DefaultTemplates.tar.gz
+
     - script: echo [TODO]　push nuget and image
 
 
