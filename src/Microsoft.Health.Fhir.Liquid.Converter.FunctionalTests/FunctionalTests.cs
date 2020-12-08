@@ -19,10 +19,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 {
     public class FunctionalTests
     {
-        private static readonly string DataFolder = @"..\..\..\..\..\data\SampleData";
-        private static readonly string ExpectedDataFolder = @"TestData\Expected";
-        private static readonly string Hl7v2TemplateFolder = @"..\..\..\..\..\data\Templates\Hl7v2";
-
         public static IEnumerable<object[]> GetDataForHl7v2()
         {
             var data = new List<object[]>
@@ -44,8 +40,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             return data.Select(item => new object[]
             {
                 Convert.ToString(item[0]),
-                Path.Combine(DataFolder, "Hl7v2", Convert.ToString(item[1])),
-                Path.Combine(ExpectedDataFolder, "Hl7v2", Convert.ToString(item[0]), Convert.ToString(item[2])),
+                Path.Join(Constants.SampleDataDirectory, "Hl7v2", Convert.ToString(item[1])),
+                Path.Join(Constants.ExpectedDataFolder, "Hl7v2", Convert.ToString(item[0]), Convert.ToString(item[2])),
             });
         }
 
@@ -54,7 +50,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         public void GivenHl7v2Message_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
         {
             var hl7v2Processor = new Hl7v2Processor();
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Hl7v2TemplateFolder);
+            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Hl7v2");
 
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
