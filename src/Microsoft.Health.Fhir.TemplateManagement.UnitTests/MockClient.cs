@@ -79,7 +79,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             }
         }
 
-        public async Task<ManifestWrapper> PullManifestAcync(string imageName, string label, CancellationToken cancellationToken = default)
+        public Task<ManifestWrapper> PullManifestAcync(string imageName, string label, CancellationToken cancellationToken = default)
         {
             if (!string.Equals(_currentToken, _realToken))
             {
@@ -89,7 +89,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string reference = _registry + "/" + imageName + ":" + label;
             if (_mockManifests.ContainsKey(reference))
             {
-                return _mockManifests[reference];
+                return Task.FromResult(_mockManifests[reference]);
             }
             else
             {
@@ -97,7 +97,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             }
         }
 
-        public async Task<Stream> PullBlobAsStreamAcync(string imageName, string digest, CancellationToken cancellationToken = default)
+        public Task<Stream> PullBlobAsStreamAcync(string imageName, string digest, CancellationToken cancellationToken = default)
         {
             if (!string.Equals(_currentToken, _realToken))
             {
@@ -107,7 +107,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             var key = imageName + ":" + digest;
             if (_mockBlobs.ContainsKey(key))
             {
-                return new MemoryStream(_mockBlobs[key]);
+                return Task.FromResult((Stream)new MemoryStream(_mockBlobs[key]));
             }
             else
             {
@@ -115,7 +115,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             }
         }
 
-        public async Task<byte[]> PullBlobAsBytesAcync(string imageName, string digest, CancellationToken cancellationToken = default)
+        public Task<byte[]> PullBlobAsBytesAcync(string imageName, string digest, CancellationToken cancellationToken = default)
         {
             if (!string.Equals(_currentToken, _realToken))
             {
@@ -125,7 +125,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             var key = imageName + ":" + digest;
             if (_mockBlobs.ContainsKey(key))
             {
-                return _mockBlobs[key];
+                return Task.FromResult(_mockBlobs[key]);
             }
             else
             {
@@ -133,7 +133,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             }
         }
 
-        public async Task<List<byte[]>> PullImageAsync(ImageInfo imageInfo, CancellationToken cancellationToken = default)
+        public Task<List<byte[]>> PullImageAsync(ImageInfo imageInfo, CancellationToken cancellationToken = default)
         {
             if (!string.Equals(_currentToken, _realToken))
             {
@@ -142,7 +142,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
             if (_mockImages.ContainsKey(imageInfo.ImageReference))
             {
-                return _mockImages[imageInfo.ImageReference];
+                return Task.FromResult(_mockImages[imageInfo.ImageReference]);
             }
             else
             {
