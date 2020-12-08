@@ -188,7 +188,7 @@ stages:
       displayName: 'Create GitHub Release'      
       inputs:
         gitHubConnection: githubpipeline
-        repositoryName: qiwjin/FHIR-Converter
+        repositoryName: microsoft/FHIR-Converter
         isDraft: true
         tagSource: manual
         tag: $(Build.BuildNumber)      
