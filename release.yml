@@ -1,6 +1,8 @@
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
+- main
+- master
 - dotliquid
 - refs/heads/dotliquid
 pr: ['dotliquid']
