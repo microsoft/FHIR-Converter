@@ -83,7 +83,7 @@ pull <ImageReference> <OutputTemplateFolder> [ -f | --ForceOverride]
 
 | Value | index |Optionality |  Description |
 | ----- | ----- | ----- |----- |
-| ImageReference |0| Required |  Image reference: \<Registry>\/\<Name>\[ @\<Digest>] \| :\<Tag> \] |
+| ImageReference |0| Required |  Image reference: \<Registry>\/\<Name>\[ @\<Digest> \| :\<Tag> \] |
 |OutputTemplateFolder | 1 |Required | Output template folder. |
 
 | Option | Name | Optionality | Default | Description |
