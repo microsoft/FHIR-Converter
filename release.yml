@@ -187,7 +187,7 @@ stages:
     - task: GithubRelease@0 
       displayName: 'Create GitHub Release'      
       inputs:
-        gitHubConnection: qiwjin
+        gitHubConnection: githubpipeline
         repositoryName: qiwjin/FHIR-Converter
         isDraft: true
         tagSource: manual
