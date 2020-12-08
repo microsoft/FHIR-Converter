@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
+using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.OutputProcessor;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Newtonsoft.Json;
@@ -44,9 +45,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
             }
 
-            var context = CreateContext(templateProvider, data);
+            var hl7v2Data = _dataParser.Parse(data);
+            var context = CreateContext(templateProvider, hl7v2Data);
             var rawResult = RenderTemplates(template, context);
             var result = PostProcessor.Process(rawResult);
+            if (traceInfo is Hl7v2TraceInfo hl7V2TraceInfo)
+            {
+                hl7V2TraceInfo.UnusedSegments = Hl7v2TraceInfo.CreateTraceInfo(hl7v2Data).UnusedSegments;
+            }
+
             return result.ToString(Formatting.Indented);
         }
 
@@ -56,10 +63,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             return Convert(data, rootTemplate, templateProvider, traceInfo);
         }
 
-        private Context CreateContext(ITemplateProvider templateProvider, string data)
+        private Context CreateContext(ITemplateProvider templateProvider, Hl7v2Data hl7v2Data)
         {
             // Load data and templates
-            var hl7v2Data = _dataParser.Parse(data);
             var timeout = _settings != null ? _settings.TimeOut : 0;
             var context = new Context(
                 environments: new List<Hash>() { Hash.FromAnonymousObject(new { hl7v2Data }) },
@@ -88,7 +94,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             try
             {
                 template.MakeThreadSafe();
-                return template.Render(new RenderParameters(CultureInfo.InvariantCulture) { Context = context });
+                return template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture));
             }
             catch (TimeoutException ex)
             {

@@ -36,6 +36,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
                 var indexString = index.ToString();
                 if (string.Equals(indexString, "Value", StringComparison.InvariantCultureIgnoreCase))
                 {
+                    SetAccessForAllComponents();
                     return Value;
                 }
                 else if (string.Equals(indexString, "Fields", StringComparison.InvariantCultureIgnoreCase))
@@ -49,6 +50,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
                 else
                 {
                     throw new RenderException(FhirConverterErrorCode.PropertyNotFound, string.Format(Resources.PropertyNotFound, indexString, this.GetType().Name));
+                }
+            }
+        }
+
+        private void SetAccessForAllComponents()
+        {
+            foreach (var field in Fields)
+            {
+                if (field is Hl7v2Field hl7v2Field)
+                {
+                    foreach (var component in hl7v2Field.Components)
+                    {
+                        if (component is Hl7v2Component hl7V2Component)
+                        {
+                            hl7V2Component.IsAccessed = true;
+                        }
+                    }
                 }
             }
         }

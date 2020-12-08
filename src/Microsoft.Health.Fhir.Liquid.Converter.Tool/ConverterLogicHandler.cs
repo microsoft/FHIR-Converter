@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
+using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool.Models;
 using Newtonsoft.Json;
@@ -56,8 +57,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 var dataType = GetDataTypes(options.TemplateDirectory);
                 var dataProcessor = CreateDataProcessor(dataType);
                 var templateProvider = CreateTemplateProvider(dataType, options.TemplateDirectory);
-                var resultString = dataProcessor.Convert(options.InputDataContent, options.RootTemplate, templateProvider);
-                var result = new ConverterResult(ProcessStatus.OK, resultString);
+                var traceInfo = CreateTraceInfo(dataType);
+                var resultString = dataProcessor.Convert(options.InputDataContent, options.RootTemplate, templateProvider, traceInfo);
+                var result = new ConverterResult(ProcessStatus.OK, resultString, traceInfo);
                 WriteOutputFile(options.OutputDataFile, JsonConvert.SerializeObject(result, Formatting.Indented));
                 Logger.LogInformation("Process completed");
             }
@@ -149,6 +151,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             }
 
             throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported");
+        }
+
+        private static TraceInfo CreateTraceInfo(DataType dataType)
+        {
+            return dataType == DataType.Hl7v2 ? new Hl7v2TraceInfo() : new TraceInfo();
         }
 
         private static List<string> GetInputFiles(DataType dataType, string inputDataFolder)

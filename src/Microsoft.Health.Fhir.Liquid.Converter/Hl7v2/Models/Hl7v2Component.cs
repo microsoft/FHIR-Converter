@@ -16,9 +16,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
     {
         public Hl7v2Component(string value, IEnumerable<string> subcomponents)
         {
+            IsAccessed = false;
             Value = value;
             Subcomponents = new SafeList<string>(subcomponents);
         }
+
+        public bool IsAccessed { get; set; }
 
         public string Value { get; set; }
 
@@ -33,6 +36,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
                     throw new RenderException(FhirConverterErrorCode.PropertyNotFound, string.Format(Resources.PropertyNotFound, index, this.GetType().Name));
                 }
 
+                IsAccessed = true;
                 var indexString = index.ToString();
                 if (string.Equals(indexString, "Value", StringComparison.InvariantCultureIgnoreCase))
                 {
