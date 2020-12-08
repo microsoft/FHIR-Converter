@@ -193,8 +193,8 @@ stages:
         tagSource: manual
         tag: $(Build.BuildNumber)      
         assets: |
-          $(Build.DefaultWorkingDirectory)/bin/**
-          $(Build.DefaultWorkingDirectory)/data/Templates/DefaultTemplates.tar.gz
+          $(Build.DefaultWorkingDirectory)/FhirConverterBuild/bin/**
+          $(Build.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/DefaultTemplates.tar.gz
 
     - script: echo [TODO]　push nuget and image
 
