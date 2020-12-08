@@ -12,16 +12,16 @@ The command-line tool can be used to pull and push a template collection through
 
 * Azure Active Directory service principal (optional) - If using service principal's identity for authentication, you need to create a [service principal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal) to access your registry. Ensure that the service principal is assigned a role such as AcrPush so that it has permissions to push and pull artifacts.
 
-* Azure CLI (optional) - To use an individual identity, you need a local installation of the Azure CLI. Version 2.0.71 or later is recommended. Run az --version to find the version. If you need to install or upgrade, see [Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
+* Azure CLI (optional) - To use an individual identity, you need a local installation of the Azure CLI. Version 2.0.71 or later is recommended. Run `az --version` to find the version. If you need to install or upgrade, see [Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
 
 * Docker (optional) - To use an individual identity, you must also have Docker installed locally, to authenticate with the registry. Docker provides packages that easily configure Docker on any [macOS](https://docs.docker.com/docker-for-mac/), [Windows](https://docs.docker.com/docker-for-windows/), or [Linux](https://docs.docker.com/engine/install/) system.
 ## Authentication
 
-Before pull & push operations, azure authentication is required for private registries. Customers can directly use individual login with Azure AD throw [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli) or use identity (individual identity or Azure AD [service principal identity](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal)) to sign in the registry. 
+Before pull & push operations, azure authentication is required for private registries. Customers can directly use individual login with Azure AD through [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli) or use identity (individual identity or Azure AD [service principal identity](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal)) to sign in the registry. 
 
 ### Login Using Azure CLI
 
-After signing in to the Azure CLI with your identity, use the Azure CLI command az acr login to access the registry.
+After signing in to the Azure CLI with your identity, use the Azure CLI command `az acr login` to access the registry.
 ```
 > az acr login --name <registry>
 ```
@@ -98,5 +98,5 @@ Example usage to pull an image of templates in a folder:
 
 When pulling a collection of templates, a hidden folder "./.image/" will be created in output folder as well, which stores meta and layers' information. Users shouldn't modify this hidden folder which may lead to unexpected result.
 
-Image labeled by tag could be override easily, using digest is safer when pulling an image. Users should remember the image digest when pushing or find digest from ACR, since it won't be searched by our tool for now.   
+Image labeled by tag could be overriden easily, using digest is safer when pulling an image. Users should remember the image digest when pushing or find digest from ACR, since it won't be searched by our tool for now.   
 
