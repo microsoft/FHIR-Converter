@@ -16,12 +16,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
         public static async Task<int> Main(string[] args)
         {
             var parseResult = Parser.Default.ParseArguments<ConverterOptions, PullTemplateOptions, PushTemplateOptions>(args);
-            int resultCode = 0;
+            int result = 0;
             parseResult.WithParsed<ConverterOptions>(options => ConverterLogicHandler.Convert(options));
-            await parseResult.WithParsedAsync<PullTemplateOptions>(async options => resultCode = await TemplateManagementLogicHandler.PullAsync(options));
-            await parseResult.WithParsedAsync<PushTemplateOptions>(async options => resultCode = await TemplateManagementLogicHandler.PushAsync(options));
-            parseResult.WithNotParsed((errors) => resultCode = HandleOptionsParseError(parseResult));
-            return resultCode;
+            await parseResult.WithParsedAsync<PullTemplateOptions>(async options => result = await TemplateManagementLogicHandler.PullAsync(options));
+            await parseResult.WithParsedAsync<PushTemplateOptions>(async options => result = await TemplateManagementLogicHandler.PushAsync(options));
+            parseResult.WithNotParsed((errors) => result = HandleOptionsParseError(parseResult));
+            return result;
         }
 
         private static int HandleOptionsParseError(ParserResult<object> parseResult)

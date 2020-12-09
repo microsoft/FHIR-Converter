@@ -21,7 +21,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 {
                     if (Directory.Exists(options.OutputTemplateFolder) && Directory.GetFileSystemEntries(options.OutputTemplateFolder).Length != 0)
                     {
-                        Console.Error.WriteLine($"Fail to pull templates: The output folder is not empty. If force to override, please add -f in parameters");
+                        Console.Error.WriteLine($"Process Exits: The output folder is not empty. If force to override, please add -f in parameters");
                         return -1;
                     }
                 }
@@ -40,7 +40,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Process Exits: Fail to pull templates. {ex.Message} ");
+                Console.Error.WriteLine($"Fail to pull templates. {ex.Message} ");
             }
 
             return -1;
@@ -71,12 +71,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 }
                 else
                 {
-                    Console.Error.WriteLine("Process Exits: Fail to push templates.");
+                    Console.Error.WriteLine("Fail to push templates.");
                 }
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Process Exits: Fail to push templates. {ex.Message} ");
+                Console.Error.WriteLine($"Fail to push templates. {ex.Message} ");
             }
 
             return -1;
