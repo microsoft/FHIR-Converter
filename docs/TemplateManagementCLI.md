@@ -56,14 +56,14 @@ push <ImageReference> InputTemplateFolder [ -n | --NewBaseLayer]
 | ----- | ----- | ----- |----- |----- |
 | -n | BuildNewBaseLayer | Optional | false | Ignore previous base layer and build new layer. |
 
-Example usage to push a collection of templates to ACR image from a folder:
+Example command to push a collection of templates to ACR image from a folder:
 
 ```
 >.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe push testacr.azurecr.io/templatetest:default myInputFolder
 ```
-When pushing templates, all files except files in hidden image folder ("./.image/") will be packed as new template image. If the folder is unpacked from a previous template image, our tool will pack all user modified files into the user layer and then push all layers to ACR (The base layer is stores in hidden folder "./.image/"). If customers using -n as parameter, all templates will be packed together and be pushed as one layer to ACR.
+When pushing templates, all files except files in hidden image folder ("./.image/") will be packed as new template image. If the folder is unpacked from a previous template image, our tool will pack all user modified files into the user layer and then push all layers to ACR (The base layer is in hidden folder "./.image/"). If customers use -n as parameter, all templates will be packed together and be pushed as one layer to ACR.
 
-After successfully pushing an image, relevant information including layers' digests and image digest will output to users. Here is an output example, users should remember the image digest which exactly index an image:
+After successfully pushing an image, relevant information including layers' digests and image digest will output to users. Here is an output example, users should remember the image digest which exactly indexes an image:
 
 ```
 Uploading 4085e9f97630 layer2.tar.gz
@@ -88,13 +88,13 @@ pull <ImageReference> <OutputTemplateFolder> [ -f | --ForceOverride]
 | ----- | ----- | ----- |----- |----- |
 | -f | ForceOverride | Optional | false | Force to override the output folder. |
 
-Example usage to pull an image of templates in a folder:
+Example usage of pulling an image of templates in a folder:
 
 ```
 >.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe pull testacr.azurecr.io/templatetest@sha256:412ea84f1bb1a9d98345efb7b427ba89616ec29ac332d543eff9a2161ca12a58 myOutputFolder
 ```
 
-After a collection of templates is pulled, a hidden folder ".image/" which contains information of metadata and layers is also created in the output folder. Users shouldn't modify this hidden folder which may lead to unexpected result.
+After a collection of templates is pulled, a hidden folder ".image/" which contains information of metadata and layers is also created in the output folder. Users shouldn't modify this hidden folder which may lead to unexpected results.
 
 Image tags are mutable and could be overwritten unintentionally. We recommend you write down the image digest and use the immutable image digest as the template reference. Users should remember the image digest when pushing or find digest from ACR, since it won't be searched by our tool for now.   
 
