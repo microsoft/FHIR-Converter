@@ -1,4 +1,4 @@
-Template Management is a tool to manage template files which is used in FHIR dotliquid converter engine. Template manager organizes template files in template image and allows pull and push operations. 
+Template Management CLI is a tool to manage template files for FHIR Converter DotLiquid engine. This CLI tool manages all template files in OCI image format and allows pushing and pulling templates from [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/).
 
 Template image is a layer based structure similar to docker image and uses [overlayfs](https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html?highlight=overlayfs) concept to organize templates.
 
@@ -61,7 +61,6 @@ Example usage to push a collection of templates to ACR image from a folder:
 ```
 >.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe push testacr.azurecr.io/templatetest:default myInputFolder
 ```
-
 When pushing templates, all files except files in hidden image folder ("./.image/") will be packed as new template image. If the folder is unpacked from a previous template image, our tool will pack all user modified files into the user layer and then push all layers to ACR (The base layer is stores in hidden folder "./.image/"). If customers using -n as parameter, all templates will be packed together and be pushed as one layer to ACR.
 
 After successfully pushing an image, relevant information including layers' digests and image digest will output to users. Here is an output example, users should remember the image digest which exactly index an image:
@@ -95,7 +94,7 @@ Example usage to pull an image of templates in a folder:
 >.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe pull testacr.azurecr.io/templatetest@sha256:412ea84f1bb1a9d98345efb7b427ba89616ec29ac332d543eff9a2161ca12a58 myOutputFolder
 ```
 
-When pulling a collection of templates, a hidden folder "./.image/" will be created in output folder as well, which stores meta and layers' information. Users shouldn't modify this hidden folder which may lead to unexpected result.
+After a collection of templates is pulled, a hidden folder ".image/" which contains information of metadata and layers is also created in the output folder. Users shouldn't modify this hidden folder which may lead to unexpected result.
 
-Image labeled by tag could be overriden easily, using digest is safer when pulling an image. Users should remember the image digest when pushing or find digest from ACR, since it won't be searched by our tool for now.   
+Image tags are mutable and could be overwritten unintentionally. We recommend you write down the image digest and use the immutable image digest as the template reference. Users should remember the image digest when pushing or find digest from ACR, since it won't be searched by our tool for now.   
 
