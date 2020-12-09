@@ -1,4 +1,4 @@
-Template Management CLI is a tool to manage template files for FHIR Converter DotLiquid engine. This CLI tool manages all template files in OCI image format and allows pushing and pulling templates from [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/).
+Template Management CLI is a tool to manage template files for FHIR Converter DotLiquid engine. This CLI tool manages all template files in [OCI image](https://github.com/opencontainers/image-spec) format and allows pushing and pulling templates with [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/).
 
 Template image is a layer based structure similar to docker image and uses [overlayfs](https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html?highlight=overlayfs) concept to organize templates.
 
