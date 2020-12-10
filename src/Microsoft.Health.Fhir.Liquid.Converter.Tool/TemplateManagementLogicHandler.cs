@@ -30,17 +30,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 if (await fileManager.PullOCIImageAsync())
                 {
                     fileManager.UnpackOCIImage();
-                    Console.WriteLine($"Succeed to pull templates to {options.OutputTemplateFolder} folder");
+                    Console.WriteLine($"Successfully pulled templates to {options.OutputTemplateFolder} folder");
                     return 0;
                 }
                 else
                 {
-                    Console.Error.WriteLine($"Fail to pull templates.");
+                    Console.Error.WriteLine($"Failed to pull templates.");
                 }
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Fail to pull templates. {ex.Message} ");
+                Console.Error.WriteLine($"Failed to pull templates. {ex.Message} ");
             }
 
             return -1;
@@ -66,17 +66,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 fileManager.PackOCIImage(options.BuildNewBaseLayer);
                 if (await fileManager.PushOCIImageAsync())
                 {
-                    Console.WriteLine($"Succeed to push new templates to {options.ImageReference}");
+                    Console.WriteLine($"Successfully pushed new templates to {options.ImageReference}");
                     return 0;
                 }
                 else
                 {
-                    Console.Error.WriteLine("Fail to push templates.");
+                    Console.Error.WriteLine("Failed to push templates.");
                 }
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Fail to push templates. {ex.Message} ");
+                Console.Error.WriteLine($"Failed to push templates. {ex.Message} ");
             }
 
             return -1;
