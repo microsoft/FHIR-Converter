@@ -1,14 +1,14 @@
-Template Management CLI is a tool to manage template files for FHIR Converter DotLiquid engine. This CLI tool manages all template files in [OCI image](https://github.com/opencontainers/image-spec) format and allows pushing and pulling templates with [Azure Container Registry](https://azure.microsoft.com/en-us/services/container-registry/).
+The $convert-data operation in the FHIR Server for Azure takes templateCollectionReference parameter, which refers to an [OCI image ](https://github.com/opencontainers/image-spec) on [Azure Container Registry (ACR)](https://azure.microsoft.com/en-us/services/container-registry/). It is the image containing Liquid templates to use for conversion.
 
-Template image is a layer based structure similar to docker image and uses [overlayfs](https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html?highlight=overlayfs) concept to organize templates.
+The Template Management CLI tool is mean to pull, push, and manage the templates on the ACR.
 
-For custom templates, we use two layers image structure to organize template collection: base layer and user layer (The user layer could be extended to multi-layers in the future if necessary). Base layer packs official published templates and user layer packs all modified templates from users. Each layer will be compressed into "*.tar.gz" file before pushing to ACR.
+Template OCI image is a layer based structure similar to docker image and uses [overlayfs](https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html?highlight=overlayfs) concept to organize templates. For custom templates, we use two layers image structure to organize template collection: base layer and user layer (The user layer could be extended to multi-layers in the future if necessary). Base layer packs Microsoft published templates and user layer packs all modified templates from users. Each layer will be compressed into "*.tar.gz" file before pushing to ACR.
 # Using Template Management CLI
 
-The command-line tool can be used to pull and push a template collection through remote registry (Now we only support Azure Container Registry). 
+The command-line tool can be used to pull and push a template collection from/to a remote registry (Now we only support Azure Container Registry). 
 
 ## Prerequisites
-* Azure container registry - Create a container registry in your Azure subscription. For example, use the [Azure portal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) or the [Azure CLI](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-azure-cli).
+* Azure container registry - Create a container registry in your Azure subscription if you do not have one. This is the registry where you want to keep your Liquid templates. You can use the [Azure portal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) or the [Azure CLI](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-azure-cli).
 
 * Azure Active Directory service principal (optional) - If using service principal's identity for authentication, you need to create a [service principal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal) to access your registry. Ensure that the service principal is assigned a role such as AcrPush so that it has permissions to push and pull artifacts.
 
@@ -23,7 +23,7 @@ Before pull & push operations, azure authentication is required for private regi
 
 After signing in to the Azure CLI with your identity, use the Azure CLI command `az acr login` to access the registry.
 ```
-> az acr login --name <registry>
+> az acr login --name <acrName>
 ```
 
 ### Login Using Identity (individual or service principal indentity)
@@ -31,14 +31,14 @@ After signing in to the Azure CLI with your identity, use the Azure CLI command 
 * Docker login
 
 ```
-> docker login <registry> -u <username> -p <password>
+> docker login <acrName.azurecr.io> -u <username> -p <password>
 ```
 * Oras Login
 
 The [oras](https://github.com/deislabs/oras) tool oras.exe is packed in our repo, users can directly use it for login as follows.
 
 ```
->.\oras.exe login <registry> -u <username> -p <password>
+>.\oras.exe login <acrName.azurecr.io> -u <username> -p <password>
 ```
 
 ## Push
@@ -62,6 +62,8 @@ Example command to push a collection of templates to ACR image from a folder:
 >.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe push testacr.azurecr.io/templatetest:default myInputFolder
 ```
 When pushing templates, all files except files in hidden image folder ("./.image/") will be packed as new template image. If the folder is unpacked from a previous template image, our tool will pack all user modified files into the user layer and then push all layers to ACR (The base layer is in hidden folder "./.image/"). If customers use -n as parameter, all templates will be packed together and be pushed as one layer to ACR.
+
+>[Note!]: As for template OCI image, entry templates should be present directly in the root folder.
 
 After successfully pushing an image, relevant information including layers' digests and image digest will output to users. Here is an output example, users should remember the image digest which exactly indexes an image:
 
