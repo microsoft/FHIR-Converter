@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
+using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
@@ -54,7 +55,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
-            var actualContent = hl7v2Processor.Convert(inputContent, rootTemplate, new Hl7v2TemplateProvider(templateDirectory));
+            var traceInfo = new Hl7v2TraceInfo();
+            var actualContent = hl7v2Processor.Convert(inputContent, rootTemplate, new Hl7v2TemplateProvider(templateDirectory), traceInfo);
 
             // Remove ID
             var regex = new Regex(@"(?<=(""urn:uuid:|""|/))([A-Za-z0-9\-]{36})(?="")");
@@ -66,6 +68,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             var expectedObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(expectedContent)));
             var actualObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(actualContent)));
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
+            Assert.True(traceInfo.UnusedSegments.Count > 0);
         }
 
         [Fact]

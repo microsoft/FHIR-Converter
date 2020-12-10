@@ -7,7 +7,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 {
     /// <summary>
     /// TraceInfo records processing details during conversion.
-    /// It is going to be implemented in coming releases.
+    /// For HL7 v2 conversion, please use its inherited class Hl7v2TraceInfo.
     /// </summary>
     public class TraceInfo
     {

@@ -3,7 +3,10 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
+using Microsoft.Health.Fhir.Liquid.Converter.Extensions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
@@ -21,54 +24,76 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
 
         public List<UnusedHl7v2Segment> UnusedSegments { get; set; }
 
-        public static Hl7v2TraceInfo CreateTraceInfo(Hl7v2Data hl7V2Data)
+        public static Hl7v2TraceInfo CreateTraceInfo(Hl7v2Data hl7v2Data)
         {
             var unusedSegments = new List<UnusedHl7v2Segment>();
-            for (var i = 0; i < hl7V2Data?.Data?.Count; ++i)
+            try
             {
-                var segment = hl7V2Data.Data[i];
-                var unusedSegment = new UnusedHl7v2Segment(i);
-                for (var j = 0; j < segment?.Fields?.Count; ++j)
+                for (var i = 0; i < hl7v2Data?.Data?.Count; ++i)
                 {
-                    // Encoding characters field is treated as accessed
-                    if (i == 0 && j == 1)
+                    var segment = hl7v2Data.Data[i];
+                    var unusedSegment = new UnusedHl7v2Segment(i);
+                    for (var j = 0; j < segment?.Fields?.Count; ++j)
                     {
-                        continue;
-                    }
-
-                    // Segment id field is treated as accessed
-                    if (j == 0 && segment.Fields[j] is Hl7v2Field segmentIdField)
-                    {
-                        unusedSegment.Type = segmentIdField.Value;
-                        continue;
-                    }
-
-                    if (segment.Fields[j] is Hl7v2Field field)
-                    {
-                        var unusedField = new UnusedHl7v2Field(j);
-                        for (var k = 0; k < field.Components.Count; ++k)
+                        // Encoding characters field is treated as accessed
+                        if (i == 0 && j == 1)
                         {
-                            if (field.Components[k] is Hl7v2Component component && component.IsAccessed == false)
+                            continue;
+                        }
+
+                        // Segment id field is treated as accessed
+                        if (j == 0 && segment.Fields[j] is Hl7v2Field segmentIdField)
+                        {
+                            unusedSegment.Type = segmentIdField.Value;
+                            continue;
+                        }
+
+                        if (j > 0 && segment.Fields[j] is Hl7v2Field field)
+                        {
+                            var unusedComponents = new List<UnusedHl7v2Component>();
+                            for (var k = 0; k < field.Components.Count; ++k)
                             {
-                                var unusedComponent = new UnusedHl7v2Component(k, component.Value);
-                                unusedField.Component.Add(unusedComponent);
+                                if (field.Components[k] is Hl7v2Component component && component.IsAccessed == false)
+                                {
+                                    var indexInSegment = FindOffsetInSegment(segment.Value, hl7v2Data.EncodingCharacters, j, k - 1);
+                                    var unusedComponent = new UnusedHl7v2Component(k - 1, indexInSegment, component.Value);
+                                    unusedComponents.Add(unusedComponent);
+                                }
+                            }
+
+                            if (unusedComponents.Count > 0)
+                            {
+                                var unusedField = new UnusedHl7v2Field(j, unusedComponents);
+                                unusedSegment.Fields.Add(unusedField);
                             }
                         }
+                    }
 
-                        if (unusedField.Component.Count > 0)
-                        {
-                            unusedSegment.Field.Add(unusedField);
-                        }
+                    if (unusedSegment.Fields.Count > 0)
+                    {
+                        unusedSegments.Add(unusedSegment);
                     }
                 }
-
-                if (unusedSegment.Field.Count > 0)
-                {
-                    unusedSegments.Add(unusedSegment);
-                }
+            }
+            catch (Exception ex)
+            {
+                throw new PostprocessException(FhirConverterErrorCode.TraceInfoError, string.Format(Resources.TraceInfoError, ex.Message));
             }
 
             return new Hl7v2TraceInfo(unusedSegments);
+        }
+
+        private static int FindOffsetInSegment(string segmentValue, Hl7v2EncodingCharacters encodingCharacters, int fieldIndex, int componentIndex)
+        {
+            var startFieldIndex = segmentValue.IndexOfNthOccurrence(encodingCharacters.FieldSeparator, fieldIndex) + 1;
+            var endFieldIndex = segmentValue.IndexOfNthOccurrence(encodingCharacters.FieldSeparator, fieldIndex + 1);
+            if (endFieldIndex == -1)
+            {
+                endFieldIndex = segmentValue.Length;
+            }
+
+            var fieldValue = segmentValue.Substring(startFieldIndex, endFieldIndex - startFieldIndex);
+            return startFieldIndex + fieldValue.IndexOfNthOccurrence(encodingCharacters.ComponentSeparator, componentIndex) + 1;
         }
     }
 }

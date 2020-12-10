@@ -19,6 +19,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
 
         public string Value { get; set; }
 
+        public Hl7v2EncodingCharacters EncodingCharacters { get; set; }
+
         public List<string> Meta { get; set; }
 
         public List<Hl7v2Segment> Data { get; set; }

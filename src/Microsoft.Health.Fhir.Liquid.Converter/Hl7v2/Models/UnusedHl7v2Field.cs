@@ -9,14 +9,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
 {
     public class UnusedHl7v2Field
     {
-        public UnusedHl7v2Field(int index)
+        public UnusedHl7v2Field(int index, List<UnusedHl7v2Component> components)
         {
             Index = index;
-            Component = new List<UnusedHl7v2Component>();
+            Components = components;
         }
 
         public int Index { get; set; }
 
-        public List<UnusedHl7v2Component> Component { get; set; }
+        public List<UnusedHl7v2Component> Components { get; set; }
     }
 }
