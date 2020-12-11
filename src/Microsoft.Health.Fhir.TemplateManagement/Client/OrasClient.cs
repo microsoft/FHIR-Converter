@@ -19,8 +19,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
     {
         private readonly string _imageReference;
 
-        private readonly ILogger _logger = TemplateManagementLogging.CreateLogger<OrasClient>();
-
         public OrasClient(string imageReference)
         {
             EnsureArg.IsNotNull(imageReference, nameof(imageReference));
@@ -28,23 +26,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             _imageReference = imageReference;
         }
 
-        public async Task<bool> PullImageAsync(string outputFolder)
+        public async Task PullImageAsync(string outputFolder)
         {
             string command = $"pull  {_imageReference} -o {outputFolder}";
             await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
-            return true;
         }
 
-        public async Task<bool> PushImageAsync(string inputFolder)
+        public async Task PushImageAsync(string inputFolder)
         {
             string argument = string.Empty;
             string command = $"push {_imageReference}";
-
-            if (!Directory.Exists(inputFolder))
-            {
-                _logger.LogInformation($"No file for push.");
-                return false;
-            }
 
             var filePathToPush = Directory.EnumerateFiles(inputFolder, "*.tar.gz", SearchOption.AllDirectories);
 
@@ -57,12 +48,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             if (string.IsNullOrEmpty(argument))
             {
-                _logger.LogInformation($"No file for push.");
-                return false;
+                throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file for push.");
             }
 
             await OrasExecutionAsync(string.Concat(command, argument), inputFolder);
-            return true;
         }
 
         private async Task OrasExecutionAsync(string command, string orasWorkingDirectory)

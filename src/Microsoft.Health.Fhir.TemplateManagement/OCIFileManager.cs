@@ -27,10 +27,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             _overlayOperator = new OverlayOperator();
         }
 
-        public async Task<bool> PullOCIImageAsync()
+        public async Task PullOCIImageAsync()
         {
             _overlayFS.ClearImageLayerFolder();
-            return await _orasClient.PullImageAsync(_overlayFS.WorkingImageLayerFolder);
+            await _orasClient.PullImageAsync(_overlayFS.WorkingImageLayerFolder);
         }
 
         public void UnpackOCIImage()
@@ -69,9 +69,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             _overlayFS.WriteImageLayers(baseArtifactLayers);
         }
 
-        public async Task<bool> PushOCIImageAsync()
+        public async Task PushOCIImageAsync()
         {
-            return await _orasClient.PushImageAsync(_overlayFS.WorkingImageLayerFolder);
+            await _orasClient.PushImageAsync(_overlayFS.WorkingImageLayerFolder);
         }
 
         private OCIFileLayer GenerateBaseFileLayer(List<OCIArtifactLayer> baseArtifactLayers)

@@ -19,37 +19,27 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
     {
         private const string MetadataFileName = "metadata.json";
 
-        internal static int Convert(ConverterOptions options)
+        internal static void Convert(ConverterOptions options)
         {
             if (!IsValidOptions(options))
             {
-                Console.Error.WriteLine("Invalid command-line options.");
-                return -1;
+                throw new InputParameterException("Invalid command-line options.");
             }
 
-            try
+            var dataType = GetDataTypes(options.TemplateDirectory);
+            var dataProcessor = CreateDataProcessor(dataType);
+            var templateProvider = CreateTemplateProvider(dataType, options.TemplateDirectory);
+
+            if (!string.IsNullOrEmpty(options.InputDataContent))
             {
-                var dataType = GetDataTypes(options.TemplateDirectory);
-                var dataProcessor = CreateDataProcessor(dataType);
-                var templateProvider = CreateTemplateProvider(dataType, options.TemplateDirectory);
-
-                if (!string.IsNullOrEmpty(options.InputDataContent))
-                {
-                    ConvertSingleFile(dataProcessor, templateProvider, dataType, options.RootTemplate, options.InputDataContent, options.OutputDataFile, options.IsTraceInfo);
-                }
-                else
-                {
-                    ConvertBatchFiles(dataProcessor, templateProvider, dataType, options.RootTemplate, options.InputDataFolder, options.OutputDataFolder, options.IsTraceInfo);
-                }
-
-                Console.WriteLine($"Process completed!");
-                return 0;
+                ConvertSingleFile(dataProcessor, templateProvider, dataType, options.RootTemplate, options.InputDataContent, options.OutputDataFile, options.IsTraceInfo);
             }
-            catch (Exception ex)
+            else
             {
-                Console.Error.WriteLine($"Error occurred when converting input data: {ex.Message}");
-                return -1;
+                ConvertBatchFiles(dataProcessor, templateProvider, dataType, options.RootTemplate, options.InputDataFolder, options.OutputDataFolder, options.IsTraceInfo);
             }
+
+            Console.WriteLine($"Conversion completed!");
         }
 
         private static void ConvertSingleFile(IFhirConverter dataProcessor, ITemplateProvider templateProvider, DataType dataType, string rootTemplate, string inputContent, string outputFile, bool isTraceInfo)

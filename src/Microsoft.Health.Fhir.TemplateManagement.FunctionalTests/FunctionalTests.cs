@@ -197,7 +197,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetValidImageInfoWithTag))]
-        public async Task GiveImageReference_WhenGetTemplateCollection_IfTokenInvalid_ExceptionWillBeThrownAsync(object _, string imageName, string tag)
+        public async Task GiveImageReference_WhenGetTemplateCollection_IfTokenInvalid_ExceptionWillBeThrownAsync(List<int> expectedTemplatesCounts, string imageName, string tag)
         {
             if (_containerRegistryInfo == null)
             {
@@ -211,6 +211,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             await Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(async () => await templateCollectionProvider.GetTemplateCollectionAsync());
             var emptyToken = string.Empty;
             Assert.Throws<ContainerRegistryAuthenticationException>(() => factory.CreateTemplateCollectionProvider(imageReference, emptyToken));
+            Assert.NotNull(expectedTemplatesCounts);
         }
 
         [Theory]
