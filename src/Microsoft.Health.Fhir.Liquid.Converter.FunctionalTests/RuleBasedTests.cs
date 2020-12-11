@@ -22,11 +22,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 {
     public class RuleBasedTests
     {
-        private static readonly string _templateBaseFolder = @"..\..\..\..\..\data\Templates";
-        private static readonly string _dataBaseFolder = @"..\..\..\..\..\data\SampleData";
-
-        private static readonly string _hl7TemplateFolder = Path.Combine(_templateBaseFolder, "Hl7v2");
-        private static readonly string _hl7DataFolder = Path.Combine(_dataBaseFolder, "Hl7v2");
+        private static readonly string _hl7TemplateFolder = Path.Combine(Constants.TemplateDirectory, "Hl7v2");
+        private static readonly string _hl7DataFolder = Path.Combine(Constants.SampleDataDirectory, "Hl7v2");
 
         private static readonly Hl7v2TemplateProvider _hl7TemplateProvider = new Hl7v2TemplateProvider(_hl7TemplateFolder);
 
