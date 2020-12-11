@@ -29,8 +29,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         public TemplateCollectionProviderTests()
         {
-            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DefaultTemplates.tar.gz");
-            TemplateLayer defaultTempalteLayer = TemplateLayer.ReadFromFile(path);
+            TemplateLayer defaultTempalteLayer = TemplateLayer.ReadFromEmbeddedResource();
             _cache.Set(ImageInfo.DefaultTemplateImageReference, defaultTempalteLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
 
             PushLargeSizeManifest();
@@ -124,7 +123,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var newTemplateCollectionProvider = new TemplateCollectionProvider(imageInfo, _emptyClient, _cache, _defaultConfig);
             TemplateLayer templateLayer = (TemplateLayer)await newTemplateCollectionProvider.GetLayerAsync(layerDigest);
-            Assert.Equal(expectedCounts, (templateLayer.TemplateContent).Count());
+            Assert.Equal(expectedCounts, templateLayer.TemplateContent.Count());
         }
 
         [Theory]
@@ -155,7 +154,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         [Theory]
         [MemberData(nameof(GetImageInfoForArtifactWithTag))]
-        public async Task GivenImageInfo_WhenGetTemplateCollectionFromTemplateCollectionProvider_IfCacheExpire_NotFoundExceptionWillBeThrown(string imageReference, object _)
+        public async Task GivenImageInfo_WhenGetTemplateCollectionFromTemplateCollectionProvider_IfCacheExpire_NotFoundExceptionWillBeThrown(string imageReference, List<int> expectedTemplatesCounts)
         {
             TemplateCollectionConfiguration config = new TemplateCollectionConfiguration() { ShortCacheTimeSpan = TimeSpan.FromSeconds(2) };
             await PullImageToCacheAsync(config);
@@ -163,6 +162,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             var newTemplateCollectionProvider = new TemplateCollectionProvider(imageInfo, _emptyClient, _cache, _defaultConfig);
             Thread.Sleep(2000);
             await Assert.ThrowsAsync<ImageNotFoundException>(() => newTemplateCollectionProvider.GetTemplateCollectionAsync());
+            Assert.NotNull(expectedTemplatesCounts);
         }
 
         [Theory]

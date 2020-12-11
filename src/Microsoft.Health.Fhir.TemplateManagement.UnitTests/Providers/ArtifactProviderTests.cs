@@ -143,11 +143,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         [Theory]
         [MemberData(nameof(GetImageInfoForArtifact))]
-        public async Task GivenImageInfo_WhenGetOCIArtifactFromACR_IfTokenUnAuth_ExceptionWillBeThrownAsync(string imageReference, object _)
+        public async Task GivenImageInfo_WhenGetOCIArtifactFromACR_IfTokenUnAuth_ExceptionWillBeThrownAsync(string imageReference, int expectedLayerCounts)
         {
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             _artifactProvider = new OCIArtifactProvider(imageInfo, MockClientWithUnAuthToken);
             await Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(async () => await _artifactProvider.GetOCIArtifactAsync());
+            Assert.IsType<int>(expectedLayerCounts);
         }
     }
 }
