@@ -13,73 +13,37 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
 {
     internal static class TemplateManagementLogicHandler
     {
-        internal static async Task<int> PullAsync(PullTemplateOptions options)
+        internal static async Task PullAsync(PullTemplateOptions options)
         {
-            try
+            if (!options.ForceOverride)
             {
-                if (!options.ForceOverride)
+                if (Directory.Exists(options.OutputTemplateFolder) && Directory.GetFileSystemEntries(options.OutputTemplateFolder).Length != 0)
                 {
-                    if (Directory.Exists(options.OutputTemplateFolder) && Directory.GetFileSystemEntries(options.OutputTemplateFolder).Length != 0)
-                    {
-                        Console.Error.WriteLine($"Process Exits: The output folder is not empty. If force to override, please add -f in parameters");
-                        return -1;
-                    }
-                }
-
-                OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.OutputTemplateFolder);
-                if (await fileManager.PullOCIImageAsync())
-                {
-                    fileManager.UnpackOCIImage();
-                    Console.WriteLine($"Successfully pulled templates to {options.OutputTemplateFolder} folder");
-                    return 0;
-                }
-                else
-                {
-                    Console.Error.WriteLine($"Failed to pull templates.");
+                    throw new InputParameterException($"The output folder is not empty. If force to override, please add -f in parameters");
                 }
             }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine($"Failed to pull templates. {ex.Message} ");
-            }
 
-            return -1;
+            OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.OutputTemplateFolder);
+            await fileManager.PullOCIImageAsync();
+            Console.WriteLine($"Successfully pulled templates to {options.OutputTemplateFolder} folder");
         }
 
-        internal static async Task<int> PushAsync(PushTemplateOptions options)
+        internal static async Task PushAsync(PushTemplateOptions options)
         {
-            try
+            if (!Directory.Exists(options.InputTemplateFolder))
             {
-                if (!Directory.Exists(options.InputTemplateFolder))
-                {
-                    Console.Error.WriteLine($"Process Exits: Input folder {options.InputTemplateFolder} not exist.");
-                    return -1;
-                }
-
-                if (Directory.GetFileSystemEntries(options.InputTemplateFolder).Length == 0)
-                {
-                    Console.Error.WriteLine($"Process Exits: Input folder {options.InputTemplateFolder} is empty.");
-                    return -1;
-                }
-
-                OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.InputTemplateFolder);
-                fileManager.PackOCIImage(options.BuildNewBaseLayer);
-                if (await fileManager.PushOCIImageAsync())
-                {
-                    Console.WriteLine($"Successfully pushed new templates to {options.ImageReference}");
-                    return 0;
-                }
-                else
-                {
-                    Console.Error.WriteLine("Failed to push templates.");
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.Error.WriteLine($"Failed to push templates. {ex.Message} ");
+                throw new InputParameterException($"Input folder {options.InputTemplateFolder} not exist.");
             }
 
-            return -1;
+            if (Directory.GetFileSystemEntries(options.InputTemplateFolder).Length == 0)
+            {
+                throw new InputParameterException($"Input folder {options.InputTemplateFolder} is empty.");
+            }
+
+            OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.InputTemplateFolder);
+            fileManager.PackOCIImage(options.BuildNewBaseLayer);
+            await fileManager.PushOCIImageAsync();
+            Console.WriteLine($"Successfully pushed new templates to {options.ImageReference}");
         }
     }
 }

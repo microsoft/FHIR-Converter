@@ -16,19 +16,25 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
         public static async Task<int> Main(string[] args)
         {
             var parseResult = Parser.Default.ParseArguments<ConverterOptions, PullTemplateOptions, PushTemplateOptions>(args);
-            int result = 0;
-            parseResult.WithParsed<ConverterOptions>(options => ConverterLogicHandler.Convert(options));
-            await parseResult.WithParsedAsync<PullTemplateOptions>(async options => result = await TemplateManagementLogicHandler.PullAsync(options));
-            await parseResult.WithParsedAsync<PushTemplateOptions>(async options => result = await TemplateManagementLogicHandler.PushAsync(options));
-            parseResult.WithNotParsed((errors) => result = HandleOptionsParseError(parseResult));
-            return result;
+            try
+            {
+                parseResult.WithParsed<ConverterOptions>(options => ConverterLogicHandler.Convert(options));
+                await parseResult.WithParsedAsync<PullTemplateOptions>(options => TemplateManagementLogicHandler.PullAsync(options));
+                await parseResult.WithParsedAsync<PushTemplateOptions>(options => TemplateManagementLogicHandler.PushAsync(options));
+                parseResult.WithNotParsed((errors) => HandleOptionsParseError(parseResult));
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Process failed: {ex.Message}");
+                return -1;
+            }
         }
 
-        private static int HandleOptionsParseError(ParserResult<object> parseResult)
+        private static void HandleOptionsParseError(ParserResult<object> parseResult)
         {
             var usageText = HelpText.RenderUsageText(parseResult);
-            Console.WriteLine(usageText);
-            return -1;
+            throw new InputParameterException(usageText);
         }
     }
 }

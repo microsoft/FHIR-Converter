@@ -3,14 +3,19 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System.Threading.Tasks;
+using System;
 
-namespace Microsoft.Health.Fhir.TemplateManagement.Client
+namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
 {
-    public interface IOrasClient
+    public class InputParameterException : Exception
     {
-        Task PullImageAsync(string outputFolder);
+        public InputParameterException()
+        {
+        }
 
-        Task PushImageAsync(string inputFolder);
+        public InputParameterException(string message)
+            : base(message)
+        {
+        }
     }
 }
