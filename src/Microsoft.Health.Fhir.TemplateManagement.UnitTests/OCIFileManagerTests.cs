@@ -70,7 +70,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string inputFolder = "TestData/UserFolder";
             var testManager = new OCIFileManager(imageReference, inputFolder);
             testManager.PackOCIImage(true);
-            Assert.True(await testManager.PushOCIImageAsync());
+            await testManager.PushOCIImageAsync();
         }
 
         private void OrasExecution(string command)
