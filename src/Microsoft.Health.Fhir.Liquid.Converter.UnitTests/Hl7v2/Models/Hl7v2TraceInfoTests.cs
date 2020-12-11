@@ -49,7 +49,7 @@ PID|1||10006579^^^1^MR^1||DUCK^DONALD^D||19241010|M||1|111 DUCK ST^^FOWL^CA^9999
             data = parser.Parse(content);
             traceInfo = Hl7v2TraceInfo.CreateTraceInfo(data);
             Assert.Equal(2, traceInfo.UnusedSegments.Count);
-            Assert.Equal(15, traceInfo.UnusedSegments[1].Fields.Count);
+            Assert.Equal(27, traceInfo.UnusedSegments[1].Components.Count);
 
             // Valid Hl7v2Data after render
             var processor = new Hl7v2Processor();
@@ -60,13 +60,9 @@ PID|1||10006579^^^1^MR^1||DUCK^DONALD^D||19241010|M||1|111 DUCK ST^^FOWL^CA^9999
             var unusedPid = traceInfo.UnusedSegments[1];
             Assert.Equal("PID", unusedPid.Type);
             Assert.Equal(1, unusedPid.Line);
-            Assert.Equal(3, unusedPid.Fields.Count);
-            Assert.Equal(1, unusedPid.Fields[0].Index);
-            Assert.Single(unusedPid.Fields[0].Components);
-            Assert.Equal(1, unusedPid.Fields[0].Index);
-            Assert.Equal(0, unusedPid.Fields[2].Components[0].Index);
-            Assert.Equal("40007716", unusedPid.Fields[2].Components[0].Value);
-            Assert.Equal(118, unusedPid.Fields[2].Components[0].OffsetInSegment);
+            Assert.Equal(6, unusedPid.Components.Count);
+            Assert.Equal(118, unusedPid.Components[2].Offset);
+            Assert.Equal("40007716", unusedPid.Components[2].Value);
         }
     }
 }

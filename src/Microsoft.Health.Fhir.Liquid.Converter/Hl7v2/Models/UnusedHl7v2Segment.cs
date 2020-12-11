@@ -13,13 +13,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
         {
             Type = string.Empty;
             Line = line;
-            Fields = new List<UnusedHl7v2Field>();
+            Components = new List<UnusedHl7v2Component>();
         }
 
         public string Type { get; set; }
 
         public int Line { get; set; }
 
-        public List<UnusedHl7v2Field> Fields { get; set; }
+        public List<UnusedHl7v2Component> Components { get; set; }
     }
 }
