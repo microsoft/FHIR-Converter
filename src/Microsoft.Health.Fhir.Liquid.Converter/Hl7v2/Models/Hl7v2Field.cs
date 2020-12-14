@@ -18,14 +18,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
         {
             Value = value;
             Components = new SafeList<Hl7v2Component>(components);
-            Repeats = new List<Hl7v2Field>();
+            Repeats = new SafeList<Hl7v2Field>();
         }
 
         public string Value { get; set; }
 
         public SafeList<Hl7v2Component> Components { get; set; }
 
-        public List<Hl7v2Field> Repeats { get; set; }
+        public SafeList<Hl7v2Field> Repeats { get; set; }
 
         public override object this[object index]
         {
@@ -39,6 +39,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
                 var indexString = index.ToString();
                 if (string.Equals(indexString, "Value", StringComparison.InvariantCultureIgnoreCase))
                 {
+                    SetAccessForAllComponents();
                     return Value;
                 }
                 else if (string.Equals(indexString, "Components", StringComparison.InvariantCultureIgnoreCase))
@@ -47,6 +48,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
                 }
                 else if (string.Equals(indexString, "Repeats", StringComparison.InvariantCultureIgnoreCase))
                 {
+                    SetAccessForAllComponents();
                     return Repeats;
                 }
                 else if (int.TryParse(indexString, out int result))
@@ -56,6 +58,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
                 else
                 {
                     throw new RenderException(FhirConverterErrorCode.PropertyNotFound, string.Format(Resources.PropertyNotFound, indexString, this.GetType().Name));
+                }
+            }
+        }
+
+        private void SetAccessForAllComponents()
+        {
+            foreach (var component in Components)
+            {
+                if (component is Hl7v2Component hl7V2Component)
+                {
+                    hl7V2Component.IsAccessed = true;
                 }
             }
         }

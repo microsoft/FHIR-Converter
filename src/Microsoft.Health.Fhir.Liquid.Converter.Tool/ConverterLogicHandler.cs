@@ -7,8 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
+using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool.Models;
 using Newtonsoft.Json;
@@ -18,89 +18,48 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
     internal static class ConverterLogicHandler
     {
         private const string MetadataFileName = "metadata.json";
-        private static readonly ILogger Logger;
-
-        static ConverterLogicHandler()
-        {
-            using var loggerFactory = LoggerFactory.Create(builder =>
-            {
-                builder.AddFilter("Microsoft.Health.Fhir.Liquid.Converter", LogLevel.Trace)
-                       .AddConsole();
-            });
-            FhirConverterLogging.LoggerFactory = loggerFactory;
-            Logger = FhirConverterLogging.CreateLogger(typeof(ConverterLogicHandler));
-        }
 
         internal static void Convert(ConverterOptions options)
         {
             if (!IsValidOptions(options))
             {
-                Logger.LogError("Invalid command-line options.");
-                return;
+                throw new InputParameterException("Invalid command-line options.");
             }
+
+            var dataType = GetDataTypes(options.TemplateDirectory);
+            var dataProcessor = CreateDataProcessor(dataType);
+            var templateProvider = CreateTemplateProvider(dataType, options.TemplateDirectory);
 
             if (!string.IsNullOrEmpty(options.InputDataContent))
             {
-                ConvertSingleFile(options);
+                ConvertSingleFile(dataProcessor, templateProvider, dataType, options.RootTemplate, options.InputDataContent, options.OutputDataFile, options.IsTraceInfo);
             }
             else
             {
-                ConvertBatchFiles(options);
+                ConvertBatchFiles(dataProcessor, templateProvider, dataType, options.RootTemplate, options.InputDataFolder, options.OutputDataFolder, options.IsTraceInfo);
             }
+
+            Console.WriteLine($"Conversion completed!");
         }
 
-        private static void ConvertSingleFile(ConverterOptions options)
+        private static void ConvertSingleFile(IFhirConverter dataProcessor, ITemplateProvider templateProvider, DataType dataType, string rootTemplate, string inputContent, string outputFile, bool isTraceInfo)
         {
-            try
-            {
-                var dataType = GetDataTypes(options.TemplateDirectory);
-                var dataProcessor = CreateDataProcessor(dataType);
-                var templateProvider = CreateTemplateProvider(dataType, options.TemplateDirectory);
-                var resultString = dataProcessor.Convert(options.InputDataContent, options.RootTemplate, templateProvider);
-                var result = new ConverterResult(ProcessStatus.OK, resultString);
-                WriteOutputFile(options.OutputDataFile, JsonConvert.SerializeObject(result, Formatting.Indented));
-                Logger.LogInformation("Process completed");
-            }
-            catch (Exception ex)
-            {
-                var error = new ConverterError(ex, options.TemplateDirectory);
-                WriteOutputFile(options.OutputDataFile, JsonConvert.SerializeObject(error, Formatting.Indented));
-                Logger.LogError($"Error occurred when converting input data: {error.ErrorMessage}");
-            }
+            var traceInfo = CreateTraceInfo(dataType, isTraceInfo);
+            var resultString = dataProcessor.Convert(inputContent, rootTemplate, templateProvider, traceInfo);
+            var result = new ConverterResult(ProcessStatus.OK, resultString, traceInfo);
+            SaveConverterResult(outputFile, result);
         }
 
-        private static void ConvertBatchFiles(ConverterOptions options)
+        private static void ConvertBatchFiles(IFhirConverter dataProcessor, ITemplateProvider templateProvider, DataType dataType, string rootTemplate, string inputFolder, string outputFolder, bool isTraceInfo)
         {
-            try
+            var files = GetInputFiles(dataType, inputFolder);
+            foreach (var file in files)
             {
-                int succeededCount = 0;
-                int failedCount = 0;
-                var dataType = GetDataTypes(options.TemplateDirectory);
-                var dataProcessor = CreateDataProcessor(dataType);
-                var templateProvider = CreateTemplateProvider(dataType, options.TemplateDirectory);
-                var files = GetInputFiles(dataType, options.InputDataFolder);
-                foreach (var file in files)
-                {
-                    try
-                    {
-                        var result = dataProcessor.Convert(File.ReadAllText(file), options.RootTemplate, templateProvider);
-                        var outputFileDirectory = Path.Join(options.OutputDataFolder, Path.GetRelativePath(options.InputDataFolder, Path.GetDirectoryName(file)));
-                        var outputFilePath = Path.Join(outputFileDirectory, Path.GetFileNameWithoutExtension(file) + ".json");
-                        WriteOutputFile(outputFilePath, result);
-                        succeededCount++;
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.LogError($"Error occurred when converting file {file}: {ex.Message}");
-                        failedCount++;
-                    }
-                }
-
-                Logger.LogInformation($"Process completed with {succeededCount} files succeeded and {failedCount} files failed");
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex.Message);
+                Console.WriteLine($"Processing {Path.GetFullPath(file)}");
+                var fileContent = File.ReadAllText(file);
+                var outputFileDirectory = Path.Join(outputFolder, Path.GetRelativePath(inputFolder, Path.GetDirectoryName(file)));
+                var outputFilePath = Path.Join(outputFileDirectory, Path.GetFileNameWithoutExtension(file) + ".json");
+                ConvertSingleFile(dataProcessor, templateProvider, dataType, rootTemplate, fileContent, outputFilePath, isTraceInfo);
             }
         }
 
@@ -151,6 +110,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported");
         }
 
+        private static TraceInfo CreateTraceInfo(DataType dataType, bool isTraceInfo)
+        {
+            return isTraceInfo ? (dataType == DataType.Hl7v2 ? new Hl7v2TraceInfo() : new TraceInfo()) : null;
+        }
+
         private static List<string> GetInputFiles(DataType dataType, string inputDataFolder)
         {
             if (dataType == DataType.Hl7v2)
@@ -161,10 +125,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             return new List<string>();
         }
 
-        private static void WriteOutputFile(string outputFilePath, string content)
+        private static void SaveConverterResult(string outputFilePath, ConverterResult result)
         {
             var outputFileDirectory = Path.GetDirectoryName(outputFilePath);
             Directory.CreateDirectory(outputFileDirectory);
+
+            var content = JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             File.WriteAllText(outputFilePath, content);
         }
 

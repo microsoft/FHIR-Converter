@@ -66,7 +66,7 @@ NK1|1|JOHNSON^CONWAY^^^^^L|SPOUS||(130) 724-0433^PRN^PH^^^431^2780404~(330) 274-
             // Hl7v2Field tests
             var field = (Hl7v2Field)segment[5];
             Assert.Equal("(130) 724-0433^PRN^PH^^^431^2780404~(330) 274-8214^ORN^PH^^^330^2748214", field["Value"]);
-            Assert.Equal(2, ((List<Hl7v2Field>)field["Repeats"]).Count);
+            Assert.Equal(2, ((SafeList<Hl7v2Field>)field["Repeats"]).Count);
             Assert.Equal("(130) 724-0433", ((Hl7v2Component)field[1]).Value);
             Assert.Throws<RenderException>(() => (Hl7v2Component)field[null]);
             Assert.Throws<RenderException>(() => (Hl7v2Component)field[1.2]);

@@ -42,5 +42,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
         // PostprocessException
         JsonParsingError = 1401,
         JsonMergingError = 1402,
+        TraceInfoError = 1403,
     }
 }

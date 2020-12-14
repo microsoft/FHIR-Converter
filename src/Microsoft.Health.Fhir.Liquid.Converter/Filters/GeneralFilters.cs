@@ -26,7 +26,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return null;
             }
 
-            var map = ((CodeSystemMapping)context["CodeSystemMapping"])?.Mapping;
+            var map = (context["CodeSystemMapping"] as CodeSystemMapping)?.Mapping;
             return map != null &&
                 map.ContainsKey(mapping) &&
                 map[mapping].ContainsKey(originalCode) &&

@@ -27,5 +27,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
 
         [Option('o', "OutputDataFolder", Required = false, HelpText = "Output data folder")]
         public string OutputDataFolder { get; set; }
+
+        [Option('t', "IsTraceInfo", Required = false, HelpText = "Provide trace information in the output")]
+        public bool IsTraceInfo { get; set; }
     }
 }

@@ -3,13 +3,21 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Models
+namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
 {
-    /// <summary>
-    /// TraceInfo records processing details during conversion.
-    /// For HL7 v2 conversion, please use its inherited class Hl7v2TraceInfo.
-    /// </summary>
-    public class TraceInfo
+    public class UnusedHl7v2Component
     {
+        public UnusedHl7v2Component(int start, int end, string value)
+        {
+            Start = start;
+            End = end;
+            Value = value;
+        }
+
+        public int Start { get; }
+
+        public int End { get; }
+
+        public string Value { get; }
     }
 }
