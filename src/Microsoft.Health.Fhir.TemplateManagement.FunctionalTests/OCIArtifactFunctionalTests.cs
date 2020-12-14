@@ -43,6 +43,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string _testMultiLayersWithInValidSequenceNumberImageReference;
         private readonly string _testInvalidCompressedImageReference;
         private bool _isOrasValid = true;
+        private string _orasErrorMessage;
 
         public OCIArtifactFunctionalTests()
         {
@@ -100,7 +101,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [Fact]
         public async Task GivenOneLayerImageWithValidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
-            Assert.True(_isOrasValid);
+            Assert.True(_isOrasValid, _orasErrorMessage);
 
             string imageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithValidSequenceNumber";
@@ -366,6 +367,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
                 var error = errStreamReader.ReadToEnd();
                 if (!string.IsNullOrEmpty(error))
                 {
+                    _orasErrorMessage = error;
                     _isOrasValid = false;
                 }
             }
