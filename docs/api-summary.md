@@ -15,11 +15,6 @@ The API is secured using an API Key.
 |GET       |/api/helpers               |Lists available template helpers                 |
 |GET       |/api/sample-data           |Lists available data                             |
 |GET       |/api/sample-data/{file}    |Returns specified data                            |
-|GET       |/api/templates/git/status  |Lists uncommitted changes                        |
-|GET       |/api/templates/git/branches|Lists of branches                                |
-|POST      |/api/templates/git/branches|Create new branch (from head)                    |
-|POST      |/api/templates/git/checkout|Checkout branch                                  |
-|POST      |/api/templates/git/commit  |Commit ALL changes                               |
 |GET       |/api/templates             |Lists available templates                        |
 |GET       |/api/templates/{file}      |Returns a specific template                      |
 |PUT       |/api/templates/{file}      |Stores a template in the template store          |

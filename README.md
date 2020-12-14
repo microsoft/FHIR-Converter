@@ -19,7 +19,6 @@ The FHIR Converter consists of the following components:
 1. [Sample data](src/sample-data) for testing purpose.
 1. A [Browser based editor](docs/web-ui-summary.md) to modify, create, and test templates.
 1. [Template management APIs](docs/api-summary.md) to manage the templates
-1. An embedded git server as another way to manage the templates
 
 The FHIR Converter released to open source on Thursday March 6th, 2020 with support for HL7 v2 to FHIR conversion. On Friday June 12th, 2020, C-CDA to FHIR conversion was added to the OSS FHIR Converter.
 
