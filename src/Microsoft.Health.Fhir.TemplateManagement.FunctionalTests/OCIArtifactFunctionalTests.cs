@@ -100,10 +100,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [Fact]
         public async Task GivenOneLayerImageWithValidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
-            if (!_isOrasValid)
-            {
-                return;
-            }
+            Assert.True(_isOrasValid);
 
             string imageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithValidSequenceNumber";
