@@ -369,6 +369,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
                 {
                     _orasErrorMessage = error;
                     _isOrasValid = false;
+                    Console.WriteLine($"OrasInitError: {error}");
                 }
             }
             else
