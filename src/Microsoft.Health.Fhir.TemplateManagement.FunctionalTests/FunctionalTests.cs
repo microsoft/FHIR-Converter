@@ -40,15 +40,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         {
             _containerRegistry = new ContainerRegistry();
             _containerRegistryInfo = new ContainerRegistryInfo();
-            _containerRegistryInfo.ContainerRegistryServer = "localhost:5000";
-            /*
-            
             _containerRegistryInfo = _containerRegistry.GetTestContainerRegistryInfo();
             if (_containerRegistryInfo == null)
             {
-                _containerRegistryInfo.ContainerRegistryServer = "localhost:5000";
+                return;
             }
-            */
+
             testOneLayerImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:onelayer";
             testMultiLayerImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:multilayers";
             testInvalidImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidlayers";
