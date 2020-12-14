@@ -61,7 +61,8 @@ PID|1||10006579^^^1^MR^1||DUCK^DONALD^D||19241010|M||1|111 DUCK ST^^FOWL^CA^9999
             Assert.Equal("PID", unusedPid.Type);
             Assert.Equal(1, unusedPid.Line);
             Assert.Equal(6, unusedPid.Components.Count);
-            Assert.Equal(118, unusedPid.Components[2].Offset);
+            Assert.Equal(118, unusedPid.Components[2].Start);
+            Assert.Equal(126, unusedPid.Components[2].End);
             Assert.Equal("40007716", unusedPid.Components[2].Value);
         }
     }

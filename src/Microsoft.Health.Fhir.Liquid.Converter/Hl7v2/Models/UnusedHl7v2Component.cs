@@ -7,14 +7,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
 {
     public class UnusedHl7v2Component
     {
-        public UnusedHl7v2Component(int offset, string value)
+        public UnusedHl7v2Component(int start, int end, string value)
         {
-            Offset = offset;
+            Start = start;
+            End = end;
             Value = value;
         }
 
-        public int Offset { get; set; }
+        public int Start { get; }
 
-        public string Value { get; set; }
+        public int End { get; }
+
+        public string Value { get; }
     }
 }

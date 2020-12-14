@@ -56,7 +56,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
                                 if (field.Components[k] is Hl7v2Component component && component.IsAccessed == false)
                                 {
                                     var indexInSegment = FindOffsetInSegment(segment.Value, hl7v2Data.EncodingCharacters, j, k - 1);
-                                    var unusedComponent = new UnusedHl7v2Component(indexInSegment, component.Value);
+                                    var unusedComponent = new UnusedHl7v2Component(indexInSegment, indexInSegment + component.Value.Length, component.Value);
                                     unusedComponents.Add(unusedComponent);
                                 }
                             }
