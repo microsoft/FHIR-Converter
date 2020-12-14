@@ -83,7 +83,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             File.Copy(_userLayerTemplatePath, "TestData/PushTest/userLayer.tar.gz", true);
             string imageReference = _containerRegistryServer + "/testimage:test";
             OrasClient orasClient = new OrasClient(imageReference);
-            Assert.True(await orasClient.PushImageAsync("TestData/PushTest"));
+            var ex = await Record.ExceptionAsync(() => orasClient.PushImageAsync("TestData/PushTest"));
+            Assert.Null(ex);
             ClearFolder("TestData/PushTest");
         }
 
@@ -98,7 +99,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             Directory.CreateDirectory("TestData/Empty");
             string imageReference = _containerRegistryServer + "/testimage:test";
             OrasClient orasClient = new OrasClient(imageReference);
-            Assert.False(await orasClient.PushImageAsync("TestData/Empty"));
+            await Assert.ThrowsAsync<OverlayException>(async () => await orasClient.PushImageAsync("TestData/Empty"));
         }
 
         [Fact]
@@ -111,7 +112,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
             string imageReference = _testOneLayerImageReference;
             OrasClient orasClient = new OrasClient(imageReference);
-            Assert.True(await orasClient.PullImageAsync("TestData/PullTest"));
+            var ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync("TestData/PullTest"));
+            Assert.Null(ex);
             ClearFolder("TestData/PullTest");
         }
 
