@@ -10,12 +10,11 @@ The following table compares the two converter engines:
 
 |  | Handlebars Engine | Liquid Engine | 
 | ----- | ----- | ----- |
-| **Release Date** | March 6, 2020 | Nov 13, 2020 |
 | **Template language** | [Handlebars](https://handlebarsjs.com/) | [Liquid](https://shopify.github.io/liquid/) |
-| **Template authoring tool** | 1. Text editor <br> 2. Self-hosted web-app | 1. Text editor <br> 2. [VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-health-fhir-converter)|
+| **Template authoring tool** | Self-hosted web-app | [VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-health-fhir-converter)|
 | **Supported conversions** | 1. HL7v2 to FHIR <br> 2. CCDA to FHIR | 1. HL7 v2 to FHIR <br> 2. *CCDA to FHIR** |
 | **Available as** | 1. Self-deployed web service <br> (on-prem or on Azure)| 1. Command line tool <br> 2. $data-convert operation of Azure API for FHIR <br> 3. *$data-convert operation on  FHIR Server for Azure**|
-**Available in Azure FHIR servers** | No | Yes |
+
 
 **To be released soon.*
 
@@ -26,7 +25,7 @@ The templates are written in [Liquid](https://shopify.github.io/liquid/) templat
 
 The converter comes with ready to use templates for HL7v2 to FHIR conversion. These templates are based on the [spreadsheet](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk/edit#gid=0) created by the HL7 [2-To-FHIR project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project). If needed, you can create new, or modify existing templates to meet your specific conversion requirements.
 
-FHIR Converter with DotLiquid engine is integrated into the [FHIR Server for Azure](https://github.com/microsoft/fhir-server) as the [$convert-data](https://github.com/microsoft/fhir-server/blob/personal/yufei/convert-data-doc/docs/ConvertDataOperation.md) operation. In addition, it is also available as a command-line tool. The converter transforms the input data into FHIR bundles. These bundles can be persisted to a FHIR server such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/).
+FHIR Converter with DotLiquid engine is integrated into the [FHIR Server for Azure](https://github.com/microsoft/fhir-server) as the [$convert-data](https://github.com/microsoft/fhir-server/blob/personal/yufei/convert-data-doc/docs/ConvertDataOperation.md) operation. In addition, it is also available as a command-line tool. The converter transforms the input data into FHIR bundles. These bundles can be persisted to a FHIR server such as the FHIR Server for Azure, or [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/).
 
 This project consists of the following components:
 
@@ -38,7 +37,7 @@ This project consists of the following components:
 
 ### $convert-data operation in the Azure API for FHIR
 
-FHIR Converter is integrated into the Azure API for FHIR to run as part of the service. Refer to the [$convert-data](https://github.com/microsoft/fhir-server/blob/personal/yufei/convert-data-doc/docs/ConvertDataOperation.md) documentation for using the FHIR converter in Azure API for FHIR.
+FHIR Converter is integrated into the FHIR Server for Azure to run as part of the service. Refer to the [$convert-data](https://github.com/microsoft/fhir-server/blob/personal/yufei/convert-data-doc/docs/ConvertDataOperation.md) documentation for using the FHIR converter in the FHIR Server for Azure.
 
 ### Command-line tool
 
