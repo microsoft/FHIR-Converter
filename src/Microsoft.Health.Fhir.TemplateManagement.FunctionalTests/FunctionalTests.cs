@@ -39,12 +39,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         public FunctionalTests()
         {
             _containerRegistry = new ContainerRegistry();
+            _containerRegistryInfo = new ContainerRegistryInfo();
+            _containerRegistryInfo.ContainerRegistryServer = "localhost:5000";
+            /*
+            
             _containerRegistryInfo = _containerRegistry.GetTestContainerRegistryInfo();
             if (_containerRegistryInfo == null)
             {
-                return;
+                _containerRegistryInfo.ContainerRegistryServer = "localhost:5000";
             }
-
+            */
             testOneLayerImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:onelayer";
             testMultiLayerImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:multilayers";
             testInvalidImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidlayers";
@@ -64,25 +68,25 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private async Task InitOneLayerImageAsync()
         {
             List<string> templateFiles = new List<string> { baseLayerTemplatePath };
-            await _containerRegistry.GenerateTemplateImageAsync(testOneLayerImageReference, templateFiles);
+            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testOneLayerImageReference, templateFiles);
         }
 
         private async Task InitMultiLayerImageAsync()
         {
             List<string> templateFiles = new List<string> { baseLayerTemplatePath, userLayerTemplatePath };
-            await _containerRegistry.GenerateTemplateImageAsync(testMultiLayerImageReference, templateFiles);
+            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testMultiLayerImageReference, templateFiles);
         }
 
         private async Task InitInvalidTarGzImageAsync()
         {
             List<string> templateFiles = new List<string> { invalidTarGzPath };
-            await _containerRegistry.GenerateTemplateImageAsync(testInvalidImageReference, templateFiles);
+            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testInvalidImageReference, templateFiles);
         }
 
         private async Task InitInvalidTemplateImageAsync()
         {
             List<string> templateFiles = new List<string> { invalidTemplatePath };
-            await _containerRegistry.GenerateTemplateImageAsync(testInvalidTemplateImageReference, templateFiles);
+            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testInvalidTemplateImageReference, templateFiles);
         }
 
         public static IEnumerable<object[]> GetValidImageInfoWithTag()
