@@ -23,10 +23,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         public OCIFileManagerTests()
         {
-            //_containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
-            _containerRegistryServer = "localhost:5000";
-            _testOneLayerImageReference = _containerRegistryServer + "/templatetest:v1";
-            _testMultiLayerImageReference = _containerRegistryServer + "/templatetest:v2";
+            _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
+            _testOneLayerImageReference = _containerRegistryServer + "/templatetest:user1";
+            _testMultiLayerImageReference = _containerRegistryServer + "/templatetest:user2";
             PushOneLayerImage();
             PushMultiLayersImage();
         }
@@ -71,7 +70,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string inputFolder = "TestData/UserFolder";
             var testManager = new OCIFileManager(imageReference, inputFolder);
             testManager.PackOCIImage(true);
-            Assert.True(await testManager.PushOCIImageAsync());
+            await testManager.PushOCIImageAsync();
         }
 
         private void OrasExecution(string command)

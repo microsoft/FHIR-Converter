@@ -84,6 +84,5 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
             hashedValue += string.Join(string.Empty, hashedStrings);
             return hashedValue;
         }
-
     }
 }

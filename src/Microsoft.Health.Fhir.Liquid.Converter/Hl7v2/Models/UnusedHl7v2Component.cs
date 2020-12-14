@@ -3,14 +3,21 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System.Threading.Tasks;
-
-namespace Microsoft.Health.Fhir.TemplateManagement.Client
+namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
 {
-    public interface IOrasClient
+    public class UnusedHl7v2Component
     {
-        Task PullImageAsync(string outputFolder);
+        public UnusedHl7v2Component(int start, int end, string value)
+        {
+            Start = start;
+            End = end;
+            Value = value;
+        }
 
-        Task PushImageAsync(string inputFolder);
+        public int Start { get; }
+
+        public int End { get; }
+
+        public string Value { get; }
     }
 }

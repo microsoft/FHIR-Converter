@@ -266,5 +266,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("TimeoutError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error happened when processing TraceInfo: {0}.
+        /// </summary>
+        internal static string TraceInfoError {
+            get {
+                return ResourceManager.GetString("TraceInfoError", resourceCulture);
+            }
+        }
     }
 }

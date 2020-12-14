@@ -42,7 +42,7 @@ true
             var context = new Context(CultureInfo.InvariantCulture);
             context.AddFilters(typeof(Filters));
 
-            var actual = template.Render(new RenderParameters(CultureInfo.InvariantCulture) { Context = context });
+            var actual = template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture));
             Assert.Equal(Expected, actual);
         }
     }

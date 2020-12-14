@@ -4,25 +4,22 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using DotLiquid;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
 {
-    public class Hl7v2Data : Drop
+    public class UnusedHl7v2Segment
     {
-        public Hl7v2Data(string value = null)
+        public UnusedHl7v2Segment(int line)
         {
-            Value = value;
-            Meta = new List<string>();
-            Data = new List<Hl7v2Segment>();
+            Type = string.Empty;
+            Line = line;
+            Components = new List<UnusedHl7v2Component>();
         }
 
-        public string Value { get; set; }
+        public string Type { get; set; }
 
-        public Hl7v2EncodingCharacters EncodingCharacters { get; set; }
+        public int Line { get; set; }
 
-        public List<string> Meta { get; set; }
-
-        public List<Hl7v2Segment> Data { get; set; }
+        public List<UnusedHl7v2Component> Components { get; set; }
     }
 }

@@ -55,7 +55,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 timeout: 0,
                 formatProvider: CultureInfo.InvariantCulture);
 
-            Assert.Empty(template.Render(new RenderParameters(CultureInfo.InvariantCulture) { Context = context }));
+            Assert.Empty(template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
         }
 
         [Theory]
@@ -81,7 +81,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 maxIterations: 0,
                 timeout: 0,
                 formatProvider: CultureInfo.InvariantCulture);
-            Assert.Throws<FileSystemException>(() => template.Render(new RenderParameters(CultureInfo.InvariantCulture) { Context = context }));
+            Assert.Throws<FileSystemException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
 
             // Valid template file system but no such template
             template = Template.Parse(@"{% evaluate bundleId using 'ID/Foo' Data: hl7v2Data -%}");
@@ -93,7 +93,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 maxIterations: 0,
                 timeout: 0,
                 formatProvider: CultureInfo.InvariantCulture);
-            Assert.Throws<Exceptions.RenderException>(() => template.Render(new RenderParameters(CultureInfo.InvariantCulture) { Context = context }));
+            Assert.Throws<Exceptions.RenderException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
         }
     }
 }
