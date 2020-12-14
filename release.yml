@@ -191,11 +191,11 @@ stages:
         repositoryName: microsoft/FHIR-Converter
         isDraft: true
         tagSource: manual
-        tag: $(Build.BuildNumber)      
+        tag: v$(major).$(minor).$(bulidnum)      
         assets: |
           $(System.DefaultWorkingDirectory)/FhirConverterBuild/bin/**
           $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/DefaultTemplates.tar.gz
 
-    - script: echo [TODO]　push nuget and image
+
 
 
