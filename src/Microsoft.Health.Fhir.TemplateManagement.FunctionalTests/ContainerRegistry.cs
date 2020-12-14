@@ -39,7 +39,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public async Task GenerateTemplateImageAsync(ContainerRegistryInfo registry, string imageReference, List<string> templateFiles)
         {
-
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
 
             if (imageInfo.Registry != registry.ContainerRegistryServer)
