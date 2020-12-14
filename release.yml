@@ -1,6 +1,8 @@
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
+- main
+- master
 - dotliquid
 - refs/heads/dotliquid
 pr: ['dotliquid']
@@ -52,6 +54,16 @@ stages:
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: false
+
+    - task: DotNetCoreCLI@2
+      displayName: 'publish github release bin'
+      inputs:
+        command: 'publish'
+        projects: '$(publishProject)'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin'
+        nobuild: true
+        publishWebProjects: false
+        zipAfterPublish: true
 
     - task: DotNetCoreCLI@2
       displayName: 'publish functional tests'
@@ -159,6 +171,7 @@ stages:
         container: registry
   
 - stage: Release
+  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
   jobs:
   - job: publish
     pool:
@@ -170,6 +183,19 @@ stages:
       inputs:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
-    - script: echo [TODO]　push nuget and image
+
+    - task: GithubRelease@0 
+      displayName: 'Create GitHub Release'      
+      inputs:
+        gitHubConnection: githubpipeline
+        repositoryName: microsoft/FHIR-Converter
+        isDraft: true
+        tagSource: manual
+        tag: v$(major).$(minor).$(bulidnum)      
+        assets: |
+          $(System.DefaultWorkingDirectory)/FhirConverterBuild/bin/**
+          $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/DefaultTemplates.tar.gz
+
+
 
 
