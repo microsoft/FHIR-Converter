@@ -10,6 +10,11 @@
             {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, NK1: firstSegments.NK1, ID: patientId -%}
         {% endif -%}
 
+        {% evaluate accountId using 'ID/Account' CX: firstSegments.PID.3 -%}
+        {% if accountId -%}
+            {% include 'Resource/Account' PID: firstSegments.PID, ID: accountId -%}
+        {% endif -%}
+
         {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
         {% if encounterId -%}
             {% include 'Resource/Encounter' PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
