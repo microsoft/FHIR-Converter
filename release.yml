@@ -127,6 +127,7 @@ stages:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
+        docker info | grep "Docker Root Dir"
         docker run --rm -d -p 5000:5000 --name registry registry:2
       displayName: start registry
 
