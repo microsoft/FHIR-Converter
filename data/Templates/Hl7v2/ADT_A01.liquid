@@ -3,6 +3,11 @@
     "type": "transaction",
     "entry": [
         {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|PR1|AVR|MSH' -%}
+
+        {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
+        {% if messageHeaderId -%}
+            {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, ID: messageHeaderID -%}
+        {% endif -%}
         
         {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
         {% if patientId -%}
