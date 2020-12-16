@@ -127,8 +127,7 @@ stages:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
-        docker info | grep "Docker Root Dir"
-        docker run --rm -d -p 5000:5000 --name registry registry:2
+        docker run --rm -d -p 5000:5000 --name registry wusongrui/registry-windows:2.7.1
       displayName: start registry
 
     #- script: |
