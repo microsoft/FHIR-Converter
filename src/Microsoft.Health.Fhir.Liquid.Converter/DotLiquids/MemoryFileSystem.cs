@@ -5,16 +5,23 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using DotLiquid;
 using DotLiquid.FileSystems;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 {
     public class MemoryFileSystem : ITemplateFileSystem
     {
-        protected List<Dictionary<string, Template>> TemplateCollection { get; set; } = new List<Dictionary<string, Template>>();
+        protected const string TemplateFileExtension = ".liquid";
+
+        protected string TemplateDirectory { get; set; }
+
+        protected List<Dictionary<string, Template>> TemplateCollection { get; set; }
 
         public string ReadTemplateFile(Context context, string templateName)
         {
@@ -39,6 +46,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 return null;
             }
 
+            // Get template from TemplateCollection first
             foreach (var templates in TemplateCollection)
             {
                 if (templates != null && templates.ContainsKey(templateName))
@@ -47,7 +55,60 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 }
             }
 
+            // If template not found but loaded from local file system, search local file system
+            if (TemplateDirectory != null)
+            {
+                if (TemplateCollection == null)
+                {
+                    TemplateCollection = new List<Dictionary<string, Template>>();
+                }
+
+                if (TemplateCollection.FirstOrDefault() == null)
+                {
+                    TemplateCollection.Add(new Dictionary<string, Template>());
+                }
+
+                var templatePath = GetAbsoluteTemplatePath(templateName);
+                var templateContent = LoadTemplate(templatePath);
+                var template = TemplateUtility.ParseTemplate(templateName, templateContent);
+                TemplateCollection[0][templateName] = template;
+                return template;
+            }
+
             return null;
+        }
+
+        protected string LoadTemplate(string templatePath)
+        {
+            try
+            {
+                return File.ReadAllText(templatePath);
+            }
+            catch (Exception ex)
+            {
+                throw new ConverterInitializeException(FhirConverterErrorCode.TemplateLoadingError, string.Format(Resources.TemplateLoadingError, ex.Message), ex);
+            }
+        }
+
+        private string GetAbsoluteTemplatePath(string templateName)
+        {
+            var result = TemplateDirectory;
+            var pathSegments = templateName.Split(Path.AltDirectorySeparatorChar);
+
+            // Root templates
+            if (pathSegments.Length == 1)
+            {
+                return Path.Join(TemplateDirectory, $"{pathSegments[0]}{TemplateFileExtension}");
+            }
+
+            // Snippets
+            pathSegments[^1] = $"_{pathSegments[^1]}{TemplateFileExtension}";
+            foreach (var pathSegment in pathSegments)
+            {
+                result = Path.Join(result, pathSegment);
+            }
+
+            return result;
         }
     }
 }

@@ -16,17 +16,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
         [Fact]
         public void GivenATemplateDirectory_WhenLoadTemplates_CorrectResultsShouldBeReturned()
         {
+            // Valid template directory
             var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
-            Assert.True(templateProvider.GetTemplate("ADT_A01").Root.NodeList.Count > 0);
+            var templates = templateProvider.LoadCodeSystemMapping();
+            Assert.NotNull(templates[0]["CodeSystem/CodeSystem"]);
 
-            Assert.Throws<ConverterInitializeException>(() => templateProvider.LoadTemplates(null));
-            Assert.Throws<ConverterInitializeException>(() => templateProvider.LoadTemplates(string.Empty));
-            Assert.Throws<ConverterInitializeException>(() => templateProvider.LoadTemplates(Path.Join("a", "b", "c")));
-
-            var exception = Assert.Throws<ConverterInitializeException>(() => templateProvider.LoadTemplates(@"TestTemplates"));
-            Assert.Equal(FhirConverterErrorCode.TemplateLoadingError, exception.FhirConverterErrorCode);
-            var innerException = exception.InnerException as FhirConverterException;
-            Assert.Equal(FhirConverterErrorCode.TemplateSyntaxError, innerException.FhirConverterErrorCode);
+            // Invalid template directory
+            Assert.Throws<ConverterInitializeException>(() => new Hl7v2TemplateProvider(string.Empty));
+            Assert.Throws<ConverterInitializeException>(() => new Hl7v2TemplateProvider(Path.Join("a", "b", "c")));
         }
     }
 }

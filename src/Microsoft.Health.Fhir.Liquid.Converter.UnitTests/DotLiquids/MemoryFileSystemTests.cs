@@ -135,5 +135,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             context["hello"] = "hello";
             Assert.Throws<NotImplementedException>(() => templateProvider.ReadTemplateFile(context, "hello"));
         }
+
+        [Fact]
+        public void GivenAValidTemplateDirectory_WhenGetTemplate_CorrectResultsShouldBeReturned()
+        {
+            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
+            Assert.NotNull(templateProvider.GetTemplate("ADT_A01"));
+            Assert.Throws<ConverterInitializeException>(() => templateProvider.GetTemplate("Foo"));
+        }
     }
 }

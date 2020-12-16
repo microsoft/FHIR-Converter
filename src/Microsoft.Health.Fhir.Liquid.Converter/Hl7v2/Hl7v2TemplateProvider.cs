@@ -3,7 +3,6 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using DotLiquid;
@@ -16,52 +15,34 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 {
     public class Hl7v2TemplateProvider : MemoryFileSystem, ITemplateProvider
     {
-        private const string TemplateFileExtension = ".liquid";
-
         public Hl7v2TemplateProvider(string templateDirectory)
-        {
-            TemplateCollection = LoadTemplates(templateDirectory);
-        }
-
-        public Hl7v2TemplateProvider(List<Dictionary<string, Template>> templateCollection)
-        {
-            TemplateCollection = templateCollection;
-        }
-
-        public List<Dictionary<string, Template>> LoadTemplates(string templateDirectory)
         {
             if (!Directory.Exists(templateDirectory))
             {
                 throw new ConverterInitializeException(FhirConverterErrorCode.TemplateFolderNotFound, string.Format(Resources.TemplateFolderNotFound, templateDirectory));
             }
 
-            try
-            {
-                // Load DotLiquid templates
-                var templates = new Dictionary<string, string>();
-                var templatePaths = Directory.EnumerateFiles(templateDirectory, "*" + TemplateFileExtension, SearchOption.AllDirectories);
-                foreach (var templatePath in templatePaths)
-                {
-                    var name = Path.GetRelativePath(templateDirectory, templatePath);
-                    templates[name] = File.ReadAllText(templatePath);
-                }
+            TemplateDirectory = templateDirectory;
+            TemplateCollection = LoadCodeSystemMapping();
+        }
 
-                // Load code system mapping
-                var codeSystemMappingPath = Path.Join(templateDirectory, "CodeSystem", "CodeSystem.json");
-                if (File.Exists(codeSystemMappingPath))
-                {
-                    var name = Path.GetRelativePath(templateDirectory, codeSystemMappingPath);
-                    templates[name] = File.ReadAllText(codeSystemMappingPath);
-                }
+        public Hl7v2TemplateProvider(List<Dictionary<string, Template>> templateCollection)
+        {
+            TemplateDirectory = null;
+            TemplateCollection = templateCollection;
+        }
 
-                // Parse templates
-                var parsedTemplates = TemplateUtility.ParseHl7v2Templates(templates);
-                return new List<Dictionary<string, Template>>() { parsedTemplates };
-            }
-            catch (Exception ex)
+        public List<Dictionary<string, Template>> LoadCodeSystemMapping()
+        {
+            var templates = new Dictionary<string, Template>();
+            var codeSystemMappingPath = Path.Join(TemplateDirectory, "CodeSystem", "CodeSystem.json");
+            if (File.Exists(codeSystemMappingPath))
             {
-                throw new ConverterInitializeException(FhirConverterErrorCode.TemplateLoadingError, string.Format(Resources.TemplateLoadingError, ex.Message), ex);
+                var content = LoadTemplate(codeSystemMappingPath);
+                templates["CodeSystem/CodeSystem"] = TemplateUtility.ParseCodeSystemMapping(content);
             }
+
+            return new List<Dictionary<string, Template>>() { templates };
         }
     }
 }

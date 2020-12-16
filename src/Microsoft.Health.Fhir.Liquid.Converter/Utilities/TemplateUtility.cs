@@ -48,7 +48,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             return parsedTemplates;
         }
 
-        private static Template ParseCodeSystemMapping(string content)
+        public static Template ParseCodeSystemMapping(string content)
         {
             if (content == null)
             {
@@ -73,7 +73,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             }
         }
 
-        private static Template ParseTemplate(string templateName, string content)
+        public static Template ParseTemplate(string templateName, string content)
         {
             if (content == null)
             {
