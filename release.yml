@@ -130,11 +130,11 @@ stages:
         docker run --rm -d -p 5000:5000 --name registry stefanscherer/registry-windows:2.6.2
       displayName: start registry
 
-    # - script: |
-    #     docker pull mcr.microsoft.com/windows/servercore:ltsc2019
-    #     docker tag mcr.microsoft.com/windows/servercore:ltsc2019 localhost:5000/windows
-    #     docker push localhost:5000/windows
-    #   displayName: test push
+    - script: |
+        docker pull mcr.microsoft.com/windows/servercore:ltsc2019
+        docker tag mcr.microsoft.com/windows/servercore:ltsc2019 localhost:5000/windows
+        docker push localhost:5000/windows
+      displayName: test push
 
     - script: |
         dotnet test **/*FunctionalTests.dll
