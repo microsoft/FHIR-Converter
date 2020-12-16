@@ -20,6 +20,11 @@
             {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId -%}
         {% endif -%}
 
+        {% evaluate provenanceId using 'ID/Provenance' ORC: firstSegments.ORC, baseID: patientId -%}
+        {% if provenanceId -%}
+            {% include 'Resource/Provenance' MSH: firstSegments.MSH, ORC: firstSegments.ORC, ID: provenanceId -%}
+        {% endif -%}
+
         {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
         {% if encounterId -%}
             {% include 'Resource/Encounter' PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
