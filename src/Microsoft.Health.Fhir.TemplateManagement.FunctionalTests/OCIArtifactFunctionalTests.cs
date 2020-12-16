@@ -48,7 +48,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         public OCIArtifactFunctionalTests()
         {
             _containerRegistryServer = "localhost:5000";
-            _testOneLayerWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_valid_sequence";
+            _testOneLayerWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest";
             _testOneLayerWithoutSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_without_sequence";
             _testOneLayerWithInValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_invalid_sequence";
             _testMultiLayersWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:multilayers_valid_sequence";
