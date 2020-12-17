@@ -4,49 +4,35 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.IO;
 using DotLiquid;
+using DotLiquid.FileSystems;
 using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
-using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
-using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 {
-    public class Hl7v2TemplateProvider : MemoryFileSystem, ITemplateProvider
+    public class Hl7v2TemplateProvider : ITemplateProvider
     {
+        private readonly IFhirConverterTemplateFileSystem _fileSystem;
+
         public Hl7v2TemplateProvider(string templateDirectory)
         {
-            if (!Directory.Exists(templateDirectory))
-            {
-                throw new ConverterInitializeException(FhirConverterErrorCode.TemplateFolderNotFound, string.Format(Resources.TemplateFolderNotFound, templateDirectory));
-            }
-
-            TemplateDirectory = templateDirectory;
-            TemplateCollection = LoadCodeSystemMapping();
+            _fileSystem = new TemplateLocalFileSystem(templateDirectory, DataType.Hl7v2);
         }
 
         public Hl7v2TemplateProvider(List<Dictionary<string, Template>> templateCollection)
         {
-            TemplateDirectory = null;
-            TemplateCollection = new List<Dictionary<string, Template>>();
-            foreach (var templates in templateCollection)
-            {
-                TemplateCollection.Add(new Dictionary<string, Template>(templates));
-            }
+            _fileSystem = new MemoryFileSystem(templateCollection);
         }
 
-        public List<Dictionary<string, Template>> LoadCodeSystemMapping()
+        public Template GetTemplate(string templateName)
         {
-            var templates = new Dictionary<string, Template>();
-            var codeSystemMappingPath = Path.Join(TemplateDirectory, "CodeSystem", "CodeSystem.json");
-            if (File.Exists(codeSystemMappingPath))
-            {
-                var content = LoadTemplate(codeSystemMappingPath);
-                templates["CodeSystem/CodeSystem"] = TemplateUtility.ParseCodeSystemMapping(content);
-            }
+            return _fileSystem.GetTemplate(templateName);
+        }
 
-            return new List<Dictionary<string, Template>>() { templates };
+        public ITemplateFileSystem GetTemplateFileSystem()
+        {
+            return _fileSystem;
         }
     }
 }

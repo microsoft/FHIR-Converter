@@ -3,10 +3,11 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.IO;
+using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
-using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
@@ -18,12 +19,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
         {
             // Valid template directory
             var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
-            var templates = templateProvider.LoadCodeSystemMapping();
-            Assert.NotNull(templates[0]["CodeSystem/CodeSystem"]);
 
             // Invalid template directory
             Assert.Throws<ConverterInitializeException>(() => new Hl7v2TemplateProvider(string.Empty));
             Assert.Throws<ConverterInitializeException>(() => new Hl7v2TemplateProvider(Path.Join("a", "b", "c")));
+
+            // Template collection
+            templateProvider = new Hl7v2TemplateProvider(new List<Dictionary<string, Template>>());
         }
     }
 }

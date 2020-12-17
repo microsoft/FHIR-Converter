@@ -7,8 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using DotLiquid;
+using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
@@ -26,9 +26,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 },
             };
 
-            var templateProvider = new Hl7v2TemplateProvider(templateCollection);
-            Assert.Equal("hello world", templateProvider.GetTemplate("template1").Render());
-            Assert.Null(templateProvider.GetTemplate("template2"));
+            var memoryFileSystem = new MemoryFileSystem(templateCollection);
+            Assert.Equal("hello world", memoryFileSystem.GetTemplate("template1").Render());
+            Assert.Null(memoryFileSystem.GetTemplate("template2"));
+            Assert.Null(memoryFileSystem.GetTemplate(null));
+            Assert.Null(memoryFileSystem.GetTemplate(string.Empty));
         }
 
         [Fact]
@@ -55,11 +57,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 },
             };
 
-            var templateProvider = new Hl7v2TemplateProvider(templateCollection);
-            Assert.Null(templateProvider.GetTemplate("template1"));
-            Assert.Equal("template2 updated in customized layer", templateProvider.GetTemplate("template2").Render());
-            Assert.Equal("template3 added in base layer", templateProvider.GetTemplate("template3").Render());
-            Assert.Equal("template4 added in customized layer", templateProvider.GetTemplate("template4").Render());
+            var memoryFileSystem = new MemoryFileSystem(templateCollection);
+            Assert.Null(memoryFileSystem.GetTemplate("template1"));
+            Assert.Equal("template2 updated in customized layer", memoryFileSystem.GetTemplate("template2").Render());
+            Assert.Equal("template3 added in base layer", memoryFileSystem.GetTemplate("template3").Render());
+            Assert.Equal("template4 added in customized layer", memoryFileSystem.GetTemplate("template4").Render());
         }
 
         [Fact]
@@ -73,13 +75,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 },
             };
 
-            var templateProvider = new Hl7v2TemplateProvider(templateCollection);
+            var memoryFileSystem = new MemoryFileSystem(templateCollection);
             var context = new Context(CultureInfo.InvariantCulture);
             context["template1"] = "template1";
             context["template2"] = "template2";
-            Assert.Equal("hello world", templateProvider.GetTemplate(context, "template1").Render());
-            Assert.Throws<RenderException>(() => templateProvider.GetTemplate(context, "template2"));
-            Assert.Throws<RenderException>(() => templateProvider.GetTemplate(context, "template3"));
+            Assert.Equal("hello world", memoryFileSystem.GetTemplate(context, "template1").Render());
+            Assert.Throws<RenderException>(() => memoryFileSystem.GetTemplate(context, "template2"));
+            Assert.Throws<RenderException>(() => memoryFileSystem.GetTemplate(context, "template3"));
+            Assert.Throws<RenderException>(() => memoryFileSystem.GetTemplate(context, null));
+            Assert.Throws<RenderException>(() => memoryFileSystem.GetTemplate(context, string.Empty));
         }
 
         [Fact]
@@ -106,17 +110,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 },
             };
 
-            var templateProvider = new Hl7v2TemplateProvider(templateCollection);
+            var memoryFileSystem = new MemoryFileSystem(templateCollection);
             var context = new Context(CultureInfo.InvariantCulture);
             context["'folder/template1'"] = "folder/template1";
             context["template2"] = "template2";
             context["template3"] = "template3";
             context["template4"] = "template4";
 
-            Assert.Throws<Exceptions.RenderException>(() => templateProvider.GetTemplate(context, "'folder/template1'"));
-            Assert.Equal("template2 updated in customized layer", templateProvider.GetTemplate(context, "template2").Render());
-            Assert.Equal("template3 added in base layer", templateProvider.GetTemplate(context, "template3").Render());
-            Assert.Equal("template4 added in customized layer", templateProvider.GetTemplate(context, "template4").Render());
+            Assert.Throws<RenderException>(() => memoryFileSystem.GetTemplate(context, "'folder/template1'"));
+            Assert.Equal("template2 updated in customized layer", memoryFileSystem.GetTemplate(context, "template2").Render());
+            Assert.Equal("template3 added in base layer", memoryFileSystem.GetTemplate(context, "template3").Render());
+            Assert.Equal("template4 added in customized layer", memoryFileSystem.GetTemplate(context, "template4").Render());
         }
 
         [Fact]
@@ -130,18 +134,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 },
             };
 
-            var templateProvider = new Hl7v2TemplateProvider(templateCollection);
+            var memoryFileSystem = new MemoryFileSystem(templateCollection);
             var context = new Context(CultureInfo.InvariantCulture);
             context["hello"] = "hello";
-            Assert.Throws<NotImplementedException>(() => templateProvider.ReadTemplateFile(context, "hello"));
-        }
-
-        [Fact]
-        public void GivenAValidTemplateDirectory_WhenGetTemplate_CorrectResultsShouldBeReturned()
-        {
-            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
-            Assert.NotNull(templateProvider.GetTemplate("ADT_A01"));
-            Assert.Throws<ConverterInitializeException>(() => templateProvider.GetTemplate("Foo"));
+            Assert.Throws<NotImplementedException>(() => memoryFileSystem.ReadTemplateFile(context, "hello"));
         }
     }
 }

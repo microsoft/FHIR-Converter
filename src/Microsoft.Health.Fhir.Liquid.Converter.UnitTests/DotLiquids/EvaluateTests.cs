@@ -53,7 +53,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             var context = new Context(
                 environments: new List<Hash>(),
                 outerScope: new Hash(),
-                registers: Hash.FromAnonymousObject(new { file_system = templateProvider }),
+                registers: Hash.FromAnonymousObject(new { file_system = templateProvider.GetTemplateFileSystem() }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
                 timeout: 0,
@@ -90,12 +90,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             context = new Context(
                 environments: new List<Hash>(),
                 outerScope: new Hash(),
-                registers: Hash.FromAnonymousObject(new { file_system = templateProvider }),
+                registers: Hash.FromAnonymousObject(new { file_system = templateProvider.GetTemplateFileSystem() }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
                 timeout: 0,
                 formatProvider: CultureInfo.InvariantCulture);
-            Assert.Throws<ConverterInitializeException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
+            Assert.Throws<Exceptions.RenderException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
         }
     }
 }
