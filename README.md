@@ -50,7 +50,7 @@ Here are the parameters that the tool accepts:
 | Option | Name | Optionality | Default | Description |
 | ----- | ----- | ----- |----- |----- |
 | -d | TemplateDirectory | Required | | Root directory of templates. |
-| -r | RootTemplate | Required | | Name of root template. The valid value is ADT_A01, OML_O21, ORU_R01, VXU_V04. |
+| -r | RootTemplate | Required | | Name of root template. Valid values are ADT_A01, OML_O21, ORU_R01, VXU_V04. |
 | -c | InputDataContent | Optional| | Input data content. Specify OutputDataFile to get the results. |
 | -f | OutputDataFile | Optional | | Output data file. |
 | -i | InputDataFolder | Optional | | Input data folder. Specify OutputDataFolder to get the results.. |
