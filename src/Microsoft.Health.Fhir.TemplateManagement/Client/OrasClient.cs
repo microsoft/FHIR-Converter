@@ -8,8 +8,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using EnsureThat;
-using Microsoft.Extensions.Logging;
-using Microsoft.Health.Fhir.Liquid.Converter;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
@@ -18,10 +16,24 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
     public class OrasClient : IOrasClient
     {
         private readonly string _imageReference;
+        private readonly string orasFileName;
 
         public OrasClient(string imageReference)
         {
             EnsureArg.IsNotNull(imageReference, nameof(imageReference));
+
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Win32NT:
+                    orasFileName = "oras-win.exe";
+                    break;
+                case PlatformID.Unix:
+                    orasFileName = "oras-unix";
+                    AddFilePermissionInLinuxSystem(orasFileName);
+                    break;
+                default:
+                    throw new SystemException("System operation is not supported");
+            }
 
             _imageReference = imageReference;
         }
@@ -57,20 +69,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
         private async Task OrasExecutionAsync(string command, string orasWorkingDirectory)
         {
             TaskCompletionSource<bool> eventHandled = new TaskCompletionSource<bool>();
-            string orasFileName;
-
-            switch (Environment.OSVersion.Platform)
-            {
-                case PlatformID.Win32NT:
-                    orasFileName = "oras-win.exe";
-                    break;
-                case PlatformID.Unix:
-                    orasFileName = "oras-unix";
-                    AddFilePermissionInLinuxSystem(orasFileName);
-                    break;
-                default:
-                    throw new SystemException("System operation is not supported");
-            }
 
             Process process = new Process
             {

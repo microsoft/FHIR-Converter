@@ -4,7 +4,6 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -55,7 +54,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
                     break;
                 case PlatformID.Unix:
                     _orasFileName = "oras-unix";
-                    AddFilePermissionInLinuxSystem(_orasFileName);
+                    OrasUtility.AddFilePermissionInLinuxSystem(_orasFileName);
                     break;
                 default:
                     throw new SystemException("System operation is not supported");
@@ -79,37 +78,46 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private void PushOneLayerWithValidSequenceNumber()
         {
             string command = $"push {_testOneLayerWithValidSequenceNumberImageReference} {_baseLayerTemplatePath}";
-            OrasExecution(command);
+            ExecuteOrasCommand(command);
         }
 
         private void PushOneLayerWithoutSequenceNumber()
         {
             string command = $"push {_testOneLayerWithoutSequenceNumberImageReference} {_emptySequenceNumberLayerPath}";
-            OrasExecution(command);
+            ExecuteOrasCommand(command);
         }
 
         private void PushOneLayerWithInvalidSequenceNumber()
         {
             string command = $"push {_testOneLayerWithInValidSequenceNumberImageReference} {_userLayerTemplatePath}";
-            OrasExecution(command);
+            ExecuteOrasCommand(command);
         }
 
         private void PushMultiLayerWithValidSequenceNumber()
         {
             string command = $"push {_testMultiLayersWithValidSequenceNumberImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
-            OrasExecution(command);
+            ExecuteOrasCommand(command);
         }
 
         private void PushMultiLayerWithInValidSequenceNumber()
         {
             string command = $"push {_testMultiLayersWithInValidSequenceNumberImageReference} {_emptySequenceNumberLayerPath} {_userLayerTemplatePath}";
-            OrasExecution(command);
+            ExecuteOrasCommand(command);
         }
 
         private void PushInvalidCompressedImage()
         {
             string command = $"push {_testInvalidCompressedImageReference} {_invalidCompressedImageLayerPath}";
-            OrasExecution(command);
+            ExecuteOrasCommand(command);
+        }
+
+        private void ExecuteOrasCommand(string command)
+        {
+            _orasErrorMessage = OrasUtility.OrasExecution(command, _orasFileName);
+            if (!string.IsNullOrEmpty(_orasErrorMessage))
+            {
+                _isOrasValid = false;
+            }
         }
 
         [Fact]
@@ -215,7 +223,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             // Check Image
             string command = $"pull {testPushMultiLayersImageReference} -o checkMultiLayersFolder";
-            OrasExecution(command);
+            OrasUtility.OrasExecution(command, _orasFileName);
             Assert.Equal(2, Directory.EnumerateFiles("checkMultiLayersFolder", "*.tar.gz", SearchOption.AllDirectories).Count());
             Assert.Equal(4, StreamUtility.DecompressTarGzStream(File.OpenRead(Path.Combine("checkMultiLayersFolder", "layer2.tar.gz"))).Count());
             ClearFolder(initInputFolder);
@@ -247,7 +255,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             // Check Image
             string command = $"pull {testPushNewBaseLayerImageReference} -o checkNewBaseLayerFolder";
-            OrasExecution(command);
+            OrasUtility.OrasExecution(command, _orasFileName);
             Assert.Single(Directory.EnumerateFiles("checkNewBaseLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
             Assert.Equal(840, StreamUtility.DecompressTarGzStream(File.OpenRead(Path.Combine("checkNewBaseLayerFolder", "layer1.tar.gz"))).Count());
             ClearFolder(initInputFolder);
@@ -274,7 +282,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             // Check Image
             string command = $"pull {testPushBaseLayerImageReference} -o checkBaseLayerFolder";
-            OrasExecution(command);
+            OrasUtility.OrasExecution(command, _orasFileName);
             Assert.Single(Directory.EnumerateFiles("checkBaseLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
             ClearFolder(initInputFolder);
             ClearFolder("checkBaseLayerFolder");
@@ -303,7 +311,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             // Check Image
             string command = $"pull {testPushNewBaseLayerImageReference} -o checkLayerFolder";
-            OrasExecution(command);
+            OrasUtility.OrasExecution(command, _orasFileName);
             Assert.Single(Directory.EnumerateFiles("checkLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
             ClearFolder(initInputFolder);
             ClearFolder("checkLayerFolder");
@@ -325,36 +333,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             ClearFolder(emptyFolder);
         }
 
-        private void OrasExecution(string command)
-        {
-            Process process = new Process
-            {
-                StartInfo = new ProcessStartInfo(_orasFileName),
-            };
-
-            process.StartInfo.Arguments = command;
-            process.StartInfo.RedirectStandardError = true;
-            process.EnableRaisingEvents = true;
-            process.Start();
-
-            StreamReader errStreamReader = process.StandardError;
-            process.WaitForExit(30000);
-            if (process.HasExited)
-            {
-                var error = errStreamReader.ReadToEnd();
-                if (!string.IsNullOrEmpty(error))
-                {
-                    _orasErrorMessage = error;
-                    _isOrasValid = false;
-                    Console.WriteLine($"OrasInitError: {error}");
-                }
-            }
-            else
-            {
-                _isOrasValid = false;
-            }
-        }
-
         private void ClearFolder(string directory)
         {
             EnsureArg.IsNotNullOrEmpty(directory, nameof(directory));
@@ -366,28 +344,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             DirectoryInfo folder = new DirectoryInfo(directory);
             folder.Delete(true);
-        }
-
-        private void AddFilePermissionInLinuxSystem(string fileName)
-        {
-            var command = $"chmod +x {fileName}";
-            var escapedArgs = command.Replace("\"", "\\\"");
-
-            using var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = "/bin/bash",
-                    Arguments = $"-c \"{escapedArgs}\"",
-                },
-            };
-
-            process.Start();
-            process.WaitForExit();
         }
     }
 }

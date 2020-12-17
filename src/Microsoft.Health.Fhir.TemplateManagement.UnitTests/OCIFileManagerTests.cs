@@ -4,7 +4,6 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -18,14 +17,27 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         private readonly string _baseLayerTemplatePath = "TestData/TarGzFiles/layer1.tar.gz";
         private readonly string _userLayerTemplatePath = "TestData/TarGzFiles/layer2.tar.gz";
         private readonly string _testOneLayerImageReference;
-        private readonly string _testMultiLayerImageReference;
         private bool _isOrasValid = true;
+        private string _orasErrorMessage;
+        private readonly string _orasFileName;
 
         public OCIFileManagerTests()
         {
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Win32NT:
+                    _orasFileName = "oras-win.exe";
+                    break;
+                case PlatformID.Unix:
+                    _orasFileName = "oras-unix";
+                    OrasUtility.AddFilePermissionInLinuxSystem(_orasFileName);
+                    break;
+                default:
+                    throw new SystemException("System operation is not supported");
+            }
+
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:user1";
-            _testMultiLayerImageReference = _containerRegistryServer + "/templatetest:user2";
             PushOneLayerImage();
             PushMultiLayersImage();
         }
@@ -33,23 +45,27 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         private void PushOneLayerImage()
         {
             string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath}";
-            OrasExecution(command);
+            _orasErrorMessage = OrasUtility.OrasExecution(command, _orasFileName);
+            if (!string.IsNullOrEmpty(_orasErrorMessage))
+            {
+                _isOrasValid = false;
+            }
         }
 
         private void PushMultiLayersImage()
         {
             string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
-            OrasExecution(command);
+            _orasErrorMessage = OrasUtility.OrasExecution(command, _orasFileName);
+            if (!string.IsNullOrEmpty(_orasErrorMessage))
+            {
+                _isOrasValid = false;
+            }
         }
 
         [Fact]
         public async Task GivenAnImageReferenceAndOutputFolder_WhenPullOCIFiles_CorrectFilesWillBeWrittenToFolderAsync()
         {
-            if (!_isOrasValid)
-            {
-                return;
-            }
-
+            Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testOneLayerImageReference;
             string outputFolder = "TestData/testOneLayer";
             var testManager = new OCIFileManager(imageReference, outputFolder);
@@ -61,44 +77,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public async Task GivenAnImageReferenceAndInputFolder_WhenPushOCIFiles_CorrectImageWillBePushedAsync()
         {
-            if (!_isOrasValid)
-            {
-                return;
-            }
+            Assert.True(_isOrasValid, _orasErrorMessage);
 
             string imageReference = _containerRegistryServer + "/templatetest:test";
             string inputFolder = "TestData/UserFolder";
             var testManager = new OCIFileManager(imageReference, inputFolder);
             testManager.PackOCIImage(true);
             await testManager.PushOCIImageAsync();
-        }
-
-        private void OrasExecution(string command)
-        {
-            Process process = new Process
-            {
-                StartInfo = new ProcessStartInfo(Path.Combine(AppContext.BaseDirectory, "oras.exe")),
-            };
-
-            process.StartInfo.Arguments = command;
-            process.StartInfo.RedirectStandardError = true;
-            process.EnableRaisingEvents = true;
-            process.Start();
-
-            StreamReader errStreamReader = process.StandardError;
-            process.WaitForExit(30000);
-            if (process.HasExited)
-            {
-                var error = errStreamReader.ReadToEnd();
-                if (!string.IsNullOrEmpty(error))
-                {
-                    _isOrasValid = false;
-                }
-            }
-            else
-            {
-                _isOrasValid = false;
-            }
         }
     }
 }
