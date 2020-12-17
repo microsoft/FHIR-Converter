@@ -57,9 +57,24 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
         private async Task OrasExecutionAsync(string command, string orasWorkingDirectory)
         {
             TaskCompletionSource<bool> eventHandled = new TaskCompletionSource<bool>();
+            string orasFileName;
+
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Win32NT:
+                    orasFileName = "oras-win.exe";
+                    break;
+                case PlatformID.Unix:
+                    orasFileName = "oras-unix";
+                    AddFilePermissionInLinuxSystem(orasFileName);
+                    break;
+                default:
+                    throw new SystemException("System operation is not supported");
+            }
+
             Process process = new Process
             {
-                StartInfo = new ProcessStartInfo(Path.Combine(AppContext.BaseDirectory, "oras.exe")),
+                StartInfo = new ProcessStartInfo(orasFileName),
             };
 
             process.StartInfo.Arguments = command;
@@ -92,6 +107,28 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             {
                 throw new OrasException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
             }
+        }
+
+        private void AddFilePermissionInLinuxSystem(string fileName)
+        {
+            var command = $"chmod +x {fileName}";
+            var escapedArgs = command.Replace("\"", "\\\"");
+
+            using var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = "/bin/bash",
+                    Arguments = $"-c \"{escapedArgs}\"",
+                },
+            };
+
+            process.Start();
+            process.WaitForExit();
         }
     }
 }

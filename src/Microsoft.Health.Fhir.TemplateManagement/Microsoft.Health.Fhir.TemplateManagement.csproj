@@ -8,7 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\tool\oras.exe" Link="oras.exe">
+    <None Include="..\..\tool\oras-unix" Link="oras-unix">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\tool\oras-win.exe" Link="oras-win.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

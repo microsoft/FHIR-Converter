@@ -44,9 +44,23 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string _testInvalidCompressedImageReference;
         private bool _isOrasValid = true;
         private string _orasErrorMessage;
+        private readonly string _orasFileName;
 
         public OCIArtifactFunctionalTests()
         {
+            switch (Environment.OSVersion.Platform)
+            {
+                case PlatformID.Win32NT:
+                    _orasFileName = "oras-win.exe";
+                    break;
+                case PlatformID.Unix:
+                    _orasFileName = "oras-unix";
+                    AddFilePermissionInLinuxSystem(_orasFileName);
+                    break;
+                default:
+                    throw new SystemException("System operation is not supported");
+            }
+
             _containerRegistryServer = "localhost:5000";
             _testOneLayerWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_valid_sequence";
             _testOneLayerWithoutSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_without_sequence";
@@ -102,7 +116,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         public async Task GivenOneLayerImageWithValidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
-
             string imageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithValidSequenceNumber";
             var testManager = new OCIFileManager(imageReference, outputFolder);
@@ -116,11 +129,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [Fact]
         public async Task GivenOneLayerImageWithoutSequenceNumber_WhenPulled_ArtifactsWillBePulledWithoutBaseLayerCopiedAsync()
         {
-            if (!_isOrasValid)
-            {
-                return;
-            }
-
+            Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testOneLayerWithoutSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithoutSequenceNumber";
             var testManager = new OCIFileManager(imageReference, outputFolder);
@@ -134,11 +143,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [Fact]
         public async Task GivenOneLayerImageWithInvalidSequenceNumber_WhenPulled_ExceptionWillBeThrownAsync()
         {
-            if (!_isOrasValid)
-            {
-                return;
-            }
-
+            Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testOneLayerWithInValidSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithInValidSequenceNumber";
             var testManager = new OCIFileManager(imageReference, outputFolder);
@@ -150,11 +155,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [Fact]
         public async Task GivenMultiLayerImageWithValidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
-            if (!_isOrasValid)
-            {
-                return;
-            }
-
+            Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testMultiLayersWithValidSequenceNumberImageReference;
             string outputFolder = "TestData/testMultiLayersWithValidSequenceNumber";
             var testManager = new OCIFileManager(imageReference, outputFolder);
@@ -168,11 +169,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [Fact]
         public async Task GivenMultiLayersImageWithInvalidSequenceNumber_WhenPulled_ExceptionWillBeThrownAsync()
         {
-            if (!_isOrasValid)
-            {
-                return;
-            }
-
+            Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testMultiLayersWithInValidSequenceNumberImageReference;
             string outputFolder = "TestData/testMultiLayersWithInValidSequenceNumber";
             var testManager = new OCIFileManager(imageReference, outputFolder);
@@ -184,11 +181,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [Fact]
         public async Task GivenInvalidCompressedImage_WhenPulled_ExceptionWillBeThrownAsync()
         {
-            if (!_isOrasValid)
-            {
-                return;
-            }
-
+            Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testInvalidCompressedImageReference;
             string outputFolder = "TestData/testInvalidCompressedImage";
             var testManager = new OCIFileManager(imageReference, outputFolder);
@@ -200,10 +193,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [Fact]
         public async Task GivenAnInputFolderUnpackedFromBaseLayer_WhenPushOCIFiles_IfUserModify_TwoLayersWillBePushedAsync()
         {
-            if (!_isOrasValid)
-            {
-                return;
-            }
+            Assert.True(_isOrasValid, _orasErrorMessage);
 
             // Pull an image
             string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
@@ -235,10 +225,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [Fact]
         public async Task GivenAnInputFolderUnpackedFromBaseLayer_WhenPushOCIFiles_IfIgnoreBaseLayer_NewBaseLayerWillBePushedAsync()
         {
-            if (!_isOrasValid)
-            {
-                return;
-            }
+            Assert.True(_isOrasValid, _orasErrorMessage);
 
             // Pull an image
             string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
@@ -270,10 +257,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [Fact]
         public async Task GivenAnInputFolderUnpackedFromBaseLayer_WhenPushOCIFiles_IfUserDoNotModify_OnlyBaseLayerWillBePushedAsync()
         {
-            if (!_isOrasValid)
-            {
-                return;
-            }
+            Assert.True(_isOrasValid, _orasErrorMessage);
 
             // Pull an image
             string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
@@ -299,10 +283,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [Fact]
         public async Task GivenAnInputFolderWithoutBaseLayer_WhenPushOCIFiles_IfUserModify_OneBaseLayerWillBePushedAsync()
         {
-            if (!_isOrasValid)
-            {
-                return;
-            }
+            Assert.True(_isOrasValid, _orasErrorMessage);
 
             // Pull an image
             string initImageReference = _testOneLayerWithoutSequenceNumberImageReference;
@@ -331,11 +312,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [Fact]
         public async Task GivenAnEmptyInputFolder_WhenPushOCIFiles_OneBaseLayerWillBePushedAsync()
         {
-            if (!_isOrasValid)
-            {
-                return;
-            }
-
+            Assert.True(_isOrasValid, _orasErrorMessage);
             string emptyFolder = "emptyFoler";
             Directory.CreateDirectory(emptyFolder);
 
@@ -352,7 +329,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         {
             Process process = new Process
             {
-                StartInfo = new ProcessStartInfo(Path.Combine(AppContext.BaseDirectory, "oras.exe")),
+                StartInfo = new ProcessStartInfo(_orasFileName),
             };
 
             process.StartInfo.Arguments = command;
@@ -389,6 +366,28 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             DirectoryInfo folder = new DirectoryInfo(directory);
             folder.Delete(true);
+        }
+
+        private void AddFilePermissionInLinuxSystem(string fileName)
+        {
+            var command = $"chmod +x {fileName}";
+            var escapedArgs = command.Replace("\"", "\\\"");
+
+            using var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = "/bin/bash",
+                    Arguments = $"-c \"{escapedArgs}\"",
+                },
+            };
+
+            process.Start();
+            process.WaitForExit();
         }
     }
 }
