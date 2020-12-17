@@ -50,7 +50,7 @@ Here are the parameters that the tool accepts:
 | Option | Name | Optionality | Default | Description |
 | ----- | ----- | ----- |----- |----- |
 | -d | TemplateDirectory | Required | | Root directory of templates. |
-| -r | RootTemplate | Required | | Name of root template. |
+| -r | RootTemplate | Required | | Name of root template. The valid value is ADT_A01, OML_O21, ORU_R01, VXU_V04. |
 | -c | InputDataContent | Optional| | Input data content. Specify OutputDataFile to get the results. |
 | -f | OutputDataFile | Optional | | Output data file. |
 | -i | InputDataFolder | Optional | | Input data folder. Specify OutputDataFolder to get the results.. |
@@ -60,12 +60,12 @@ Here are the parameters that the tool accepts:
 
 Example usage to convert HL7 v2 messages to FHIR resources in a folder:
 ```
->.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -e ADT_A01 -i myInputDataFolder -o myOutputDataFolder
+>.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r ADT_A01 -i myInputDataFolder -o myOutputDataFolder
 ```
 
 **Manage Templates**
 
-The command-line tool also supports managing different versions of templates from Azure Container Registry (ACR). Users can customize templates and store them on ACR if default templates can not meet requirements. After ACR authentication, users can pull and push templates from/to a remote ACR through our tool.
+The command-line tool also supports managing different versions of templates from Azure Container Registry (ACR). Users can customize templates and store them on ACR if default templates can not meet requirements. After [ACR authentication](docs/TemplateManagementCLI.md), users can pull and push templates from/to a remote ACR through our tool.
 
 Example command to push a collection of templates to ACR image from a folder:
 ```
@@ -79,7 +79,7 @@ Example usage of pulling an image of templates in a folder:
 ```
 More details of usage are given in [Template Management CLI tool](docs/TemplateManagementCLI.md).
 
-Besides current version of [templates](data/Templates) given in our project, other versions that released by Microsoft are stored in a public ACR: healthplatformregistry.azurecr.io, users only have pull permission and can directly pull templates without authentication. 
+Besides current version of [templates](data/Templates) given in our project, other versions that released by Microsoft are stored in a public ACR: healthplatformregistry.azurecr.io, users can directly pull templates from ``` healthplatformregistry.azurecr.io/hl7v2defaulttemplate:<version> ``` without authentication. 
 
 ### A note on Resource ID generation 
 
