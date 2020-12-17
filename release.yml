@@ -130,7 +130,7 @@ stages:
         git clone -q https://github.com/StefanScherer/dockerfiles-windows.git
         cd dockerfiles-windows/registry/
         docker build -t registry-windows:2.6.2 .
-        docker run --rm -d -p 5000:5000 --isolation=hyperv --name registry registry-windows:2.6.2
+        docker run --rm -d -p 5000:5000 --name registry registry-windows:2.6.2
       displayName: start registry
 
     #- script: |
