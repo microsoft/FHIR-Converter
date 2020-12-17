@@ -65,7 +65,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public async Task GivenAnImageReferenceAndOutputFolder_WhenPullOCIFiles_CorrectFilesWillBeWrittenToFolderAsync()
         {
-            Assert.True(_isOrasValid, _orasErrorMessage);
+            if (!_isOrasValid)
+            {
+                return;
+            }
+
             string imageReference = _testOneLayerImageReference;
             string outputFolder = "TestData/testOneLayer";
             var testManager = new OCIFileManager(imageReference, outputFolder);
@@ -77,7 +81,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public async Task GivenAnImageReferenceAndInputFolder_WhenPushOCIFiles_CorrectImageWillBePushedAsync()
         {
-            Assert.True(_isOrasValid, _orasErrorMessage);
+            if (!_isOrasValid)
+            {
+                return;
+            }
 
             string imageReference = _containerRegistryServer + "/templatetest:test";
             string inputFolder = "TestData/UserFolder";

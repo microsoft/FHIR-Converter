@@ -77,7 +77,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         [MemberData(nameof(GetInvalidReference))]
         public async Task GivenAnInValidImageReference_WhenPullAndPushImageUseOras_ExceptionWillBeThrown(string reference)
         {
-            Assert.True(_isOrasValid, _orasErrorMessage);
+            if (!_isOrasValid)
+            {
+                return;
+            }
 
             Directory.CreateDirectory("TestData/PushTest");
             File.Copy(_baseLayerTemplatePath, "TestData/PushTest/baseLayer.tar.gz", true);
@@ -92,7 +95,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         [Fact]
         public async Task GivenAValidImageReference_WhenPushImageUseOras_ImageWillBePushedAsync()
         {
-            Assert.True(_isOrasValid, _orasErrorMessage);
+            if (!_isOrasValid)
+            {
+                return;
+            }
 
             Directory.CreateDirectory("TestData/PushTest");
             File.Copy(_baseLayerTemplatePath, "TestData/PushTest/baseLayer.tar.gz", true);
@@ -107,7 +113,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         [Fact]
         public async Task GivenAValidImageReference_WhenPushEmptyFolderUseOras_ImageWillNotBePushedAsync()
         {
-            Assert.True(_isOrasValid, _orasErrorMessage);
+            if (!_isOrasValid)
+            {
+                return;
+            }
 
             Directory.CreateDirectory("TestData/Empty");
             string imageReference = _containerRegistryServer + "/testimage:test";
@@ -118,7 +127,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         [Fact]
         public async Task GivenAValidImageReference_WhenPullImageUseOras_ImageWillBePulledAsync()
         {
-            Assert.True(_isOrasValid, _orasErrorMessage);
+            if (!_isOrasValid)
+            {
+                return;
+            }
 
             string imageReference = _testOneLayerImageReference;
             OrasClient orasClient = new OrasClient(imageReference);
