@@ -29,7 +29,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
         public Hl7v2TemplateProvider(List<Dictionary<string, Template>> templateCollection)
         {
             TemplateDirectory = null;
-            TemplateCollection = templateCollection;
+            TemplateCollection = new List<Dictionary<string, Template>>();
+            foreach (var templates in templateCollection)
+            {
+                TemplateCollection.Add(new Dictionary<string, Template>(templates));
+            }
         }
 
         public List<Dictionary<string, Template>> LoadCodeSystemMapping()
