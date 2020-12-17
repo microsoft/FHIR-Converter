@@ -2,12 +2,32 @@
     "resourceType": "Bundle",
     "type": "transaction",
     "entry": [
-        {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|ORC' -%}
+        {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|ORC|MSH' -%}
+
+        {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
+        {% if messageHeaderId -%}
+            {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, ID: messageHeaderID -%}
+        {% endif -%}
+
+        {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseID: patientId -%}
+        {% if provenanceId -%}
+            {% include 'Resource/Provenance' MSH: firstSegments.MSH, ORC: firstSegments.ORC, ID: provenanceId -%}
+        {% endif -%}
         
         {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
         {% if patientId -%}
             {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
             {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, NK1: firstSegments.NK1, ID: patientId -%}
+        {% endif -%}
+
+        {% evaluate accountId using 'ID/Account' CX: firstSegments.PID.3 -%}
+        {% if accountId -%}
+            {% include 'Resource/Account' PID: firstSegments.PID, ID: accountId -%}
+        {% endif -%}
+
+        {% evaluate organizationId using 'ID/Organization' HD: firstSegments.MSH.6 -%}
+        {% if organizationId -%}
+            {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId -%}
         {% endif -%}
         
         {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
@@ -31,6 +51,8 @@
         
         {% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
         {% for nk1Segment in nk1SegmentLists.NK1 -%}
+            {% include 'Resource/Patient' NK1: nk1Segment, ID: patientId -%}
+
             {% evaluate relatedPersonId using 'ID/RelatedPerson' NK1: nk1Segment, baseId: patientId -%}
             {% if relatedPersonId -%}
                 {% include 'Resource/RelatedPerson' NK1: nk1Segment, ID: relatedPersonId -%}
