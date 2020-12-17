@@ -30,7 +30,7 @@ FHIR Converter with DotLiquid engine is integrated into the [FHIR Server for Azu
 
 This project consists of the following components:
 
-1. A command-line tool for converting data.
+1. A command-line tool for converting data and managing templates.
 2. [Templates](data/Templates) for HL7 v2 to FHIR conversion.
 3. [Sample data](data/SampleData) for testing purpose.
 
@@ -38,7 +38,7 @@ This project consists of the following components:
 
 ### $convert-data operation in the Azure API for FHIR
 
-FHIR Converter is integrated into the Azure API for FHIR to run as part of the service. Refer to the [$convert-data](https://github.com/microsoft/fhir-server/blob/personal/yufei/convert-data-doc/docs/ConvertDataOperation.md) documentation for using the FHIR converter in Azure API for FHIR.
+FHIR Converter is integrated into the Azure API for FHIR to run as part of the service. Template management tool can be used to customize Refer to the [$convert-data](https://github.com/microsoft/fhir-server/blob/personal/yufei/convert-data-doc/docs/ConvertDataOperation.md) documentation for using the FHIR converter in Azure API for FHIR.
 
 ### Command-line tool
 
@@ -79,7 +79,8 @@ Example usage of pulling an image of templates in a folder:
 ```
 More details of usage are given in [Template Management CLI tool](docs/TemplateManagementCLI.md).
 
-Besides current version of [templates](data/Templates) given in our project, other versions that released by Microsoft are stored in a public ACR: healthplatformregistry.azurecr.io, users can directly pull templates from ``` healthplatformregistry.azurecr.io/hl7v2defaulttemplate:<version> ``` without authentication. 
+Besides current version of [templates](data/Templates) given in our project, other versions that released by Microsoft are stored in a public ACR: healthplatformregistry.azurecr.io, users can directly pull templates from ``` healthplatformregistry.azurecr.io/hl7v2defaulttemplate:<version> ``` without authentication.
+>Note!: Template version is aligned with the version of FHIR Converter. 
 
 ### A note on Resource ID generation 
 
