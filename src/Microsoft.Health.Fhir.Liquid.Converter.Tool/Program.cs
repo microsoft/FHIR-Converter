@@ -4,9 +4,9 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CommandLine;
-using CommandLine.Text;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool.Models;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
@@ -21,7 +21,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 parseResult.WithParsed<ConverterOptions>(options => ConverterLogicHandler.Convert(options));
                 await parseResult.WithParsedAsync<PullTemplateOptions>(options => TemplateManagementLogicHandler.PullAsync(options));
                 await parseResult.WithParsedAsync<PushTemplateOptions>(options => TemplateManagementLogicHandler.PushAsync(options));
-                parseResult.WithNotParsed((errors) => HandleOptionsParseError(parseResult));
+                parseResult.WithNotParsed((errors) => HandleOptionsParseError(errors));
                 return 0;
             }
             catch (Exception ex)
@@ -31,10 +31,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             }
         }
 
-        private static void HandleOptionsParseError(ParserResult<object> parseResult)
+        private static void HandleOptionsParseError(IEnumerable<Error> errors)
         {
-            var usageText = HelpText.RenderUsageText(parseResult);
-            throw new InputParameterException(usageText);
+            if (!errors.IsHelp() && !errors.IsVersion())
+            {
+                throw new InputParameterException(@"The input option is invalid.");
+            }
         }
     }
 }
