@@ -10,12 +10,11 @@ The following table compares the two converter engines:
 
 |  | Handlebars Engine | Liquid Engine | 
 | ----- | ----- | ----- |
-| **Release Date** | March 6, 2020 | Nov 13, 2020 |
 | **Template language** | [Handlebars](https://handlebarsjs.com/) | [Liquid](https://shopify.github.io/liquid/) |
-| **Template authoring tool** | 1. Text editor <br> 2. Self-hosted web-app | 1. Text editor <br> 2. [VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-health-fhir-converter)|
+| **Template authoring tool** | Self-hosted web-app | [VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-health-fhir-converter)|
 | **Supported conversions** | 1. HL7v2 to FHIR <br> 2. CCDA to FHIR | 1. HL7 v2 to FHIR <br> 2. *CCDA to FHIR** |
 | **Available as** | 1. Self-deployed web service <br> (on-prem or on Azure)| 1. Command line tool <br> 2. $data-convert operation of Azure API for FHIR <br> 3. *$data-convert operation on  FHIR Server for Azure**|
-**Available in Azure FHIR servers** | No | Yes |
+
 
 **To be released soon.*
 
@@ -26,11 +25,11 @@ The templates are written in [Liquid](https://shopify.github.io/liquid/) templat
 
 The converter comes with ready to use templates for HL7v2 to FHIR conversion. These templates are based on the [spreadsheet](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk/edit#gid=0) created by the HL7 [2-To-FHIR project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project). If needed, you can create new, or modify existing templates to meet your specific conversion requirements.
 
-FHIR Converter with DotLiquid engine is integrated into the [FHIR Server for Azure](https://github.com/microsoft/fhir-server) as the [$convert-data](https://github.com/microsoft/fhir-server/blob/personal/yufei/convert-data-doc/docs/ConvertDataOperation.md) operation. In addition, it is also available as a command-line tool. The converter transforms the input data into FHIR bundles. These bundles can be persisted to a FHIR server such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/).
+FHIR Converter with DotLiquid engine is integrated into the [FHIR Server for Azure](https://github.com/microsoft/fhir-server) as the [$convert-data](https://github.com/microsoft/fhir-server/blob/master/docs/ConvertDataOperation.md) operation. In addition, it is also available as a command-line tool. The converter transforms the input data into FHIR bundles. These bundles can be persisted to a FHIR server such as the [FHIR Server for Azure](https://github.com/microsoft/fhir-server), or [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/).
 
 This project consists of the following components:
 
-1. A command-line tool for converting data.
+1. A command-line tool for converting data and managing templates.
 2. [Templates](data/Templates) for HL7 v2 to FHIR conversion.
 3. [Sample data](data/SampleData) for testing purpose.
 
@@ -38,9 +37,11 @@ This project consists of the following components:
 
 ### $convert-data operation in the Azure API for FHIR
 
-FHIR Converter is integrated into the Azure API for FHIR to run as part of the service. Refer to the [$convert-data](https://github.com/microsoft/fhir-server/blob/personal/yufei/convert-data-doc/docs/ConvertDataOperation.md) documentation for using the FHIR converter in Azure API for FHIR.
+FHIR Converter is integrated into the FHIR Server for Azure to run as part of the service. Refer to the [$convert-data](https://github.com/microsoft/fhir-server/blob/master/docs/ConvertDataOperation.md) documentation for using the FHIR converter in the FHIR Server for Azure.
 
 ### Command-line tool
+
+**Convert Data**
 
 The command-line tool can be used to convert a folder containing HL7 v2 messages to FHIR resources.
 Here are the parameters that the tool accepts:
@@ -48,18 +49,38 @@ Here are the parameters that the tool accepts:
 | Option | Name | Optionality | Default | Description |
 | ----- | ----- | ----- |----- |----- |
 | -d | TemplateDirectory | Required | | Root directory of templates. |
-| -r | RootTemplate | Required | | Name of root template. |
+| -r | RootTemplate | Required | | Name of root template. Valid values are ADT_A01, OML_O21, ORU_R01, VXU_V04. |
 | -c | InputDataContent | Optional| | Input data content. Specify OutputDataFile to get the results. |
 | -f | OutputDataFile | Optional | | Output data file. |
-| -i | InputDataFolder | Optional | | Input data folder. Specify OutputDataFolder to get the results.. |
+| -i | InputDataFolder | Optional | | Input data folder. Specify OutputDataFolder to get the results. |
 | -o | OutputDataFolder | Optional | | Output data folder. |
+| -t | IsTraceInfo | Optional | | Provide trace information in the output if "-t" is set. |
 | --version | Version | Optional | | Display version information. |
 | --help | Help | Optional | | Display usage information of this tool. |
 
 Example usage to convert HL7 v2 messages to FHIR resources in a folder:
 ```
->.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe -d myTemplateDirectory -e ADT_A01 -i myInputDataFolder -o myOutputDataFolder
+>.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r ADT_A01 -i myInputDataFolder -o myOutputDataFolder
 ```
+
+**Manage Templates**
+
+The command-line tool also supports managing different versions of templates from Azure Container Registry (ACR). Users can customize templates and store them on ACR if default templates can not meet requirements. After [ACR authentication](docs/TemplateManagementCLI.md), users can pull and push templates from/to a remote ACR through our tool.
+
+Example command to push a collection of templates to ACR image from a folder:
+```
+>.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe push testacr.azurecr.io/templatetest:default myInputFolder
+```
+Example usage of pulling an image of templates in a folder:
+
+```
+>.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe pull testacr.azurecr.io/templatetest@sha256:412ea84f1bb1a9d98345efb7b427ba89616ec29ac332d543eff9a2161ca12a58 myOutputFolder
+
+```
+More details of usage are given in [Template Management CLI tool](docs/TemplateManagementCLI.md).
+
+Besides current version of [templates](data/Templates) given in our project, other versions that released by Microsoft are stored in a public ACR: healthplatformregistry.azurecr.io, users can directly pull templates from ``` healthplatformregistry.azurecr.io/hl7v2defaulttemplates:<version> ``` without authentication.
+>Note!: Template version is aligned with the version of FHIR Converter. 
 
 ### A note on Resource ID generation 
 

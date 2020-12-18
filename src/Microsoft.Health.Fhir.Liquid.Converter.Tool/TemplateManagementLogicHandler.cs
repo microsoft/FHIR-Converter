@@ -25,6 +25,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
 
             OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.OutputTemplateFolder);
             await fileManager.PullOCIImageAsync();
+            fileManager.UnpackOCIImage();
             Console.WriteLine($"Successfully pulled templates to {options.OutputTemplateFolder} folder");
         }
 

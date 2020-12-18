@@ -7,7 +7,7 @@ using CommandLine;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
 {
-    [Verb("pull", HelpText = "Pull template image to registry")]
+    [Verb("pull", HelpText = "Pull a template image from a registry")]
     public class PullTemplateOptions
     {
         [Value(0, Required = true, HelpText = "Image reference: <registry>/<imageName>:<imageTag> or <registry>/<imageName>@<imageDigest>")]
@@ -18,8 +18,5 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
 
         [Option('f', "ForceOverride", Required = false, Default = false, HelpText = "Force to override existed files")]
         public bool ForceOverride { get; set; }
-
-        [Option('e', "ErrorJsonFile", Required = false, Default = null, HelpText = "Output error message File.")]
-        public string ErrorJsonFile { get; set; }
     }
 }
