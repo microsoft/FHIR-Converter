@@ -3,65 +3,36 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
-using System.IO;
 using DotLiquid;
+using DotLiquid.FileSystems;
 using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
-using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
-using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 {
-    public class Hl7v2TemplateProvider : MemoryFileSystem, ITemplateProvider
+    public class Hl7v2TemplateProvider : ITemplateProvider
     {
-        private const string TemplateFileExtension = ".liquid";
+        private readonly IFhirConverterTemplateFileSystem _fileSystem;
 
         public Hl7v2TemplateProvider(string templateDirectory)
         {
-            TemplateCollection = LoadTemplates(templateDirectory);
+            _fileSystem = new TemplateLocalFileSystem(templateDirectory, DataType.Hl7v2);
         }
 
         public Hl7v2TemplateProvider(List<Dictionary<string, Template>> templateCollection)
         {
-            TemplateCollection = templateCollection;
+            _fileSystem = new MemoryFileSystem(templateCollection);
         }
 
-        public List<Dictionary<string, Template>> LoadTemplates(string templateDirectory)
+        public Template GetTemplate(string templateName)
         {
-            if (!Directory.Exists(templateDirectory))
-            {
-                throw new ConverterInitializeException(FhirConverterErrorCode.TemplateFolderNotFound, string.Format(Resources.TemplateFolderNotFound, templateDirectory));
-            }
+            return _fileSystem.GetTemplate(templateName);
+        }
 
-            try
-            {
-                // Load DotLiquid templates
-                var templates = new Dictionary<string, string>();
-                var templatePaths = Directory.EnumerateFiles(templateDirectory, "*" + TemplateFileExtension, SearchOption.AllDirectories);
-                foreach (var templatePath in templatePaths)
-                {
-                    var name = Path.GetRelativePath(templateDirectory, templatePath);
-                    templates[name] = File.ReadAllText(templatePath);
-                }
-
-                // Load code system mapping
-                var codeSystemMappingPath = Path.Join(templateDirectory, "CodeSystem", "CodeSystem.json");
-                if (File.Exists(codeSystemMappingPath))
-                {
-                    var name = Path.GetRelativePath(templateDirectory, codeSystemMappingPath);
-                    templates[name] = File.ReadAllText(codeSystemMappingPath);
-                }
-
-                // Parse templates
-                var parsedTemplates = TemplateUtility.ParseHl7v2Templates(templates);
-                return new List<Dictionary<string, Template>>() { parsedTemplates };
-            }
-            catch (Exception ex)
-            {
-                throw new ConverterInitializeException(FhirConverterErrorCode.TemplateLoadingError, string.Format(Resources.TemplateLoadingError, ex.Message), ex);
-            }
+        public ITemplateFileSystem GetTemplateFileSystem()
+        {
+            return _fileSystem;
         }
     }
 }
