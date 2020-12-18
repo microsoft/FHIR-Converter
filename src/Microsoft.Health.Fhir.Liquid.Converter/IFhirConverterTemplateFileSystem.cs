@@ -8,10 +8,8 @@ using DotLiquid.FileSystems;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
 {
-    public interface ITemplateProvider
+    public interface IFhirConverterTemplateFileSystem : ITemplateFileSystem
     {
         public Template GetTemplate(string templateName);
-
-        public ITemplateFileSystem GetTemplateFileSystem();
     }
 }
