@@ -70,7 +70,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             var context = new Context(
                 environments: new List<Hash>() { Hash.FromAnonymousObject(new { hl7v2Data }) },
                 outerScope: new Hash(),
-                registers: Hash.FromAnonymousObject(new { file_system = templateProvider }),
+                registers: Hash.FromAnonymousObject(new { file_system = templateProvider.GetTemplateFileSystem() }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
                 timeout: timeout,

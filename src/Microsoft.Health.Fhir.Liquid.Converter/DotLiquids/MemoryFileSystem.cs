@@ -6,15 +6,23 @@
 using System;
 using System.Collections.Generic;
 using DotLiquid;
-using DotLiquid.FileSystems;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 {
-    public class MemoryFileSystem : ITemplateFileSystem
+    public class MemoryFileSystem : IFhirConverterTemplateFileSystem
     {
-        protected List<Dictionary<string, Template>> TemplateCollection { get; set; } = new List<Dictionary<string, Template>>();
+        private readonly List<Dictionary<string, Template>> _templateCollection;
+
+        public MemoryFileSystem(List<Dictionary<string, Template>> templateCollection)
+        {
+            _templateCollection = new List<Dictionary<string, Template>>();
+            foreach (var templates in templateCollection)
+            {
+                _templateCollection.Add(new Dictionary<string, Template>(templates));
+            }
+        }
 
         public string ReadTemplateFile(Context context, string templateName)
         {
@@ -26,7 +34,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             var templatePath = (string)context[templateName];
             if (templatePath == null)
             {
-                throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, templatePath));
+                throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, templateName));
             }
 
             return GetTemplate(templatePath) ?? throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, templatePath));
@@ -39,7 +47,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 return null;
             }
 
-            foreach (var templates in TemplateCollection)
+            foreach (var templates in _templateCollection)
             {
                 if (templates != null && templates.ContainsKey(templateName))
                 {
