@@ -79,7 +79,7 @@ Example usage of pulling an image of templates in a folder:
 ```
 More details of usage are given in [Template Management CLI tool](docs/TemplateManagementCLI.md).
 
-Besides current version of [templates](data/Templates) given in our project, other versions that released by Microsoft are stored in a public ACR: healthplatformregistry.azurecr.io, users can directly pull templates from ``` healthplatformregistry.azurecr.io/hl7v2defaulttemplate:<version> ``` without authentication.
+Besides current version of [templates](data/Templates) given in our project, other versions that released by Microsoft are stored in a public ACR: healthplatformregistry.azurecr.io, users can directly pull templates from ``` healthplatformregistry.azurecr.io/hl7v2defaulttemplates:<version> ``` without authentication.
 >Note!: Template version is aligned with the version of FHIR Converter. 
 
 ### A note on Resource ID generation 
