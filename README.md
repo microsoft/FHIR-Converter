@@ -38,7 +38,7 @@ This project consists of the following components:
 
 ### $convert-data operation in the Azure API for FHIR
 
-FHIR Converter is integrated into the Azure API for FHIR to run as part of the service. Template management tool can be used to customize Refer to the [$convert-data](https://github.com/microsoft/fhir-server/blob/personal/yufei/convert-data-doc/docs/ConvertDataOperation.md) documentation for using the FHIR converter in Azure API for FHIR.
+FHIR Converter is integrated into the Azure API for FHIR to run as part of the service. Refer to the [$convert-data](https://github.com/microsoft/fhir-server/blob/personal/yufei/convert-data-doc/docs/ConvertDataOperation.md) documentation for using the FHIR converter in Azure API for FHIR.
 
 ### Command-line tool
 
