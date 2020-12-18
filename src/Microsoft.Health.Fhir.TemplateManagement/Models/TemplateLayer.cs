@@ -36,8 +36,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         {
             try
             {
-                using Stream fielStream = File.OpenRead(filePath);
-                return ReadFromStream(fielStream);
+                using Stream fileStream = File.OpenRead(filePath);
+                return ReadFromStream(fileStream);
             }
             catch (Exception ex)
             {

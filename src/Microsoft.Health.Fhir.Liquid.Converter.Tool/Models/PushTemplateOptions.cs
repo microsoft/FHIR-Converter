@@ -7,7 +7,7 @@ using CommandLine;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
 {
-    [Verb("push", HelpText = "Push template image to registry")]
+    [Verb("push", HelpText = "Push a template image to registry")]
     public class PushTemplateOptions
     {
         [Value(0, Required = true, HelpText = "Image reference: <registry>/<imageName>:<imageTag>")]
@@ -18,8 +18,5 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
 
         [Option('n', "NewBaseLayer", Required = false, Default = false, HelpText = "Build new base layer")]
         public bool BuildNewBaseLayer { get; set; }
-
-        [Option('e', "ErrorJsonFile", Required = false, Default = null, HelpText = "Output error message File.")]
-        public string ErrorJsonFile { get; set; }
     }
 }
