@@ -55,6 +55,7 @@ Here are the parameters that the tool accepts:
 | -f | OutputDataFile | Optional | | Output data file. |
 | -i | InputDataFolder | Optional | | Input data folder. Specify OutputDataFolder to get the results.. |
 | -o | OutputDataFolder | Optional | | Output data folder. |
+| -t | IsTraceInfo | Optional | | Provide trace information in the output if "-t" is set. |
 | --version | Version | Optional | | Display version information. |
 | --help | Help | Optional | | Display usage information of this tool. |
 
