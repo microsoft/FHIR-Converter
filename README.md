@@ -29,7 +29,7 @@ FHIR Converter with DotLiquid engine is integrated into the [FHIR Server for Azu
 
 This project consists of the following components:
 
-1. A command-line tool for converting data.
+1. A command-line tool for converting data and managing templates.
 2. [Templates](data/Templates) for HL7 v2 to FHIR conversion.
 3. [Sample data](data/SampleData) for testing purpose.
 
@@ -41,24 +41,46 @@ FHIR Converter is integrated into the FHIR Server for Azure to run as part of th
 
 ### Command-line tool
 
+**Convert Data**
+
 The command-line tool can be used to convert a folder containing HL7 v2 messages to FHIR resources.
 Here are the parameters that the tool accepts:
 
 | Option | Name | Optionality | Default | Description |
 | ----- | ----- | ----- |----- |----- |
 | -d | TemplateDirectory | Required | | Root directory of templates. |
-| -r | RootTemplate | Required | | Name of root template. |
+| -r | RootTemplate | Required | | Name of root template. Valid values are ADT_A01, OML_O21, ORU_R01, VXU_V04. |
 | -c | InputDataContent | Optional| | Input data content. Specify OutputDataFile to get the results. |
 | -f | OutputDataFile | Optional | | Output data file. |
-| -i | InputDataFolder | Optional | | Input data folder. Specify OutputDataFolder to get the results.. |
+| -i | InputDataFolder | Optional | | Input data folder. Specify OutputDataFolder to get the results. |
 | -o | OutputDataFolder | Optional | | Output data folder. |
+| -t | IsTraceInfo | Optional | | Provide trace information in the output if "-t" is set. |
 | --version | Version | Optional | | Display version information. |
 | --help | Help | Optional | | Display usage information of this tool. |
 
 Example usage to convert HL7 v2 messages to FHIR resources in a folder:
 ```
->.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe -d myTemplateDirectory -r ADT_A01 -i myInputDataFolder -o myOutputDataFolder
+>.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r ADT_A01 -i myInputDataFolder -o myOutputDataFolder
 ```
+
+**Manage Templates**
+
+The command-line tool also supports managing different versions of templates from Azure Container Registry (ACR). Users can customize templates and store them on ACR if default templates can not meet requirements. After [ACR authentication](docs/TemplateManagementCLI.md), users can pull and push templates from/to a remote ACR through our tool.
+
+Example command to push a collection of templates to ACR image from a folder:
+```
+>.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe push testacr.azurecr.io/templatetest:default myInputFolder
+```
+Example usage of pulling an image of templates in a folder:
+
+```
+>.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe pull testacr.azurecr.io/templatetest@sha256:412ea84f1bb1a9d98345efb7b427ba89616ec29ac332d543eff9a2161ca12a58 myOutputFolder
+
+```
+More details of usage are given in [Template Management CLI tool](docs/TemplateManagementCLI.md).
+
+Besides current version of [templates](data/Templates) given in our project, other versions that released by Microsoft are stored in a public ACR: healthplatformregistry.azurecr.io, users can directly pull templates from ``` healthplatformregistry.azurecr.io/hl7v2defaulttemplates:<version> ``` without authentication.
+>Note!: Template version is aligned with the version of FHIR Converter. 
 
 ### A note on Resource ID generation 
 
