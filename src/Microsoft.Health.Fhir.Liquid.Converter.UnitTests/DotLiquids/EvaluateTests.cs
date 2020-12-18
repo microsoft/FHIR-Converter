@@ -7,13 +7,17 @@ using System.Collections.Generic;
 using System.Globalization;
 using DotLiquid;
 using DotLiquid.Exceptions;
+using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
 {
     public class EvaluateTests
     {
+        public const string TemplateName = "TemplateName";
+
         public static IEnumerable<object[]> GetValidEvaluateTemplateContents()
         {
             yield return new object[] { @"{% evaluate bundleId using 'ID/Bundle' -%}" };
@@ -41,15 +45,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         public void GivenValidEvaluateTemplateContent_WhenParseAndRender_CorrectResultShouldBeReturned(string templateContent)
         {
             // Template should be parsed correctly
-            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
-            var template = Template.Parse(templateContent);
+            var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
             Assert.True(template.Root.NodeList.Count > 0);
 
             // Template should be rendered correctly
+            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
             var context = new Context(
                 environments: new List<Hash>(),
                 outerScope: new Hash(),
-                registers: Hash.FromAnonymousObject(new { file_system = templateProvider }),
+                registers: Hash.FromAnonymousObject(new { file_system = templateProvider.GetTemplateFileSystem() }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
                 timeout: 0,
@@ -62,17 +66,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [MemberData(nameof(GetInvalidEvaluateTemplateContents))]
         public void GivenInvalidEvaluateTemplateContent_WhenParse_ExceptionsShouldBeThrown(string templateContent)
         {
-            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
-            Assert.Throws<SyntaxException>(() => Template.Parse(templateContent));
+            Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplate(TemplateName, templateContent));
         }
 
         [Fact]
         public void GivenInvalidSnippet_WhenRender_ExceptionsShouldBeThrown()
         {
-            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
-
             // No template file system
-            var template = Template.Parse(@"{% evaluate bundleId using 'ID/Bundle' Data: hl7v2Data -%}");
+            var template = TemplateUtility.ParseTemplate(TemplateName, @"{% evaluate bundleId using 'ID/Bundle' Data: hl7v2Data -%}");
             var context = new Context(
                 environments: new List<Hash>(),
                 outerScope: new Hash(),
@@ -84,11 +85,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             Assert.Throws<FileSystemException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
 
             // Valid template file system but no such template
-            template = Template.Parse(@"{% evaluate bundleId using 'ID/Foo' Data: hl7v2Data -%}");
+            template = TemplateUtility.ParseTemplate(TemplateName, @"{% evaluate bundleId using 'ID/Foo' Data: hl7v2Data -%}");
+            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
             context = new Context(
                 environments: new List<Hash>(),
                 outerScope: new Hash(),
-                registers: Hash.FromAnonymousObject(new { file_system = templateProvider }),
+                registers: Hash.FromAnonymousObject(new { file_system = templateProvider.GetTemplateFileSystem() }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
                 timeout: 0,

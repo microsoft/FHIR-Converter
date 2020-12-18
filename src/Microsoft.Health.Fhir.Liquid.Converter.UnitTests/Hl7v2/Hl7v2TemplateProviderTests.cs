@@ -3,10 +3,11 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.IO;
+using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
-using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
@@ -16,17 +17,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
         [Fact]
         public void GivenATemplateDirectory_WhenLoadTemplates_CorrectResultsShouldBeReturned()
         {
+            // Valid template directory
             var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
-            Assert.True(templateProvider.GetTemplate("ADT_A01").Root.NodeList.Count > 0);
 
-            Assert.Throws<ConverterInitializeException>(() => templateProvider.LoadTemplates(null));
-            Assert.Throws<ConverterInitializeException>(() => templateProvider.LoadTemplates(string.Empty));
-            Assert.Throws<ConverterInitializeException>(() => templateProvider.LoadTemplates(Path.Join("a", "b", "c")));
+            // Invalid template directory
+            Assert.Throws<ConverterInitializeException>(() => new Hl7v2TemplateProvider(string.Empty));
+            Assert.Throws<ConverterInitializeException>(() => new Hl7v2TemplateProvider(Path.Join("a", "b", "c")));
 
-            var exception = Assert.Throws<ConverterInitializeException>(() => templateProvider.LoadTemplates(@"TestTemplates"));
-            Assert.Equal(FhirConverterErrorCode.TemplateLoadingError, exception.FhirConverterErrorCode);
-            var innerException = exception.InnerException as FhirConverterException;
-            Assert.Equal(FhirConverterErrorCode.TemplateSyntaxError, innerException.FhirConverterErrorCode);
+            // Template collection
+            templateProvider = new Hl7v2TemplateProvider(new List<Dictionary<string, Template>>());
         }
     }
 }
