@@ -7,7 +7,7 @@ using CommandLine;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
 {
-    [Verb("push", HelpText = "Push a template image to registry")]
+    [Verb("push", HelpText = "Push a template image to a registry")]
     public class PushTemplateOptions
     {
         [Value(0, Required = true, HelpText = "Image reference: <registry>/<imageName>:<imageTag>")]
