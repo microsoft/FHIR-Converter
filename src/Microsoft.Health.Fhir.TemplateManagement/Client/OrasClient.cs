@@ -8,8 +8,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using EnsureThat;
-using Microsoft.Extensions.Logging;
-using Microsoft.Health.Fhir.Liquid.Converter;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
