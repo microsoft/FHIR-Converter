@@ -84,10 +84,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             {
                 var properties = resource.ToObject<JObject>().Properties();
                 var propNames = properties.Select(p => p.Name).ToHashSet();
-
-                // An empty resource only contains "resourceType" and "id" properties
-                propNames.Remove("resourceType");
-                propNames.Remove("id");
                 Assert.True(propNames?.Count() > 0);
             }
         }
