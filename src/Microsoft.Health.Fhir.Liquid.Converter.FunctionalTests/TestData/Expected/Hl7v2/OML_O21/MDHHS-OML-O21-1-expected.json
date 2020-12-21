@@ -3,10 +3,10 @@
   "type": "transaction",
   "entry": [
     {
-      "fullUrl": "urn:uuid:7af3814d-7b7b-3caa-a589-682a83308448",
+      "fullUrl": "urn:uuid:97997f4d-5259-b974-5a44-1b7450c2f4ab",
       "resource": {
         "resourceType": "Patient",
-        "id": "7af3814d-7b7b-3caa-a589-682a83308448",
+        "id": "97997f4d-5259-b974-5a44-1b7450c2f4ab",
         "identifier": [
           {
             "value": "MRNTC09SA-Part A"
@@ -47,14 +47,14 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Patient/7af3814d-7b7b-3caa-a589-682a83308448"
+        "url": "Patient/97997f4d-5259-b974-5a44-1b7450c2f4ab"
       }
     },
     {
-      "fullUrl": "urn:uuid:aeea203b-4277-3d11-be4e-19f0f0cb9cb8",
+      "fullUrl": "urn:uuid:39780c38-eef5-37af-195d-4a60184c0354",
       "resource": {
         "resourceType": "RelatedPerson",
-        "id": "aeea203b-4277-3d11-be4e-19f0f0cb9cb8",
+        "id": "39780c38-eef5-37af-195d-4a60184c0354",
         "relationship": [
           {
             "coding": [
@@ -75,33 +75,13 @@
             ]
           }
         ],
-        "address": [
-          {
-            "line": [
-              "123 Main Street",
-              "Apartment 3-C"
-            ],
-            "city": "Oldtown",
-            "state": "MI",
-            "postalCode": "48917",
-            "country": "USA"
-          }
-        ],
-        "name": [
-          {
-            "family": "Shine",
-            "given": [
-              "Sarah"
-            ]
-          }
-        ],
         "patient": {
-          "reference": "Patient/7af3814d-7b7b-3caa-a589-682a83308448"
+          "reference": "Patient/97997f4d-5259-b974-5a44-1b7450c2f4ab"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "RelatedPerson/aeea203b-4277-3d11-be4e-19f0f0cb9cb8"
+        "url": "RelatedPerson/39780c38-eef5-37af-195d-4a60184c0354"
       }
     }
   ]
