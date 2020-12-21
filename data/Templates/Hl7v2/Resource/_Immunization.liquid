@@ -71,11 +71,11 @@
         {
             {% include 'DataType/CWECodeableConcept' CWE: RXA.5 -%}
         },
-        "lotNumber":"{{ RXA.15.Value }}",
-        "expirationDate":"{{ RXA.16.Value | add_hyphens_date }}",
+        "lotNumber":"{{ RXA.15.Repeats.0 }}",
+        "expirationDate":"{{ RXA.16.Repeats.0 | add_hyphens_date }}",
         "statusReason":
         {
-            {% include 'DataType/CWECodeableConcept' CWE: RXA.18 -%}
+            {% include 'DataType/CWECodeableConcept' CWE: RXA.18.Repeats.0 -%}
         },
         "reasonCode":
         [
