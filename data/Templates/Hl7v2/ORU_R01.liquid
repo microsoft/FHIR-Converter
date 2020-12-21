@@ -8,16 +8,16 @@
         {% if messageHeaderId -%}
             {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, ID: messageHeaderID -%}
         {% endif -%}
-
-        {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseID: patientId -%}
-        {% if provenanceId -%}
-            {% include 'Resource/Provenance' MSH: firstSegments.MSH, ORC: firstSegments.ORC, ID: provenanceId -%}
-        {% endif -%}
         
         {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
         {% if patientId -%}
             {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
             {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, NK1: firstSegments.NK1, ID: patientId -%}
+        {% endif -%}
+
+        {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseID: patientId -%}
+        {% if provenanceId -%}
+            {% include 'Resource/Provenance' MSH: firstSegments.MSH, ORC: firstSegments.ORC, ID: provenanceId -%}
         {% endif -%}
 
         {% evaluate accountId using 'ID/Account' CX: firstSegments.PID.3 -%}
