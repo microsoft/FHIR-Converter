@@ -58,8 +58,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             PushOneLayerWithValidSequenceNumber();
             PushOneLayerWithoutSequenceNumber();
             PushOneLayerWithInvalidSequenceNumber();
-            PushMultiLayerWithValidSequenceNumber();
-            PushMultiLayerWithInValidSequenceNumber();
+            PushMultiLayersWithValidSequenceNumber();
+            PushMultiLayersWithInValidSequenceNumber();
             PushInvalidCompressedImage();
         }
 
@@ -81,13 +81,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             ExecuteOrasCommand(command);
         }
 
-        private void PushMultiLayerWithValidSequenceNumber()
+        private void PushMultiLayersWithValidSequenceNumber()
         {
             string command = $"push {_testMultiLayersWithValidSequenceNumberImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
             ExecuteOrasCommand(command);
         }
 
-        private void PushMultiLayerWithInValidSequenceNumber()
+        private void PushMultiLayersWithInValidSequenceNumber()
         {
             string command = $"push {_testMultiLayersWithInValidSequenceNumberImageReference} {_emptySequenceNumberLayerPath} {_userLayerTemplatePath}";
             ExecuteOrasCommand(command);
