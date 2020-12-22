@@ -75,7 +75,7 @@
         "expirationDate":"{{ RXA.16.Repeats[0].Value | add_hyphens_date }}",
         "statusReason":
         {
-            {% include 'DataType/CWECodeableConcept' CWE: RXA.18.Repeats[0].Value -%}
+            {% include 'DataType/CWECodeableConcept' CWE: RXA.18.Repeats[0] -%}
         },
         "reasonCode":
         [

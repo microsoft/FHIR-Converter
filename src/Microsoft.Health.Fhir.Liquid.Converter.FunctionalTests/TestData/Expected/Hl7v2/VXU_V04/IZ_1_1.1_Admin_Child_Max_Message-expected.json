@@ -78,7 +78,27 @@
             "use": "home"
           }
         ],
-        "active": "true"
+        "active": "true",
+        "contact": [
+          {
+            "name": {
+              "family": "Lam",
+              "given": [
+                "Morgan"
+              ],
+              "use": "official"
+            },
+            "address": {
+              "line": [
+                "32 Prescott Street Ave"
+              ],
+              "city": "Warwick",
+              "state": "MA",
+              "postalCode": "02452",
+              "country": "USA"
+            }
+          }
+        ]
       },
       "request": {
         "method": "PUT",
@@ -165,6 +185,26 @@
                 "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
               }
             ]
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "32 Prescott Street Ave"
+            ],
+            "city": "Warwick",
+            "state": "MA",
+            "postalCode": "02452",
+            "country": "USA"
+          }
+        ],
+        "name": [
+          {
+            "family": "Lam",
+            "given": [
+              "Morgan"
+            ],
+            "use": "official"
           }
         ],
         "patient": {

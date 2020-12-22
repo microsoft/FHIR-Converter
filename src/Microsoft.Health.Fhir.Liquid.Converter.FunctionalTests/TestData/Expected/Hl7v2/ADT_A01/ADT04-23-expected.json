@@ -107,6 +107,20 @@
         "deceasedBoolean": "false",
         "contact": [
           {
+            "name": {
+              "family": "PEACH",
+              "given": [
+                "PRINCESS"
+              ]
+            },
+            "address": {
+              "line": [
+                "ANOTHER CASTLE"
+              ],
+              "city": "TOADSTOOL KINGDOM",
+              "state": "NES",
+              "country": "JP"
+            },
             "telecom": [
               {
                 "value": "(123)555-1234"
@@ -117,6 +131,20 @@
             ]
           },
           {
+            "name": {
+              "family": "TOADSTOOL",
+              "given": [
+                "PRINCESS"
+              ]
+            },
+            "address": {
+              "line": [
+                "YET ANOTHER CASTLE"
+              ],
+              "city": "TOADSTOOL KINGDOM",
+              "state": "NES",
+              "country": "JP"
+            },
             "telecom": [
               {
                 "value": "(123)555-3456"
@@ -327,6 +355,16 @@
       "resource": {
         "resourceType": "RelatedPerson",
         "id": "4e083e5f-53b4-194d-b6bd-6d51b5dab850",
+        "address": [
+          {
+            "line": [
+              "ANOTHER CASTLE"
+            ],
+            "city": "TOADSTOOL KINGDOM",
+            "state": "NES",
+            "country": "JP"
+          }
+        ],
         "telecom": [
           {
             "value": "(123)555-1234"
@@ -334,6 +372,14 @@
           {
             "value": "(123)555-2345",
             "use": "work"
+          }
+        ],
+        "name": [
+          {
+            "family": "PEACH",
+            "given": [
+              "PRINCESS"
+            ]
           }
         ],
         "patient": {
@@ -361,6 +407,16 @@
             ]
           }
         ],
+        "address": [
+          {
+            "line": [
+              "YET ANOTHER CASTLE"
+            ],
+            "city": "TOADSTOOL KINGDOM",
+            "state": "NES",
+            "country": "JP"
+          }
+        ],
         "telecom": [
           {
             "value": "(123)555-3456"
@@ -368,6 +424,14 @@
           {
             "value": "(123)555-4567",
             "use": "work"
+          }
+        ],
+        "name": [
+          {
+            "family": "TOADSTOOL",
+            "given": [
+              "PRINCESS"
+            ]
           }
         ],
         "patient": {

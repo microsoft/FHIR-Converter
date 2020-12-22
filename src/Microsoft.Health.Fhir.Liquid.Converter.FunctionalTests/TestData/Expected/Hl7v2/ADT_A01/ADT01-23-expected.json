@@ -104,6 +104,20 @@
         ],
         "contact": [
           {
+            "name": {
+              "family": "DUCK",
+              "given": [
+                "HUEY"
+              ]
+            },
+            "address": {
+              "line": [
+                "3583 DUCK RD"
+              ],
+              "city": "FOWL",
+              "state": "CA",
+              "postalCode": "999990000"
+            },
             "telecom": [
               {
                 "value": "8885552222"
@@ -287,9 +301,27 @@
       "resource": {
         "resourceType": "RelatedPerson",
         "id": "b8e7e176-84c6-7e2d-d422-a69df56229d8",
+        "address": [
+          {
+            "line": [
+              "3583 DUCK RD"
+            ],
+            "city": "FOWL",
+            "state": "CA",
+            "postalCode": "999990000"
+          }
+        ],
         "telecom": [
           {
             "value": "8885552222"
+          }
+        ],
+        "name": [
+          {
+            "family": "DUCK",
+            "given": [
+              "HUEY"
+            ]
           }
         ],
         "patient": {

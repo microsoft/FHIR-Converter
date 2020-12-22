@@ -34,12 +34,12 @@
         [
             { {% include 'DataType/XAD' XAD: ROL.11 -%} },
             {
-                {% include 'DataType/XAD' XAD: NK1.4.Repeats[0].Value -%}
+                {% include 'DataType/XAD' XAD: NK1.4.Repeats[0] -%}
             },
             {
                 {% include 'DataType/XAD' XAD: NK1.32 -%}
             },
-            { {% include 'DataType/XAD' XAD: PRT.14.Repeats[0].Value -%} },
+            { {% include 'DataType/XAD' XAD: PRT.14.Repeats[0] -%} },
         ],
         "telecom":
         [
@@ -64,11 +64,11 @@
             {
                 {% include 'DataType/XTN' XTN: NK1.41 -%}
             },
-            { {% include 'DataType/XTN' XTN: PRT.15.Repeats[0].Value -%} },
+            { {% include 'DataType/XTN' XTN: PRT.15.Repeats[0] -%} },
         ],
         "name":
         [
-            { {% include 'DataType/XPN' XPN: NK1.2.Repeats[0].Value -%} },
+            { {% include 'DataType/XPN' XPN: NK1.2.Repeats[0] -%} },
             { {% include 'DataType/XPN' XPN: NK1.30 -%} },
         ],
         "gender":"{{ NK1.15.Value | get_property: 'CodeSystem/Gender', 'code' }}",
@@ -82,7 +82,7 @@
                 },
             },
         ],
-        {% include 'DataType/XCNRelatedPerson' XCN: PRT.5.Repeats[0].Value -%}
+        {% include 'DataType/XCNRelatedPerson' XCN: PRT.5.Repeats[0] -%}
     },
     "request":{
         "method":"PUT",

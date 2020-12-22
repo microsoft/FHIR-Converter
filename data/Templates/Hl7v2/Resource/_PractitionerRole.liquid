@@ -28,7 +28,7 @@
         "telecom":
         [
             { {% include 'DataType/XTN' XTN: ROL.12 -%} },
-            { {% include 'DataType/XTN' XTN: PRT.15.Repeats[0].Value -%} },
+            { {% include 'DataType/XTN' XTN: PRT.15.Repeats[0] -%} },
         ],
         "location":
         [
@@ -40,12 +40,12 @@
         ],
         {% include 'DataType/XCNPractitionerRole' XCN: ROL.4 -%}
         {% include 'DataType/XCNPractitionerRole' XCN: OBX.25 -%}
-        {% include 'DataType/XCNPractitionerRole' XCN: PRT.5.Repeats[0].Value -%}
+        {% include 'DataType/XCNPractitionerRole' XCN: PRT.5.Repeats[0] -%}
         "specialty":
         [
             { {% include 'DataType/CWECodeableConcept' CWE: PRT.6 -%} },
         ],
-        {% include 'DataType/XCNPractitionerRole' XCN: ORC.12.Repeats[0].Value -%}
+        {% include 'DataType/XCNPractitionerRole' XCN: ORC.12.Repeats[0] -%}
         {% include 'DataType/NDLPractitionerRole' NDL: OBR.32 -%}
         {% include 'DataType/NDLPractitionerRole' NDL: OBR.34 -%}
         {% include 'DataType/NDLPractitionerRole' NDL: OBR.35 -%}
