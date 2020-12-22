@@ -20,14 +20,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         private readonly string _testOneLayerImageReference;
         private readonly string _testMultiLayersImageReference;
         private bool _isOrasValid = true;
+        private readonly Task _pushOneLayerImage;
+        private readonly Task _pushMultiLayerImage;
 
         public OCIFileManagerTests()
         {
+            _pushOneLayerImage = PushOneLayerImageAsync();
+            _pushMultiLayerImage = PushMultiLayersImageAsync();
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:user1";
             _testMultiLayersImageReference = _containerRegistryServer + "/templatetest:user2";
-            new Action(async () => await PushOneLayerImageAsync()).Invoke();
-            new Action(async () => await PushMultiLayersImageAsync()).Invoke();
         }
 
         private async Task PushOneLayerImageAsync()
@@ -59,6 +61,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public async Task GivenAnImageReferenceAndOutputFolder_WhenPullOCIFiles_CorrectFilesWillBeWrittenToFolderAsync()
         {
+            await _pushOneLayerImage;
+            await _pushMultiLayerImage;
+
             if (!_isOrasValid)
             {
                 return;
@@ -75,6 +80,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public async Task GivenAnImageReferenceAndInputFolder_WhenPushOCIFiles_CorrectImageWillBePushedAsync()
         {
+            await _pushOneLayerImage;
+            await _pushMultiLayerImage;
+
             if (!_isOrasValid)
             {
                 return;

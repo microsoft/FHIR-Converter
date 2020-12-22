@@ -21,14 +21,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         private readonly string _testOneLayerImageReference;
         private readonly string _testMultiLayerImageReference;
         private bool _isOrasValid = true;
+        private readonly Task _pushOneLayerImage;
+        private readonly Task _pushMultiLayerImage;
 
         public OrasClientTests()
         {
+            _pushOneLayerImage = PushOneLayerImageAsync();
+            _pushMultiLayerImage = PushMultiLayersImageAsync();
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:v1";
             _testMultiLayerImageReference = _containerRegistryServer + "/templatetest:v2";
-            new Action(async () => await PushOneLayerImageAsync()).Invoke();
-            new Action(async () => await PushMultiLayersImageAsync()).Invoke();
         }
 
         public static IEnumerable<object[]> GetInvalidReference()
@@ -68,6 +70,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         [MemberData(nameof(GetInvalidReference))]
         public async Task GivenAnInValidImageReference_WhenPullAndPushImageUseOras_ExceptionWillBeThrown(string reference)
         {
+            await _pushOneLayerImage;
+            await _pushMultiLayerImage;
+
             if (!_isOrasValid)
             {
                 return;
@@ -86,6 +91,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         [Fact]
         public async Task GivenAValidImageReference_WhenPushImageUseOras_ImageWillBePushedAsync()
         {
+            await _pushOneLayerImage;
+            await _pushMultiLayerImage;
+
             if (!_isOrasValid)
             {
                 return;
@@ -104,6 +112,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         [Fact]
         public async Task GivenAValidImageReference_WhenPushEmptyFolderUseOras_ImageWillNotBePushedAsync()
         {
+            await _pushOneLayerImage;
+            await _pushMultiLayerImage;
+
             if (!_isOrasValid)
             {
                 return;
@@ -118,6 +129,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         [Fact]
         public async Task GivenAValidImageReference_WhenPullImageUseOras_ImageWillBePulledAsync()
         {
+            await _pushOneLayerImage;
+            await _pushMultiLayerImage;
+
             if (!_isOrasValid)
             {
                 return;
