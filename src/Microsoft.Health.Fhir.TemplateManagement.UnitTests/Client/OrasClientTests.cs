@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
@@ -20,14 +21,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         private readonly string _baseLayerTemplatePath = "TestData/TarGzFiles/baseLayer.tar.gz";
         private readonly string _userLayerTemplatePath = "TestData/TarGzFiles/userV1.tar.gz";
         private readonly string _testOneLayerImageReference;
-        private readonly string _testMultiLayerImageReference;
+        private readonly string _testMultiLayersImageReference;
         private bool _isOrasValid = true;
 
         public OrasClientTests()
         {
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:v1";
-            _testMultiLayerImageReference = _containerRegistryServer + "/templatetest:v2";
+            _testMultiLayersImageReference = _containerRegistryServer + "/templatetest:v2";
             PushOneLayerImage();
             PushMultiLayersImage();
         }
@@ -39,6 +40,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             yield return new object[] { $"/testImage@" };
         }
 
+        public static IEnumerable<object[]> GetValidOutputFolder()
+        {
+            yield return new object[] { $"test folder" };
+            yield return new object[] { $"testfolder" };
+            yield return new object[] { $"test（1）" };
+            yield return new object[] { $"&$%^#$%$" };
+        }
+
         private void PushOneLayerImage()
         {
             string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath}";
@@ -47,8 +56,25 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
         private void PushMultiLayersImage()
         {
-            string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
+            string command = $"push {_testMultiLayersImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
             OrasExecution(command);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidOutputFolder))]
+        public async Task GivenValidOutputFolder_WhenPull_ImageWillBePulledAsync(string outputFolder)
+        {
+            if (!_isOrasValid)
+            {
+                return;
+            }
+
+            string imageReference = _testOneLayerImageReference;
+            OrasClient orasClient = new OrasClient(imageReference);
+            var ex = await Record.ExceptionAsync(() => orasClient.PullImageAsync(outputFolder));
+            Assert.Null(ex);
+            Assert.Equal(1, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            ClearFolder(outputFolder);
         }
 
         [Theory]

@@ -28,7 +28,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
         public async Task PullImageAsync(string outputFolder)
         {
-            string command = $"pull  {_imageReference} -o {outputFolder}";
+            string command = $"pull  {_imageReference} -o \"{outputFolder}\"";
             await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
         }
 
