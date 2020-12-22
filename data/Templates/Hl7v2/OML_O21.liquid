@@ -12,7 +12,7 @@
         {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
         {% if patientId -%}
             {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
-            {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, NK1: firstSegments.NK1, ID: patientId -%}
+            {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, ID: patientId -%}
         {% endif -%}
 
         {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseID: patientId -%}
