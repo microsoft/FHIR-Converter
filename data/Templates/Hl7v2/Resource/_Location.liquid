@@ -7,17 +7,17 @@
         {% include 'DataType/PL' PL: PV1.3 -%}
         {% include 'DataType/PL' PL: PV1.6 -%}
         {% include 'DataType/PL' PL: PL -%}
-        {% include 'DataType/PL' PL: PR1.23.Repeats.0 -%}
-        {% include 'DataType/PL' PL: PRT.9.Repeats.0 -%}
-        {% include 'DataType/XONLocation' XON: ORC.21.Repeats.0 -%}
+        {% include 'DataType/PL' PL: PR1.23.Repeats[0].Value -%}
+        {% include 'DataType/PL' PL: PRT.9.Repeats[0].Value -%}
+        {% include 'DataType/XONLocation' XON: ORC.21.Repeats[0].Value -%}
         "address":
         {
-            {% include 'DataType/XAD' XAD: ORC.22.Repeats.0 -%}
+            {% include 'DataType/XAD' XAD: ORC.22.Repeats[0].Value -%}
             {% include 'DataType/XAD' XAD: RXA.28 -%}
         },
         "telecom":
         [
-            { {% include 'DataType/XTN' XTN: ORC.23.Repeats.0 -%} },
+            { {% include 'DataType/XTN' XTN: ORC.23.Repeats[0].Value -%} },
         ],
         {% include 'DataType/PL' PL: RXA.27 -%}
     },

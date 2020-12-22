@@ -14,7 +14,7 @@
             {% if OBX.25 -%}
             { {% include 'DataType/XAD' XAD: OBX.24 -%} },
             {% endif -%}
-            { {% include 'DataType/XAD' XAD: ORC.22.Repeats.0 -%} },
+            { {% include 'DataType/XAD' XAD: ORC.22.Repeats[0].Value -%} },
         ],
         {% if MSH.21 == null -%}
         {% include 'DataType/HDOrganization' HD: MSH.4 -%}
@@ -42,12 +42,12 @@
         [
             { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/OrganizationUnitType', CWE: PRT.7 -%} },
         ],
-        {% include 'DataType/XONOrganization' XON: PRT.8.Repeats.0 -%}
+        {% include 'DataType/XONOrganization' XON: PRT.8.Repeats[0].Value -%}
         "telecom":
         [
-            { {% include 'DataType/XTN' XTN: ORC.23.Repeats.0 -%} },
+            { {% include 'DataType/XTN' XTN: ORC.23.Repeats[0].Value -%} },
         ],
-        {% include 'DataType/CWEOrganization' CWE: RXA.17.Repeats.0 -%}
+        {% include 'DataType/CWEOrganization' CWE: RXA.17.Repeats[0].Value -%}
     },
     "request":{
         "method":"PUT",
