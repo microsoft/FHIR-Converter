@@ -20,16 +20,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         private readonly string _testOneLayerImageReference;
         private readonly string _testMultiLayersImageReference;
         private bool _isOrasValid = true;
-        private readonly Task _pushOneLayerImage;
-        private readonly Task _pushMultiLayerImage;
 
         public OCIFileManagerTests()
         {
-            _pushOneLayerImage = PushOneLayerImageAsync();
-            _pushMultiLayerImage = PushMultiLayersImageAsync();
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:user1";
             _testMultiLayersImageReference = _containerRegistryServer + "/templatetest:user2";
+            Task.Run(PushOneLayerImageAsync).Wait();
+            Task.Run(PushMultiLayersImageAsync).Wait();
         }
 
         private async Task PushOneLayerImageAsync()
@@ -61,9 +59,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public async Task GivenAnImageReferenceAndOutputFolder_WhenPullOCIFiles_CorrectFilesWillBeWrittenToFolderAsync()
         {
-            await _pushOneLayerImage;
-            await _pushMultiLayerImage;
-
             if (!_isOrasValid)
             {
                 return;
@@ -74,15 +69,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             var testManager = new OCIFileManager(imageReference, outputFolder);
             await testManager.PullOCIImageAsync();
             testManager.UnpackOCIImage();
-            Assert.Equal(9, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Equal(842, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
         }
 
         [Fact]
         public async Task GivenAnImageReferenceAndInputFolder_WhenPushOCIFiles_CorrectImageWillBePushedAsync()
         {
-            await _pushOneLayerImage;
-            await _pushMultiLayerImage;
-
             if (!_isOrasValid)
             {
                 return;
