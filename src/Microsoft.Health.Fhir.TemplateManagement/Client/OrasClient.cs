@@ -4,32 +4,31 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
-using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
     public class OrasClient : IOrasClient
     {
         private readonly string _imageReference;
-        private readonly string _orasFileName;
 
         public OrasClient(string imageReference)
         {
             EnsureArg.IsNotNull(imageReference, nameof(imageReference));
 
-            _orasFileName = OrasUtility.GetOrasFileName();
             _imageReference = imageReference;
         }
 
         public async Task PullImageAsync(string outputFolder)
         {
             string command = $"pull  {_imageReference} -o {outputFolder}";
-            await OrasUtility.OrasExecutionAsync(command, _orasFileName, Directory.GetCurrentDirectory());
+            await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
         }
 
         public async Task PushImageAsync(string inputFolder)
@@ -51,7 +50,84 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file for push.");
             }
 
-            await OrasUtility.OrasExecutionAsync(string.Concat(command, argument), _orasFileName, inputFolder);
+            await OrasExecutionAsync(string.Concat(command, argument), inputFolder);
+        }
+
+        public static async Task OrasExecutionAsync(string command, string orasWorkingDirectory)
+        {
+            TaskCompletionSource<bool> eventHandled = new TaskCompletionSource<bool>();
+
+            string orasFileName;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                orasFileName = Constants.OrasFileForWindows;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                orasFileName = Constants.OrasFileForUnix;
+                AddOrasFileExecutionPermission();
+            }
+            else
+            {
+                throw new TemplateManagementException("Operation system is not supported");
+            }
+
+            Process process = new Process
+            {
+                StartInfo = new ProcessStartInfo(orasFileName),
+            };
+
+            process.StartInfo.Arguments = command;
+            process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.WorkingDirectory = orasWorkingDirectory;
+            process.EnableRaisingEvents = true;
+
+            // Add event to make it async.
+            process.Exited += new EventHandler((sender, e) => { eventHandled.TrySetResult(true); });
+            try
+            {
+                process.Start();
+            }
+            catch (Exception ex)
+            {
+                throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, "Oras process failed", ex);
+            }
+
+            StreamReader errStreamReader = process.StandardError;
+            await Task.WhenAny(eventHandled.Task, Task.Delay(Constants.TimeOutMilliseconds));
+            if (process.HasExited)
+            {
+                string error = errStreamReader.ReadToEnd();
+                if (!string.IsNullOrEmpty(error))
+                {
+                    throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, error);
+                }
+            }
+            else
+            {
+                throw new OrasException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
+            }
+        }
+
+        public static void AddOrasFileExecutionPermission()
+        {
+            var command = $"chmod +x {Constants.OrasFileForUnix}";
+
+            using var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = "/bin/bash",
+                    Arguments = $"-c \"{command}\"",
+                },
+            };
+
+            process.Start();
+            process.WaitForExit();
         }
     }
 }

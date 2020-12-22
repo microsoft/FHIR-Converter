@@ -9,7 +9,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
-using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
@@ -22,11 +21,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         private readonly string _testOneLayerImageReference;
         private readonly string _testMultiLayerImageReference;
         private bool _isOrasValid = true;
-        private readonly string _orasFileName;
 
         public OrasClientTests()
         {
-            _orasFileName = OrasUtility.GetOrasFileName();
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:v1";
             _testMultiLayerImageReference = _containerRegistryServer + "/templatetest:v2";
@@ -46,7 +43,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath}";
             try
             {
-                await OrasUtility.OrasExecutionAsync(command, _orasFileName, Directory.GetCurrentDirectory());
+                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             }
             catch
             {
@@ -59,7 +56,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
             try
             {
-                await OrasUtility.OrasExecutionAsync(command, _orasFileName, Directory.GetCurrentDirectory());
+                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             }
             catch
             {

@@ -27,5 +27,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         internal const string OverlayMetaJsonFile = ".image/meta.info";
 
         internal const int TimeOutMilliseconds = 30000;
+
+        internal const string OrasFileForWindows = "oras.exe";
+
+        internal const string OrasFileForUnix = "oras-unix";
     }
 }
