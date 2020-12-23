@@ -50,7 +50,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
         public static IEnumerable<object[]> GetInValidFolder()
         {
-            yield return new object[] { @"\\" };
+            yield return new object[] { @"\" };
             yield return new object[] { @"*:" };
             yield return new object[] { @" " };
         }
@@ -69,7 +69,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
         [Theory]
         [MemberData(nameof(GetInValidFolder))]
-        public async Task GivenInValidOutputFolder_WhenPullandPushImageUseOras_ExceptionWillBeThrownAsync(string outputFolder)
+        public async Task GivenInValidOutputFolder_WhenPullUseOras_ExceptionWillBeThrownAsync(string outputFolder)
         {
             if (!_isOrasValid)
             {

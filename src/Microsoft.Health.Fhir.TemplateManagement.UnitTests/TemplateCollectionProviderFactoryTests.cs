@@ -50,7 +50,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public void GiveDefaultImageReference_WhenGetTemplateProviderWithEmptyToken_ADefaultTemplateProviderWillBeReturnedAsync()
         {
-            string imageReference = "MicrosoftHealth/FhirConverter:default";
+            string imageReference = ImageInfo.DefaultTemplateImageReference;
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
             Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
             Assert.NotNull(factory.CreateTemplateCollectionProvider(imageReference, string.Empty));
@@ -75,7 +75,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public void GiveNewDefaultTemplateTarGzFile_WhenInitDefaultTemplate_DefaultTemplatesWillBeInit()
         {
-            string imageReference = "MicrosoftHealth/FhirConverter:default";
+            string imageReference = ImageInfo.DefaultTemplateImageReference;
             CreateTarGz("NewDefaultTemplates.tar.gz", templateFolder);
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
             factory.InitDefaultTemplates("NewDefaultTemplates.tar.gz");
