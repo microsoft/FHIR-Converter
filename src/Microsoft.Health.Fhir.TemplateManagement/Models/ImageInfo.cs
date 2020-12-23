@@ -17,7 +17,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         private const char ImageRegistryDelimiter = '/';
 
         // Reference docker's image name format: https://docs.docker.com/engine/reference/commandline/tag/#extended-description
-        private static readonly Regex s_imageNameRegex = new Regex(@"^[a-z0-9]+(([_\.]|_{2}|\-+)[a-z0-9]+)*(\/[a-z0-9]+(([_\.]|_{2}|\-+)[a-z0-9]+)*)*$");
+        private static readonly Regex ImageNameRegex = new Regex(@"^[a-z0-9]+(([_\.]|_{2}|\-+)[a-z0-9]+)*(\/[a-z0-9]+(([_\.]|_{2}|\-+)[a-z0-9]+)*)*$");
 
         public ImageInfo(string registry, string imageName, string tag = "latest", string digest = null)
         {
@@ -157,7 +157,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         private static void ValidateImageName(string imageName)
         {
-            if (!s_imageNameRegex.IsMatch(imageName))
+            if (!ImageNameRegex.IsMatch(imageName))
             {
                 throw new ImageReferenceException(TemplateManagementErrorCode.InvalidReference, @"Image name is invalid. Image name should contains lowercase letters, digits and separators. The valid format is ^[a-z0-9]+(([_\.]|_{2}|\-+)[a-z0-9]+)*(\/[a-z0-9]+(([_\.]|_{2}|\-+)[a-z0-9]+)*)*$");
             }
