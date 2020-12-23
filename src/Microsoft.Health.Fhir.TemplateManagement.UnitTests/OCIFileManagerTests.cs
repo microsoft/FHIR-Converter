@@ -44,8 +44,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             OrasExecution(command);
         }
 
-
-
         public static IEnumerable<object[]> GetValidOutputFolder()
         {
             yield return new object[] { @"OCI/test folder" };
