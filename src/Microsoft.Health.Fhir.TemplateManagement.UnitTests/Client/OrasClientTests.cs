@@ -68,7 +68,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         [MemberData(nameof(GetInvalidReference))]
         public async Task GivenAnInValidImageReference_WhenPullAndPushImageUseOras_ExceptionWillBeThrown(string reference)
         {
-
             if (!_isOrasValid)
             {
                 return;
