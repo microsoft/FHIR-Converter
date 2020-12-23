@@ -40,12 +40,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             yield return new object[] { $"/testImage@" };
         }
 
-        public static IEnumerable<object[]> GetValidOutputFolder()
+        public static IEnumerable<object[]> GetValidFolder()
         {
             yield return new object[] { $"test folder" };
             yield return new object[] { $"testfolder" };
             yield return new object[] { $"test（1）" };
             yield return new object[] { $"&$%^#$%$" };
+        }
+
+        public static IEnumerable<object[]> GetInValidFolder()
+        {
+            yield return new object[] { $" " };
         }
 
         private void PushOneLayerImage()
@@ -61,8 +66,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         }
 
         [Theory]
-        [MemberData(nameof(GetValidOutputFolder))]
-        public async Task GivenValidOutputFolder_WhenPull_ImageWillBePulledAsync(string outputFolder)
+        [MemberData(nameof(GetInValidFolder))]
+        public async Task GivenInValidOutputFolder_WhenPullandPushImageUseOras_ExceptionWillBeThrownAsync(string outputFolder)
         {
             if (!_isOrasValid)
             {
@@ -71,9 +76,24 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
             string imageReference = _testOneLayerImageReference;
             OrasClient orasClient = new OrasClient(imageReference);
-            var ex = await Record.ExceptionAsync(() => orasClient.PullImageAsync(outputFolder));
+            await Assert.ThrowsAsync<OrasException>(async () => await orasClient.PullImageAsync(outputFolder));
+            ClearFolder(outputFolder);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidFolder))]
+        public async Task GivenValidOutputFolder_WhenPullImageUseOras_ImageWillBePulledAsync(string outputFolder)
+        {
+            if (!_isOrasValid)
+            {
+                return;
+            }
+
+            string imageReference = _testOneLayerImageReference;
+            OrasClient orasClient = new OrasClient(imageReference);
+            var ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(outputFolder));
             Assert.Null(ex);
-            Assert.Equal(1, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Single(Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories));
             ClearFolder(outputFolder);
         }
 
@@ -94,6 +114,26 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             await Assert.ThrowsAsync<OrasException>(() => orasClient.PushImageAsync("TestData/PushTest"));
             await Assert.ThrowsAsync<OrasException>(() => orasClient.PullImageAsync("TestData/PushTest"));
             ClearFolder("TestData/PushTest");
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidFolder))]
+        public async Task GivenValidInputFolder_WhenPushUseOras_ImageWillBePushedAsync(string outputFolder)
+        {
+            if (!_isOrasValid)
+            {
+                return;
+            }
+
+            string imageReference = _testOneLayerImageReference;
+            OrasClient orasClient = new OrasClient(imageReference);
+            await orasClient.PullImageAsync(outputFolder);
+
+            string testImageReference = _containerRegistryServer + "/testFolder";
+            OrasClient testOrasClient = new OrasClient(imageReference);
+            var ex = await Record.ExceptionAsync(async () => await orasClient.PushImageAsync(outputFolder));
+            Assert.Null(ex);
+            ClearFolder(outputFolder);
         }
 
         [Fact]

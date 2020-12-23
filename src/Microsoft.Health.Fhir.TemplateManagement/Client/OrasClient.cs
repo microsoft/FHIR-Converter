@@ -8,8 +8,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using EnsureThat;
-using Microsoft.Extensions.Logging;
-using Microsoft.Health.Fhir.Liquid.Converter;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
@@ -28,14 +26,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
         public async Task PullImageAsync(string outputFolder)
         {
-            string command = $"pull  {_imageReference} -o \"{outputFolder}\"";
+            string command = $"pull  \"{_imageReference}\" -o \"{outputFolder}\"";
             await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
         }
 
         public async Task PushImageAsync(string inputFolder)
         {
             string argument = string.Empty;
-            string command = $"push {_imageReference}";
+            string command = $"push \"{_imageReference}\"";
 
             var filePathToPush = Directory.EnumerateFiles(inputFolder, "*.tar.gz", SearchOption.AllDirectories);
 
@@ -43,7 +41,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             // Change oras working folder to inputFolder
             foreach (var filePath in filePathToPush)
             {
-                argument += $" {Path.GetRelativePath(inputFolder, filePath)}";
+                argument += $" \"{Path.GetRelativePath(inputFolder, filePath)}\"";
             }
 
             if (string.IsNullOrEmpty(argument))
