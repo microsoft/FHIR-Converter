@@ -44,6 +44,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             OrasExecution(command);
         }
 
+
+
         public static IEnumerable<object[]> GetValidOutputFolder()
         {
             yield return new object[] { @"OCI/test folder" };
@@ -57,6 +59,40 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { @"\\" };
             yield return new object[] { @"*:" };
             yield return new object[] { @" " };
+        }
+
+        public static IEnumerable<object[]> GetInValidImageReferenceInfo()
+        {
+            yield return new object[] { "testacr.azurecr.io@v1" };
+            yield return new object[] { "testacr.azurecr.io:templateset:v1" };
+            yield return new object[] { "testacr.azurecr.io_v1" };
+            yield return new object[] { "testacr.azurecr.io:v1" };
+            yield return new object[] { "testacr.azurecr.io/" };
+            yield return new object[] { "/testacr.azurecr.io" };
+            yield return new object[] { "testacr.azurecr.io/name:" };
+            yield return new object[] { "testacr.azurecr.io/:tag" };
+            yield return new object[] { "testacr.azurecr.io/name@" };
+            yield return new object[] { "testacr.azurecr.io/INVALID" };
+            yield return new object[] { "testacr.azurecr.io/invalid_" };
+            yield return new object[] { "testacr.azurecr.io/in*valid" };
+            yield return new object[] { "testacr.azurecr.io/org/org/in*valid" };
+            yield return new object[] { "testacr.azurecr.io/invalid____set" };
+            yield return new object[] { "testacr.azurecr.io/invalid....set" };
+            yield return new object[] { "testacr.azurecr.io/invalid._set" };
+            yield return new object[] { "testacr.azurecr.io/_invalid" };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInValidImageReferenceInfo))]
+        public void GivenInValidImageReference_WhenPullOCIFiles_ExceptionWillBeThrownAsync(string imageReference)
+        {
+            if (!_isOrasValid)
+            {
+                return;
+            }
+
+            string outputFolder = "test";
+            Assert.Throws<ImageReferenceException>(() => new OCIFileManager(imageReference, outputFolder));
         }
 
         [Theory]

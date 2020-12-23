@@ -63,13 +63,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
             try
             {
                 ValidateImageReference(imageReference);
+                return true;
             }
             catch
             {
                 return false;
             }
-
-            return true;
         }
 
         public static void ValidateImageReference(string imageReference)
