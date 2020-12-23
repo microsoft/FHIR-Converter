@@ -2,7 +2,7 @@
     "resourceType": "Bundle",
     "type": "transaction",
     "entry": [
-        {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|PR1|AVR|MSH' -%}
+        {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|AVR|MSH' -%}
 
         {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
         {% if messageHeaderId -%}
@@ -49,20 +49,23 @@
             {% endif -%}
         {% endif -%}
 
-        {% evaluate procedureId using 'ID/Procedure' PR1: firstSegments.PR1, baseId: patientId -%}
-        {% if procedureId -%}
-            {% include 'Resource/Procedure' PR1: firstSegments.PR1, ID: procedureId -%}
+        {% assign pr1SegmentLists = hl7v2Data | get_segment_lists: 'PR1' -%}
+        {% for pr1Segment in pr1SegmentLists.PR1 -%}
+            {% evaluate procedureId using 'ID/Procedure' PR1: pr1Segment, baseId: patientId -%}
+            {% if procedureId -%}
+                {% include 'Resource/Procedure' PR1: pr1Segment, ID: procedureId -%}
 
-            {% evaluate locationId using 'ID/Location' PL: firstSegments.PR1.23 -%}
-            {% if locationId -%}
-                {% include 'Resource/Location' PL: firstSegments.PR1.23, ID: locationId -%}
-            {% endif -%}
+                {% evaluate locationId using 'ID/Location' PL: pr1Segment.23 -%}
+                {% if locationId -%}
+                    {% include 'Resource/Location' PL: pr1Segment.23, ID: locationId -%}
+                {% endif -%}
 
-            {% if patientId -%}
-                {% include 'Reference/Procedure/Subject' ID: procedureId, REF: fullPatientId -%}
+                {% if patientId -%}
+                    {% include 'Reference/Procedure/Subject' ID: procedureId, REF: fullPatientId -%}
+                {% endif -%}
             {% endif -%}
-        {% endif -%}
-        
+        {% endfor -%}
+
         {% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
         {% for nk1Segment in nk1SegmentLists.NK1 -%}
             {% include 'Resource/Patient' NK1: nk1Segment, ID: patientId -%}
