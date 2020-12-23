@@ -26,7 +26,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.OutputTemplateFolder);
             await fileManager.PullOCIImageAsync();
             fileManager.UnpackOCIImage();
-            Console.WriteLine($"Successfully pulled templates to {options.OutputTemplateFolder} folder");
+            Console.WriteLine($"Successfully pulled artifacts to {options.OutputTemplateFolder} folder");
         }
 
         internal static async Task PushAsync(PushTemplateOptions options)
@@ -44,7 +44,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.InputTemplateFolder);
             fileManager.PackOCIImage(options.BuildNewBaseLayer);
             await fileManager.PushOCIImageAsync();
-            Console.WriteLine($"Successfully pushed new templates to {options.ImageReference}");
+            Console.WriteLine($"Successfully pushed artifacts to {options.ImageReference}");
         }
     }
 }

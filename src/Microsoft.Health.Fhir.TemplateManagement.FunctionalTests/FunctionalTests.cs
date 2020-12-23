@@ -56,11 +56,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             new Action(async () => await InitInvalidTemplateImageAsync()).Invoke();
         }
 
-        private void Lazy(Action p)
-        {
-            throw new NotImplementedException();
-        }
-
         private async Task InitOneLayerImageAsync()
         {
             List<string> templateFiles = new List<string> { baseLayerTemplatePath };
