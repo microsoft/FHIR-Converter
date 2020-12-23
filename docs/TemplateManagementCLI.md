@@ -5,7 +5,7 @@ The Template Management CLI tool is mean to pull, push, and manage the templates
 Template OCI image is a layer based structure similar to docker image and uses [overlayfs](https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html?highlight=overlayfs) concept to organize templates. For custom templates, we use two layers image structure to organize template collection: base layer and user layer (The user layer could be extended to multi-layers in the future if necessary). Base layer packs Microsoft published templates and user layer packs all modified templates from users. Each layer will be compressed into "*.tar.gz" file before pushing to ACR.
 # Using Template Management CLI
 
-The command-line tool can be used to pull and push a template collection from/to Azure Container Registry. For now we only support for windows, and will support other OS soon.
+The command-line tool can be used to pull and push a template collection from/to Azure Container Registry. For now we only support windows, and will support other OS soon.
 
 ## Prerequisites
 * Azure container registry - Create a container registry in your Azure subscription if you do not have one. This is the registry where you want to keep your Liquid templates. You can use the [Azure portal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) or the [Azure CLI](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-azure-cli).
@@ -17,9 +17,7 @@ Before pull & push operations, azure authentication is required for private regi
 
 ### Login Using Azure CLI
 
-To use an individual identity, you need a local installation of the Azure CLI. Version 2.0.71 or later is recommended. Run `az --version` to find the version. If you need to install or upgrade, see [Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
-
-
+To use individual login with Azure AD, you need a local installation of the Azure CLI. Version 2.0.71 or later is recommended. Run `az --version` to find the version. If you need to install or upgrade, see [Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
 
 You should first sign in to the Azure CLI with your identity, and then use the Azure CLI command `az acr login` to access the registry.
 ```
