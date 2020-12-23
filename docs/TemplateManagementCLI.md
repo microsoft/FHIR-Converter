@@ -51,7 +51,7 @@ push <ImageReference> InputTemplateFolder [ -n | --NewBaseLayer]
 ```
 | Value | index |Optionality |  Description |
 | ----- | ----- | ----- |----- |
-| ImageReference |0| Required |  Image reference: \<Registry>\/\<Name> \[:\<Tag>]  (Image name should be lowcase.)|
+| ImageReference |0| Required |  Image reference: \<registry>\/\<name>:\<tag>  (Here is the [reference](https://docs.docker.com/engine/reference/commandline/tag/#extended-description) for the valid format.)|
 |InputTemplateFolder | 1 |Required |Input template folder. |
 
 | Option | Name | Optionality | Default | Description |
@@ -85,7 +85,7 @@ pull <ImageReference> <OutputTemplateFolder> [ -f | --ForceOverride]
 
 | Value | index |Optionality |  Description |
 | ----- | ----- | ----- |----- |
-| ImageReference |0| Required |  Image reference: \<Registry>\/\<Name>\[ @\<Digest> \| :\<Tag> \] |
+| ImageReference |0| Required |  Image reference: \<registry>\/\<name>@\<digest> or  \<registry>\/\<name>\:\<tag> |
 |OutputTemplateFolder | 1 |Required | Output template folder. |
 
 | Option | Name | Optionality | Default | Description |
