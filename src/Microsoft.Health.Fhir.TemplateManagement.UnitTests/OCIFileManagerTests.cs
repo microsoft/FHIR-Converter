@@ -4,10 +4,12 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
@@ -42,6 +44,52 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             OrasExecution(command);
         }
 
+        public static IEnumerable<object[]> GetValidOutputFolder()
+        {
+            yield return new object[] { @"OCI/test folder" };
+            yield return new object[] { @"OCI/testfolder" };
+            yield return new object[] { @"OCI/test（1）" };
+            yield return new object[] { @"OCI/&$%^#$%$" };
+        }
+
+        public static IEnumerable<object[]> GetInValidOutputFolder()
+        {
+            yield return new object[] { @"\\" };
+            yield return new object[] { @"*:" };
+            yield return new object[] { @" " };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInValidOutputFolder))]
+        public async Task GivenInValidOutputFolder_WhenPullOCIFiles_ExceptionWillBeThrownAsync(string outputFolder)
+        {
+            if (!_isOrasValid)
+            {
+                return;
+            }
+
+            string imageReference = _testOneLayerImageReference;
+            var testManager = new OCIFileManager(imageReference, outputFolder);
+            await Assert.ThrowsAsync<OrasException>(async () => await testManager.PullOCIImageAsync());
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidOutputFolder))]
+        public async Task GivenValidOutputFolder_WhenPullOCIFiles_CorrectFilesWillBePulledAsync(string outputFolder)
+        {
+            if (!_isOrasValid)
+            {
+                return;
+            }
+
+            string imageReference = _testOneLayerImageReference;
+            var testManager = new OCIFileManager(imageReference, outputFolder);
+            await testManager.PullOCIImageAsync();
+            testManager.UnpackOCIImage();
+            Assert.Equal(842, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            ClearFolder(outputFolder);
+        }
+
         [Fact]
         public async Task GivenAnImageReferenceAndOutputFolder_WhenPullOCIFiles_CorrectFilesWillBeWrittenToFolderAsync()
         {
@@ -50,12 +98,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
                 return;
             }
 
-            string imageReference = _testOneLayerImageReference;
-            string outputFolder = "TestData/testOneLayer";
+            string imageReference = _testMultiLayersImageReference;
+            string outputFolder = "TestData/testMultiLayers";
             var testManager = new OCIFileManager(imageReference, outputFolder);
             await testManager.PullOCIImageAsync();
             testManager.UnpackOCIImage();
-            Assert.Equal(842, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Equal(9, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            ClearFolder(outputFolder);
         }
 
         [Fact]
@@ -70,7 +119,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string inputFolder = "TestData/UserFolder";
             var testManager = new OCIFileManager(imageReference, inputFolder);
             testManager.PackOCIImage(true);
-            await testManager.PushOCIImageAsync();
+            var ex = await Record.ExceptionAsync(async () => await testManager.PushOCIImageAsync());
+            Assert.Null(ex);
         }
 
         private void OrasExecution(string command)
@@ -99,6 +149,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             {
                 _isOrasValid = false;
             }
+        }
+
+        private void ClearFolder(string directory)
+        {
+            if (!Directory.Exists(directory))
+            {
+                return;
+            }
+
+            DirectoryInfo folder = new DirectoryInfo(directory);
+            folder.Delete(true);
         }
     }
 }
