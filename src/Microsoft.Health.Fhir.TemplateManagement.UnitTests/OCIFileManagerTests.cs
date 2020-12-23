@@ -18,14 +18,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         private readonly string _baseLayerTemplatePath = "TestData/TarGzFiles/layer1.tar.gz";
         private readonly string _userLayerTemplatePath = "TestData/TarGzFiles/layer2.tar.gz";
         private readonly string _testOneLayerImageReference;
-        private readonly string _testMultiLayerImageReference;
+        private readonly string _testMultiLayersImageReference;
         private bool _isOrasValid = true;
 
         public OCIFileManagerTests()
         {
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:user1";
-            _testMultiLayerImageReference = _containerRegistryServer + "/templatetest:user2";
+            _testMultiLayersImageReference = _containerRegistryServer + "/templatetest:user2";
             PushOneLayerImage();
             PushMultiLayersImage();
         }
@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         private void PushMultiLayersImage()
         {
-            string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
+            string command = $"push {_testMultiLayersImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
             OrasExecution(command);
         }
 
@@ -55,7 +55,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             var testManager = new OCIFileManager(imageReference, outputFolder);
             await testManager.PullOCIImageAsync();
             testManager.UnpackOCIImage();
-            Assert.Equal(9, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Equal(842, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
         }
 
         [Fact]
