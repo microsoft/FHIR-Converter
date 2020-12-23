@@ -17,10 +17,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "testacr.azurecr.io/templateset:v1", "testacr.azurecr.io", "templateset", "v1", null, "v1" };
             yield return new object[] { "testacr.azurecr.io/templateset@sha256:e6dcff9eaf7604aa7a855e52b2cda22c5cfc5cadaa035892557c4ff19630b612", "testacr.azurecr.io", "templateset", "latest", "sha256:e6dcff9eaf7604aa7a855e52b2cda22c5cfc5cadaa035892557c4ff19630b612", "sha256:e6dcff9eaf7604aa7a855e52b2cda22c5cfc5cadaa035892557c4ff19630b612" };
             yield return new object[] { "testacr.azurecr.io/templateset", "testacr.azurecr.io", "templateset", "latest", null, "latest" };
-            yield return new object[] { "testacr.azurecr.io/template-set-123", "testacr.azurecr.io", "template-set-123", "latest", null, "latest" };
-            yield return new object[] { "testacr.azurecr.io/template_set", "testacr.azurecr.io", "template_set", "latest", null, "latest" };
-            yield return new object[] { "testacr.azurecr.io/template.set", "testacr.azurecr.io", "template.set", "latest", null, "latest" };
-            yield return new object[] { "testacr.azurecr.io/template.set_set-set", "testacr.azurecr.io", "template.set_set-set", "latest", null, "latest" };
         }
 
         public static IEnumerable<object[]> GetInValidImageReferenceInfo()
@@ -37,6 +33,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "testacr.azurecr.io/INVALID" };
             yield return new object[] { "testacr.azurecr.io/invalid_" };
             yield return new object[] { "testacr.azurecr.io/in*valid" };
+            yield return new object[] { "testacr.azurecr.io/org/org/in*valid" };
+            yield return new object[] { "testacr.azurecr.io/invalid____set" };
+            yield return new object[] { "testacr.azurecr.io/invalid....set" };
+            yield return new object[] { "testacr.azurecr.io/invalid._set" };
+            yield return new object[] { "testacr.azurecr.io/_invalid" };
         }
 
         public static IEnumerable<object[]> GetValidImageReference()
@@ -44,6 +45,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "testacr.azurecr.io/templateset:v1" };
             yield return new object[] { "testacr.azurecr.io/templateset@sha256:e6dcff9eaf7604aa7a855e52b2cda22c5cfc5cadaa035892557c4ff19630b612" };
             yield return new object[] { "testacr.azurecr.io/templateset" };
+            yield return new object[] { "testacr.azurecr.io/org/templateset" };
+            yield return new object[] { "testacr.azurecr.io/org/template-set" };
+            yield return new object[] { "testacr.azurecr.io/org/template.set" };
+            yield return new object[] { "testacr.azurecr.io/org/template__set" };
+            yield return new object[] { "testacr.azurecr.io/org/template-----set" };
+            yield return new object[] { "testacr.azurecr.io/org/template-set_set.set" };
         }
 
         [Theory]

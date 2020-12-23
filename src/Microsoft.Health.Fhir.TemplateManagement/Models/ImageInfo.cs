@@ -16,6 +16,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         private const char ImageTagDelimiter = ':';
         private const char ImageRegistryDelimiter = '/';
 
+        // Reference docker's image name format: https://docs.docker.com/engine/reference/commandline/tag/#extended-description
+        private static readonly Regex _imageNameRegex = new Regex(@"^[a-z0-9]+(([_\.]|_{2}|\-+)[a-z0-9]+)*(\/[a-z0-9]+(([_\.]|_{2}|\-+)[a-z0-9]+)*)*$");
+
         public ImageInfo(string registry, string imageName, string tag = "latest", string digest = null)
         {
             Registry = registry;
@@ -109,16 +112,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
             }
         }
 
-        private static void ValidateImageName(string imageName)
-        {
-            // Reference docker's image name format: https://docs.docker.com/engine/reference/commandline/tag/#extended-description
-            Regex imageNameRegex = new Regex(@"^([a-z0-9])+((\.{1}|\-+|_{1,2})[a-z0-9]+)*$");
-            if (!imageNameRegex.IsMatch(imageName))
-            {
-                throw new ImageReferenceException(TemplateManagementErrorCode.InvalidReference, @"Image name is invalid. Image name should contains lowercase letters, digits and separators. The valid format is ^([a-z0-9])+((\.{1}|\-+|_{1,2})[a-z0-9]+)*$");
-            }
-        }
-
         public static ImageInfo CreateFromImageReference(string imageReference)
         {
             var registryDelimiterPosition = imageReference.IndexOf(ImageRegistryDelimiter, StringComparison.InvariantCultureIgnoreCase);
@@ -161,6 +154,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         {
             var index = input.IndexOf(delimiter, StringComparison.InvariantCultureIgnoreCase);
             return new Tuple<string, string>(input.Substring(0, index), input.Substring(index + 1));
+        }
+
+        private static void ValidateImageName(string imageName)
+        {
+            if (!_imageNameRegex.IsMatch(imageName))
+            {
+                throw new ImageReferenceException(TemplateManagementErrorCode.InvalidReference, @"Image name is invalid. Image name should contains lowercase letters, digits and separators. The valid format is ^[a-z0-9]+(([_\.]|_{2}|\-+)[a-z0-9]+)*(\/[a-z0-9]+(([_\.]|_{2}|\-+)[a-z0-9]+)*)*$");
+            }
         }
     }
 }
