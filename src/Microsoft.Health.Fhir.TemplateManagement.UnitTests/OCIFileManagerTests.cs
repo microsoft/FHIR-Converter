@@ -54,6 +54,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         public static IEnumerable<object[]> GetInValidOutputFolder()
         {
+            yield return new object[] { @"\\" };
+            yield return new object[] { @"*:" };
             yield return new object[] { @" " };
         }
 
@@ -69,7 +71,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string imageReference = _testOneLayerImageReference;
             var testManager = new OCIFileManager(imageReference, outputFolder);
             await Assert.ThrowsAsync<OrasException>(async () => await testManager.PullOCIImageAsync());
-            ClearFolder(outputFolder);
         }
 
         [Theory]

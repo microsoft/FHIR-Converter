@@ -42,15 +42,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
         public static IEnumerable<object[]> GetValidFolder()
         {
-            yield return new object[] { $"test folder" };
-            yield return new object[] { $"testfolder" };
-            yield return new object[] { $"test（1）" };
-            yield return new object[] { $"&$%^#$%$" };
+            yield return new object[] { @"test folder" };
+            yield return new object[] { @"testfolder" };
+            yield return new object[] { @"test（1）" };
+            yield return new object[] { @"&$%^#$%$" };
         }
 
         public static IEnumerable<object[]> GetInValidFolder()
         {
-            yield return new object[] { $" " };
+            yield return new object[] { @"\\" };
+            yield return new object[] { @"*:" };
+            yield return new object[] { @" " };
         }
 
         private void PushOneLayerImage()
@@ -77,7 +79,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             string imageReference = _testOneLayerImageReference;
             OrasClient orasClient = new OrasClient(imageReference);
             await Assert.ThrowsAsync<OrasException>(async () => await orasClient.PullImageAsync(outputFolder));
-            ClearFolder(outputFolder);
         }
 
         [Theory]
