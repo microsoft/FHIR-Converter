@@ -86,5 +86,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             var exception = Assert.Throws<RenderException>(() => hl7v2Processor.Convert(@"MSH|^~\&|", "template", new Hl7v2TemplateProvider(templateCollection)));
             Assert.True(exception.InnerException is DotLiquid.Exceptions.StackLevelException);
         }
+
+        [Fact]
+        public void GivenEscapedMessage_WhenConverting_ExpectedCharacterShouldbeReturned()
+        {
+            var hl7v2Processor = new Hl7v2Processor();
+            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Hl7v2");
+            var inputContent = string.Join("\n", new List<string>
+            {
+                @"MSH|^~\&|FOO|BAR|FOO|BAR|20201225000000|FOO|ADT^A01|123456|P|2.3|||||||||||",
+                @"PR1|1|FOO|FOO^ESCAPED ONE \T\ ESCAPED TWO^BAR|ESCAPED THREE \T\ ESCAPED FOUR|20201225000000||||||||||",
+            });
+            var result = JObject.Parse(hl7v2Processor.Convert(inputContent, "ADT_A01", new Hl7v2TemplateProvider(templateDirectory)));
+
+            var texts = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Procedure')].resource.code.text");
+            var expected = new List<string> { "ESCAPED ONE & ESCAPED TWO", "ESCAPED THREE & ESCAPED FOUR" };
+            Assert.Contains(expected, e => texts.Select(Convert.ToString).Contains(e));
+        }
     }
 }
