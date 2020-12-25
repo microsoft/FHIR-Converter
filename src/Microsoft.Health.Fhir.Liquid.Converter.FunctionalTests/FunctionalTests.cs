@@ -101,7 +101,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
             var texts = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Procedure')].resource.code.text");
             var expected = new List<string> { "ESCAPED ONE & ESCAPED TWO", "ESCAPED THREE & ESCAPED FOUR" };
-            Assert.Contains(expected, e => texts.Select(Convert.ToString).Contains(e));
+            Assert.Contains(expected, texts.Select(Convert.ToString).Contains);
         }
     }
 }
