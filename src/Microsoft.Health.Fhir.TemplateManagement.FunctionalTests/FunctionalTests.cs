@@ -50,15 +50,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             testInvalidImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidlayers";
             testInvalidTemplateImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidtemplateslayers";
             token = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_containerRegistryInfo.ContainerRegistryUsername}:{_containerRegistryInfo.ContainerRegistryPassword}"));
-            new Action(async () => await InitOneLayerImageAsync()).Invoke();
-            new Action(async () => await InitMultiLayerImageAsync()).Invoke();
-            new Action(async () => await InitInvalidTarGzImageAsync()).Invoke();
-            new Action(async () => await InitInvalidTemplateImageAsync()).Invoke();
-        }
-
-        private void Lazy(Action p)
-        {
-            throw new NotImplementedException();
+            Task.Run(InitOneLayerImageAsync).Wait();
+            Task.Run(InitMultiLayerImageAsync).Wait();
+            Task.Run(InitInvalidTarGzImageAsync).Wait();
+            Task.Run(InitInvalidTemplateImageAsync).Wait();
         }
 
         private async Task InitOneLayerImageAsync()
@@ -109,8 +104,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public static IEnumerable<object[]> GetNotExistImageInfo()
         {
-            yield return new object[] { "templatetest", "notExist" };
-            yield return new object[] { "notExist", "multilayers" };
+            yield return new object[] { "templatetest", "notexist" };
+            yield return new object[] { "notexist", "multilayers" };
         }
 
         public static IEnumerable<object[]> GetInvalidImageReference()
@@ -272,7 +267,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             }
 
             int defaultTemplatesCounts = 838;
-            string imageReference = "MicrosoftHealth/FhirConverter:default";
+            string imageReference = ImageInfo.DefaultTemplateImageReference;
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
             var templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, string.Empty);
             var templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();

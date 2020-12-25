@@ -22,6 +22,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         public OCIFileManager(string imageReference, string workingFolder)
         {
+            ImageInfo.ValidateImageReference(imageReference);
             _orasClient = new OrasClient(imageReference);
             _overlayFS = new OverlayFileSystem(workingFolder);
             _overlayOperator = new OverlayOperator();
