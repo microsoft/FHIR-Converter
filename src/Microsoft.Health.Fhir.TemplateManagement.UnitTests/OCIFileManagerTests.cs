@@ -4,10 +4,12 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
+using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
@@ -167,6 +169,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             testManager.PackOCIImage(true);
             var ex = await Record.ExceptionAsync(async () => await testManager.PushOCIImageAsync());
             Assert.Null(ex);
+        }
+
+        private void ClearFolder(string directory)
+        {
+            if (!Directory.Exists(directory))
+            {
+                return;
+            }
+
+            DirectoryInfo folder = new DirectoryInfo(directory);
+            folder.Delete(true);
         }
     }
 }

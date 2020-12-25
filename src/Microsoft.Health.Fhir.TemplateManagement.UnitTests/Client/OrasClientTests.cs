@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
@@ -27,7 +26,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         {
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:v1";
-            _testMultiLayerImageReference = _containerRegistryServer + "/templatetest:v2";
+            _testMultiLayersImageReference = _containerRegistryServer + "/templatetest:v2";
             Task.Run(PushOneLayerImageAsync).Wait();
             Task.Run(PushMultiLayersImageAsync).Wait();
         }
@@ -54,7 +53,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             yield return new object[] { @" " };
         }
 
-        private void PushOneLayerImage()
+        private async Task PushOneLayerImageAsync()
         {
             string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath}";
             try
@@ -69,7 +68,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
         private async Task PushMultiLayersImageAsync()
         {
-            string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
+            string command = $"push {_testMultiLayersImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
             try
             {
                 await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
@@ -103,6 +102,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
                 return;
             }
 
+            outputFolder = "testpull" + outputFolder;
             string imageReference = _testOneLayerImageReference;
             OrasClient orasClient = new OrasClient(imageReference);
             var ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(outputFolder));
@@ -139,6 +139,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
                 return;
             }
 
+            outputFolder = "testpush" + outputFolder;
             string imageReference = _testOneLayerImageReference;
             OrasClient orasClient = new OrasClient(imageReference);
             await orasClient.PullImageAsync(outputFolder);
