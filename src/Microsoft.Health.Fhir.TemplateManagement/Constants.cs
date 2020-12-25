@@ -30,6 +30,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         internal const string OrasFileForWindows = "oras.exe";
 
-        internal const string OrasFileForUnix = "oras-unix";
+        internal const string OrasFileForLinux = "oras-linux";
     }
 }

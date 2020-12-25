@@ -8,9 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\tool\oras-unix" Link="oras-unix">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\..\tool\oras.exe" Link="oras.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -38,6 +35,12 @@
     <EmbeddedResource Include="../../bin/DefaultTemplates.tar.gz">
       <Link>DefaultTemplates.tar.gz</Link>
     </EmbeddedResource>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Update="oras-linux">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">

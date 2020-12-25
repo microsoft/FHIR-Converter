@@ -64,7 +64,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                orasFileName = Constants.OrasFileForUnix;
+                orasFileName = Constants.OrasFileForLinux;
                 AddOrasFileExecutionPermission();
             }
             else
@@ -111,7 +111,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
         public static void AddOrasFileExecutionPermission()
         {
-            var command = $"chmod +x {Constants.OrasFileForUnix}";
+            var command = $"chmod +x {Constants.OrasFileForLinux}";
 
             using var process = new Process
             {
