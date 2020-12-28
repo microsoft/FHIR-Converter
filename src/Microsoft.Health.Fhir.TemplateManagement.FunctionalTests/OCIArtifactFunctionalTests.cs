@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EnsureThat;
+using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Xunit;
@@ -42,12 +43,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string _testMultiLayersWithInValidSequenceNumberImageReference;
         private readonly string _testInvalidCompressedImageReference;
         private bool _isOrasValid = true;
-        private string _orasErrorMessage;
-        private readonly string _orasFileName;
+        private string _orasErrorMessage = "Oras tool invalid.";
 
         public OCIArtifactFunctionalTests()
         {
-            _orasFileName = "oras.exe";
             _containerRegistryServer = "localhost:5000";
             _testOneLayerWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_valid_sequence";
             _testOneLayerWithoutSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_without_sequence";
@@ -55,54 +54,57 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             _testMultiLayersWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:multilayers_valid_sequence";
             _testMultiLayersWithInValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:multilayers_invalid_sequence";
             _testInvalidCompressedImageReference = _containerRegistryServer + "/templatetest:invalid_image";
-            PushOneLayerWithValidSequenceNumber();
-            PushOneLayerWithoutSequenceNumber();
-            PushOneLayerWithInvalidSequenceNumber();
-            PushMultiLayersWithValidSequenceNumber();
-            PushMultiLayersWithInValidSequenceNumber();
-            PushInvalidCompressedImage();
+            Task.Run(PushOneLayerWithValidSequenceNumberAsync).Wait();
+            Task.Run(PushOneLayerWithoutSequenceNumberAsync).Wait();
+            Task.Run(PushOneLayerWithInvalidSequenceNumberAsync).Wait();
+            Task.Run(PushMultiLayersWithValidSequenceNumberAsync).Wait();
+            Task.Run(PushMultiLayersWithInValidSequenceNumberAsync).Wait();
+            Task.Run(PushInvalidCompressedImageAsync).Wait();
         }
 
-        private void PushOneLayerWithValidSequenceNumber()
+        private async Task PushOneLayerWithValidSequenceNumberAsync()
         {
             string command = $"push {_testOneLayerWithValidSequenceNumberImageReference} {_baseLayerTemplatePath}";
-            ExecuteOrasCommand(command);
+            await ExecuteOrasCommandAsync(command);
         }
 
-        private void PushOneLayerWithoutSequenceNumber()
+        private async Task PushOneLayerWithoutSequenceNumberAsync()
         {
             string command = $"push {_testOneLayerWithoutSequenceNumberImageReference} {_emptySequenceNumberLayerPath}";
-            ExecuteOrasCommand(command);
+            await ExecuteOrasCommandAsync(command);
         }
 
-        private void PushOneLayerWithInvalidSequenceNumber()
+        private async Task PushOneLayerWithInvalidSequenceNumberAsync()
         {
             string command = $"push {_testOneLayerWithInValidSequenceNumberImageReference} {_userLayerTemplatePath}";
-            ExecuteOrasCommand(command);
+            await ExecuteOrasCommandAsync(command);
         }
 
-        private void PushMultiLayersWithValidSequenceNumber()
+        private async Task PushMultiLayersWithValidSequenceNumberAsync()
         {
             string command = $"push {_testMultiLayersWithValidSequenceNumberImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
-            ExecuteOrasCommand(command);
+            await ExecuteOrasCommandAsync(command);
         }
 
-        private void PushMultiLayersWithInValidSequenceNumber()
+        private async Task PushMultiLayersWithInValidSequenceNumberAsync()
         {
             string command = $"push {_testMultiLayersWithInValidSequenceNumberImageReference} {_emptySequenceNumberLayerPath} {_userLayerTemplatePath}";
-            ExecuteOrasCommand(command);
+            await ExecuteOrasCommandAsync(command);
         }
 
-        private void PushInvalidCompressedImage()
+        private async Task PushInvalidCompressedImageAsync()
         {
             string command = $"push {_testInvalidCompressedImageReference} {_invalidCompressedImageLayerPath}";
-            ExecuteOrasCommand(command);
+            await ExecuteOrasCommandAsync(command);
         }
 
-        private void ExecuteOrasCommand(string command)
+        private async Task ExecuteOrasCommandAsync(string command)
         {
-            _orasErrorMessage = OrasUtility.OrasExecution(command, _orasFileName);
-            if (!string.IsNullOrEmpty(_orasErrorMessage))
+            try
+            {
+                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+            }
+            catch
             {
                 _isOrasValid = false;
             }
@@ -211,7 +213,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             // Check Image
             string command = $"pull {testPushMultiLayersImageReference} -o checkMultiLayersFolder";
-            OrasUtility.OrasExecution(command, _orasFileName);
+            await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Equal(2, Directory.EnumerateFiles("checkMultiLayersFolder", "*.tar.gz", SearchOption.AllDirectories).Count());
             Assert.Equal(4, StreamUtility.DecompressTarGzStream(File.OpenRead(Path.Combine("checkMultiLayersFolder", "layer2.tar.gz"))).Count());
             ClearFolder(initInputFolder);
@@ -243,7 +245,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             // Check Image
             string command = $"pull {testPushNewBaseLayerImageReference} -o checkNewBaseLayerFolder";
-            OrasUtility.OrasExecution(command, _orasFileName);
+            await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Single(Directory.EnumerateFiles("checkNewBaseLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
             Assert.Equal(840, StreamUtility.DecompressTarGzStream(File.OpenRead(Path.Combine("checkNewBaseLayerFolder", "layer1.tar.gz"))).Count());
             ClearFolder(initInputFolder);
@@ -270,7 +272,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             // Check Image
             string command = $"pull {testPushBaseLayerImageReference} -o checkBaseLayerFolder";
-            OrasUtility.OrasExecution(command, _orasFileName);
+            await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Single(Directory.EnumerateFiles("checkBaseLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
             ClearFolder(initInputFolder);
             ClearFolder("checkBaseLayerFolder");
@@ -299,7 +301,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             // Check Image
             string command = $"pull {testPushNewBaseLayerImageReference} -o checkLayerFolder";
-            OrasUtility.OrasExecution(command, _orasFileName);
+            await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Single(Directory.EnumerateFiles("checkLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
             ClearFolder(initInputFolder);
             ClearFolder("checkLayerFolder");
