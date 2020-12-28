@@ -5,42 +5,44 @@ The Template Management CLI tool is mean to pull, push, and manage the templates
 Template OCI image is a layer based structure similar to docker image and uses [overlayfs](https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html?highlight=overlayfs) concept to organize templates. For custom templates, we use two layers image structure to organize template collection: base layer and user layer (The user layer could be extended to multi-layers in the future if necessary). Base layer packs Microsoft published templates and user layer packs all modified templates from users. Each layer will be compressed into "*.tar.gz" file before pushing to ACR.
 # Using Template Management CLI
 
-The command-line tool can be used to pull and push a template collection from/to a remote registry (Now we only support Azure Container Registry). 
+The command-line tool can be used to pull and push a template collection from/to Azure Container Registry. For now we only support windows, and will support other OSs soon.
 
 ## Prerequisites
 * Azure container registry - Create a container registry in your Azure subscription if you do not have one. This is the registry where you want to keep your Liquid templates. You can use the [Azure portal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) or the [Azure CLI](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-azure-cli).
 
-* Azure Active Directory service principal (optional) - If using service principal's identity for authentication, you need to create a [service principal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal) to access your registry. Ensure that the service principal is assigned a role such as AcrPush so that it has permissions to push and pull artifacts.
 
-* Azure CLI (optional) - To use an individual identity, you need a local installation of the Azure CLI. Version 2.0.71 or later is recommended. Run `az --version` to find the version. If you need to install or upgrade, see [Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
-
-* Docker (optional) - To use an individual identity, you must also have Docker installed locally, to authenticate with the registry. Docker provides packages that easily configure Docker on any [macOS](https://docs.docker.com/docker-for-mac/), [Windows](https://docs.docker.com/docker-for-windows/), or [Linux](https://docs.docker.com/engine/install/) system.
 ## Authentication
 
 Before pull & push operations, azure authentication is required for private registries. Customers can directly use individual login with Azure AD through [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli) or use identity (individual identity or Azure AD [service principal identity](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal)) to sign in the registry. 
 
 ### Login Using Azure CLI
 
-After signing in to the Azure CLI with your identity, use the Azure CLI command `az acr login` to access the registry.
+To use individual login with Azure AD, you need a local installation of the Azure CLI. The latest version is recommended. Run `az --version` to find the version. If you need to install or upgrade, see [Install Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli).
+
+You should first sign in to the Azure CLI with your identity, and then use the Azure CLI command `az acr login` to access the registry. Make sure you have permissions on the registry in order to pull/push.
 ```
+> az login
 > az acr login --name <acrName>
 ```
 
 ### Login Using Identity (individual or service principal indentity)
 
+
 * Docker login
 
+To use docker login, you should install docker first. Docker provides packages that easily configure Docker on any [macOS](https://docs.docker.com/docker-for-mac/), [Windows](https://docs.docker.com/docker-for-windows/), or [Linux](https://docs.docker.com/engine/install/) system.
 ```
 > docker login <acrName.azurecr.io> -u <username> -p <password>
 ```
 * Oras Login
 
-The [oras](https://github.com/deislabs/oras) tool oras.exe is packed in our repo, users can directly use it for login as follows.
+The [oras](https://github.com/deislabs/oras) tool oras.exe for windows is packed in our repo, users can directly use it for login as follows.
 
 ```
 >.\oras.exe login <acrName.azurecr.io> -u <username> -p <password>
 ```
 
+If using service principal's identity for authentication, you need to create a [service principal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal) to access your registry. Ensure that the service principal is assigned a role such as AcrPush so that it has permissions to push and pull artifacts.
 ## Push
 To push a template collection, the command is: 
 
@@ -49,7 +51,7 @@ push <ImageReference> InputTemplateFolder [ -n | --NewBaseLayer]
 ```
 | Value | index |Optionality |  Description |
 | ----- | ----- | ----- |----- |
-| ImageReference |0| Required |  Image reference: \<Registry>\/\<Name> \[:\<Tag>]  (Image name should be lowcase.)|
+| ImageReference |0| Required |  Image reference: \<registry>\/\<name>:\<tag>  (Here is the [reference](https://docs.docker.com/engine/reference/commandline/tag/#extended-description) for the valid format.)|
 |InputTemplateFolder | 1 |Required |Input template folder. |
 
 | Option | Name | Optionality | Default | Description |
@@ -83,7 +85,7 @@ pull <ImageReference> <OutputTemplateFolder> [ -f | --ForceOverride]
 
 | Value | index |Optionality |  Description |
 | ----- | ----- | ----- |----- |
-| ImageReference |0| Required |  Image reference: \<Registry>\/\<Name>\[ @\<Digest> \| :\<Tag> \] |
+| ImageReference |0| Required |  Image reference: \<registry>\/\<name>@\<digest> or  \<registry>\/\<name>\:\<tag> |
 |OutputTemplateFolder | 1 |Required | Output template folder. |
 
 | Option | Name | Optionality | Default | Description |

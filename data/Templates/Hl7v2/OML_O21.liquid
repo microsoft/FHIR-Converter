@@ -2,12 +2,32 @@
     "resourceType": "Bundle",
     "type": "transaction",
     "entry": [
-        {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|ORC' -%}
+        {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|ORC|MSH' -%}
+
+        {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
+        {% if messageHeaderId -%}
+            {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, ID: messageHeaderID -%}
+        {% endif -%}
         
         {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
         {% if patientId -%}
             {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
-            {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, NK1: firstSegments.NK1, ID: patientId -%}
+            {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, ID: patientId -%}
+        {% endif -%}
+
+        {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseID: patientId -%}
+        {% if provenanceId -%}
+            {% include 'Resource/Provenance' MSH: firstSegments.MSH, ORC: firstSegments.ORC, ID: provenanceId -%}
+        {% endif -%}
+
+        {% evaluate accountId using 'ID/Account' CX: firstSegments.PID.3 -%}
+        {% if accountId -%}
+            {% include 'Resource/Account' PID: firstSegments.PID, ID: accountId -%}
+        {% endif -%}
+
+        {% evaluate organizationId using 'ID/Organization' HD: firstSegments.MSH.6 -%}
+        {% if organizationId -%}
+            {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId -%}
         {% endif -%}
 
         {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
@@ -32,6 +52,8 @@
         
         {% assign al1SegmentLists = hl7v2Data | get_segment_lists: 'AL1' -%}
         {% for al1Segment in al1SegmentLists.AL1 -%}
+            {% include 'Resource/Patient' NK1: nk1Segment, ID: patientId -%}
+
             {% evaluate allergyIntoleranceId using 'ID/AllergyIntolerance' AL1: al1Segment, baseId: patientId -%}
             {% if allergyIntoleranceId -%}
                 {% include 'Resource/AllergyIntolerance' AL1: al1Segment, ID: allergyIntoleranceId -%}

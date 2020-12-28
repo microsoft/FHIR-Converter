@@ -55,8 +55,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             var fieldValues = dataString.Split(encodingCharacters.FieldSeparator);
             for (var f = 0; f < fieldValues.Length; ++f)
             {
+                // MSH segment need to be handled separatedly since it's first field is the field separator `|`,
+                // and the second field is encoding characters
                 if (isHeaderSegment && f == 1)
                 {
+                    // field separator
+                    var fieldSeparatorComponents = new List<Hl7v2Component>
+                    {
+                        null,
+                        new Hl7v2Component(encodingCharacters.FieldSeparator.ToString(), new List<string> { null, encodingCharacters.FieldSeparator.ToString() }),
+                    };
+                    var fieldSeparatorField = new Hl7v2Field(encodingCharacters.FieldSeparator.ToString(), fieldSeparatorComponents);
+                    fields.Add(fieldSeparatorField);
+
+                    // encoding characters
                     var seperatorFieldComponents = new List<Hl7v2Component>
                     {
                         null,
