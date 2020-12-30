@@ -33,19 +33,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string testMultiLayerImageReference;
         private readonly string testInvalidImageReference;
         private readonly string testInvalidTemplateImageReference;
-        private readonly ContainerRegistry _containerRegistry;
+        private readonly ContainerRegistry _containerRegistry = new ContainerRegistry();
         private readonly ContainerRegistryInfo _containerRegistryInfo;
 
         public TemplateCollectionFunctionalTests()
         {
-            _containerRegistry = new ContainerRegistry();
-            _containerRegistryInfo = new ContainerRegistryInfo();
             _containerRegistryInfo = _containerRegistry.GetTestContainerRegistryInfo();
-            if (_containerRegistryInfo == null)
-            {
-                return;
-            }
-
             testOneLayerImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:onelayer";
             testMultiLayerImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:multilayers";
             testInvalidImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidlayers";
@@ -55,6 +48,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public async Task InitializeAsync()
         {
+            if (_containerRegistryInfo == null)
+            {
+                return;
+            }
+
             await InitOneLayerImageAsync();
             await InitMultiLayerImageAsync();
             await InitInvalidTarGzImageAsync();
