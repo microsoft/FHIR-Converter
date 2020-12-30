@@ -20,7 +20,7 @@ using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 {
-    public class TemplateCollectionFunctionalTests
+    public class TemplateCollectionFunctionalTests : IAsyncLifetime
     {
         private readonly string token;
         private readonly TemplateCollectionConfiguration _config = new TemplateCollectionConfiguration();
@@ -51,34 +51,19 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             testInvalidImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidlayers";
             testInvalidTemplateImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidtemplateslayers";
             token = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_containerRegistryInfo.ContainerRegistryUsername}:{_containerRegistryInfo.ContainerRegistryPassword}"));
-            Task.Run(InitOneLayerImageAsync).Wait();
-            Task.Run(InitMultiLayerImageAsync).Wait();
-            Task.Run(InitInvalidTarGzImageAsync).Wait();
-            Task.Run(InitInvalidTemplateImageAsync).Wait();
         }
 
-        private async Task InitOneLayerImageAsync()
+        public async Task InitializeAsync()
         {
-            List<string> templateFiles = new List<string> { baseLayerTemplatePath };
-            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testOneLayerImageReference, templateFiles);
+            await InitOneLayerImageAsync();
+            await InitMultiLayerImageAsync();
+            await InitInvalidTarGzImageAsync();
+            await InitInvalidTemplateImageAsync();
         }
 
-        private async Task InitMultiLayerImageAsync()
+        public Task DisposeAsync()
         {
-            List<string> templateFiles = new List<string> { baseLayerTemplatePath, userLayerTemplatePath };
-            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testMultiLayerImageReference, templateFiles);
-        }
-
-        private async Task InitInvalidTarGzImageAsync()
-        {
-            List<string> templateFiles = new List<string> { invalidTarGzPath };
-            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testInvalidImageReference, templateFiles);
-        }
-
-        private async Task InitInvalidTemplateImageAsync()
-        {
-            List<string> templateFiles = new List<string> { invalidTemplatePath };
-            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testInvalidTemplateImageReference, templateFiles);
+            return Task.CompletedTask;
         }
 
         public static IEnumerable<object[]> GetValidImageInfoWithTag()
@@ -283,6 +268,30 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var actualContent = hl7v2Processor.Convert(inputContent, entryTemplate, new Hl7v2TemplateProvider(templateProvider));
 
             Assert.True(actualContent.Length != 0);
+        }
+
+        private async Task InitOneLayerImageAsync()
+        {
+            List<string> templateFiles = new List<string> { baseLayerTemplatePath };
+            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testOneLayerImageReference, templateFiles);
+        }
+
+        private async Task InitMultiLayerImageAsync()
+        {
+            List<string> templateFiles = new List<string> { baseLayerTemplatePath, userLayerTemplatePath };
+            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testMultiLayerImageReference, templateFiles);
+        }
+
+        private async Task InitInvalidTarGzImageAsync()
+        {
+            List<string> templateFiles = new List<string> { invalidTarGzPath };
+            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testInvalidImageReference, templateFiles);
+        }
+
+        private async Task InitInvalidTemplateImageAsync()
+        {
+            List<string> templateFiles = new List<string> { invalidTemplatePath };
+            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testInvalidTemplateImageReference, templateFiles);
         }
     }
 }

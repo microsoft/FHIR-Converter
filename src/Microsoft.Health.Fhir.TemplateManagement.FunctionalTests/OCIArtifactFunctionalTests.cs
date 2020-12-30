@@ -3,7 +3,6 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,21 +14,7 @@ using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 {
-    /// <summary>
-    /// Test Cases:
-    /// Pull one layer image with valid sequence number, successfully pulled with base layer copied.
-    /// Pull one layer image without sequence number, successfully pulled without base layer copied.
-    /// Pull one layer image with invalid sequence number, exception will be thrown.
-    /// Pull multi-layers with valid sequence numbers, successfully pulled with base layer copied.
-    /// Pull multi-layers with invalid sequence numbers, exception will be thrown.
-    /// Pull invalid image, exception will be thrown.
-    /// Push artifacts which unpacked from base layer. If user modify artifacts, successfully pushed multi-layers image.
-    /// Push artifacts which unpacked from base layer. If user don't modify artifacts, successfully pushed one-layer image.
-    /// Push artifacts without base layer, successfully pushed one-layer image.
-    /// Push artifacts and ignore base layer, successfully pushed one-layer image.
-    /// Push empty artifact folder, exception will be thrown.
-    /// </summary>
-    public class OCIArtifactFunctionalTests
+    public class OCIArtifactFunctionalTests : IAsyncLifetime
     {
         private readonly string _containerRegistryServer;
         private readonly string _baseLayerTemplatePath = "TestData/TarGzFiles/layer1.tar.gz";
@@ -43,7 +28,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string _testMultiLayersWithInValidSequenceNumberImageReference;
         private readonly string _testInvalidCompressedImageReference;
         private bool _isOrasValid = true;
-        private string _orasErrorMessage = "Oras tool invalid.";
+        private readonly string _orasErrorMessage = "Oras tool invalid.";
 
         public OCIArtifactFunctionalTests()
         {
@@ -54,12 +39,21 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             _testMultiLayersWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:multilayers_valid_sequence";
             _testMultiLayersWithInValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:multilayers_invalid_sequence";
             _testInvalidCompressedImageReference = _containerRegistryServer + "/templatetest:invalid_image";
-            Task.Run(PushOneLayerWithValidSequenceNumberAsync).Wait();
-            Task.Run(PushOneLayerWithoutSequenceNumberAsync).Wait();
-            Task.Run(PushOneLayerWithInvalidSequenceNumberAsync).Wait();
-            Task.Run(PushMultiLayersWithValidSequenceNumberAsync).Wait();
-            Task.Run(PushMultiLayersWithInValidSequenceNumberAsync).Wait();
-            Task.Run(PushInvalidCompressedImageAsync).Wait();
+        }
+
+        public async Task InitializeAsync()
+        {
+            await PushOneLayerWithValidSequenceNumberAsync();
+            await PushOneLayerWithoutSequenceNumberAsync();
+            await PushOneLayerWithInvalidSequenceNumberAsync();
+            await PushMultiLayersWithValidSequenceNumberAsync();
+            await PushMultiLayersWithInValidSequenceNumberAsync();
+            await PushInvalidCompressedImageAsync();
+        }
+
+        public Task DisposeAsync()
+        {
+            return Task.CompletedTask;
         }
 
         private async Task PushOneLayerWithValidSequenceNumberAsync()
@@ -110,6 +104,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             }
         }
 
+        // Pull one layer image with valid sequence number, successfully pulled with base layer copied.
         [Fact]
         public async Task GivenOneLayerImageWithValidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
@@ -124,6 +119,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             ClearFolder(outputFolder);
         }
 
+        // Pull one layer image without sequence number, successfully pulled without base layer copied.
         [Fact]
         public async Task GivenOneLayerImageWithoutSequenceNumber_WhenPulled_ArtifactsWillBePulledWithoutBaseLayerCopiedAsync()
         {
@@ -138,6 +134,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             ClearFolder(outputFolder);
         }
 
+        // Pull one layer image with invalid sequence number, exception will be thrown.
         [Fact]
         public async Task GivenOneLayerImageWithInvalidSequenceNumber_WhenPulled_ExceptionWillBeThrownAsync()
         {
@@ -150,6 +147,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             ClearFolder(outputFolder);
         }
 
+        // Pull multi-layers with valid sequence numbers, successfully pulled with base layer copied.
         [Fact]
         public async Task GivenMultiLayerImageWithValidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
@@ -164,6 +162,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             ClearFolder(outputFolder);
         }
 
+        // Pull multi-layers with invalid sequence numbers, exception will be thrown.
         [Fact]
         public async Task GivenMultiLayersImageWithInvalidSequenceNumber_WhenPulled_ExceptionWillBeThrownAsync()
         {
@@ -176,6 +175,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             ClearFolder(outputFolder);
         }
 
+        // Pull invalid image, exception will be thrown.
         [Fact]
         public async Task GivenInvalidCompressedImage_WhenPulled_ExceptionWillBeThrownAsync()
         {
@@ -188,6 +188,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             ClearFolder(outputFolder);
         }
 
+        // Push artifacts which unpacked from base layer. If user modify artifacts, successfully pushed multi-layers image.
         [Fact]
         public async Task GivenAnInputFolderUnpackedFromBaseLayer_WhenPushOCIFiles_IfUserModify_TwoLayersWillBePushedAsync()
         {
@@ -220,6 +221,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             ClearFolder("checkMultiLayersFolder");
         }
 
+        // Push artifacts and ignore base layer, successfully pushed one-layer image.
         [Fact]
         public async Task GivenAnInputFolderUnpackedFromBaseLayer_WhenPushOCIFiles_IfIgnoreBaseLayer_NewBaseLayerWillBePushedAsync()
         {
@@ -252,6 +254,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             ClearFolder("checkNewBaseLayerFolder");
         }
 
+        // Push artifacts which unpacked from base layer. If user don't modify artifacts, successfully pushed one-layer image.
         [Fact]
         public async Task GivenAnInputFolderUnpackedFromBaseLayer_WhenPushOCIFiles_IfUserDoNotModify_OnlyBaseLayerWillBePushedAsync()
         {
@@ -278,6 +281,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             ClearFolder("checkBaseLayerFolder");
         }
 
+        // Push artifacts without base layer, successfully pushed one-layer image.
         [Fact]
         public async Task GivenAnInputFolderWithoutBaseLayer_WhenPushOCIFiles_IfUserModify_OneBaseLayerWillBePushedAsync()
         {
@@ -307,6 +311,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             ClearFolder("checkLayerFolder");
         }
 
+        // Push empty artifact folder, exception will be thrown.
         [Fact]
         public async Task GivenAnEmptyInputFolder_WhenPushOCIFiles_OneBaseLayerWillBePushedAsync()
         {
