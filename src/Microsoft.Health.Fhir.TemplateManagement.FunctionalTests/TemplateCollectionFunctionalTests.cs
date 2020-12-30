@@ -39,6 +39,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         public TemplateCollectionFunctionalTests()
         {
             _containerRegistryInfo = _containerRegistry.GetTestContainerRegistryInfo();
+            if (_containerRegistryInfo == null)
+            {
+                return;
+            }
+
             testOneLayerImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:onelayer";
             testMultiLayerImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:multilayers";
             testInvalidImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidlayers";
