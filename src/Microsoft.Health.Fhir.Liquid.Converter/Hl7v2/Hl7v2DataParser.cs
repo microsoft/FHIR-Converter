@@ -83,10 +83,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                     {
                         /**
                          * Take care of repeatable fields firstly, then render the whole field.
-                         * 1. If the config doesn't point out the field actually contains $RepetitionSeparator as repeatable,
+                         * 1. If the HL7V2 spec doesn't point out the field actually contains $RepetitionSeparator as repeatable,
                          * just take the first element in the repetition as the whole field by default.
                          * 2. If the field is not repeatable at all, there will also be all right to take the components
-                         * from the first element from the $Repeats.
+                         * from the first element of the $Repeats.
                          */
                         var field = new Hl7v2Field(fieldValues[f], new List<Hl7v2Component>());
                         var repetitions = fieldValues[f].Split(encodingCharacters.RepetitionSeparator);
