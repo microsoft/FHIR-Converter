@@ -10,7 +10,6 @@ using System.Linq;
 using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.InputProcessor;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.OutputProcessor;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -49,8 +48,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             var hl7v2Data = _dataParser.Parse(data);
             var context = CreateContext(templateProvider, hl7v2Data);
             var rawResult = RenderTemplates(template, context);
-            rawResult = Hl7v2EscapeSequenceProcessor.Unescape(rawResult, hl7v2Data.EncodingCharacters);
-
             var result = PostProcessor.Process(rawResult);
             if (traceInfo is Hl7v2TraceInfo hl7V2TraceInfo)
             {
