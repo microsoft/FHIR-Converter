@@ -36,7 +36,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                 for (var i = 0; i < segments.Length; ++i)
                 {
                     var fields = ParseFields(segments[i], encodingCharacters, isHeaderSegment: i == 0);
-                    var segment = new Hl7v2Segment(SlackValue(segments[i], encodingCharacters), fields);
+                    var segment = new Hl7v2Segment(NormalizeText(segments[i], encodingCharacters), fields);
                     result.Meta.Add(fields.First()?.Value ?? string.Empty);
                     result.Data.Add(segment);
                 }
@@ -82,12 +82,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                     if (!string.IsNullOrEmpty(fieldValues[f]))
                     {
                         var components = ParseComponents(fieldValues[f], encodingCharacters);
-                        var field = new Hl7v2Field(SlackValue(fieldValues[f], encodingCharacters), components);
+                        var field = new Hl7v2Field(NormalizeText(fieldValues[f], encodingCharacters), components);
                         var repetitions = fieldValues[f].Split(encodingCharacters.RepetitionSeparator);
                         for (var r = 0; r < repetitions.Length; ++r)
                         {
                             var repetitionComponents = ParseComponents(repetitions[r], encodingCharacters);
-                            var repetition = new Hl7v2Field(SlackValue(repetitions[r], encodingCharacters), repetitionComponents);
+                            var repetition = new Hl7v2Field(NormalizeText(repetitions[r], encodingCharacters), repetitionComponents);
                             field.Repeats.Add(repetition);
                         }
 
@@ -113,7 +113,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                 if (!string.IsNullOrEmpty(componentValue))
                 {
                     var subcomponents = ParseSubcomponents(componentValue, encodingCharacters);
-                    var component = new Hl7v2Component(SlackValue(componentValue, encodingCharacters), subcomponents);
+                    var component = new Hl7v2Component(NormalizeText(componentValue, encodingCharacters), subcomponents);
                     components.Add(component);
                 }
                 else
@@ -132,7 +132,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             var subcomponentValues = dataString.Split(encodingCharacters.SubcomponentSeparator);
             foreach (var subcomponentValue in subcomponentValues)
             {
-                subcomponents.Add(SlackValue(subcomponentValue, encodingCharacters));
+                subcomponents.Add(NormalizeText(subcomponentValue, encodingCharacters));
             }
 
             return subcomponents;
@@ -150,7 +150,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             };
         }
 
-        private string SlackValue(string value, Hl7v2EncodingCharacters encodingCharacters)
+        private string NormalizeText(string value, Hl7v2EncodingCharacters encodingCharacters)
         {
             var semanticalUnescape = Hl7v2EscapeSequenceProcessor.Unescape(value, encodingCharacters);
             var grammarEscape = SpecialCharProcessor.Escape(semanticalUnescape);

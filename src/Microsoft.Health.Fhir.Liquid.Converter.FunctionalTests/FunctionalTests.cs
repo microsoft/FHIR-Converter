@@ -99,9 +99,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
             var result = JObject.Parse(hl7v2Processor.Convert(inputContent, "ADT_A01", new Hl7v2TemplateProvider(templateDirectory)));
 
-            var texts = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Procedure')].resource.code.text");
+            var texts = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Procedure')].resource.code.text").Select(Convert.ToString);
             var expected = new List<string> { "ESCAPED ONE & ESCAPED TWO", "ESCAPED THREE & ESCAPED FOUR" };
-            Assert.Contains(expected, texts.Select(Convert.ToString).Contains);
+            Assert.NotEmpty(texts.Intersect(expected));
         }
     }
 }
