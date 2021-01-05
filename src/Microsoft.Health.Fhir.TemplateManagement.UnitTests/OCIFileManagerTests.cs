@@ -5,16 +5,16 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 {
-    public class OCIFileManagerTests
+    public class OCIFileManagerTests : IAsyncLifetime
     {
         private readonly string _containerRegistryServer;
         private readonly string _baseLayerTemplatePath = "TestData/TarGzFiles/layer1.tar.gz";
@@ -28,20 +28,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:user1";
             _testMultiLayersImageReference = _containerRegistryServer + "/templatetest:user2";
-            PushOneLayerImage();
-            PushMultiLayersImage();
         }
 
-        private void PushOneLayerImage()
+        public async Task InitializeAsync()
         {
-            string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath}";
-            OrasExecution(command);
+            await PushOneLayerImageAsync();
+            await PushMultiLayersImageAsync();
         }
 
-        private void PushMultiLayersImage()
+        public Task DisposeAsync()
         {
-            string command = $"push {_testMultiLayersImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
-            OrasExecution(command);
+            return Task.CompletedTask;
         }
 
         public static IEnumerable<object[]> GetValidOutputFolder()
@@ -157,34 +154,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             Assert.Null(ex);
         }
 
-        private void OrasExecution(string command)
-        {
-            Process process = new Process
-            {
-                StartInfo = new ProcessStartInfo(Path.Combine(AppContext.BaseDirectory, "oras.exe")),
-            };
-
-            process.StartInfo.Arguments = command;
-            process.StartInfo.RedirectStandardError = true;
-            process.EnableRaisingEvents = true;
-            process.Start();
-
-            StreamReader errStreamReader = process.StandardError;
-            process.WaitForExit(30000);
-            if (process.HasExited)
-            {
-                var error = errStreamReader.ReadToEnd();
-                if (!string.IsNullOrEmpty(error))
-                {
-                    _isOrasValid = false;
-                }
-            }
-            else
-            {
-                _isOrasValid = false;
-            }
-        }
-
         private void ClearFolder(string directory)
         {
             if (!Directory.Exists(directory))
@@ -194,6 +163,32 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
             DirectoryInfo folder = new DirectoryInfo(directory);
             folder.Delete(true);
+        }
+
+        private async Task PushOneLayerImageAsync()
+        {
+            string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath}";
+            try
+            {
+                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+            }
+            catch
+            {
+                _isOrasValid = false;
+            }
+        }
+
+        private async Task PushMultiLayersImageAsync()
+        {
+            string command = $"push {_testMultiLayersImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
+            try
+            {
+                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+            }
+            catch
+            {
+                _isOrasValid = false;
+            }
         }
     }
 }
