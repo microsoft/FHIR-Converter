@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
@@ -14,22 +13,31 @@ using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 {
-    public class OrasClientTests
+    public class OrasClientTests : IAsyncLifetime
     {
         private readonly string _containerRegistryServer;
         private readonly string _baseLayerTemplatePath = "TestData/TarGzFiles/baseLayer.tar.gz";
         private readonly string _userLayerTemplatePath = "TestData/TarGzFiles/userV1.tar.gz";
         private readonly string _testOneLayerImageReference;
-        private readonly string _testMultiLayerImageReference;
+        private readonly string _testMultiLayersImageReference;
         private bool _isOrasValid = true;
 
         public OrasClientTests()
         {
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:v1";
-            _testMultiLayerImageReference = _containerRegistryServer + "/templatetest:v2";
-            PushOneLayerImage();
-            PushMultiLayersImage();
+            _testMultiLayersImageReference = _containerRegistryServer + "/templatetest:v2";
+        }
+
+        public async Task InitializeAsync()
+        {
+            await PushOneLayerImageAsync();
+            await PushMultiLayersImageAsync();
+        }
+
+        public Task DisposeAsync()
+        {
+            return Task.CompletedTask;
         }
 
         public static IEnumerable<object[]> GetInvalidReference()
@@ -39,16 +47,51 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             yield return new object[] { $"/testImage@" };
         }
 
-        private void PushOneLayerImage()
+        public static IEnumerable<object[]> GetValidFolder()
         {
-            string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath}";
-            OrasExecution(command);
+            yield return new object[] { @"test folder" };
+            yield return new object[] { @"testfolder" };
+            yield return new object[] { @"test（1）" };
+            yield return new object[] { @"&$%^#$%$" };
         }
 
-        private void PushMultiLayersImage()
+        public static IEnumerable<object[]> GetInValidFolder()
         {
-            string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
-            OrasExecution(command);
+            yield return new object[] { @"\" };
+            yield return new object[] { @"*:" };
+            yield return new object[] { @" " };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInValidFolder))]
+        public async Task GivenInValidOutputFolder_WhenPullUseOras_ExceptionWillBeThrownAsync(string outputFolder)
+        {
+            if (!_isOrasValid)
+            {
+                return;
+            }
+
+            string imageReference = _testOneLayerImageReference;
+            OrasClient orasClient = new OrasClient(imageReference);
+            await Assert.ThrowsAsync<OrasException>(async () => await orasClient.PullImageAsync(outputFolder));
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidFolder))]
+        public async Task GivenValidOutputFolder_WhenPullImageUseOras_ImageWillBePulledAsync(string outputFolder)
+        {
+            if (!_isOrasValid)
+            {
+                return;
+            }
+
+            outputFolder = "testpull" + outputFolder;
+            string imageReference = _testOneLayerImageReference;
+            OrasClient orasClient = new OrasClient(imageReference);
+            var ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(outputFolder));
+            Assert.Null(ex);
+            Assert.Single(Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories));
+            ClearFolder(outputFolder);
         }
 
         [Theory]
@@ -68,6 +111,27 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             await Assert.ThrowsAsync<OrasException>(() => orasClient.PushImageAsync("TestData/PushTest"));
             await Assert.ThrowsAsync<OrasException>(() => orasClient.PullImageAsync("TestData/PushTest"));
             ClearFolder("TestData/PushTest");
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidFolder))]
+        public async Task GivenValidInputFolder_WhenPushUseOras_ImageWillBePushedAsync(string outputFolder)
+        {
+            if (!_isOrasValid)
+            {
+                return;
+            }
+
+            outputFolder = "testpush" + outputFolder;
+            string imageReference = _testOneLayerImageReference;
+            OrasClient orasClient = new OrasClient(imageReference);
+            await orasClient.PullImageAsync(outputFolder);
+
+            string testImageReference = _containerRegistryServer + "/testFolder";
+            OrasClient testOrasClient = new OrasClient(imageReference);
+            var ex = await Record.ExceptionAsync(async () => await orasClient.PushImageAsync(outputFolder));
+            Assert.Null(ex);
+            ClearFolder(outputFolder);
         }
 
         [Fact]
@@ -128,29 +192,27 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             folder.Delete(true);
         }
 
-        private void OrasExecution(string command)
+        private async Task PushOneLayerImageAsync()
         {
-            Process process = new Process
+            string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath}";
+            try
             {
-                StartInfo = new ProcessStartInfo(Path.Combine(AppContext.BaseDirectory, "oras.exe")),
-            };
-
-            process.StartInfo.Arguments = command;
-            process.StartInfo.RedirectStandardError = true;
-            process.EnableRaisingEvents = true;
-            process.Start();
-
-            StreamReader errStreamReader = process.StandardError;
-            process.WaitForExit(30000);
-            if (process.HasExited)
-            {
-                var error = errStreamReader.ReadToEnd();
-                if (!string.IsNullOrEmpty(error))
-                {
-                    _isOrasValid = false;
-                }
+                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             }
-            else
+            catch
+            {
+                _isOrasValid = false;
+            }
+        }
+
+        private async Task PushMultiLayersImageAsync()
+        {
+            string command = $"push {_testMultiLayersImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
+            try
+            {
+                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+            }
+            catch
             {
                 _isOrasValid = false;
             }

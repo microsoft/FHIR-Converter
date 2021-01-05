@@ -6,10 +6,9 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using EnsureThat;
-using Microsoft.Extensions.Logging;
-using Microsoft.Health.Fhir.Liquid.Converter;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
@@ -28,14 +27,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
         public async Task PullImageAsync(string outputFolder)
         {
-            string command = $"pull  {_imageReference} -o {outputFolder}";
+            string command = $"pull  \"{_imageReference}\" -o \"{outputFolder}\"";
             await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
         }
 
         public async Task PushImageAsync(string inputFolder)
         {
             string argument = string.Empty;
-            string command = $"push {_imageReference}";
+            string command = $"push \"{_imageReference}\"";
 
             var filePathToPush = Directory.EnumerateFiles(inputFolder, "*.tar.gz", SearchOption.AllDirectories);
 
@@ -43,7 +42,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             // Change oras working folder to inputFolder
             foreach (var filePath in filePathToPush)
             {
-                argument += $" {Path.GetRelativePath(inputFolder, filePath)}";
+                argument += $" \"{Path.GetRelativePath(inputFolder, filePath)}\"";
             }
 
             if (string.IsNullOrEmpty(argument))
@@ -54,12 +53,28 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             await OrasExecutionAsync(string.Concat(command, argument), inputFolder);
         }
 
-        private async Task OrasExecutionAsync(string command, string orasWorkingDirectory)
+        public static async Task OrasExecutionAsync(string command, string orasWorkingDirectory)
         {
             TaskCompletionSource<bool> eventHandled = new TaskCompletionSource<bool>();
+
+            string orasFileName;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                orasFileName = Constants.OrasFileForWindows;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                orasFileName = Constants.OrasFileForLinux;
+                AddOrasFileExecutionPermission();
+            }
+            else
+            {
+                throw new TemplateManagementException("Operation system is not supported");
+            }
+
             Process process = new Process
             {
-                StartInfo = new ProcessStartInfo(Path.Combine(AppContext.BaseDirectory, "oras.exe")),
+                StartInfo = new ProcessStartInfo(orasFileName),
             };
 
             process.StartInfo.Arguments = command;
@@ -92,6 +107,27 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             {
                 throw new OrasException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
             }
+        }
+
+        public static void AddOrasFileExecutionPermission()
+        {
+            var command = $"chmod +x {Constants.OrasFileForLinux}";
+
+            using var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = "/bin/bash",
+                    Arguments = $"-c \"{command}\"",
+                },
+            };
+
+            process.Start();
+            process.WaitForExit();
         }
     }
 }

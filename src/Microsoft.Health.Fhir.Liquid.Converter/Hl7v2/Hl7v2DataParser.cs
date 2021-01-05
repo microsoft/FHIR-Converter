@@ -1,4 +1,4 @@
-﻿// -------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
@@ -36,7 +36,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                 for (var i = 0; i < segments.Length; ++i)
                 {
                     var fields = ParseFields(segments[i], encodingCharacters, isHeaderSegment: i == 0);
-                    var segment = new Hl7v2Segment(segments[i], fields);
+                    var segment = new Hl7v2Segment(NormalizeText(segments[i], encodingCharacters), fields);
                     result.Meta.Add(fields.First()?.Value ?? string.Empty);
                     result.Data.Add(segment);
                 }
@@ -92,12 +92,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                          * For circumstance #3, we just take the first element in the repetition as the whole field by default;
                          * For circumstance #4, there will also be all right to take the first element of the $Repeats as the field itself;
                          */
-                        var field = new Hl7v2Field(fieldValues[f], new List<Hl7v2Component>());
+                        var field = new Hl7v2Field(NormalizeText(fieldValues[f], encodingCharacters), new List<Hl7v2Component>());
                         var repetitions = fieldValues[f].Split(encodingCharacters.RepetitionSeparator);
                         for (var r = 0; r < repetitions.Length; ++r)
                         {
                             var repetitionComponents = ParseComponents(repetitions[r], encodingCharacters);
-                            var repetition = new Hl7v2Field(repetitions[r], repetitionComponents);
+                            var repetition = new Hl7v2Field(NormalizeText(repetitions[r], encodingCharacters), repetitionComponents);
                             field.Repeats.Add(repetition);
                         }
 
@@ -124,7 +124,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                 if (!string.IsNullOrEmpty(componentValue))
                 {
                     var subcomponents = ParseSubcomponents(componentValue, encodingCharacters);
-                    var component = new Hl7v2Component(componentValue, subcomponents);
+                    var component = new Hl7v2Component(NormalizeText(componentValue, encodingCharacters), subcomponents);
                     components.Add(component);
                 }
                 else
@@ -143,9 +143,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             var subcomponentValues = dataString.Split(encodingCharacters.SubcomponentSeparator);
             foreach (var subcomponentValue in subcomponentValues)
             {
-                subcomponents.Add(
-                    SpecialCharProcessor.Escape(
-                    Hl7v2EscapeSequenceProcessor.Unescape(subcomponentValue, encodingCharacters)));
+                subcomponents.Add(NormalizeText(subcomponentValue, encodingCharacters));
             }
 
             return subcomponents;
@@ -161,6 +159,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                 EscapeCharacter = headerSegment[6],
                 SubcomponentSeparator = headerSegment[7],
             };
+        }
+
+        private string NormalizeText(string value, Hl7v2EncodingCharacters encodingCharacters)
+        {
+            var semanticalUnescape = Hl7v2EscapeSequenceProcessor.Unescape(value, encodingCharacters);
+            var grammarEscape = SpecialCharProcessor.Escape(semanticalUnescape);
+            return grammarEscape;
         }
     }
 }
