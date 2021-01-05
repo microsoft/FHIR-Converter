@@ -38,13 +38,13 @@
             {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.3 -%}
             {% if locationId -%}
                 {% include 'Resource/Location' PL: firstSegments.PV1.3, ID: locationId -%}
-                {% include 'Resource/Encounter' Location-ID-PV1-3: locationId, ID: encounterId -%}
+                {% include 'Resource/Encounter' PV1: firstSegments.PV1, Location_ID_PV1_3: locationId, ID: encounterId -%}
             {% endif -%}
 
             {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.6 -%}
             {% if locationId -%}
                 {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId -%}
-                {% include 'Resource/Encounter' Location-ID-PV1-6: locationId, ID: encounterId -%}
+                {% include 'Resource/Encounter' PV1: firstSegments.PV1, Location_ID_PV1_6: locationId, ID: encounterId -%}
             {% endif -%}
 
             {% if patientId -%}

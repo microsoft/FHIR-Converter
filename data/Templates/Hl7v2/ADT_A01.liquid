@@ -37,13 +37,13 @@
             {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.3 -%}
             {% if locationId -%}
                 {% include 'Resource/Location' PL: firstSegments.PV1.3, ID: locationId -%}
-                {% include 'Resource/Encounter' Location-ID-PV1-3: locationId, ID: encounterId -%}
+                {% include 'Resource/Encounter' PV1: firstSegments.PV1, Location_ID_PV1_3: locationId, ID: encounterId -%}
             {% endif -%}
 
             {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.6 -%}
             {% if locationId -%}
                 {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId -%}
-                {% include 'Resource/Encounter' Location-ID-PV1-6: locationId, ID: encounterId -%}
+                {% include 'Resource/Encounter' PV1: firstSegments.PV1, Location_ID_PV1_6: locationId, ID: encounterId -%}
             {% endif -%}
 
             {% if patientId -%}
@@ -58,7 +58,7 @@
             {% evaluate locationId using 'ID/Location' PL: firstSegments.PR1.23 -%}
             {% if locationId -%}
                 {% include 'Resource/Location' PL: firstSegments.PR1.23, ID: locationId -%}
-                {% include 'Resource/Procedure' Location-ID-PR1-23: locationId, ID: procedureId -%}
+                {% include 'Resource/Procedure' PR1: firstSegments.PR1, Location_ID_PR1_23: locationId, ID: procedureId -%}
             {% endif -%}
 
             {% if patientId -%}
