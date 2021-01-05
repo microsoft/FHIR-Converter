@@ -1,4 +1,4 @@
-﻿// -------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
@@ -81,8 +81,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                 {
                     if (!string.IsNullOrEmpty(fieldValues[f]))
                     {
-                        var components = ParseComponents(fieldValues[f], encodingCharacters);
-                        var field = new Hl7v2Field(NormalizeText(fieldValues[f], encodingCharacters), components);
+                        /**
+                         * We have four circumstances here.
+                         * 1. The templates using this field treat it as repeatable, and the field contains $RepetitionSeparator;
+                         * 2. The templates using this field treat it as repeatable, and the field doesn't contain $RepetitionSeparator;
+                         * 3. The templates using this field treat it as unrepeatable, and the field contains $RepetitionSeparator;
+                         * 4. The templates using this field treat it as unrepeatable, and the field doesn't contain $RepetitionSeparator;
+                         *
+                         * For circumstance #1 and #2, it will be all ok because the $field.Repeats always contains at least one value;
+                         * For circumstance #3, we just take the first element in the repetition as the whole field by default;
+                         * For circumstance #4, there will also be all right to take the first element of the $Repeats as the field itself;
+                         */
+                        var field = new Hl7v2Field(NormalizeText(fieldValues[f], encodingCharacters), new List<Hl7v2Component>());
                         var repetitions = fieldValues[f].Split(encodingCharacters.RepetitionSeparator);
                         for (var r = 0; r < repetitions.Length; ++r)
                         {
@@ -91,6 +101,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                             field.Repeats.Add(repetition);
                         }
 
+                        field.Components = ((Hl7v2Field)field.Repeats[0]).Components;
                         fields.Add(field);
                     }
                     else
