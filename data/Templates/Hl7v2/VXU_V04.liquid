@@ -15,7 +15,7 @@
             {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, ID: patientId -%}
         {% endif -%}
 
-        {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseID: patientId -%}
+        {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseId: patientId -%}
         {% if provenanceId -%}
             {% include 'Resource/Provenance' MSH: firstSegments.MSH, ORC: firstSegments.ORC, ID: provenanceId -%}
         {% endif -%}
@@ -37,11 +37,13 @@
             {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.3 -%}
             {% if locationId -%}
                 {% include 'Resource/Location' PL: firstSegments.PV1.3, ID: locationId -%}
+                {% include 'Resource/Encounter' Location-ID-PV1-3: locationId, ID: encounterId -%}
             {% endif -%}
 
             {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.6 -%}
             {% if locationId -%}
                 {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId -%}
+                {% include 'Resource/Encounter' Location-ID-PV1-6: locationId, ID: encounterId -%}
             {% endif -%}
             
             {% if patientId -%}
