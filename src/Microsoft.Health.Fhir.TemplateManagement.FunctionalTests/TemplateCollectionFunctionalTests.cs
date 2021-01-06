@@ -36,8 +36,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string testInvalidTemplateImageReference;
         private readonly ContainerRegistry _containerRegistry = new ContainerRegistry();
         private readonly ContainerRegistryInfo _containerRegistryInfo;
-        private static readonly string _templateDirectory = Path.Join("..", "..", "data", "Templates");
-        private static readonly string _sampleDataDirectory = Path.Join("..", "..", "data", "SampleData");
+        private readonly string _templateDirectory = Path.Join("..", "..", "data", "Templates");
+        private readonly string _sampleDataDirectory = Path.Join("..", "..", "data", "SampleData");
 
         public TemplateCollectionFunctionalTests()
         {
@@ -225,7 +225,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [MemberData(nameof(GetHl7v2DataAndEntryTemplate))]
         public async Task GetTemplateCollectionFromACR_WhenGivenHl7v2DataForConverting__ExpectedFhirResourceShouldBeReturnedAsync(string hl7v2Data, string entryTemplate)
         {
-            hl7v2Data = Path.Combine(_sampleDataDirectory, hl7v2Data);
+            hl7v2Data = Path.Combine(_sampleDataDirectory, "Hl7v2", hl7v2Data);
 
             if (_containerRegistryInfo == null)
             {
@@ -242,7 +242,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [MemberData(nameof(GetHl7v2DataAndEntryTemplate))]
         public async Task GetTemplateCollectionFromACR_WhenGivenHl7v2DataForConverting_IfTemplateNotExist_ExceptionWillBeThrownAsync(string hl7v2Data, string entryTemplate)
         {
-            hl7v2Data = Path.Combine(_sampleDataDirectory, hl7v2Data);
+            hl7v2Data = Path.Combine(_sampleDataDirectory, "Hl7v2", hl7v2Data);
 
             if (_containerRegistryInfo == null)
             {
