@@ -81,7 +81,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
 
         private static int FindOffsetInSegment(string segmentHeader, string segmentValue, Hl7v2EncodingCharacters encodingCharacters, int fieldIndex, int componentIndex)
         {
-            // All values($segmentValue and $fieldValue) need to be unescaped firstly (from "\\T" to "\T"),
+            // All values($segmentValue and $fieldValue) need to be unescaped firstly (from "\" to "\\"),
             // or the length will be incorrectly calculated
             segmentValue = SpecialCharProcessor.Unescape(segmentValue);
 
