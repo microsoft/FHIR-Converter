@@ -36,6 +36,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string testInvalidTemplateImageReference;
         private readonly ContainerRegistry _containerRegistry = new ContainerRegistry();
         private readonly ContainerRegistryInfo _containerRegistryInfo;
+        private static readonly string _templateDirectory = Path.Join("..", "..", "data", "Templates");
+        private static readonly string _sampleDataDirectory = Path.Join("..", "..", "data", "SampleData");
 
         public TemplateCollectionFunctionalTests()
         {
@@ -76,28 +78,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             yield return new object[] { new List<int> { 767, 838 }, "templatetest", "multilayers" };
         }
 
-        public static IEnumerable<object[]> GetHl7v2DataAndTemplateImageReference()
+        public static IEnumerable<object[]> GetHl7v2DataAndEntryTemplate()
         {
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\ADT01-23.hl7", "ADT_A01" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\IZ_1_1.1_Admin_Child_Max_Message.hl7", "VXU_V04" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\LAB-ORU-1.hl7", "ORU_R01" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\MDHHS-OML-O21-1.hl7", "OML_O21" };
-        }
-
-        public static IEnumerable<object[]> GetHl7v2DataAndTemplateImageReferenceWithoutGivenTemplate()
-        {
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\ADT01-23.hl7", "ADT_A01" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\IZ_1_1.1_Admin_Child_Max_Message.hl7", "VXU_V04" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\LAB-ORU-1.hl7", "ORU_R01" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\MDHHS-OML-O21-1.hl7", "OML_O21" };
+            yield return new object[] { @"ADT01-23.hl7", "ADT_A01" };
+            yield return new object[] { @"IZ_1_1.1_Admin_Child_Max_Message.hl7", "VXU_V04" };
+            yield return new object[] { @"LAB-ORU-1.hl7", "ORU_R01" };
+            yield return new object[] { @"MDHHS-OML-O21-1.hl7", "OML_O21" };
         }
 
         public static IEnumerable<object[]> GetHl7v2DataAndTemplateSources()
         {
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\ADT01-23.hl7", @"..\..\..\..\..\data\Templates\Hl7v2", "ADT_A01" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\IZ_1_1.1_Admin_Child_Max_Message.hl7", @"..\..\..\..\..\data\Templates\Hl7v2", "VXU_V04" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\LAB-ORU-1.hl7", @"..\..\..\..\..\data\Templates\Hl7v2", "ORU_R01" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\MDHHS-OML-O21-1.hl7", @"..\..\..\..\..\data\Templates\Hl7v2", "OML_O21" };
+            yield return new object[] { @"ADT01-23.hl7", @"HL7v2", "ADT_A01" };
+            yield return new object[] { @"IZ_1_1.1_Admin_Child_Max_Message.hl7", @"HL7v2", "VXU_V04" };
+            yield return new object[] { @"LAB-ORU-1.hl7", @"HL7v2", "ORU_R01" };
+            yield return new object[] { @"MDHHS-OML-O21-1.hl7", @"HL7v2", "OML_O21" };
         }
 
         public static IEnumerable<object[]> GetNotExistImageInfo()
@@ -228,9 +222,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         }
 
         [Theory]
-        [MemberData(nameof(GetHl7v2DataAndTemplateImageReference))]
+        [MemberData(nameof(GetHl7v2DataAndEntryTemplate))]
         public async Task GetTemplateCollectionFromACR_WhenGivenHl7v2DataForConverting__ExpectedFhirResourceShouldBeReturnedAsync(string hl7v2Data, string entryTemplate)
         {
+            hl7v2Data = Path.Combine(_sampleDataDirectory, hl7v2Data);
+
             if (_containerRegistryInfo == null)
             {
                 return;
@@ -243,9 +239,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         }
 
         [Theory]
-        [MemberData(nameof(GetHl7v2DataAndTemplateImageReferenceWithoutGivenTemplate))]
+        [MemberData(nameof(GetHl7v2DataAndEntryTemplate))]
         public async Task GetTemplateCollectionFromACR_WhenGivenHl7v2DataForConverting_IfTemplateNotExist_ExceptionWillBeThrownAsync(string hl7v2Data, string entryTemplate)
         {
+            hl7v2Data = Path.Combine(_sampleDataDirectory, hl7v2Data);
+
             if (_containerRegistryInfo == null)
             {
                 return;
@@ -278,6 +276,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [MemberData(nameof(GetHl7v2DataAndTemplateSources))]
         public async Task GivenSameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
         {
+            inputFile = Path.Join(AppDomain.CurrentDomain.BaseDirectory, _sampleDataDirectory, "Hl7v2", inputFile);
+            defaultTemplateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, _templateDirectory, defaultTemplateDirectory);
+
             var folderTemplateProvider = new Hl7v2TemplateProvider(defaultTemplateDirectory);
 
             var templateProviderFactory = new TemplateCollectionProviderFactory(new MemoryCache(new MemoryCacheOptions()), Options.Create(new TemplateCollectionConfiguration()));
