@@ -86,7 +86,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
             segmentValue = SpecialCharProcessor.Unescape(segmentValue);
 
             // MSH segment should be treated separately since the first '|' in MSH segment is a special field
-            if (segmentHeader == "MSH")
+            if (segmentHeader.Equals("MSH"))
             {
                 fieldIndex--;
             }
