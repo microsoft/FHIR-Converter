@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using DotLiquid;
 using Microsoft.Extensions.Caching.Memory;
@@ -100,6 +101,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\IZ_1_1.1_Admin_Child_Max_Message.hl7", "VXU_V04" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\LAB-ORU-1.hl7", "ORU_R01" };
             yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\MDHHS-OML-O21-1.hl7", "OML_O21" };
+        }
+
+        public static IEnumerable<object[]> GetHl7v2DataAndTemplateSources()
+        {
+            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\ADT01-23.hl7", @"..\..\..\..\..\data\Templates\Hl7v2", "ADT_A01" };
+            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\IZ_1_1.1_Admin_Child_Max_Message.hl7", @"..\..\..\..\..\data\Templates\Hl7v2", "VXU_V04" };
+            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\LAB-ORU-1.hl7", @"..\..\..\..\..\data\Templates\Hl7v2", "ORU_R01" };
+            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\MDHHS-OML-O21-1.hl7", @"..\..\..\..\..\data\Templates\Hl7v2", "OML_O21" };
         }
 
         public static IEnumerable<object[]> GetNotExistImageInfo()
@@ -273,6 +282,25 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
             Assert.Single(templateCollection);
             Assert.Equal(defaultTemplatesCounts, templateCollection.First().Count());
+        }
+
+        // Conversion results of DefaultTemplates.tar.gz and default template folder should be the same.
+        [Theory]
+        [MemberData(nameof(GetHl7v2DataAndTemplateSources))]
+        public async Task GivenSameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
+        {
+            var folderTemplateProvider = new Hl7v2TemplateProvider(defaultTemplateDirectory);
+
+            var templateProviderFactory = new TemplateCollectionProviderFactory(new MemoryCache(new MemoryCacheOptions()), Options.Create(new TemplateCollectionConfiguration()));
+            var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(ImageInfo.DefaultTemplateImageReference, string.Empty);
+            var imageTemplateProvider = new Hl7v2TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
+
+            var hl7v2Processor = new Hl7v2Processor();
+            var inputContent = File.ReadAllText(inputFile);
+
+            var imageResult = hl7v2Processor.Convert(inputContent, rootTemplate, imageTemplateProvider);
+            var folderResult = hl7v2Processor.Convert(inputContent, rootTemplate, folderTemplateProvider);
+            Assert.Equal(imageResult, folderResult);
         }
 
         private void TestByTemplate(string inputFile, string entryTemplate, List<Dictionary<string, Template>> templateProvider)
