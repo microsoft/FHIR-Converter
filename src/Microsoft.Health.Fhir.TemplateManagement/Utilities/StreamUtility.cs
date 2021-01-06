@@ -62,12 +62,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
             using var outputStream = new MemoryStream();
             tarIn.CopyEntryContents(outputStream);
             outputStream.Position = 0;
-
-            using (var streamReader = new StreamReader(outputStream, Encoding.UTF8, true))
-            {
-                var text = streamReader.ReadToEnd();
-                return Encoding.UTF8.GetBytes(text);
-            }
+            return outputStream.ToArray();
         }
 
         public static string CalculateDigestFromSha256(byte[] content)
