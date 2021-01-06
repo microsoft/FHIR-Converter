@@ -34,17 +34,17 @@
         {% if encounterId -%}
             {% include 'Resource/Encounter' PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
 
-            {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.3 -%}
-            {% if locationId -%}
-                {% include 'Resource/Location' PL: firstSegments.PV1.3, ID: locationId -%}
-                {% include 'Resource/Encounter' PV1: firstSegments.PV1, Location_ID_PV1_3: locationId, ID: encounterId -%}
+            {% evaluate locationId3 using 'ID/Location' PL: firstSegments.PV1.3 -%}
+            {% if locationId3 -%}
+                {% include 'Resource/Location' PL: firstSegments.PV1.3, ID: locationId3 -%}
             {% endif -%}
 
-            {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.6 -%}
-            {% if locationId -%}
-                {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId -%}
-                {% include 'Resource/Encounter' PV1: firstSegments.PV1, Location_ID_PV1_6: locationId, ID: encounterId -%}
+            {% evaluate locationId6 using 'ID/Location' PL: firstSegments.PV1.6 -%}
+            {% if locationId6 -%}
+                {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId6 -%}
             {% endif -%}
+
+            {% include 'Resource/Encounter' PV1: firstSegments.PV1, Location_ID_PV1_3: locationId3, Location_ID_PV1_6: locationId6, ID: encounterId -%}
 
             {% if patientId -%}
                 {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
