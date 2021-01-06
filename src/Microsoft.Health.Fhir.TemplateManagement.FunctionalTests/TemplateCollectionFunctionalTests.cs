@@ -88,10 +88,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public static IEnumerable<object[]> GetHl7v2DataAndTemplateSources()
         {
-            yield return new object[] { @"ADT01-23.hl7", @"HL7v2", "ADT_A01" };
-            yield return new object[] { @"IZ_1_1.1_Admin_Child_Max_Message.hl7", @"HL7v2", "VXU_V04" };
-            yield return new object[] { @"LAB-ORU-1.hl7", @"HL7v2", "ORU_R01" };
-            yield return new object[] { @"MDHHS-OML-O21-1.hl7", @"HL7v2", "OML_O21" };
+            yield return new object[] { @"ADT01-23.hl7", @"Hl7v2", "ADT_A01" };
+            yield return new object[] { @"IZ_1_1.1_Admin_Child_Max_Message.hl7", @"Hl7v2", "VXU_V04" };
+            yield return new object[] { @"LAB-ORU-1.hl7", @"Hl7v2", "ORU_R01" };
+            yield return new object[] { @"MDHHS-OML-O21-1.hl7", @"Hl7v2", "OML_O21" };
         }
 
         public static IEnumerable<object[]> GetNotExistImageInfo()
