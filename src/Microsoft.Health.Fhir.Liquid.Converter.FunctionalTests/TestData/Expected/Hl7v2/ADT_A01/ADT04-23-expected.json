@@ -3,10 +3,10 @@
   "type": "transaction",
   "entry": [
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:18548d54-14a8-815a-c1bb-396f35b37164",
       "resource": {
         "resourceType": "MessageHeader",
-        "id": "",
+        "id": "18548d54-14a8-815a-c1bb-396f35b37164",
         "source": {
           "source": {
             "name": "NES"
@@ -38,14 +38,14 @@
       },
       "request": {
         "method": "PUT",
-        "url": "MessageHeader/"
+        "url": "MessageHeader/18548d54-14a8-815a-c1bb-396f35b37164"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:5002eb07-c460-7112-6574-50303ae3b4a6",
       "resource": {
         "resourceType": "Patient",
-        "id": "",
+        "id": "5002eb07-c460-7112-6574-50303ae3b4a6",
         "identifier": [
           {
             "value": "123456789",
@@ -158,14 +158,14 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Patient/"
+        "url": "Patient/5002eb07-c460-7112-6574-50303ae3b4a6"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:ab3d28cb-c909-4ba2-b02e-0a868895ef0b",
       "resource": {
         "resourceType": "Provenance",
-        "id": "",
+        "id": "ab3d28cb-c909-4ba2-b02e-0a868895ef0b",
         "agent": [
           {
             "type": {
@@ -182,14 +182,14 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Provenance/"
+        "url": "Provenance/ab3d28cb-c909-4ba2-b02e-0a868895ef0b"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:0b931b2e-4814-b7ed-7159-4cf2805ef38f",
       "resource": {
         "resourceType": "Account",
-        "id": "",
+        "id": "0b931b2e-4814-b7ed-7159-4cf2805ef38f",
         "identifier": [
           {
             "value": "12345678"
@@ -198,14 +198,14 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Account/"
+        "url": "Account/0b931b2e-4814-b7ed-7159-4cf2805ef38f"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5",
       "resource": {
         "resourceType": "Organization",
-        "id": "",
+        "id": "ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5",
         "identifier": [
           {
             "value": "NINTENDO"
@@ -219,14 +219,14 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Organization/"
+        "url": "Organization/ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:1ffe7bbb-44ca-d195-1456-40d94950090b",
       "resource": {
         "resourceType": "Encounter",
-        "id": "",
+        "id": "1ffe7bbb-44ca-d195-1456-40d94950090b",
         "class": {
           "code": "AMB",
           "display": "ambulatory",
@@ -248,13 +248,13 @@
           },
           {
             "location": {
-              "reference": "Location/"
+              "reference": "Location/1061dd71-d0a8-e8d0-7468-5be2eb4db1f8"
             },
             "status": "active"
           },
           {
             "location": {
-              "reference": "Location/"
+              "reference": "Location/affd96b8-87bc-956b-0215-7db7a8c6a9b3"
             },
             "status": "completed"
           }
@@ -324,19 +324,19 @@
           "start": "2001-01-01T00:00:00Z"
         },
         "subject": {
-          "reference": "Patient/"
+          "reference": "Patient/5002eb07-c460-7112-6574-50303ae3b4a6"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Encounter/"
+        "url": "Encounter/1ffe7bbb-44ca-d195-1456-40d94950090b"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:1061dd71-d0a8-e8d0-7468-5be2eb4db1f8",
       "resource": {
         "resourceType": "Location",
-        "id": "",
+        "id": "1061dd71-d0a8-e8d0-7468-5be2eb4db1f8",
         "mode": "instance",
         "physicalType": {
           "coding": [
@@ -348,25 +348,25 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Location/"
+        "url": "Location/1061dd71-d0a8-e8d0-7468-5be2eb4db1f8"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:affd96b8-87bc-956b-0215-7db7a8c6a9b3",
       "resource": {
         "resourceType": "Location",
-        "id": ""
+        "id": "affd96b8-87bc-956b-0215-7db7a8c6a9b3"
       },
       "request": {
         "method": "PUT",
-        "url": "Location/"
+        "url": "Location/affd96b8-87bc-956b-0215-7db7a8c6a9b3"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:4e083e5f-53b4-194d-b6bd-6d51b5dab850",
       "resource": {
         "resourceType": "RelatedPerson",
-        "id": "",
+        "id": "4e083e5f-53b4-194d-b6bd-6d51b5dab850",
         "address": [
           {
             "line": [
@@ -395,19 +395,19 @@
           }
         ],
         "patient": {
-          "reference": "Patient/"
+          "reference": "Patient/5002eb07-c460-7112-6574-50303ae3b4a6"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "RelatedPerson/"
+        "url": "RelatedPerson/4e083e5f-53b4-194d-b6bd-6d51b5dab850"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:a7a01053-59be-eb80-1f54-591a69d5bc8e",
       "resource": {
         "resourceType": "RelatedPerson",
-        "id": "",
+        "id": "a7a01053-59be-eb80-1f54-591a69d5bc8e",
         "relationship": [
           {
             "coding": [
@@ -447,12 +447,12 @@
           }
         ],
         "patient": {
-          "reference": "Patient/"
+          "reference": "Patient/5002eb07-c460-7112-6574-50303ae3b4a6"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "RelatedPerson/"
+        "url": "RelatedPerson/a7a01053-59be-eb80-1f54-591a69d5bc8e"
       }
     }
   ]
