@@ -51,6 +51,11 @@ PID|1||10006579^^^1^MR^1||DUCK^DONALD^D||19241010|M||1|111 DUCK ST^^FOWL^CA^9999
             Assert.Equal(2, traceInfo.UnusedSegments.Count);
             Assert.Equal(27, traceInfo.UnusedSegments[1].Components.Count);
 
+            // Specially test MSH unused segments
+            Assert.Equal(9, traceInfo.UnusedSegments[0].Components[0].Start);
+            Assert.Equal("AccMgr", traceInfo.UnusedSegments[0].Components[0].Value);
+            Assert.Equal(15, traceInfo.UnusedSegments[0].Components[0].End);
+
             // Valid Hl7v2Data after render
             var processor = new Hl7v2Processor();
             var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
