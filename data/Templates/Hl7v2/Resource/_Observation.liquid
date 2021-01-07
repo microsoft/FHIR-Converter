@@ -106,6 +106,33 @@
                 },
             },
         ],
+        "performer":
+        [
+            {
+                {% if OBX.16 and Practitioner_ID_OBX_16 -%}
+                "reference":"Practitioner  /{{ Practitioner  _ID_OBX_16 }}",
+                {% endif -%}
+            },
+            {
+                {% if OBX.24 and Organization_address_ID_OBX_24 -%}
+                "reference":"Organization.address/{{ Organization_address_ID_OBX_24 }}",
+                {% endif -%}
+            },
+            {
+                {% if OBX.24 and Organization_address_ID_OBX_24 -%}
+                "reference":"Organization.address/{{ Organization_address_ID_OBX_24 }}",
+                {% endif -%}
+                {% if OBX.25 and PractitionerRole_ID_OBX_25 -%}
+                "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_25 }}",
+                {% endif -%}
+            },
+        ],
+        "device":
+        {
+            {% if OBX.18 and Device_identifier_ID_OBX_18 -%}
+            "reference":"Device.identifier/{{ Device_identifier_ID_OBX_18 }}",
+            {% endif -%}
+        },
         "component":
         [
             {

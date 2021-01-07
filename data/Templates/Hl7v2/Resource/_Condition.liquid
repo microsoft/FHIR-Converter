@@ -28,6 +28,12 @@
                 },
             ],
         },
+        "asserter":
+        {
+            {% if DG1.16 and Practitioner_ID_DG1_16 -%}
+            "reference":"Practitioner/{{ Practitioner_ID_DG1_16 }}",
+            {% endif -%}
+        },
     },
     "request":{
         "method":"PUT",
