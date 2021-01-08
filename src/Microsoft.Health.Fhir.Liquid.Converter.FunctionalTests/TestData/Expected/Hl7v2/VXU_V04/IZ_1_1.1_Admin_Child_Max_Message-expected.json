@@ -158,6 +158,56 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:57ea8417-a3d9-a03e-3e89-0e2800129af1",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "57ea8417-a3d9-a03e-3e89-0e2800129af1",
+        "identifier": [
+          {
+            "value": "57422"
+          }
+        ],
+        "name": [
+          {
+            "family": "RADON",
+            "given": [
+              "NICHOLAS"
+            ],
+            "use": "official"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/57ea8417-a3d9-a03e-3e89-0e2800129af1"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:cdc6a323-66a4-19cb-ff4e-a5c9a5f5fd1b",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "cdc6a323-66a4-19cb-ff4e-a5c9a5f5fd1b",
+        "identifier": [
+          {
+            "value": "57422"
+          }
+        ],
+        "name": [
+          {
+            "family": "RADON",
+            "given": [
+              "NICHOLAS"
+            ],
+            "use": "official"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/cdc6a323-66a4-19cb-ff4e-a5c9a5f5fd1b"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:df475b46-a50f-6a66-3a9a-2aca2b31a5bb",
       "resource": {
         "resourceType": "Provenance",
@@ -171,6 +221,9 @@
                   "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
                 }
               ]
+            },
+            "who": {
+              "reference": "Practitioner/57ea8417-a3d9-a03e-3e89-0e2800129af1"
             }
           },
           {
@@ -181,6 +234,9 @@
                   "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
                 }
               ]
+            },
+            "who": {
+              "reference": "Practitioner/cdc6a323-66a4-19cb-ff4e-a5c9a5f5fd1b"
             }
           }
         ],
@@ -245,31 +301,6 @@
       "request": {
         "method": "PUT",
         "url": "RelatedPerson/a17fe59e-2385-e7c3-59c4-14f214cf72c7"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:cdc6a323-66a4-19cb-ff4e-a5c9a5f5fd1b",
-      "resource": {
-        "resourceType": "Practitioner",
-        "id": "cdc6a323-66a4-19cb-ff4e-a5c9a5f5fd1b",
-        "identifier": [
-          {
-            "value": "57422"
-          }
-        ],
-        "name": [
-          {
-            "family": "RADON",
-            "given": [
-              "NICHOLAS"
-            ],
-            "use": "official"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Practitioner/cdc6a323-66a4-19cb-ff4e-a5c9a5f5fd1b"
       }
     },
     {

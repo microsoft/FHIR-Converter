@@ -147,48 +147,54 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:593c9cc7-23a1-da42-e45a-c2754188dc96",
+      "fullUrl": "urn:uuid:9d113ef1-15cf-ec5c-6e04-230bf6b8bf71",
       "resource": {
-        "resourceType": "Provenance",
-        "id": "593c9cc7-23a1-da42-e45a-c2754188dc96",
-        "agent": [
+        "resourceType": "Practitioner",
+        "id": "9d113ef1-15cf-ec5c-6e04-230bf6b8bf71",
+        "identifier": [
           {
+            "value": "654",
             "type": {
               "coding": [
                 {
-                  "code": "enterer",
-                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
+                  "code": "MD"
                 }
               ]
             }
           },
           {
+            "value": "7824",
             "type": {
               "coding": [
                 {
-                  "code": "author",
-                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
+                  "code": "PRN"
                 }
               ]
             }
           }
         ],
-        "recorded": "2015-06-24T21:47:27.655+08:00"
+        "name": [
+          {
+            "family": "Thomas",
+            "given": [
+              "Wilma",
+              "Elizabeth"
+            ],
+            "use": "official"
+          },
+          {
+            "family": "Jackson",
+            "given": [
+              "Lily",
+              "Suzanne"
+            ],
+            "use": "official"
+          }
+        ]
       },
       "request": {
         "method": "PUT",
-        "url": "Provenance/593c9cc7-23a1-da42-e45a-c2754188dc96"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:99ce28f5-c743-ed2e-b88e-47f2e32d23d5",
-      "resource": {
-        "resourceType": "Account",
-        "id": "99ce28f5-c743-ed2e-b88e-47f2e32d23d5"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Account/99ce28f5-c743-ed2e-b88e-47f2e32d23d5"
+        "url": "Practitioner/9d113ef1-15cf-ec5c-6e04-230bf6b8bf71"
       }
     },
     {
@@ -222,6 +228,57 @@
       "request": {
         "method": "PUT",
         "url": "Practitioner/72b45e56-f6fc-c8af-bc2f-7f62d1a14e80"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:593c9cc7-23a1-da42-e45a-c2754188dc96",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "593c9cc7-23a1-da42-e45a-c2754188dc96",
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "enterer",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
+                }
+              ]
+            },
+            "who": {
+              "reference": "Practitioner/9d113ef1-15cf-ec5c-6e04-230bf6b8bf71"
+            }
+          },
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
+                }
+              ]
+            },
+            "who": {
+              "reference": "Practitioner/72b45e56-f6fc-c8af-bc2f-7f62d1a14e80"
+            }
+          }
+        ],
+        "recorded": "2015-06-24T21:47:27.655+08:00"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Provenance/593c9cc7-23a1-da42-e45a-c2754188dc96"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:99ce28f5-c743-ed2e-b88e-47f2e32d23d5",
+      "resource": {
+        "resourceType": "Account",
+        "id": "99ce28f5-c743-ed2e-b88e-47f2e32d23d5"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Account/99ce28f5-c743-ed2e-b88e-47f2e32d23d5"
       }
     },
     {
@@ -304,39 +361,6 @@
       "request": {
         "method": "PUT",
         "url": "Immunization/c0f2ddcb-f061-279f-d5e1-7b54b437e9db"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:9d113ef1-15cf-ec5c-6e04-230bf6b8bf71",
-      "resource": {
-        "resourceType": "Practitioner",
-        "id": "9d113ef1-15cf-ec5c-6e04-230bf6b8bf71",
-        "identifier": [
-          {
-            "value": "7824",
-            "type": {
-              "coding": [
-                {
-                  "code": "PRN"
-                }
-              ]
-            }
-          }
-        ],
-        "name": [
-          {
-            "family": "Jackson",
-            "given": [
-              "Lily",
-              "Suzanne"
-            ],
-            "use": "official"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Practitioner/9d113ef1-15cf-ec5c-6e04-230bf6b8bf71"
       }
     },
     {
