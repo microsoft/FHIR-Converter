@@ -105,10 +105,15 @@
 
         {% assign dg1SegmentLists = hl7v2Data | get_segment_lists: 'DG1' -%}
         {% for dg1Segment in dg1SegmentLists.DG1 -%}
+            {% evaluate practitionerId using 'ID/Practitioner' XCN: dg1Segment.16 -%}
+            {% if practitionerId -%}
+                {% include 'Resource/Practitioner' DG1: dg1Segment, ID: practitionerId -%}
+            {% endif -%}
+
             {% evaluate conditionId using 'ID/Condition' DG1: dg1Segment, baseId: patientId -%}
             {% if conditionId -%}
                 {% assign fullConditionId = conditionId | prepend: 'Condition/' -%}
-                {% include 'Resource/Condition' DG1: dg1Segment, ID: conditionId -%}
+                {% include 'Resource/Condition' DG1: dg1Segment, Practitioner_ID_DG1_16: practitionerId, ID: conditionId -%}
                 {% if patientId -%}
                     {% include 'Reference/Condition/Subject' ID: conditionId, REF: fullPatientId -%}
                 {% endif -%}

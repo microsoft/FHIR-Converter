@@ -119,10 +119,15 @@
 
             {% assign dg1SegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'DG1' -%}
             {% for dg1Segment in dg1SegmentLists.DG1 -%}
+                {% evaluate practitionerId using 'ID/Practitioner' XCN: dg1Segment.16 -%}
+                {% if practitionerId -%}
+                    {% include 'Resource/Practitioner' DG1: dg1Segment, ID: practitionerId -%}
+                {% endif -%}
+
                 {% evaluate conditionId using 'ID/Condition' DG1: dg1Segment, baseId: patientId -%}
                 {% if conditionId -%}
                     {% assign fullConditionId = conditionId | prepend: 'Condition/' -%}
-                    {% include 'Resource/Condition' DG1: obxSegment, ID: conditionId -%}
+                    {% include 'Resource/Condition' DG1: obxSegment, Practitioner_ID_DG1_16: practitionerId, ID: conditionId -%}
                     {% include 'Reference/ServiceRequest/ReasonReference' ID: serviceRequestId, REF: fullConditionId -%}
                     {% if patientId -%}
                         {% include 'Reference/Condition/Subject' ID: conditionId, REF: fullPatientId -%}
