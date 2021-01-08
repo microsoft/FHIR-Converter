@@ -1,6 +1,6 @@
 ﻿{
     "resourceType": "Bundle",
-    "type": "transaction",
+    "type": "batch",
     "entry": [
         {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|ORC|MSH' -%}
 
