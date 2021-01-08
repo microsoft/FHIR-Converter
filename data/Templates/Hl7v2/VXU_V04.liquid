@@ -6,9 +6,20 @@
 
         {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
         {% if messageHeaderId -%}
-            {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, ID: messageHeaderID -%}
+            {% evaluate organizationId4 using 'ID/Organization' HD: firstSegments.MSH.4 -%}
+            {% evaluate organizationId6 using 'ID/Organization' HD: firstSegments.MSH.6 -%}
+
+            {% if organizationId4 -%}
+                {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId4 -%}
+            {% endif -%}
+
+            {% if organizationId6 -%}
+                {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId6 -%}
+            {% endif -%}
+
+            {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, Organization_ID_MSH_4: organizationId4, Organization_ID_MSH_6: organizationId6, ID: messageHeaderID -%}
         {% endif -%}
-        
+
         {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
         {% if patientId -%}
             {% assign fullPatientId = patientId | prepend: 'Patient/' -%}

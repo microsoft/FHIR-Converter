@@ -3,6 +3,48 @@
   "type": "transaction",
   "entry": [
     {
+      "fullUrl": "urn:uuid:8a4905a9-ae0d-541f-4fde-2e228bbb0f70",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "8a4905a9-ae0d-541f-4fde-2e228bbb0f70",
+        "identifier": [
+          {
+            "value": "X68"
+          }
+        ],
+        "destination": [
+          {
+            "endpoint": "NIST Test Iz Reg"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/8a4905a9-ae0d-541f-4fde-2e228bbb0f70"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:57e4a003-b56b-2993-9714-18b188c68595",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "57e4a003-b56b-2993-9714-18b188c68595",
+        "identifier": [
+          {
+            "value": "X68"
+          }
+        ],
+        "destination": [
+          {
+            "endpoint": "NIST Test Iz Reg"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/57e4a003-b56b-2993-9714-18b188c68595"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:5cddb2d1-c441-ec21-1c0c-96605dd3a9c0",
       "resource": {
         "resourceType": "MessageHeader",
@@ -12,6 +54,13 @@
             "name": "Test EHR Application"
           }
         },
+        "destination": [
+          {
+            "receiver": {
+              "reference": "Organization/57e4a003-b56b-2993-9714-18b188c68595"
+            }
+          }
+        ],
         "meta": {
           "tag": [
             {
@@ -25,6 +74,9 @@
               }
             }
           ]
+        },
+        "sender": {
+          "reference": "Organization/8a4905a9-ae0d-541f-4fde-2e228bbb0f70"
         }
       },
       "request": {
@@ -148,27 +200,6 @@
       "request": {
         "method": "PUT",
         "url": "Account/82fcb02d-52a4-17af-a707-923501f587d1"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:57e4a003-b56b-2993-9714-18b188c68595",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "57e4a003-b56b-2993-9714-18b188c68595",
-        "identifier": [
-          {
-            "value": "X68"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "NIST Test Iz Reg"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/57e4a003-b56b-2993-9714-18b188c68595"
       }
     },
     {
