@@ -7,7 +7,7 @@
         {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
         {% evaluate organizationId4 using 'ID/Organization' HD: firstSegments.MSH.4 -%}
         {% evaluate organizationId6 using 'ID/Organization' HD: firstSegments.MSH.6 -%}
-        {% evaluate organizationId22 using 'ID/Organization' HD: firstSegments.MSH.22 -%}
+        {% evaluate organizationId22 using 'ID/Organization' XON: firstSegments.MSH.22 -%}
 
         {% if organizationId4 -%}
             {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId4 -%}
@@ -33,7 +33,7 @@
 
         {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseId: patientId -%}
         {% if provenanceId -%}
-            {% include 'Resource/Provenance' MSH: firstSegments.MSH, ORC: firstSegments.ORC, ID: provenanceId -%}
+            {% include 'Resource/Provenance' MSH: firstSegments.MSH, ORC: firstSegments.ORC, Organization_ID_MSH_4： organizationId4, Organization_ID_MSH_6： organizationId6, Organization_ID_MSH_22： organizationId22, ID: provenanceId -%}
         {% endif -%}
 
         {% evaluate accountId using 'ID/Account' CX: firstSegments.PID.3 -%}
