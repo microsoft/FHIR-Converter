@@ -1,6 +1,6 @@
 ﻿{
     "resourceType": "Bundle",
-    "type": "transaction",
+    "type": "batch",
     "entry": [
         {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|NK1|PV1|PV2|MSH' -%}
 
@@ -15,7 +15,7 @@
             {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, ID: patientId -%}
         {% endif -%}
 
-        {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseID: patientId -%}
+        {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseId: patientId -%}
         {% if provenanceId -%}
             {% include 'Resource/Provenance' MSH: firstSegments.MSH, ORC: firstSegments.ORC, ID: provenanceId -%}
         {% endif -%}
@@ -35,16 +35,18 @@
             {% assign fullEncounterId = encounterId | prepend: 'Encounter/' -%}
             {% include 'Resource/Encounter' PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
 
-            {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.3 -%}
-            {% if locationId -%}
-                {% include 'Resource/Location' PL: firstSegments.PV1.3, ID: locationId -%}
+            {% evaluate locationId3 using 'ID/Location' PL: firstSegments.PV1.3 -%}
+            {% if locationId3 -%}
+                {% include 'Resource/Location' PL: firstSegments.PV1.3, ID: locationId3 -%}
             {% endif -%}
 
-            {% evaluate locationId using 'ID/Location' PL: firstSegments.PV1.6 -%}
-            {% if locationId -%}
-                {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId -%}
+            {% evaluate locationId6 using 'ID/Location' PL: firstSegments.PV1.6 -%}
+            {% if locationId6 -%}
+                {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId6 -%}
             {% endif -%}
-            
+
+            {% include 'Resource/Encounter' PV1: firstSegments.PV1, Location_ID_PV1_3: locationId3, Location_ID_PV1_6: locationId6, ID: encounterId -%}
+
             {% if patientId -%}
                 {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
             {% endif -%}

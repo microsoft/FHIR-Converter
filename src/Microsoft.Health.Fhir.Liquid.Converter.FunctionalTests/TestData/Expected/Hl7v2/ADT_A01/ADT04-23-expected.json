@@ -1,6 +1,6 @@
 ﻿{
   "resourceType": "Bundle",
-  "type": "transaction",
+  "type": "batch",
   "entry": [
     {
       "fullUrl": "urn:uuid:18548d54-14a8-815a-c1bb-396f35b37164",
@@ -162,10 +162,10 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:dd338e52-023d-44ac-5ede-c7f279ec6829",
+      "fullUrl": "urn:uuid:ab3d28cb-c909-4ba2-b02e-0a868895ef0b",
       "resource": {
         "resourceType": "Provenance",
-        "id": "dd338e52-023d-44ac-5ede-c7f279ec6829",
+        "id": "ab3d28cb-c909-4ba2-b02e-0a868895ef0b",
         "agent": [
           {
             "type": {
@@ -182,7 +182,7 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Provenance/dd338e52-023d-44ac-5ede-c7f279ec6829"
+        "url": "Provenance/ab3d28cb-c909-4ba2-b02e-0a868895ef0b"
       }
     },
     {
@@ -236,13 +236,13 @@
         "location": [
           {
             "location": {
-              "reference": "Location/"
+              "reference": "Location/1061dd71-d0a8-e8d0-7468-5be2eb4db1f8"
             },
             "status": "active"
           },
           {
             "location": {
-              "reference": "Location/"
+              "reference": "Location/affd96b8-87bc-956b-0215-7db7a8c6a9b3"
             },
             "status": "completed"
           }
