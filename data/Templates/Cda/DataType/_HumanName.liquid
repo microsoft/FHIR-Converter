@@ -1,0 +1,16 @@
+"use":{% include 'ValueSet/NameUse' code: HumanName.use -%},
+"family":"{{HumanName.family._}}",
+"given":[
+	{% assign givens = HumanName.given | to_array -%}
+	{% for g in givens -%}
+		"{{g._}}",
+	{% endfor -%}
+],
+"prefix":
+[
+	"{{HumanName.prefix._}}",
+],
+"suffix":
+[
+	"{{HumanName.suffix._}}",
+]

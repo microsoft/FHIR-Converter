@@ -1,0 +1,53 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Patient",
+        "id":"{{ ID }}",
+        "meta":
+        {
+            "profile":
+            [
+                "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient",
+            ],
+        },
+        "identifier":
+        [
+            {% assign ids = patientRole.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "address":
+        [
+            {% assign addrs = patientRole.addr | to_array -%}
+            {% for addr in addrs -%}
+            { {% include 'DataType/Address' Address: addr -%} },
+            {% endfor -%}
+        ],
+        "telecom":
+        [
+            {% assign telecoms = patientRole.telecom | to_array -%}
+            {% for telecom in telecoms -%}
+            { {% include 'DataType/ContactPoint' ContactPoint: telecom -%} },
+            {% endfor -%}
+        ],
+        "extension":
+        [
+            { {% include 'Extension/Race' Race: patientRole.patient -%} },
+            { {% include 'Extension/Ethnicity' Ethnicity: patientRole.patient -%} },
+        ],
+        "name":
+        [
+            {% assign names = patientRole.patient.name | to_array -%}
+            {% for name in names -%}
+            { {% include 'DataType/HumanName' HumanName: name -%} },
+            {% endfor -%}
+        ],
+        "gender":"{{ patientRole.patient.administrativeGenderCode.displayName }}",
+        "birthDate":"{{ patientRole.patient.birthTime.value | add_hyphens_date }}",
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Patient/{{ ID }}",
+    },
+},

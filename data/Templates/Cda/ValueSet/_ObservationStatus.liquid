@@ -1,0 +1,27 @@
+﻿{% if code == 'registered' -%}
+"registered"
+{% elsif code == 'received' -%}
+"registered"
+{% elsif code == 'preliminary' -%}
+"preliminary"
+{% elsif code == 'final' -%}
+"final"
+{% elsif code == 'completed' -%}
+"final"
+{% elsif code == 'amended' -%}
+"amended"
+{% elsif code == 'corrected' -%}
+"corrected"
+{% elsif code == 'cancelled' -%}
+"cancelled"
+{% elsif code == 'abandoned' -%}
+"cancelled"
+{% elsif code == 'entered-in-error' -%}
+"entered-in-error"
+{% elsif code == 'error' -%}
+"entered-in-error"
+{% elsif code == 'unknown' -%}
+"unknown"
+{% else -%}
+"unknown"
+{% endif -%}

@@ -1,0 +1,15 @@
+﻿{% if code == 'active' -%}
+"active"
+{% elsif code == 'cancelled' -%}
+"cancelled"
+{% elsif code == 'abandonded' -%}
+"cancelled"
+{% elsif code == 'entered-in-error' -%}
+"entered-in-error"
+{% elsif code == 'error' -%}
+"entered-in-error"
+{% elsif code == 'draft' -%}
+"draft"
+{% else -%}
+"active"
+{% endif -%}

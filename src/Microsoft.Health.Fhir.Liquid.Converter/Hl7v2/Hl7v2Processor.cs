@@ -3,21 +3,19 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.OutputProcessor;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessor;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 {
-    public class Hl7v2Processor : IFhirConverter
+    public class Hl7v2Processor : BaseProcessor
     {
         private readonly Hl7v2DataParser _dataParser = new Hl7v2DataParser();
         private readonly ProcessorSettings _settings;
@@ -27,7 +25,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             _settings = processorSettings;
         }
 
-        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             if (string.IsNullOrEmpty(rootTemplate))
             {
@@ -57,16 +55,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             return result.ToString(Formatting.Indented);
         }
 
-        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, CancellationToken cancellationToken, TraceInfo traceInfo = null)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            return Convert(data, rootTemplate, templateProvider, traceInfo);
-        }
-
         private Context CreateContext(ITemplateProvider templateProvider, Hl7v2Data hl7v2Data)
         {
             // Load data and templates
-            var timeout = _settings != null ? _settings.TimeOut : 0;
+            var timeout = _settings?.TimeOut ?? 0;
             var context = new Context(
                 environments: new List<Hash>() { Hash.FromAnonymousObject(new { hl7v2Data }) },
                 outerScope: new Hash(),
@@ -87,27 +79,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             context.AddFilters(typeof(Filters));
 
             return context;
-        }
-
-        private string RenderTemplates(Template template, Context context)
-        {
-            try
-            {
-                template.MakeThreadSafe();
-                return template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture));
-            }
-            catch (TimeoutException ex)
-            {
-                throw new RenderException(FhirConverterErrorCode.TimeoutError, Resources.TimeoutError, ex);
-            }
-            catch (RenderException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new RenderException(FhirConverterErrorCode.TemplateRenderingError, string.Format(Resources.TemplateRenderingError, ex.Message), ex);
-            }
         }
     }
 }

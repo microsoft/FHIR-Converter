@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Health.Fhir.Liquid.Converter.Cda;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -92,22 +93,24 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
 
         private static IFhirConverter CreateDataProcessor(DataType dataType)
         {
-            if (dataType == DataType.Hl7v2)
+            return dataType switch
             {
-                return new Hl7v2Processor();
-            }
-
-            throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported");
+                DataType.Hl7v2 => new Hl7v2Processor(),
+                DataType.Cda => new CdaProcessor(),
+                _ => throw new NotImplementedException(
+                    $"The conversion from data type {dataType} to FHIR is not supported")
+            };
         }
 
         private static ITemplateProvider CreateTemplateProvider(DataType dataType, string templateDirectory)
         {
-            if (dataType == DataType.Hl7v2)
+            return dataType switch
             {
-                return new Hl7v2TemplateProvider(templateDirectory);
-            }
-
-            throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported");
+                DataType.Hl7v2 => new Hl7v2TemplateProvider(templateDirectory),
+                DataType.Cda => new CdaTemplateProvider(templateDirectory),
+                _ => throw new NotImplementedException(
+                    $"The conversion from data type {dataType} to FHIR is not supported")
+            };
         }
 
         private static TraceInfo CreateTraceInfo(DataType dataType, bool isTraceInfo)
@@ -117,12 +120,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
 
         private static List<string> GetInputFiles(DataType dataType, string inputDataFolder)
         {
-            if (dataType == DataType.Hl7v2)
+            return dataType switch
             {
-                return Directory.EnumerateFiles(inputDataFolder, "*.hl7", SearchOption.AllDirectories).ToList();
-            }
-
-            return new List<string>();
+                DataType.Hl7v2 => Directory.EnumerateFiles(inputDataFolder, "*.hl7", SearchOption.AllDirectories).ToList(),
+                DataType.Cda => Directory.EnumerateFiles(inputDataFolder, "*.cda", SearchOption.AllDirectories).ToList(),
+                _ => new List<string>(),
+            };
         }
 
         private static void SaveConverterResult(string outputFilePath, ConverterResult result)
@@ -136,18 +139,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
 
         private static bool IsValidOptions(ConverterOptions options)
         {
-            var contentTofile = !string.IsNullOrEmpty(options.InputDataContent) &&
+            var contentToFile = !string.IsNullOrEmpty(options.InputDataContent) &&
                 !string.IsNullOrEmpty(options.OutputDataFile) &&
                 string.IsNullOrEmpty(options.InputDataFolder) &&
                 string.IsNullOrEmpty(options.OutputDataFolder);
 
-            var folderTofolder = string.IsNullOrEmpty(options.InputDataContent) &&
+            var folderToFolder = string.IsNullOrEmpty(options.InputDataContent) &&
                 string.IsNullOrEmpty(options.OutputDataFile) &&
                 !string.IsNullOrEmpty(options.InputDataFolder) &&
                 !string.IsNullOrEmpty(options.OutputDataFolder) &&
                 !IsSameDirectory(options.InputDataFolder, options.OutputDataFolder);
 
-            return contentTofile || folderTofolder;
+            return contentToFile || folderToFolder;
         }
 
         private static bool IsSameDirectory(string inputFolder, string outputFolder)

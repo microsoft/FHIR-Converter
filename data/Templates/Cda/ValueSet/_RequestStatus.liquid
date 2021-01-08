@@ -1,0 +1,23 @@
+﻿{% if code == 'draft' -%}
+"draft"
+{% elsif code == 'active' -%}
+"active"
+{% elsif code == 'suspended' -%}
+"on-hold"
+{% elsif code == 'on-hold' -%}
+"on-hold"
+{% elsif code == 'failed' -%}
+"revoked"
+{% elsif code == 'revoked' -%}
+"revoked"
+{% elsif code == 'completed' -%}
+"completed"
+{% elsif code == 'entered-in-error' -%}
+"entered-in-error"
+{% elsif code == 'error' -%}
+"entered-in-error"
+{% elsif code == 'unknown' -%}
+"unknown"
+{% else -%}
+"unknown"
+{% endif -%}

@@ -1,0 +1,11 @@
+﻿{% if code == 'active' -%}
+"active"
+{% elsif code == 'aborted' -%}
+"resolved"
+{% elsif code == 'completed' -%}
+"resolved"
+{% elsif code == 'suspended' -%}
+"inactive"
+{% else -%}
+""
+{% endif -%}

@@ -1,0 +1,33 @@
+﻿{% if code == 'planned' -%}
+"planned"
+{% elsif code == 'arrived' -%}
+"arrived"
+{% elsif code == 'triaged' -%}
+"triaged"
+{% elsif code == 'accepted' -%}
+"triaged"
+{% elsif code == 'active' -%}
+"in-progress"
+{% elsif code == 'onleave' -%}
+"onleave"
+{% elsif code == 'suspended' -%}
+"onleave"
+{% elsif code == 'normal' -%}
+"finished"
+{% elsif code == 'complete' -%}
+"finished"
+{% elsif code == 'finished' -%}
+"finished"
+{% elsif code == 'cancelled' -%}
+"cancelled"
+{% elsif code == 'abandoned' -%}
+"cancelled"
+{% elsif code == 'error' -%}
+"entered-in-error"
+{% elsif code == 'entered-in-error' -%}
+"entered-in-error"
+{% elsif code == 'unknown' -%}
+"unknown"
+{% else -%}
+"unknown"
+{% endif -%}
