@@ -5,18 +5,23 @@
         {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|AVR|MSH' -%}
 
         {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
+        {% evaluate organizationId4 using 'ID/Organization' HD: firstSegments.MSH.4 -%}
+        {% evaluate organizationId6 using 'ID/Organization' HD: firstSegments.MSH.6 -%}
+        {% evaluate organizationId22 using 'ID/Organization' HD: firstSegments.MSH.22 -%}
+
+        {% if organizationId4 -%}
+            {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId4 -%}
+        {% endif -%}
+
+        {% if organizationId6 -%}
+            {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId6 -%}
+        {% endif -%}
+
+        {% if organizationId22 -%}
+            {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId22 -%}
+        {% endif -%}
+
         {% if messageHeaderId -%}
-            {% evaluate organizationId4 using 'ID/Organization' HD: firstSegments.MSH.4 -%}
-            {% evaluate organizationId6 using 'ID/Organization' HD: firstSegments.MSH.6 -%}
-
-            {% if organizationId4 -%}
-                {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId4 -%}
-            {% endif -%}
-
-            {% if organizationId6 -%}
-                {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId6 -%}
-            {% endif -%}
-
             {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, Organization_ID_MSH_4: organizationId4, Organization_ID_MSH_6: organizationId6, ID: messageHeaderID -%}
         {% endif -%}
         
