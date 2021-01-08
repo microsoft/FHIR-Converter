@@ -84,12 +84,22 @@
             {% assign rxaSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'RXA' -%}
             {% for rxaSegment in rxaSegmentLists.RXA -%}
                 {% evaluate practitionerId using 'ID/Practitioner' XCN: rxaSegment.10 -%}
+                {% evaluate organizationId using 'ID/Organization' CWE: rxaSegment.17 -%}
+                {% evaluate locationId using 'ID/Location' CWE: rxaSegment.27 -%}
 
                 {% if practitionerId -%}
                     {% include 'Resource/Practitioner' RXA: rxaSegment, ID: practitionerId -%}
                 {% endif -%}
 
-                {% include 'Resource/Immunization' RXA: rxaSegment, Practitioner_ID_RXA_10: practitionerId, ID: immunizationId -%}
+                {% if organizationId -%}
+                    {% include 'Resource/Organization' RXA: rxaSegment, ID: organizationId -%}
+                {% endif -%}
+
+                {% if locationId -%}
+                    {% include 'Resource/Location' RXA: rxaSegment, ID: locationId -%}
+                {% endif -%}
+
+                {% include 'Resource/Immunization' RXA: rxaSegment, Practitioner_ID_RXA_10: practitionerId, Organization_ID_RXA_17: organizationId, Location_ID_RXA_27: locationId, ID: immunizationId -%}
 
                 {% assign obxSegmentLists = hl7v2Data | get_related_segment_list: rxaSegment, 'OBX' -%}
                 {% for obxSegment in obxSegmentLists.OBX -%}

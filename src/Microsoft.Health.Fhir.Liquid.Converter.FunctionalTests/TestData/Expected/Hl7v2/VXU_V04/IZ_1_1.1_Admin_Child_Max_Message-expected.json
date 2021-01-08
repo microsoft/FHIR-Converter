@@ -302,7 +302,10 @@
         },
         "lotNumber": "Z0860BB",
         "expirationDate": "2012-11-04",
-        "status": "completed"
+        "status": "completed",
+        "manufacturer": {
+          "reference": "Organization/bcdbbced-4721-ecce-55fe-75020f5c6048"
+        }
       },
       "request": {
         "method": "PUT",
@@ -332,6 +335,24 @@
       "request": {
         "method": "PUT",
         "url": "Practitioner/6389563f-944d-cf03-c166-cab811fa11b5"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bcdbbced-4721-ecce-55fe-75020f5c6048",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "bcdbbced-4721-ecce-55fe-75020f5c6048",
+        "identifier": [
+          {
+            "value": "CSL",
+            "system": "MVX"
+          }
+        ],
+        "name": "CSL Behring"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/bcdbbced-4721-ecce-55fe-75020f5c6048"
       }
     },
     {

@@ -269,7 +269,10 @@
         },
         "lotNumber": "315841",
         "expirationDate": "2015-12-16",
-        "status": "completed"
+        "status": "completed",
+        "manufacturer": {
+          "reference": "Organization/1d6edd62-0051-4efa-bc0b-db345da54f10"
+        }
       },
       "request": {
         "method": "PUT",
@@ -307,6 +310,24 @@
       "request": {
         "method": "PUT",
         "url": "Practitioner/9d113ef1-15cf-ec5c-6e04-230bf6b8bf71"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1d6edd62-0051-4efa-bc0b-db345da54f10",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "1d6edd62-0051-4efa-bc0b-db345da54f10",
+        "identifier": [
+          {
+            "value": "PMC",
+            "system": "MVX"
+          }
+        ],
+        "name": "Sanofi Pasteur"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/1d6edd62-0051-4efa-bc0b-db345da54f10"
       }
     },
     {
