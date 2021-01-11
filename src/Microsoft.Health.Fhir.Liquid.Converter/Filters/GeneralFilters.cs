@@ -32,7 +32,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 map[mapping].ContainsKey(originalCode) &&
                 map[mapping][originalCode].ContainsKey(property) ?
                 map[mapping][originalCode][property] :
-                null;
+                originalCode;
         }
 
         public static string Evaluate(string input, string property)
