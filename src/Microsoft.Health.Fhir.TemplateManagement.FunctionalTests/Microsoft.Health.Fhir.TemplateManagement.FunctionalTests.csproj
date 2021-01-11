@@ -6,6 +6,12 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <OutputPath>..\..\bin\Microsoft.Health.Fhir.TemplateManagement.FunctionalTests\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Remove="TestData\Expected\**" />
     <EmbeddedResource Remove="TestData\Expected\**" />

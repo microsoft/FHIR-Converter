@@ -36,13 +36,21 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             {
                 var fileContent = content.ToDictionary(
                     item => item.Key,
-                    item => item.Value == null ? null : Encoding.UTF8.GetString(item.Value));
+                    item => item.Value == null ? null : GetContentWithoutBOM(item.Value));
                 var parsedTemplate = TemplateUtility.ParseHl7v2Templates(fileContent);
                 return parsedTemplate;
             }
             catch (Exception ex)
             {
                 throw new TemplateParseException(TemplateManagementErrorCode.ParseTemplatesFailed, "Parse templates from image failed.", ex);
+            }
+        }
+
+        private static string GetContentWithoutBOM(byte[] content)
+        {
+            using (var streamReader = new StreamReader(new MemoryStream(content), Encoding.UTF8, true))
+            {
+                return streamReader.ReadToEnd();
             }
         }
     }
