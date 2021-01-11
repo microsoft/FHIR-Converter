@@ -29,6 +29,13 @@ stages:
   - job: Build
     steps:
     - script: echo $(version)
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'restore'
+        projects: '$(solution)'
+        feedsToUse: 'select'
+
     - task: DotNetCoreCLI@2
       displayName: 'dotnet build'
       inputs:
