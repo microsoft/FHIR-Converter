@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using DotLiquid;
 using Microsoft.Extensions.Caching.Memory;
@@ -35,6 +36,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string testInvalidTemplateImageReference;
         private readonly ContainerRegistry _containerRegistry = new ContainerRegistry();
         private readonly ContainerRegistryInfo _containerRegistryInfo;
+        private static readonly string _templateDirectory = Path.Join("..", "..", "data", "Templates");
+        private static readonly string _sampleDataDirectory = Path.Join("..", "..", "data", "SampleData");
 
         public TemplateCollectionFunctionalTests()
         {
@@ -75,20 +78,37 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             yield return new object[] { new List<int> { 767, 838 }, "templatetest", "multilayers" };
         }
 
-        public static IEnumerable<object[]> GetHl7v2DataAndTemplateImageReference()
+        public static IEnumerable<object[]> GetHl7v2DataAndEntryTemplate()
         {
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\ADT01-23.hl7", "ADT_A01" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\IZ_1_1.1_Admin_Child_Max_Message.hl7", "VXU_V04" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\LAB-ORU-1.hl7", "ORU_R01" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\MDHHS-OML-O21-1.hl7", "OML_O21" };
+            var data = new List<object[]>
+            {
+                new object[] { @"ADT01-23.hl7", @"ADT_A01" },
+                new object[] { @"IZ_1_1.1_Admin_Child_Max_Message.hl7", @"VXU_V04" },
+                new object[] { @"LAB-ORU-1.hl7", @"ORU_R01" },
+                new object[] { @"MDHHS-OML-O21-1.hl7", @"OML_O21" },
+            };
+            return data.Select(item => new object[]
+            {
+                Path.Join(_sampleDataDirectory, "Hl7v2", Convert.ToString(item[0])),
+                Convert.ToString(item[1]),
+            });
         }
 
-        public static IEnumerable<object[]> GetHl7v2DataAndTemplateImageReferenceWithoutGivenTemplate()
+        public static IEnumerable<object[]> GetHl7v2DataAndTemplateSources()
         {
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\ADT01-23.hl7", "ADT_A01" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\IZ_1_1.1_Admin_Child_Max_Message.hl7", "VXU_V04" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\LAB-ORU-1.hl7", "ORU_R01" };
-            yield return new object[] { @"..\..\..\..\..\data\SampleData\Hl7v2\MDHHS-OML-O21-1.hl7", "OML_O21" };
+            var data = new List<object[]>
+            {
+                new object[] { @"ADT01-23.hl7", @"ADT_A01" },
+                new object[] { @"IZ_1_1.1_Admin_Child_Max_Message.hl7", @"VXU_V04" },
+                new object[] { @"LAB-ORU-1.hl7", @"ORU_R01" },
+                new object[] { @"MDHHS-OML-O21-1.hl7", @"OML_O21" },
+            };
+            return data.Select(item => new object[]
+            {
+                Path.Join(_sampleDataDirectory, "Hl7v2", Convert.ToString(item[0])),
+                Path.Join(_templateDirectory, "Hl7v2"),
+                Convert.ToString(item[1]),
+            });
         }
 
         public static IEnumerable<object[]> GetNotExistImageInfo()
@@ -219,7 +239,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         }
 
         [Theory]
-        [MemberData(nameof(GetHl7v2DataAndTemplateImageReference))]
+        [MemberData(nameof(GetHl7v2DataAndEntryTemplate))]
         public async Task GetTemplateCollectionFromACR_WhenGivenHl7v2DataForConverting__ExpectedFhirResourceShouldBeReturnedAsync(string hl7v2Data, string entryTemplate)
         {
             if (_containerRegistryInfo == null)
@@ -234,7 +254,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         }
 
         [Theory]
-        [MemberData(nameof(GetHl7v2DataAndTemplateImageReferenceWithoutGivenTemplate))]
+        [MemberData(nameof(GetHl7v2DataAndEntryTemplate))]
         public async Task GetTemplateCollectionFromACR_WhenGivenHl7v2DataForConverting_IfTemplateNotExist_ExceptionWillBeThrownAsync(string hl7v2Data, string entryTemplate)
         {
             if (_containerRegistryInfo == null)
@@ -262,6 +282,25 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
             Assert.Single(templateCollection);
             Assert.Equal(defaultTemplatesCounts, templateCollection.First().Count());
+        }
+
+        // Conversion results of DefaultTemplates.tar.gz and default template folder should be the same.
+        [Theory]
+        [MemberData(nameof(GetHl7v2DataAndTemplateSources))]
+        public async Task GivenSameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
+        {
+            var folderTemplateProvider = new Hl7v2TemplateProvider(defaultTemplateDirectory);
+
+            var templateProviderFactory = new TemplateCollectionProviderFactory(new MemoryCache(new MemoryCacheOptions()), Options.Create(new TemplateCollectionConfiguration()));
+            var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(ImageInfo.DefaultTemplateImageReference, string.Empty);
+            var imageTemplateProvider = new Hl7v2TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
+
+            var hl7v2Processor = new Hl7v2Processor();
+            var inputContent = File.ReadAllText(inputFile);
+
+            var imageResult = hl7v2Processor.Convert(inputContent, rootTemplate, imageTemplateProvider);
+            var folderResult = hl7v2Processor.Convert(inputContent, rootTemplate, folderTemplateProvider);
+            Assert.Equal(imageResult, folderResult);
         }
 
         private void TestByTemplate(string inputFile, string entryTemplate, List<Dictionary<string, Template>> templateProvider)
