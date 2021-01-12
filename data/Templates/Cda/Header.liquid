@@ -1,3 +1,38 @@
+{% if msg.ClinicalDocument.legalAuthenticator -%}
+    {% include 'Resource/Practitioner' practitioner: msg.ClinicalDocument.legalAuthenticator.assignedEntity ID: 'practitioner-id' -%}
+{% endif -%}
+
+{% if msg.ClinicalDocument.componentOf.encompassingEncounter -%}
+    {% include 'Resource/Encounter' encounter: msg.ClinicalDocument.componentOf.encompassingEncounter ID: "encounter-id" -%}
+{% endif -%}
+
+{% if msg.ClinicalDocument.componentOf.encompassingEncounter.location -%}
+    {% include 'Resource/Location' location: msg.ClinicalDocument.componentOf.encompassingEncounter.location ID: "location-id" -%}
+{% endif -%}
+
+{% if msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization.name._ -%}
+    {% include 'Resource/Organization' org: msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization ID: "organization-id" -%}
+{% endif -%}
+
+{% assign authors = msg.ClinicalDocument.author | to_array -%}
+{% for author in authors -%}
+    {% if author.assignedAuthor.assignedAuthoringDevice -%}
+        {% include 'Resource/Device' author: author.assignedAuthor ID: "device-id" -%}
+    {% endif -%}
+
+    {% if author.assignedAuthor.representedOrganization -%}
+        {% include 'Resource/Organization' org: author.assignedAuthor.representedOrganization ID: "organization-id-2" -%}
+    {% endif -%}
+
+    {% if author.assignedAuthor -%}
+        {% include 'Resource/Practitioner' practitioner: author.assignedAuthor ID: "practitioner-id-2" -%}
+    {% endif -%}
+{% endfor -%}
+
 {% if msg.ClinicalDocument.recordTarget.patientRole -%}
-    {% include 'Resource/Patient' patientRole: msg.ClinicalDocument.recordTarget.patientRole ID: '123' -%}
+    {% include 'Resource/Patient' patientRole: msg.ClinicalDocument.recordTarget.patientRole ID: 'patient-id' -%}
+{% endif -%}
+
+{% if msg.ClinicalDocument.recordTarget.patientRole.patient.guardian -%}
+    {% include 'Resource/RelatedPerson' relatedPerson: msg.ClinicalDocument.recordTarget.patientRole.patient.guardian ID: "relatedPerson-id" -%}
 {% endif -%}

@@ -3,5 +3,7 @@
     "type": "batch",
     "entry": [
     	{% include 'Header' -%}
+        {% include 'Section/AllergiesAndAdverseReactions' -%}
+        {% include 'Resource/DocumentReference' docref: msg ID: "documentReference-id" -%}
     ]
 }

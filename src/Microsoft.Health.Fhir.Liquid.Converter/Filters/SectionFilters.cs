@@ -24,30 +24,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return input;
         }
 
-        public static List<object> ToArray(object input)
-        {
-            if (input is IEnumerable<object> enumerableObject)
-            {
-                return enumerableObject.ToList();
-            }
-            else
-            {
-                return new List<object> { input };
-            }
-        }
-
-        public static List<object> Concat(List<object> l1, List<object> l2)
-        {
-            var result = new List<object>();
-            result.AddRange(l1.Where(x => x != null));
-            result.AddRange(l2.Where(x => x != null));
-            return result;
-        }
-
         public static IDictionary<string, object> GetFirstCdaSections(Hash data, string sectionNameContent)
         {
             var result = new Dictionary<string, object>();
-            var sectionNames = sectionNameContent.Split("|");
+            var sectionNames = sectionNameContent.Split("|", StringSplitOptions.RemoveEmptyEntries);
             var components = ((((data["ClinicalDocument"] as Hash)?
                 ["component"] as Hash)?
                 ["structuredBody"] as Hash)?
@@ -80,7 +60,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         public static IDictionary<string, object> GetCdaSectionLists(IDictionary<string, object> data, string sectionNameContent)
         {
             var result = new Dictionary<string, object>();
-            var sectionNames = sectionNameContent.Split("|");
+            var sectionNames = sectionNameContent.Split("|", StringSplitOptions.RemoveEmptyEntries);
             var components = ((((data["ClinicalDocument"] as Hash)?
                 ["component"] as Hash)?
                 ["structuredBody"] as Hash)?
@@ -120,7 +100,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         public static IDictionary<string, object> GetFirstCdaSectionsByTemplateId(Hash data, string templateIdContent)
         {
             var result = new Dictionary<string, object>();
-            var templateIds = templateIdContent.Split("|");
+            var templateIds = templateIdContent.Split("|", StringSplitOptions.RemoveEmptyEntries);
             var components = ((((data["ClinicalDocument"] as Hash)?
                 ["component"] as Hash)?
                 ["structuredBody"] as Hash)?

@@ -1,0 +1,43 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Condition",
+        "id":"{{ ID }}",
+        "identifier":
+        {
+            {% assign ids = conditionEntry.id | to_array -%}
+            {% for id in ids -%}
+            {% include 'DataType/Identifier' Identifier: id -%}
+            {% endfor -%}
+        },
+        "clinicalStatus":
+        {
+            {% if entryRelationship.observation.templateId.root == 2.16.840.1.113883.10.20.22.4.5 -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: conditionEntry.entryRelationship.observation.value -%}
+            {% endif -%}
+        },
+        "code":
+        {
+            {% assign translations = conditionEntry.value.translation | to_array -%}
+            {% if translation.first -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: translations.first -%}
+            {% endif -%}
+            {% if translation.first == null -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: conditionEntry.value -%}
+            {% endif -%}
+        },
+        {% if conditionEntry.effectiveTime.low.value -%}
+        "onsetDateTime":"{{ conditionEntry.effectiveTime.low.value | format_as_date_time }}",
+        {% endif -%}
+        "onsetAge":
+        {
+            {% if entryRelationship.observation.templateId.root == 2.16.840.1.113883.10.20.22.4.31 -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: conditionEntry.entryRelationship.observation.value.value -%}
+            {% endif -%}
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Condition/{{ ID }}",
+    },
+},

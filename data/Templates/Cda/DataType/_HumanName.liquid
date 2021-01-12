@@ -3,7 +3,11 @@
 "given":[
 	{% assign givens = HumanName.given | to_array -%}
 	{% for g in givens -%}
-		"{{g._}}",
+		{% if g._ -%}
+			"{{g._}}",
+		{% elsif g -%}
+			"{{g}}",
+		{% endif -%}
 	{% endfor -%}
 ],
 "prefix":

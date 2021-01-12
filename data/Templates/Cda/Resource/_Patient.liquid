@@ -1,4 +1,4 @@
-{
+﻿{
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
         "resourceType": "Patient",
@@ -43,8 +43,28 @@
             { {% include 'DataType/HumanName' HumanName: name -%} },
             {% endfor -%}
         ],
-        "gender":"{{ patientRole.patient.administrativeGenderCode.displayName }}",
+        "gender":"{{ patientRole.patient.administrativeGenderCode.displayName | downcase }}",
         "birthDate":"{{ patientRole.patient.birthTime.value | add_hyphens_date }}",
+        "communication":
+        [
+            {% assign languageCommunications = patientRole.patient.languageCommunication | to_array -%}
+            {% for languageCommunication in languageCommunications -%}
+            {
+                "language":
+                {
+                    "coding":
+                    [
+                        {
+                            "system":"urn:ietf:bcp:47",
+                            "code":"{{ languageCommunication.languageCode.code }}",
+                            "display":{% include 'ValueSet/Language' code: languageCommunication.languageCode.code -%}
+                        },
+                    ],
+                },
+                "preferred":"{{ languageCommunication.preferenceInd.value }}",
+            },
+            {% endfor -%}
+        ],
     },
     "request":{
         "method":"PUT",

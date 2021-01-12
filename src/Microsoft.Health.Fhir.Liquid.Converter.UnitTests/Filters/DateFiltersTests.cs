@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Xunit;
@@ -80,6 +81,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         public void GivenAnInvalidHl7v2DateTime_WhenFormatAsDateTime_ExceptionShouldBeThrown(string input)
         {
             Assert.Throws<RenderException>(() => Filters.FormatAsDateTime(input));
+        }
+
+        [Fact]
+        public void NowTests()
+        {
+            var dateTime = DateTime.Parse(Filters.Now(string.Empty));
+            Assert.True(dateTime.Year > 2020);
+            Assert.True(dateTime.Month >= 1 && dateTime.Month < 13);
+            Assert.True(dateTime.Day >= 1 && dateTime.Day < 32);
         }
     }
 }

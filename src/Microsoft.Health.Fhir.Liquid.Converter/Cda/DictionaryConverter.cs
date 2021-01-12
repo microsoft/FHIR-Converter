@@ -135,14 +135,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
 
                         var v = ReadValue(reader);
 
-                        // TODO: Remove attribute "@" and text content "#"
+                        // TODO: Check attribute "@" and text content "#"
                         if (propertyName.StartsWith("@"))
                         {
+                            // If property is attribute, remove "@"
                             propertyName = propertyName[1..];
                             obj[propertyName] = v;
                         }
                         else if (propertyName.StartsWith("#text", StringComparison.InvariantCultureIgnoreCase))
                         {
+                            // If property is text content, replace it with "_"
                             propertyName = "_";
                             obj[propertyName] = v;
                         }
@@ -154,6 +156,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                             }
                             else
                             {
+                                // Some properties are saved as text content while some others are saved as element, e.g., <family qualifier="SP">Betterhalf</family> or <family>Betterhalf</family>
+                                // If saved as text content, it is saved in "x.#text", which is transformed to "x._".
+                                // If saved as element, it is saved in "x" and we need to turn it into "x._" as well.
                                 var innerObj = new Dictionary<string, object>() { { "_", v } };
                                 obj[propertyName] = innerObj;
                             }

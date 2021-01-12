@@ -3,7 +3,7 @@
 {% for e in entries -%}
     {% assign relationships = e.act.entryRelationship | to_array -%}
     {% for r in relationships -%}
-        {% if r.observation.templateId.root | contains: '"2.16.840.1.113883.10.20.22.4.7"' -%}
+        {% if r.observation.templateId | to_json_string | contains: '2.16.840.1.113883.10.20.22.4.7' -%}
             {% assign id = r.observation | to_json_string | generate_uuid -%}
             {% include 'Resource/AllergyIntolerance' allergyStatus: e.act.statusCode, allergyEntry: r.observation, ID: id -%},
             {% include 'Reference/AllergyIntolerance/Patient' ID: id, REF: '123' -%},
