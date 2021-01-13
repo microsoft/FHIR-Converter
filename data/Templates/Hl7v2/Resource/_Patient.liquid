@@ -42,9 +42,11 @@
         ],
         "name":
         [
+            {% for p in PID.5.Repeats -%}
             {
-                {% include 'DataType/XPN' XPN: PID.5 -%}
+                {% include 'DataType/XPN' XPN: p -%}
             },
+            {% endfor -%}
             {
                 {% include 'DataType/XPN' XPN: PID.9 -%}
             },
@@ -53,9 +55,11 @@
         "gender":"{{ PID.8.Value | get_property: 'CodeSystem/Gender', 'code' }}",
         "address":
         [
+            {% for p in PID.11.Repeats -%}
             {
-                {% include 'DataType/XAD' XAD: PID.11 -%}
+                {% include 'DataType/XAD' XAD: p -%}
             },
+            {% endfor -%}
             {
                 "district":"{{ PID.12.Value }}",
             },

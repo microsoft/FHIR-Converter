@@ -52,12 +52,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             await OrasExecutionAsync(string.Concat(command, argument), inputFolder);
         }
 
-        private async Task OrasExecutionAsync(string command, string orasWorkingDirectory)
+        public static async Task OrasExecutionAsync(string command, string orasWorkingDirectory)
         {
             TaskCompletionSource<bool> eventHandled = new TaskCompletionSource<bool>();
+
             Process process = new Process
             {
-                StartInfo = new ProcessStartInfo(Path.Combine(AppContext.BaseDirectory, "oras.exe")),
+                StartInfo = new ProcessStartInfo(Constants.OrasFile),
             };
 
             process.StartInfo.Arguments = command;
