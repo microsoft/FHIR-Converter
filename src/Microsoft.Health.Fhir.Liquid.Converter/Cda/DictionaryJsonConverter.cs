@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
 {
-    public class DictionaryConverter : JsonConverter
+    public class DictionaryJsonConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -91,7 +91,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 case JsonToken.Bytes:
                     return reader.Value;
                 default:
-                    throw new JsonSerializationException(string.Format("Unexpected token when converting IDictionary<string, object>: {0}", reader.TokenType));
+                    throw new JsonSerializationException($"Unexpected token when converting IDictionary<string, object>: {reader.TokenType}");
             }
         }
 
@@ -142,7 +142,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                             propertyName = propertyName[1..];
                             obj[propertyName] = v;
                         }
-                        else if (propertyName.StartsWith("#text", StringComparison.InvariantCultureIgnoreCase))
+                        else if (propertyName.Equals("#text", StringComparison.InvariantCultureIgnoreCase))
                         {
                             // If property is text content, replace it with "_"
                             propertyName = "_";
@@ -156,9 +156,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                             }
                             else
                             {
-                                // Some properties are saved as text content while some others are saved as element, e.g., <family qualifier="SP">Betterhalf</family> or <family>Betterhalf</family>
-                                // If saved as text content, it is saved in "x.#text", which is transformed to "x._".
-                                // If saved as element, it is saved in "x" and we need to turn it into "x._" as well.
+                                // Some properties are saved in element while some others are saved in text content, e.g., <family>Betterhalf</family> and <family qualifier="SP">Betterhalf</family>
+                                // If saved as element, it is saved in "x".
+                                // If saved as text content, it is saved in "x.#text".
+                                // We need to convert them to same level with "x._".
+                                // TODO: Double check the logic (list?)
                                 var innerObj = new Dictionary<string, object>() { { "_", v } };
                                 obj[propertyName] = innerObj;
                             }

@@ -44,9 +44,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         public static List<string> Match(string data, string regexString)
         {
             var result = new List<string>();
+            if (string.IsNullOrEmpty(data))
+            {
+                return result;
+            }
+
             var regex = new Regex(regexString);
             var matches = regex.Match(data);
-            foreach (Match match in matches.Groups)
+            foreach (Match match in matches.Captures)
             {
                 result.Add(match.Value);
             }
@@ -56,7 +61,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static string ToJsonString(object data)
         {
-            return JsonConvert.SerializeObject(data, Formatting.None);
+            return data == null ? null : JsonConvert.SerializeObject(data, Formatting.None);
         }
 
         public static string Gzip(string data)

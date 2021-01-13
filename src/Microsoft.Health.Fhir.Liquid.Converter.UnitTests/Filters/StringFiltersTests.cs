@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
@@ -43,6 +44,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             Assert.Equal("\"", Filters.UnescapeSpecialChars("\\\""));
             Assert.Equal(string.Empty, Filters.UnescapeSpecialChars(string.Empty));
             Assert.Null(Filters.UnescapeSpecialChars(null));
+        }
+
+        [Fact]
+        public void MatchTests()
+        {
+            Assert.Empty(Filters.Match(string.Empty, "[0-9]"));
+            Assert.Empty(Filters.Match(null, "[0-9]"));
+            Assert.Single(Filters.Match("foo1", "[0-9]"));
+            Assert.Throws<ArgumentNullException>(() => Filters.Match("foo1", null));
+            Assert.ThrowsAny<ArgumentException>(() => Filters.Match("foo1", "[a-z"));
+        }
+
+        [Fact]
+        public void ToJsonStringTests()
+        {
+            Assert.Null(Filters.ToJsonString(null));
+            Assert.Equal(@"[""a"",""b""]", Filters.ToJsonString(new List<string>() { "a", "b" }));
         }
 
         [Fact]

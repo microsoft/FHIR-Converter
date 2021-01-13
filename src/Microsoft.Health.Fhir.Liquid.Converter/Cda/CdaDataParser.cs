@@ -19,7 +19,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
             RemoveNamespacePrefix(xdoc.Root);
 
             var jsonString = JsonConvert.SerializeObject(xdoc);
-            var dataDictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonString, new DictionaryConverter()) ?? new Dictionary<string, object>();
+            var dataDictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonString, new DictionaryJsonConverter()) ?? new Dictionary<string, object>();
             dataDictionary["_originalData"] = document;
 
             return new Dictionary<string, object>()

@@ -45,7 +45,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 {
                     if (component is Dictionary<string, object> componentDict &&
                         componentDict.GetValueOrDefault("section") is Dictionary<string, object> sectionDict &&
-                        sectionDict.GetValueOrDefault("title") is string titleString &&
+                        sectionDict.GetValueOrDefault("title") is Dictionary<string, object> titleDict &&
+                        titleDict.GetValueOrDefault("_") is string titleString &&
                         titleString.Contains(sectionName, StringComparison.InvariantCultureIgnoreCase))
                     {
                         result[NormalizeSectionName(sectionName)] = sectionDict;
@@ -78,7 +79,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 {
                     if (component is Dictionary<string, object> componentDict &&
                         componentDict.GetValueOrDefault("section") is Dictionary<string, object> sectionDict &&
-                        sectionDict.GetValueOrDefault("title") is string titleString &&
+                        sectionDict.GetValueOrDefault("title") is Dictionary<string, object> titleDict &&
+                        titleDict.GetValueOrDefault("_") is string titleString &&
                         titleString.Contains(sectionName, StringComparison.InvariantCultureIgnoreCase))
                     {
                         var normalizedSectionName = NormalizeSectionName(sectionName);
