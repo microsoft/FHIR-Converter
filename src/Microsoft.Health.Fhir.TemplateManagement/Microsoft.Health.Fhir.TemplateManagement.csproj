@@ -5,16 +5,8 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>true</IsPackable>
     <NuspecFile>Microsoft.Health.Fhir.Liquid.Converter.nuspec</NuspecFile>
+    <OrasWinUrl>https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_windows_amd64.tar.gz</OrasWinUrl>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\..\tool\oras-linux" Link="oras-linux">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\tool\oras.exe" Link="oras.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
   
   <ItemGroup>
     <PackageReference Include="Ensure.That" Version="9.2.0" />
@@ -35,19 +27,25 @@
   </ItemGroup>
   
   <ItemGroup>
-    <EmbeddedResource Include="../../bin/DefaultTemplates.tar.gz">
-      <Link>DefaultTemplates.tar.gz</Link>
+    <EmbeddedResource Include="../../bin/Hl7v2DefaultTemplates.tar.gz">
+      <Link>Hl7v2DefaultTemplates.tar.gz</Link>
     </EmbeddedResource>
   </ItemGroup>
   
   <ItemGroup>
-    <None Update="oras-linux">
+    <None Update="oras.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="mkdir ..\..\bin &amp; tar -zcvf ../../bin/DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
+    <Exec Command="mkdir ..\..\bin &amp; tar -zcvf ../../bin/Hl7v2DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
   </Target>
-
+  
+  <Target Name="DownloadOrasFile" BeforeTargets="Build">
+    <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="../../bin">
+      <Output TaskParameter="DownloadedFile" ItemName="Content" />
+    </DownloadFile>
+    <Exec Command="tar -xvf ..\..\bin\oras_0.8.1_windows_amd64.tar.gz -C ..\..\bin &amp; copy ..\..\bin\oras.exe ." />
+  </Target>
 </Project>
