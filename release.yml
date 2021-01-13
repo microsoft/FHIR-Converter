@@ -29,6 +29,16 @@ stages:
   - job: Build
     steps:
     - script: echo $(version)
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet restore'
+      inputs:
+        command: 'restore'
+        projects: '$(solution)'
+        arguments: '--configuration $(buildConfiguration)'
+        feedsToUse: 'select'
+        vstsFeed: '7621b231-1a7d-4364-935b-2f72b911c43d/a60b7c8b-c6ae-4a8e-bd15-a526b603a1f2'
+
     - task: DotNetCoreCLI@2
       displayName: 'dotnet build'
       inputs:
