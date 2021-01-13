@@ -32,6 +32,18 @@
                         },
                     ],
                 },
+                "who":
+                {
+                    {% if MSH.4 and Organization_ID_MSH_4 -%}
+                    "reference":"Organization/{{ Organization_ID_MSH_4 }}",
+                    {% endif -%}
+                    {% if MSH.22 and Organization_ID_MSH_22 -%}
+                    "reference":"Organization/{{ Organization_ID_MSH_22 }}",
+                    {% endif -%}
+                    {% if ORC.10 and Practitioner_ID_ORC_10 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_ORC_10 }}",
+                    {% endif -%}
+                },
             },
             {
                 "type":
@@ -48,6 +60,12 @@
                         },
                     ],
                 },
+                "who":
+                {
+                    {% if ORC.11 and Practitioner_ID_ORC_11 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_ORC_11 }}",
+                    {% endif -%}
+                },
             },
             {
                 "type":
@@ -63,6 +81,15 @@
                             {% endif -%}
                         },
                     ],
+                },
+                "who":
+                {
+                    {% if ORC.12 and Practitioner_ID_ORC_12 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_ORC_12 }}",
+                    {% endif -%}
+                    {% if ORC.24 and Practitioner_address_ID_ORC_24 -%}
+                    "reference":"Practitioner.address/{{ Practitioner_address_ID_ORC_24 }}",
+                    {% endif -%}
                 },
             },
         ],
@@ -95,6 +122,18 @@
             ],
         },
         "occurredDateTime":"{{ ORC.9.Value | format_as_date_time }}",
+        "location":
+        {
+            {% if ORC.21 and Location_ID_ORC_21 -%}
+            "reference":"Location/{{ Location_ID_ORC_21 }}",
+            {% endif -%}
+            {% if ORC.22 and Location_address_ID_ORC_22 -%}
+            "reference":"Location.address/{{ Location_address_ID_ORC_22 }}",
+            {% endif -%}
+            {% if ORC.23 and Location_telecom_ID_ORC_23 -%}
+            "reference":"Location.telecom/{{ Location_telecom_ID_ORC_23 }}",
+            {% endif -%}
+        },
     },
     "request":{
         "method":"PUT",

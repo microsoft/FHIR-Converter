@@ -45,6 +45,21 @@
         [
             { {% include 'DataType/CWECodeableConcept' CWE: PRT.6 -%} },
         ],
+        "organization":
+        {
+            {% if PRT.7 and Organization_type_ID_PRT_7 -%}
+            "reference":"{{ "Organization.type/{{ Organization_type_ID_PRT_7 }}" | get_property: 'CodeSystem/OrganizationUnitType', 'code' }}",
+            {% endif -%}
+            {% if PRT.8 and Organization_ID_PRT_8 -%}
+            "reference":"Organization/{{ Organization_ID_PRT_8 }}",
+            {% endif -%}
+        },
+        "practitioner":
+        {
+            {% if PRT.14 and Practitioner_address_ID_PRT_14 -%}
+            "reference":"Practitioner.address/{{ Practitioner_address_ID_PRT_14 }}",
+            {% endif -%}
+        },
         {% include 'DataType/XCNPractitionerRole' XCN: ORC.12.Repeats[0] -%}
         {% include 'DataType/NDLPractitionerRole' NDL: OBR.32 -%}
         {% include 'DataType/NDLPractitionerRole' NDL: OBR.34 -%}

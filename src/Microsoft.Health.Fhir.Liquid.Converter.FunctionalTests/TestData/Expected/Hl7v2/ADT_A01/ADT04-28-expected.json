@@ -3,6 +3,22 @@
   "type": "batch",
   "entry": [
     {
+      "fullUrl": "urn:uuid:6fbc0a9a-11e5-aa44-b0d7-79439e65ae84",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "6fbc0a9a-11e5-aa44-b0d7-79439e65ae84",
+        "identifier": [
+          {
+            "value": "RDX"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/6fbc0a9a-11e5-aa44-b0d7-79439e65ae84"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:aa9b0327-0d9f-945a-888c-07658da974df",
       "resource": {
         "resourceType": "MessageHeader",
@@ -25,6 +41,9 @@
               }
             }
           ]
+        },
+        "sender": {
+          "reference": "Organization/6fbc0a9a-11e5-aa44-b0d7-79439e65ae84"
         }
       },
       "request": {
@@ -172,14 +191,6 @@
           "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
         },
         "status": "unknown",
-        "location": [
-          {
-            "location": {
-              "reference": "Location/a821376a-5d7b-7274-8d95-a3f7c7efaf1b"
-            },
-            "status": "active"
-          }
-        ],
         "participant": [
           {
             "type": [
@@ -224,6 +235,14 @@
         "period": {
           "start": "2018-10-17T22:28:05Z"
         },
+        "location": [
+          {
+            "location": {
+              "reference": "Location/a821376a-5d7b-7274-8d95-a3f7c7efaf1b"
+            },
+            "status": "active"
+          }
+        ],
         "subject": {
           "reference": "Patient/f7a9494a-3fac-e0e1-78d8-d7c20410ca33"
         }

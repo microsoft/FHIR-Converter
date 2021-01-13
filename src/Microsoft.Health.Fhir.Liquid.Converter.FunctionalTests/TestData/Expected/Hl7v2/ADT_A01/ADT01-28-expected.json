@@ -3,6 +3,27 @@
   "type": "batch",
   "entry": [
     {
+      "fullUrl": "urn:uuid:2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4",
+        "identifier": [
+          {
+            "value": "GOOD HEALTH HOSPITAL"
+          }
+        ],
+        "destination": [
+          {
+            "endpoint": "GOOD HEALTH HOSPITAL"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:64c2d51b-34a4-e841-fb1c-03f1f7762d1a",
       "resource": {
         "resourceType": "MessageHeader",
@@ -18,7 +39,10 @@
               {
                 "name": "GHH LAB, INC."
               }
-            ]
+            ],
+            "receiver": {
+              "reference": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
+            }
           }
         ],
         "meta": {
@@ -34,6 +58,9 @@
               }
             }
           ]
+        },
+        "sender": {
+          "reference": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
         }
       },
       "request": {
@@ -205,27 +232,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4",
-        "identifier": [
-          {
-            "value": "GOOD HEALTH HOSPITAL"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "GOOD HEALTH HOSPITAL"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:8add615d-1d8a-1bf3-bffc-9bd789bee0a3",
       "resource": {
         "resourceType": "Encounter",
@@ -236,14 +242,6 @@
           "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
         },
         "status": "unknown",
-        "location": [
-          {
-            "location": {
-              "reference": "Location/29eb5214-21d0-ed82-39f9-da4e50277c80"
-            },
-            "status": "active"
-          }
-        ],
         "hospitalization": {
           "admitSource": {
             "coding": [
@@ -275,6 +273,14 @@
             }
           ]
         },
+        "location": [
+          {
+            "location": {
+              "reference": "Location/29eb5214-21d0-ed82-39f9-da4e50277c80"
+            },
+            "status": "active"
+          }
+        ],
         "subject": {
           "reference": "Patient/d5fe6802-a680-e762-8f43-9659340b00ac"
         }
