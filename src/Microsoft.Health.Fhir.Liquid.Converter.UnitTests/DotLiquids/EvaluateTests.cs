@@ -53,7 +53,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             var context = new Context(
                 environments: new List<Hash>(),
                 outerScope: new Hash(),
-                registers: Hash.FromAnonymousObject(new { file_system = templateProvider.GetTemplateFileSystem() }),
+                registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
                 timeout: 0,
@@ -90,7 +90,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             context = new Context(
                 environments: new List<Hash>(),
                 outerScope: new Hash(),
-                registers: Hash.FromAnonymousObject(new { file_system = templateProvider.GetTemplateFileSystem() }),
+                registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
                 timeout: 0,
