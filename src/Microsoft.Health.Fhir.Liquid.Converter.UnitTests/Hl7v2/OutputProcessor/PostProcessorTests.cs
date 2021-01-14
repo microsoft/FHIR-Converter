@@ -6,8 +6,8 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.OutputProcessor;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
