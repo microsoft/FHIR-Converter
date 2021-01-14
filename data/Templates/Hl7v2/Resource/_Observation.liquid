@@ -25,10 +25,10 @@
         "valueString":"{{ OBX.5.Value }}",
         {% endif -%}
         {% if OBX.2.Value == "VR" -%}
-        "valueString":OBX-5.1+"-"+OBX-5.2,
+        "valueString":"{{ OBX.5.1 }}-{{ OBX.5.2 }}",
         {% endif -%}
         {% if OBX.2.Value == "SN" -%}
-        "valueString":OBX-5.1+" "+OBX-5.2+" "+OBX-5.3,
+        "valueString":"{{ OBX.5.1 }} {{ OBX.5.2 }} {{ OBX.5.3 }}",
         {% endif -%}
         "valueCodeableConcept":
         {
@@ -176,10 +176,10 @@
                 "valueString":"{{ OBX.5.Value }}",
                 {% endif -%}
                 {% if OBX.2.Value == "VR" -%}
-                "valueString":OBX-5.1+"-"+OBX-5.2,
+                "valueString":"{{ OBX.5.1 }}-{{ OBX.5.2}}",
                 {% endif -%}
                 {% if OBX.2.Value == "SN" -%}
-                "valueString":OBX-5.1+" "+OBX-5.2+" "+OBX-5.3,
+                "valueString":"{{ OBX.5.1 }} {{ OBX.5.2 }} {{ OBX.5.3 }}",
                 {% endif -%}
                 "valueCodeableConcept":
                 {
