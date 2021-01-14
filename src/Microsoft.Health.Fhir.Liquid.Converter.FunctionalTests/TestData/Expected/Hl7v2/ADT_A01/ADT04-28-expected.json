@@ -110,6 +110,16 @@
             "use": "home"
           }
         ],
+        "maritalStatus": {
+          "coding": [
+            {
+              "code": "Married",
+              "display": "Married",
+              "system": "Married",
+              "version": "Married"
+            }
+          ]
+        },
         "contact": [
           {
             "name": {
@@ -130,6 +140,18 @@
             "telecom": [
               {
                 "value": "+19189368865"
+              }
+            ],
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "code": "Emergency Contact",
+                    "display": "Emergency Contact",
+                    "system": "Emergency Contact",
+                    "version": "Emergency Contact"
+                  }
+                ]
               }
             ]
           }
@@ -188,7 +210,8 @@
         "class": {
           "code": "IMP",
           "display": "inpatient encounter",
-          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "version": "I"
         },
         "status": "unknown",
         "participant": [
@@ -276,6 +299,28 @@
       "resource": {
         "resourceType": "RelatedPerson",
         "id": "ece287da-a00b-b349-5de5-c25906e7ac53",
+        "relationship": [
+          {
+            "coding": [
+              {
+                "code": "Mother",
+                "display": "Mother",
+                "system": "Mother",
+                "version": "Mother"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "Emergency Contact",
+                "display": "Emergency Contact",
+                "system": "Emergency Contact",
+                "version": "Emergency Contact"
+              }
+            ]
+          }
+        ],
         "address": [
           {
             "line": [

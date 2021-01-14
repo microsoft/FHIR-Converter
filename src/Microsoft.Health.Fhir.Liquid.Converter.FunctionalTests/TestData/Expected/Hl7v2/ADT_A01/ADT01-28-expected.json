@@ -162,7 +162,8 @@
             {
               "code": "S",
               "display": "Never Married",
-              "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+              "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
+              "version": "S"
             }
           ]
         },
@@ -174,7 +175,19 @@
                 "NELDA",
                 "W"
               ]
-            }
+            },
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "code": "NK",
+                    "display": "NK",
+                    "system": "NK",
+                    "version": "NK"
+                  }
+                ]
+              }
+            ]
           }
         ]
       },
@@ -239,7 +252,8 @@
         "class": {
           "code": "IMP",
           "display": "inpatient encounter",
-          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "version": "I"
         },
         "status": "unknown",
         "hospitalization": {
@@ -320,7 +334,18 @@
               {
                 "code": "SPS",
                 "display": "spouse",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
+                "version": "SPO"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "NK",
+                "display": "NK",
+                "system": "NK",
+                "version": "NK"
               }
             ]
           }

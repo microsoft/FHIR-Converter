@@ -3,10 +3,10 @@
   "type": "batch",
   "entry": [
     {
-      "fullUrl": "urn:uuid:aa0cf9ae-78b3-73ec-0ef7-234369f8a10c",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Organization",
-        "id": "aa0cf9ae-78b3-73ec-0ef7-234369f8a10c",
+        "id": "",
         "identifier": [
           {
             "value": "NIST Lab Facility"
@@ -20,14 +20,14 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Organization/aa0cf9ae-78b3-73ec-0ef7-234369f8a10c"
+        "url": "Organization/"
       }
     },
     {
-      "fullUrl": "urn:uuid:c828b9d8-dc07-4b58-af67-705a38d1fa4d",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Organization",
-        "id": "c828b9d8-dc07-4b58-af67-705a38d1fa4d",
+        "id": "",
         "identifier": [
           {
             "value": "NIST Lab Facility"
@@ -41,14 +41,14 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Organization/c828b9d8-dc07-4b58-af67-705a38d1fa4d"
+        "url": "Organization/"
       }
     },
     {
-      "fullUrl": "urn:uuid:15cde54f-eadb-4bee-fe4c-0e8dbe4f4959",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "MessageHeader",
-        "id": "15cde54f-eadb-4bee-fe4c-0e8dbe4f4959",
+        "id": "",
         "source": {
           "source": {
             "name": "NIST Test Lab APP"
@@ -57,7 +57,7 @@
         "destination": [
           {
             "receiver": {
-              "reference": "Organization/c828b9d8-dc07-4b58-af67-705a38d1fa4d"
+              "reference": "Organization/"
             }
           }
         ],
@@ -76,19 +76,19 @@
           ]
         },
         "sender": {
-          "reference": "Organization/aa0cf9ae-78b3-73ec-0ef7-234369f8a10c"
+          "reference": "Organization/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "MessageHeader/15cde54f-eadb-4bee-fe4c-0e8dbe4f4959"
+        "url": "MessageHeader/"
       }
     },
     {
-      "fullUrl": "urn:uuid:397de93b-65e0-b3b6-7a79-d7869d57a8aa",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Patient",
-        "id": "397de93b-65e0-b3b6-7a79-d7869d57a8aa",
+        "id": "",
         "identifier": [
           {
             "value": "PATID1234",
@@ -116,37 +116,37 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+        "url": "Patient/"
       }
     },
     {
-      "fullUrl": "urn:uuid:2cae9944-334d-aa12-db0e-b76bf6379ba9",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Provenance",
-        "id": "2cae9944-334d-aa12-db0e-b76bf6379ba9",
+        "id": "",
         "recorded": "2011-06-01T03:05:51+08:00"
       },
       "request": {
         "method": "PUT",
-        "url": "Provenance/2cae9944-334d-aa12-db0e-b76bf6379ba9"
+        "url": "Provenance/"
       }
     },
     {
-      "fullUrl": "urn:uuid:d89caeaa-3e83-1bc6-de48-869aade1d077",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Account",
-        "id": "d89caeaa-3e83-1bc6-de48-869aade1d077"
+        "id": ""
       },
       "request": {
         "method": "PUT",
-        "url": "Account/d89caeaa-3e83-1bc6-de48-869aade1d077"
+        "url": "Account/"
       }
     },
     {
-      "fullUrl": "urn:uuid:e5528a59-da05-4148-e016-5b99bdb33924",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "DiagnosticReport",
-        "id": "e5528a59-da05-4148-e016-5b99bdb33924",
+        "id": "",
         "identifier": [
           {
             "type": {
@@ -185,117 +185,117 @@
         "status": "final",
         "result": [
           {
-            "reference": "Observation/b9018883-1320-3dfb-e157-cb46bb7a6679"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/becb609f-f513-876c-973a-98f4a3e25295"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/418e1d5b-7cf8-4f97-2f20-064f064073bf"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/63ebf56e-13b3-032c-04f0-0b0ae2596154"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/2fecfbb4-8bfc-33df-cc06-46079a214417"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/d88298c6-5018-0e69-8bff-bb2e57479ede"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/b1082ae5-5936-88dc-f6ab-906231b9c7f1"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/61c65289-d3f6-bd40-9fa1-33856ad2288f"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/69a93e5e-128e-1cd9-b510-a781f1af141a"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/95277a83-6195-ad8c-9492-f3489b45732b"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/4cd993fb-7522-ee9f-69de-3d12d06960a7"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/15122490-e5b2-954f-3960-d7c8f3f62632"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/612d5b88-0687-46f9-3ada-0fc9ba9b5fe0"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/0f40b9a3-8c63-ca5d-cc60-859cfa8a6660"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/d9a5816e-5c0e-15fe-cd9d-417f8abd7abb"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/db00b811-6280-5dad-bf61-07314b205438"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/0b77694d-87ce-5da4-90c4-4d451437d2d9"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/4c96bb15-0280-fea1-1715-e3f424cf55cc"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/19124803-ebc8-8a88-2acc-f5b890f8c5c5"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/6074e0a6-0ba6-b905-c957-13b2899a4dbe"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/700cce12-7f39-bbb0-94f3-689107732835"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/d198666f-2eae-1c28-ee17-d525a7a3ec85"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/db250a50-54ff-eacd-ef4f-8f05b79aecad"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/90c2203d-56d6-be20-2be4-9b879d3647a5"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/3260b2c2-a8f9-1a32-d09f-556192b37dcd"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/ff76c538-2861-d8cf-7fc6-418d7f0688ef"
+            "reference": "Observation/"
           },
           {
-            "reference": "Observation/7cb9f3da-bf77-1317-12a2-d70c8577ca71"
+            "reference": "Observation/"
           }
         ],
         "specimen": [
           {
-            "reference": "Specimen/a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963"
+            "reference": "Specimen/"
           }
         ]
       },
       "request": {
         "method": "PUT",
-        "url": "DiagnosticReport/e5528a59-da05-4148-e016-5b99bdb33924"
+        "url": "DiagnosticReport/"
       }
     },
     {
-      "fullUrl": "urn:uuid:fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "PractitionerRole",
-        "id": "fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+        "id": ""
       },
       "request": {
         "method": "PUT",
-        "url": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+        "url": "PractitionerRole/"
       }
     },
     {
-      "fullUrl": "urn:uuid:b9018883-1320-3dfb-e157-cb46bb7a6679",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "b9018883-1320-3dfb-e157-cb46bb7a6679",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -318,7 +318,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -327,7 +328,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -359,7 +360,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -367,19 +369,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/b9018883-1320-3dfb-e157-cb46bb7a6679"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:becb609f-f513-876c-973a-98f4a3e25295",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "becb609f-f513-876c-973a-98f4a3e25295",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -402,7 +404,8 @@
               {
                 "code": "L",
                 "display": "Low",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "L"
               }
             ]
           }
@@ -411,7 +414,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -443,7 +446,8 @@
                   {
                     "code": "L",
                     "display": "Low",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "L"
                   }
                 ]
               }
@@ -451,19 +455,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/becb609f-f513-876c-973a-98f4a3e25295"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:418e1d5b-7cf8-4f97-2f20-064f064073bf",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "418e1d5b-7cf8-4f97-2f20-064f064073bf",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -486,7 +490,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -495,7 +500,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -527,7 +532,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -535,19 +541,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/418e1d5b-7cf8-4f97-2f20-064f064073bf"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:63ebf56e-13b3-032c-04f0-0b0ae2596154",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "63ebf56e-13b3-032c-04f0-0b0ae2596154",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -570,7 +576,8 @@
               {
                 "code": "HH",
                 "display": "Critical high",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "HH"
               }
             ]
           }
@@ -579,7 +586,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -611,7 +618,8 @@
                   {
                     "code": "HH",
                     "display": "Critical high",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "HH"
                   }
                 ]
               }
@@ -619,19 +627,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/63ebf56e-13b3-032c-04f0-0b0ae2596154"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:2fecfbb4-8bfc-33df-cc06-46079a214417",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "2fecfbb4-8bfc-33df-cc06-46079a214417",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -654,7 +662,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -663,7 +672,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -695,7 +704,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -703,19 +713,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/2fecfbb4-8bfc-33df-cc06-46079a214417"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:d88298c6-5018-0e69-8bff-bb2e57479ede",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "d88298c6-5018-0e69-8bff-bb2e57479ede",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -738,7 +748,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -747,7 +758,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -779,7 +790,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -787,19 +799,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/d88298c6-5018-0e69-8bff-bb2e57479ede"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -822,7 +834,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -831,7 +844,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -863,7 +876,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -871,19 +885,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:b1082ae5-5936-88dc-f6ab-906231b9c7f1",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "b1082ae5-5936-88dc-f6ab-906231b9c7f1",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -906,7 +920,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -915,7 +930,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -947,7 +962,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -955,19 +971,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/b1082ae5-5936-88dc-f6ab-906231b9c7f1"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:61c65289-d3f6-bd40-9fa1-33856ad2288f",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "61c65289-d3f6-bd40-9fa1-33856ad2288f",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -990,7 +1006,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -999,7 +1016,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -1031,7 +1048,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -1039,19 +1057,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/61c65289-d3f6-bd40-9fa1-33856ad2288f"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:69a93e5e-128e-1cd9-b510-a781f1af141a",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "69a93e5e-128e-1cd9-b510-a781f1af141a",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -1074,7 +1092,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -1083,7 +1102,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -1115,7 +1134,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -1123,19 +1143,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/69a93e5e-128e-1cd9-b510-a781f1af141a"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:95277a83-6195-ad8c-9492-f3489b45732b",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "95277a83-6195-ad8c-9492-f3489b45732b",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -1158,7 +1178,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -1167,7 +1188,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -1199,7 +1220,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -1207,19 +1229,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/95277a83-6195-ad8c-9492-f3489b45732b"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:4cd993fb-7522-ee9f-69de-3d12d06960a7",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "4cd993fb-7522-ee9f-69de-3d12d06960a7",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -1242,7 +1264,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -1251,7 +1274,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -1283,7 +1306,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -1291,19 +1315,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/4cd993fb-7522-ee9f-69de-3d12d06960a7"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:15122490-e5b2-954f-3960-d7c8f3f62632",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "15122490-e5b2-954f-3960-d7c8f3f62632",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -1326,7 +1350,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -1335,7 +1360,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -1367,7 +1392,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -1375,19 +1401,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/15122490-e5b2-954f-3960-d7c8f3f62632"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:612d5b88-0687-46f9-3ada-0fc9ba9b5fe0",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "612d5b88-0687-46f9-3ada-0fc9ba9b5fe0",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -1410,7 +1436,8 @@
               {
                 "code": "HH",
                 "display": "Critical high",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "HH"
               }
             ]
           }
@@ -1419,7 +1446,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -1451,7 +1478,8 @@
                   {
                     "code": "HH",
                     "display": "Critical high",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "HH"
                   }
                 ]
               }
@@ -1459,19 +1487,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/612d5b88-0687-46f9-3ada-0fc9ba9b5fe0"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:0f40b9a3-8c63-ca5d-cc60-859cfa8a6660",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "0f40b9a3-8c63-ca5d-cc60-859cfa8a6660",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -1494,7 +1522,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -1503,7 +1532,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -1535,7 +1564,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -1543,19 +1573,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/0f40b9a3-8c63-ca5d-cc60-859cfa8a6660"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:d9a5816e-5c0e-15fe-cd9d-417f8abd7abb",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "d9a5816e-5c0e-15fe-cd9d-417f8abd7abb",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -1578,7 +1608,8 @@
               {
                 "code": "HH",
                 "display": "Critical high",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "HH"
               }
             ]
           }
@@ -1587,7 +1618,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -1619,7 +1650,8 @@
                   {
                     "code": "HH",
                     "display": "Critical high",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "HH"
                   }
                 ]
               }
@@ -1627,19 +1659,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/d9a5816e-5c0e-15fe-cd9d-417f8abd7abb"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:db00b811-6280-5dad-bf61-07314b205438",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "db00b811-6280-5dad-bf61-07314b205438",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -1662,7 +1694,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -1671,7 +1704,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -1703,7 +1736,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -1711,19 +1745,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/db00b811-6280-5dad-bf61-07314b205438"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:0b77694d-87ce-5da4-90c4-4d451437d2d9",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "0b77694d-87ce-5da4-90c4-4d451437d2d9",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -1746,7 +1780,8 @@
               {
                 "code": "HH",
                 "display": "Critical high",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "HH"
               }
             ]
           }
@@ -1755,7 +1790,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -1787,7 +1822,8 @@
                   {
                     "code": "HH",
                     "display": "Critical high",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "HH"
                   }
                 ]
               }
@@ -1795,19 +1831,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/0b77694d-87ce-5da4-90c4-4d451437d2d9"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:4c96bb15-0280-fea1-1715-e3f424cf55cc",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "4c96bb15-0280-fea1-1715-e3f424cf55cc",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -1830,7 +1866,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -1839,7 +1876,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -1871,7 +1908,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -1879,19 +1917,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/4c96bb15-0280-fea1-1715-e3f424cf55cc"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:19124803-ebc8-8a88-2acc-f5b890f8c5c5",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "19124803-ebc8-8a88-2acc-f5b890f8c5c5",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -1918,7 +1956,8 @@
               {
                 "code": "A",
                 "display": "Abnormal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "A"
               }
             ]
           }
@@ -1927,7 +1966,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -1948,7 +1987,8 @@
                   {
                     "code": "A",
                     "display": "Abnormal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "A"
                   }
                 ]
               }
@@ -1956,19 +1996,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/19124803-ebc8-8a88-2acc-f5b890f8c5c5"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:6074e0a6-0ba6-b905-c957-13b2899a4dbe",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "6074e0a6-0ba6-b905-c957-13b2899a4dbe",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -1995,7 +2035,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -2004,7 +2045,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -2025,7 +2066,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -2033,19 +2075,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/6074e0a6-0ba6-b905-c957-13b2899a4dbe"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:700cce12-7f39-bbb0-94f3-689107732835",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "700cce12-7f39-bbb0-94f3-689107732835",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -2072,7 +2114,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -2081,7 +2124,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -2102,7 +2145,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -2110,19 +2154,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/700cce12-7f39-bbb0-94f3-689107732835"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:d198666f-2eae-1c28-ee17-d525a7a3ec85",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "d198666f-2eae-1c28-ee17-d525a7a3ec85",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -2149,7 +2193,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -2158,7 +2203,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -2179,7 +2224,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -2187,19 +2233,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/d198666f-2eae-1c28-ee17-d525a7a3ec85"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:db250a50-54ff-eacd-ef4f-8f05b79aecad",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "db250a50-54ff-eacd-ef4f-8f05b79aecad",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -2226,7 +2272,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -2235,7 +2282,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -2256,7 +2303,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -2264,19 +2312,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/db250a50-54ff-eacd-ef4f-8f05b79aecad"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:90c2203d-56d6-be20-2be4-9b879d3647a5",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "90c2203d-56d6-be20-2be4-9b879d3647a5",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -2303,7 +2351,8 @@
               {
                 "code": "N",
                 "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "N"
               }
             ]
           }
@@ -2312,7 +2361,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -2333,7 +2382,8 @@
                   {
                     "code": "N",
                     "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "N"
                   }
                 ]
               }
@@ -2341,19 +2391,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/90c2203d-56d6-be20-2be4-9b879d3647a5"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:3260b2c2-a8f9-1a32-d09f-556192b37dcd",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "3260b2c2-a8f9-1a32-d09f-556192b37dcd",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -2371,7 +2421,8 @@
               {
                 "code": "A",
                 "display": "Abnormal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "A"
               }
             ]
           }
@@ -2380,7 +2431,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -2402,7 +2453,8 @@
                   {
                     "code": "A",
                     "display": "Abnormal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "A"
                   }
                 ]
               }
@@ -2410,19 +2462,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/3260b2c2-a8f9-1a32-d09f-556192b37dcd"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:ff76c538-2861-d8cf-7fc6-418d7f0688ef",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "ff76c538-2861-d8cf-7fc6-418d7f0688ef",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -2440,7 +2492,8 @@
               {
                 "code": "A",
                 "display": "Abnormal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "A"
               }
             ]
           }
@@ -2449,7 +2502,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -2471,7 +2524,8 @@
                   {
                     "code": "A",
                     "display": "Abnormal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "A"
                   }
                 ]
               }
@@ -2479,19 +2533,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/ff76c538-2861-d8cf-7fc6-418d7f0688ef"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:7cb9f3da-bf77-1317-12a2-d70c8577ca71",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Observation",
-        "id": "7cb9f3da-bf77-1317-12a2-d70c8577ca71",
+        "id": "",
         "code": {
           "coding": [
             {
@@ -2509,7 +2563,8 @@
               {
                 "code": "A",
                 "display": "Abnormal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                "version": "A"
               }
             ]
           }
@@ -2518,7 +2573,7 @@
         "effectiveDateTime": "2011-01-04T06:34:28+08:00",
         "performer": [
           {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+            "reference": "PractitionerRole/"
           }
         ],
         "component": [
@@ -2540,7 +2595,8 @@
                   {
                     "code": "A",
                     "display": "Abnormal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation",
+                    "version": "A"
                   }
                 ]
               }
@@ -2548,19 +2604,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+          "reference": "Patient/"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/7cb9f3da-bf77-1317-12a2-d70c8577ca71"
+        "url": "Observation/"
       }
     },
     {
-      "fullUrl": "urn:uuid:a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963",
+      "fullUrl": "urn:uuid:",
       "resource": {
         "resourceType": "Specimen",
-        "id": "a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963",
+        "id": "",
         "type": {
           "coding": [
             {
@@ -2577,7 +2633,7 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Specimen/a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963"
+        "url": "Specimen/"
       }
     }
   ]

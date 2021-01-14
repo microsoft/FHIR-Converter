@@ -3,10 +3,10 @@
   "type": "batch",
   "entry": [
     {
-      "fullUrl": "urn:uuid:7393bcca-6d2f-543d-7787-0753133a8496",
+      "fullUrl": "urn:uuid:55e2d2b6-8c08-6f34-9f2c-ccf2ba785dba",
       "resource": {
         "resourceType": "MessageHeader",
-        "id": "7393bcca-6d2f-543d-7787-0753133a8496",
+        "id": "55e2d2b6-8c08-6f34-9f2c-ccf2ba785dba",
         "meta": {
           "tag": [
             {
@@ -24,7 +24,7 @@
       },
       "request": {
         "method": "PUT",
-        "url": "MessageHeader/7393bcca-6d2f-543d-7787-0753133a8496"
+        "url": "MessageHeader/55e2d2b6-8c08-6f34-9f2c-ccf2ba785dba"
       }
     },
     {
@@ -72,6 +72,18 @@
               {
                 "value": "(330) 274-8214"
               }
+            ],
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "code": "EMERGENCY",
+                    "display": "EMERGENCY",
+                    "system": "EMERGENCY",
+                    "version": "EMERGENCY"
+                  }
+                ]
+              }
             ]
           }
         ]
@@ -82,10 +94,10 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:fff06283-df6e-44e7-1d12-5d50810e155f",
+      "fullUrl": "urn:uuid:269e4fbc-35ab-2c46-9c28-f4ab11c3b1f3",
       "resource": {
         "resourceType": "Provenance",
-        "id": "fff06283-df6e-44e7-1d12-5d50810e155f",
+        "id": "269e4fbc-35ab-2c46-9c28-f4ab11c3b1f3",
         "agent": [
           {
             "type": {
@@ -102,7 +114,7 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Provenance/fff06283-df6e-44e7-1d12-5d50810e155f"
+        "url": "Provenance/269e4fbc-35ab-2c46-9c28-f4ab11c3b1f3"
       }
     },
     {
@@ -129,7 +141,8 @@
         "class": {
           "code": "EMER",
           "display": "emergency",
-          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "version": "E"
         },
         "status": "unknown",
         "participant": [
@@ -164,6 +177,28 @@
       "resource": {
         "resourceType": "RelatedPerson",
         "id": "4e852062-3313-586b-4979-1f4c539eb4d5",
+        "relationship": [
+          {
+            "coding": [
+              {
+                "code": "SPOUS",
+                "display": "SPOUS",
+                "system": "SPOUS",
+                "version": "SPOUS"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "EMERGENCY",
+                "display": "EMERGENCY",
+                "system": "EMERGENCY",
+                "version": "EMERGENCY"
+              }
+            ]
+          }
+        ],
         "telecom": [
           {
             "value": "(130) 724-0433",
