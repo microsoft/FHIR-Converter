@@ -5,5 +5,6 @@
     {% for c in components -%}
         {% assign observationId = c.observation | to_json_string | generate_uuid -%}
         {% include 'Resource/Observation' observationCategory: 'vital-signs', observationEntry: c.observation, ID: observationId -%}
+        {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
     {% endfor -%}
 {% endfor -%}

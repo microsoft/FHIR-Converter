@@ -3,4 +3,5 @@
 {% for e in entries -%}
     {% assign observationId = e.observation | to_json_string | generate_uuid -%}
     {% include 'Resource/Observation' observationCategory: 'social-history', observationEntry: e.observation, ID: observationId -%}
+    {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
 {% endfor -%}

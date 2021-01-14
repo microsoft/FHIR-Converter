@@ -37,7 +37,6 @@
 {% endfor -%}
 
 {% if msg.ClinicalDocument.recordTarget.patientRole -%}
-    {% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}
     {% include 'Resource/Patient' patientRole: msg.ClinicalDocument.recordTarget.patientRole ID: patientId -%}
 {% endif -%}
 

@@ -2,10 +2,13 @@
     "resourceType": "Bundle",
     "type": "batch",
     "entry": [
-    	{% include 'Header' -%}
-        {% include 'Section/AllergiesAndAdverseReactions' -%}
-        {% include 'Section/SocialHistory' -%}
-        {% include 'Section/VitalSigns' -%}
+        {% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}
+        {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
+    	{% include 'Header' patientId: patientId -%}
+        {% include 'Section/AllergiesAndAdverseReactions' fullPatientId: fullPatientId -%}
+        {% include 'Section/Result' fullPatientId: fullPatientId -%}
+        {% include 'Section/SocialHistory' fullPatientId: fullPatientId -%}
+        {% include 'Section/VitalSigns' fullPatientId: fullPatientId-%}
         {% include 'Resource/DocumentReference' docref: msg ID: "documentReference-id" -%}
     ]
 }
