@@ -17,6 +17,20 @@
             { {% include 'DataType/Identifier' Identifier: id -%} },
             {% endfor -%}
         ],
+        "name":
+        [
+            {% assign names = patientRole.patient.name | to_array -%}
+            {% for name in names -%}
+            { {% include 'DataType/HumanName' HumanName: name -%} },
+            {% endfor -%}
+        ],
+        "birthDate":"{{ patientRole.patient.birthTime.value | add_hyphens_date }}",
+        "gender":"{{ patientRole.patient.administrativeGenderCode.displayName | downcase }}",
+        "extension":
+        [
+            { {% include 'Extension/Race' Race: patientRole.patient -%} },
+            { {% include 'Extension/Ethnicity' Ethnicity: patientRole.patient -%} },
+        ],
         "address":
         [
             {% assign addrs = patientRole.addr | to_array -%}
@@ -31,20 +45,6 @@
             { {% include 'DataType/ContactPoint' ContactPoint: telecom -%} },
             {% endfor -%}
         ],
-        "extension":
-        [
-            { {% include 'Extension/Race' Race: patientRole.patient -%} },
-            { {% include 'Extension/Ethnicity' Ethnicity: patientRole.patient -%} },
-        ],
-        "name":
-        [
-            {% assign names = patientRole.patient.name | to_array -%}
-            {% for name in names -%}
-            { {% include 'DataType/HumanName' HumanName: name -%} },
-            {% endfor -%}
-        ],
-        "gender":"{{ patientRole.patient.administrativeGenderCode.displayName | downcase }}",
-        "birthDate":"{{ patientRole.patient.birthTime.value | add_hyphens_date }}",
         "communication":
         [
             {% assign languageCommunications = patientRole.patient.languageCommunication | to_array -%}

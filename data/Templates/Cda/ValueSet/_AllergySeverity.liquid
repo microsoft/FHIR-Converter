@@ -1,11 +1,11 @@
 ﻿{% if code == 'fatal' -%}
-"severe"
+"severe",
 {% elsif code == 'moderate to severe' -%}
-"severe"
+"severe",
 {% elsif code == 'mild to moderate' -%}
-"moderate"
+"moderate",
 {% elsif code == 'mild' -%}
-"mild"
+"mild",
 {% else -%}
-"{{code}}"
+"{{code}}",
 {% endif -%}

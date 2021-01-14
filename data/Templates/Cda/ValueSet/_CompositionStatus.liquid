@@ -1,19 +1,19 @@
 ﻿{% if code == 'draft' -%}
-"preliminary"
+"preliminary",
 {% elsif code == 'preliminary' -%}
-"preliminary"
+"preliminary",
 {% elsif code == 'final' -%}
-"final"
+"final",
 {% elsif code == 'completed' -%}
-"final"
+"final",
 {% elsif code == 'amended' -%}
-"amended"
+"amended",
 {% elsif code == 'replaced' -%}
-"amended"
+"amended",
 {% elsif code == 'entered-in-error' -%}
-"entered-in-error"
+"entered-in-error",
 {% elsif code == 'error' -%}
-"entered-in-error"
+"entered-in-error",
 {% else -%}
-"preliminary"
+"preliminary",
 {% endif -%}

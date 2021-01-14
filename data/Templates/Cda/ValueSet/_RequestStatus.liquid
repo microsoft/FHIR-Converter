@@ -1,23 +1,23 @@
 ﻿{% if code == 'draft' -%}
-"draft"
+"draft",
 {% elsif code == 'active' -%}
-"active"
+"active",
 {% elsif code == 'suspended' -%}
-"on-hold"
+"on-hold",
 {% elsif code == 'on-hold' -%}
-"on-hold"
+"on-hold",
 {% elsif code == 'failed' -%}
-"revoked"
+"revoked",
 {% elsif code == 'revoked' -%}
-"revoked"
+"revoked",
 {% elsif code == 'completed' -%}
-"completed"
+"completed",
 {% elsif code == 'entered-in-error' -%}
-"entered-in-error"
+"entered-in-error",
 {% elsif code == 'error' -%}
-"entered-in-error"
+"entered-in-error",
 {% elsif code == 'unknown' -%}
-"unknown"
+"unknown",
 {% else -%}
-"unknown"
+"unknown",
 {% endif -%}
