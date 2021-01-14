@@ -29,6 +29,12 @@
         {% include 'DataType/TQTask' TQ: ORC.7 -%}
         "authoredOn":"{{ ORC.9.Value | format_as_date_time }}",
         "lastModified":"{{ ORC.9.Value | format_as_date_time }}",
+        "requester":
+        {
+            {% if ORC.12 and Practitioner_ID_ORC_12 -%}
+            "reference":"Practitioner/{{ Practitioner_ID_ORC_12 }}",
+            {% endif -%}
+        },
     },
     "request":{
         "method":"PUT",

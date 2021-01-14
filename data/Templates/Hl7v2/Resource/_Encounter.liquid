@@ -67,6 +67,12 @@
             [
                 { {% include 'DataType/CWECodeableConcept' CWE: PV1.38 -%} },
             ],
+            "destination":
+            {
+                {% if PV1.37 and Location_ID_PV1_37 -%}
+                "reference":"Location/{{ Location_ID_PV1_37 }}",
+                {% endif -%}
+            },
         },
         "participant":
         [
@@ -101,6 +107,9 @@
                 ],
                 "individual":
                 {
+                    {% if PV1.7 and Practitioner_ID_PV1_7 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_PV1_7 }}",
+                    {% endif -%}
                     {% if PV2.13 and Practitioner.Value -%}
                     "reference":"Practitioner|PractitionerRole/{{ Practitioner|PractitionerRole_ID_PV2_13 }}",
                     {% endif -%}
@@ -126,6 +135,12 @@
                         {% endif -%}
                     },
                 ],
+                "individual":
+                {
+                    {% if PV1.8 and Practitioner_ID_PV1_8 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_PV1_8 }}",
+                    {% endif -%}
+                },
             },
             {
                 "type":
@@ -147,6 +162,12 @@
                         {% endif -%}
                     },
                 ],
+                "individual":
+                {
+                    {% if PV1.9 and Practitioner_ID_PV1_9 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_PV1_9 }}",
+                    {% endif -%}
+                },
             },
             {
                 "type":
@@ -168,6 +189,12 @@
                         {% endif -%}
                     },
                 ],
+                "individual":
+                {
+                    {% if PV1.17 and Practitioner_ID_PV1_17 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_PV1_17 }}",
+                    {% endif -%}
+                },
             },
             {
                 "type":
@@ -189,6 +216,12 @@
                         {% endif -%}
                     },
                 ],
+                "individual":
+                {
+                    {% if PV1.52 and Practitioner_ID_PV1_52 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_PV1_52 }}",
+                    {% endif -%}
+                },
             },
         ],
         "serviceType":
@@ -253,6 +286,16 @@
         {
             {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/EncounterPriority', CWE: PV2.25 -%}
         },
+        "diagnosis":
+        [
+            {
+                "use":
+                {
+                    {% if DG1.6.Value == "admitting" -%}
+                    {% endif -%}
+                },
+            },
+        ],
     },
     "request":{
         "method":"PUT",

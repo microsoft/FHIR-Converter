@@ -42,6 +42,14 @@
             "reference":"Location/{{ Location_ID_PR1_23 }}",
             {% endif -%}
         },
+        "partOf":
+        [
+            {
+                {% if PR1.25 and Procedure_ID_PR1_25 -%}
+                "reference":"Procedure/{{ Procedure_ID_PR1_25 }}",
+                {% endif -%}
+            },
+        ],
     },
     "request":{
         "method":"PUT",

@@ -5,6 +5,9 @@
     },
     {
         "value":"{{ HD.2.Value }}",
+        "type":
+        {
+        },
         {% if HD.3 -%}
         "system":"{{ "urn:ietf:rfc:3986" | get_property: 'CodeSystem/UniversalIDType', 'system' }}",
         {% endif -%}

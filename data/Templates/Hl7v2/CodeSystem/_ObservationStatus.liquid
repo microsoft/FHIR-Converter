@@ -60,8 +60,8 @@
     "display" : "Entered in Error",
     "system" : "http://hl7.org/fhir/observation-status",
     {% else -%}
-    "code" : "",
-    "display" : "",
-    "system" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "{{ inCode }}",
     {% endif -%}
 }

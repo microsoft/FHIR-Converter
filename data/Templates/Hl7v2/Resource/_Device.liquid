@@ -8,10 +8,20 @@
             { {% include 'DataType/EIIdentifier' EI: OBX.18.Repeats[0] -%} },
             { {% include 'DataType/EIIdentifier' EI: PRT.10 -%} },
         ],
+        "udiCarrier":
+        [
+            {
+            },
+            {
+            },
+        ],
         "manufactureDate":"{{ PRT.17.Value | format_as_date_time }}",
         "expirationDate":"{{ PRT.18.Value | format_as_date_time }}",
         "lotNumber":"{{ PRT.19.Value }}",
         "serialNumber":"{{ PRT.20.Value }}",
+        "type":
+        {
+        },
     },
     "request":{
         "method":"PUT",

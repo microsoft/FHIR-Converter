@@ -13,6 +13,8 @@
             "value":"{{ OBX.5.Value }}",
             {% endif -%}
             {% if OBX.2.Value == "SN" -%}
+            {% endif -%}
+            {% if OBX.2.Value == "SN" -%}
             {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
             {% endif -%}
             {% if OBX.2.Value == "NA" or OBX.2.Value == "NM" -%}
@@ -22,10 +24,18 @@
         {% if OBX.2.Value == "ST" or OBX.2.Value == "FT" or OBX.2.Value == "TX" -%}
         "valueString":"{{ OBX.5.Value }}",
         {% endif -%}
+        {% if OBX.2.Value == "VR" -%}
+        "valueString":OBX-5.1+"-"+OBX-5.2,
+        {% endif -%}
+        {% if OBX.2.Value == "SN" -%}
+        "valueString":OBX-5.1+" "+OBX-5.2+" "+OBX-5.3,
+        {% endif -%}
         "valueCodeableConcept":
         {
             {% if OBX.2.Value == "CF" or OBX.2.Value == "CNE" or OBX.2.Value == "CWE" or OBX.2.Value == "CE" -%}
             {% include 'DataType/CWECodeableConcept' CWE: OBX.5 -%}
+            {% endif -%}
+            {% if OBX.2.Value == "IS" -%}
             {% endif -%}
         },
         "valuePeriod":
@@ -60,6 +70,8 @@
         },
         "valueRange":
         {
+            {% if OBX.2.Value == "NR" -%}
+            {% endif -%}
             {% if OBX.2.Value == "SN" -%}
             {% include 'DataType/SNRange' SN: OBX.5 -%}
             {% endif -%}
@@ -114,11 +126,17 @@
                 {% endif -%}
             },
             {
+                {% if OBX.23 and Organization_ID_OBX_23 -%}
+                "reference":"Organization/{{ Organization_ID_OBX_23 }}",
+                {% endif -%}
                 {% if OBX.24 and Organization_address_ID_OBX_24 -%}
                 "reference":"Organization.address/{{ Organization_address_ID_OBX_24 }}",
                 {% endif -%}
             },
             {
+                {% if OBX.23 and Organization_ID_OBX_23 -%}
+                "reference":"Organization/{{ Organization_ID_OBX_23 }}",
+                {% endif -%}
                 {% if OBX.24 and Organization_address_ID_OBX_24 -%}
                 "reference":"Organization.address/{{ Organization_address_ID_OBX_24 }}",
                 {% endif -%}
@@ -146,6 +164,8 @@
                     "value":"{{ OBX.5.Value }}",
                     {% endif -%}
                     {% if OBX.2.Value == "SN" -%}
+                    {% endif -%}
+                    {% if OBX.2.Value == "SN" -%}
                     {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
                     {% endif -%}
                     {% if OBX.2.Value == "NA" or OBX.2.Value == "NM" -%}
@@ -155,6 +175,19 @@
                 {% if OBX.2.Value == "ST" or OBX.2.Value == "FT" or OBX.2.Value == "TX" -%}
                 "valueString":"{{ OBX.5.Value }}",
                 {% endif -%}
+                {% if OBX.2.Value == "VR" -%}
+                "valueString":OBX-5.1+"-"+OBX-5.2,
+                {% endif -%}
+                {% if OBX.2.Value == "SN" -%}
+                "valueString":OBX-5.1+" "+OBX-5.2+" "+OBX-5.3,
+                {% endif -%}
+                "valueCodeableConcept":
+                {
+                    {% if OBX.2.Value == "CF" or OBX.2.Value == "CNE" or OBX.2.Value == "CWE" or OBX.2.Value == "CE" -%}
+                    {% endif -%}
+                    {% if OBX.2.Value == "IS" -%}
+                    {% endif -%}
+                },
                 "valuePeriod":
                 {
                     {% if OBX.2.Value == "DR" -%}
@@ -187,6 +220,8 @@
                 },
                 "valueRange":
                 {
+                    {% if OBX.2.Value == "NR" -%}
+                    {% endif -%}
                     {% if OBX.2.Value == "SN" -%}
                     {% include 'DataType/SNRange' SN: OBX.5 -%}
                     {% endif -%}

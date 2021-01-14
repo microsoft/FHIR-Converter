@@ -52,6 +52,15 @@
         ],
         "collection":
         {
+            "quantity":
+            {
+            },
+            "collector":
+            {
+                {% if OBR.10 and Practitioner_ID_OBR_10 -%}
+                "reference":"Practitioner/{{ Practitioner_ID_OBR_10 }}",
+                {% endif -%}
+            },
             "method":
             {
                 {% include 'DataType/CWECodeableConcept' CWE: SPM.7 -%}

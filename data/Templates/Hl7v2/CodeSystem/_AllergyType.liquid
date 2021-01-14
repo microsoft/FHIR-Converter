@@ -32,8 +32,8 @@
     "display" : "Allergy",
     "system" : "http://hl7.org/fhir/allergy-intolerance-type",
     {% else -%}
-    "code" : "",
-    "display" : "",
-    "system" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "{{ inCode }}",
     {% endif -%}
 }

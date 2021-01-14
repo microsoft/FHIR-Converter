@@ -28,8 +28,8 @@
     "display" : "Unknown",
     "system" : "http://terminology.hl7.org/CodeSystem/v2-0430",
     {% else -%}
-    "code" : "",
-    "display" : "",
-    "system" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "{{ inCode }}",
     {% endif -%}
 }

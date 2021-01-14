@@ -28,8 +28,8 @@
     "display" : "Elective",
     "system" : "http://terminology.hl7.org/CodeSystem/v2-0007",
     {% else -%}
-    "code" : "",
-    "display" : "",
-    "system" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "{{ inCode }}",
     {% endif -%}
 }

@@ -328,8 +328,8 @@
     "display" : "United Church of Christ",
     "system" : "http://terminology.hl7.org/CodeSystem/v3-ReligiousAffiliation",
     {% else -%}
-    "code" : "",
-    "display" : "",
-    "system" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "{{ inCode }}",
     {% endif -%}
 }

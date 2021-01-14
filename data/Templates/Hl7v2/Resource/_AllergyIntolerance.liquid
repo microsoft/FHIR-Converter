@@ -3,6 +3,9 @@
     "resource":{
         "resourceType": "AllergyIntolerance",
         "id":"{{ ID }}",
+        "category":
+        [
+        ],
         "type":"{{ AL1.2.Value | get_property: 'CodeSystem/AllergyType', 'code' }}",
         "code":
         {
@@ -11,6 +14,9 @@
         "reaction":
         [
             {
+                {% if AL1.4.Value != U.Value -%}
+                "severity":"{{ AL1.4.Value }}",
+                {% endif -%}
                 "manifestation":
                 [
                     {
@@ -19,6 +25,7 @@
                 ],
             },
         ],
+        "criticality":"{{ AL1.4.Value }}",
         "onsetDateTime":"{{ AL1.6.Value | format_as_date_time }}",
     },
     "request":{

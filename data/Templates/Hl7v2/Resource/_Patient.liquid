@@ -120,6 +120,9 @@
         "generalPractitioner":
         [
             {
+                {% if PD1.3 and Organization_ID_PD1_3 -%}
+                "reference":"Organization/{{ Organization_ID_PD1_3 }}",
+                {% endif -%}
                 {% if PD1.4 and PractitionerRole_ID_PD1_4 -%}
                 "reference":"PractitionerRole/{{ PractitionerRole_ID_PD1_4 }}",
                 {% endif -%}
@@ -169,6 +172,9 @@
                 "organization":
                 [
                     {
+                        {% if NK1.13 and Organization_ID_NK1_13 -%}
+                        "reference":"Organization/{{ Organization_ID_NK1_13 }}",
+                        {% endif -%}
                         {% if NK1.30 and Organization_contact_name_ID_NK1_30 -%}
                         "reference":"Organization.contact.name/{{ Organization_contact_name_ID_NK1_30 }}",
                         {% endif -%}

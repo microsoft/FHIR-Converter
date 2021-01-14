@@ -1,10 +1,10 @@
-﻿{% if CWE.1.Value -%}
+﻿{% if CWE.1 and CWE.3 -%}
 "code":"{{ CWE.1.Value }}",
 {% endif -%}
-{% if CWE.2.Value -%}
+{% if CWE.2 == null -%}
 "unit":"{{ CWE.1.Value }}",
 {% endif -%}
 "unit":"{{ CWE.2.Value }}",
-{% if CWE.1.Value -%}
+{% if CWE.1 and CWE.3 -%}
 "system":"{{ CWE.3.Value }}",
 {% endif -%}

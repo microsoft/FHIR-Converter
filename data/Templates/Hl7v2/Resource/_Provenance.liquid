@@ -44,6 +44,12 @@
                     "reference":"Practitioner/{{ Practitioner_ID_ORC_10 }}",
                     {% endif -%}
                 },
+                "onBehalfOf":
+                {
+                    {% if ORC.17 and Organization_ID_ORC_17 -%}
+                    "reference":"Organization/{{ Organization_ID_ORC_17 }}",
+                    {% endif -%}
+                },
             },
             {
                 "type":

@@ -28,8 +28,8 @@
     "display" : "year",
     "system" : "http://unitsofmeasure.org/",
     {% else -%}
-    "code" : "",
-    "display" : "",
-    "system" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "{{ inCode }}",
     {% endif -%}
 }

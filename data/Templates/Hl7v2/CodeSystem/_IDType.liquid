@@ -432,8 +432,8 @@
     "display" : "Organization identifier",
     "system" : "http://terminology.hl7.org/CodeSystem/v2-0203",
     {% else -%}
-    "code" : "",
-    "display" : "",
-    "system" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "{{ inCode }}",
     {% endif -%}
 }

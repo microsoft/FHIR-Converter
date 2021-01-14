@@ -13,6 +13,9 @@
 {% if XAD.7.Value == "M" or XAD.7.Value == "SH" -%}
 "type":"{{ XAD.7.Value | get_property: 'CodeSystem/AddressType', 'code' }}",
 {% endif -%}
+{% if XAD.7.Value == "BA" or XAD.7.Value == "BI" or XAD.7.Value == "C" or XAD.7.Value == "B" or XAD.7.Value == "H" or XAD.7.Value == "O" -%}
+"use":"{{ XAD.7.Value }}",
+{% endif -%}
 {% if XAD.9.9 == null -%}
 "district":"{{ XAD.9.2 }}",
 {% endif -%}

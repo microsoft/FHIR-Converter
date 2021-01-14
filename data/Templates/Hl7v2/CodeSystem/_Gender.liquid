@@ -24,8 +24,8 @@
     "display" : "Other",
     "system" : "http://hl7.org/fhir/administrative-gender",
     {% else -%}
-    "code" : "",
-    "display" : "",
-    "system" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "{{ inCode }}",
     {% endif -%}
 }

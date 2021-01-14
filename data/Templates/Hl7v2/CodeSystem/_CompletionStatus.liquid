@@ -16,8 +16,8 @@
     "display" : "Completed",
     "system" : "http://hl7.org/fhir/event-status",
     {% else -%}
-    "code" : "",
-    "display" : "",
-    "system" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "{{ inCode }}",
     {% endif -%}
 }

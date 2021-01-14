@@ -12,8 +12,8 @@
     "display" : "Not a student",
     "system" : "http://terminology.hl7.org/CodeSystem/v2-0231",
     {% else -%}
-    "code" : "",
-    "display" : "",
-    "system" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "{{ inCode }}",
     {% endif -%}
 }
