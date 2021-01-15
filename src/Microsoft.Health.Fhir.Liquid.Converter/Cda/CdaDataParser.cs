@@ -3,8 +3,12 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
+using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
@@ -13,32 +17,66 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
     {
         public IDictionary<string, object> Parse(string document)
         {
-            var xdoc = XDocument.Parse(document);
-
-            // Remove namespaces
-            RemoveNamespacePrefix(xdoc.Root);
-
-            var jsonString = JsonConvert.SerializeObject(xdoc);
-            var dataDictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonString, new DictionaryJsonConverter()) ?? new Dictionary<string, object>();
-            dataDictionary["_originalData"] = document;
-
-            return new Dictionary<string, object>()
+            try
             {
-                { "msg", dataDictionary },
-            };
+                var xDocument = XDocument.Parse(document);
+
+                // Remove redundant xml namespaces
+                var defaultNamespace = xDocument?.Root?.GetDefaultNamespace().NamespaceName;
+                var attributes = xDocument?.Root?.Attributes();
+                foreach (var attribute in attributes?.Where(attribute => IsRedundantNamespaceAttribute(attribute, defaultNamespace))?.ToList())
+                {
+                    attribute.Remove();
+                }
+
+                // Normalize non-default namespace in xml attributes
+                var namespaces = xDocument?.Root?.Attributes()?.Where(x => x.IsNamespaceDeclaration && x.Value != defaultNamespace);
+                NormalizeNamespacePrefixInAttributes(xDocument?.Root, namespaces);
+
+                // Convert to json
+                var jsonString = JsonConvert.SerializeXNode(xDocument);
+                var dataDictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonString, new DictionaryJsonConverter()) ?? new Dictionary<string, object>();
+                dataDictionary["_originalData"] = document;
+
+                return new Dictionary<string, object>()
+                {
+                    { "msg", dataDictionary },
+                };
+            }
+            catch (Exception ex)
+            {
+                throw new DataParseException(FhirConverterErrorCode.InputParsingError, string.Format(Resources.InputParsingError, ex.Message), ex);
+            }
         }
 
-        private void RemoveNamespacePrefix(XElement element)
+        private bool IsRedundantNamespaceAttribute(XAttribute attribute, string defaultNamespace)
         {
-            // TODO: Check namespace, especially for sdtc
-            if (element?.Name?.Namespace != null)
+            return attribute.IsNamespaceDeclaration &&
+                   !string.Equals(attribute.Name.LocalName, "xmlns", StringComparison.InvariantCultureIgnoreCase) &&
+                   string.Equals(attribute.Value, defaultNamespace, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        /// <summary>
+        /// Replace "namespace:attribute" to "namespace_attribute" to be compatible with DotLiquids
+        /// </summary>
+        private void NormalizeNamespacePrefixInAttributes(XElement element, IEnumerable<XAttribute> namespaces)
+        {
+            if (element == null || namespaces == null)
             {
-                element.Name = element.Name.LocalName;
+                return;
             }
 
-            foreach (var child in element?.Descendants())
+            foreach (var ns in namespaces)
             {
-                RemoveNamespacePrefix(child);
+                if (string.Equals(ns.Value, element.Name.NamespaceName, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    element.Name = $"{ns.Name.LocalName}_{element.Name.LocalName}";
+                }
+            }
+
+            foreach (var child in element.Descendants())
+            {
+                NormalizeNamespacePrefixInAttributes(child, namespaces);
             }
         }
     }

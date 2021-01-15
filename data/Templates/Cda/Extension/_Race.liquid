@@ -3,7 +3,7 @@
     "extension":
     [
         {% assign raceCodes1 = Race.raceCode | to_array -%}
-        {% assign raceCodes2 = Race.sdtc:raceCode | to_array -%}
+        {% assign raceCodes2 = Race.sdtc_raceCode | to_array -%}
         {% assign raceCodes = raceCodes1 | concat: raceCodes2 -%}
         {% for r in raceCodes -%}
             {
@@ -32,7 +32,7 @@
         {% endfor -%}
         {
             "url": "text",
-            {% if Race.sdtc:raceCode -%}
+            {% if Race.sdtc_raceCode -%}
                 "valueString":"Mixed",
             {% elsif Race.raceCode.nullFlavor -%}
                 {% assign normalizedCode = Race.raceCode.nullFlavor | upcase -%}

@@ -3,7 +3,7 @@
     "extension":
     [
         {% assign ethnicCodes1 = Ethnicity.ethnicGroupCode | to_array -%}
-        {% assign ethnicCodes2 = Ethnicity.sdtc:ethnicGroupCode | to_array -%}
+        {% assign ethnicCodes2 = Ethnicity.sdtc_ethnicGroupCode | to_array -%}
         {% assign ethnicCodes = ethnicCodes1 | concat: ethnicCodes2 -%}
         {% for e in ethnicCodes -%}
             {
@@ -32,7 +32,7 @@
         {% endfor -%}
         {
             "url": "text",
-            {% if Ethnicity.sdtc:ethnicGroupCode -%}
+            {% if Ethnicity.sdtc_ethnicGroupCode -%}
                 "valueString":"Mixed",
             {% elsif Ethnicity.ethnicGroupCode.nullFlavor -%}
                 {% assign normalizedCode = Ethnicity.ethnicGroupCode.nullFlavor | upcase -%}

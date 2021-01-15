@@ -135,7 +135,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
 
                         var v = ReadValue(reader);
 
-                        // TODO: Check attribute "@" and text content "#"
+                        // TODO: Should we do this when serializing xml?
                         if (propertyName.StartsWith("@"))
                         {
                             // If property is attribute, remove "@"
