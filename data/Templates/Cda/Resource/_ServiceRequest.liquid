@@ -1,0 +1,29 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "ServiceRequest",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = serviceEntry.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "status":{% include 'ValueSet/RequestStatus' code: serviceEntry.statusCode.code -%}
+        "code":
+        {
+            {% if serviceEntry.code.translation -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: serviceEntry.code.translation -%}
+            {% endif -%}
+            {% if serviceEntry.code.translation == null -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: serviceEntry.code -%}
+            {% endif -%}
+        },
+        "priority":"{{ serviceEntry.priorityCode.displayName }}",
+    },
+    "request":{
+        "method":"PUT",
+        "url":"ServiceRequest/{{ ID }}",
+    },
+},

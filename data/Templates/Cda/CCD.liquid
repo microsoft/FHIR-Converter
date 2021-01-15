@@ -6,6 +6,7 @@
         {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
     	{% include 'Header' patientId: patientId -%}
         {% include 'Section/AllergiesAndAdverseReactions' fullPatientId: fullPatientId -%}
+        {% include 'Section/Medication' fullPatientId: fullPatientId -%}
         {% include 'Section/Result' fullPatientId: fullPatientId -%}
         {% include 'Section/SocialHistory' fullPatientId: fullPatientId -%}
         {% include 'Section/VitalSigns' fullPatientId: fullPatientId-%}

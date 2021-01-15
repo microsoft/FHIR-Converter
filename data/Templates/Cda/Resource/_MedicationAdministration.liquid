@@ -1,0 +1,41 @@
+﻿{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "MedicationAdministration",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = medicationAdministration.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "status":"{{ medicationAdministration.statusCode.code }}",
+        "effectivePeriod":
+        {
+            "start":"{{ medicationAdministration.effectiveTime.low.value | format_as_date_time }}",
+            "end":"{{ medicationAdministration.effectiveTime.high.value | format_as_date_time }}",
+        },
+        "dosage":
+        {
+            "route":
+            {
+                {% include 'DataType/CodeableConcept' CodeableConcept: medicationAdministration.routeCode -%}
+            },
+            "dose":
+            {
+                "value":"{{ medicationAdministration.doseQuantity.value }}",
+                "unit":"{{ medicationAdministration.doseQuantity.unit }}",
+            },
+            "rateQuantity":
+            {
+                "value":"{{ medicationAdministration.rateQuantity.value }}",
+                "unit":"{{ medicationAdministration.rateQuantity.unit }}",
+            },
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"MedicationAdministration/{{ ID }}",
+    },
+},
