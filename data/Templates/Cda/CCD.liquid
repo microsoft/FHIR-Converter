@@ -7,7 +7,8 @@
     	{% include 'Header' patientId: patientId -%}
         {% include 'Section/AllergiesAndAdverseReactions' fullPatientId: fullPatientId -%}
         {% include 'Section/Medication' fullPatientId: fullPatientId -%}
-        {% include 'Section/Result' fullPatientId: fullPatientId -%}
+        {% include 'Section/Problem' fullPatientId: fullPatientId -%}
+        {% include 'Section/Results' fullPatientId: fullPatientId -%}
         {% include 'Section/SocialHistory' fullPatientId: fullPatientId -%}
         {% include 'Section/VitalSigns' fullPatientId: fullPatientId-%}
         {% include 'Resource/DocumentReference' docref: msg ID: "documentReference-id" -%}

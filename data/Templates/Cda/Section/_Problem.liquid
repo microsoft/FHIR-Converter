@@ -1,0 +1,10 @@
+{% assign firstSections = msg | get_first_cda_sections_by_template_id: '2.16.840.1.113883.10.20.22.2.5.1' -%}
+{% assign entries = firstSections.2_16_840_1_113883_10_20_22_2_5_1.entry | to_array -%}
+{% for e in entries -%}
+    {% assign relationships = e.act.entryRelationship | to_array -%}
+    {% for r in relationships -%}
+        {% assign conditionId = r.observation | to_json_string | generate_uuid -%}
+        {% include 'Resource/Condition' conditionEntry: r.observation, ID: conditionId -%}
+        {% include 'Reference/Condition/Subject' ID: conditionId, REF: fullPatientId -%}
+    {% endfor -%}
+{% endfor -%}

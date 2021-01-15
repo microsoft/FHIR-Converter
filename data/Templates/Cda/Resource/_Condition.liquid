@@ -4,17 +4,20 @@
         "resourceType": "Condition",
         "id":"{{ ID }}",
         "identifier":
-        {
+        [
             {% assign ids = conditionEntry.id | to_array -%}
             {% for id in ids -%}
-            {% include 'DataType/Identifier' Identifier: id -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
             {% endfor -%}
-        },
+        ],
         "clinicalStatus":
         {
-            {% if entryRelationship.observation.templateId.root == 2.16.840.1.113883.10.20.22.4.5 -%}
-            {% include 'DataType/CodeableConcept' CodeableConcept: conditionEntry.entryRelationship.observation.value -%}
-            {% endif -%}
+            {% assign relationships = conditionEntry.entryRelationship | to_array -%}
+            {% for r in relationships -%}
+                {% if r.observation.templateId | to_json_string | contains: '2.16.840.1.113883.10.20.22.4.5' -%}
+                {% include 'DataType/CodeableConcept' CodeableConcept: r.observation.value -%}
+                {% endif -%}
+            {% endfor -%}
         },
         "code":
         {
@@ -31,9 +34,12 @@
         {% endif -%}
         "onsetAge":
         {
-            {% if entryRelationship.observation.templateId.root == 2.16.840.1.113883.10.20.22.4.31 -%}
-            {% include 'DataType/CodeableConcept' CodeableConcept: conditionEntry.entryRelationship.observation.value.value -%}
-            {% endif -%}
+            {% assign relationships = conditionEntry.entryRelationship | to_array -%}
+            {% for r in relationships -%}
+                {% if r.observation.templateId | to_json_string | contains: '2.16.840.1.113883.10.20.22.4.31' -%}
+                {% include 'DataType/CodeableConcept' CodeableConcept: r.observation.value.value -%}
+                {% endif -%}
+            {% endfor -%}
         },
     },
     "request":{
