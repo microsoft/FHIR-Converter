@@ -290,6 +290,38 @@
                 "text": "admitter"
               }
             ]
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ATND",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                    "display": "attender"
+                  }
+                ]
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/b065b233-8738-f1ec-1314-d61e4aac2c9e"
+            }
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ADM",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+                  }
+                ],
+                "text": "admitter"
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/b065b233-8738-f1ec-1314-d61e4aac2c9e"
+            }
           }
         ],
         "serviceType": {
@@ -359,6 +391,17 @@
       "request": {
         "method": "PUT",
         "url": "Location/9b2956e2-230b-9dd5-ad8d-0e697a8664c1"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b065b233-8738-f1ec-1314-d61e4aac2c9e",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "b065b233-8738-f1ec-1314-d61e4aac2c9e"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/b065b233-8738-f1ec-1314-d61e4aac2c9e"
       }
     },
     {

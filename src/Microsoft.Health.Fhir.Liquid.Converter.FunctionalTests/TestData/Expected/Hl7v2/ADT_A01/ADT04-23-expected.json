@@ -325,6 +325,54 @@
                 "text": "admitter"
               }
             ]
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ATND",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                    "display": "attender"
+                  }
+                ]
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/06328e17-a467-ce3f-48ba-28a3e3c21152"
+            }
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "REF",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+                  }
+                ],
+                "text": "referrer"
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/a5bcb90d-8151-7e13-dd82-9e837d506efa"
+            }
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ADM",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+                  }
+                ],
+                "text": "admitter"
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/06328e17-a467-ce3f-48ba-28a3e3c21152"
+            }
           }
         ],
         "serviceType": {
@@ -401,6 +449,28 @@
       "request": {
         "method": "PUT",
         "url": "Location/affd96b8-87bc-956b-0215-7db7a8c6a9b3"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:06328e17-a467-ce3f-48ba-28a3e3c21152",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "06328e17-a467-ce3f-48ba-28a3e3c21152"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/06328e17-a467-ce3f-48ba-28a3e3c21152"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a5bcb90d-8151-7e13-dd82-9e837d506efa",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "a5bcb90d-8151-7e13-dd82-9e837d506efa"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/a5bcb90d-8151-7e13-dd82-9e837d506efa"
       }
     },
     {

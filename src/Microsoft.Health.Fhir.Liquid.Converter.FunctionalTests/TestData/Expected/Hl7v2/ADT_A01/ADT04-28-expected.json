@@ -240,6 +240,38 @@
                 "text": "referrer"
               }
             ]
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ATND",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                    "display": "attender"
+                  }
+                ]
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/78421d2f-a405-2d71-ff9f-132539dbcdb5"
+            }
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "REF",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+                  }
+                ],
+                "text": "referrer"
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/fb207bbb-3ad0-180c-bd53-8ca8fd3581ec"
+            }
           }
         ],
         "identifier": [
@@ -292,6 +324,28 @@
       "request": {
         "method": "PUT",
         "url": "Location/a821376a-5d7b-7274-8d95-a3f7c7efaf1b"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:78421d2f-a405-2d71-ff9f-132539dbcdb5",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "78421d2f-a405-2d71-ff9f-132539dbcdb5"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/78421d2f-a405-2d71-ff9f-132539dbcdb5"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fb207bbb-3ad0-180c-bd53-8ca8fd3581ec",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "fb207bbb-3ad0-180c-bd53-8ca8fd3581ec"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/fb207bbb-3ad0-180c-bd53-8ca8fd3581ec"
       }
     },
     {

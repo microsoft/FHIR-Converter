@@ -188,6 +188,17 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:da437276-fd7c-eb21-1885-4041aa59c483",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "da437276-fd7c-eb21-1885-4041aa59c483"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/da437276-fd7c-eb21-1885-4041aa59c483"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:c3c41c66-630e-8d1b-2fad-cffb0957da29",
       "resource": {
         "resourceType": "DiagnosticReport",
@@ -219,6 +230,14 @@
             }
           ]
         },
+        "specimen": [
+          {
+            "reference": "Practitioner/da437276-fd7c-eb21-1885-4041aa59c483"
+          },
+          {
+            "reference": "Specimen/6006d57e-e0a3-d90e-7d9b-546ed575c527"
+          }
+        ],
         "result": [
           {
             "reference": "Observation/24b96f9a-359e-fc62-bf8a-45e4f1b4c6e9"
@@ -234,11 +253,6 @@
           },
           {
             "reference": "Observation/437fa03d-5559-9f37-42ed-482f65dd47ce"
-          }
-        ],
-        "specimen": [
-          {
-            "reference": "Specimen/6006d57e-e0a3-d90e-7d9b-546ed575c527"
           }
         ]
       },
@@ -665,6 +679,14 @@
             }
           ]
         },
+        "specimen": [
+          {
+            "reference": "Practitioner/da437276-fd7c-eb21-1885-4041aa59c483"
+          },
+          {
+            "reference": "Specimen/6006d57e-e0a3-d90e-7d9b-546ed575c527"
+          }
+        ],
         "result": [
           {
             "reference": "Observation/8c207e70-3fd2-2bf4-df75-256240c60258"
@@ -680,11 +702,6 @@
           },
           {
             "reference": "Observation/30282793-eed9-7f34-ea78-c9465ef05757"
-          }
-        ],
-        "specimen": [
-          {
-            "reference": "Specimen/6006d57e-e0a3-d90e-7d9b-546ed575c527"
           }
         ]
       },

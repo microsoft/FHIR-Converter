@@ -158,6 +158,22 @@
                 ]
               }
             ]
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ATND",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                    "display": "attender"
+                  }
+                ]
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/10ffd4e9-25bf-8239-3d9b-64bef81e192a"
+            }
           }
         ],
         "period": {
@@ -170,6 +186,17 @@
       "request": {
         "method": "PUT",
         "url": "Encounter/bd2f287c-f7df-4b1b-7fbf-987cdf51ee4e"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:10ffd4e9-25bf-8239-3d9b-64bef81e192a",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "10ffd4e9-25bf-8239-3d9b-64bef81e192a"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/10ffd4e9-25bf-8239-3d9b-64bef81e192a"
       }
     },
     {

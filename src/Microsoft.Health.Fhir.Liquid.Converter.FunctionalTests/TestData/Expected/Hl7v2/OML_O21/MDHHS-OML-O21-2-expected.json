@@ -131,7 +131,39 @@
             "use": "work"
           }
         ],
-        "deceasedBoolean": "false"
+        "deceasedBoolean": "false",
+        "contact": [
+          {
+            "name": {
+              "family": "Shonal",
+              "given": [
+                "Old"
+              ]
+            },
+            "address": {
+              "line": [
+                "123 Main Street",
+                "Apartment 3-C"
+              ],
+              "city": "Oldtown",
+              "state": "MI",
+              "postalCode": "48917",
+              "country": "USA"
+            },
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "code": "E",
+                    "display": "Employer",
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0131",
+                    "version": "E"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       "request": {
         "method": "PUT",
@@ -298,6 +330,28 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:a07e0fa5-e133-7049-7e66-15c22f36bfbf",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "a07e0fa5-e133-7049-7e66-15c22f36bfbf",
+        "address": [
+          {
+            "line": [
+              "2405 Garden St"
+            ],
+            "city": "Detroit",
+            "state": "MI",
+            "postalCode": "48201",
+            "country": "USA"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/a07e0fa5-e133-7049-7e66-15c22f36bfbf"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:bafe469c-5cc7-f800-feae-81b33cf36940",
       "resource": {
         "resourceType": "ServiceRequest",
@@ -357,6 +411,9 @@
         "status": "NW",
         "authoredOn": "2016-02-23T22:37:05+08:00",
         "occurrenceDateTime": "2016-02-23T22:47:05+08:00",
+        "requester": {
+          "reference": "Organization/a07e0fa5-e133-7049-7e66-15c22f36bfbf"
+        },
         "code": {
           "coding": [
             {

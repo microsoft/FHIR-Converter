@@ -3,10 +3,10 @@
   "type": "batch",
   "entry": [
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:f1f46d90-0473-6ea2-ae7f-b3165305d99f",
       "resource": {
         "resourceType": "MessageHeader",
-        "id": "",
+        "id": "f1f46d90-0473-6ea2-ae7f-b3165305d99f",
         "source": {
           "source": {
             "name": "SomeSystem"
@@ -38,14 +38,14 @@
       },
       "request": {
         "method": "PUT",
-        "url": "MessageHeader/"
+        "url": "MessageHeader/f1f46d90-0473-6ea2-ae7f-b3165305d99f"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:bab5ca58-f272-4c06-4b3f-f9661e45a22b",
       "resource": {
         "resourceType": "Patient",
-        "id": "",
+        "id": "bab5ca58-f272-4c06-4b3f-f9661e45a22b",
         "identifier": [
           {
             "value": "10006579",
@@ -135,14 +135,14 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Patient/"
+        "url": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:8834d46e-2efc-8cde-66d2-fd368b4c6e9c",
       "resource": {
         "resourceType": "Provenance",
-        "id": "",
+        "id": "8834d46e-2efc-8cde-66d2-fd368b4c6e9c",
         "agent": [
           {
             "type": {
@@ -159,14 +159,14 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Provenance/"
+        "url": "Provenance/8834d46e-2efc-8cde-66d2-fd368b4c6e9c"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:f70a39cb-cf13-6f75-885d-cf691752c711",
       "resource": {
         "resourceType": "Account",
-        "id": "",
+        "id": "f70a39cb-cf13-6f75-885d-cf691752c711",
         "identifier": [
           {
             "value": "40007716",
@@ -183,14 +183,25 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Account/"
+        "url": "Account/f70a39cb-cf13-6f75-885d-cf691752c711"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:da437276-fd7c-eb21-1885-4041aa59c483",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "da437276-fd7c-eb21-1885-4041aa59c483"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/da437276-fd7c-eb21-1885-4041aa59c483"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:abc9f629-6e71-5ca8-488e-283e73338943",
       "resource": {
         "resourceType": "DiagnosticReport",
-        "id": "",
+        "id": "abc9f629-6e71-5ca8-488e-283e73338943",
         "identifier": [
           {
             "type": {
@@ -219,39 +230,42 @@
           ]
         },
         "status": "final",
-        "result": [
-          {
-            "reference": "Observation/"
-          },
-          {
-            "reference": "Observation/"
-          },
-          {
-            "reference": "Observation/"
-          },
-          {
-            "reference": "Observation/"
-          },
-          {
-            "reference": "Observation/"
-          }
-        ],
         "specimen": [
           {
-            "reference": "Specimen/"
+            "reference": "Practitioner/da437276-fd7c-eb21-1885-4041aa59c483"
+          },
+          {
+            "reference": "Specimen/7c7cbbd6-4a47-b606-9d5b-dc2d6a03e663"
+          }
+        ],
+        "result": [
+          {
+            "reference": "Observation/f736fbb2-aafc-4e52-abb9-20d77d01d302"
+          },
+          {
+            "reference": "Observation/1ef60c39-1161-0129-a263-b693d23f90c3"
+          },
+          {
+            "reference": "Observation/fa77427d-7606-99a5-ae91-f316de160668"
+          },
+          {
+            "reference": "Observation/2f7b51cf-44f5-547d-2815-747fd4ec7a88"
+          },
+          {
+            "reference": "Observation/73bdfe72-5f9f-31fc-ad22-90e1ccf2d7fe"
           }
         ]
       },
       "request": {
         "method": "PUT",
-        "url": "DiagnosticReport/"
+        "url": "DiagnosticReport/abc9f629-6e71-5ca8-488e-283e73338943"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:f736fbb2-aafc-4e52-abb9-20d77d01d302",
       "resource": {
         "resourceType": "Observation",
-        "id": "",
+        "id": "f736fbb2-aafc-4e52-abb9-20d77d01d302",
         "code": {
           "coding": [
             {
@@ -275,19 +289,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/"
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/"
+        "url": "Observation/f736fbb2-aafc-4e52-abb9-20d77d01d302"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:1ef60c39-1161-0129-a263-b693d23f90c3",
       "resource": {
         "resourceType": "Observation",
-        "id": "",
+        "id": "1ef60c39-1161-0129-a263-b693d23f90c3",
         "code": {
           "coding": [
             {
@@ -345,19 +359,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/"
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/"
+        "url": "Observation/1ef60c39-1161-0129-a263-b693d23f90c3"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:fa77427d-7606-99a5-ae91-f316de160668",
       "resource": {
         "resourceType": "Observation",
-        "id": "",
+        "id": "fa77427d-7606-99a5-ae91-f316de160668",
         "code": {
           "coding": [
             {
@@ -381,19 +395,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/"
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/"
+        "url": "Observation/fa77427d-7606-99a5-ae91-f316de160668"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:2f7b51cf-44f5-547d-2815-747fd4ec7a88",
       "resource": {
         "resourceType": "Observation",
-        "id": "",
+        "id": "2f7b51cf-44f5-547d-2815-747fd4ec7a88",
         "code": {
           "coding": [
             {
@@ -451,19 +465,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/"
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/"
+        "url": "Observation/2f7b51cf-44f5-547d-2815-747fd4ec7a88"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:73bdfe72-5f9f-31fc-ad22-90e1ccf2d7fe",
       "resource": {
         "resourceType": "Observation",
-        "id": "",
+        "id": "73bdfe72-5f9f-31fc-ad22-90e1ccf2d7fe",
         "code": {
           "coding": [
             {
@@ -521,19 +535,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/"
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/"
+        "url": "Observation/73bdfe72-5f9f-31fc-ad22-90e1ccf2d7fe"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:7c7cbbd6-4a47-b606-9d5b-dc2d6a03e663",
       "resource": {
         "resourceType": "Specimen",
-        "id": "",
+        "id": "7c7cbbd6-4a47-b606-9d5b-dc2d6a03e663",
         "receivedTime": "2014-10-06T08:21:00Z",
         "identifier": [
           {
@@ -562,14 +576,14 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Specimen/"
+        "url": "Specimen/7c7cbbd6-4a47-b606-9d5b-dc2d6a03e663"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:c3c41c66-630e-8d1b-2fad-cffb0957da29",
       "resource": {
         "resourceType": "DiagnosticReport",
-        "id": "",
+        "id": "c3c41c66-630e-8d1b-2fad-cffb0957da29",
         "identifier": [
           {
             "type": {
@@ -597,39 +611,42 @@
             }
           ]
         },
-        "result": [
-          {
-            "reference": "Observation/"
-          },
-          {
-            "reference": "Observation/"
-          },
-          {
-            "reference": "Observation/"
-          },
-          {
-            "reference": "Observation/"
-          },
-          {
-            "reference": "Observation/"
-          }
-        ],
         "specimen": [
           {
-            "reference": "Specimen/"
+            "reference": "Practitioner/da437276-fd7c-eb21-1885-4041aa59c483"
+          },
+          {
+            "reference": "Specimen/7c7cbbd6-4a47-b606-9d5b-dc2d6a03e663"
+          }
+        ],
+        "result": [
+          {
+            "reference": "Observation/f3f13545-5a9c-5279-e1a3-6faff5d56778"
+          },
+          {
+            "reference": "Observation/690c7dfd-8d22-ac69-0f11-bf58da18db99"
+          },
+          {
+            "reference": "Observation/4bb79fc0-148e-6d5b-b111-6e09c39ec56e"
+          },
+          {
+            "reference": "Observation/5597ddac-19fb-6893-705d-65097d31b66b"
+          },
+          {
+            "reference": "Observation/e4412677-d1c2-f97d-b765-5bdfb16cdac5"
           }
         ]
       },
       "request": {
         "method": "PUT",
-        "url": "DiagnosticReport/"
+        "url": "DiagnosticReport/c3c41c66-630e-8d1b-2fad-cffb0957da29"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:f3f13545-5a9c-5279-e1a3-6faff5d56778",
       "resource": {
         "resourceType": "Observation",
-        "id": "",
+        "id": "f3f13545-5a9c-5279-e1a3-6faff5d56778",
         "code": {
           "coding": [
             {
@@ -687,19 +704,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/"
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/"
+        "url": "Observation/f3f13545-5a9c-5279-e1a3-6faff5d56778"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:690c7dfd-8d22-ac69-0f11-bf58da18db99",
       "resource": {
         "resourceType": "Observation",
-        "id": "",
+        "id": "690c7dfd-8d22-ac69-0f11-bf58da18db99",
         "code": {
           "coding": [
             {
@@ -757,19 +774,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/"
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/"
+        "url": "Observation/690c7dfd-8d22-ac69-0f11-bf58da18db99"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:4bb79fc0-148e-6d5b-b111-6e09c39ec56e",
       "resource": {
         "resourceType": "Observation",
-        "id": "",
+        "id": "4bb79fc0-148e-6d5b-b111-6e09c39ec56e",
         "code": {
           "coding": [
             {
@@ -827,19 +844,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/"
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/"
+        "url": "Observation/4bb79fc0-148e-6d5b-b111-6e09c39ec56e"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:5597ddac-19fb-6893-705d-65097d31b66b",
       "resource": {
         "resourceType": "Observation",
-        "id": "",
+        "id": "5597ddac-19fb-6893-705d-65097d31b66b",
         "code": {
           "coding": [
             {
@@ -897,19 +914,19 @@
           }
         ],
         "subject": {
-          "reference": "Patient/"
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/"
+        "url": "Observation/5597ddac-19fb-6893-705d-65097d31b66b"
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:e4412677-d1c2-f97d-b765-5bdfb16cdac5",
       "resource": {
         "resourceType": "Observation",
-        "id": "",
+        "id": "e4412677-d1c2-f97d-b765-5bdfb16cdac5",
         "code": {
           "coding": [
             {
@@ -967,12 +984,12 @@
           }
         ],
         "subject": {
-          "reference": "Patient/"
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Observation/"
+        "url": "Observation/e4412677-d1c2-f97d-b765-5bdfb16cdac5"
       }
     }
   ]
