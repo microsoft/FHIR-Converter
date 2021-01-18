@@ -159,7 +159,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 case JValue value:
                     if (ResourceFilter.NonCompareValues.All(func => !func(value.ToString())))
                     {
-                        Assert.Contains(value.ToString(), origin);
+                        Assert.Contains(value.ToString().Trim(), origin);
                     }
 
                     break;
