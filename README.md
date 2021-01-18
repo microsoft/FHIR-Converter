@@ -10,7 +10,7 @@ The Converter makes use of templates that define the mappings between different 
 
 Templates for HL7v2, and CCDA, to FHIR conversion come pre-installed with the Converter. HL7v2 to FHIR templates are based on the [spreadsheet](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk/edit#gid=0) created by the HL7 [2-To-FHIR project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project). If needed, you can create new, or modify existing templates by following this document, and deploy those to meet your specific conversion requirements.
 
-FHIR converter runs as a REST web service and can be deployed on-prem or in the cloud. It takes raw data as input and converts it to FHIR bundles. These bundles can be persisted to a FHIR server such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/). 
+FHIR converter runs as a REST web service and can be deployed on-prem or in the cloud. It takes raw data as input and converts it to FHIR bundles. These bundles can be persisted to a FHIR server such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/).
 
 The FHIR Converter consists of the following components:
 
@@ -38,7 +38,7 @@ Once you have your subscription, click the link below. Note the service name as 
     <img src="https://azuredeploy.net/deploybutton.png"/>
 </a>
 
-Once it is deployed, you can access the UI and the service at [https://<SERVICE_NAME>.azurewebsites.net](https://SERVICE_NAME.azurewebsites.net). 
+Once it is deployed, you can access the UI and the service at [https://<SERVICE_NAME>.azurewebsites.net](https://SERVICE_NAME.azurewebsites.net).
 
 If you need to view or edit your API Key later, take the following steps:
 
@@ -53,6 +53,7 @@ Make sure that you have Node.js >=10.10.0 < 11.0 installed
 ```
 git clone https://github.com/microsoft/FHIR-Converter/
 cd FHIR-Converter
+git checkout handlebars
 npm install
 npm start
 ```
