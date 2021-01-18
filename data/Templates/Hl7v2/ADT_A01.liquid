@@ -31,9 +31,15 @@
         {% endif -%}
         
         {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
+        {% evaluate organizationId_PD1_3 using 'ID/Organization' XON: firstSegments.PD1.3 -%}
+
+        {% if organizationId_PD1_3 -%}
+            {% include 'Resource/Organization' PD1: firstSegments.PD1, ID: organizationId_PD1_3 -%}
+        {% endif -%}
+
         {% if patientId -%}
             {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
-            {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, ID: patientId -%}
+            {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, Organization_ID_PD1_3: organizationId_PD1_3, ID: patientId -%}
         {% endif -%}
 
         {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseId: patientId -%}
@@ -137,7 +143,13 @@
         
         {% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
         {% for nk1Segment in nk1SegmentLists.NK1 -%}
-            {% include 'Resource/Patient' NK1: nk1Segment, ID: patientId -%}
+            {% evaluate organizationId_NK1_13 using 'ID/Organization' XON: nk1Segment.13 -%}
+
+            {% if organizationId_NK1_13 -%}
+                {% include 'Resource/Organization' NK1: nk1Segment, ID: organizationId_NK1_13 -%}
+            {% endif -%}
+
+            {% include 'Resource/Patient' NK1: nk1Segment, Organization_ID_NK1_13: organizationId_NK1_13, ID: patientId -%}
 
             {% evaluate relatedPersonId using 'ID/RelatedPerson' NK1: nk1Segment, baseId: patientId -%}
             {% if relatedPersonId -%}
