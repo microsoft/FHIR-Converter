@@ -1,5 +1,8 @@
+{% evaluate practitionerId using 'Utils/GenerateId' obj: msg.ClinicalDocument.legalAuthenticator.assignedEntity -%}
+{% assign compositionId = msg.ClinicalDocument | to_json_string | generate_uuid -%}
+{% include 'Resource/Composition' composition: msg.ClinicalDocument, practitionerId: practitionerId, ID: compositionId -%}
+
 {% if msg.ClinicalDocument.legalAuthenticator -%}
-    {% evaluate practitionerId using 'Utils/GenerateId' obj: msg.ClinicalDocument.legalAuthenticator.assignedEntity -%}
     {% include 'Resource/Practitioner' practitioner: msg.ClinicalDocument.legalAuthenticator.assignedEntity ID: practitionerId -%}
 {% endif -%}
 

@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -19,18 +20,26 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
         {
             try
             {
+                // Remove line breaks
+                document = Regex.Replace(document, @"\r\n?|\n", string.Empty);
+
                 var xDocument = XDocument.Parse(document);
 
                 // Remove redundant xml namespaces
-                var defaultNamespace = xDocument?.Root?.GetDefaultNamespace().NamespaceName;
-                var attributes = xDocument?.Root?.Attributes();
-                foreach (var attribute in attributes?.Where(attribute => IsRedundantNamespaceAttribute(attribute, defaultNamespace))?.ToList())
+                var defaultNamespace = xDocument?.Root?.GetDefaultNamespace()?.NamespaceName;
+                var redundantAttributes = xDocument?.Root?.Attributes()?
+                    .Where(attribute => IsRedundantNamespaceAttribute(attribute, defaultNamespace));
+                if (redundantAttributes != null)
                 {
-                    attribute.Remove();
+                    foreach (var attribute in redundantAttributes)
+                    {
+                        attribute.Remove();
+                    }
                 }
 
                 // Normalize non-default namespace in xml attributes
-                var namespaces = xDocument?.Root?.Attributes()?.Where(x => x.IsNamespaceDeclaration && x.Value != defaultNamespace);
+                var namespaces = xDocument?.Root?.Attributes()?
+                    .Where(x => x.IsNamespaceDeclaration && x.Value != defaultNamespace);
                 NormalizeNamespacePrefixInAttributes(xDocument?.Root, namespaces);
 
                 // Convert to json
@@ -57,7 +66,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
         }
 
         /// <summary>
-        /// Replace "namespace:attribute" to "namespace_attribute" to be compatible with DotLiquids
+        /// Replace "namespace:attribute" to "namespace_attribute" to be compatible with DotLiquids, e.g., from sdtc:raceCode to sdtc_raceCode
         /// </summary>
         private void NormalizeNamespacePrefixInAttributes(XElement element, IEnumerable<XAttribute> namespaces)
         {
