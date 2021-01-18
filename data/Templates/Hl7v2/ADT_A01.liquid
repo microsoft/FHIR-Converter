@@ -153,6 +153,7 @@
             {% evaluate observationId using 'ID/Observation' OBX: obxSegment, baseId: patientId -%}
             {% evaluate practitionerId using 'ID/Practitioner' XCN: obxSegment.16 -%}
             {% evaluate practitionerRoleId using 'ID/PractitionerRole' XCN: obxSegment.25 -%}
+            {% evaluate organizationId using 'ID/Organization' XON: obxSegment.23 -%}
 
             {% if practitionerId -%}
                 {% include 'Resource/Practitioner' OBX: obxSegment, ID: practitionerId -%}
@@ -162,8 +163,12 @@
                 {% include 'Resource/PractitionerRole' OBX: obxSegment, ID: practitionerRoleId -%}
             {% endif %}
 
+            {% if organizationId -%}
+                {% include 'Resource/Organization' OBX: obxSegment, ID: organizationId -%}
+            {% endif -%}
+
             {% if observationId -%}
-                {% include 'Resource/Observation' OBX: obxSegment, Practitioner_ID_OBX_16: practitionerId, PractitionerRole_ID_OBX_25: practitionerRoleId, ID: observationId -%}
+                {% include 'Resource/Observation' OBX: obxSegment, Practitioner_ID_OBX_16: practitionerId, PractitionerRole_ID_OBX_25: practitionerRoleId, Organization_ID_OBX_23: organizationId, ID: observationId -%}
                 {% if patientId -%}
                     {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
                 {% endif -%}
