@@ -192,7 +192,7 @@
                     {% endif -%}
 
                     {% if practitionerRoleId -%}
-                        {% include 'Resource/PractitionerRole' OBX: obxSegment, ID: practitionerRoleId -%}
+                        {% include 'Resource/PractitionerRole' OBX: obxSegment, Practitioner_ID_OBX_16: practitionerId, Organization_ID_OBX_23: organizationId, ID: practitionerRoleId -%}
                     {% endif %}
 
                     {% if organizationId -%}
