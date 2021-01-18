@@ -2,11 +2,7 @@
 "line": [
     {% assign lines = Address.streetAddressLine | to_array -%}
     {% for l in lines -%}
-        {% if l._ -%}
-            "{{l._}}",
-        {% elsif l -%}
-            "{{l}}",
-        {% endif -%}
+        "{{l._}}",
     {% endfor -%}
 ],
 "city": "{{Address.city._}}",

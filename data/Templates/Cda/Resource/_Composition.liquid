@@ -48,19 +48,19 @@
             {% assign components = composition.component.structuredBody.component | to_array -%}
             {% for component in components -%}
             {
-                {% if component.section.title. -%}
+                {% if component.section.title._ -%}
                 "title":"{{ component.section.title._ }}",
                 {% endif -%}
-                {% if component.section.title. == null -%}
+                {% if component.section.title._ == null -%}
                 "title":"{{ component.section.code.displayName }}",
                 {% endif -%}
                 "text":
                 {
                     "status":"generated",
-                    {% if component.section.title. -%}
+                    {% if component.section.title._ -%}
                     "div":"<div xmlns=\"http://www.w3.org/1999/xhtml\">{{ component.section.title._ }}</div>",
                     {% endif -%}
-                    {% if component.section.title. == null -%}
+                    {% if component.section.title._ == null -%}
                     "div":"<div xmlns=\"http://www.w3.org/1999/xhtml\">{{ component.section.code.displayName }}</div>",
                     {% endif -%}
                 },

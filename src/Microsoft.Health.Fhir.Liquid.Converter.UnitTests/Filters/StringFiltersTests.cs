@@ -66,7 +66,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         [Fact]
         public void GzipTest()
         {
-            // TODO: Add linux result
             var equal = string.Equals(Filters.Gzip("uncompressed"), "H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA=", StringComparison.InvariantCultureIgnoreCase);
             Assert.True(equal);
             Assert.Equal(string.Empty, Filters.Gzip(string.Empty));
@@ -76,7 +75,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         [Fact]
         public void GunzipTest()
         {
-            // TODO: Add linux result
             var equal = string.Equals(Filters.Gunzip("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA="), "uncompressed", StringComparison.InvariantCultureIgnoreCase);
             Assert.True(equal);
             Assert.Equal(string.Empty, Filters.Gunzip(string.Empty));

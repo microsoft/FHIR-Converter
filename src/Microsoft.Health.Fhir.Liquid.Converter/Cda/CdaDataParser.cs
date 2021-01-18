@@ -20,29 +20,32 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
         {
             try
             {
-                // Remove line breaks
+                // Remove line breaks to avoid invalid line breaks in json value
                 document = Regex.Replace(document, @"\r\n?|\n", string.Empty);
 
                 var xDocument = XDocument.Parse(document);
 
-                // Remove redundant xml namespaces
+                // Remove redundant namespaces to avoid appending namespace prefix before elements
                 var defaultNamespace = xDocument?.Root?.GetDefaultNamespace()?.NamespaceName;
-                var redundantAttributes = xDocument?.Root?.Attributes()?
+                var redundantNamespaces = xDocument?.Root?.Attributes()?
                     .Where(attribute => IsRedundantNamespaceAttribute(attribute, defaultNamespace));
-                if (redundantAttributes != null)
+                if (redundantNamespaces != null)
                 {
-                    foreach (var attribute in redundantAttributes)
+                    foreach (var ns in redundantNamespaces)
                     {
-                        attribute.Remove();
+                        ns.Remove();
                     }
                 }
 
-                // Normalize non-default namespace in xml attributes
+                // Normalize non-default namespace prefix in elements
                 var namespaces = xDocument?.Root?.Attributes()?
                     .Where(x => x.IsNamespaceDeclaration && x.Value != defaultNamespace);
-                NormalizeNamespacePrefixInAttributes(xDocument?.Root, namespaces);
+                NormalizeNamespacePrefix(xDocument?.Root, namespaces);
 
-                // Convert to json
+                // Change XText to XElement with name "_" to avoid serializing depth difference, e.g., given="foo" and given.#text="foo"
+                ReplaceTextWithElement(xDocument?.Root);
+
+                // Convert to json dictionary
                 var jsonString = JsonConvert.SerializeXNode(xDocument);
                 var dataDictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonString, new DictionaryJsonConverter()) ?? new Dictionary<string, object>();
                 dataDictionary["_originalData"] = document;
@@ -58,9 +61,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
             }
         }
 
-        private bool IsRedundantNamespaceAttribute(XAttribute attribute, string defaultNamespace)
+        private static bool IsRedundantNamespaceAttribute(XAttribute attribute, string defaultNamespace)
         {
-            return attribute.IsNamespaceDeclaration &&
+            return attribute != null &&
+                   attribute.IsNamespaceDeclaration &&
                    !string.Equals(attribute.Name.LocalName, "xmlns", StringComparison.InvariantCultureIgnoreCase) &&
                    string.Equals(attribute.Value, defaultNamespace, StringComparison.InvariantCultureIgnoreCase);
         }
@@ -68,7 +72,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
         /// <summary>
         /// Replace "namespace:attribute" to "namespace_attribute" to be compatible with DotLiquids, e.g., from sdtc:raceCode to sdtc_raceCode
         /// </summary>
-        private void NormalizeNamespacePrefixInAttributes(XElement element, IEnumerable<XAttribute> namespaces)
+        private static void NormalizeNamespacePrefix(XElement element, IEnumerable<XAttribute> namespaces)
         {
             if (element == null || namespaces == null)
             {
@@ -83,9 +87,31 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 }
             }
 
-            foreach (var child in element.Descendants())
+            foreach (var childElement in element.Elements())
             {
-                NormalizeNamespacePrefixInAttributes(child, namespaces);
+                NormalizeNamespacePrefix(childElement, namespaces);
+            }
+        }
+
+        private static void ReplaceTextWithElement(XElement element)
+        {
+            if (element == null)
+            {
+                return;
+            }
+
+            foreach (var node in element.Nodes())
+            {
+                switch (node)
+                {
+                    case XText textNode:
+                        element.Add(new XElement("_", textNode.Value));
+                        textNode.Remove();
+                        break;
+                    case XElement elementNode:
+                        ReplaceTextWithElement(elementNode);
+                        break;
+                }
             }
         }
     }

@@ -135,37 +135,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
 
                         var v = ReadValue(reader);
 
-                        // TODO: Should we do this when serializing xml?
+                        // TODO: Should we do this when it is xml?
                         if (propertyName.StartsWith("@"))
                         {
                             // If property is attribute, remove "@"
                             propertyName = propertyName[1..];
-                            obj[propertyName] = v;
-                        }
-                        else if (propertyName.Equals("#text", StringComparison.InvariantCultureIgnoreCase))
-                        {
-                            // If property is text content, replace it with "_"
-                            propertyName = "_";
-                            obj[propertyName] = v;
-                        }
-                        else
-                        {
-                            if (v is ICollection)
-                            {
-                                obj[propertyName] = v;
-                            }
-                            else
-                            {
-                                // Some properties are saved in element while some others are saved in text content, e.g., <family>Betterhalf</family> and <family qualifier="SP">Betterhalf</family>
-                                // If saved as element, it is saved in "x".
-                                // If saved as text content, it is saved in "x.#text".
-                                // We need to convert them to same level with "x._".
-                                // TODO: Double check the logic (list?)
-                                var innerObj = new Dictionary<string, object>() { { "_", v } };
-                                obj[propertyName] = innerObj;
-                            }
                         }
 
+                        obj[propertyName] = v;
                         break;
                     case JsonToken.Comment:
                         break;
