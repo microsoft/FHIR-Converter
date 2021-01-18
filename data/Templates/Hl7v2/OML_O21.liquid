@@ -158,9 +158,15 @@
         {% assign orcSegmentLists = hl7v2Data | get_segment_lists: 'ORC' -%}
         {% for orcSegment in orcSegmentLists.ORC -%}
             {% evaluate serviceRequestId using 'ID/ServiceRequest' ORC: orcSegment, baseId: patientId -%}
+            {% evaluate organizationId_ORC_21 using 'ID/Organization' CWE: orcSegment.21 -%}
+
+            {% if organizationId_ORC_21 -%}
+                {% include 'Resource/Organization' ORC: orcSegment, ID: organizationId_ORC_21 -%}
+            {% endif -%}
+
             {% if serviceRequestId -%}
                 {% assign fullServiceRequestId = serviceRequestId | prepend: 'ServiceRequest/' -%}
-                {% include 'Resource/ServiceRequest' ORC: orcSegment, ID: serviceRequestId -%}
+                {% include 'Resource/ServiceRequest' ORC: orcSegment, Organization_ID_ORC_21: organizationId_ORC_21, ID: serviceRequestId -%}
 
                 {% assign tq1SegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'TQ1' -%}
                 {% for tq1Segment in tq1SegmentLists.TQ1 -%}
@@ -169,7 +175,13 @@
 
                 {% assign obrSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'OBR' -%}
                 {% for obrSegment in obrSegmentLists.OBR -%}
-                    {% include 'Resource/ServiceRequest' OBR: obrSegment, ID: serviceRequestId -%}
+                    {% evaluate practitionerId_OBR_10 using 'ID/Practitioner' XCN: obrSegment.10 -%}
+
+                    {% if practitionerId_OBR_10 -%}
+                        {% include 'Resource/Practitioner' OBR: obrSegment, ID: practitionerId_OBR_10 -%}
+                    {% endif -%}
+
+                    {% include 'Resource/ServiceRequest' OBR: obrSegment, Practitioner_ID_OBR_10: practitionerId_OBR_10, ID: serviceRequestId -%}
                 {% endfor -%}
 
                 {% if patientId -%}
@@ -178,8 +190,14 @@
             {% endif -%}
 
             {% evaluate provenanceId using 'ID/Provenance' ORC: orcSegment, baseId: patientId -%}
+            {% evaluate organizationId using 'ID/Organization' CWE: orcSegment.17 -%}
+
+            {% if organizationId -%}
+                {% include 'Resource/Organization' ORC: orcSegment, ID: organizationId -%}
+            {% endif -%}
+
             {% if provenanceId -%}
-                {% include 'Resource/Provenance' ORC: orcSegment, ID: provenanceId -%}
+                {% include 'Resource/Provenance' ORC: orcSegment, Organization_ID_ORC_17: organizationId, ID: provenanceId -%}
                 {% include 'Reference/Provenance/Target' ID: provenanceId, REF: fullServiceRequestId -%}
             {% endif -%}
 
