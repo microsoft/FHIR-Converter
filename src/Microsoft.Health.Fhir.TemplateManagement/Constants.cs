@@ -7,7 +7,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 {
     internal static class Constants
     {
-        internal const string DefaultTemplatePath = "DefaultTemplates.tar.gz";
+        internal const string DefaultTemplatePath = "Hl7v2DefaultTemplates.tar.gz";
 
         // Accept meidia type for manifest.
         internal const string MediatypeV2Manifest = "application/vnd.docker.distribution.manifest.v2+json";
@@ -28,8 +28,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         internal const int TimeOutMilliseconds = 30000;
 
-        internal const string OrasFileForWindows = "oras.exe";
-
-        internal const string OrasFileForLinux = "oras-linux";
+        internal const string OrasFile = "oras";
     }
 }

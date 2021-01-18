@@ -16,7 +16,7 @@ variables:
   functionalTests: "**/*FunctionalTests/*.csproj"
   buildConfiguration: 'Release'
   major: 3
-  minor: 1
+  minor: 2
   bulidnum: $[counter(format('{0}.{1}',variables['major'],variables['minor']), 100)]
   revision: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
   version: $(major).$(minor).$(bulidnum).$(revision)
@@ -29,6 +29,16 @@ stages:
   - job: Build
     steps:
     - script: echo $(version)
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet restore'
+      inputs:
+        command: 'restore'
+        projects: '$(solution)'
+        arguments: '--configuration $(buildConfiguration)'
+        feedsToUse: 'select'
+        vstsFeed: '7621b231-1a7d-4364-935b-2f72b911c43d/a60b7c8b-c6ae-4a8e-bd15-a526b603a1f2'
+
     - task: DotNetCoreCLI@2
       displayName: 'dotnet build'
       inputs:
@@ -81,7 +91,7 @@ stages:
         includeRootFolder: false
         archiveType: 'tar'
         tarCompression: 'gz'
-        archiveFile: '$(Build.SourcesDirectory)/data/Templates/DefaultTemplates.tar.gz'
+        archiveFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2DefaultTemplates.tar.gz'
 
     - task: CopyFiles@2
       displayName: 'copy DefaultTemplates to artifacts'
@@ -161,6 +171,11 @@ stages:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
+        curl -LO https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_linux_amd64.tar.gz
+        mkdir -p oras-install/
+        tar -zxf oras_0.8.1_*.tar.gz -C oras-install/
+        mv oras-install/oras /usr/local/bin/
+        rm -rf oras_0.8.1_*.tar.gz oras-install/
         docker run --rm -d -p 5000:5000 --name registry registry:2
       displayName: start registry
     - script: |
@@ -197,7 +212,7 @@ stages:
         tag: v$(major).$(minor).$(bulidnum)      
         assets: |
           $(System.DefaultWorkingDirectory)/FhirConverterBuild/bin/**
-          $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/DefaultTemplates.tar.gz
+          $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/Hl7v2DefaultTemplates.tar.gz
 
 
 

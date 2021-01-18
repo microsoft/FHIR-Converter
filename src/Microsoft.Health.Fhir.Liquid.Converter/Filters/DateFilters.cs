@@ -79,13 +79,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         private static string ConvertDate(string input, GroupCollection groups)
         {
-            int year = groups["year"].Success ? int.Parse(groups["year"].Value) : 0;
-            int month = groups["month"].Success ? int.Parse(groups["month"].Value) : 0;
-            int day = groups["day"].Success ? int.Parse(groups["day"].Value) : 0;
+            var year = groups["year"].Success ? int.Parse(groups["year"].Value) : 1;
+            var month = groups["month"].Success ? int.Parse(groups["month"].Value) : 1;
+            var day = groups["day"].Success ? int.Parse(groups["day"].Value) : 1;
 
             try
             {
-                return new DateTime(year, month, day).ToString("yyyy-MM-dd");
+                var dateTime = new DateTime(year, month, day);
+                return groups["year"].Success switch
+                {
+                    true when groups["month"].Success && groups["day"].Success => dateTime.ToString("yyyy-MM-dd"),
+                    true when groups["month"].Success => dateTime.ToString("yyyy-MM"),
+                    true => dateTime.ToString("yyyy"),
+                    _ => throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input))
+                };
             }
             catch (Exception)
             {

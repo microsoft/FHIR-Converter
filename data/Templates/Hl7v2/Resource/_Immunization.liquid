@@ -64,6 +64,15 @@
                         },
                     ],
                 },
+                "actor":
+                {
+                    {% if ORC.12 and Practitioner_ID_ORC_12 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_ORC_12 }}",
+                    {% endif -%}
+                    {% if RXA.10 and Practitioner_ID_RXA_10 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_RXA_10 }}",
+                    {% endif -%}
+                },
             },
         ],
         "occurrenceDateTime":"{{ RXA.3.Value | format_as_date_time }}",
@@ -85,6 +94,23 @@
         {% if RXA.21.Value == "D" -%}
         "status":"entered-in-error",
         {% endif -%}
+        "manufacturer":
+        {
+            {% if RXA.17 and Organization_ID_RXA_17 -%}
+            "reference":"Organization/{{ Organization_ID_RXA_17 }}",
+            {% endif -%}
+        },
+        "location":
+        [
+            {
+                {% if RXA.27 and Location_ID_RXA_27 -%}
+                "reference":"Location/{{ Location_ID_RXA_27 }}",
+                {% endif -%}
+                {% if RXA.28 and Location_address_ID_RXA_28 -%}
+                "reference":"Location.address/{{ Location_address_ID_RXA_28 }}",
+                {% endif -%}
+            },
+        ],
         "route":
         {
             {% include 'DataType/CWECodeableConcept' CWE: RXR.1 -%}

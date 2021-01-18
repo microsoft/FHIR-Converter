@@ -75,6 +75,14 @@
         {% if OBR.8 == null -%}
         "effectiveDateTime":"{{ OBR.7.Value | format_as_date_time }}",
         {% endif -%}
+        "basedOn":
+        [
+            {
+                {% if ORC.2 and ServiceRequest_ID_ORC_2 -%}
+                "reference":"ServiceRequest/{{ ServiceRequest_ID_ORC_2 }}",
+                {% endif -%}
+            },
+        ],
         "code":
         {
             {% include 'DataType/CWECodeableConcept' CWE: OBR.4 -%}
@@ -92,6 +100,28 @@
             { {% include 'DataType/CWECodeableConcept' CWE: OBR.24 -%} },
         ],
         "status":"{{ OBR.25.Value | get_property: 'CodeSystem/ResultStatus', 'code' }}",
+        "specimen":
+        [
+            {
+                {% if OBR.13 and Specimen_receivedTime_ID_OBR_13 -%}
+                "reference":"Specimen.receivedTime/{{ Specimen_receivedTime_ID_OBR_13 }}",
+                {% endif -%}
+                {% if OBR.39 and Specimen_note_ID_OBR_39 -%}
+                "reference":"Specimen.note/{{ Specimen_note_ID_OBR_39 }}",
+                {% endif -%}
+            },
+        ],
+        "performer":
+        [
+            {
+                {% if OBR.34 and PractitionerRole_ID_OBR_34 -%}
+                "reference":"PractitionerRole/{{ PractitionerRole_ID_OBR_34 }}",
+                {% endif -%}
+                {% if OBR.35 and PractitionerRole_ID_OBR_35 -%}
+                "reference":"PractitionerRole/{{ PractitionerRole_ID_OBR_35 }}",
+                {% endif -%}
+            },
+        ],
     },
     "request":{
         "method":"PUT",

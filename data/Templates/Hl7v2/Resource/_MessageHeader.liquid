@@ -14,6 +14,12 @@
         [
             {
                 {% include 'DataType/HDMSH_5' HD: MSH.5 -%}
+                "receiver":
+                {
+                    {% if MSH.6 and Organization_ID_MSH_6 -%}
+                    "reference":"Organization/{{ Organization_ID_MSH_6 }}",
+                    {% endif -%}
+                },
             },
         ],
         "meta":
@@ -27,6 +33,15 @@
             ],
         },
         "language":"{{ MSH.19.Value | get_property: 'CodeSystem/Language', 'code' }}",
+        "sender":
+        {
+            {% if MSH.4 and Organization_ID_MSH_4 -%}
+            "reference":"Organization/{{ Organization_ID_MSH_4 }}",
+            {% endif -%}
+            {% if MSH.17 and Organization_address_country_ID_MSH_17 -%}
+            "reference":"{{ "Organization.address.country/{{ Organization_address_country_ID_MSH_17 }}" | get_property: 'CodeSystem/Countries', 'code' }}",
+            {% endif -%}
+        },
     },
     "request":{
         "method":"PUT",

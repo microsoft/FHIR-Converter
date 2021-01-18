@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2.OutputProcessor
+namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.OutputProcessor
 {
     public class PostProcessorTests
     {

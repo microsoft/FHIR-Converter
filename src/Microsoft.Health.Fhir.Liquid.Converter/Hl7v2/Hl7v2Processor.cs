@@ -60,9 +60,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             // Load data and templates
             var timeout = _settings?.TimeOut ?? 0;
             var context = new Context(
-                environments: new List<Hash>() { Hash.FromAnonymousObject(new { hl7v2Data }) },
+                environments: new List<Hash>() { Hash.FromDictionary(new Dictionary<string, object>() { { "hl7v2Data", hl7v2Data } }) },
                 outerScope: new Hash(),
-                registers: Hash.FromAnonymousObject(new { file_system = templateProvider.GetTemplateFileSystem() }),
+                registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
                 timeout: timeout,
