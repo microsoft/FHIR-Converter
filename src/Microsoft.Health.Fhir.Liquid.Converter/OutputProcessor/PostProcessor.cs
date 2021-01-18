@@ -14,7 +14,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.OutputProcessor
+namespace Microsoft.Health.Fhir.Liquid.Converter.OutputProcessor
 {
     public static class PostProcessor
     {
