@@ -8,6 +8,7 @@
         {% evaluate organizationId4 using 'ID/Organization' HD: firstSegments.MSH.4 -%}
         {% evaluate organizationId6 using 'ID/Organization' HD: firstSegments.MSH.6 -%}
         {% evaluate organizationId22 using 'ID/Organization' XON: firstSegments.MSH.22 -%}
+        {% evaluate organizationId23 using 'ID/Organization' XON: firstSegments.MSH.23 -%}
 
         {% if organizationId4 -%}
             {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId4 -%}
@@ -21,8 +22,12 @@
             {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId22 -%}
         {% endif -%}
 
+        {% if organizationId23 -%}
+            {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId23 -%}
+        {% endif -%}
+
         {% if messageHeaderId -%}
-            {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, Organization_ID_MSH_4: organizationId4, Organization_ID_MSH_6: organizationId6, ID: messageHeaderID -%}
+            {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, Organization_ID_MSH_4: organizationId4, Organization_ID_MSH_6: organizationId6, Organization_ID_MSH_22: organizationId22, Organization_ID_MSH_23: organizationId23, ID: messageHeaderID -%}
         {% endif -%}
 
         {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
@@ -81,7 +86,32 @@
                 {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId6 -%}
             {% endif -%}
 
-            {% include 'Resource/Encounter' PV1: firstSegments.PV1, Location_ID_PV1_3: locationId3, Location_ID_PV1_6: locationId6, ID: encounterId -%}
+            {% evaluate practitionerId7 using 'ID/Practitioner' XCN: firstSegments.PV1.7 -%}
+            {% if practitionerId7 -%}
+                {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId7 -%}
+            {% endif -%}
+
+            {% evaluate practitionerId8 using 'ID/Practitioner' XCN: firstSegments.PV1.8 -%}
+            {% if practitionerId8 -%}
+                {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId8 -%}
+            {% endif -%}
+
+            {% evaluate practitionerId9 using 'ID/Practitioner' XCN: firstSegments.PV1.9 -%}
+            {% if practitionerId9 -%}
+                {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId9 -%}
+            {% endif -%}
+
+            {% evaluate practitionerId17 using 'ID/Practitioner' XCN: firstSegments.PV1.17 -%}
+            {% if practitionerId17 -%}
+                {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId17 -%}
+            {% endif -%}
+
+            {% evaluate practitionerId52 using 'ID/Practitioner' XCN: firstSegments.PV1.52 -%}
+            {% if practitionerId52 -%}
+                {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId52 -%}
+            {% endif -%}
+
+            {% include 'Resource/Encounter' PV1: firstSegments.PV1, Location_ID_PV1_3: locationId3, Location_ID_PV1_6: locationId6, Practitioner_ID_PV1_7: practitionerId7, Practitioner_ID_PV1_8: practitionerId8, Practitioner_ID_PV1_9: practitionerId9, Practitioner_ID_PV1_17: practitionerId17, Practitioner_ID_PV1_52: practitionerId52, ID: encounterId -%}
             
             {% if patientId -%}
                 {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
