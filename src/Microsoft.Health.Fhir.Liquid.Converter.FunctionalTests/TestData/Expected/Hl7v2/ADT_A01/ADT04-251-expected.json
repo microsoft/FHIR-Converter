@@ -3,6 +3,16 @@
   "type": "batch",
   "entry": [
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:55e2d2b6-8c08-6f34-9f2c-ccf2ba785dba",
       "resource": {
         "resourceType": "MessageHeader",
@@ -94,6 +104,53 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:10ffd4e9-25bf-8239-3d9b-64bef81e192a",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "10ffd4e9-25bf-8239-3d9b-64bef81e192a"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/10ffd4e9-25bf-8239-3d9b-64bef81e192a"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1791139d-4b3d-30a1-a790-ecff6e63a1fd",
+      "resource": {
+        "resourceType": "Account",
+        "id": "1791139d-4b3d-30a1-a790-ecff6e63a1fd",
+        "identifier": [
+          {
+            "value": "123456789"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Account/1791139d-4b3d-30a1-a790-ecff6e63a1fd"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:269e4fbc-35ab-2c46-9c28-f4ab11c3b1f3",
       "resource": {
         "resourceType": "Provenance",
@@ -118,22 +175,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:1791139d-4b3d-30a1-a790-ecff6e63a1fd",
-      "resource": {
-        "resourceType": "Account",
-        "id": "1791139d-4b3d-30a1-a790-ecff6e63a1fd",
-        "identifier": [
-          {
-            "value": "123456789"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Account/1791139d-4b3d-30a1-a790-ecff6e63a1fd"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:bd2f287c-f7df-4b1b-7fbf-987cdf51ee4e",
       "resource": {
         "resourceType": "Encounter",
@@ -146,19 +187,6 @@
         },
         "status": "unknown",
         "participant": [
-          {
-            "type": [
-              {
-                "coding": [
-                  {
-                    "code": "ATND",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
-                    "display": "attender"
-                  }
-                ]
-              }
-            ]
-          },
           {
             "type": [
               {
@@ -186,17 +214,6 @@
       "request": {
         "method": "PUT",
         "url": "Encounter/bd2f287c-f7df-4b1b-7fbf-987cdf51ee4e"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:10ffd4e9-25bf-8239-3d9b-64bef81e192a",
-      "resource": {
-        "resourceType": "Practitioner",
-        "id": "10ffd4e9-25bf-8239-3d9b-64bef81e192a"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Practitioner/10ffd4e9-25bf-8239-3d9b-64bef81e192a"
       }
     },
     {

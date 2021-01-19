@@ -45,6 +45,26 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization",
+        "identifier": [
+          {
+            "value": "NIST Lab Facility"
+          }
+        ],
+        "destination": [
+          {
+            "endpoint": "NIST EHR Facility"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:15cde54f-eadb-4bee-fe4c-0e8dbe4f4959",
       "resource": {
         "resourceType": "MessageHeader",
@@ -120,6 +140,26 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:2cae9944-334d-aa12-db0e-b76bf6379ba9",
       "resource": {
         "resourceType": "Provenance",
@@ -140,6 +180,20 @@
       "request": {
         "method": "PUT",
         "url": "Account/d89caeaa-3e83-1bc6-de48-869aade1d077"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Encounter",
+        "status": "unknown",
+        "subject": {
+          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/"
       }
     },
     {
@@ -281,20 +335,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8",
-      "resource": {
-        "resourceType": "PractitionerRole",
-        "id": "fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8",
-        "organization": {
-          "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:c8cd57a5-13a6-54d1-7dcd-d0a6b637c660",
       "resource": {
         "resourceType": "Organization",
@@ -323,6 +363,20 @@
       "request": {
         "method": "PUT",
         "url": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8",
+        "organization": {
+          "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
       }
     },
     {

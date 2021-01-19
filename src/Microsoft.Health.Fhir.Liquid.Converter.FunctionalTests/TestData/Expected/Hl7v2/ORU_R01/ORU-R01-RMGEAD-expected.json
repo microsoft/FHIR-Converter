@@ -45,6 +45,26 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization",
+        "identifier": [
+          {
+            "value": "ELAB-3"
+          }
+        ],
+        "destination": [
+          {
+            "endpoint": "BLDG4"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:59137ac2-b595-49c0-863e-df25b62bf2cd",
       "resource": {
         "resourceType": "MessageHeader",
@@ -152,6 +172,26 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:66170fe1-2ab4-a3a0-672a-dd146b9bee1b",
       "resource": {
         "resourceType": "Provenance",
@@ -189,6 +229,20 @@
       "request": {
         "method": "PUT",
         "url": "Account/4af7a7fb-e594-e5b3-43b9-969188e0c692"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Encounter",
+        "status": "unknown",
+        "subject": {
+          "reference": "Patient/92bee074-a5c5-3c79-1905-2ed380528150"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/"
       }
     },
     {
@@ -233,6 +287,16 @@
       "request": {
         "method": "PUT",
         "url": "DiagnosticReport/0ca81c8f-6cb0-10b0-91e8-7528b98f5691"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "PractitionerRole"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "PractitionerRole/"
       }
     },
     {

@@ -3,6 +3,21 @@
   "type": "batch",
   "entry": [
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization",
+        "address": [
+          {
+            "country": "USA"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:35c86567-5347-8c97-4810-b39dedb9f855",
       "resource": {
         "resourceType": "MessageHeader",
@@ -140,6 +155,26 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:1e298a0f-e932-5a4a-e5e0-e910a77f7949",
       "resource": {
         "resourceType": "Provenance",
@@ -185,6 +220,20 @@
       "request": {
         "method": "PUT",
         "url": "Account/f70a39cb-cf13-6f75-885d-cf691752c711"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Encounter",
+        "status": "unknown",
+        "subject": {
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/"
       }
     },
     {
@@ -259,6 +308,16 @@
       "request": {
         "method": "PUT",
         "url": "DiagnosticReport/c3c41c66-630e-8d1b-2fad-cffb0957da29"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "PractitionerRole"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "PractitionerRole/"
       }
     },
     {

@@ -45,6 +45,26 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization",
+        "identifier": [
+          {
+            "value": "MDHHS"
+          }
+        ],
+        "destination": [
+          {
+            "endpoint": "MDHHS"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:6eda7d2f-32f8-a6c7-5125-d59f65a25c97",
       "resource": {
         "resourceType": "MessageHeader",
@@ -171,6 +191,26 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:7bed24f6-d6fa-1218-ced1-b5d66ac0f024",
       "resource": {
         "resourceType": "Provenance",
@@ -191,6 +231,20 @@
       "request": {
         "method": "PUT",
         "url": "Account/d26a5004-0934-26f5-0201-4e302d6163c4"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Encounter",
+        "status": "unknown",
+        "subject": {
+          "reference": "Patient/97997f4d-5259-b974-5a44-1b7450c2f4ab"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/"
       }
     },
     {

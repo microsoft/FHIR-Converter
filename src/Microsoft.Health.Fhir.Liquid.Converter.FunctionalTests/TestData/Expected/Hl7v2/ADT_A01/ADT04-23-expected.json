@@ -45,6 +45,26 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization",
+        "identifier": [
+          {
+            "value": "NINTENDO"
+          }
+        ],
+        "destination": [
+          {
+            "endpoint": "TESTFACILITY"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:18548d54-14a8-815a-c1bb-396f35b37164",
       "resource": {
         "resourceType": "MessageHeader",
@@ -235,6 +255,94 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:06328e17-a467-ce3f-48ba-28a3e3c21152",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "06328e17-a467-ce3f-48ba-28a3e3c21152"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/06328e17-a467-ce3f-48ba-28a3e3c21152"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a5bcb90d-8151-7e13-dd82-9e837d506efa",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "a5bcb90d-8151-7e13-dd82-9e837d506efa"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/a5bcb90d-8151-7e13-dd82-9e837d506efa"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0b931b2e-4814-b7ed-7159-4cf2805ef38f",
+      "resource": {
+        "resourceType": "Account",
+        "id": "0b931b2e-4814-b7ed-7159-4cf2805ef38f",
+        "identifier": [
+          {
+            "value": "12345678"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Account/0b931b2e-4814-b7ed-7159-4cf2805ef38f"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1061dd71-d0a8-e8d0-7468-5be2eb4db1f8",
+      "resource": {
+        "resourceType": "Location",
+        "id": "1061dd71-d0a8-e8d0-7468-5be2eb4db1f8",
+        "mode": "instance",
+        "physicalType": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/location-physical-type"
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/1061dd71-d0a8-e8d0-7468-5be2eb4db1f8"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:affd96b8-87bc-956b-0215-7db7a8c6a9b3",
+      "resource": {
+        "resourceType": "Location",
+        "id": "affd96b8-87bc-956b-0215-7db7a8c6a9b3"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/affd96b8-87bc-956b-0215-7db7a8c6a9b3"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:ab3d28cb-c909-4ba2-b02e-0a868895ef0b",
       "resource": {
         "resourceType": "Provenance",
@@ -259,22 +367,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:0b931b2e-4814-b7ed-7159-4cf2805ef38f",
-      "resource": {
-        "resourceType": "Account",
-        "id": "0b931b2e-4814-b7ed-7159-4cf2805ef38f",
-        "identifier": [
-          {
-            "value": "12345678"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Account/0b931b2e-4814-b7ed-7159-4cf2805ef38f"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:1ffe7bbb-44ca-d195-1456-40d94950090b",
       "resource": {
         "resourceType": "Encounter",
@@ -286,46 +378,21 @@
           "version": "O"
         },
         "status": "unknown",
+        "location": [
+          {
+            "location": {
+              "reference": "Location/1061dd71-d0a8-e8d0-7468-5be2eb4db1f8"
+            },
+            "status": "active"
+          },
+          {
+            "location": {
+              "reference": "Location/affd96b8-87bc-956b-0215-7db7a8c6a9b3"
+            },
+            "status": "completed"
+          }
+        ],
         "participant": [
-          {
-            "type": [
-              {
-                "coding": [
-                  {
-                    "code": "ATND",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
-                    "display": "attender"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": [
-              {
-                "coding": [
-                  {
-                    "code": "REF",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
-                  }
-                ],
-                "text": "referrer"
-              }
-            ]
-          },
-          {
-            "type": [
-              {
-                "coding": [
-                  {
-                    "code": "ADM",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
-                  }
-                ],
-                "text": "admitter"
-              }
-            ]
-          },
           {
             "type": [
               {
@@ -398,20 +465,6 @@
         "period": {
           "start": "2001-01-01T00:00:00Z"
         },
-        "location": [
-          {
-            "location": {
-              "reference": "Location/1061dd71-d0a8-e8d0-7468-5be2eb4db1f8"
-            },
-            "status": "active"
-          },
-          {
-            "location": {
-              "reference": "Location/affd96b8-87bc-956b-0215-7db7a8c6a9b3"
-            },
-            "status": "completed"
-          }
-        ],
         "subject": {
           "reference": "Patient/5002eb07-c460-7112-6574-50303ae3b4a6"
         }
@@ -419,58 +472,6 @@
       "request": {
         "method": "PUT",
         "url": "Encounter/1ffe7bbb-44ca-d195-1456-40d94950090b"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:1061dd71-d0a8-e8d0-7468-5be2eb4db1f8",
-      "resource": {
-        "resourceType": "Location",
-        "id": "1061dd71-d0a8-e8d0-7468-5be2eb4db1f8",
-        "mode": "instance",
-        "physicalType": {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/location-physical-type"
-            }
-          ]
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Location/1061dd71-d0a8-e8d0-7468-5be2eb4db1f8"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:affd96b8-87bc-956b-0215-7db7a8c6a9b3",
-      "resource": {
-        "resourceType": "Location",
-        "id": "affd96b8-87bc-956b-0215-7db7a8c6a9b3"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Location/affd96b8-87bc-956b-0215-7db7a8c6a9b3"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:06328e17-a467-ce3f-48ba-28a3e3c21152",
-      "resource": {
-        "resourceType": "Practitioner",
-        "id": "06328e17-a467-ce3f-48ba-28a3e3c21152"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Practitioner/06328e17-a467-ce3f-48ba-28a3e3c21152"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:a5bcb90d-8151-7e13-dd82-9e837d506efa",
-      "resource": {
-        "resourceType": "Practitioner",
-        "id": "a5bcb90d-8151-7e13-dd82-9e837d506efa"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Practitioner/a5bcb90d-8151-7e13-dd82-9e837d506efa"
       }
     },
     {

@@ -45,6 +45,16 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:aefd5bbc-563b-7d19-5096-4b5754c338c1",
       "resource": {
         "resourceType": "MessageHeader",
@@ -201,6 +211,56 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner",
+        "identifier": [
+          {
+            "value": "654",
+            "type": {
+              "coding": [
+                {
+                  "code": "MD"
+                }
+              ]
+            }
+          },
+          {
+            "value": "7824",
+            "type": {
+              "coding": [
+                {
+                  "code": "PRN"
+                }
+              ]
+            }
+          }
+        ],
+        "name": [
+          {
+            "family": "Thomas",
+            "given": [
+              "Wilma",
+              "Elizabeth"
+            ],
+            "use": "official"
+          },
+          {
+            "family": "Jackson",
+            "given": [
+              "Lily",
+              "Suzanne"
+            ],
+            "use": "official"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:72b45e56-f6fc-c8af-bc2f-7f62d1a14e80",
       "resource": {
         "resourceType": "Practitioner",
@@ -231,6 +291,16 @@
       "request": {
         "method": "PUT",
         "url": "Practitioner/72b45e56-f6fc-c8af-bc2f-7f62d1a14e80"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
       }
     },
     {
@@ -282,6 +352,20 @@
       "request": {
         "method": "PUT",
         "url": "Account/99ce28f5-c743-ed2e-b88e-47f2e32d23d5"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Encounter",
+        "status": "unknown",
+        "subject": {
+          "reference": "Patient/8dc947ee-0db3-5fa2-04bb-16fd7680cfbe"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/"
       }
     },
     {
@@ -382,6 +466,16 @@
       "request": {
         "method": "PUT",
         "url": "Organization/1d6edd62-0051-4efa-bc0b-db345da54f10"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "PractitionerRole"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "PractitionerRole/"
       }
     },
     {
