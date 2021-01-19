@@ -12,20 +12,20 @@
         ],
         "clinicalStatus":
         {
-            {% assign relationships = conditionEntry.entryRelationship | to_array -%}
-            {% for r in relationships -%}
-                {% if r.observation.templateId | to_json_string | contains: '2.16.840.1.113883.10.20.22.4.5' -%}
-                {% include 'DataType/CodeableConcept' CodeableConcept: r.observation.value -%}
-                {% endif -%}
+            {% assign entryRelationships = conditionEntry.entryRelationship | to_array -%}
+            {% for entryRelationship in entryRelationships -%}
+            {% if entryRelationship.observation.templateId | to_json_string | contains: "2.16.840.1.113883.10.20.22.4.5" -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: entryRelationship.observation.value -%}
+            {% endif -%}
             {% endfor -%}
         },
         "code":
         {
             {% assign translations = conditionEntry.value.translation | to_array -%}
-            {% if translation.first -%}
+            {% if translations.first -%}
             {% include 'DataType/CodeableConcept' CodeableConcept: translations.first -%}
             {% endif -%}
-            {% if translation.first == null -%}
+            {% if translations.first == null -%}
             {% include 'DataType/CodeableConcept' CodeableConcept: conditionEntry.value -%}
             {% endif -%}
         },
@@ -34,11 +34,11 @@
         {% endif -%}
         "onsetAge":
         {
-            {% assign relationships = conditionEntry.entryRelationship | to_array -%}
-            {% for r in relationships -%}
-                {% if r.observation.templateId | to_json_string | contains: '2.16.840.1.113883.10.20.22.4.31' -%}
-                {% include 'DataType/CodeableConcept' CodeableConcept: r.observation.value.value -%}
-                {% endif -%}
+            {% assign entryRelationships = conditionEntry.entryRelationship | to_array -%}
+            {% for entryRelationship in entryRelationships -%}
+            {% if entryRelationship.observation.templateId | to_json_string | contains: "2.16.840.1.113883.10.20.22.4.31" -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: entryRelationship.observation.value.value -%}
+            {% endif -%}
             {% endfor -%}
         },
     },
