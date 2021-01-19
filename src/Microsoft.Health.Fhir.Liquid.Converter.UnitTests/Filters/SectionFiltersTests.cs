@@ -89,7 +89,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         private static IDictionary<string, object> LoadTestData()
         {
             var parser = new CdaDataParser();
-            var dataContent = File.ReadAllText(Path.Join("..", "..", "data", "SampleData", "Cda", "170.314B2_Amb_CCD.cda"));
+            var dataContent = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Cda", "170.314B2_Amb_CCD.cda"));
             return parser.Parse(dataContent);
         }
     }

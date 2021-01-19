@@ -20,6 +20,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
         {
             try
             {
+                if (string.IsNullOrEmpty(document))
+                {
+                    throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
+                }
+
                 // Remove line breaks to avoid invalid line breaks in json value
                 document = Regex.Replace(document, @"\r\n?|\n", string.Empty);
 
@@ -27,15 +32,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
 
                 // Remove redundant namespaces to avoid appending namespace prefix before elements
                 var defaultNamespace = xDocument?.Root?.GetDefaultNamespace()?.NamespaceName;
-                var redundantNamespaces = xDocument?.Root?.Attributes()?
-                    .Where(attribute => IsRedundantNamespaceAttribute(attribute, defaultNamespace));
-                if (redundantNamespaces != null)
-                {
-                    foreach (var ns in redundantNamespaces)
-                    {
-                        ns.Remove();
-                    }
-                }
+                xDocument?.Root?.Attributes()?.Where(attribute => IsRedundantNamespaceAttribute(attribute, defaultNamespace))?.ToList()?
+                    .ForEach(action: x => x.Remove());
 
                 // Normalize non-default namespace prefix in elements
                 var namespaces = xDocument?.Root?.Attributes()?
@@ -47,7 +45,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
 
                 // Convert to json dictionary
                 var jsonString = JsonConvert.SerializeXNode(xDocument);
-                var dataDictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonString, new DictionaryJsonConverter()) ?? new Dictionary<string, object>();
+                var dataDictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonString, new DictionaryJsonConverter()) ??
+                                     new Dictionary<string, object>();
                 dataDictionary["_originalData"] = document;
 
                 return new Dictionary<string, object>()
@@ -65,7 +64,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
         {
             return attribute != null &&
                    attribute.IsNamespaceDeclaration &&
-                   !string.Equals(attribute.Name.LocalName, "xmlns", StringComparison.InvariantCultureIgnoreCase) &&
+                   !string.Equals(attribute.Name?.LocalName, "xmlns", StringComparison.InvariantCultureIgnoreCase) &&
                    string.Equals(attribute.Value, defaultNamespace, StringComparison.InvariantCultureIgnoreCase);
         }
 
@@ -84,6 +83,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 if (string.Equals(ns.Value, element.Name.NamespaceName, StringComparison.InvariantCultureIgnoreCase))
                 {
                     element.Name = $"{ns.Name.LocalName}_{element.Name.LocalName}";
+                    break;
                 }
             }
 
@@ -100,9 +100,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 return;
             }
 
-            foreach (var node in element.Nodes())
+            // Iterate reversely to avoid missing unprocessed nodes
+            var nodes = element.Nodes().ToList();
+            for (var i = nodes.Count - 1; i >= 0; --i)
             {
-                switch (node)
+                switch (nodes[i])
                 {
                     case XText textNode:
                         element.Add(new XElement("_", textNode.Value));

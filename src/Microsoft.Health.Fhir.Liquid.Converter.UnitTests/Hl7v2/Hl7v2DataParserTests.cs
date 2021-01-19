@@ -15,7 +15,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
 {
     public class Hl7v2DataParserTests
     {
-        private Hl7v2DataParser _parser = new Hl7v2DataParser();
+        private readonly Hl7v2DataParser _parser = new Hl7v2DataParser();
 
         public static IEnumerable<object[]> GetNullOrEmptyHl7v2Message()
         {

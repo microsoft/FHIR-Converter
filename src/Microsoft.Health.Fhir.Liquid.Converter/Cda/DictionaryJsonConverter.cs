@@ -4,7 +4,6 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -39,10 +38,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
         {
             writer.WriteStartObject();
             var obj = value as IDictionary<string, object>;
-            foreach (var kvp in obj)
+            foreach (var entry in obj)
             {
-                writer.WritePropertyName(kvp.Key);
-                WriteValue(writer, kvp.Value);
+                writer.WritePropertyName(entry.Key);
+                WriteValue(writer, entry.Value);
             }
 
             writer.WriteEndObject();
@@ -52,9 +51,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
         {
             writer.WriteStartArray();
             var array = value as IEnumerable<object>;
-            foreach (var o in array)
+            foreach (var obj in array)
             {
-                WriteValue(writer, o);
+                WriteValue(writer, obj);
             }
 
             writer.WriteEndArray();
@@ -133,8 +132,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                             throw new JsonSerializationException("Unexpected end when reading IDictionary<string, object>");
                         }
 
-                        var v = ReadValue(reader);
-
                         // TODO: Should we do this when it is xml?
                         if (propertyName.StartsWith("@"))
                         {
@@ -142,6 +139,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                             propertyName = propertyName[1..];
                         }
 
+                        var v = ReadValue(reader);
                         obj[propertyName] = v;
                         break;
                     case JsonToken.Comment:
