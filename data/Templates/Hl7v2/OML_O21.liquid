@@ -3,259 +3,151 @@
     "type": "batch",
     "entry": [
         {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|ORC|MSH' -%}
+        {% assign al1SegmentLists = hl7v2Data | get_segment_lists: 'AL1' -%}
+        {% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
+        {% assign orcSegmentLists = hl7v2Data | get_segment_lists: 'ORC' -%}
+        {% assign spmSegmentLists = hl7v2Data | get_segment_lists: 'SPM' -%}
 
-        {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
         {% evaluate organizationId4 using 'ID/Organization' HD: firstSegments.MSH.4 -%}
         {% evaluate organizationId6 using 'ID/Organization' HD: firstSegments.MSH.6 -%}
         {% evaluate organizationId22 using 'ID/Organization' XON: firstSegments.MSH.22 -%}
         {% evaluate organizationId23 using 'ID/Organization' XON: firstSegments.MSH.23 -%}
-
-        {% if organizationId4 -%}
-            {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId4 -%}
-        {% endif -%}
-
-        {% if organizationId6 -%}
-            {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId6 -%}
-        {% endif -%}
-
-        {% if organizationId22 -%}
-            {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId22 -%}
-        {% endif -%}
-
-        {% if organizationId23 -%}
-            {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId23 -%}
-        {% endif -%}
-
-        {% if messageHeaderId -%}
-            {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, Organization_ID_MSH_4: organizationId4, Organization_ID_MSH_6: organizationId6, Organization_ID_MSH_22: organizationId22, Organization_ID_MSH_23: organizationId23, ID: messageHeaderID -%}
-        {% endif -%}
-        
-        {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
         {% evaluate organizationId_PD1_3 using 'ID/Organization' XON: firstSegments.PD1.3 -%}
 
-        {% if organizationId_PD1_3 -%}
-            {% include 'Resource/Organization' PD1: firstSegments.PD1, ID: organizationId_PD1_3 -%}
-        {% endif -%}
+        {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId4 -%}
+        {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId6 -%}
+        {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId22 -%}
+        {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId23 -%}
+        {% include 'Resource/Organization' PD1: firstSegments.PD1, ID: organizationId_PD1_3 -%}
 
-        {% if patientId -%}
-            {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
-            {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, Organization_ID_PD1_3: organizationId_PD1_3, ID: patientId -%}
-        {% endif -%}
+        {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
+        {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, Organization_ID_MSH_4: organizationId4, Organization_ID_MSH_6: organizationId6, Organization_ID_MSH_22: organizationId22, Organization_ID_MSH_23: organizationId23, ID: messageHeaderID -%}
+
+        {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
+        {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
+        {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, Organization_ID_PD1_3: organizationId_PD1_3, ID: patientId -%}
+
+        {% evaluate practitionerId10_ORC_10 using 'ID/Practitioner' XCN: firstSegments.ORC.10 -%}
+        {% evaluate practitionerId10_ORC_11 using 'ID/Practitioner' XCN: firstSegments.ORC.11 -%}
+        {% evaluate practitionerId10_ORC_12 using 'ID/Practitioner' XCN: firstSegments.ORC.12 -%}
+        {% evaluate practitionerId7_PV1_7 using 'ID/Practitioner' XCN: firstSegments.PV1.7 -%}
+        {% evaluate practitionerId7_PV1_8 using 'ID/Practitioner' XCN: firstSegments.PV1.8 -%}
+        {% evaluate practitionerId7_PV1_9 using 'ID/Practitioner' XCN: firstSegments.PV1.9 -%}
+        {% evaluate practitionerId7_PV1_17 using 'ID/Practitioner' XCN: firstSegments.PV1.17 -%}
+        {% evaluate practitionerId7_PV1_52 using 'ID/Practitioner' XCN: firstSegments.PV1.52 -%}
+
+        {% include 'Resource/Practitioner' ORC: firstSegments.ORC, ID: practitionerId10_ORC_10 -%}
+        {% include 'Resource/Practitioner' ORC: firstSegments.ORC, ID: practitionerId10_ORC_11 -%}
+        {% include 'Resource/Practitioner' ORC: firstSegments.ORC, ID: practitionerId10_ORC_12 -%}
+        {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId7_PV1_7 -%}
+        {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId7_PV1_8 -%}
+        {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId7_PV1_9 -%}
+        {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId7_PV1_17 -%}
+        {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId7_PV1_52 -%}
+
+        {% evaluate locationId_ORC_21 using 'ID/Location' XON: firstSegments.ORC.21 -%}
+        {% evaluate locationId3_PV1_3 using 'ID/Location' PL: firstSegments.PV1.3 -%}
+        {% evaluate locationId3_PV1_6 using 'ID/Location' PL: firstSegments.PV1.6 -%}
+
+        {% include 'Resource/Location' ORC: firstSegments.ORC, ID: locationId_ORC_21 -%}
+        {% include 'Resource/Location' PL: firstSegments.PV1.3, ID: locationId3_PV1_3 -%}
+        {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId3_PV1_6 -%}
 
         {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseId: patientId -%}
-        {% evaluate practitionerId10 using 'ID/Practitioner' XCN: firstSegments.ORC.10 -%}
-        {% evaluate practitionerId11 using 'ID/Practitioner' XCN: firstSegments.ORC.11 -%}
-        {% evaluate practitionerId12 using 'ID/Practitioner' XCN: firstSegments.ORC.12 -%}
-        {% evaluate locationId using 'ID/Location' XON: firstSegments.ORC.21 -%}
-
-        {% if practitionerId10 -%}
-            {% include 'Resource/Practitioner' ORC: firstSegments.ORC, ID: practitionerId10 -%}
-        {% endif %}
-
-        {% if practitionerId11 -%}
-            {% include 'Resource/Practitioner' ORC: firstSegments.ORC, ID: practitionerId11 -%}
-        {% endif %}
-
-        {% if practitionerId12 -%}
-            {% include 'Resource/Practitioner' ORC: firstSegments.ORC, ID: practitionerId12 -%}
-        {% endif %}
-
-        {% if locationId -%}
-            {% include 'Resource/Location' ORC: firstSegments.ORC, ID: locationId -%}
-        {% endif -%}
-
-        {% if provenanceId -%}
-            {% include 'Resource/Provenance' MSH: firstSegments.MSH, ORC: firstSegments.ORC, Organization_ID_MSH_4： organizationId4, Organization_ID_MSH_22： organizationId22, Practitioner_ID_ORC_10: practitionerId10, Practitioner_ID_ORC_11: practitionerId11, Practitioner_ID_ORC_12: practitionerId12, Location_ID_ORC_21: locationId, ID: provenanceId -%}
-        {% endif -%}
+        {% include 'Resource/Provenance' MSH: firstSegments.MSH, ORC: firstSegments.ORC, Organization_ID_MSH_4： organizationId4, Organization_ID_MSH_22： organizationId22, Practitioner_ID_ORC_10: practitionerId10_ORC_10, Practitioner_ID_ORC_11: practitionerId10_ORC_11, Practitioner_ID_ORC_12: practitionerId10_ORC_12, Location_ID_ORC_21: locationId_ORC_21, ID: provenanceId -%}
 
         {% evaluate accountId using 'ID/Account' CX: firstSegments.PID.3 -%}
-        {% if accountId -%}
-            {% include 'Resource/Account' PID: firstSegments.PID, ID: accountId -%}
-        {% endif -%}
-
-        {% evaluate organizationId using 'ID/Organization' HD: firstSegments.MSH.6 -%}
-        {% if organizationId -%}
-            {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId -%}
-        {% endif -%}
+        {% include 'Resource/Account' PID: firstSegments.PID, ID: accountId -%}
 
         {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
-        {% if encounterId -%}
-            {% assign fullEncounterId = encounterId | prepend: 'Encounter/' -%}
-            {% include 'Resource/Encounter' PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
+        {% include 'Resource/Encounter' PV1: firstSegments.PV1, PV2: firstSegments.PV2, Location_ID_PV1_3: locationId3_PV1_3, Location_ID_PV1_6: locationId3_PV1_6, Practitioner_ID_PV1_7: practitionerId7_PV1_7, Practitioner_ID_PV1_8: practitionerId7_PV1_8, Practitioner_ID_PV1_9: practitionerId7_PV1_9, Practitioner_ID_PV1_17: practitionerId7_PV1_17, Practitioner_ID_PV1_52: practitionerId7_PV1_52, ID: encounterId -%}
+        {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
 
-            {% evaluate locationId3 using 'ID/Location' PL: firstSegments.PV1.3 -%}
-            {% if locationId3 -%}
-                {% include 'Resource/Location' PL: firstSegments.PV1.3, ID: locationId3 -%}
-            {% endif -%}
-
-            {% evaluate locationId6 using 'ID/Location' PL: firstSegments.PV1.6 -%}
-            {% if locationId6 -%}
-                {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId6 -%}
-            {% endif -%}
-
-            {% evaluate practitionerId7 using 'ID/Practitioner' XCN: firstSegments.PV1.7 -%}
-            {% if practitionerId7 -%}
-                {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId7 -%}
-            {% endif -%}
-
-            {% evaluate practitionerId8 using 'ID/Practitioner' XCN: firstSegments.PV1.8 -%}
-            {% if practitionerId8 -%}
-                {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId8 -%}
-            {% endif -%}
-
-            {% evaluate practitionerId9 using 'ID/Practitioner' XCN: firstSegments.PV1.9 -%}
-            {% if practitionerId9 -%}
-                {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId9 -%}
-            {% endif -%}
-
-            {% evaluate practitionerId17 using 'ID/Practitioner' XCN: firstSegments.PV1.17 -%}
-            {% if practitionerId17 -%}
-                {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId17 -%}
-            {% endif -%}
-
-            {% evaluate practitionerId52 using 'ID/Practitioner' XCN: firstSegments.PV1.52 -%}
-            {% if practitionerId52 -%}
-                {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId52 -%}
-            {% endif -%}
-
-            {% include 'Resource/Encounter' PV1: firstSegments.PV1, Location_ID_PV1_3: locationId3, Location_ID_PV1_6: locationId6, Practitioner_ID_PV1_7: practitionerId7, Practitioner_ID_PV1_8: practitionerId8, Practitioner_ID_PV1_9: practitionerId9, Practitioner_ID_PV1_17: practitionerId17, Practitioner_ID_PV1_52: practitionerId52, ID: encounterId -%}
-
-            {% if patientId -%}
-                {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
-            {% endif -%}
-        {% endif -%}
-        
-        {% assign al1SegmentLists = hl7v2Data | get_segment_lists: 'AL1' -%}
         {% for al1Segment in al1SegmentLists.AL1 -%}
             {% evaluate allergyIntoleranceId using 'ID/AllergyIntolerance' AL1: al1Segment, baseId: patientId -%}
-            {% if allergyIntoleranceId -%}
-                {% include 'Resource/AllergyIntolerance' AL1: al1Segment, ID: allergyIntoleranceId -%}
-                {% if patientId -%}
-                    {% include 'Reference/AllergyIntolerance/Patient' ID: allergyIntoleranceId, REF: fullPatientId -%}
-                {% endif -%}
-            {% endif -%}
+            {% include 'Resource/AllergyIntolerance' AL1: al1Segment, ID: allergyIntoleranceId -%}
+            {% include 'Reference/AllergyIntolerance/Patient' ID: allergyIntoleranceId, REF: fullPatientId -%}
         {% endfor -%}
 
-        {% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
         {% for nk1Segment in nk1SegmentLists.NK1 -%}
             {% evaluate organizationId_NK1_13 using 'ID/Organization' XON: nk1Segment.13 -%}
-
-            {% if organizationId_NK1_13 -%}
-                {% include 'Resource/Organization' NK1: nk1Segment, ID: organizationId_NK1_13 -%}
-            {% endif -%}
+            {% include 'Resource/Organization' NK1: nk1Segment, ID: organizationId_NK1_13 -%}
 
             {% include 'Resource/Patient' NK1: nk1Segment, Organization_ID_NK1_13: organizationId_NK1_13, ID: patientId -%}
 
             {% evaluate relatedPersonId using 'ID/RelatedPerson' NK1: nk1Segment, baseId: patientId -%}
-            {% if relatedPersonId -%}
-                {% include 'Resource/RelatedPerson' NK1: nk1Segment, ID: relatedPersonId -%}
-                {% if patientId -%}
-                    {% include 'Reference/RelatedPerson/Patient' ID: relatedPersonId, REF: fullPatientId -%}
-                {% endif -%}
-            {% endif -%}
+            {% include 'Resource/RelatedPerson' NK1: nk1Segment, ID: relatedPersonId -%}
+            {% include 'Reference/RelatedPerson/Patient' ID: relatedPersonId, REF: fullPatientId -%}
         {% endfor -%}
 
-        {% assign orcSegmentLists = hl7v2Data | get_segment_lists: 'ORC' -%}
         {% for orcSegment in orcSegmentLists.ORC -%}
-            {% evaluate serviceRequestId using 'ID/ServiceRequest' ORC: orcSegment, baseId: patientId -%}
+            {% assign tq1SegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'TQ1' -%}
+            {% assign obrSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'OBR' -%}
+            {% assign obxSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'OBX' -%}
+            {% assign dg1SegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'DG1' -%}
+
             {% evaluate organizationId_ORC_21 using 'ID/Organization' CWE: orcSegment.21 -%}
+            {% evaluate organizationId_ORC_17 using 'ID/Organization' CWE: orcSegment.17 -%}
 
-            {% if organizationId_ORC_21 -%}
-                {% include 'Resource/Organization' ORC: orcSegment, ID: organizationId_ORC_21 -%}
-            {% endif -%}
+            {% include 'Resource/Organization' ORC: orcSegment, ID: organizationId_ORC_21 -%}
+            {% include 'Resource/Organization' ORC: orcSegment, ID: organizationId_ORC_17 -%}
 
-            {% if serviceRequestId -%}
-                {% assign fullServiceRequestId = serviceRequestId | prepend: 'ServiceRequest/' -%}
-                {% include 'Resource/ServiceRequest' ORC: orcSegment, Organization_ID_ORC_21: organizationId_ORC_21, ID: serviceRequestId -%}
-
-                {% assign tq1SegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'TQ1' -%}
-                {% for tq1Segment in tq1SegmentLists.TQ1 -%}
-                    {% include 'Resource/ServiceRequest' TQ1: tq1Segment, ID: serviceRequestId -%}
-                {% endfor -%}
-
-                {% assign obrSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'OBR' -%}
-                {% for obrSegment in obrSegmentLists.OBR -%}
-                    {% evaluate practitionerId_OBR_10 using 'ID/Practitioner' XCN: obrSegment.10 -%}
-
-                    {% if practitionerId_OBR_10 -%}
-                        {% include 'Resource/Practitioner' OBR: obrSegment, ID: practitionerId_OBR_10 -%}
-                    {% endif -%}
-
-                    {% include 'Resource/ServiceRequest' OBR: obrSegment, Practitioner_ID_OBR_10: practitionerId_OBR_10, ID: serviceRequestId -%}
-                {% endfor -%}
-
-                {% if patientId -%}
-                    {% include 'Reference/ServiceRequest/Subject' ID: serviceRequestId, REF: fullPatientId -%}
-                {% endif -%}
-            {% endif -%}
+            {% evaluate serviceRequestId using 'ID/ServiceRequest' ORC: orcSegment, baseId: patientId -%}
+            {% assign fullServiceRequestId = serviceRequestId | prepend: 'ServiceRequest/' -%}
+            {% include 'Resource/ServiceRequest' ORC: orcSegment, Organization_ID_ORC_21: organizationId_ORC_21, ID: serviceRequestId -%}
+            {% include 'Reference/ServiceRequest/Subject' ID: serviceRequestId, REF: fullPatientId -%}
 
             {% evaluate provenanceId using 'ID/Provenance' ORC: orcSegment, baseId: patientId -%}
-            {% evaluate organizationId using 'ID/Organization' CWE: orcSegment.17 -%}
+            {% include 'Resource/Provenance' ORC: orcSegment, Organization_ID_ORC_17: organizationId_ORC_17, ID: provenanceId -%}
+            {% include 'Reference/Provenance/Target' ID: provenanceId, REF: fullServiceRequestId -%}
 
-            {% if organizationId -%}
-                {% include 'Resource/Organization' ORC: orcSegment, ID: organizationId -%}
-            {% endif -%}
-
-            {% if provenanceId -%}
-                {% include 'Resource/Provenance' ORC: orcSegment, Organization_ID_ORC_17: organizationId, ID: provenanceId -%}
-                {% include 'Reference/Provenance/Target' ID: provenanceId, REF: fullServiceRequestId -%}
-            {% endif -%}
-
-            {% assign obxSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'OBX' -%}
-            {% for obxSegment in obxSegmentLists.OBX -%}
-                {% evaluate observationId using 'ID/Observation' OBX: obxSegment, baseId: patientId -%}
-                {% evaluate practitionerId using 'ID/Practitioner' XCN: obxSegment.16 -%}
-                {% evaluate practitionerRoleId using 'ID/PractitionerRole' XCN: obxSegment.25 -%}
-                {% evaluate organizationId using 'ID/Organization' XON: obxSegment.23 -%}
-
-                {% if practitionerId -%}
-                    {% include 'Resource/Practitioner' OBX: obxSegment, ID: practitionerId -%}
-                {% endif -%}
-
-                {% if practitionerRoleId -%}
-                    {% include 'Resource/PractitionerRole' OBX: obxSegment, Practitioner_ID_OBX_16: practitionerId, Organization_ID_OBX_23: organizationId, ID: practitionerRoleId -%}
-                {% endif %}
-
-                {% if organizationId -%}
-                    {% include 'Resource/Organization' OBX: obxSegment, ID: organizationId -%}
-                {% endif -%}
-
-                {% if observationId -%}
-                    {% assign fullObservationId = observationId | prepend: 'Observation/' -%}
-                    {% include 'Resource/Observation' OBX: obxSegment, Practitioner_ID_OBX_16: practitionerId, PractitionerRole_ID_OBX_25: practitionerRoleId, Organization_ID_OBX_23: organizationId, ID: observationId -%}
-                    {% include 'Reference/ServiceRequest/SupportingInfo' ID: serviceRequestId, REF: fullObservationId -%}
-                    {% if patientId -%}
-                        {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
-                    {% endif -%}
-                {% endif -%}
+            {% for tq1Segment in tq1SegmentLists.TQ1 -%}
+                {% include 'Resource/ServiceRequest' TQ1: tq1Segment, ID: serviceRequestId -%}
             {% endfor -%}
 
-            {% assign dg1SegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'DG1' -%}
+            {% for obrSegment in obrSegmentLists.OBR -%}
+                {% evaluate practitionerId_OBR_10 using 'ID/Practitioner' XCN: obrSegment.10 -%}
+                {% include 'Resource/Practitioner' OBR: obrSegment, ID: practitionerId_OBR_10 -%}
+
+                {% include 'Resource/ServiceRequest' OBR: obrSegment, Practitioner_ID_OBR_10: practitionerId_OBR_10, ID: serviceRequestId -%}
+            {% endfor -%}
+
+            {% for obxSegment in obxSegmentLists.OBX -%}
+                {% evaluate organizationId_OBX_23 using 'ID/Organization' XON: obxSegment.23 -%}
+                {% include 'Resource/Organization' OBX: obxSegment, ID: organizationId_OBX_23 -%}
+
+                {% evaluate practitionerId_OBX_16 using 'ID/Practitioner' XCN: obxSegment.16 -%}
+                {% include 'Resource/Practitioner' OBX: obxSegment, ID: practitionerId_OBX_16 -%}
+
+                {% evaluate practitionerRoleId_OBX_25 using 'ID/PractitionerRole' XCN: obxSegment.25 -%}
+                {% include 'Resource/PractitionerRole' OBX: obxSegment, Practitioner_ID_OBX_16: practitionerId_OBX_16, Organization_ID_OBX_23: organizationId, ID: practitionerRoleId_OBX_25 -%}
+
+                {% evaluate observationId using 'ID/Observation' OBX: obxSegment, baseId: patientId -%}
+                {% include 'Resource/Observation' OBX: obxSegment, Practitioner_ID_OBX_16: practitionerId_OBX_16, PractitionerRole_ID_OBX_25: practitionerRoleId_OBX_25, Organization_ID_OBX_23: organizationId_OBX_23, ID: observationId -%}
+                {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
+
+                {% assign fullObservationId = observationId | prepend: 'Observation/' -%}
+                {% include 'Reference/ServiceRequest/SupportingInfo' ID: serviceRequestId, REF: fullObservationId -%}
+            {% endfor -%}
+
             {% for dg1Segment in dg1SegmentLists.DG1 -%}
-                {% evaluate practitionerId using 'ID/Practitioner' XCN: dg1Segment.16 -%}
-                {% if practitionerId -%}
-                    {% include 'Resource/Practitioner' DG1: dg1Segment, ID: practitionerId -%}
-                {% endif -%}
+                {% evaluate practitionerId_DG1_16 using 'ID/Practitioner' XCN: dg1Segment.16 -%}
+                {% include 'Resource/Practitioner' DG1: dg1Segment, ID: practitionerId_DG1_16 -%}
 
                 {% evaluate conditionId using 'ID/Condition' DG1: dg1Segment, baseId: patientId -%}
-                {% if conditionId -%}
-                    {% assign fullConditionId = conditionId | prepend: 'Condition/' -%}
-                    {% include 'Resource/Condition' DG1: obxSegment, Practitioner_ID_DG1_16: practitionerId, ID: conditionId -%}
-                    {% include 'Reference/ServiceRequest/ReasonReference' ID: serviceRequestId, REF: fullConditionId -%}
-                    {% if patientId -%}
-                        {% include 'Reference/Condition/Subject' ID: conditionId, REF: fullPatientId -%}
-                    {% endif -%}
-                {% endif -%}
+                {% include 'Resource/Condition' DG1: obxSegment, Practitioner_ID_DG1_16: practitionerId_DG1_16, ID: conditionId -%}
+                {% include 'Reference/Condition/Subject' ID: conditionId, REF: fullPatientId -%}
+
+                {% assign fullConditionId = conditionId | prepend: 'Condition/' -%}
+                {% include 'Reference/ServiceRequest/ReasonReference' ID: serviceRequestId, REF: fullConditionId -%}
             {% endfor -%}
 
-            {% assign spmSegmentLists = hl7v2Data | get_segment_lists: 'SPM' -%}
             {% for spmSegment in spmSegmentLists.SPM -%}
                 {% evaluate specimenId using 'ID/Specimen' SPM: spmSegment, baseId: patientId -%}
-                {% if specimenId -%}
-                    {% assign fullSpecimenId = specimenId | prepend: 'Specimen/' -%}
-                    {% include 'Resource/Specimen' SPM: spmSegment, ID: specimenId -%}
-                    {% include 'Reference/ServiceRequest/Specimen' ID: serviceRequestId, REF: fullSpecimenId -%}
-                {% endif -%}
+                {% include 'Resource/Specimen' SPM: spmSegment, ID: specimenId -%}
+
+                {% assign fullSpecimenId = specimenId | prepend: 'Specimen/' -%}
+                {% include 'Reference/ServiceRequest/Specimen' ID: serviceRequestId, REF: fullSpecimenId -%}
             {% endfor -%}
         {% endfor -%}
     ] 
