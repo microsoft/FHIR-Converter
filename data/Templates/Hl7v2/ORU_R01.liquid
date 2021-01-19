@@ -28,8 +28,6 @@
         {% evaluate practitionerId10_ORC_10 using 'ID/Practitioner' XCN: firstSegments.ORC.10 -%}
         {% evaluate practitionerId10_ORC_11 using 'ID/Practitioner' XCN: firstSegments.ORC.11 -%}
         {% evaluate practitionerId10_ORC_12 using 'ID/Practitioner' XCN: firstSegments.ORC.12 -%}
-        {% evaluate locationId_PV1_3 using 'ID/Location' PL: firstSegments.PV1.3 -%}
-        {% evaluate locationId_PV1_6 using 'ID/Location' PL: firstSegments.PV1.6 -%}
         {% evaluate practitionerId_7 using 'ID/Practitioner' XCN: firstSegments.PV1.7 -%}
         {% evaluate practitionerId_PV1_8 using 'ID/Practitioner' XCN: firstSegments.PV1.8 -%}
         {% evaluate practitionerId_PV1_9 using 'ID/Practitioner' XCN: firstSegments.PV1.9 -%}
@@ -39,15 +37,18 @@
         {% include 'Resource/Practitioner' ORC: firstSegments.ORC, ID: practitionerId10_ORC_10 -%}
         {% include 'Resource/Practitioner' ORC: firstSegments.ORC, ID: practitionerId10_ORC_11 -%}
         {% include 'Resource/Practitioner' ORC: firstSegments.ORC, ID: practitionerId10_ORC_12 -%}
-        {% include 'Resource/Location' PL: firstSegments.PV1.3, ID: locationId_PV1_3 -%}
-        {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId_PV1_6 -%}
         {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId_PV1_7 -%}
         {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId_PV1_8 -%}
         {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId_PV1_9 -%}
         {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId_PV1_17 -%}
         {% include 'Resource/Practitioner' PV1: firstSegments.PV1, ID: practitionerId_PV1_52 -%}
 
+        {% evaluate locationId_PV1_3 using 'ID/Location' PL: firstSegments.PV1.3 -%}
+        {% evaluate locationId_PV1_6 using 'ID/Location' PL: firstSegments.PV1.6 -%}
         {% evaluate locationId_ORC_21 using 'ID/Location' XON: firstSegments.ORC.21 -%}
+
+        {% include 'Resource/Location' PL: firstSegments.PV1.3, ID: locationId_PV1_3 -%}
+        {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId_PV1_6 -%}
         {% include 'Resource/Location' ORC: firstSegments.ORC, ID: locationId_ORC_21 -%}
 
         {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseId: patientId -%}
