@@ -3,8 +3,6 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
@@ -21,8 +19,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
         private readonly ProcessorSettings _settings;
 
         public Hl7v2Processor(ProcessorSettings processorSettings = null)
+            : base(processorSettings)
         {
-            _settings = processorSettings;
         }
 
         public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
@@ -55,28 +53,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             return result.ToString(Formatting.Indented);
         }
 
-        private Context CreateContext(ITemplateProvider templateProvider, Hl7v2Data hl7v2Data)
+        protected override Context CreateContext(ITemplateProvider templateProvider, object hl7v2Data)
         {
-            // Load data and templates
-            var timeout = _settings?.TimeOut ?? 0;
-            var context = new Context(
-                environments: new List<Hash>() { Hash.FromDictionary(new Dictionary<string, object>() { { "hl7v2Data", hl7v2Data } }) },
-                outerScope: new Hash(),
-                registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
-                errorsOutputMode: ErrorsOutputMode.Rethrow,
-                maxIterations: 0,
-                timeout: timeout,
-                formatProvider: CultureInfo.InvariantCulture);
-
             // Load code system mapping
+            var context = base.CreateContext(templateProvider, hl7v2Data);
             var codeSystemMapping = templateProvider.GetTemplate("CodeSystem/CodeSystem");
             if (codeSystemMapping?.Root?.NodeList?.First() != null)
             {
                 context["CodeSystemMapping"] = codeSystemMapping.Root.NodeList.First();
             }
-
-            // Load filters
-            context.AddFilters(typeof(Filters));
 
             return context;
         }

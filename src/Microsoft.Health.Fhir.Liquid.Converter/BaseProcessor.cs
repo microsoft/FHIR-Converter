@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using DotLiquid;
@@ -14,15 +15,44 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 {
     public class BaseProcessor : IFhirConverter
     {
-        public virtual string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        private readonly ProcessorSettings _settings;
+
+        public BaseProcessor(ProcessorSettings processorSettings = null)
         {
-            throw new NotImplementedException();
+            _settings = processorSettings;
         }
 
         public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, CancellationToken cancellationToken, TraceInfo traceInfo = null)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return Convert(data, rootTemplate, templateProvider, traceInfo);
+        }
+
+        public virtual string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected virtual Context CreateContext(ITemplateProvider templateProvider, object data)
+        {
+            // Load data and templates
+            var timeout = _settings?.TimeOut ?? 0;
+            var dataDictionary = data is IDictionary<string, object> dictionary
+                ? dictionary
+                : new Dictionary<string, object>() { { "hl7v2Data", data } };
+            var context = new Context(
+                environments: new List<Hash>() { Hash.FromDictionary(dataDictionary) },
+                outerScope: new Hash(),
+                registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
+                errorsOutputMode: ErrorsOutputMode.Rethrow,
+                maxIterations: 0,
+                timeout: timeout,
+                formatProvider: CultureInfo.InvariantCulture);
+
+            // Load filters
+            context.AddFilters(typeof(Filters));
+
+            return context;
         }
 
         protected string RenderTemplates(Template template, Context context)

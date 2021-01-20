@@ -97,8 +97,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             {
                 DataType.Hl7v2 => new Hl7v2Processor(),
                 DataType.Cda => new CdaProcessor(),
-                _ => throw new NotImplementedException(
-                    $"The conversion from data type {dataType} to FHIR is not supported")
+                _ => throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported")
             };
         }
 
@@ -108,8 +107,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             {
                 DataType.Hl7v2 => new Hl7v2TemplateProvider(templateDirectory),
                 DataType.Cda => new CdaTemplateProvider(templateDirectory),
-                _ => throw new NotImplementedException(
-                    $"The conversion from data type {dataType} to FHIR is not supported")
+                _ => throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported")
             };
         }
 

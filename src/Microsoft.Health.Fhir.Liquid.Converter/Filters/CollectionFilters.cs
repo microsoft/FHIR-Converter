@@ -27,8 +27,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         public static List<object> Concat(List<object> l1, List<object> l2)
         {
             var result = new List<object>();
-            result.AddRange(l1?.Where(x => x != null) ?? Array.Empty<object>());
-            result.AddRange(l2?.Where(x => x != null) ?? Array.Empty<object>());
+            result.AddRange(l1 ?? new List<object>());
+            result.AddRange(l2 ?? new List<object>());
             return result;
         }
     }

@@ -22,7 +22,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         public void ConcatTests()
         {
             Assert.Empty(Filters.Concat(null, null));
-            Assert.Single(Filters.Concat(new List<object> { string.Empty, null }, new List<object>()));
+            Assert.Equal(2, Filters.Concat(new List<object> { string.Empty, null }, null).Count);
+            Assert.Equal(2, Filters.Concat(new List<object> { string.Empty, null }, new List<object>()).Count);
         }
     }
 }
