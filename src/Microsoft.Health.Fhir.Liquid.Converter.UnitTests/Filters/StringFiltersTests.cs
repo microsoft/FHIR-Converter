@@ -52,6 +52,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             Assert.Empty(Filters.Match(string.Empty, "[0-9]"));
             Assert.Empty(Filters.Match(null, "[0-9]"));
             Assert.Single(Filters.Match("foo1", "[0-9]"));
+
             Assert.Throws<ArgumentNullException>(() => Filters.Match("foo1", null));
             Assert.ThrowsAny<ArgumentException>(() => Filters.Match("foo1", "[a-z"));
         }
@@ -66,18 +67,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         [Fact]
         public void GzipTest()
         {
-            var equal = string.Equals(Filters.Gzip("uncompressed"), "H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA=", StringComparison.InvariantCultureIgnoreCase);
-            Assert.True(equal);
+            Assert.Equal("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA=", Filters.Gzip("uncompressed"));
+            Assert.Equal("uncompressed", Filters.Gunzip(Filters.Gzip("uncompressed")));
             Assert.Equal(string.Empty, Filters.Gzip(string.Empty));
+
             Assert.Throws<ArgumentNullException>(() => Filters.Gzip(null));
         }
 
         [Fact]
         public void GunzipTest()
         {
-            var equal = string.Equals(Filters.Gunzip("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA="), "uncompressed", StringComparison.InvariantCultureIgnoreCase);
-            Assert.True(equal);
+            Assert.Equal("uncompressed", Filters.Gunzip("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA="));
+            Assert.Equal("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA=", Filters.Gzip(Filters.Gunzip("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA=")));
             Assert.Equal(string.Empty, Filters.Gunzip(string.Empty));
+
             Assert.Throws<ArgumentNullException>(() => Filters.Gunzip(null));
         }
 
@@ -86,6 +89,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         {
             Assert.Equal("a9993e364706816aba3e25717850c26c9cd0d89d", Filters.Sha1Hash("abc"));
             Assert.Equal("da39a3ee5e6b4b0d3255bfef95601890afd80709", Filters.Sha1Hash(string.Empty));
+
             Assert.Throws<ArgumentNullException>(() => Filters.Sha1Hash(null));
         }
 
@@ -94,6 +98,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         {
             Assert.Equal("YSJi", Filters.Base64Encode(@"a""b"));
             Assert.Equal(string.Empty, Filters.Base64Encode(string.Empty));
+
             Assert.Throws<ArgumentNullException>(() => Filters.Base64Encode(null));
         }
 
@@ -102,6 +107,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         {
             Assert.Equal(@"a""b", Filters.Base64Decode("YSJi"));
             Assert.Equal(string.Empty, Filters.Base64Decode(string.Empty));
+
             Assert.Throws<ArgumentNullException>(() => Filters.Base64Decode(null));
         }
     }

@@ -35,12 +35,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Cda
         }
 
         [Fact]
-        public void GivenValidCdaDocument_WhenParse_CorrectResultShouldBeReturned()
+        public void GivenCdaDocument_WhenParse_CorrectResultShouldBeReturned()
         {
+            // Valid document
             var document = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Cda", "CCD.cda"));
             var data = _parser.Parse(document);
             Assert.NotNull(data);
             Assert.NotNull(((Dictionary<string, object>)data).GetValueOrDefault("msg"));
+
+            // Invalid document
+            document = @"<templateId root=""2.16.840.1.113883.10.20.22.1.1""/><templateId root = ""2.16.840.1.113883.10.20.22.1.2""/>";
+            var exception = Assert.Throws<DataParseException>(() => _parser.Parse(document));
+            Assert.Equal(FhirConverterErrorCode.InputParsingError, exception.FhirConverterErrorCode);
         }
     }
 }

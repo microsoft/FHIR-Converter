@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using DotLiquid;
+using Microsoft.Health.Fhir.Liquid.Converter.Cda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
@@ -46,6 +47,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
+        public static IEnumerable<object[]> GetDataForCda()
+        {
+            var data = new List<object[]>
+            {
+                new object[] { @"CCD", @"170.314B2_Amb_CCD.cda", @"170.314B2_Amb_CCD-expected.json" },
+            };
+            return data.Select(item => new object[]
+            {
+                Convert.ToString(item[0]),
+                Path.Join(Constants.SampleDataDirectory, "Cda", Convert.ToString(item[1])),
+                Path.Join(Constants.ExpectedDataFolder, "Cda", Convert.ToString(item[0]), Convert.ToString(item[2])),
+            });
+        }
+
         [Theory]
         [MemberData(nameof(GetDataForHl7v2))]
         public void GivenHl7v2Message_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
@@ -71,6 +86,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             Assert.True(traceInfo.UnusedSegments.Count > 0);
         }
 
+        [Theory]
+        [MemberData(nameof(GetDataForCda))]
+        public void GivenCdaDocument_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
+        {
+            var cdaProcessor = new CdaProcessor();
+            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Cda");
+
+            var inputContent = File.ReadAllText(inputFile);
+            var expectedContent = File.ReadAllText(expectedFile);
+            var actualContent = cdaProcessor.Convert(inputContent, rootTemplate, new CdaTemplateProvider(templateDirectory));
+
+            var expectedObject = JObject.Parse(expectedContent).SelectToken("FhirResource");
+            var actualObject = JObject.Parse(actualContent).SelectToken("FhirResource");
+            Assert.True(JToken.DeepEquals(expectedObject, actualObject));
+        }
+
         [Fact]
         public void GivenAnInvalidTemplate_WhenConverting_ExceptionsShouldBeThrown()
         {
@@ -85,23 +116,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
             var exception = Assert.Throws<RenderException>(() => hl7v2Processor.Convert(@"MSH|^~\&|", "template", new Hl7v2TemplateProvider(templateCollection)));
             Assert.True(exception.InnerException is DotLiquid.Exceptions.StackLevelException);
-        }
-
-        [Fact]
-        public void GivenEscapedMessage_WhenConverting_ExpectedCharacterShouldbeReturned()
-        {
-            var hl7v2Processor = new Hl7v2Processor();
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Hl7v2");
-            var inputContent = string.Join("\n", new List<string>
-            {
-                @"MSH|^~\&|FOO|BAR|FOO|BAR|20201225000000|FOO|ADT^A01|123456|P|2.3|||||||||||",
-                @"PR1|1|FOO|FOO^ESCAPED ONE \T\ ESCAPED TWO^BAR|ESCAPED THREE \T\ ESCAPED FOUR|20201225000000||||||||||",
-            });
-            var result = JObject.Parse(hl7v2Processor.Convert(inputContent, "ADT_A01", new Hl7v2TemplateProvider(templateDirectory)));
-
-            var texts = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Procedure')].resource.code.text").Select(Convert.ToString);
-            var expected = new List<string> { "ESCAPED ONE & ESCAPED TWO", "ESCAPED THREE & ESCAPED FOUR" };
-            Assert.NotEmpty(texts.Intersect(expected));
         }
     }
 }
