@@ -11,6 +11,8 @@
         {% include 'Section/Results' fullPatientId: fullPatientId -%}
         {% include 'Section/SocialHistory' fullPatientId: fullPatientId -%}
         {% include 'Section/VitalSigns' fullPatientId: fullPatientId-%}
-        {% include 'Resource/DocumentReference' docref: msg ID: "documentReference-id" -%}
+        
+        {% assign documentId = msg | to_json_string | generate_uuid -%}
+        {% include 'Resource/DocumentReference' docref: msg ID: documentId -%}
     ]
 }

@@ -19,6 +19,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
     internal static class ConverterLogicHandler
     {
         private const string MetadataFileName = "metadata.json";
+        private static readonly List<string> CdaExtensions = new List<string> { ".cda", ".xml" };
 
         internal static void Convert(ConverterOptions options)
         {
@@ -121,7 +122,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             return dataType switch
             {
                 DataType.Hl7v2 => Directory.EnumerateFiles(inputDataFolder, "*.hl7", SearchOption.AllDirectories).ToList(),
-                DataType.Cda => Directory.EnumerateFiles(inputDataFolder, "*.cda", SearchOption.AllDirectories).ToList(),
+                DataType.Cda => Directory.EnumerateFiles(inputDataFolder, "*.*", SearchOption.AllDirectories)
+                    .Where(x => CdaExtensions.Contains(Path.GetExtension(x).ToLower())).ToList(),
                 _ => new List<string>(),
             };
         }
