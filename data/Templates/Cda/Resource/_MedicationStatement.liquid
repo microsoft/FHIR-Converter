@@ -10,7 +10,7 @@
             { {% include 'DataType/Identifier' Identifier: id -%} },
             {% endfor -%}
         ],
-        "status":{% include 'ValueSet/MedicationStatementStatus' code: medicationStatement.statusCode.code -%}
+        "status":"{{ medicationStatement.statusCode.code | get_property: 'ValueSet/MedicationStatementStatus' }}",
         "effectivePeriod":
         {
             "start":"{{ medicationStatement.effectiveTime.low.value | format_as_date_time }}",

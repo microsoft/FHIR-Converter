@@ -4,7 +4,7 @@
         "resourceType": "Encounter",
         "id":"{{ ID }}",
         {% if encounter.statusCode.code -%}
-        "status":{% include 'ValueSet/EncounterStatus' code: encounter.statusCode.code -%}
+        "status":"{{ encounter.statusCode.code | get_property: 'ValueSet/EncounterStatus' }}",
         {% endif -%}
         {% if encounter.statusCode.code == null -%}
         "status":"unknown",

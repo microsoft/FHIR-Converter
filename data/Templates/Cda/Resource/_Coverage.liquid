@@ -10,7 +10,7 @@
             { {% include 'DataType/Identifier' Identifier: id -%} },
             {% endfor -%}
         ],
-        "status":{% include 'ValueSet/FMStatus' code: payerEntry.statusCode.code -%}
+        "status":"{{ payerEntry.statusCode.code | get_property: 'ValueSet/FMStatus' }}",
         "relationship":
         {
             {% include 'DataType/CodeableConcept' CodeableConcept: payerEntry.code -%}

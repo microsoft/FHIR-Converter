@@ -2,10 +2,10 @@
 	{% if ContactPoint.value | contains: 'tel:' -%}
 		"system":"phone",
 		"value": "{{ContactPoint.value | replace: 'tel:\s*', ''}}",
-		"use": {% include 'ValueSet/TelecomUse' code: ContactPoint.use -%},
+		"use": "{{ ContactPoint.use | get_property: 'ValueSet/TelecomUse' }}",
 	{% elsif ContactPoint.value | contains: 'mailto:' -%}
 		"system":"email",
 		"value": "{{ContactPoint.value | replace: 'mailto:\s*', ''}}",
-		"use": {% include 'ValueSet/TelecomUse' code: ContactPoint.use -%},
+		"use": "{{ ContactPoint.use | get_property: 'ValueSet/TelecomUse' }}",
 	{% endif -%}
 {% endif -%}

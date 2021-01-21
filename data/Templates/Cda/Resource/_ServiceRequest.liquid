@@ -10,7 +10,7 @@
             { {% include 'DataType/Identifier' Identifier: id -%} },
             {% endfor -%}
         ],
-        "status":{% include 'ValueSet/RequestStatus' code: serviceEntry.statusCode.code -%}
+        "status":"{{ serviceEntry.statusCode.code | get_property: 'ValueSet/RequestStatus' }}",
         "code":
         {
             {% if serviceEntry.code.translation -%}

@@ -33,7 +33,7 @@
                 ],
             },
         ],
-        "status":{% include 'ValueSet/ObservationStatus' code: observationEntry.statusCode.code -%}
+        "status":"{{ observationEntry.statusCode.code | get_property: 'ValueSet/ObservationStatus' }}",
         "code":
         {
             {% if observationEntry.code.translation.code -%}

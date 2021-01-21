@@ -3,6 +3,8 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System.Linq;
+using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessor;
@@ -43,6 +45,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
             var result = PostProcessor.Process(rawResult);
 
             return result.ToString(Formatting.Indented);
+        }
+
+        protected override Context CreateContext(ITemplateProvider templateProvider, object cdaData)
+        {
+            // Load value set mapping
+            var context = base.CreateContext(templateProvider, cdaData);
+            var codeSystemMapping = templateProvider.GetTemplate("ValueSet/ValueSet");
+            if (codeSystemMapping?.Root?.NodeList?.First() != null)
+            {
+                context["CodeSystemMapping"] = codeSystemMapping.Root.NodeList.First();
+            }
+
+            return context;
         }
     }
 }

@@ -1,4 +1,4 @@
-"use": {% include 'ValueSet/AddressUse' code: Address.use -%},
+"use": "{{ Address.use | get_property: 'ValueSet/AddressUse' }}",
 "line": [
     {% assign lines = Address.streetAddressLine | to_array -%}
     {% for l in lines -%}

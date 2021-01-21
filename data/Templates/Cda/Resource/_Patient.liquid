@@ -57,7 +57,7 @@
                         {
                             "system":"urn:ietf:bcp:47",
                             "code":"{{ languageCommunication.languageCode.code }}",
-                            "display":{% include 'ValueSet/Language' code: languageCommunication.languageCode.code -%}
+                            "display":"{{ languageCommunication.languageCode.code | get_property: 'ValueSet/Language' }}",
                         },
                     ],
                 },

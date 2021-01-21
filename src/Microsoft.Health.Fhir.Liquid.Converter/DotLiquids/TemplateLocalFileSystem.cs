@@ -31,7 +31,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
             if (dataType == DataType.Hl7v2)
             {
-                LoadCodeSystemMappingTemplate();
+                LoadMappingTemplate("CodeSystem");
+            }
+            else if (dataType == DataType.Cda)
+            {
+                LoadMappingTemplate("ValueSet");
             }
         }
 
@@ -77,14 +81,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             return null;
         }
 
-        private void LoadCodeSystemMappingTemplate()
+        private void LoadMappingTemplate(string type)
         {
-            var codeSystemMappingPath = Path.Join(_templateDirectory, "CodeSystem", "CodeSystem.json");
+            var codeSystemMappingPath = Path.Join(_templateDirectory, type, $"{type}.json");
             if (File.Exists(codeSystemMappingPath))
             {
                 var content = LoadTemplate(codeSystemMappingPath);
                 var template = TemplateUtility.ParseCodeSystemMapping(content);
-                _templateCache["CodeSystem/CodeSystem"] = template;
+                _templateCache[$"{type}/{type}"] = template;
             }
         }
 

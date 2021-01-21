@@ -1,4 +1,4 @@
-"use":{% include 'ValueSet/NameUse' code: HumanName.use -%},
+"use":"{{ HumanName.use | get_property: 'ValueSet/NameUse' }}",
 "family":"{{HumanName.family._}}",
 "given":[
 	{% assign givens = HumanName.given | to_array -%}
