@@ -9,7 +9,7 @@
     {% for c in components -%}
         {% if c.observation -%}
             {% assign observationId = c.observation | to_json_string | generate_uuid -%}
-            {% include 'Resource/Observation' observationCategory: 'laboratory', observationEntry: c.observation, ID: observationId-%}
+            {% include 'Resource/Observation' observationCategory: 'laboratory', observationEntry: c.observation, ID: observationId -%}
             {% assign fullObservationId = observationId | prepend: 'Observation/' -%}
             {% include 'Reference/DiagnosticReport/Result' ID: diagnosticId, REF: fullObservationId -%}
             {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
