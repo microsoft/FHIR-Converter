@@ -7,6 +7,9 @@
         [
             { {% include 'DataType/CX' CX: PID.18 -%} },
         ],
+        {% if PID -%}
+        "status": "active",
+        {% endif -%}
         "subject":
         [
             {% if PID.18 -%}

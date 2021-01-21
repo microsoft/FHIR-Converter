@@ -56,6 +56,7 @@
 
         {% evaluate accountId using 'ID/Account' CX: firstSegments.PID.3 -%}
         {% include 'Resource/Account' PID: firstSegments.PID, ID: accountId -%}
+        {% include 'Reference/Account/Subject' ID: accountId, REF: fullPatientId -%}
 
         {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
         {% assign fullEncounterId = encounterId | prepend: 'Encounter/' -%}
