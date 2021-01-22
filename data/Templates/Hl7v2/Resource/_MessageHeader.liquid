@@ -39,6 +39,10 @@
                 { {% include 'DataType/PT' PT: MSH.11 -%} },
             ],
         },
+        "eventCoding":
+        {
+            {% include 'DataType/MSG' MSG: MSH.9 -%}
+        },
         "language":"{{ MSH.19.Value | get_property: 'CodeSystem/Language', 'code' }}",
         "sender":
         {
