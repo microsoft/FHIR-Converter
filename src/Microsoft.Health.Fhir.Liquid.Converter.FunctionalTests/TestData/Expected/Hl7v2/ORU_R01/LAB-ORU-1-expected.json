@@ -1,6 +1,10 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
+  "timestamp": "201410060645",
+  "identifier": {
+    "value": "182"
+  },
   "entry": [
     {
       "fullUrl": "urn:uuid:",
@@ -18,32 +22,24 @@
         "resourceType": "MessageHeader",
         "id": "f1f46d90-0473-6ea2-ae7f-b3165305d99f",
         "source": {
-          "source": {
-            "name": "SomeSystem"
-          }
+          "name": "SomeSystem"
         },
         "destination": [
           {
-            "destination": [
-              {
-                "name": "TransformationAgent"
-              }
-            ]
+            "name": "TransformationAgent"
           }
         ],
         "meta": {
           "tag": [
             {
-              "meta": {
-                "tag": [
-                  {
-                    "code": "T",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-                  }
-                ]
-              }
+              "code": "T",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "R01",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -205,6 +201,12 @@
               ]
             }
           }
+        ],
+        "status": "active",
+        "subject": [
+          {
+            "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
+          }
         ]
       },
       "request": {
@@ -309,6 +311,16 @@
       "request": {
         "method": "PUT",
         "url": "PractitionerRole/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Device"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Device/"
       }
     },
     {

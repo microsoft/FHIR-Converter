@@ -1,6 +1,10 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
+  "timestamp": "20050110045504",
+  "identifier": {
+    "value": "599102"
+  },
   "entry": [
     {
       "fullUrl": "urn:uuid:3fa041fd-9a00-f9ae-30ba-4e3ad5585603",
@@ -39,23 +43,19 @@
         "resourceType": "MessageHeader",
         "id": "d3171c25-5db7-e705-140c-19d0972f1ba2",
         "source": {
-          "source": {
-            "name": "AccMgr"
-          }
+          "name": "AccMgr"
         },
         "meta": {
           "tag": [
             {
-              "meta": {
-                "tag": [
-                  {
-                    "code": "P",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-                  }
-                ]
-              }
+              "code": "P",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "A01",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         },
         "sender": {
           "reference": "Organization/3fa041fd-9a00-f9ae-30ba-4e3ad5585603"
@@ -229,6 +229,12 @@
                 }
               ]
             }
+          }
+        ],
+        "status": "active",
+        "subject": [
+          {
+            "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
           }
         ]
       },

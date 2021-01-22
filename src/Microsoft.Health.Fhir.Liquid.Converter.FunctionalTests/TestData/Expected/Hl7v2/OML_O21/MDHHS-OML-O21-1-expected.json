@@ -1,6 +1,10 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
+  "timestamp": "20160308180405-0500",
+  "identifier": {
+    "value": "TC09SAPartAIG030101AA"
+  },
   "entry": [
     {
       "fullUrl": "urn:uuid:3ec1a91c-4720-6f8c-d861-4fa35aff66a7",
@@ -70,17 +74,11 @@
         "resourceType": "MessageHeader",
         "id": "6eda7d2f-32f8-a6c7-5125-d59f65a25c97",
         "source": {
-          "source": {
-            "name": "MDHHSDataHub"
-          }
+          "name": "MDHHSDataHub"
         },
         "destination": [
           {
-            "destination": [
-              {
-                "name": "LAN"
-              }
-            ],
+            "name": "LAN",
             "receiver": {
               "reference": "Organization/d6043a57-a50e-abc1-6fcf-96fff9d1bfb0"
             }
@@ -89,16 +87,14 @@
         "meta": {
           "tag": [
             {
-              "meta": {
-                "tag": [
-                  {
-                    "code": "T",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-                  }
-                ]
-              }
+              "code": "T",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "O21",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         },
         "sender": {
           "reference": "Organization/3ec1a91c-4720-6f8c-d861-4fa35aff66a7"
@@ -225,7 +221,13 @@
       "fullUrl": "urn:uuid:d26a5004-0934-26f5-0201-4e302d6163c4",
       "resource": {
         "resourceType": "Account",
-        "id": "d26a5004-0934-26f5-0201-4e302d6163c4"
+        "id": "d26a5004-0934-26f5-0201-4e302d6163c4",
+        "status": "active",
+        "subject": [
+          {
+            "reference": "Patient/97997f4d-5259-b974-5a44-1b7450c2f4ab"
+          }
+        ]
       },
       "request": {
         "method": "PUT",

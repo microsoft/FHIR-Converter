@@ -1,6 +1,10 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
+  "timestamp": "201207010822",
+  "identifier": {
+    "value": "NIST-IZ-001.00"
+  },
   "entry": [
     {
       "fullUrl": "urn:uuid:8a4905a9-ae0d-541f-4fde-2e228bbb0f70",
@@ -70,9 +74,7 @@
         "resourceType": "MessageHeader",
         "id": "5cddb2d1-c441-ec21-1c0c-96605dd3a9c0",
         "source": {
-          "source": {
-            "name": "Test EHR Application"
-          }
+          "name": "Test EHR Application"
         },
         "destination": [
           {
@@ -84,16 +86,14 @@
         "meta": {
           "tag": [
             {
-              "meta": {
-                "tag": [
-                  {
-                    "code": "P",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-                  }
-                ]
-              }
+              "code": "P",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "V04",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         },
         "sender": {
           "reference": "Organization/8a4905a9-ae0d-541f-4fde-2e228bbb0f70"
@@ -305,7 +305,13 @@
       "fullUrl": "urn:uuid:82fcb02d-52a4-17af-a707-923501f587d1",
       "resource": {
         "resourceType": "Account",
-        "id": "82fcb02d-52a4-17af-a707-923501f587d1"
+        "id": "82fcb02d-52a4-17af-a707-923501f587d1",
+        "status": "active",
+        "subject": [
+          {
+            "reference": "Patient/1b2dce0f-93ae-fae4-cc64-b90257c96f1b"
+          }
+        ]
       },
       "request": {
         "method": "PUT",
@@ -493,6 +499,16 @@
       "request": {
         "method": "PUT",
         "url": "PractitionerRole/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Device"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Device/"
       }
     },
     {

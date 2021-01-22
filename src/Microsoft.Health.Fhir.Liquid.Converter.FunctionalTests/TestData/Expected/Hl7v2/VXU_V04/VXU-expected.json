@@ -1,6 +1,10 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
+  "timestamp": "20150624084727.655-0500",
+  "identifier": {
+    "value": "NIST-IZ-AD-2.1_Send_V04_Z22"
+  },
   "entry": [
     {
       "fullUrl": "urn:uuid:8a0eacde-8a9d-6c26-af93-755bbf26dedc",
@@ -60,17 +64,11 @@
         "resourceType": "MessageHeader",
         "id": "aefd5bbc-563b-7d19-5096-4b5754c338c1",
         "source": {
-          "source": {
-            "name": "NISTEHRAPP"
-          }
+          "name": "NISTEHRAPP"
         },
         "destination": [
           {
-            "destination": [
-              {
-                "name": "NISTIISAPP"
-              }
-            ],
+            "name": "NISTIISAPP",
             "receiver": {
               "reference": "Organization/421aa904-409c-709f-ad7d-f1a7673d884f"
             }
@@ -79,16 +77,14 @@
         "meta": {
           "tag": [
             {
-              "meta": {
-                "tag": [
-                  {
-                    "code": "P",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-                  }
-                ]
-              }
+              "code": "P",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "V04",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         },
         "sender": {
           "reference": "Organization/8a0eacde-8a9d-6c26-af93-755bbf26dedc"
@@ -347,7 +343,13 @@
       "fullUrl": "urn:uuid:99ce28f5-c743-ed2e-b88e-47f2e32d23d5",
       "resource": {
         "resourceType": "Account",
-        "id": "99ce28f5-c743-ed2e-b88e-47f2e32d23d5"
+        "id": "99ce28f5-c743-ed2e-b88e-47f2e32d23d5",
+        "status": "active",
+        "subject": [
+          {
+            "reference": "Patient/8dc947ee-0db3-5fa2-04bb-16fd7680cfbe"
+          }
+        ]
       },
       "request": {
         "method": "PUT",
@@ -476,6 +478,16 @@
       "request": {
         "method": "PUT",
         "url": "PractitionerRole/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Device"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Device/"
       }
     },
     {
