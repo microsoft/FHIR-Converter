@@ -1,14 +1,21 @@
-﻿{
+﻿{% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|AVR|MSH' -%}
+{% assign pr1SegmentLists = hl7v2Data | get_segment_lists: 'PR1' -%}
+{% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
+{% assign obxSegmentLists = hl7v2Data | get_segment_lists: 'OBX' -%}
+{% assign al1SegmentLists = hl7v2Data | get_segment_lists: 'AL1' -%}
+{% assign dg1SegmentLists = hl7v2Data | get_segment_lists: 'DG1' -%}
+
+{
     "resourceType": "Bundle",
     "type": "batch",
+    {% if firstSegments.MSH.7 -%}
+    "timestamp":"{{ firstSegments.MSH.7.Value }}",
+    {% endif -%}
+    "identifier":
+    {
+        "value":"{{ firstSegments.MSH.10.Value }}",
+    },
     "entry": [
-        {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|AVR|MSH' -%}
-        {% assign pr1SegmentLists = hl7v2Data | get_segment_lists: 'PR1' -%}
-        {% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
-        {% assign obxSegmentLists = hl7v2Data | get_segment_lists: 'OBX' -%}
-        {% assign al1SegmentLists = hl7v2Data | get_segment_lists: 'AL1' -%}
-        {% assign dg1SegmentLists = hl7v2Data | get_segment_lists: 'DG1' -%}
-
         {% evaluate organizationId4 using 'ID/Organization' HD: firstSegments.MSH.4 -%}
         {% evaluate organizationId6 using 'ID/Organization' HD: firstSegments.MSH.6 -%}
         {% evaluate organizationId22 using 'ID/Organization' XON: firstSegments.MSH.22 -%}

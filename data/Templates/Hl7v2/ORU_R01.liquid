@@ -1,11 +1,18 @@
-﻿{
+﻿{% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|NK1|PV1|PV2|MSH' -%}
+{% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
+{% assign obrSegmentLists = hl7v2Data | get_segment_lists: 'OBR' -%}
+
+{
     "resourceType": "Bundle",
     "type": "batch",
+    {% if firstSegments.MSH.7 -%}
+    "timestamp":"{{ firstSegments.MSH.7.Value }}",
+    {% endif -%}
+    "identifier":
+    {
+        "value":"{{ firstSegments.MSH.10.Value }}",
+    },
     "entry": [
-        {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|NK1|PV1|PV2|MSH' -%}
-        {% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
-        {% assign obrSegmentLists = hl7v2Data | get_segment_lists: 'OBR' -%}
-
         {% evaluate organizationId4 using 'ID/Organization' HD: firstSegments.MSH.4 -%}
         {% evaluate organizationId6 using 'ID/Organization' HD: firstSegments.MSH.6 -%}
         {% evaluate organizationId22 using 'ID/Organization' XON: firstSegments.MSH.22 -%}
