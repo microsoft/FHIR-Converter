@@ -28,16 +28,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             var result = new Dictionary<string, object>();
             var sectionNames = sectionNameContent.Split("|", StringSplitOptions.RemoveEmptyEntries);
-            var components = ((((data["ClinicalDocument"] as Hash)?
+            var dataComponents = (((data["ClinicalDocument"] as Hash)?
                 ["component"] as Hash)?
                 ["structuredBody"] as Hash)?
-                ["component"] as List<object>)?
-                .ToList();
+                ["component"];
 
-            if (components == null)
+            if (dataComponents == null)
             {
                 return result;
             }
+
+            var components = dataComponents is List<object> listComponents
+                ? listComponents
+                : new List<object> { dataComponents };
 
             foreach (var sectionName in sectionNames)
             {
@@ -62,16 +65,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             var result = new Dictionary<string, object>();
             var sectionNames = sectionNameContent.Split("|", StringSplitOptions.RemoveEmptyEntries);
-            var components = ((((data["ClinicalDocument"] as Hash)?
+            var dataComponents = (((data["ClinicalDocument"] as Hash)?
                 ["component"] as Hash)?
                 ["structuredBody"] as Hash)?
-                ["component"] as List<object>)?
-                .ToList();
+                ["component"];
 
-            if (components == null)
+            if (dataComponents == null)
             {
                 return result;
             }
+
+            var components = dataComponents is List<object> listComponents
+                ? listComponents
+                : new List<object> { dataComponents };
 
             foreach (var sectionName in sectionNames)
             {
@@ -103,16 +109,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             var result = new Dictionary<string, object>();
             var templateIds = templateIdContent.Split("|", StringSplitOptions.RemoveEmptyEntries);
-            var components = ((((data["ClinicalDocument"] as Hash)?
+            var dataComponents = (((data["ClinicalDocument"] as Hash)?
                 ["component"] as Hash)?
                 ["structuredBody"] as Hash)?
-                ["component"] as List<object>)?
-                .ToList();
+                ["component"];
 
-            if (components == null)
+            if (dataComponents == null)
             {
                 return result;
             }
+
+            var components = dataComponents is List<object> listComponents
+                ? listComponents
+                : new List<object> { dataComponents };
 
             foreach (var templateId in templateIds)
             {
