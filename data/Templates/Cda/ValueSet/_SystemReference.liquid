@@ -23,10 +23,9 @@
     {% elsif code == '2.16.840.1.113883.6.101' -%}
         "http://nucc.org/provider-taxonomy"
     {% elsif s == 1 -%}
-	    "urn:oid:{{code}}"
+	    "urn:oid:{{ code }}"
     {% else -%}
-        {% assign c = code | replace: ' ', '' -%}
-        "http://terminology.hl7.org/CodeSystem/{{c}}"
+        "http://terminology.hl7.org/CodeSystem/{{ code | replace: ' ', '' }}"
     {% endif -%}
 {% else -%}
     ""
