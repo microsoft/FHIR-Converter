@@ -1,4 +1,4 @@
-﻿{
+{
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
         "resourceType": "ServiceRequest",
@@ -101,6 +101,18 @@
         [
             { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/OrderType', CWE: ORC.29 -%} },
         ],
+        "requester":
+        {
+            {% if ORC.12 and PractitionerRole_ID_ORC_12 -%}
+            "reference":"PractitionerRole/{{ PractitionerRole_ID_ORC_12 }}",
+            {% endif -%}
+            {% if ORC.22 and Organization_address_ID_ORC_22 -%}
+            "reference":"Organization.address/{{ Organization_address_ID_ORC_22 }}",
+            {% endif -%}
+            {% if ORC.23 and Organization_telecom_ID_ORC_23 -%}
+            "reference":"Organization.telecom/{{ Organization_telecom_ID_ORC_23 }}",
+            {% endif -%}
+        },
         "quantityQuantity":
         {
             {% include 'DataType/CQ' CQ: TQ1.2 -%}
@@ -131,6 +143,14 @@
         "reasonCode":
         [
             { {% include 'DataType/CWECodeableConcept' CWE: OBR.31 -%} },
+        ],
+        "specimen":
+        [
+            {
+                {% if OBR.14 and Specimen_receivedTime_ID_OBR_14 -%}
+                "reference":"Specimen.receivedTime/{{ Specimen_receivedTime_ID_OBR_14 }}",
+                {% endif -%}
+            },
         ],
     },
     "request":{

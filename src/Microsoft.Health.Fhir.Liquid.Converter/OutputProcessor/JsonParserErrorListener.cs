@@ -6,7 +6,7 @@
 using System.IO;
 using Antlr4.Runtime;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.OutputProcessor
+namespace Microsoft.Health.Fhir.Liquid.Converter.OutputProcessor
 {
     public class JsonParserErrorListener : BaseErrorListener
     {

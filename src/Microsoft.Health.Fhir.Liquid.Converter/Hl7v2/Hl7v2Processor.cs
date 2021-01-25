@@ -11,8 +11,8 @@ using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.OutputProcessor;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessor;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2

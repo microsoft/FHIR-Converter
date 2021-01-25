@@ -1,4 +1,4 @@
-﻿{
+{
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
         "resourceType": "Encounter",
@@ -18,7 +18,7 @@
             {
                 "location":
                 {
-                    {% if Location_ID_PV1_3 -%}
+                    {% if PV1.3 and Location_ID_PV1_3 -%}
                     "reference":"Location/{{ Location_ID_PV1_3 }}",
                     {% endif -%}
                 },
@@ -32,7 +32,7 @@
             {
                 "location":
                 {
-                    {% if Location_ID_PV1_6 -%}
+                    {% if PV1.6 and Location_ID_PV1_6 -%}
                     "reference":"Location/{{ Location_ID_PV1_6 }}",
                     {% endif -%}
                 },
@@ -99,6 +99,12 @@
                         {% endif -%}
                     },
                 ],
+                "individual":
+                {
+                    {% if PV2.13 and Practitioner.Value -%}
+                    "reference":"Practitioner|PractitionerRole/{{ Practitioner|PractitionerRole_ID_PV2_13 }}",
+                    {% endif -%}
+                },
             },
             {
                 "type":
@@ -217,6 +223,14 @@
             "start":"{{ PV1.44.Value | format_as_date_time }}",
             "end":"{{ PV1.45.Value | format_as_date_time }}",
         },
+        "episodeOfCare":
+        [
+            {
+                {% if PV1.54 and EpisodeOfCare_identifier_value_ID_PV1_54 -%}
+                "reference":"EpisodeOfCare.identifier.value/{{ EpisodeOfCare_identifier_value_ID_PV1_54 }}",
+                {% endif -%}
+            },
+        ],
         "reasonCode":
         [
             { {% include 'DataType/CWECodeableConcept' CWE: PV2.3 -%} },

@@ -1,4 +1,4 @@
-﻿{
+{
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
         "resourceType": "Patient",
@@ -117,6 +117,17 @@
             "lastUpdated":"{{ PID.33.Value | format_as_date_time }}",
         },
         "active":"{{ PD1.16.Value | get_property: 'CodeSystem/RegistryStatus', 'code' }}",
+        "generalPractitioner":
+        [
+            {
+                {% if PD1.4 and PractitionerRole_ID_PD1_4 -%}
+                "reference":"PractitionerRole/{{ PractitionerRole_ID_PD1_4 }}",
+                {% endif -%}
+                {% if ROL.4 and PractitionerRole_ID_ROL_4 -%}
+                "reference":"PractitionerRole/{{ PractitionerRole_ID_ROL_4 }}",
+                {% endif -%}
+            },
+        ],
         "contact":
         [
             {
@@ -155,6 +166,20 @@
                     "end":"{{ NK1.9.Value | format_as_date_time }}",
                 },
                 "gender":"{{ NK1.15.Value | get_property: 'CodeSystem/Gender', 'code' }}",
+                "organization":
+                [
+                    {
+                        {% if NK1.30 and Organization_contact_name_ID_NK1_30 -%}
+                        "reference":"Organization.contact.name/{{ Organization_contact_name_ID_NK1_30 }}",
+                        {% endif -%}
+                        {% if NK1.31 and Organization_contact_telecom_ID_NK1_31 -%}
+                        "reference":"Organization.contact.telecom/{{ Organization_contact_telecom_ID_NK1_31 }}",
+                        {% endif -%}
+                        {% if NK1.32 and Organization_contact_address_ID_NK1_32 -%}
+                        "reference":"Organization.contact.address/{{ Organization_contact_address_ID_NK1_32 }}",
+                        {% endif -%}
+                    },
+                ],
             },
         ],
     },

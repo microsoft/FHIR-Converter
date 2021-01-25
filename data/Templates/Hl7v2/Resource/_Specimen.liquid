@@ -1,4 +1,4 @@
-﻿{
+{
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
         "resourceType": "Specimen",
@@ -75,6 +75,14 @@
         {
             {% include 'DataType/CX' CX: SPM.30.Repeats[0] -%}
         },
+        "parent":
+        [
+            {
+                {% if SPM.3 and Specimen_identifier_ID_SPM_3 -%}
+                "reference":"Specimen.identifier/{{ Specimen_identifier_ID_SPM_3 }}",
+                {% endif -%}
+            },
+        ],
     },
     "request":{
         "method":"PUT",
