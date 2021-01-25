@@ -6,57 +6,17 @@
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
 {
+    /// <summary>
+    /// One-way JsonConverter to deserialize JSON string to IDictionary
+    /// </summary>
     public class DictionaryJsonConverter : JsonConverter
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            WriteValue(writer, value);
-        }
-
-        private void WriteValue(JsonWriter writer, object value)
-        {
-            var t = JToken.FromObject(value);
-            switch (t.Type)
-            {
-                case JTokenType.Object:
-                    WriteObject(writer, value);
-                    break;
-                case JTokenType.Array:
-                    WriteArray(writer, value);
-                    break;
-                default:
-                    writer.WriteValue(value);
-                    break;
-            }
-        }
-
-        private void WriteObject(JsonWriter writer, object value)
-        {
-            writer.WriteStartObject();
-            var obj = value as IDictionary<string, object>;
-            foreach (var entry in obj)
-            {
-                writer.WritePropertyName(entry.Key);
-                WriteValue(writer, entry.Value);
-            }
-
-            writer.WriteEndObject();
-        }
-
-        private void WriteArray(JsonWriter writer, object value)
-        {
-            writer.WriteStartArray();
-            var array = value as IEnumerable<object>;
-            foreach (var obj in array)
-            {
-                WriteValue(writer, obj);
-            }
-
-            writer.WriteEndArray();
+            throw new NotImplementedException();
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)

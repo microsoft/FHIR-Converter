@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -29,14 +30,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             _templateDirectory = templateDirectory;
             _templateCache = new Dictionary<string, Template>();
 
-            if (dataType == DataType.Hl7v2)
-            {
-                LoadMappingTemplate("CodeSystem");
-            }
-            else if (dataType == DataType.Cda)
-            {
-                LoadMappingTemplate("ValueSet");
-            }
+            LoadMappingTemplate(dataType);
         }
 
         public string ReadTemplateFile(Context context, string templateName)
@@ -81,14 +75,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             return null;
         }
 
-        private void LoadMappingTemplate(string type)
+        private void LoadMappingTemplate(DataType dataType)
         {
-            var codeSystemMappingPath = Path.Join(_templateDirectory, type, $"{type}.json");
+            var mappingFileType = dataType == DataType.Hl7v2 ? "CodeSystem" : "ValueSet";
+            var codeSystemMappingPath = Path.Join(_templateDirectory, mappingFileType, $"{mappingFileType}.json");
             if (File.Exists(codeSystemMappingPath))
             {
                 var content = LoadTemplate(codeSystemMappingPath);
                 var template = TemplateUtility.ParseCodeSystemMapping(content);
-                _templateCache[$"{type}/{type}"] = template;
+                _templateCache[$"{mappingFileType}/{mappingFileType}"] = template;
             }
         }
 
@@ -117,12 +112,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
             // Snippets
             pathSegments[^1] = $"_{pathSegments[^1]}.liquid";
-            foreach (var pathSegment in pathSegments)
-            {
-                result = Path.Join(result, pathSegment);
-            }
 
-            return result;
+            return pathSegments.Aggregate(result, Path.Join);
         }
     }
 }
