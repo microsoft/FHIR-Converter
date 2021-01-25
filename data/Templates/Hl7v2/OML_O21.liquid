@@ -1,4 +1,4 @@
-﻿{% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|ORC|MSH' -%}
+{% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|ORC|MSH' -%}
 {% assign al1SegmentLists = hl7v2Data | get_segment_lists: 'AL1' -%}
 {% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
 {% assign orcSegmentLists = hl7v2Data | get_segment_lists: 'ORC' -%}
