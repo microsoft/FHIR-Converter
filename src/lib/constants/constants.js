@@ -8,7 +8,8 @@ var path = require('path');
 let serviceTemplateFolder = '../../service-templates';
 let sampleDataFolder = '../../sample-data';
 
-module.exports.BASE_TEMPLATE_FILES_LOCATION = path.join(__dirname, '../../templates');
+module.exports.AVAILABLE_PARSERS = path.join(__dirname, '../parsers')
+module.exports.BASE_TEMPLATE_FILES_LOCATION = path.join(__dirname, '../../templates/');
 module.exports.TEMPLATE_FILES_LOCATION = path.join(__dirname, serviceTemplateFolder);
 module.exports.SAMPLE_DATA_LOCATION =  path.join(__dirname, sampleDataFolder);
 module.exports.STATIC_LOCATION = path.join(__dirname, '../../static');

@@ -85,6 +85,47 @@ describe("GET /api/helpers", function () {
     });
 });
 
+describe( "GET /api/parsers", function () {
+    before(function () {
+        app.setValidApiKeys(apiKeys);
+    });
+
+    it('should return 401 without a valid API key', function (done) {
+        supertest(app)
+            .get("/api/parsers")
+            .expect(401)
+            .end(function (err) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    done();
+                }
+            });
+    });
+
+    it("should return status code 200 and contain an array", function (done) {
+        supertest(app)
+            .get("/api/parsers")
+            .set(API_KEY_HEADER, apiKeys[0])
+            .expect(200)
+            .expect(function (response) {
+                if (!Array.isArray(response.body)) {
+                    throw new Error('Response is not array');
+                }
+            })
+            .end(function (err) {
+                if (err) {
+                    done(err);
+                }
+                else {
+                    done();
+                }
+            });
+    });
+
+});
+
 describe("GET /api/sample-data", function () {
     before(function () {
         app.setValidApiKeys(apiKeys);
@@ -844,7 +885,7 @@ describe('POST /api/convert/hl7v2 (inline conversion)', function () {
             .expect(400, {
                 error: {
                     code: "BadRequest",
-                    message: "Unable to parse input data. The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type undefined"
+                    message: "Unable to parse input data. The first argument must be of type string or an instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined"
                 }
             })
             .end(function (err) {

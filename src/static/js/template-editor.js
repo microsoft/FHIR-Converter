@@ -35,11 +35,6 @@ var currentDataType;
 var templateOutputSplit;
 var dataTemplateSplit;
 
-var dataTypeMappings = {
-    'HL7v2': 'hl7v2',
-    'CDA': 'cda'
-};
-
 function getSettings() {
     return currentEditorSettings;
 }
@@ -342,7 +337,7 @@ function changeDataType(dataType) {
         outputCode.setValue("");
 
         $('#data-type-dropdown-button').text('FHIR Converter: ' + dataType);
-        currentDataType = dataTypeMappings[dataType];
+        currentDataType = dataType.toLowerCase();
 
         if (templateOutputSplit) {
             templateOutputSplit.destroy();
@@ -352,7 +347,7 @@ function changeDataType(dataType) {
         }
 
         switch (dataType) {
-            case 'HL7v2':
+            case 'HL7V2':
                 $('#editor-wrapper').addClass('vertical-content');
 
                 // Create splits for editor areas
@@ -456,9 +451,9 @@ $(document).ready(function () {
         }
     });
 
-    $("#data-type-dropdown").on('click', 'a', function () {
-        changeDataType($(this).text());
-    });
+    // $("#data-type-dropdown").on('click', 'a', function () {
+    //     changeDataType($(this).text());
+    // });
 
     $('#template-dropdown-button').on('click', function () {
         loadTemplateOptions();
@@ -535,8 +530,11 @@ $(document).ready(function () {
         createBranch($('#branch-name-input').val(), $('#base-branch-select').val(), $("#checkout-new-branch").prop("checked") == true);
     });
 
-    changeDataType('HL7v2');
+    changeDataType('HL7V2');
 
     // See if we have a valid API key and if not raise modal
     checkApiKeyAndRaiseModal();
+
+    // load available parsers
+    loadParsersOptions();
 });

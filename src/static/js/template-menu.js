@@ -11,6 +11,18 @@ function loadData(dataFile) {
     });
 }
 
+function loadParsersOptions() {
+    $.getJSON(getUrl('parsers'), function (dataList) {
+        $("#data-type-dropdown").html('');
+
+        $.each(dataList, function (index, item) {
+            const dataNameWithType = item.toUpperCase();
+
+            $("#data-type-dropdown").append("<a class=\"dropdown-item\" href=\"#\" onClick=\"changeDataType('" + dataNameWithType + "');\">" + dataNameWithType + "</a>");
+        });
+    });
+}
+
 function loadTemplate(templateFile) {
     if (closeAllTemplates()) {
         addTab(templateFile, null);

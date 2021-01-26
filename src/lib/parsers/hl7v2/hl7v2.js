@@ -2,11 +2,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
-var specialCharProcessor = require('../inputProcessor/specialCharProcessor');
+var specialCharProcessor = require('../../inputProcessor/specialCharProcessor');
 var hl7SequenceHandler = require('./hl7EscapeSequence');
-var hl7v2TemplatePreprocessor = require('../inputProcessor/templatePreprocessor');
+var hl7v2TemplatePreprocessor = require('../../inputProcessor/templatePreprocessor');
 var CoverageArray = require('./coverage-array');
-var dataHandler = require('../dataHandler/dataHandler');
+var dataHandler = require('../../dataHandler/dataHandler');
 
 module.exports = class hl7v2 extends dataHandler {
     constructor() {

@@ -4,11 +4,11 @@
 // -------------------------------------------------------------------------------------------------
 
 let parseString = require('xml2js').parseString;
-let dataHandler = require('../dataHandler/dataHandler');
+let dataHandler = require('../../dataHandler/dataHandler');
 
-module.exports = class cda extends dataHandler {
+module.exports = class dummy extends dataHandler {
     constructor() {
-        super("cda");
+        super("dummy");
     }
 
     parseSrcData(data) {

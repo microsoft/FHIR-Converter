@@ -7,8 +7,8 @@ var assert = require('assert');
 var fs = require('fs');
 var hl7 = require('./hl7v2');
 var path = require('path');
-var templatePreprocessor = require('../inputProcessor/templatePreprocessor');
-var HandlebarsConverter = require('../handlebars-converter/handlebars-converter');
+var templatePreprocessor = require('../../inputProcessor/templatePreprocessor');
+var HandlebarsConverter = require('../../handlebars-converter/handlebars-converter');
 
 describe('hl7v2', function () {
     it('should throw when first segment is not MSH.', function () {
@@ -30,7 +30,7 @@ describe('hl7v2', function () {
     var fileNames = ['ADT01-23.hl7', 'ADT04-23.hl7', 'ADT04-251.hl7', 'IZ_1_1.1_Admin_Child_Max_Message.hl7', 'LRI_2.0-NG_CBC_Typ_Message.hl7'];
     fileNames.forEach(fileName => {
         it('should return an array when given valid HL7 v2 message (' + fileName + ')', function (done) {
-            var messageFile = path.join(path.join(__dirname, "../../sample-data/hl7v2"), fileName);
+            var messageFile = path.join(path.join(__dirname, "../../../sample-data/hl7v2"), fileName);
             parseFile(messageFile, function (out) {
                 done(Array.isArray(out));
             });
@@ -62,7 +62,7 @@ describe('hl7v2', function () {
 
 describe('hl7.parseCoverageReport', function () {
     it('should successfully parse a coverage report', function (done) {
-        var messageFile = path.join(path.join(__dirname, "../../test-data"), 'coverage-test.hl7');
+        var messageFile = path.join(path.join(__dirname, "../../../test-data"), 'coverage-test.hl7');
         convertFile(messageFile, 'basic.hbs', (msgContext) => {
             var coverageReport = new hl7().getConversionResultMetadata(msgContext).unusedSegments;
             assert.deepEqual(coverageReport, [
@@ -98,7 +98,7 @@ describe('hl7.parseCoverageReport', function () {
 
 describe('hl7.parseInvalidAccess', function () {
     it('should successfully parse an invalid access report', function (done) {
-        var messageFile = path.join(path.join(__dirname, "../../test-data"), 'coverage-test.hl7');
+        var messageFile = path.join(path.join(__dirname, "../../../test-data"), 'coverage-test.hl7');
         convertFile(messageFile, 'basic.hbs', (msgContext) => {
             var accessReport = new hl7().getConversionResultMetadata(msgContext).invalidAccess;
             assert.deepEqual(accessReport, [
@@ -130,7 +130,7 @@ describe('hl7.parseInvalidAccess', function () {
 });
 
 function GetTemplate(templateString) {
-    var instance = HandlebarsConverter.instance(true, "../../test-data/templates");
+    var instance = HandlebarsConverter.instance(true, "../../../test-data/templates");
     return instance.compile(templatePreprocessor.Process(templateString));
 }
 
@@ -142,7 +142,7 @@ function parseFile(filePath, cb) {
 
 function convertFile(msgFile, templateFile, cb) {
     parseFile(msgFile, (parsedMsg) => {
-        var templateFolder = path.join(__dirname, "../../test-data/templates");
+        var templateFolder = path.join(__dirname, "../../../test-data/templates");
         fs.readFile(path.join(templateFolder, templateFile), (err, template) => {
             GetTemplate(template.toString())({ msg: parsedMsg });
             cb(parsedMsg);

@@ -13,8 +13,9 @@ The API is secured using an API Key.
 | Function | Syntax                    | Details                                         |
 |----------|---------------------------|-------------------------------------------------|
 |GET       |/api/helpers               |Lists available template helpers                 |
+|GET       |/api/parsers               |Lists available template parsers                 |
 |GET       |/api/sample-data           |Lists available data                             |
-|GET       |/api/sample-data/{file}    |Returns specified data                            |
+|GET       |/api/sample-data/{file}    |Returns specified data                           |
 |GET       |/api/templates             |Lists available templates                        |
 |GET       |/api/templates/{file}      |Returns a specific template                      |
 |PUT       |/api/templates/{file}      |Stores a template in the template store          |

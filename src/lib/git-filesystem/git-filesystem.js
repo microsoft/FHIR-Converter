@@ -106,7 +106,7 @@ var getBranches = function () {
                 }
             )
             .then(function () {
-                return repository.getReferences(NodeGit.Reference.TYPE.LISTALL);
+                return repository.getReferences();
             })
             .then(function (references) {
                 for (var i = 0; i < references.length; i++) {
