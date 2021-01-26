@@ -31,12 +31,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 var xDocument = XDocument.Parse(document);
 
                 // Remove redundant namespaces to avoid appending namespace prefix before elements
-                var defaultNamespace = xDocument?.Root?.GetDefaultNamespace()?.NamespaceName;
-                xDocument?.Root?.Attributes()?.Where(attribute => IsRedundantNamespaceAttribute(attribute, defaultNamespace))?.ToList()?
+                var defaultNamespace = xDocument.Root?.GetDefaultNamespace().NamespaceName;
+                xDocument.Root?.Attributes()
+                    .Where(attribute => IsRedundantNamespaceAttribute(attribute, defaultNamespace))
+                    .ToList()
                     .ForEach(action: x => x.Remove());
 
                 // Normalize non-default namespace prefix in elements
-                var namespaces = xDocument?.Root?.Attributes()?
+                var namespaces = xDocument.Root?.Attributes()
                     .Where(x => x.IsNamespaceDeclaration && x.Value != defaultNamespace);
                 NormalizeNamespacePrefix(xDocument?.Root, namespaces);
 
@@ -64,7 +66,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
         {
             return attribute != null &&
                    attribute.IsNamespaceDeclaration &&
-                   !string.Equals(attribute.Name?.LocalName, "xmlns", StringComparison.InvariantCultureIgnoreCase) &&
+                   !string.Equals(attribute.Name.LocalName, "xmlns", StringComparison.InvariantCultureIgnoreCase) &&
                    string.Equals(attribute.Value, defaultNamespace, StringComparison.InvariantCultureIgnoreCase);
         }
 
@@ -100,7 +102,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 return;
             }
 
-            // Iterate reversely to avoid missing unprocessed nodes
+            // Iterate reversely as the list itself is updating
             var nodes = element.Nodes().ToList();
             for (var i = nodes.Count - 1; i >= 0; --i)
             {

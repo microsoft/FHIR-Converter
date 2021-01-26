@@ -16,15 +16,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Cda
     {
         private readonly CdaDataParser _parser = new CdaDataParser();
 
-        public static IEnumerable<object[]> GetNullOrEmptyData()
+        public static IEnumerable<object[]> GetNullOrEmptyCdaDocument()
         {
             yield return new object[] { null };
             yield return new object[] { string.Empty };
         }
 
+        public static IEnumerable<object[]> GetInvalidCdaDocument()
+        {
+            yield return new object[] { "\n" };
+            yield return new object[] { "abc" };
+            yield return new object[] { @"<templateId root=""2.16.840.1.113883.10.20.22.1.1""/><templateId root = ""2.16.840.1.113883.10.20.22.1.2""/>" };
+        }
+
         [Theory]
-        [MemberData(nameof(GetNullOrEmptyData))]
-        public void GivenNullOrEmptyData_WhenParse_CorrectResultShouldBeReturned(string input)
+        [MemberData(nameof(GetNullOrEmptyCdaDocument))]
+        public void GivenNullOrEmptyData_WhenParse_ExceptionShouldBeThrown(string input)
         {
             var exception = Assert.Throws<DataParseException>(() => _parser.Parse(input));
             Assert.Equal(FhirConverterErrorCode.InputParsingError, exception.FhirConverterErrorCode);
@@ -34,19 +41,21 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Cda
             Assert.Equal(FhirConverterErrorCode.NullOrEmptyInput, innerException.FhirConverterErrorCode);
         }
 
+        [Theory]
+        [MemberData(nameof(GetInvalidCdaDocument))]
+        public void GivenInvalidCdaDocument_WhenParse_ExceptionShouldBeThrown(string input)
+        {
+            var exception = Assert.Throws<DataParseException>(() => _parser.Parse(input));
+            Assert.Equal(FhirConverterErrorCode.InputParsingError, exception.FhirConverterErrorCode);
+        }
+
         [Fact]
         public void GivenCdaDocument_WhenParse_CorrectResultShouldBeReturned()
         {
-            // Valid document
             var document = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Cda", "CCD.cda"));
             var data = _parser.Parse(document);
             Assert.NotNull(data);
             Assert.NotNull(((Dictionary<string, object>)data).GetValueOrDefault("msg"));
-
-            // Invalid document
-            document = @"<templateId root=""2.16.840.1.113883.10.20.22.1.1""/><templateId root = ""2.16.840.1.113883.10.20.22.1.2""/>";
-            var exception = Assert.Throws<DataParseException>(() => _parser.Parse(document));
-            Assert.Equal(FhirConverterErrorCode.InputParsingError, exception.FhirConverterErrorCode);
         }
     }
 }

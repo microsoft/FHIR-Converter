@@ -30,7 +30,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
             {
                 if (!reader.Read())
                 {
-                    throw new JsonSerializationException("Unexpected Token when converting IDictionary<string, object>");
+                    throw new JsonSerializationException(Resources.UnexpectedJsonConvertToken);
                 }
             }
 
@@ -50,7 +50,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 case JsonToken.Bytes:
                     return reader.Value;
                 default:
-                    throw new JsonSerializationException($"Unexpected token when converting IDictionary<string, object>: {reader.TokenType}");
+                    throw new JsonSerializationException(Resources.UnexpectedJsonConvertToken);
             }
         }
 
@@ -73,7 +73,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 }
             }
 
-            throw new JsonSerializationException("Unexpected end when reading IDictionary<string, object>");
+            throw new JsonSerializationException(Resources.UnexpectedJsonConvertEnd);
         }
 
         private object ReadObject(JsonReader reader)
@@ -89,13 +89,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
 
                         if (!reader.Read())
                         {
-                            throw new JsonSerializationException("Unexpected end when reading IDictionary<string, object>");
+                            throw new JsonSerializationException(Resources.UnexpectedJsonConvertEnd);
                         }
 
-                        // TODO: Should we do this when it is xml?
+                        // TODO: Remove "@" if it is attribute
                         if (propertyName.StartsWith("@"))
                         {
-                            // If property is attribute, remove "@"
                             propertyName = propertyName[1..];
                         }
 
@@ -109,7 +108,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 }
             }
 
-            throw new JsonSerializationException("Unexpected end when reading IDictionary<string, object>");
+            throw new JsonSerializationException(Resources.UnexpectedJsonConvertEnd);
         }
 
         public override bool CanConvert(Type objectType)

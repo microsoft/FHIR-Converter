@@ -25,7 +25,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
 
         [Theory]
         [MemberData(nameof(GetNullOrEmptyHl7v2Message))]
-        public void GivenNullOrEmptyHl7v2Message_WhenParse_CorrectHl7v2DataShouldBeReturned(string input)
+        public void GivenNullOrEmptyHl7v2Message_WhenParse_ExceptionShouldBeThrown(string input)
         {
             var exception = Assert.Throws<DataParseException>(() => _parser.Parse(input));
             Assert.Equal(FhirConverterErrorCode.InputParsingError, exception.FhirConverterErrorCode);
