@@ -4,15 +4,6 @@
     "entry": [
         {% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}
         {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
-    	{% include 'Header' patientId: patientId -%}
-        {% include 'Section/AllergiesAndAdverseReactions' fullPatientId: fullPatientId -%}
-        {% include 'Section/Medication' fullPatientId: fullPatientId -%}
-        {% include 'Section/Problem' fullPatientId: fullPatientId -%}
-        {% include 'Section/Results' fullPatientId: fullPatientId -%}
-        {% include 'Section/SocialHistory' fullPatientId: fullPatientId -%}
-        {% include 'Section/VitalSigns' fullPatientId: fullPatientId-%}
-        
-        {% assign documentId = msg | to_json_string | generate_uuid -%}
-        {% include 'Resource/DocumentReference' docref: msg ID: documentId -%}
+    	{% include 'Section/VitalSigns' fullPatientId: fullPatientId-%}
     ]
 }

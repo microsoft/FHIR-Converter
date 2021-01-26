@@ -3,7 +3,7 @@
 {% for e in entries -%}
     {% assign components = e.organizer.component | to_array -%}
     {% for c in components -%}
-        {% assign observationId = c.observation | to_json_string | generate_uuid -%}
+        {% assign observationId = c.observation | to_json_string | generate_uuid | test -%}
         {% include 'Resource/Observation' observationCategory: 'vital-signs', observationEntry: c.observation, ID: observationId -%}
         {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
     {% endfor -%}

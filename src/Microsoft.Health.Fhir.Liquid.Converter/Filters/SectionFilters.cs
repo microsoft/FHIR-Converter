@@ -21,6 +21,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         // TODO: Remove this after testing
         public static object Test(object input)
         {
+            Console.WriteLine($"Creating Observation: current time stamp in milliseconds: {DateTime.Now.Ticks / 10000}");
             return input;
         }
 
