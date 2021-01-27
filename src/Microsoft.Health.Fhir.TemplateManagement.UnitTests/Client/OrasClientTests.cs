@@ -108,7 +108,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             File.Copy(_userLayerTemplatePath, "TestData/PushTest/userLayer.tar.gz", true);
             string imageReference = _containerRegistryServer + reference;
             OrasClient orasClient = new OrasClient(imageReference);
-            await Assert.ThrowsAsync<OrasException>(() => orasClient.PushImageAsync("TestData/PushTest"));
+            await Assert.ThrowsAsync<OrasException>(() => orasClient.PushImageAsync("TestData/PushTest", new List<string> { "baseLayer.tar.gz", "userLayer.tar.gz" }));
             await Assert.ThrowsAsync<OrasException>(() => orasClient.PullImageAsync("TestData/PushTest"));
             ClearFolder("TestData/PushTest");
         }
@@ -129,7 +129,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
             string testImageReference = _containerRegistryServer + "/testFolder";
             OrasClient testOrasClient = new OrasClient(imageReference);
-            var ex = await Record.ExceptionAsync(async () => await orasClient.PushImageAsync(outputFolder));
+            var ex = await Record.ExceptionAsync(async () => await orasClient.PushImageAsync(outputFolder, new List<string> { Path.Combine("TestData", "TarGzFiles", "baseLayer.tar.gz") }));
             Assert.Null(ex);
             ClearFolder(outputFolder);
         }
@@ -147,7 +147,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             File.Copy(_userLayerTemplatePath, "TestData/PushTest/userLayer.tar.gz", true);
             string imageReference = _containerRegistryServer + "/testimage:test";
             OrasClient orasClient = new OrasClient(imageReference);
-            var ex = await Record.ExceptionAsync(() => orasClient.PushImageAsync("TestData/PushTest"));
+            var ex = await Record.ExceptionAsync(() => orasClient.PushImageAsync(
+                "TestData/PushTest",
+                new List<string> { "baseLayer.tar.gz", "userLayer.tar.gz" }));
             Assert.Null(ex);
             ClearFolder("TestData/PushTest");
         }
@@ -163,7 +165,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             Directory.CreateDirectory("TestData/Empty");
             string imageReference = _containerRegistryServer + "/testimage:test";
             OrasClient orasClient = new OrasClient(imageReference);
-            await Assert.ThrowsAsync<OverlayException>(async () => await orasClient.PushImageAsync("TestData/Empty"));
+            await Assert.ThrowsAsync<OverlayException>(async () => await orasClient.PushImageAsync("TestData/Empty", new List<string>()));
         }
 
         [Fact]

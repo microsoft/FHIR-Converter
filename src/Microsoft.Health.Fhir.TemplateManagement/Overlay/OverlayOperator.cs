@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using EnsureThat;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
@@ -72,9 +73,37 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return sortedLayers;
         }
 
+        public List<OCIFileLayer> SortOCIFileLayersByManifest(List<OCIFileLayer> fileLayers, ManifestWrapper manifest)
+        {
+            EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
+            EnsureArg.IsNotNull(manifest, nameof(manifest));
+
+            List<OCIFileLayer> sortedLayers = new List<OCIFileLayer>();
+            foreach (var layerInfo in manifest.Layers)
+            {
+                var currentLayer = fileLayers.Where(layer => layer.Digest == layerInfo.Digest).ToList();
+                if (currentLayer == null)
+                {
+                    throw new OverlayException(TemplateManagementErrorCode.SortLayersFailed, "Layers in manifest not found.");
+                }
+
+                if (currentLayer.Count > 1)
+                {
+                    throw new OverlayException(TemplateManagementErrorCode.SortLayersFailed, "Duplicated layers.");
+                }
+
+                sortedLayers.Add(currentLayer[0]);
+            }
+
+            return sortedLayers;
+        }
+
         public OCIFileLayer MergeOCIFileLayers(List<OCIFileLayer> sortedLayers)
         {
-            EnsureArg.IsNotNull(sortedLayers, nameof(sortedLayers));
+            if (sortedLayers == null || !sortedLayers.Any())
+            {
+                return null;
+            }
 
             List<string> removedFiles = new List<string>();
             Dictionary<string, byte[]> mergedFiles = new Dictionary<string, byte[]> { };
@@ -171,7 +200,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
             if (fileLayer.FileContent.Count == 0)
             {
-                return new OCIArtifactLayer();
+                return fileLayer;
             }
 
             var fileContents = fileLayer.FileContent;
@@ -185,8 +214,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 }
             }
 
-            var resultLayer = new OCIArtifactLayer() { SequenceNumber = fileLayer.SequenceNumber, Content = resultStream.ToArray(), FileName = fileLayer.FileName };
-            return resultLayer;
+            fileLayer.Content = resultStream.ToArray();
+            return fileLayer;
         }
 
         public List<OCIArtifactLayer> ArchiveOCIFileLayers(List<OCIFileLayer> fileLayers)

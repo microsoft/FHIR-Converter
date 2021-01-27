@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>true</IsPackable>
     <NuspecFile>Microsoft.Health.Fhir.Liquid.Converter.nuspec</NuspecFile>
-    <OrasWinUrl>https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_windows_amd64.tar.gz</OrasWinUrl>
+    <OrasWinUrl>https://github.com/deislabs/oras/releases/download/v0.9.0/oras_0.9.0_windows_amd64.tar.gz</OrasWinUrl>
   </PropertyGroup>
   
   <ItemGroup>
@@ -46,6 +46,6 @@
     <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="../../bin">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
-    <Exec Command="tar -xvf ..\..\bin\oras_0.8.1_windows_amd64.tar.gz -C ..\..\bin &amp; copy ..\..\bin\oras.exe ." />
+    <Exec Command="tar -xvf ..\..\bin\oras_0.9.0_windows_amd64.tar.gz -C ..\..\bin &amp; copy ..\..\bin\oras.exe . " />
   </Target>
 </Project>

@@ -29,5 +29,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         internal const int TimeOutMilliseconds = 30000;
 
         internal const string OrasFile = "oras";
+        internal const string Manifest = "manifest";
     }
 }

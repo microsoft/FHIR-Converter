@@ -24,8 +24,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             }
 
             OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.OutputTemplateFolder);
-            await fileManager.PullOCIImageAsync();
-            fileManager.UnpackOCIImage();
+            string digest = await fileManager.PullOCIImageAsync();
+            fileManager.UnpackOCIImage(digest);
             Console.WriteLine($"Successfully pulled artifacts to {options.OutputTemplateFolder} folder");
         }
 
@@ -42,8 +42,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             }
 
             OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.InputTemplateFolder);
-            fileManager.PackOCIImage(options.BuildNewBaseLayer);
-            await fileManager.PushOCIImageAsync();
+            var artifactLayers = fileManager.PackOCIImage(options.BuildNewBaseLayer);
+            await fileManager.PushOCIImageAsync(artifactLayers);
             Console.WriteLine($"Successfully pushed artifacts to {options.ImageReference}");
         }
     }

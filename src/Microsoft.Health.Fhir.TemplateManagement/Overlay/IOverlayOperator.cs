@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
@@ -31,6 +32,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// <param name="fileLayers">List of OCIFileLayers</param>
         /// <returns>The sorted list of OCIFileLayers</returns>
         List<OCIFileLayer> SortOCIFileLayersBySequenceNumber(List<OCIFileLayer> fileLayers);
+
+        /// <summary>
+        /// If load manifest successfully, sort OCIFileLayers by manifest.
+        /// </summary>
+        /// <param name="fileLayers">List of OCIFileLayers</param>
+        /// <param name="manifest">Image manifest</param>
+        /// <returns>The sorted list of OCIFileLayers</returns>
+        List<OCIFileLayer> SortOCIFileLayersByManifest(List<OCIFileLayer> fileLayers, ManifestWrapper manifest);
 
         /// <summary>
         /// Merge sorted OCIFileLayers.

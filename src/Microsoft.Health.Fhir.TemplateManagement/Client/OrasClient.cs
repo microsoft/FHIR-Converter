@@ -4,8 +4,10 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
@@ -24,24 +26,31 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             _imageReference = imageReference;
         }
 
-        public async Task PullImageAsync(string outputFolder)
+        public async Task<string> PullImageAsync(string outputFolder)
         {
             string command = $"pull  \"{_imageReference}\" -o \"{outputFolder}\"";
-            await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+            string output = await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+            Console.WriteLine(output);
+            Regex rx = new Regex("(?<rule>[A-Za-z][A-Za-z0-9]*([+.-_][A-Za-z][A-Za-z0-9]*)*):(?<digest>[0-9a-fA-F]{32,})");
+            var digest = rx.Matches(output)[0].Groups["digest"].ToString();
+            return digest;
         }
 
-        public async Task PushImageAsync(string inputFolder)
+        public async Task PushImageAsync(string inputFolder, List<string> filePathList)
         {
             string argument = string.Empty;
             string command = $"push \"{_imageReference}\"";
 
-            var filePathToPush = Directory.EnumerateFiles(inputFolder, "*.tar.gz", SearchOption.AllDirectories);
-
             // In order to remove image's directory prefix. (e.g. "layers/layer1.tar.gz" --> "layer1.tar.gz"
             // Change oras working folder to inputFolder
-            foreach (var filePath in filePathToPush)
+            foreach (var filePath in filePathList)
             {
-                argument += $" \"{Path.GetRelativePath(inputFolder, filePath)}\"";
+                if (!File.Exists(Path.Combine(inputFolder, filePath)))
+                {
+                    throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "Image layer not found");
+                }
+
+                argument += $" \"{filePath}\"";
             }
 
             if (string.IsNullOrEmpty(argument))
@@ -52,7 +61,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             await OrasExecutionAsync(string.Concat(command, argument), inputFolder);
         }
 
-        public static async Task OrasExecutionAsync(string command, string orasWorkingDirectory)
+        public static async Task<string> OrasExecutionAsync(string command, string orasWorkingDirectory)
         {
             TaskCompletionSource<bool> eventHandled = new TaskCompletionSource<bool>();
 
@@ -63,6 +72,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             process.StartInfo.Arguments = command;
             process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.WorkingDirectory = orasWorkingDirectory;
             process.EnableRaisingEvents = true;
 
@@ -78,6 +88,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
 
             StreamReader errStreamReader = process.StandardError;
+            StreamReader outputStreamReader = process.StandardOutput;
             await Task.WhenAny(eventHandled.Task, Task.Delay(Constants.TimeOutMilliseconds));
             if (process.HasExited)
             {
@@ -86,6 +97,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 {
                     throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, error);
                 }
+                return outputStreamReader.ReadToEnd();
             }
             else
             {

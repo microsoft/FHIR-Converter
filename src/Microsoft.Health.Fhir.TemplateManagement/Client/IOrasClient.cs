@@ -3,14 +3,15 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
     public interface IOrasClient
     {
-        Task PullImageAsync(string outputFolder);
+        Task<string> PullImageAsync(string outputFolder);
 
-        Task PushImageAsync(string inputFolder);
+        Task PushImageAsync(string inputFolder, List<string> filePathList);
     }
 }

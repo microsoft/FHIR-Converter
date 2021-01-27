@@ -3,11 +3,14 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using EnsureThat;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
@@ -18,11 +21,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             EnsureArg.IsNotNullOrEmpty(workingFolder, nameof(workingFolder));
 
             WorkingFolder = workingFolder;
+            WorkingImageFolder = Path.Combine(workingFolder, Constants.HiddenImageFolder);
             WorkingImageLayerFolder = Path.Combine(workingFolder, Constants.HiddenLayersFolder);
             WorkingBaseLayerFolder = Path.Combine(workingFolder, Constants.HiddenBaseLayerFolder);
         }
 
         public string WorkingFolder { get; set; }
+
+        public string WorkingImageFolder { get; set; }
 
         public string WorkingImageLayerFolder { get; set; }
 
@@ -90,6 +96,38 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                     layers[index - 1].WriteToFolder(WorkingBaseLayerFolder);
                 }
             }
+        }
+
+        public ManifestWrapper ReadManifest(string digest)
+        {
+            try
+            {
+                var cachePath = Environment.GetEnvironmentVariable("ORAS_CACHE");
+                var manifestContent = File.ReadAllText(Path.Combine(cachePath, "blobs", "sha256", digest));
+                return JsonConvert.DeserializeObject<ManifestWrapper>(manifestContent);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public ManifestWrapper ReadManifest(string dir, string fileName)
+        {
+            try
+            {
+                var manifestContent = File.ReadAllText(Path.Combine(dir, fileName));
+                return JsonConvert.DeserializeObject<ManifestWrapper>(manifestContent);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public void WriteManifest(ManifestWrapper manifest)
+        {
+            File.WriteAllText(Path.Combine(WorkingImageFolder, Constants.Manifest), JsonConvert.SerializeObject(manifest));
         }
 
         public void ClearImageLayerFolder()
