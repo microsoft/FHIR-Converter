@@ -23,11 +23,11 @@ The templates are written in [Liquid](https://shopify.github.io/liquid/) templat
 
 The converter comes with ready to use templates for HL7v2 to FHIR conversion. These templates are based on the [spreadsheet](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk/edit#gid=0) created by the HL7 [2-To-FHIR project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project). If needed, you can create new, or modify existing templates to meet your specific conversion requirements.
 
-FHIR Converter with DotLiquid engine is integrated into the [FHIR Server for Azure](https://github.com/microsoft/fhir-server) as the [$convert-data](https://github.com/microsoft/fhir-server/blob/master/docs/ConvertDataOperation.md) operation. In addition, it is also available as a command-line tool. The converter transforms the input data into FHIR bundles. These bundles can be persisted to a FHIR server such as the [FHIR Server for Azure](https://github.com/microsoft/fhir-server), or [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/).
+FHIR Converter with DotLiquid engine is integrated into the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/), and [FHIR Server for Azure](https://github.com/microsoft/fhir-server) as the [$convert-data](https://docs.microsoft.com/en-us/azure/healthcare-apis/convert-data) operation. In addition, it is also available as a command-line tool. The converter transforms the input data into FHIR bundles that can be persisted to a FHIR server.
 
 This project consists of the following components:
 
-1. A command-line tool for converting data and managing templates.
+1. A command-line tool) for converting data and managing templates.
 2. [Templates](data/Templates) for HL7 v2 to FHIR conversion.
 3. [Sample data](data/SampleData) for testing purpose.
 
@@ -35,7 +35,7 @@ This project consists of the following components:
 
 ### $convert-data operation in the Azure API for FHIR
 
-FHIR Converter is integrated into the FHIR Server for Azure to run as part of the service. Refer to the [$convert-data](https://github.com/microsoft/fhir-server/blob/master/docs/ConvertDataOperation.md) documentation for using the FHIR converter in the FHIR Server for Azure.
+FHIR Converter is integrated into Azure API for FHIR, and FHIR Server for Azure to run as part of the service. Refer to the [$convert-data](https://docs.microsoft.com/en-us/azure/healthcare-apis/convert-data) documentation for using the FHIR converter in the FHIR Server for Azure.
 
 ### Command-line tool
 
