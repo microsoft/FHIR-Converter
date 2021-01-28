@@ -92,7 +92,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                             throw new JsonSerializationException(Resources.UnexpectedJsonConvertEnd);
                         }
 
-                        // TODO: Remove "@" if it is attribute
+                        // Remove "@" if it is attribute
                         if (propertyName.StartsWith("@"))
                         {
                             propertyName = propertyName[1..];

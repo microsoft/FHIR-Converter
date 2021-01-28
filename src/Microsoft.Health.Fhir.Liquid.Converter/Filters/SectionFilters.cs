@@ -17,12 +17,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     {
         private static readonly Regex NormalizeSectionNameRegex = new Regex("[^A-Za-z0-9]");
 
-        // TODO: Remove this after testing
-        public static object Test(object input)
-        {
-            return input;
-        }
-
         public static IDictionary<string, object> GetFirstCdaSections(Hash data, string sectionNameContent)
         {
             var result = new Dictionary<string, object>();
