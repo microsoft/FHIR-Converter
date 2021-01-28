@@ -748,12 +748,12 @@ module.exports = function (app) {
      *         in: query
      *         description: 'Flag about whether to return the "unusedSegments", only used in web portal'
      *         required: false
-     *         type: bool
+     *         type: boolean
      *       - name: invalidAccess
      *         in: query
      *         description: 'Flag about whether to return the "invalidAccess", only used in web portal'
      *         required: false
-     *         type: bool
+     *         type: boolean
      *       - name: X-MS-CONVERSION-API-KEY
      *         in: header
      *         description: 'API key'
@@ -830,12 +830,12 @@ module.exports = function (app) {
      *         in: query
      *         description: 'Flag about whether to return the "unusedSegments", only used in web portal'
      *         required: false
-     *         type: bool
+     *         type: boolean
      *       - name: invalidAccess
      *         in: query
      *         description: 'Flag about whether to return the "invalidAccess", only used in web portal'
      *         required: false
-     *         type: bool
+     *         type: boolean
      *       - name: X-MS-CONVERSION-API-KEY
      *         in: header
      *         description: 'API key'
