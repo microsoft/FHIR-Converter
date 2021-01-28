@@ -5,7 +5,7 @@
         "id":"{{ ID }}",
         "type":
         {
-            {% assign codes = docref.ClinicalDocument.code | to_array -%}
+            {% assign codes = documentReference.ClinicalDocument.code | to_array -%}
             {% include 'DataType/CodeableConcept' CodeableConcept: codes.first -%}
         },
         "date":"{{ "" | now }}",
@@ -16,8 +16,8 @@
                 "attachment":
                 {
                     "contentType":"text/plain",
-                    "data":"{{ docref._originalData | gzip }}",
-                    "hash":"{{ docref._originalData | gzip | sha1_hash | base64_encode }}",
+                    "data":"{{ documentReference._originalData | gzip }}",
+                    "hash":"{{ documentReference._originalData | gzip | sha1_hash | base64_encode }}",
                 },
             },
         ],

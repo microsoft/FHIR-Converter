@@ -5,27 +5,27 @@
         "id":"{{ ID }}",
         "identifier":
         [
-            {% assign ids = diagReport.id | to_array -%}
+            {% assign ids = diagnosticReport.id | to_array -%}
             {% for id in ids -%}
             { {% include 'DataType/Identifier' Identifier: id -%} },
             {% endfor -%}
         ],
-        "status":"{{ diagReport.statusCode.code | get_property: 'ValueSet/DiagnosticReportStatus' }}",
+        "status":"{{ diagnosticReport.statusCode.code | get_property: 'ValueSet/DiagnosticReportStatus' }}",
         "code":
         {
             {% if diagReport.code.translation -%}
-            {% include 'DataType/CodeableConcept' CodeableConcept: diagReport.code.translation -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: diagnosticReport.code.translation -%}
             {% endif -%}
             {% if diagReport.code.translation == null -%}
-            {% include 'DataType/CodeableConcept' CodeableConcept: diagReport.code -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: diagnosticReport.code -%}
             {% endif -%}
         },
         "effectivePeriod":
         {
-            "start":"{{ diagReport.effectiveTime.low.value | format_as_date_time }}",
-            "end":"{{ diagReport.effectiveTime.high.value | format_as_date_time }}",
+            "start":"{{ diagnosticReport.effectiveTime.low.value | format_as_date_time }}",
+            "end":"{{ diagnosticReport.effectiveTime.high.value | format_as_date_time }}",
         },
-        "effectiveDateTime":"{{ diagReport.effectiveTime.value | format_as_date_time }}",
+        "effectiveDateTime":"{{ diagnosticReport.effectiveTime.value | format_as_date_time }}",
     },
     "request":{
         "method":"PUT",

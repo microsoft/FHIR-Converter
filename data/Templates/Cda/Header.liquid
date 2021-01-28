@@ -1,6 +1,7 @@
 {% evaluate practitionerId using 'Utils/GenerateId' obj: msg.ClinicalDocument.legalAuthenticator.assignedEntity -%}
 {% assign compositionId = msg.ClinicalDocument | to_json_string | generate_uuid -%}
 {% include 'Resource/Composition' composition: msg.ClinicalDocument, practitionerId: practitionerId, ID: compositionId -%}
+{% include 'Reference/Composition/Subject' ID: compositionId, REF: fullPatientId -%}
 
 {% if msg.ClinicalDocument.legalAuthenticator -%}
     {% include 'Resource/Practitioner' practitioner: msg.ClinicalDocument.legalAuthenticator.assignedEntity ID: practitionerId -%}
@@ -22,7 +23,7 @@
 
 {% if msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization.name._ -%}
     {% assign organizationId = msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization | to_json_string | generate_uuid -%}
-    {% include 'Resource/Organization' org: msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization ID: organizationId -%}
+    {% include 'Resource/Organization' organization: msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization ID: organizationId -%}
     {% assign fullOrganizationId = organizationId | prepend: 'Organization/' -%}
     {% include 'Reference/Composition/Custodian' ID: compositionId, REF: fullOrganizationId -%}
 {% endif -%}
@@ -38,7 +39,7 @@
 
     {% if author.assignedAuthor.representedOrganization -%}
         {% assign organizationId = author.assignedAuthor.representedOrganization | to_json_string | generate_uuid -%}
-        {% include 'Resource/Organization' org: author.assignedAuthor.representedOrganization ID: organizationId -%}
+        {% include 'Resource/Organization' organization: author.assignedAuthor.representedOrganization ID: organizationId -%}
         {% assign fullOrganizationId = organizationId | prepend: 'Organization/' -%}
         {% if deviceId -%}
             {% include 'Reference/Device/Owner' ID: deviceId, REF: fullOrganizationId -%}

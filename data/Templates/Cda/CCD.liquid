@@ -13,6 +13,6 @@
     	{% include 'Section/VitalSigns' -%}
 
         {% assign documentId = msg | to_json_string | generate_uuid -%}
-        {% include 'Resource/DocumentReference' docref: msg ID: documentId -%}
+        {% include 'Resource/DocumentReference' documentReference: msg ID: documentId -%}
     ]
 }

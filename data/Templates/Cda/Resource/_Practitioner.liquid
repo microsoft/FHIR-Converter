@@ -42,7 +42,9 @@
         [
             {% assign codes = practitioner.code | to_array -%}
             {% for code in codes -%}
-            { {% include 'DataType/CodeableConcept' CodeableConcept: code -%} },
+            {
+                "code": { {% include 'DataType/CodeableConcept' CodeableConcept: code -%} },
+            },
             {% endfor -%}
         ],
     },
