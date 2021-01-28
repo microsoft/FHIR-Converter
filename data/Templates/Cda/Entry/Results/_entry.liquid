@@ -1,0 +1,4 @@
+{% assign diagnosticId = entry.organizer | to_json_string | generate_uuid -%}
+{% include 'Resource/DiagnosticReport' diagReport: entry.organizer, ID: diagnosticId -%}
+{% include 'Reference/DiagnosticReport/Subject' ID: diagnosticId, REF: fullPatientId -%}
+{{ entry.organizer.component | to_array | batch_render: 'Entry/Results/entry_organizer_component', 'component' }}

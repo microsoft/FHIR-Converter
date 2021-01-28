@@ -3,9 +3,11 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text;
+using DotLiquid;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
 {
@@ -30,6 +32,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             result.AddRange(l1 ?? new List<object>());
             result.AddRange(l2 ?? new List<object>());
             return result;
+        }
+
+        public static string BatchRender(Context context, List<object> collection, string templateName, string variableName)
+        {
+            var sb = new StringBuilder();
+            var templateFileSystem = context.Registers["file_system"] as IFhirConverterTemplateFileSystem;
+            var template = templateFileSystem?.GetTemplate(templateName);
+            collection?.ForEach(entry =>
+            {
+                context[variableName] = entry;
+                sb.Append(template?.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
+            });
+
+            return sb.ToString();
         }
     }
 }
