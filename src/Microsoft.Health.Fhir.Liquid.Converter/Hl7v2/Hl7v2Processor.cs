@@ -16,7 +16,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
     public class Hl7v2Processor : BaseProcessor
     {
         private readonly Hl7v2DataParser _dataParser = new Hl7v2DataParser();
-        private readonly ProcessorSettings _settings;
 
         public Hl7v2Processor(ProcessorSettings processorSettings = null)
             : base(processorSettings)
