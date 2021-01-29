@@ -1,87 +1,27 @@
-﻿{
+{
   "resourceType": "Bundle",
   "type": "batch",
   "entry": [
-    {
-      "fullUrl": "urn:uuid:37113002-8500-6f18-8ff4-95b962eeadfe",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "37113002-8500-6f18-8ff4-95b962eeadfe",
-        "identifier": [
-          {
-            "value": "NINTENDO"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "TESTFACILITY"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/37113002-8500-6f18-8ff4-95b962eeadfe"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5",
-        "identifier": [
-          {
-            "value": "NINTENDO"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "TESTFACILITY"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5"
-      }
-    },
     {
       "fullUrl": "urn:uuid:18548d54-14a8-815a-c1bb-396f35b37164",
       "resource": {
         "resourceType": "MessageHeader",
         "id": "18548d54-14a8-815a-c1bb-396f35b37164",
         "source": {
-          "source": {
-            "name": "NES"
-          }
+          "name": "NES"
         },
         "destination": [
           {
-            "destination": [
-              {
-                "name": "TESTSYSTEM"
-              }
-            ],
-            "receiver": {
-              "reference": "Organization/ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5"
-            }
+            "name": "TESTSYSTEM"
           }
         ],
         "meta": {
           "tag": [
             {
-              "meta": {
-                "tag": [
-                  {
-                    "code": "P",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-                  }
-                ]
-              }
+              "code": "P",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
-        },
-        "sender": {
-          "reference": "Organization/37113002-8500-6f18-8ff4-95b962eeadfe"
         }
       },
       "request": {
@@ -247,6 +187,23 @@
       "request": {
         "method": "PUT",
         "url": "Account/0b931b2e-4814-b7ed-7159-4cf2805ef38f"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5",
+        "identifier": [
+          {
+            "value": "NINTENDO"
+          }
+        ],
+        "endpoint": "TESTFACILITY"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5"
       }
     },
     {

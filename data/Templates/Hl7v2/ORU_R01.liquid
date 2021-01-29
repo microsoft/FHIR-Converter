@@ -5,9 +5,6 @@
         {% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|NK1|PV1|PV2|MSH' -%}
 
         {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
-        {% evaluate organizationId4 using 'ID/Organization' HD: firstSegments.MSH.4 -%}
-        {% evaluate organizationId6 using 'ID/Organization' HD: firstSegments.MSH.6 -%}
-        {% evaluate organizationId22 using 'ID/Organization' XON: firstSegments.MSH.22 -%}
 
         {% if organizationId4 -%}
             {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId4 -%}
