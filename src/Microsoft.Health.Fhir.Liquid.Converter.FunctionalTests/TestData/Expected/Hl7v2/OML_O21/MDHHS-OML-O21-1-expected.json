@@ -3,85 +3,25 @@
   "type": "batch",
   "entry": [
     {
-      "fullUrl": "urn:uuid:3ec1a91c-4720-6f8c-d861-4fa35aff66a7",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "3ec1a91c-4720-6f8c-d861-4fa35aff66a7",
-        "identifier": [
-          {
-            "value": "MDHHS"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "MDHHS"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/3ec1a91c-4720-6f8c-d861-4fa35aff66a7"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:d6043a57-a50e-abc1-6fcf-96fff9d1bfb0",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "d6043a57-a50e-abc1-6fcf-96fff9d1bfb0",
-        "identifier": [
-          {
-            "value": "MDHHS"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "MDHHS"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/d6043a57-a50e-abc1-6fcf-96fff9d1bfb0"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:6eda7d2f-32f8-a6c7-5125-d59f65a25c97",
       "resource": {
         "resourceType": "MessageHeader",
         "id": "6eda7d2f-32f8-a6c7-5125-d59f65a25c97",
         "source": {
-          "source": {
-            "name": "MDHHSDataHub"
-          }
+          "name": "MDHHSDataHub"
         },
         "destination": [
           {
-            "destination": [
-              {
-                "name": "LAN"
-              }
-            ],
-            "receiver": {
-              "reference": "Organization/d6043a57-a50e-abc1-6fcf-96fff9d1bfb0"
-            }
+            "name": "LAN"
           }
         ],
         "meta": {
           "tag": [
             {
-              "meta": {
-                "tag": [
-                  {
-                    "code": "T",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-                  }
-                ]
-              }
+              "code": "T",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
-        },
-        "sender": {
-          "reference": "Organization/3ec1a91c-4720-6f8c-d861-4fa35aff66a7"
         }
       },
       "request": {

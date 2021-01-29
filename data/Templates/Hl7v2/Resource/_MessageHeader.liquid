@@ -29,7 +29,7 @@
             ],
             "tag":
             [
-                { {% include 'DataType/PT' PT: MSH.11 -%} },
+                {% include 'DataType/PT' PT: MSH.11 -%},
             ],
         },
         "language":"{{ MSH.19.Value | get_property: 'CodeSystem/Language', 'code' }}",

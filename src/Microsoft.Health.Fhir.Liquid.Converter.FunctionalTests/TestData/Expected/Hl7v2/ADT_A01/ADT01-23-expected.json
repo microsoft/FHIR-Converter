@@ -1,49 +1,22 @@
-﻿{
+{
   "resourceType": "Bundle",
   "type": "batch",
   "entry": [
-    {
-      "fullUrl": "urn:uuid:3fa041fd-9a00-f9ae-30ba-4e3ad5585603",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "3fa041fd-9a00-f9ae-30ba-4e3ad5585603",
-        "identifier": [
-          {
-            "value": "1"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/3fa041fd-9a00-f9ae-30ba-4e3ad5585603"
-      }
-    },
     {
       "fullUrl": "urn:uuid:d3171c25-5db7-e705-140c-19d0972f1ba2",
       "resource": {
         "resourceType": "MessageHeader",
         "id": "d3171c25-5db7-e705-140c-19d0972f1ba2",
         "source": {
-          "source": {
-            "name": "AccMgr"
-          }
+          "name": "AccMgr"
         },
         "meta": {
           "tag": [
             {
-              "meta": {
-                "tag": [
-                  {
-                    "code": "P",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-                  }
-                ]
-              }
+              "code": "P",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
-        },
-        "sender": {
-          "reference": "Organization/3fa041fd-9a00-f9ae-30ba-4e3ad5585603"
         }
       },
       "request": {

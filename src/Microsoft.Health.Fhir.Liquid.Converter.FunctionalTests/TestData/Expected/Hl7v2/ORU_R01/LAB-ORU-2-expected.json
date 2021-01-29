@@ -1,44 +1,32 @@
-﻿{
+{
   "resourceType": "Bundle",
   "type": "batch",
   "entry": [
     {
-      "fullUrl": "urn:uuid:9a62ebb2-108d-3a93-9edf-18645610f536",
+      "fullUrl": "urn:uuid:35c86567-5347-8c97-4810-b39dedb9f855",
       "resource": {
         "resourceType": "MessageHeader",
-        "id": "9a62ebb2-108d-3a93-9edf-18645610f536",
+        "id": "35c86567-5347-8c97-4810-b39dedb9f855",
         "source": {
-          "source": {
-            "name": "SomeSystem"
-          }
+          "name": "SomeSystem"
         },
         "destination": [
           {
-            "destination": [
-              {
-                "name": "TransformationAgent"
-              }
-            ]
+            "name": "TransformationAgent"
           }
         ],
         "meta": {
           "tag": [
             {
-              "meta": {
-                "tag": [
-                  {
-                    "code": "T",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-                  }
-                ]
-              }
+              "code": "T",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
         }
       },
       "request": {
         "method": "PUT",
-        "url": "MessageHeader/9a62ebb2-108d-3a93-9edf-18645610f536"
+        "url": "MessageHeader/35c86567-5347-8c97-4810-b39dedb9f855"
       }
     },
     {
@@ -118,10 +106,10 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:ad8f826c-a3b4-130e-10ad-6d3048232aa0",
+      "fullUrl": "urn:uuid:1e298a0f-e932-5a4a-e5e0-e910a77f7949",
       "resource": {
         "resourceType": "Provenance",
-        "id": "ad8f826c-a3b4-130e-10ad-6d3048232aa0",
+        "id": "1e298a0f-e932-5a4a-e5e0-e910a77f7949",
         "agent": [
           {
             "type": {
@@ -138,7 +126,7 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Provenance/ad8f826c-a3b4-130e-10ad-6d3048232aa0"
+        "url": "Provenance/1e298a0f-e932-5a4a-e5e0-e910a77f7949"
       }
     },
     {
