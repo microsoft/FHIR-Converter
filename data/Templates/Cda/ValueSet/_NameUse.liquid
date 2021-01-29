@@ -1,0 +1,9 @@
+{% if code == 'C' -%}
+"usual",
+{% elsif code == 'L' -%}
+"usual",
+{% elsif code == 'P' -%}
+"nickname",
+{% else -%}
+"{{ code }}",
+{% endif -%}

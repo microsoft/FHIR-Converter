@@ -1,0 +1,33 @@
+{% if code == 'preparation' -%}
+"preparation",
+{% elsif code == 'planned' -%}
+"preparation",
+{% elsif code == 'active' -%}
+"in-progress",
+{% elsif code == 'in-progress' -%}
+"in-progress",
+{% elsif code == 'abandoned' -%}
+"not-done",
+{% elsif code == 'not-done' -%}
+"not-done",
+{% elsif code == 'suspended' -%}
+"on-hold",
+{% elsif code == 'on-hold' -%}
+"on-hold",
+{% elsif code == 'failed' -%}
+"stopped",
+{% elsif code == 'stopped' -%}
+"stopped",
+{% elsif code == 'completed' -%}
+"completed",
+{% elsif code == 'complete' -%}
+"completed",
+{% elsif code == 'entered-in-error' -%}
+"entered-in-error",
+{% elsif code == 'error' -%}
+"entered-in-error",
+{% elsif code == 'unknown' -%}
+"unknown",
+{% else -%}
+"{{ code }}",
+{% endif -%}
