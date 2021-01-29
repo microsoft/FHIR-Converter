@@ -27,7 +27,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         ManifestWrapper ReadManifest(string dir, string fileName);
 
-        public void WriteManifest(ManifestWrapper manifest);
+        void WriteManifest(ManifestWrapper manifest);
 
         void ClearImageLayerFolder();
 

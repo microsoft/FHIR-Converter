@@ -6,9 +6,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Overlay;
+using Microsoft.Health.Fhir.TemplateManagement.Utilities;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
@@ -88,7 +91,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             }
 
             var fileLayers = _overlayOperator.ExtractOCIFileLayers(inputLayers);
-            Assert.Throws<OverlayException>(() => _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers));
+            Assert.Throws<OverlayException>(() => _overlayOperator.SortOCIFileLayers(fileLayers));
         }
 
         [Fact]
@@ -103,10 +106,45 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             }
 
             var fileLayers = _overlayOperator.ExtractOCIFileLayers(inputLayers);
-            var sortedLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
+            var sortedLayers = _overlayOperator.SortOCIFileLayers(fileLayers);
             Assert.Equal("layer1.tar.gz", sortedLayers[0].FileName);
             Assert.Equal("layer2.tar.gz", sortedLayers[1].FileName);
             Assert.Equal("testdecompress.tar.gz", sortedLayers[2].FileName);
+        }
+
+        [Fact]
+        public void GivenAListOfOCIArtifactLayers_WhenSortLayersWithManifest_ListOfsortedLayersShouldBeReturned()
+        {
+            List<string> artifactFilePath = new List<string>() { "TestData/TarGzFiles/testdecompress.tar.gz", "TestData/TarGzFiles/layer2.tar.gz", "TestData/TarGzFiles/layer1.tar.gz" };
+            List<OCIArtifactLayer> inputLayers = new List<OCIArtifactLayer>();
+            foreach (var oneFile in artifactFilePath)
+            {
+                var oneLayer = new OCIArtifactLayer() { Content = File.ReadAllBytes(oneFile), FileName = Path.GetFileName(oneFile), Digest = StreamUtility.CalculateDigestFromSha256(File.OpenRead(oneFile)) };
+                inputLayers.Add(oneLayer);
+            }
+
+            var fileLayers = _overlayOperator.ExtractOCIFileLayers(inputLayers);
+            var manifest = JsonConvert.DeserializeObject<ManifestWrapper>(File.ReadAllText("TestData/testmanifest"));
+            var sortedLayers = _overlayOperator.SortOCIFileLayers(fileLayers, manifest);
+            Assert.Equal("layer1.tar.gz", sortedLayers[0].FileName);
+            Assert.Equal("layer2.tar.gz", sortedLayers[1].FileName);
+            Assert.Equal("testdecompress.tar.gz", sortedLayers[2].FileName);
+        }
+
+        [Fact]
+        public void GivenAListOfOCIArtifactLayers_WhenSortLayersWithManifest_IfLayerNotFound_ExceptionWillBeThrown()
+        {
+            List<string> artifactFilePath = new List<string>() { "TestData/TarGzFiles/testdecompress.tar.gz" };
+            List<OCIArtifactLayer> inputLayers = new List<OCIArtifactLayer>();
+            foreach (var oneFile in artifactFilePath)
+            {
+                var oneLayer = new OCIArtifactLayer() { Content = File.ReadAllBytes(oneFile), FileName = Path.GetFileName(oneFile), Digest = StreamUtility.CalculateDigestFromSha256(File.OpenRead(oneFile)) };
+                inputLayers.Add(oneLayer);
+            }
+
+            var fileLayers = _overlayOperator.ExtractOCIFileLayers(inputLayers);
+            var manifest = JsonConvert.DeserializeObject<ManifestWrapper>(File.ReadAllText("TestData/testmanifest"));
+            Assert.Throws<OverlayException>(() => _overlayOperator.SortOCIFileLayers(fileLayers, manifest));
         }
 
         [Fact]
@@ -122,7 +160,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             }
 
             var fileLayers = _overlayOperator.ExtractOCIFileLayers(inputLayers);
-            var sortedLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
+            var sortedLayers = _overlayOperator.SortOCIFileLayers(fileLayers);
 
             // Generate Merged OCIFileLAyers
             var mergedLayer = _overlayOperator.MergeOCIFileLayers(sortedLayers);
@@ -194,7 +232,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             var baseLayers = overlayFs.ReadBaseLayers();
 
             var fileLayers = _overlayOperator.ExtractOCIFileLayers(baseLayers);
-            var sortedFileLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
+            var sortedFileLayers = _overlayOperator.SortOCIFileLayers(fileLayers);
             var mergedFileLayer = _overlayOperator.MergeOCIFileLayers(sortedFileLayers);
             return mergedFileLayer;
         }

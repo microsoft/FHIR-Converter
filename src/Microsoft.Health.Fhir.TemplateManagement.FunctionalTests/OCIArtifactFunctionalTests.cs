@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,6 +40,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             _testMultiLayersWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:multilayers_valid_sequence";
             _testMultiLayersWithInValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:multilayers_invalid_sequence";
             _testInvalidCompressedImageReference = _containerRegistryServer + "/templatetest:invalid_image";
+            Environment.SetEnvironmentVariable("ORAS_CACHE", ".oras/cache");
         }
 
         public async Task InitializeAsync()
@@ -127,23 +129,38 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string imageReference = _testOneLayerWithoutSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithoutSequenceNumber";
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
-            Assert.Equal(2, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            var digest = await testManager.PullOCIImageAsync();
+            testManager.UnpackOCIImage(digest);
+            Assert.Single(Directory.EnumerateFiles(outputFolder, "*.*"));
             Assert.False(Directory.Exists(Path.Combine(outputFolder, ".image", "base")));
             ClearFolder(outputFolder);
         }
 
-        // Pull one layer image with invalid sequence number, exception will be thrown.
+        // Pull one layer image with invalid sequence number, if manifest load failed, exception will be thrown.
         [Fact]
-        public async Task GivenOneLayerImageWithInvalidSequenceNumber_WhenPulled_ExceptionWillBeThrownAsync()
+        public async Task GivenOneLayerImageWithInvalidSequenceNumber_WhenPulled_IfManifestLoadFailed_ExceptionWillBeThrownAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testOneLayerWithInValidSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithInValidSequenceNumber";
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            Assert.Throws<OverlayException>(() => testManager.UnpackOCIImage());
+            var digest = await testManager.PullOCIImageAsync();
+            Assert.Throws<OverlayException>(() => testManager.UnpackOCIImage(digest + "wrong"));
+            ClearFolder(outputFolder);
+        }
+
+        // Pull one layer image with invalid sequence number, if successfully load manifest, artifacts will be pulled.
+        [Fact]
+        public async Task GivenOneLayerImageWithInvalidSequenceNumber_WhenPulled_IfManifestLoadSuccessfully_ArtifactsWillBePulledAsync()
+        {
+            Assert.True(_isOrasValid, _orasErrorMessage);
+            string imageReference = _testOneLayerWithInValidSequenceNumberImageReference;
+            string outputFolder = "TestData/testOneLayerWithInValidSequenceNumberAndManifest";
+            var testManager = new OCIFileManager(imageReference, outputFolder);
+            var digest = await testManager.PullOCIImageAsync();
+            testManager.UnpackOCIImage(digest);
+            Assert.Empty(Directory.EnumerateFiles(outputFolder, "*.liquid", SearchOption.AllDirectories));
+            Assert.False(Directory.Exists(Path.Combine(outputFolder, ".image", "base")));
             ClearFolder(outputFolder);
         }
 
@@ -155,23 +172,38 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string imageReference = _testMultiLayersWithValidSequenceNumberImageReference;
             string outputFolder = "TestData/testMultiLayersWithValidSequenceNumber";
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
-            Assert.Equal(9, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            var digest = await testManager.PullOCIImageAsync();
+            testManager.UnpackOCIImage(digest);
+            Assert.Equal(4, Directory.EnumerateFiles(outputFolder, "*.liquid", SearchOption.AllDirectories).Count());
             Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
             ClearFolder(outputFolder);
         }
 
-        // Pull multi-layers with invalid sequence numbers, exception will be thrown.
+        // Pull multi-layers with invalid sequence numbers, if load manifest failed, exception will be thrown.
         [Fact]
-        public async Task GivenMultiLayersImageWithInvalidSequenceNumber_WhenPulled_ExceptionWillBeThrownAsync()
+        public async Task GivenMultiLayersImageWithInvalidSequenceNumber_WhenPulled_IfManifestLoadFailed_ExceptionWillBeThrownAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testMultiLayersWithInValidSequenceNumberImageReference;
             string outputFolder = "TestData/testMultiLayersWithInValidSequenceNumber";
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            Assert.Throws<OverlayException>(() => testManager.UnpackOCIImage());
+            var digest = await testManager.PullOCIImageAsync();
+            Assert.Throws<OverlayException>(() => testManager.UnpackOCIImage(digest + "wrong"));
+            ClearFolder(outputFolder);
+        }
+
+        // Pull multi-layers with invalid sequence numbers, if successfully load manifest, artifacts will be pulled.
+        [Fact]
+        public async Task GivenMultiLayersImageWithInvalidSequenceNumber_WhenPulled_IfManifestLoadSuccessfully_ArtifactsWillBePulledAsync()
+        {
+            Assert.True(_isOrasValid, _orasErrorMessage);
+            string imageReference = _testMultiLayersWithInValidSequenceNumberImageReference;
+            string outputFolder = "TestData/testMultiLayersWithInValidSequenceNumberAndManifest";
+            var testManager = new OCIFileManager(imageReference, outputFolder);
+            var digest = await testManager.PullOCIImageAsync();
+            testManager.UnpackOCIImage(digest);
+            Assert.Empty(Directory.EnumerateFiles(outputFolder, "*.liquid", SearchOption.AllDirectories));
+            Assert.False(Directory.Exists(Path.Combine(outputFolder, ".image", "base")));
             ClearFolder(outputFolder);
         }
 
@@ -183,8 +215,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string imageReference = _testInvalidCompressedImageReference;
             string outputFolder = "TestData/testInvalidCompressedImage";
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            Assert.Throws<ArtifactDecompressException>(() => testManager.UnpackOCIImage());
+            var digest = await testManager.PullOCIImageAsync();
+            Assert.Throws<ArtifactDecompressException>(() => testManager.UnpackOCIImage(digest));
             ClearFolder(outputFolder);
         }
 
@@ -198,8 +230,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder1";
             var testManager = new OCIFileManager(initImageReference, initInputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
+            var digest = await testManager.PullOCIImageAsync();
+            testManager.UnpackOCIImage(digest);
 
             // Modified by user
             File.WriteAllText(Path.Combine(initInputFolder, "add"), "add");
@@ -231,8 +263,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder2";
             var testManager = new OCIFileManager(initImageReference, initInputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
+            var digest = await testManager.PullOCIImageAsync();
+            testManager.UnpackOCIImage(digest);
 
             // Modified by user
             File.WriteAllText(Path.Combine(initInputFolder, "add"), "add");
@@ -264,8 +296,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder3";
             var testManager = new OCIFileManager(initImageReference, initInputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
+            var digest = await testManager.PullOCIImageAsync();
+            testManager.UnpackOCIImage(digest);
 
             // Push image.
             string testPushBaseLayerImageReference = _containerRegistryServer + "/templatetest:push_baselayer";
@@ -291,8 +323,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string initImageReference = _testOneLayerWithoutSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder4";
             var testManager = new OCIFileManager(initImageReference, initInputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
+            var digest = await testManager.PullOCIImageAsync();
+            testManager.UnpackOCIImage(digest);
 
             // Modified by user
             File.WriteAllText(Path.Combine(initInputFolder, "add"), "add");

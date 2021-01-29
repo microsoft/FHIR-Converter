@@ -28,7 +28,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
 
         public static void ValidateManifest(ManifestWrapper manifestInfo)
         {
-            if (manifestInfo == null || manifestInfo.Layers == null || !manifestInfo.Layers.Any())
+            if (manifestInfo?.Layers?.Any() != true)
             {
                 throw new ImageValidationException(TemplateManagementErrorCode.InvalidManifestInfo, $"Manifest is invalid");
             }

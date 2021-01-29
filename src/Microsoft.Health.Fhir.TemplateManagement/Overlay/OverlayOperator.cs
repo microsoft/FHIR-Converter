@@ -64,43 +64,44 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return artifactLayers.Select(ExtractOCIFileLayer).ToList();
         }
 
-        public List<OCIFileLayer> SortOCIFileLayersBySequenceNumber(List<OCIFileLayer> fileLayers)
+        public List<OCIFileLayer> SortOCIFileLayers(List<OCIFileLayer> fileLayers, ManifestWrapper manifest = null, bool isBaseLayer = false)
         {
             EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
-
-            var sortedLayers = fileLayers.OrderBy(layer => layer.SequenceNumber <= -1 ? int.MaxValue : layer.SequenceNumber).ToList();
-            ValidateSortedLayersBySequenceNumber(sortedLayers);
-            return sortedLayers;
-        }
-
-        public List<OCIFileLayer> SortOCIFileLayersByManifest(List<OCIFileLayer> fileLayers, ManifestWrapper manifest)
-        {
-            EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
-            EnsureArg.IsNotNull(manifest, nameof(manifest));
 
             List<OCIFileLayer> sortedLayers = new List<OCIFileLayer>();
-            foreach (var layerInfo in manifest.Layers)
+            if (manifest == null)
             {
-                var currentLayer = fileLayers.Where(layer => layer.Digest == layerInfo.Digest).ToList();
-                if (currentLayer == null)
-                {
-                    throw new OverlayException(TemplateManagementErrorCode.SortLayersFailed, "Layers in manifest not found.");
-                }
-
-                if (currentLayer.Count > 1)
-                {
-                    throw new OverlayException(TemplateManagementErrorCode.SortLayersFailed, "Duplicated layers.");
-                }
-
-                sortedLayers.Add(currentLayer[0]);
+                sortedLayers = fileLayers.OrderBy(layer => layer.SequenceNumber <= -1 ? int.MaxValue : layer.SequenceNumber).ToList();
+                ValidateSortedLayers(sortedLayers);
+                return sortedLayers;
             }
+            else
+            {
+                foreach (var layerInfo in manifest.Layers)
+                {
+                    var currentLayers = fileLayers.Where(layer => layer.Digest == layerInfo.Digest).ToList();
+                    if (!currentLayers.Any())
+                    {
+                        if (isBaseLayer)
+                        {
+                            return ValidateBaseLayers(sortedLayers) ? sortedLayers : new List<OCIFileLayer>();
+                        }
 
-            return sortedLayers;
+                        throw new OverlayException(TemplateManagementErrorCode.SortLayersFailed, "Layers in manifest not found.");
+                    }
+
+                    sortedLayers.Add(currentLayers[0]);
+                }
+
+                return sortedLayers;
+            }
         }
 
         public OCIFileLayer MergeOCIFileLayers(List<OCIFileLayer> sortedLayers)
         {
-            if (sortedLayers == null || !sortedLayers.Any())
+            EnsureArg.IsNotNull(sortedLayers, nameof(sortedLayers));
+
+            if (!sortedLayers.Any())
             {
                 return null;
             }
@@ -225,7 +226,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return fileLayers.Select(ArchiveOCIFileLayer).ToList();
         }
 
-        private void ValidateSortedLayersBySequenceNumber(List<OCIFileLayer> sortedLayers)
+        private bool ValidateBaseLayers(List<OCIFileLayer> sortedLayers)
+        {
+            for (var index = 1; index <= sortedLayers.Count(); index++)
+            {
+                if (sortedLayers[index - 1].SequenceNumber != index)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void ValidateSortedLayers(List<OCIFileLayer> sortedLayers)
         {
             for (var index = 1; index <= sortedLayers.Count(); index++)
             {

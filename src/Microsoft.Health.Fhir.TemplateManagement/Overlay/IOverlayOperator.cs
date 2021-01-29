@@ -26,20 +26,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         List<OCIFileLayer> ExtractOCIFileLayers(List<OCIArtifactLayer> artifactLayers);
 
         /// <summary>
-        /// Stably sort OCIFileLayers by sequence number.
-        /// If sequence number is -1 , the layer will be placed at the end of list.
-        /// </summary>
-        /// <param name="fileLayers">List of OCIFileLayers</param>
-        /// <returns>The sorted list of OCIFileLayers</returns>
-        List<OCIFileLayer> SortOCIFileLayersBySequenceNumber(List<OCIFileLayer> fileLayers);
-
-        /// <summary>
         /// If load manifest successfully, sort OCIFileLayers by manifest.
+        /// Otherwise sort layers by sequence number.
         /// </summary>
         /// <param name="fileLayers">List of OCIFileLayers</param>
         /// <param name="manifest">Image manifest</param>
+        /// /// <param name="isBaseLayer">Is sort for base layers</param>
         /// <returns>The sorted list of OCIFileLayers</returns>
-        List<OCIFileLayer> SortOCIFileLayersByManifest(List<OCIFileLayer> fileLayers, ManifestWrapper manifest);
+        List<OCIFileLayer> SortOCIFileLayers(List<OCIFileLayer> fileLayers, ManifestWrapper manifest = null, bool isBaseLayer = false);
 
         /// <summary>
         /// Merge sorted OCIFileLayers.

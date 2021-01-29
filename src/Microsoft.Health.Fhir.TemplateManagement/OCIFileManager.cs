@@ -44,7 +44,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             }
 
             var fileLayers = _overlayOperator.ExtractOCIFileLayers(rawLayers);
-            var sortedLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
+            var sortedLayers = _overlayOperator.SortOCIFileLayers(fileLayers);
             _overlayFS.WriteBaseLayers(sortedLayers.GetRange(0, 1).Cast<OCIArtifactLayer>().ToList());
             var mergedFileLayer = _overlayOperator.MergeOCIFileLayers(sortedLayers);
             _overlayFS.WriteMergedOCIFileLayer(mergedFileLayer);
@@ -63,16 +63,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             // Load manifest.
             var manifest = _overlayFS.ReadManifest(digest);
             List<OCIFileLayer> sortedLayers;
-            if (manifest == null)
-            {
-                sortedLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
-            }
-            else
+            if (manifest != null)
             {
                 ValidationUtility.ValidateManifest(manifest);
-                sortedLayers = _overlayOperator.SortOCIFileLayersByManifest(fileLayers, manifest);
                 _overlayFS.WriteManifest(manifest);
             }
+
+            sortedLayers = _overlayOperator.SortOCIFileLayers(fileLayers, manifest);
 
             _overlayFS.WriteBaseLayers(sortedLayers.GetRange(0, 1).Cast<OCIArtifactLayer>().ToList());
             var mergedFileLayer = _overlayOperator.MergeOCIFileLayers(sortedLayers);
@@ -88,7 +85,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement
                 baseArtifactLayers = _overlayFS.ReadBaseLayers();
             }
 
-            var baseOCIFileLayers = SortBaseLayers(baseArtifactLayers);
+            var fileLayers = _overlayOperator.ExtractOCIFileLayers(baseArtifactLayers);
+            var manifest = _overlayFS.ReadManifest(_overlayFS.WorkingImageFolder, Constants.Manifest);
+
+            var baseOCIFileLayers = _overlayOperator.SortOCIFileLayers(fileLayers, manifest, true);
             var snapshotLayer = _overlayOperator.MergeOCIFileLayers(baseOCIFileLayers);
             var diffLayer = _overlayOperator.GenerateDiffLayer(mergedLayer, snapshotLayer);
             var diffArtifactLayer = _overlayOperator.ArchiveOCIFileLayer(diffLayer);
@@ -101,46 +101,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         {
             _overlayFS.WriteImageLayers(sortedlayers);
             await _orasClient.PushImageAsync(_overlayFS.WorkingImageLayerFolder, sortedlayers.Select(layer => layer.FileName).ToList());
-        }
-
-        private List<OCIFileLayer> SortBaseLayers(List<OCIArtifactLayer> baseArtifactLayers)
-        {
-            List<OCIFileLayer> sortedBaseLayers = new List<OCIFileLayer>();
-            if (baseArtifactLayers.Count == 0)
-            {
-                return sortedBaseLayers;
-            }
-
-            var fileLayers = _overlayOperator.ExtractOCIFileLayers(baseArtifactLayers);
-            var manifest = _overlayFS.ReadManifest(_overlayFS.WorkingImageFolder, "manifest");
-
-            if (manifest == null)
-            {
-                sortedBaseLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
-            }
-            else
-            {
-                foreach (var layerInfo in manifest.Layers)
-                {
-                    var currentLayer = fileLayers.Where(layer => layer.Digest == layerInfo.Digest).ToList();
-                    if (currentLayer == null)
-                    {
-                        break;
-                    }
-
-                    sortedBaseLayers.Add(currentLayer[0]);
-                }
-            }
-
-            for (var index = 1; index <= sortedBaseLayers.Count(); index++)
-            {
-                if (sortedBaseLayers[index - 1].SequenceNumber != index)
-                {
-                    return sortedBaseLayers;
-                }
-            }
-
-            return sortedBaseLayers;
         }
     }
 }

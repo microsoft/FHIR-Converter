@@ -115,8 +115,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
             string imageReference = _testOneLayerImageReference;
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
+            var digest = await testManager.PullOCIImageAsync();
+            testManager.UnpackOCIImage(digest);
             Assert.Equal(842, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             ClearFolder(outputFolder);
         }
@@ -132,8 +132,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string imageReference = _testMultiLayersImageReference;
             string outputFolder = "TestData/testMultiLayers";
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
+            var digest = await testManager.PullOCIImageAsync();
+            testManager.UnpackOCIImage(digest);
             Assert.Equal(9, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             ClearFolder(outputFolder);
         }
