@@ -1,66 +1,27 @@
-﻿{
+{
   "resourceType": "Bundle",
   "type": "batch",
   "entry": [
-    {
-      "fullUrl": "urn:uuid:2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4",
-        "identifier": [
-          {
-            "value": "GOOD HEALTH HOSPITAL"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "GOOD HEALTH HOSPITAL"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
-      }
-    },
     {
       "fullUrl": "urn:uuid:64c2d51b-34a4-e841-fb1c-03f1f7762d1a",
       "resource": {
         "resourceType": "MessageHeader",
         "id": "64c2d51b-34a4-e841-fb1c-03f1f7762d1a",
         "source": {
-          "source": {
-            "name": "ADT1"
-          }
+          "name": "ADT1"
         },
         "destination": [
           {
-            "destination": [
-              {
-                "name": "GHH LAB, INC."
-              }
-            ],
-            "receiver": {
-              "reference": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
-            }
+            "name": "GHH LAB, INC."
           }
         ],
         "meta": {
           "tag": [
             {
-              "meta": {
-                "tag": [
-                  {
-                    "code": "P",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-                  }
-                ]
-              }
+              "code": "P",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
-        },
-        "sender": {
-          "reference": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
         }
       },
       "request": {
