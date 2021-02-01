@@ -32,7 +32,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public OCIArtifactFunctionalTests()
         {
-            _containerRegistryServer = "OCIsowuacr.azurecr.io";
+            _containerRegistryServer = "localhost:5000";
             _testOneLayerWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_valid_sequence";
             _testOneLayerWithoutSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_without_sequence";
             _testOneLayerWithInValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_invalid_sequence";
