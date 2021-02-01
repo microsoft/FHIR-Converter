@@ -142,6 +142,32 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             Directory.Delete(resultFolder, true);
         }
 
+        [Fact]
+        public async Task CheckParserFunctionality()
+        {
+            var jsonResult = await Task.FromResult(@"{
+                ""resourceType"": ""Observation"",
+                ""id"": ""209c8566-dafa-22b6-31f6-e4c00e649c61"",
+                ""valueQuantity"": {
+                    ""code"": ""mg/dl""
+                },
+                ""valueRange"": {	
+                    ""low"": {	
+                        ""value"": ""182""	
+                    }
+                }
+            }");
+            try
+            {
+                var bundle = _fhirParser.Parse<Hl7.Fhir.Model.Observation>(jsonResult);
+                Assert.Null(bundle);
+            }
+            catch (FormatException fe)
+            {
+                Assert.NotNull(fe);
+            }
+        }
+
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
         [MemberData(nameof(GetCCDACases))]
