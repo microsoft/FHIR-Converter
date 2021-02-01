@@ -149,8 +149,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string imageReference = _containerRegistryServer + "/templatetest:test";
             string inputFolder = "TestData/UserFolder";
             var testManager = new OCIFileManager(imageReference, inputFolder);
-            testManager.PackOCIImage(true);
-            var ex = await Record.ExceptionAsync(async () => await testManager.PushOCIImageAsync());
+            var layers = testManager.PackOCIImage(true);
+            var ex = await Record.ExceptionAsync(async () => await testManager.PushOCIImageAsync(layers));
             Assert.Null(ex);
         }
 

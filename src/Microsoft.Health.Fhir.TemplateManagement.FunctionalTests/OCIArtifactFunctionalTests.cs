@@ -32,7 +32,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public OCIArtifactFunctionalTests()
         {
-            _containerRegistryServer = "localhost:5000";
+            _containerRegistryServer = "OCIsowuacr.azurecr.io";
             _testOneLayerWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_valid_sequence";
             _testOneLayerWithoutSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_without_sequence";
             _testOneLayerWithInValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_invalid_sequence";
@@ -209,8 +209,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             // Push new image.
             string testPushMultiLayersImageReference = _containerRegistryServer + "/templatetest:push_multilayers";
             var pushManager = new OCIFileManager(testPushMultiLayersImageReference, initInputFolder);
-            pushManager.PackOCIImage();
-            await pushManager.PushOCIImageAsync();
+            var layers = pushManager.PackOCIImage();
+            await pushManager.PushOCIImageAsync(layers);
 
             // Check Image
             string command = $"pull {testPushMultiLayersImageReference} -o checkMultiLayersFolder";
@@ -242,8 +242,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             // Push new image ignore base layer.
             string testPushNewBaseLayerImageReference = _containerRegistryServer + "/templatetest:push_newbaselayer";
             var pushManager = new OCIFileManager(testPushNewBaseLayerImageReference, initInputFolder);
-            pushManager.PackOCIImage(true);
-            await pushManager.PushOCIImageAsync();
+            var layers = pushManager.PackOCIImage(true);
+            await pushManager.PushOCIImageAsync(layers);
 
             // Check Image
             string command = $"pull {testPushNewBaseLayerImageReference} -o checkNewBaseLayerFolder";
@@ -270,8 +270,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             // Push image.
             string testPushBaseLayerImageReference = _containerRegistryServer + "/templatetest:push_baselayer";
             var pushManager = new OCIFileManager(testPushBaseLayerImageReference, initInputFolder);
-            pushManager.PackOCIImage();
-            await pushManager.PushOCIImageAsync();
+            var layers = pushManager.PackOCIImage();
+            await pushManager.PushOCIImageAsync(layers);
 
             // Check Image
             string command = $"pull {testPushBaseLayerImageReference} -o checkBaseLayerFolder";
@@ -300,8 +300,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             // Push image.
             string testPushNewBaseLayerImageReference = _containerRegistryServer + "/templatetest:pushwithoutbase_newbaselayer";
             var pushManager = new OCIFileManager(testPushNewBaseLayerImageReference, initInputFolder);
-            pushManager.PackOCIImage();
-            await pushManager.PushOCIImageAsync();
+            var layers = pushManager.PackOCIImage();
+            await pushManager.PushOCIImageAsync(layers);
 
             // Check Image
             string command = $"pull {testPushNewBaseLayerImageReference} -o checkLayerFolder";
@@ -313,7 +313,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         // Push empty artifact folder, exception will be thrown.
         [Fact]
-        public async Task GivenAnEmptyInputFolder_WhenPushOCIFiles_OneBaseLayerWillBePushedAsync()
+        public async Task GivenAnEmptyInputFolder_WhenPushOCIFiles_ExceptionWillBeThrown()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
             string emptyFolder = "emptyFoler";
@@ -322,8 +322,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             // Push image.
             string testPushNewBaseLayerImageReference = _containerRegistryServer + "/templatetest:empty";
             var pushManager = new OCIFileManager(testPushNewBaseLayerImageReference, emptyFolder);
-            pushManager.PackOCIImage();
-            await Assert.ThrowsAsync<DirectoryNotFoundException>(() => pushManager.PushOCIImageAsync());
+            var layers = pushManager.PackOCIImage();
+            await Assert.ThrowsAsync<OverlayException>(() => pushManager.PushOCIImageAsync(layers));
 
             ClearFolder(emptyFolder);
         }
