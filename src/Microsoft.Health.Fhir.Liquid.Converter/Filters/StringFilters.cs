@@ -50,9 +50,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
 
             var regex = new Regex(regexString);
-            regex.Match(data).Captures.ToList().ForEach(capture => result.Add(capture.Value));
-
-            return result;
+            return regex.Match(data).Captures.Select(capture => capture.Value).ToList();
         }
 
         public static string ToJsonString(object data)

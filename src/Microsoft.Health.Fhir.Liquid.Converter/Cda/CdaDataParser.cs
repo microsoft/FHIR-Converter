@@ -47,7 +47,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 var dataDictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonString, new DictionaryJsonConverter()) ??
                                      new Dictionary<string, object>();
 
-                // Remove line breaks in original data to generate some hash across platforms
+                // Remove line breaks in original data
                 dataDictionary["_originalData"] = Regex.Replace(document, @"\r\n?|\n", string.Empty);
 
                 return new Dictionary<string, object>()
