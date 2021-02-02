@@ -43,10 +43,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static List<string> Match(string data, string regexString)
         {
-            var result = new List<string>();
             if (string.IsNullOrEmpty(data))
             {
-                return result;
+                return new List<string>();
             }
 
             var regex = new Regex(regexString);
