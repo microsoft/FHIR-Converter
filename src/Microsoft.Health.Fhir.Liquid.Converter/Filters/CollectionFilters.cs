@@ -28,10 +28,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static List<object> Concat(List<object> l1, List<object> l2)
         {
-            var result = new List<object>();
-            result.AddRange(l1 ?? new List<object>());
-            result.AddRange(l2 ?? new List<object>());
-            return result;
+            return new List<object>().Concat(l1 ?? new List<object>()).Concat(l2 ?? new List<object>()).ToList();
         }
 
         public static string BatchRender(Context context, List<object> collection, string templateName, string variableName)

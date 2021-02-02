@@ -23,23 +23,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
     {
         public static IEnumerable<object[]> GetDataForHl7v2()
         {
-            var data = new List<object[]>
+            var data = new List<string[]>
             {
-                new object[] { @"ADT_A01", @"ADT01-23.hl7", @"ADT01-23-expected.json" },
-                new object[] { @"ADT_A01", @"ADT01-28.hl7", @"ADT01-28-expected.json" },
-                new object[] { @"ADT_A01", @"ADT04-23.hl7", @"ADT04-23-expected.json" },
-                new object[] { @"ADT_A01", @"ADT04-251.hl7", @"ADT04-251-expected.json" },
-                new object[] { @"ADT_A01", @"ADT04-28.hl7", @"ADT04-28-expected.json" },
-                new object[] { @"OML_O21", @"MDHHS-OML-O21-1.hl7", @"MDHHS-OML-O21-1-expected.json" },
-                new object[] { @"OML_O21", @"MDHHS-OML-O21-2.hl7", @"MDHHS-OML-O21-2-expected.json" },
-                new object[] { @"ORU_R01", @"LAB-ORU-1.hl7", @"LAB-ORU-1-expected.json" },
-                new object[] { @"ORU_R01", @"LAB-ORU-2.hl7", @"LAB-ORU-2-expected.json" },
-                new object[] { @"ORU_R01", @"LRI_2.0-NG_CBC_Typ_Message.hl7", @"LRI_2.0-NG_CBC_Typ_Message-expected.json" },
-                new object[] { @"ORU_R01", @"ORU-R01-RMGEAD.hl7", @"ORU-R01-RMGEAD-expected.json" },
-                new object[] { @"VXU_V04", @"IZ_1_1.1_Admin_Child_Max_Message.hl7", @"IZ_1_1.1_Admin_Child_Max_Message-expected.json" },
-                new object[] { @"VXU_V04", @"VXU.hl7", @"VXU-expected.json" },
+                new[] { @"ADT_A01", @"ADT01-23.hl7", @"ADT01-23-expected.json" },
+                new[] { @"ADT_A01", @"ADT01-28.hl7", @"ADT01-28-expected.json" },
+                new[] { @"ADT_A01", @"ADT04-23.hl7", @"ADT04-23-expected.json" },
+                new[] { @"ADT_A01", @"ADT04-251.hl7", @"ADT04-251-expected.json" },
+                new[] { @"ADT_A01", @"ADT04-28.hl7", @"ADT04-28-expected.json" },
+                new[] { @"OML_O21", @"MDHHS-OML-O21-1.hl7", @"MDHHS-OML-O21-1-expected.json" },
+                new[] { @"OML_O21", @"MDHHS-OML-O21-2.hl7", @"MDHHS-OML-O21-2-expected.json" },
+                new[] { @"ORU_R01", @"LAB-ORU-1.hl7", @"LAB-ORU-1-expected.json" },
+                new[] { @"ORU_R01", @"LAB-ORU-2.hl7", @"LAB-ORU-2-expected.json" },
+                new[] { @"ORU_R01", @"LRI_2.0-NG_CBC_Typ_Message.hl7", @"LRI_2.0-NG_CBC_Typ_Message-expected.json" },
+                new[] { @"ORU_R01", @"ORU-R01-RMGEAD.hl7", @"ORU-R01-RMGEAD-expected.json" },
+                new[] { @"VXU_V04", @"IZ_1_1.1_Admin_Child_Max_Message.hl7", @"IZ_1_1.1_Admin_Child_Max_Message-expected.json" },
+                new[] { @"VXU_V04", @"VXU.hl7", @"VXU-expected.json" },
             };
-            return data.Select(item => new object[]
+            return data.Select(item => new[]
             {
                 Convert.ToString(item[0]),
                 Path.Join(Constants.SampleDataDirectory, "Hl7v2", Convert.ToString(item[1])),
@@ -49,11 +49,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         public static IEnumerable<object[]> GetDataForCda()
         {
-            var data = new List<object[]>
+            var data = new List<string[]>
             {
-                new object[] { @"CCD", @"170.314B2_Amb_CCD.cda", @"170.314B2_Amb_CCD-expected.json" },
+                new[] { @"CCD", @"170.314B2_Amb_CCD.cda", @"170.314B2_Amb_CCD-expected.json" },
             };
-            return data.Select(item => new object[]
+            return data.Select(item => new[]
             {
                 Convert.ToString(item[0]),
                 Path.Join(Constants.SampleDataDirectory, "Cda", Convert.ToString(item[1])),
@@ -97,8 +97,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             var expectedContent = File.ReadAllText(expectedFile);
             var actualContent = cdaProcessor.Convert(inputContent, rootTemplate, new CdaTemplateProvider(templateDirectory));
 
-            var expectedObject = JObject.Parse(expectedContent).SelectToken("FhirResource");
-            var actualObject = JObject.Parse(actualContent).SelectToken("FhirResource");
+            var expectedObject = JObject.Parse(expectedContent);
+            var actualObject = JObject.Parse(actualContent);
+
+            // Remove DocumentReference.date, which is the time when it is generated
+            expectedObject["entry"]?.Last()?.SelectToken("resource.date")?.Parent?.Remove();
+            actualObject["entry"]?.Last()?.SelectToken("resource.date")?.Parent?.Remove();
+
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
         }
 

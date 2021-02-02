@@ -50,11 +50,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
 
             var regex = new Regex(regexString);
-            var matches = regex.Match(data);
-            foreach (Match match in matches.Captures)
-            {
-                result.Add(match.Value);
-            }
+            regex.Match(data).Captures.ToList().ForEach(capture => result.Add(capture.Value));
 
             return result;
         }
@@ -76,7 +72,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return Convert.ToBase64String(outputStream.ToArray());
         }
 
-        public static string Gunzip(string data)
+        public static string GunzipBase64String(string data)
         {
             using var inputStream = new MemoryStream(Convert.FromBase64String(data));
             using var outputStream = new MemoryStream();
@@ -90,7 +86,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static string Sha1Hash(string data)
         {
-            var hash = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(data));
+            using var sha1 = new SHA1Managed();
+            var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(data));
             return string.Concat(hash.Select(b => b.ToString("x2")));
         }
 

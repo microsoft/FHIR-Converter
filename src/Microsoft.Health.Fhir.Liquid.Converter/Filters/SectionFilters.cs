@@ -21,19 +21,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             var result = new Dictionary<string, object>();
             var sectionNames = sectionNameContent.Split("|", StringSplitOptions.RemoveEmptyEntries);
-            var dataComponents = (((data["ClinicalDocument"] as Hash)?
-                ["component"] as Hash)?
-                ["structuredBody"] as Hash)?
-                ["component"];
+            var components = GetComponents(data);
 
-            if (dataComponents == null)
+            if (components == null)
             {
                 return result;
             }
-
-            var components = dataComponents is List<object> listComponents
-                ? listComponents
-                : new List<object> { dataComponents };
 
             foreach (var sectionName in sectionNames)
             {
@@ -54,23 +47,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return result;
         }
 
-        public static IDictionary<string, object> GetCdaSectionLists(IDictionary<string, object> data, string sectionNameContent)
+        public static IDictionary<string, object> GetCdaSectionLists(Hash data, string sectionNameContent)
         {
             var result = new Dictionary<string, object>();
             var sectionNames = sectionNameContent.Split("|", StringSplitOptions.RemoveEmptyEntries);
-            var dataComponents = (((data["ClinicalDocument"] as Hash)?
-                ["component"] as Hash)?
-                ["structuredBody"] as Hash)?
-                ["component"];
+            var components = GetComponents(data);
 
-            if (dataComponents == null)
+            if (components == null)
             {
                 return result;
             }
-
-            var components = dataComponents is List<object> listComponents
-                ? listComponents
-                : new List<object> { dataComponents };
 
             foreach (var sectionName in sectionNames)
             {
@@ -102,19 +88,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             var result = new Dictionary<string, object>();
             var templateIds = templateIdContent.Split("|", StringSplitOptions.RemoveEmptyEntries);
-            var dataComponents = (((data["ClinicalDocument"] as Hash)?
-                ["component"] as Hash)?
-                ["structuredBody"] as Hash)?
-                ["component"];
+            var components = GetComponents(data);
 
-            if (dataComponents == null)
+            if (components == null)
             {
                 return result;
             }
-
-            var components = dataComponents is List<object> listComponents
-                ? listComponents
-                : new List<object> { dataComponents };
 
             foreach (var templateId in templateIds)
             {
@@ -132,6 +111,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
 
             return result;
+        }
+
+        private static List<object> GetComponents(Hash data)
+        {
+            var dataComponents = (((data["ClinicalDocument"] as Hash)?
+                ["component"] as Hash)?
+                ["structuredBody"] as Hash)?
+                ["component"];
+
+            if (dataComponents == null)
+            {
+                return null;
+            }
+
+            return dataComponents is List<object> listComponents
+                ? listComponents
+                : new List<object> { dataComponents };
         }
 
         private static string NormalizeSectionName(string input)

@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -24,9 +23,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 {
                     throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
                 }
-
-                // Remove line breaks to avoid invalid line breaks in json value
-                document = Regex.Replace(document, @"\r\n?|\n", string.Empty);
 
                 var xDocument = XDocument.Parse(document);
 

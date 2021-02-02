@@ -92,12 +92,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         }
 
         [Fact]
-        public void NowTests()
+        public void NowTest()
         {
             var dateTime = DateTime.Parse(Filters.Now(string.Empty));
             Assert.True(dateTime.Year > 2020);
             Assert.True(dateTime.Month >= 1 && dateTime.Month < 13);
             Assert.True(dateTime.Day >= 1 && dateTime.Day < 32);
+
+            var days = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+            var nowWithFormat = Filters.Now(string.Empty, "dddd, dd MMMM yyyy HH:mm:ss");
+            Assert.Contains(days, day => nowWithFormat.StartsWith(day));
         }
     }
 }

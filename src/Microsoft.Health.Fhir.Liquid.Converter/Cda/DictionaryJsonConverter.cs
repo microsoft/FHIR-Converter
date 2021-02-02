@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
@@ -40,9 +41,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                     return ReadObject(reader);
                 case JsonToken.StartArray:
                     return ReadArray(reader);
+                case JsonToken.String:
+                    // Remove line breaks to avoid invalid line breaks in json value
+                    return Regex.Replace(reader.Value.ToString(), @"\r\n?|\n", string.Empty);
                 case JsonToken.Integer:
                 case JsonToken.Float:
-                case JsonToken.String:
                 case JsonToken.Boolean:
                 case JsonToken.Undefined:
                 case JsonToken.Null:
