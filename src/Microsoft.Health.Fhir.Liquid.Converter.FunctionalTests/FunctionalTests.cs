@@ -41,9 +41,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             };
             return data.Select(item => new[]
             {
-                Convert.ToString(item[0]),
-                Path.Join(Constants.SampleDataDirectory, "Hl7v2", Convert.ToString(item[1])),
-                Path.Join(Constants.ExpectedDataFolder, "Hl7v2", Convert.ToString(item[0]), Convert.ToString(item[2])),
+                item[0],
+                Path.Join(Constants.SampleDataDirectory, "Hl7v2", item[1]),
+                Path.Join(Constants.ExpectedDataFolder, "Hl7v2", item[0], item[2]),
             });
         }
 
@@ -55,9 +55,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             };
             return data.Select(item => new[]
             {
-                Convert.ToString(item[0]),
-                Path.Join(Constants.SampleDataDirectory, "Cda", Convert.ToString(item[1])),
-                Path.Join(Constants.ExpectedDataFolder, "Cda", Convert.ToString(item[0]), Convert.ToString(item[2])),
+                item[0],
+                Path.Join(Constants.SampleDataDirectory, "Cda", item[1]),
+                Path.Join(Constants.ExpectedDataFolder, "Cda", item[0], item[2]),
             });
         }
 

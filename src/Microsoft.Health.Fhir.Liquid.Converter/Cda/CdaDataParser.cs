@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -45,7 +46,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 var jsonString = JsonConvert.SerializeXNode(xDocument);
                 var dataDictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonString, new DictionaryJsonConverter()) ??
                                      new Dictionary<string, object>();
-                dataDictionary["_originalData"] = document;
+
+                // Remove line breaks in original data to generate some hash across platforms
+                dataDictionary["_originalData"] = Regex.Replace(document, @"\r\n?|\n", string.Empty);
 
                 return new Dictionary<string, object>()
                 {
