@@ -94,14 +94,33 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         [Fact]
         public void NowTest()
         {
+            // FHIR DateTime format
             var dateTime = DateTime.Parse(Filters.Now(string.Empty));
             Assert.True(dateTime.Year > 2020);
             Assert.True(dateTime.Month >= 1 && dateTime.Month < 13);
             Assert.True(dateTime.Day >= 1 && dateTime.Day < 32);
 
+            // Standard DateTime format, "d" stands for short day pattern
+            var nowWithStandardFormat = Filters.Now(string.Empty, "d");
+            Assert.Contains("/", nowWithStandardFormat);
+
+            // Customized DateTime format
             var days = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-            var nowWithFormat = Filters.Now(string.Empty, "dddd, dd MMMM yyyy HH:mm:ss");
-            Assert.Contains(days, day => nowWithFormat.StartsWith(day));
+            var nowWithCustomizedFormat = Filters.Now(string.Empty, "dddd, dd MMMM yyyy HH:mm:ss");
+            Assert.Contains(days, day => nowWithCustomizedFormat.StartsWith(day));
+
+            // Null and empty format will lead to default format, which is short day with long time
+            dateTime = DateTime.Parse(Filters.Now(string.Empty, null));
+            Assert.True(dateTime.Year > 2020);
+            Assert.True(dateTime.Month >= 1 && dateTime.Month < 13);
+            Assert.True(dateTime.Day >= 1 && dateTime.Day < 32);
+            dateTime = DateTime.Parse(Filters.Now(string.Empty, string.Empty));
+            Assert.True(dateTime.Year > 2020);
+            Assert.True(dateTime.Month >= 1 && dateTime.Month < 13);
+            Assert.True(dateTime.Day >= 1 && dateTime.Day < 32);
+
+            // Invalid DateTime format
+            Assert.Throws<FormatException>(() => Filters.Now(string.Empty, "a"));
         }
     }
 }
