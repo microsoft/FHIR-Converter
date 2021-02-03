@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Hl7.Fhir.Serialization;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -26,6 +27,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         private static readonly string _hl7DataFolder = Path.Combine(Constants.SampleDataDirectory, "Hl7v2");
 
         private static readonly Hl7v2TemplateProvider _hl7TemplateProvider = new Hl7v2TemplateProvider(_hl7TemplateFolder);
+        private static readonly FhirJsonParser _fhirParser = new FhirJsonParser();
 
         private static readonly int _maxRevealDepth = 1 << 7;
 
@@ -138,6 +140,50 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             }
 
             Directory.Delete(resultFolder, true);
+        }
+
+        [Fact]
+        public async Task CheckParserFunctionality()
+        {
+            var jsonResult = await Task.FromResult(@"{
+                ""resourceType"": ""Observation"",
+                ""id"": ""209c8566-dafa-22b6-31f6-e4c00e649c61"",
+                ""valueQuantity"": {
+                    ""code"": ""mg/dl""
+                },
+                ""valueRange"": {	
+                    ""low"": {	
+                        ""value"": ""182""	
+                    }
+                }
+            }");
+            try
+            {
+                var bundle = _fhirParser.Parse<Hl7.Fhir.Model.Observation>(jsonResult);
+                Assert.Null(bundle);
+            }
+            catch (FormatException fe)
+            {
+                Assert.NotNull(fe);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetHL7V2Cases))]
+        [MemberData(nameof(GetCCDACases))]
+        public async Task CheckPassFhirParser(string templateName, string samplePath)
+        {
+            var result = await ConvertData(templateName, samplePath);
+            var jsonResult = JsonConvert.SerializeObject(result, Formatting.Indented);
+            try
+            {
+                var bundle = _fhirParser.Parse<Hl7.Fhir.Model.Bundle>(jsonResult);
+                Assert.NotNull(bundle);
+            }
+            catch (FormatException fe)
+            {
+                Assert.Null(fe);
+            }
         }
 
         private async Task<JObject> ConvertData(string templateName, string samplePath)
