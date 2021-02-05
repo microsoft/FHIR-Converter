@@ -3,11 +3,16 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using EnsureThat;
+using Microsoft.Azure.ContainerRegistry.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Utilities;
+using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
@@ -28,7 +33,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         public string WorkingBaseLayerFolder { get; set; }
 
-        public OCIFileLayer ReadMergedOCIFileLayer()
+        public OCIFileLayer ReadOCIFileLayer()
         {
             var filePaths = Directory.EnumerateFiles(WorkingFolder, "*.*", SearchOption.AllDirectories)
                 .Where(f => !string.Equals(GetTopDirectoryPath(Path.GetRelativePath(WorkingFolder, f)), Constants.HiddenImageFolder));
@@ -43,7 +48,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return fileLayer;
         }
 
-        public void WriteMergedOCIFileLayer(OCIFileLayer oneLayer)
+        public void WriteOCIFileLayer(OCIFileLayer oneLayer)
         {
             EnsureArg.IsNotNull(oneLayer, nameof(oneLayer));
 
@@ -59,7 +64,22 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         public List<OCIArtifactLayer> ReadImageLayers()
         {
-            return ReadOCIArtifactLayers(WorkingImageLayerFolder);
+            var manifest = ReadManifest();
+            var imageLayers = ReadOCIArtifactLayers(WorkingImageLayerFolder);
+            var sortedLayers = new List<OCIArtifactLayer>();
+            ValidationUtility.ValidateManifest(manifest);
+            foreach (var layerInfo in manifest.Layers)
+            {
+                var currentLayers = imageLayers.Where(layer => layer.Digest == layerInfo.Digest).ToList();
+                if (!currentLayers.Any())
+                {
+                    throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, $"Layer {layerInfo.Digest} not found.");
+                }
+
+                sortedLayers.Add(currentLayers[0]);
+            }
+
+            return sortedLayers;
         }
 
         public void WriteImageLayers(List<OCIArtifactLayer> imageLayers)
@@ -67,28 +87,51 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             EnsureArg.IsNotNull(imageLayers, nameof(imageLayers));
 
             ClearFolder(WorkingImageLayerFolder);
+
+            // Used to label layers sequence. In this version, only two layers will be generated.
+            // Should not exceed 9 in the future.
+            var layerNumber = 1;
             foreach (var layer in imageLayers)
             {
-                layer.WriteToFolder(WorkingImageLayerFolder);
+                if (layer.Content == null)
+                {
+                    continue;
+                }
+
+                layer.WriteToFolder(WorkingImageLayerFolder, string.Format("layer{0}.tar.gz", layerNumber));
+                layerNumber += 1;
             }
         }
 
-        public List<OCIArtifactLayer> ReadBaseLayers()
+        public OCIArtifactLayer ReadBaseLayer()
         {
-            return ReadOCIArtifactLayers(WorkingBaseLayerFolder);
+            var layers = ReadOCIArtifactLayers(WorkingBaseLayerFolder);
+            if (layers.Count() > 1)
+            {
+                throw new OverlayException(TemplateManagementErrorCode.BaseLayerLoadFailed, $"Base layer load failed. More than one layer in the base layer folder.");
+            }
+
+            return layers.Count == 0 ? new OCIFileLayer() : layers[0];
         }
 
-        public void WriteBaseLayers(List<OCIArtifactLayer> layers)
+        public void WriteBaseLayer(OCIArtifactLayer baseLayer)
         {
-            EnsureArg.IsNotNull(layers, nameof(layers));
+            EnsureArg.IsNotNull(baseLayer, nameof(baseLayer));
 
             ClearFolder(WorkingBaseLayerFolder);
-            for (var index = 1; index <= layers.Count; index++)
+            baseLayer.WriteToFolder(WorkingBaseLayerFolder, "layer1.tar.gz");
+        }
+
+        public ManifestWrapper ReadManifest()
+        {
+            try
             {
-                if (layers[index - 1].SequenceNumber == index)
-                {
-                    layers[index - 1].WriteToFolder(WorkingBaseLayerFolder);
-                }
+                var manifestContent = File.ReadAllText(Path.Combine(WorkingImageLayerFolder, Constants.ManifestFileName));
+                return JsonConvert.DeserializeObject<ManifestWrapper>(manifestContent);
+            }
+            catch (Exception ex)
+            {
+                throw new OverlayException(TemplateManagementErrorCode.OrasCacheFailed, $"Read manifest failed.", ex);
             }
         }
 

@@ -4,23 +4,26 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
     public interface IOverlayFileSystem
     {
-        OCIFileLayer ReadMergedOCIFileLayer();
+        OCIFileLayer ReadOCIFileLayer();
 
-        void WriteMergedOCIFileLayer(OCIFileLayer oneLayer);
+        void WriteOCIFileLayer(OCIFileLayer oneLayer);
 
         List<OCIArtifactLayer> ReadImageLayers();
 
         void WriteImageLayers(List<OCIArtifactLayer> imageLayers);
 
-        List<OCIArtifactLayer> ReadBaseLayers();
+        OCIArtifactLayer ReadBaseLayer();
 
-        void WriteBaseLayers(List<OCIArtifactLayer> layers);
+        void WriteBaseLayer(OCIArtifactLayer baseLayer);
+
+        ManifestWrapper ReadManifest();
 
         void ClearImageLayerFolder();
 

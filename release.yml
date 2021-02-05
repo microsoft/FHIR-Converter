@@ -171,11 +171,11 @@ stages:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
-        curl -LO https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_linux_amd64.tar.gz
+        curl -LO https://github.com/deislabs/oras/releases/download/v0.9.0/oras_0.9.0_windows_amd64.tar.gz
         mkdir -p oras-install/
-        tar -zxf oras_0.8.1_*.tar.gz -C oras-install/
+        tar -zxf oras_0.9.0_*.tar.gz -C oras-install/
         mv oras-install/oras /usr/local/bin/
-        rm -rf oras_0.8.1_*.tar.gz oras-install/
+        rm -rf oras_0.9.0_*.tar.gz oras-install/
         docker run --rm -d -p 5000:5000 --name registry registry:2
       displayName: start registry
     - script: |

@@ -19,7 +19,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         {
             string workingFolder = "TestData/DecompressedFiles";
             var overlayFs = new OverlayFileSystem(workingFolder);
-            var oneLayer = overlayFs.ReadMergedOCIFileLayer();
+            var oneLayer = overlayFs.ReadOCIFileLayer();
             Assert.Equal(3, oneLayer.FileContent.Count());
         }
 
@@ -28,13 +28,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         {
             string fileFolder = "TestData/DecompressedFiles";
             var testlayFs = new OverlayFileSystem(fileFolder);
-            var testLayer = testlayFs.ReadMergedOCIFileLayer();
+            var testLayer = testlayFs.ReadOCIFileLayer();
 
             string workingFolder = "TestData/workingFolder";
             Directory.CreateDirectory(workingFolder);
             ClearFolder(workingFolder);
             var overlayFs = new OverlayFileSystem(workingFolder);
-            overlayFs.WriteMergedOCIFileLayer(testLayer);
+            overlayFs.WriteOCIFileLayer(testLayer);
             var filePaths = Directory.EnumerateFiles(workingFolder, "*.*", SearchOption.AllDirectories);
             Assert.Equal(3, filePaths.Count());
         }

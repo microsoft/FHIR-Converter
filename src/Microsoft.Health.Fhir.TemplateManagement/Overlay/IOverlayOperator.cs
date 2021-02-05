@@ -15,22 +15,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// </summary>
         /// <param name="artifactLayer">One OCIArtifactLayer</param>
         /// <returns>One OCIFileLayer</returns>
-        OCIFileLayer ExtractOCIFileLayer(OCIArtifactLayer artifactLayer);
+        OCIFileLayer ExtractArtifactLayer(OCIArtifactLayer artifactLayer);
 
         /// <summary>
         /// Extract List of OCIArtifactLayers to a list of OCIFileLayers
         /// </summary>
         /// <param name="artifactLayers">List of OCIArtifactLayers</param>
         /// <returns>List of OCIFileLayers</returns>
-        List<OCIFileLayer> ExtractOCIFileLayers(List<OCIArtifactLayer> artifactLayers);
-
-        /// <summary>
-        /// Stably sort OCIFileLayers by sequence number.
-        /// If sequence number is -1 , the layer will be placed at the end of list.
-        /// </summary>
-        /// <param name="fileLayers">List of OCIFileLayers</param>
-        /// <returns>The sorted list of OCIFileLayers</returns>
-        List<OCIFileLayer> SortOCIFileLayersBySequenceNumber(List<OCIFileLayer> fileLayers);
+        List<OCIFileLayer> ExtractArtifactLayers(List<OCIArtifactLayer> artifactLayers);
 
         /// <summary>
         /// Merge sorted OCIFileLayers.

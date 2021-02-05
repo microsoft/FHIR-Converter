@@ -117,7 +117,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             var testManager = new OCIFileManager(imageReference, outputFolder);
             await testManager.PullOCIImageAsync();
             testManager.UnpackOCIImage();
-            Assert.Equal(842, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Equal(843, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             ClearFolder(outputFolder);
         }
 
@@ -134,7 +134,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             var testManager = new OCIFileManager(imageReference, outputFolder);
             await testManager.PullOCIImageAsync();
             testManager.UnpackOCIImage();
-            Assert.Equal(9, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Equal(10, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             ClearFolder(outputFolder);
         }
 
