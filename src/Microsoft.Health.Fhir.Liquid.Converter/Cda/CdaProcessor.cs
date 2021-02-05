@@ -6,18 +6,17 @@
 using System.Linq;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessor;
 using Newtonsoft.Json;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
+namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
 {
-    public class Hl7v2Processor : BaseProcessor
+    public class CdaProcessor : BaseProcessor
     {
-        private readonly Hl7v2DataParser _dataParser = new Hl7v2DataParser();
+        private readonly CdaDataParser _dataParser = new CdaDataParser();
 
-        public Hl7v2Processor(ProcessorSettings processorSettings = null)
+        public CdaProcessor(ProcessorSettings processorSettings = null)
             : base(processorSettings)
         {
         }
@@ -40,23 +39,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
             }
 
-            var hl7v2Data = _dataParser.Parse(data);
-            var context = CreateContext(templateProvider, hl7v2Data);
+            var cdaData = _dataParser.Parse(data);
+            var context = CreateContext(templateProvider, cdaData);
             var rawResult = RenderTemplates(template, context);
             var result = PostProcessor.Process(rawResult);
-            if (traceInfo is Hl7v2TraceInfo hl7V2TraceInfo)
-            {
-                hl7V2TraceInfo.UnusedSegments = Hl7v2TraceInfo.CreateTraceInfo(hl7v2Data).UnusedSegments;
-            }
 
             return result.ToString(Formatting.Indented);
         }
 
-        protected override Context CreateContext(ITemplateProvider templateProvider, object hl7v2Data)
+        protected override Context CreateContext(ITemplateProvider templateProvider, object cdaData)
         {
-            // Load code system mapping
-            var context = base.CreateContext(templateProvider, hl7v2Data);
-            var codeSystemMapping = templateProvider.GetTemplate("CodeSystem/CodeSystem");
+            // Load value set mapping
+            var context = base.CreateContext(templateProvider, cdaData);
+            var codeSystemMapping = templateProvider.GetTemplate("ValueSet/ValueSet");
             if (codeSystemMapping?.Root?.NodeList?.First() != null)
             {
                 context["CodeSystemMapping"] = codeSystemMapping.Root.NodeList.First();

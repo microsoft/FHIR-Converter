@@ -6,24 +6,24 @@
 using System.Collections.Generic;
 using System.IO;
 using DotLiquid;
+using Microsoft.Health.Fhir.Liquid.Converter.Cda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Xunit;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
+namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Cda
 {
-    public class Hl7v2TemplateProviderTests
+    public class CdaTemplateProviderTests
     {
         [Fact]
         public void GivenATemplateDirectory_WhenLoadTemplates_CorrectResultsShouldBeReturned()
         {
             // Valid template directory
-            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
-            Assert.NotNull(templateProvider.GetTemplate("ADT_A01"));
+            var templateProvider = new CdaTemplateProvider(Constants.CdaTemplateDirectory);
+            Assert.NotNull(templateProvider.GetTemplate("CCD"));
 
             // Invalid template directory
-            Assert.Throws<ConverterInitializeException>(() => new Hl7v2TemplateProvider(string.Empty));
-            Assert.Throws<ConverterInitializeException>(() => new Hl7v2TemplateProvider(Path.Join("a", "b", "c")));
+            Assert.Throws<ConverterInitializeException>(() => new CdaTemplateProvider(string.Empty));
+            Assert.Throws<ConverterInitializeException>(() => new CdaTemplateProvider(Path.Join("a", "b", "c")));
 
             // Template collection
             var collection = new List<Dictionary<string, Template>>()
@@ -33,7 +33,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
                     { "foo", Template.Parse("bar") },
                 },
             };
-            templateProvider = new Hl7v2TemplateProvider(collection);
+            templateProvider = new CdaTemplateProvider(collection);
             Assert.NotNull(templateProvider.GetTemplate("foo"));
         }
     }
