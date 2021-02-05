@@ -105,7 +105,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             Assert.Contains("/", nowWithStandardFormat);
 
             // Customized DateTime format
-            var days = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+            var days = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
             var nowWithCustomizedFormat = Filters.Now(string.Empty, "dddd, dd MMMM yyyy HH:mm:ss");
             Assert.Contains(days, day => nowWithCustomizedFormat.StartsWith(day));
 

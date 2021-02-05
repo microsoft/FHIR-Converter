@@ -13,11 +13,11 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
 {
-    public class BaseProcessor : IFhirConverter
+    public abstract class BaseProcessor : IFhirConverter
     {
         private readonly ProcessorSettings _settings;
 
-        public BaseProcessor(ProcessorSettings processorSettings = null)
+        protected BaseProcessor(ProcessorSettings processorSettings = null)
         {
             _settings = processorSettings;
         }
@@ -28,10 +28,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return Convert(data, rootTemplate, templateProvider, traceInfo);
         }
 
-        public virtual string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
 
         protected virtual Context CreateContext(ITemplateProvider templateProvider, object data)
         {
