@@ -31,8 +31,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 var defaultNamespace = xDocument.Root?.GetDefaultNamespace().NamespaceName;
                 xDocument.Root?.Attributes()
                     .Where(attribute => IsRedundantNamespaceAttribute(attribute, defaultNamespace))
-                    .ToList()
-                    .ForEach(action: x => x.Remove());
+                    .Remove();
 
                 // Normalize non-default namespace prefix in elements
                 var namespaces = xDocument.Root?.Attributes()
