@@ -19,7 +19,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string _containerRegistryServer;
         private readonly string _baseLayerTemplatePath = "TestData/TarGzFiles/layer1.tar.gz";
         private readonly string _userLayerTemplatePath = "TestData/TarGzFiles/layer2.tar.gz";
-        private readonly string _emptySequenceNumberLayerPath = "TestData/TarGzFiles/UserV1.tar.gz";
+        private readonly string _emptySequenceNumberLayerPath = "TestData/TarGzFiles/userV1.tar.gz";
         private readonly string _invalidCompressedImageLayerPath = "TestData/TarGzFiles/invalid1.tar.gz";
         private readonly string _testOneLayerWithValidSequenceNumberImageReference;
         private readonly string _testOneLayerWithoutSequenceNumberImageReference;
