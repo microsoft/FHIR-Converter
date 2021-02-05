@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using DotLiquid;
 
@@ -19,29 +20,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static IDictionary<string, object> GetFirstCdaSections(Hash data, string sectionNameContent)
         {
+            var sectionLists = Filters.GetCdaSectionLists(data, sectionNameContent);
             var result = new Dictionary<string, object>();
-            var sectionNames = sectionNameContent.Split("|", StringSplitOptions.RemoveEmptyEntries);
-            var components = GetComponents(data);
-
-            if (components == null)
+            foreach (var (key, value) in sectionLists)
             {
-                return result;
-            }
-
-            foreach (var sectionName in sectionNames)
-            {
-                foreach (var component in components)
-                {
-                    if (component is Dictionary<string, object> componentDict &&
-                        componentDict.GetValueOrDefault("section") is Dictionary<string, object> sectionDict &&
-                        sectionDict.GetValueOrDefault("title") is Dictionary<string, object> titleDict &&
-                        titleDict.GetValueOrDefault("_") is string titleString &&
-                        titleString.Contains(sectionName, StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        result[NormalizeSectionName(sectionName)] = sectionDict;
-                        break;
-                    }
-                }
+                result[key] = (value as List<object>)?.First();
             }
 
             return result;
