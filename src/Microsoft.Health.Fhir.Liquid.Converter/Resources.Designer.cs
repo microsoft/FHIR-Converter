@@ -275,5 +275,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("TraceInfoError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected end when reading IDictionary&lt;string, object&gt;..
+        /// </summary>
+        internal static string UnexpectedJsonConvertEnd {
+            get {
+                return ResourceManager.GetString("UnexpectedJsonConvertEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected token when converting IDictionary&lt;string, object&gt;..
+        /// </summary>
+        internal static string UnexpectedJsonConvertToken {
+            get {
+                return ResourceManager.GetString("UnexpectedJsonConvertToken", resourceCulture);
+            }
+        }
     }
 }

@@ -1,0 +1,34 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Device",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = author.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "type":
+        {
+            "coding":
+            [
+                {
+                    "display":"{{ author.assignedAuthoringDevice.manufacturerModelName._ }}",
+                },
+            ],
+        },
+        "manufacturer":"{{ author.assignedAuthoringDevice.manufacturerModelName._ }}",
+        "version":
+        [
+            {
+                "value":"{{ author.assignedAuthoringDevice.softwareName._ }}",
+            },
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Device/{{ ID }}",
+    },
+},

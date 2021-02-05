@@ -72,6 +72,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
         }
 
+        public static string Now(string input, string format = "yyyy-MM-ddTHH:mm:ss.FFFZ")
+        {
+            return DateTime.UtcNow.ToString(format);
+        }
+
         private static string ConvertDate(string input, GroupCollection groups)
         {
             var year = groups["year"].Success ? int.Parse(groups["year"].Value) : 1;
