@@ -23,8 +23,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         void WriteBaseLayer(OCIArtifactLayer baseLayer);
 
-        ManifestWrapper ReadManifest();
-
         void ClearImageLayerFolder();
 
         void ClearBaseLayerFolder();

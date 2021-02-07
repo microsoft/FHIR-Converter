@@ -104,7 +104,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             }
         }
 
-
         // Pull one layer image with valid sequence number, successfully pulled with base layer copied.
         [Fact]
         public async Task GivenOneLayerImage_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
@@ -284,6 +283,32 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             Assert.Single(Directory.EnumerateFiles("checkBaseLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
             ClearFolder(initInputFolder);
             ClearFolder("checkBaseLayerFolder");
+        }
+
+        // Push artifacts without base layer, successfully pushed one-layer image.
+        [Fact]
+        public async Task GivenAnInputFolderWithoutBaseLayer_WhenPushOCIFiles_IfUserModify_OneBaseLayerWillBePushedAsync()
+        {
+            Assert.True(_isOrasValid, _orasErrorMessage);
+
+            string initInputFolder = "TestData/UserFolder4";
+            Directory.CreateDirectory(initInputFolder);
+
+            // Modified by user
+            File.WriteAllText(Path.Combine(initInputFolder, "add"), "add");
+
+            // Push image.
+            string testPushNewBaseLayerImageReference = _containerRegistryServer + "/templatetest:pushwithoutbase_newbaselayer";
+            var pushManager = new OCIFileManager(testPushNewBaseLayerImageReference, initInputFolder);
+            pushManager.PackOCIImage();
+            await pushManager.PushOCIImageAsync();
+
+            // Check Image
+            string command = $"pull {testPushNewBaseLayerImageReference} -o checkLayerFolder";
+            await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+            Assert.Single(Directory.EnumerateFiles("checkLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
+            ClearFolder(initInputFolder);
+            ClearFolder("checkLayerFolder");
         }
 
         // Push empty artifact folder, exception will be thrown.

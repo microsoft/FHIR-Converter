@@ -25,17 +25,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         // Content of the layer.
         public virtual byte[] Content { get; set; }
 
-        public void WriteToFolder(string directory, string fileName)
+        public void WriteToFolder(string path)
         {
-            EnsureArg.IsNotNullOrEmpty(directory, nameof(directory));
+            EnsureArg.IsNotNullOrEmpty(path, nameof(path));
 
             if (Content == null)
             {
                 return;
             }
 
-            Directory.CreateDirectory(directory);
-            File.WriteAllBytes(Path.Combine(directory, fileName), Content);
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            File.WriteAllBytes(path, Content);
         }
 
         public void ReadFromFolder(string path)

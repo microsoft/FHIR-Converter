@@ -127,9 +127,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 var cachePath = Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName);
                 return File.ReadAllText(Path.Combine(cachePath, "blobs", "sha256", digest));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new OrasException(TemplateManagementErrorCode.OrasCacheFailed, $"Read manifest from oras cache failed.");
+                throw new OrasException(TemplateManagementErrorCode.OrasCacheFailed, $"Read manifest from oras cache failed.", ex);
             }
         }
     }

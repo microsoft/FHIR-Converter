@@ -98,7 +98,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                     continue;
                 }
 
-                layer.WriteToFolder(WorkingImageLayerFolder, string.Format("layer{0}.tar.gz", layerNumber));
+                layer.WriteToFolder(Path.Combine(WorkingImageLayerFolder, string.Format("layer{0}.tar.gz", layerNumber)));
                 layerNumber += 1;
             }
         }
@@ -119,10 +119,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             EnsureArg.IsNotNull(baseLayer, nameof(baseLayer));
 
             ClearFolder(WorkingBaseLayerFolder);
-            baseLayer.WriteToFolder(WorkingBaseLayerFolder, "layer1.tar.gz");
+            baseLayer.WriteToFolder(Path.Combine(WorkingBaseLayerFolder, "layer1.tar.gz"));
         }
 
-        public ManifestWrapper ReadManifest()
+        private ManifestWrapper ReadManifest()
         {
             try
             {
