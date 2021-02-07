@@ -25,7 +25,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         // Content of the layer.
         public virtual byte[] Content { get; set; }
 
-        public void WriteToFolder(string path)
+        public void WriteToFile(string path)
         {
             EnsureArg.IsNotNullOrEmpty(path, nameof(path));
 
@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
             File.WriteAllBytes(path, Content);
         }
 
-        public void ReadFromFolder(string path)
+        public void ReadFromFile(string path)
         {
             EnsureArg.IsNotNullOrEmpty(path, nameof(path));
 

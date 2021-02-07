@@ -98,7 +98,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                     continue;
                 }
 
-                layer.WriteToFolder(Path.Combine(WorkingImageLayerFolder, string.Format("layer{0}.tar.gz", layerNumber)));
+                layer.WriteToFile(Path.Combine(WorkingImageLayerFolder, string.Format("layer{0}.tar.gz", layerNumber)));
                 layerNumber += 1;
             }
         }
@@ -119,7 +119,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             EnsureArg.IsNotNull(baseLayer, nameof(baseLayer));
 
             ClearFolder(WorkingBaseLayerFolder);
-            baseLayer.WriteToFolder(Path.Combine(WorkingBaseLayerFolder, "layer1.tar.gz"));
+            baseLayer.WriteToFile(Path.Combine(WorkingBaseLayerFolder, "layer1.tar.gz"));
         }
 
         private ManifestWrapper ReadManifest()
@@ -172,7 +172,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             foreach (var tarGzFile in layersPath)
             {
                 var artifactLayer = new OCIArtifactLayer();
-                artifactLayer.ReadFromFolder(tarGzFile);
+                artifactLayer.ReadFromFile(tarGzFile);
                 if (artifactLayer.Content != null)
                 {
                     result.Add(artifactLayer);

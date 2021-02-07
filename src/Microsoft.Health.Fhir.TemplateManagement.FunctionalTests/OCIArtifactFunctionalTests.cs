@@ -323,7 +323,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string testPushNewBaseLayerImageReference = _containerRegistryServer + "/templatetest:empty";
             var pushManager = new OCIFileManager(testPushNewBaseLayerImageReference, emptyFolder);
             pushManager.PackOCIImage();
-            await Assert.ThrowsAsync<DirectoryNotFoundException>(() => pushManager.PushOCIImageAsync());
+            await Assert.ThrowsAsync<OverlayException>(() => pushManager.PushOCIImageAsync());
 
             ClearFolder(emptyFolder);
         }

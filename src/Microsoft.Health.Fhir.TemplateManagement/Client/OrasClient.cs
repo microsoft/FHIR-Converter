@@ -17,16 +17,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
     public class OrasClient : IOrasClient
     {
         private readonly string _imageReference;
-        private readonly Regex _digestRx = new Regex("(?<rule>[A-Za-z][A-Za-z0-9]*([+.-_][A-Za-z][A-Za-z0-9]*)*):(?<digest>[0-9a-fA-F]{32,})");
+        private readonly Regex _digestRegex = new Regex("(?<algorithm>[A-Za-z][A-Za-z0-9]*([+.-_][A-Za-z][A-Za-z0-9]*)*):(?<hex>[0-9a-fA-F]{32,})");
 
         public OrasClient(string imageReference)
         {
             EnsureArg.IsNotNull(imageReference, nameof(imageReference));
 
             _imageReference = imageReference;
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("ORAS_CACHE")))
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName)))
             {
-                Environment.SetEnvironmentVariable("ORAS_CACHE", ".oras/cache");
+                Environment.SetEnvironmentVariable("ORAS_CACHE", Constants.DefaultOrasCacheEnvironmentVariable);
             }
         }
 
@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             string digest;
             try
             {
-                digest = _digestRx.Matches(output)[0].Groups["digest"].ToString();
+                digest = _digestRegex.Matches(output)[0].Groups["hex"].ToString();
             }
             catch (Exception ex)
             {
@@ -52,24 +52,24 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
         {
             if (!Directory.Exists(inputFolder))
             {
-                throw new DirectoryNotFoundException("Image Folder not found.");
+                throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "Image folder not found.");
             }
 
             string argument = string.Empty;
             string command = $"push \"{_imageReference}\"";
 
-            var filePathToPush = Directory.EnumerateFiles(inputFolder, "*.tar.gz", SearchOption.AllDirectories);
+            var filePathesToPush = Directory.EnumerateFiles(inputFolder, "*.tar.gz", SearchOption.AllDirectories);
 
             // In order to remove image's directory prefix. (e.g. "layers/layer1" --> "layer1"
             // Change oras working folder to inputFolder
-            foreach (var filePath in filePathToPush)
+            foreach (var filePath in filePathesToPush)
             {
                 argument += $" \"{Path.GetRelativePath(inputFolder, filePath)}\"";
             }
 
             if (string.IsNullOrEmpty(argument))
             {
-                throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file for push.");
+                throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file to push.");
             }
 
             Console.WriteLine(await OrasExecutionAsync(string.Concat(command, argument), inputFolder));
@@ -129,7 +129,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
             catch (Exception ex)
             {
-                throw new OrasException(TemplateManagementErrorCode.OrasCacheFailed, $"Read manifest from oras cache failed.", ex);
+                throw new OrasException(TemplateManagementErrorCode.OrasCacheFailed, "Read manifest from oras cache failed.", ex);
             }
         }
     }
