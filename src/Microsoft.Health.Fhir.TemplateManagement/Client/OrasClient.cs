@@ -26,15 +26,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             _imageReference = imageReference;
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName)))
             {
-                Environment.SetEnvironmentVariable("ORAS_CACHE", Constants.DefaultOrasCacheEnvironmentVariable);
+                Environment.SetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName, Constants.DefaultOrasCacheEnvironmentVariable);
             }
         }
 
-        public async Task PullImageAsync(string outputFolder)
+        public async Task<OrasOperationResult> PullImageAsync(string outputFolder)
         {
             string command = $"pull  \"{_imageReference}\" -o \"{outputFolder}\"";
             string output = await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
-            Console.WriteLine(output);
             string digest;
             try
             {
@@ -45,10 +44,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, "Return image digest failed.", ex);
             }
 
+            if (!Directory.Exists(outputFolder))
+            {
+                throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, "Pull image failed or image is empty.");
+            }
+
             File.WriteAllText(Path.Combine(outputFolder, Constants.ManifestFileName), LoadManifestContentFromCache(digest));
+            return new OrasOperationResult() { OrasResponse = output };
         }
 
-        public async Task PushImageAsync(string inputFolder)
+        public async Task<OrasOperationResult> PushImageAsync(string inputFolder)
         {
             if (!Directory.Exists(inputFolder))
             {
@@ -57,7 +62,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             string argument = string.Empty;
             string command = $"push \"{_imageReference}\"";
-
             var filePathesToPush = Directory.EnumerateFiles(inputFolder, "*.tar.gz", SearchOption.AllDirectories);
 
             // In order to remove image's directory prefix. (e.g. "layers/layer1" --> "layer1"
@@ -72,7 +76,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file to push.");
             }
 
-            Console.WriteLine(await OrasExecutionAsync(string.Concat(command, argument), inputFolder));
+            return new OrasOperationResult() { OrasResponse = await OrasExecutionAsync(string.Concat(command, argument), inputFolder) };
         }
 
         public static async Task<string> OrasExecutionAsync(string command, string orasWorkingDirectory)

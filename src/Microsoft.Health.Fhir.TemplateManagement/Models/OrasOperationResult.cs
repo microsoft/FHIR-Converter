@@ -3,15 +3,10 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System.Threading.Tasks;
-using Microsoft.Health.Fhir.TemplateManagement.Models;
-
-namespace Microsoft.Health.Fhir.TemplateManagement.Client
+namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
-    public interface IOrasClient
+    public class OrasOperationResult
     {
-        Task<OrasOperationResult> PullImageAsync(string outputFolder);
-
-        Task<OrasOperationResult> PushImageAsync(string inputFolder);
+        public string OrasResponse { get; set; }
     }
 }
