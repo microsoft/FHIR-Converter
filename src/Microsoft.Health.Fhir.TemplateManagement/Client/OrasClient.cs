@@ -30,7 +30,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
         }
 
-        public async Task<OrasOperationResult> PullImageAsync(string outputFolder)
+        public async Task<OCIOperationResult> PullImageAsync(string outputFolder)
         {
             string command = $"pull  \"{_imageReference}\" -o \"{outputFolder}\"";
             string output = await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
@@ -50,10 +50,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
 
             File.WriteAllText(Path.Combine(outputFolder, Constants.ManifestFileName), LoadManifestContentFromCache(digest));
-            return new OrasOperationResult() { OrasResponse = output };
+            return new OCIOperationResult() { ClientResponse = output };
         }
 
-        public async Task<OrasOperationResult> PushImageAsync(string inputFolder)
+        public async Task<OCIOperationResult> PushImageAsync(string inputFolder)
         {
             if (!Directory.Exists(inputFolder))
             {
@@ -76,7 +76,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file to push.");
             }
 
-            return new OrasOperationResult() { OrasResponse = await OrasExecutionAsync(string.Concat(command, argument), inputFolder) };
+            return new OCIOperationResult() { ClientResponse = await OrasExecutionAsync(string.Concat(command, argument), inputFolder) };
         }
 
         public static async Task<string> OrasExecutionAsync(string command, string orasWorkingDirectory)

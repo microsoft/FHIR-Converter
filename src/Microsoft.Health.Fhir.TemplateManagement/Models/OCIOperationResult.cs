@@ -5,8 +5,8 @@
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
-    public class OrasOperationResult
+    public class OCIOperationResult
     {
-        public string OrasResponse { get; set; }
+        public string ClientResponse { get; set; }
     }
 }

@@ -33,7 +33,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         [MemberData(nameof(GetValidOCIArtifact))]
         public void GivenAnOCIArtifactLayer_WhenExtractLayers_CorrectOCIFileLayerShouldBeReturned(OCIArtifactLayer inputLayer, int fileCounts, int sequenceNumber)
         {
-            var result = _overlayOperator.ExtractArtifactLayer(inputLayer);
+            var result = _overlayOperator.Extract(inputLayer);
             Assert.Equal(fileCounts, result.FileContent.Count);
             Assert.Equal(sequenceNumber, result.SequenceNumber);
             Assert.Equal(inputLayer.Content, result.Content);
@@ -48,7 +48,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             string filePath = "TestData/TarGzFiles/invalid1.tar.gz";
             var oneLayer = new OCIArtifactLayer() { Content = File.ReadAllBytes(filePath) };
 
-            Assert.Throws<ArtifactDecompressException>(() => _overlayOperator.ExtractArtifactLayer(oneLayer));
+            Assert.Throws<ArtifactDecompressException>(() => _overlayOperator.Extract(oneLayer));
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             string filePath = "TestData/TarGzFiles/testdecompress.tar.gz";
             var oneLayer = new OCIArtifactLayer() { Content = File.ReadAllBytes(filePath) };
 
-            var result = _overlayOperator.ExtractArtifactLayer(oneLayer);
+            var result = _overlayOperator.Extract(oneLayer);
             Assert.Equal(-1, result.SequenceNumber);
         }
 
@@ -72,7 +72,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
                 inputLayers.Add(oneLayer);
             }
 
-            var result = _overlayOperator.ExtractArtifactLayers(inputLayers);
+            var result = _overlayOperator.Extract(inputLayers);
             Assert.Equal(inputLayers.Count(), result.Count());
         }
 
@@ -88,10 +88,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
                 inputLayers.Add(oneLayer);
             }
 
-            var fileLayers = _overlayOperator.ExtractArtifactLayers(inputLayers);
+            var fileLayers = _overlayOperator.Extract(inputLayers);
 
             // Generate Merged OCIFileLAyers
-            var mergedLayer = _overlayOperator.MergeOCIFileLayers(fileLayers);
+            var mergedLayer = _overlayOperator.Merge(fileLayers);
             Assert.Equal(6, mergedLayer.FileContent.Count());
         }
 
@@ -114,7 +114,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             File.Copy("TestData/TarGzFiles/layer1.tar.gz", "TestData/UserFolder/.image/base/layer1.tar.gz", true);
             var fileLayer = overlayFs.ReadOCIFileLayer();
             var baseLayers = overlayFs.ReadBaseLayer();
-            var baseOCIfileLayer = _overlayOperator.ExtractArtifactLayer(baseLayers);
+            var baseOCIfileLayer = _overlayOperator.Extract(baseLayers);
             var diffLayers = _overlayOperator.GenerateDiffLayer(fileLayer, baseOCIfileLayer);
 
             overlayFs.ClearBaseLayerFolder();
@@ -128,9 +128,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             string artifactPath = "TestData/TarGzFiles/layer1.tar.gz";
             OCIArtifactLayer inputLayer = new OCIArtifactLayer() { Content = File.ReadAllBytes(artifactPath) };
             var overlayOperator = new OverlayOperator();
-            var fileLayer = overlayOperator.ExtractArtifactLayer(inputLayer);
+            var fileLayer = overlayOperator.Extract(inputLayer);
             var diffLayers = _overlayOperator.GenerateDiffLayer(fileLayer, null);
-            var packedLayer = _overlayOperator.ArchiveOCIFileLayer(diffLayers);
+            var packedLayer = _overlayOperator.Archive(diffLayers);
             Assert.True(inputLayer.Content.Count() == packedLayer.Content.Count());
         }
 
@@ -145,14 +145,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             }
 
             var overlayOperator = new OverlayOperator();
-            var fileLayers = overlayOperator.ExtractArtifactLayers(inputLayers);
+            var fileLayers = overlayOperator.Extract(inputLayers);
             var diffLayers = new List<OCIFileLayer>();
             foreach (var layer in fileLayers)
             {
                 diffLayers.Add(_overlayOperator.GenerateDiffLayer(layer, null));
             }
 
-            var packedLayers = _overlayOperator.ArchiveOCIFileLayers(diffLayers);
+            var packedLayers = _overlayOperator.Archive(diffLayers);
             Assert.Equal(inputLayers.Count, packedLayers.Count);
         }
     }

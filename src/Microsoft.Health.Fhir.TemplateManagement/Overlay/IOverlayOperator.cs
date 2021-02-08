@@ -15,14 +15,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// </summary>
         /// <param name="artifactLayer">One OCIArtifactLayer</param>
         /// <returns>One OCIFileLayer</returns>
-        OCIFileLayer ExtractArtifactLayer(OCIArtifactLayer artifactLayer);
+        OCIFileLayer Extract(OCIArtifactLayer artifactLayer);
 
         /// <summary>
         /// Extract List of OCIArtifactLayers to a list of OCIFileLayers
         /// </summary>
         /// <param name="artifactLayers">List of OCIArtifactLayers</param>
         /// <returns>List of OCIFileLayers</returns>
-        List<OCIFileLayer> ExtractArtifactLayers(List<OCIArtifactLayer> artifactLayers);
+        List<OCIFileLayer> Extract(List<OCIArtifactLayer> artifactLayers);
 
         /// <summary>
         /// Merge sorted OCIFileLayers.
@@ -31,7 +31,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// </summary>
         /// <param name="sortedLayers">List of sorted OCIFileLayers</param>
         /// <returns>One Merged OCIFileLayer.</returns>
-        OCIFileLayer MergeOCIFileLayers(List<OCIFileLayer> sortedLayers);
+        OCIFileLayer Merge(List<OCIFileLayer> sortedLayers);
 
         /// <summary>
         /// Generate diff OCIFileLayer by comparing two OCIArtifactLayers.
@@ -46,13 +46,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// </summary>
         /// <param name="fileLayer">One OCIFileLayer</param>
         /// <returns>One OCIArtifactLayer</returns>
-        OCIArtifactLayer ArchiveOCIFileLayer(OCIFileLayer fileLayer);
+        OCIArtifactLayer Archive(OCIFileLayer fileLayer);
 
         /// <summary>
         /// Archive List of OCIFileLayers to OCIArtifactLayers.
         /// </summary>
         /// <param name="fileLayers">List of OCIFileLayer</param>
         /// <returns>List of OCIArtifactLayer</returns>
-        List<OCIArtifactLayer> ArchiveOCIFileLayers(List<OCIFileLayer> fileLayers);
+        List<OCIArtifactLayer> Archive(List<OCIFileLayer> fileLayers);
     }
 }

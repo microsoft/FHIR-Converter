@@ -21,7 +21,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
     public class OverlayOperator : IOverlayOperator
     {
-        public OCIFileLayer ExtractArtifactLayer(OCIArtifactLayer artifactLayer)
+        public OCIFileLayer Extract(OCIArtifactLayer artifactLayer)
         {
             EnsureArg.IsNotNull(artifactLayer, nameof(artifactLayer));
 
@@ -56,14 +56,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             };
         }
 
-        public List<OCIFileLayer> ExtractArtifactLayers(List<OCIArtifactLayer> artifactLayers)
+        public List<OCIFileLayer> Extract(List<OCIArtifactLayer> artifactLayers)
         {
             EnsureArg.IsNotNull(artifactLayers, nameof(artifactLayers));
 
-            return artifactLayers.Select(ExtractArtifactLayer).ToList();
+            return artifactLayers.Select(Extract).ToList();
         }
 
-        public OCIFileLayer MergeOCIFileLayers(List<OCIFileLayer> sortedLayers)
+        public OCIFileLayer Merge(List<OCIFileLayer> sortedLayers)
         {
             EnsureArg.IsNotNull(sortedLayers, nameof(sortedLayers));
 
@@ -161,7 +161,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return diffLayer;
         }
 
-        public OCIArtifactLayer ArchiveOCIFileLayer(OCIFileLayer fileLayer)
+        public OCIArtifactLayer Archive(OCIFileLayer fileLayer)
         {
             EnsureArg.IsNotNull(fileLayer, nameof(fileLayer));
 
@@ -185,11 +185,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return fileLayer;
         }
 
-        public List<OCIArtifactLayer> ArchiveOCIFileLayers(List<OCIFileLayer> fileLayers)
+        public List<OCIArtifactLayer> Archive(List<OCIFileLayer> fileLayers)
         {
             EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
 
-            return fileLayers.Select(ArchiveOCIFileLayer).ToList();
+            return fileLayers.Select(Archive).ToList();
         }
     }
 }

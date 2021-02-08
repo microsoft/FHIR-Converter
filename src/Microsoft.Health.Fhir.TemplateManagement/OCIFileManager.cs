@@ -25,7 +25,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             _overlayOperator = new OverlayOperator();
         }
 
-        public async Task<OrasOperationResult> PullOCIImageAsync()
+        public async Task<OCIOperationResult> PullOCIImageAsync()
         {
             _overlayFS.ClearImageLayerFolder();
             return await _orasClient.PullImageAsync(_overlayFS.WorkingImageLayerFolder);
@@ -40,8 +40,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             }
 
             _overlayFS.WriteBaseLayer(rawLayers[0]);
-            var ociFileLayers = _overlayOperator.ExtractArtifactLayers(rawLayers);
-            var mergedFileLayer = _overlayOperator.MergeOCIFileLayers(ociFileLayers);
+            var ociFileLayers = _overlayOperator.Extract(rawLayers);
+            var mergedFileLayer = _overlayOperator.Merge(ociFileLayers);
             _overlayFS.WriteOCIFileLayer(mergedFileLayer);
         }
 
@@ -54,13 +54,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement
                 baseArtifactLayer = _overlayFS.ReadBaseLayer();
             }
 
-            var extractedBaseLayer = _overlayOperator.ExtractArtifactLayer(baseArtifactLayer);
+            var extractedBaseLayer = _overlayOperator.Extract(baseArtifactLayer);
             var diffLayer = _overlayOperator.GenerateDiffLayer(ociFileLayer, extractedBaseLayer);
-            var diffArtifactLayer = _overlayOperator.ArchiveOCIFileLayer(diffLayer);
+            var diffArtifactLayer = _overlayOperator.Archive(diffLayer);
             _overlayFS.WriteImageLayers(new List<OCIArtifactLayer> { baseArtifactLayer, diffArtifactLayer });
         }
 
-        public async Task<OrasOperationResult> PushOCIImageAsync()
+        public async Task<OCIOperationResult> PushOCIImageAsync()
         {
             return await _orasClient.PushImageAsync(_overlayFS.WorkingImageLayerFolder);
         }
