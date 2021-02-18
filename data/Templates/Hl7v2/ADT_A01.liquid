@@ -9,7 +9,7 @@
     "resourceType": "Bundle",
     "type": "batch",
     {% if firstSegments.MSH.7 -%}
-    "timestamp":"{{ firstSegments.MSH.7.Value }}",
+    "timestamp":"{{ firstSegments.MSH.7.Value | format_as_date_time }}",
     {% endif -%}
     "identifier":
     {
