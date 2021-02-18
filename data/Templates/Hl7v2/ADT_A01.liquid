@@ -16,24 +16,12 @@
         "value":"{{ firstSegments.MSH.10.Value }}",
     },
     "entry": [
-        {% evaluate organizationId4 using 'ID/Organization' HD: firstSegments.MSH.4 -%}
-        {% evaluate organizationId6 using 'ID/Organization' HD: firstSegments.MSH.6 -%}
-        {% evaluate organizationId22 using 'ID/Organization' XON: firstSegments.MSH.22 -%}
-        {% evaluate organizationId23 using 'ID/Organization' XON: firstSegments.MSH.23 -%}
-        {% evaluate organizationId_PD1_3 using 'ID/Organization' XON: firstSegments.PD1.3 -%}
-
-        {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId4 -%}
-        {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId6 -%}
-        {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId22 -%}
-        {% include 'Resource/Organization' MSH: firstSegments.MSH, ID: organizationId23 -%}
-        {% include 'Resource/Organization' PD1: firstSegments.PD1, ID: organizationId_PD1_3 -%}
-
         {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
-        {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, Organization_ID_MSH_4: organizationId4, Organization_ID_MSH_6: organizationId6, Organization_ID_MSH_22: organizationId22, Organization_ID_MSH_23: organizationId23, ID: messageHeaderID -%}
+        {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, ID: messageHeaderID -%}
 
         {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
         {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
-        {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, Organization_ID_PD1_3: organizationId_PD1_3, ID: patientId -%}
+        {% include 'Resource/Patient' PID: firstSegments.PID, PD1: firstSegments.PD1, ID: patientId -%}
 
         {% evaluate practitionerId_ORC_10 using 'ID/Practitioner' XCN: firstSegments.ORC.10 -%}
         {% evaluate practitionerId_ORC_11 using 'ID/Practitioner' XCN: firstSegments.ORC.11 -%}
@@ -66,7 +54,7 @@
         {% include 'Resource/Location' PL: firstSegments.PV1.6, ID: locationId_PV1_6 -%}
 
         {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseId: patientId -%}
-        {% include 'Resource/Provenance' MSH: firstSegments.MSH, ORC: firstSegments.ORC, Organization_ID_MSH_4： organizationId4, Organization_ID_MSH_22： organizationId22, Practitioner_ID_ORC_10: practitionerId_ORC_10, Practitioner_ID_ORC_11: practitionerId_ORC_11, Practitioner_ID_ORC_12: practitionerId_ORC_12, Location_ID_ORC_21: locationId_ORC_21, ID: provenanceId -%}
+        {% include 'Resource/Provenance' MSH: firstSegments.MSH, ORC: firstSegments.ORC, Practitioner_ID_ORC_10: practitionerId_ORC_10, Practitioner_ID_ORC_11: practitionerId_ORC_11, Practitioner_ID_ORC_12: practitionerId_ORC_12, Location_ID_ORC_21: locationId_ORC_21, ID: provenanceId -%}
 
         {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
         {% include 'Resource/Encounter' PV1: firstSegments.PV1, PV2: firstSegments.PV2, Location_ID_PV1_3: locationId_PV1_3, Location_ID_PV1_6: locationId_PV1_6, Practitioner_ID_PV1_7: practitionerId_PV1_7, Practitioner_ID_PV1_8: practitionerId_PV1_8, Practitioner_ID_PV1_9: practitionerId_PV1_9, Practitioner_ID_PV1_17: practitionerId_PV1_17, Practitioner_ID_PV1_52: practitionerId_PV1_52, ID: encounterId -%}

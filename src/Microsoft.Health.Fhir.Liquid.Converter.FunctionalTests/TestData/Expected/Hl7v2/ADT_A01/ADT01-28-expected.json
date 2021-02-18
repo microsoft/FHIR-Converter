@@ -7,47 +7,6 @@
   },
   "entry": [
     {
-      "fullUrl": "urn:uuid:2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4",
-        "identifier": [
-          {
-            "value": "GOOD HEALTH HOSPITAL"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "GOOD HEALTH HOSPITAL"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Organization",
-        "identifier": [
-          {
-            "value": "GOOD HEALTH HOSPITAL"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "GOOD HEALTH HOSPITAL"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:64c2d51b-34a4-e841-fb1c-03f1f7762d1a",
       "resource": {
         "resourceType": "MessageHeader",
@@ -57,10 +16,6 @@
         },
         "destination": [
           {
-            "name": "GHH LAB, INC.",
-            "receiver": {
-              "reference": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
-            }
           }
         ],
         "meta": {
@@ -70,13 +25,6 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
-        },
-        "eventCoding": {
-          "code": "A01",
-          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
-        },
-        "sender": {
-          "reference": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
         }
       },
       "request": {

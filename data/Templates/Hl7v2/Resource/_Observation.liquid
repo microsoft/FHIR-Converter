@@ -68,26 +68,6 @@
                 {% endif -%}{% endif -%}
             },
         },
-        "valueRange":
-        {
-            {% if OBX.2.Value == "NR" -%}
-            {% endif -%}
-            {% if OBX.2.Value == "SN" -%}
-            {% include 'DataType/SNRange' SN: OBX.5 -%}
-            {% endif -%}
-            "low":
-            {
-                {% if OBX.2.Value == "SN" and OBX.5.3.Value == "-" -%}
-                {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
-                {% endif -%}
-            },
-            "high":
-            {
-                {% if OBX.2.Value == "SN" and OBX.5.3.Value == "-" -%}
-                {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
-                {% endif -%}
-            },
-        },
         "interpretation":
         [
             { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/InterpretationCode', CWE: OBX.8 -%} },
@@ -216,26 +196,6 @@
                         {% if OBX.2.Value == "SN" -%}{% if OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
                         {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
                         {% endif -%}{% endif -%}
-                    },
-                },
-                "valueRange":
-                {
-                    {% if OBX.2.Value == "NR" -%}
-                    {% endif -%}
-                    {% if OBX.2.Value == "SN" -%}
-                    {% include 'DataType/SNRange' SN: OBX.5 -%}
-                    {% endif -%}
-                    "low":
-                    {
-                        {% if OBX.2.Value == "SN" and OBX.5.3.Value == "-" -%}
-                        {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
-                        {% endif -%}
-                    },
-                    "high":
-                    {
-                        {% if OBX.2.Value == "SN" and OBX.5.3.Value == "-" -%}
-                        {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
-                        {% endif -%}
                     },
                 },
                 "referenceRange":

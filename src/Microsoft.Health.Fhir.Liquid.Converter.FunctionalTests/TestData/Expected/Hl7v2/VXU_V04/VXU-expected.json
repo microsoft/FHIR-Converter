@@ -7,58 +7,6 @@
   },
   "entry": [
     {
-      "fullUrl": "urn:uuid:8a0eacde-8a9d-6c26-af93-755bbf26dedc",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "8a0eacde-8a9d-6c26-af93-755bbf26dedc",
-        "identifier": [
-          {
-            "value": "NISTEHRFAC"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "NISTIISFAC"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/8a0eacde-8a9d-6c26-af93-755bbf26dedc"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:421aa904-409c-709f-ad7d-f1a7673d884f",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "421aa904-409c-709f-ad7d-f1a7673d884f",
-        "identifier": [
-          {
-            "value": "NISTEHRFAC"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "NISTIISFAC"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/421aa904-409c-709f-ad7d-f1a7673d884f"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Organization"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:aefd5bbc-563b-7d19-5096-4b5754c338c1",
       "resource": {
         "resourceType": "MessageHeader",
@@ -68,10 +16,6 @@
         },
         "destination": [
           {
-            "name": "NISTIISAPP",
-            "receiver": {
-              "reference": "Organization/421aa904-409c-709f-ad7d-f1a7673d884f"
-            }
           }
         ],
         "meta": {
@@ -81,16 +25,6 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
-        },
-        "eventCoding": {
-          "code": "V04",
-          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
-        },
-        "sender": {
-          "reference": "Organization/8a0eacde-8a9d-6c26-af93-755bbf26dedc"
-        },
-        "responsible": {
-          "reference": "Organization/8a0eacde-8a9d-6c26-af93-755bbf26dedc"
         }
       },
       "request": {

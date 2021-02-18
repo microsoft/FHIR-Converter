@@ -7,37 +7,6 @@
   },
   "entry": [
     {
-      "fullUrl": "urn:uuid:6fbc0a9a-11e5-aa44-b0d7-79439e65ae84",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "6fbc0a9a-11e5-aa44-b0d7-79439e65ae84",
-        "identifier": [
-          {
-            "value": "RDX"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/6fbc0a9a-11e5-aa44-b0d7-79439e65ae84"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Organization",
-        "identifier": [
-          {
-            "value": "RDX"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:aa9b0327-0d9f-945a-888c-07658da974df",
       "resource": {
         "resourceType": "MessageHeader",
@@ -52,13 +21,6 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
-        },
-        "eventCoding": {
-          "code": "A04",
-          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
-        },
-        "sender": {
-          "reference": "Organization/6fbc0a9a-11e5-aa44-b0d7-79439e65ae84"
         }
       },
       "request": {

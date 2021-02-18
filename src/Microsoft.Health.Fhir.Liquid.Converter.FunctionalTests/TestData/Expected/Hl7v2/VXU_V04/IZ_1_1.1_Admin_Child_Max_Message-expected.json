@@ -7,68 +7,6 @@
   },
   "entry": [
     {
-      "fullUrl": "urn:uuid:8a4905a9-ae0d-541f-4fde-2e228bbb0f70",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "8a4905a9-ae0d-541f-4fde-2e228bbb0f70",
-        "identifier": [
-          {
-            "value": "X68"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "NIST Test Iz Reg"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/8a4905a9-ae0d-541f-4fde-2e228bbb0f70"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:57e4a003-b56b-2993-9714-18b188c68595",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "57e4a003-b56b-2993-9714-18b188c68595",
-        "identifier": [
-          {
-            "value": "X68"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "NIST Test Iz Reg"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/57e4a003-b56b-2993-9714-18b188c68595"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Organization",
-        "identifier": [
-          {
-            "value": "X68"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "NIST Test Iz Reg"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:5cddb2d1-c441-ec21-1c0c-96605dd3a9c0",
       "resource": {
         "resourceType": "MessageHeader",
@@ -76,13 +14,6 @@
         "source": {
           "name": "Test EHR Application"
         },
-        "destination": [
-          {
-            "receiver": {
-              "reference": "Organization/57e4a003-b56b-2993-9714-18b188c68595"
-            }
-          }
-        ],
         "meta": {
           "tag": [
             {
@@ -90,13 +21,6 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
-        },
-        "eventCoding": {
-          "code": "V04",
-          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
-        },
-        "sender": {
-          "reference": "Organization/8a4905a9-ae0d-541f-4fde-2e228bbb0f70"
         }
       },
       "request": {

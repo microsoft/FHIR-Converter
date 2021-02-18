@@ -7,16 +7,6 @@
   },
   "entry": [
     {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Organization"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:55e2d2b6-8c08-6f34-9f2c-ccf2ba785dba",
       "resource": {
         "resourceType": "MessageHeader",
@@ -104,24 +94,27 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:",
+      "fullUrl": "urn:uuid:269e4fbc-35ab-2c46-9c28-f4ab11c3b1f3",
       "resource": {
-        "resourceType": "Practitioner"
+        "resourceType": "Provenance",
+        "id": "269e4fbc-35ab-2c46-9c28-f4ab11c3b1f3",
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
+                }
+              ]
+            }
+          }
+        ],
+        "recorded": "2019-05-03T03:16:59.069+08:00"
       },
       "request": {
         "method": "PUT",
-        "url": "Practitioner/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:10ffd4e9-25bf-8239-3d9b-64bef81e192a",
-      "resource": {
-        "resourceType": "Practitioner",
-        "id": "10ffd4e9-25bf-8239-3d9b-64bef81e192a"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Practitioner/10ffd4e9-25bf-8239-3d9b-64bef81e192a"
+        "url": "Provenance/269e4fbc-35ab-2c46-9c28-f4ab11c3b1f3"
       }
     },
     {
