@@ -4,7 +4,7 @@
         "resourceType": "Bundle",
         "id":"{{ ID }}",
         {% if MSH.7 -%}
-        "timestamp":"{{ MSH.7.Value }}",
+        "timestamp":"{{ MSH.7.Value | format_as_date_time }}",
         {% endif -%}
         "identifier":
         {
