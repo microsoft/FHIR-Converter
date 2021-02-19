@@ -6,6 +6,7 @@
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using EnsureThat;
@@ -22,6 +23,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
     public class ACRClient : IOCIArtifactClient
     {
         private readonly IAzureContainerRegistryClient _client;
+        private bool retryFlag = true;
 
         public ACRClient(string registry, string token)
         {
@@ -45,6 +47,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 cancellationToken.ThrowIfCancellationRequested();
                 rawStream = await _client.Blob.GetAsync(imageName, digest, cancellationToken);
                 return rawStream;
+            }
+            catch (HttpRequestException ex)
+            {
+                if (!retryFlag)
+                {
+                    throw new ImageFetchException(TemplateManagementErrorCode.FetchLayerFailed, $"Pull Image Failed.{ex}", ex);
+                }
+
+                retryFlag = false;
+                return await PullBlobAsStreamAcync(imageName, digest, cancellationToken);
             }
             catch (TemplateManagementException)
             {
