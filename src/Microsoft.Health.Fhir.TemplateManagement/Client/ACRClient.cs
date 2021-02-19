@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using EnsureThat;
 using Microsoft.Azure.ContainerRegistry;
 using Microsoft.Azure.ContainerRegistry.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
@@ -25,7 +26,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
     public class ACRClient : IOCIArtifactClient
     {
         private readonly IAzureContainerRegistryClient _client;
-        private readonly RetryPolicy _retryPolicy = Policy.Handle<HttpRequestException>().Retry();
+        private static readonly ILogger _logger = TemplateManagementLogging.CreateLogger<ACRClient>();
+        private readonly AsyncPolicy _retryPolicy = Policy.Handle<HttpRequestException>().WaitAndRetryAsync(1, retryNumber => TimeSpan.FromMilliseconds(200), onRetry: (exception, retryCount, context) =>
+        {
+            _logger.LogError($"Retry {retryCount} of {context.PolicyKey} at {context.OperationKey}, due to: {exception}.");
+        });
 
         public ACRClient(string registry, string token)
         {
@@ -47,7 +52,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                rawStream = await _retryPolicy.Execute(async () => await _client.Blob.GetAsync(imageName, digest, cancellationToken));
+                rawStream = await _retryPolicy.ExecuteAsync(async() => await _client.Blob.GetAsync(imageName, digest, cancellationToken));
                 return rawStream;
             }
             catch (TemplateManagementException)
