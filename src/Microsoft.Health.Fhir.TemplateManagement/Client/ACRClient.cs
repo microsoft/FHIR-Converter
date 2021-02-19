@@ -17,13 +17,15 @@ using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Microsoft.Rest;
 using Microsoft.Rest.Azure;
+using Polly;
+using Polly.Retry;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
     public class ACRClient : IOCIArtifactClient
     {
         private readonly IAzureContainerRegistryClient _client;
-        private bool retryFlag = true;
+        private readonly RetryPolicy _retryPolicy = Policy.Handle<HttpRequestException>().Retry();
 
         public ACRClient(string registry, string token)
         {
@@ -45,18 +47,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                rawStream = await _client.Blob.GetAsync(imageName, digest, cancellationToken);
+                rawStream = await _retryPolicy.Execute(async () => await _client.Blob.GetAsync(imageName, digest, cancellationToken));
                 return rawStream;
-            }
-            catch (HttpRequestException ex)
-            {
-                if (!retryFlag)
-                {
-                    throw new ImageFetchException(TemplateManagementErrorCode.FetchLayerFailed, $"Pull Image Failed.{ex}", ex);
-                }
-
-                retryFlag = false;
-                return await PullBlobAsStreamAcync(imageName, digest, cancellationToken);
             }
             catch (TemplateManagementException)
             {
