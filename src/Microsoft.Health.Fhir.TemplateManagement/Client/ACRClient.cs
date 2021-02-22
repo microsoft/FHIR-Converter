@@ -19,7 +19,6 @@ using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Microsoft.Rest;
 using Microsoft.Rest.Azure;
 using Polly;
-using Polly.Retry;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
@@ -52,7 +51,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                rawStream = await _retryPolicy.ExecuteAsync(async() => await _client.Blob.GetAsync(imageName, digest, cancellationToken));
+                rawStream = await _retryPolicy.ExecuteAsync(async () => await _client.Blob.GetAsync(imageName, digest, cancellationToken));
                 return rawStream;
             }
             catch (TemplateManagementException)

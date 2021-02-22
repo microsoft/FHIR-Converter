@@ -53,13 +53,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         }
 
         [Fact]
-        public void GivenARequestFromACRClient_WhenPullBlob_IfHttpRequestError_ImageFetchExceptionWillBeThrown()
+        public async System.Threading.Tasks.Task GivenARequestFromACRClient_WhenPullBlob_IfHttpRequestErrorOnceAndRetrySucceed_BlobStreamWillBeReturnAsync()
         {
             var acrClientMock = new Mock<IAzureContainerRegistryClient>();
             acrClientMock.Setup(p => p.Blob).Throws(new HttpRequestException());
-            var client = new ACRClient(acrClientMock.Object);
-            Assert.ThrowsAsync<ImageFetchException>(() => client.PullBlobAsBytesAcync(_imageName, _digest));
-            Assert.ThrowsAsync<ImageFetchException>(() => client.PullBlobAsStreamAcync(_imageName, _digest));
+            var client = new ACRClient(new MockACRClient());
+            var result = await client.PullBlobAsStreamAcync(_imageName, _digest);
+            Assert.NotNull(result);
         }
 
         [Fact]
