@@ -51,7 +51,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                rawStream = await _retryPolicy.ExecuteAsync(async () => await _client.Blob.GetAsync(imageName, digest, cancellationToken));
+                rawStream = await _retryPolicy.ExecuteAsync(async (cancellationToken) => await _client.Blob.GetAsync(imageName, digest, cancellationToken), cancellationToken);
                 return rawStream;
             }
             catch (TemplateManagementException)
