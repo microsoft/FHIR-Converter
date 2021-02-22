@@ -6,6 +6,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.Azure.ContainerRegistry;
 using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
@@ -53,7 +54,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task GivenARequestFromACRClient_WhenPullBlob_IfHttpRequestErrorOnceAndRetrySucceed_BlobStreamWillBeReturnAsync()
+        public void GivenARequestFromACRClient_WhenPullBlob_IfHttpRequestError_ExceptionWillBeThrown()
+        {
+            var acrClientMock = new Mock<IAzureContainerRegistryClient>();
+            acrClientMock.Setup(p => p.Blob).Throws(new HttpRequestException());
+            var client = new ACRClient(acrClientMock.Object);
+            Assert.ThrowsAsync<ImageFetchException>(() => client.PullBlobAsBytesAcync(_imageName, _digest));
+            Assert.ThrowsAsync<ImageFetchException>(() => client.PullBlobAsStreamAcync(_imageName, _digest));
+        }
+
+        [Fact]
+        public async Task GivenARequestFromACRClient_WhenPullBlob_IfHttpRequestErrorOnceAndRetrySucceed_BlobStreamWillBeReturnAsync()
         {
             var acrClientMock = new Mock<IAzureContainerRegistryClient>();
             acrClientMock.Setup(p => p.Blob).Throws(new HttpRequestException());
