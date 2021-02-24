@@ -3,9 +3,6 @@
     "resource":{
         "resourceType": "ServiceRequest",
         "id":"{{ ID }}",
-        {% if ORC.5 == null -%}
-        "status":"{{ ORC.1.Value }}",
-        {% endif -%}
         "status":"{{ ORC.5.Value | get_property: 'CodeSystem/OrderStatus', 'code' }}",
         {% if ORC.1 -%}
         "intent":"order",

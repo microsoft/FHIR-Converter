@@ -32,8 +32,8 @@
     "display" : "Active",
     "system" : "http://hl7.org/fhir/request-status",
     {% else -%}
-    "code" : "{{ inCode }}",
-    "display" : "{{ inCode }}",
+    "code" : "unknown",
+    "display" : "Unknown",
     "system" : "",
     {% endif -%}
 }
