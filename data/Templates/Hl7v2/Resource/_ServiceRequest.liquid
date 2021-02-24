@@ -3,6 +3,10 @@
     "resource":{
         "resourceType": "ServiceRequest",
         "id":"{{ ID }}",
+        {% if ORC.5 == null -%}
+        "status":"{{ ORC.1.Value }}",
+        {% endif -%}
+        "status":"{{ ORC.5.Value | get_property: 'CodeSystem/OrderStatus', 'code' }}",
         {% if ORC.1 -%}
         "intent":"order",
         {% endif -%}
@@ -91,10 +95,6 @@
             { {% include 'DataType/EIIdentifier' EI: OBR.3 -%} },
             { {% include 'DataType/EIIdentifier' EI: OBR.53 -%} },
         ],
-        {% if ORC.5 == null -%}
-        "status":"{{ ORC.1.Value }}",
-        {% endif -%}
-        "status":"{{ ORC.5.Value | get_property: 'CodeSystem/OrderStatus', 'code' }}",
         {% if ORC.1.Value -%}
         "authoredOn":"{{ ORC.9.Value | format_as_date_time }}",
         {% endif -%}
@@ -111,15 +111,6 @@
             {% endif -%}
             {% if ORC.21 and Organization_ID_ORC_21 -%}
             "reference":"Organization/{{ Organization_ID_ORC_21 }}",
-            {% endif -%}
-            {% if ORC.22 and Organization_address_ID_ORC_22 -%}
-            "reference":"Organization.address/{{ Organization_address_ID_ORC_22 }}",
-            {% endif -%}
-            {% if ORC.23 and Organization_telecom_ID_ORC_23 -%}
-            "reference":"Organization.telecom/{{ Organization_telecom_ID_ORC_23 }}",
-            {% endif -%}
-            {% if OBR.16 and Practioner_ID_OBR_16 -%}
-            "reference":"Practioner/{{ Practioner_ID_OBR_16 }}",
             {% endif -%}
         },
         "quantityQuantity":
@@ -156,14 +147,8 @@
         "specimen":
         [
             {
-                {% if OBR.9 and Specimen_collection_quantity_ID_OBR_9 -%}
-                "reference":"Specimen.collection.quantity/{{ Specimen_collection_quantity_ID_OBR_9 }}",
-                {% endif -%}
                 {% if OBR.10 and Practitioner_ID_OBR_10 -%}
                 "reference":"Practitioner/{{ Practitioner_ID_OBR_10 }}",
-                {% endif -%}
-                {% if OBR.14 and Specimen_receivedTime_ID_OBR_14 -%}
-                "reference":"Specimen.receivedTime/{{ Specimen_receivedTime_ID_OBR_14 }}",
                 {% endif -%}
                 {% if OBR.15 and Specimen_ID_OBR_15 -%}
                 "reference":"Specimen/{{ Specimen_ID_OBR_15 }}",

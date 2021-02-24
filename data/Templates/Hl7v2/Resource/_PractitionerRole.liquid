@@ -40,21 +40,16 @@
         ],
         {% include 'DataType/XCNPractitionerRole' XCN: ROL.4 -%}
         {% include 'DataType/XCNPractitionerRole' XCN: OBX.25 -%}
-        {% include 'DataType/XCNPractitionerRole' XCN: PRT.5.Repeats[0] -%}
-        "specialty":
-        [
-            { {% include 'DataType/CWECodeableConcept' CWE: PRT.6 -%} },
-        ],
+        "practitioner":
+        {
+            {% if OBX.16 and Practitioner_ID_OBX_16 -%}
+            "reference":"Practitioner/{{ Practitioner_ID_OBX_16 }}",
+            {% endif -%}
+        },
         "organization":
         {
             {% if OBX.23 and Organization_ID_OBX_23 -%}
             "reference":"Organization/{{ Organization_ID_OBX_23 }}",
-            {% endif -%}
-            {% if OBX.24 and Organization_address_ID_OBX_24 -%}
-            "reference":"Organization.address/{{ Organization_address_ID_OBX_24 }}",
-            {% endif -%}
-            {% if PRT.7 and Organization_type_ID_PRT_7 -%}
-            "reference":"{{ "Organization.type/{{ Organization_type_ID_PRT_7 }}" | get_property: 'CodeSystem/OrganizationUnitType', 'code' }}",
             {% endif -%}
             {% if PRT.8 and Organization_ID_PRT_8 -%}
             "reference":"Organization/{{ Organization_ID_PRT_8 }}",
@@ -62,22 +57,12 @@
             {% if ORC.21 and Organization_ID_ORC_21 -%}
             "reference":"Organization/{{ Organization_ID_ORC_21 }}",
             {% endif -%}
-            {% if ORC.22 and Organization_address_ID_ORC_22 -%}
-            "reference":"Organization.address/{{ Organization_address_ID_ORC_22 }}",
-            {% endif -%}
-            {% if ORC.23 and Organization_telecom_ID_ORC_23 -%}
-            "reference":"Organization.telecom/{{ Organization_telecom_ID_ORC_23 }}",
-            {% endif -%}
         },
-        "practitioner":
-        {
-            {% if OBX.16 and Practitioner_ID_OBX_16 -%}
-            "reference":"Practitioner/{{ Practitioner_ID_OBX_16 }}",
-            {% endif -%}
-            {% if PRT.14 and Practitioner_address_ID_PRT_14 -%}
-            "reference":"Practitioner.address/{{ Practitioner_address_ID_PRT_14 }}",
-            {% endif -%}
-        },
+        {% include 'DataType/XCNPractitionerRole' XCN: PRT.5.Repeats[0] -%}
+        "specialty":
+        [
+            { {% include 'DataType/CWECodeableConcept' CWE: PRT.6 -%} },
+        ],
         {% include 'DataType/XCNPractitionerRole' XCN: ORC.12.Repeats[0] -%}
         {% include 'DataType/NDLPractitionerRole' NDL: OBR.32 -%}
         {% include 'DataType/NDLPractitionerRole' NDL: OBR.34 -%}

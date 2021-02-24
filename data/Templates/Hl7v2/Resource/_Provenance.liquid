@@ -93,9 +93,6 @@
                     {% if ORC.12 and Practitioner_ID_ORC_12 -%}
                     "reference":"Practitioner/{{ Practitioner_ID_ORC_12 }}",
                     {% endif -%}
-                    {% if ORC.24 and Practitioner_address_ID_ORC_24 -%}
-                    "reference":"Practitioner.address/{{ Practitioner_address_ID_ORC_24 }}",
-                    {% endif -%}
                 },
             },
         ],
@@ -132,12 +129,6 @@
         {
             {% if ORC.21 and Location_ID_ORC_21 -%}
             "reference":"Location/{{ Location_ID_ORC_21 }}",
-            {% endif -%}
-            {% if ORC.22 and Location_address_ID_ORC_22 -%}
-            "reference":"Location.address/{{ Location_address_ID_ORC_22 }}",
-            {% endif -%}
-            {% if ORC.23 and Location_telecom_ID_ORC_23 -%}
-            "reference":"Location.telecom/{{ Location_telecom_ID_ORC_23 }}",
             {% endif -%}
         },
     },

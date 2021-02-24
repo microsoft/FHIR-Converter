@@ -16,29 +16,29 @@
         "location":
         [
             {
-                "location":
-                {
-                    {% if PV1.3 and Location_ID_PV1_3 -%}
-                    "reference":"Location/{{ Location_ID_PV1_3 }}",
-                    {% endif -%}
-                },
                 {% if PV1.2.1.Value != "P" and Location_ID_PV1_3 -%}
                 "status":"active",
                 {% endif -%}
                 {% if PV1.2.1.Value == "P" and Location_ID_PV1_3 -%}
                 "status":"planned",
                 {% endif -%}
+                "location":
+                {
+                    {% if PV1.3 and Location_ID_PV1_3 -%}
+                    "reference":"Location/{{ Location_ID_PV1_3 }}",
+                    {% endif -%}
+                },
             },
             {
+                {% if PV1.6 and Location_ID_PV1_6 -%}
+                "status":"completed",
+                {% endif -%}
                 "location":
                 {
                     {% if PV1.6 and Location_ID_PV1_6 -%}
                     "reference":"Location/{{ Location_ID_PV1_6 }}",
                     {% endif -%}
                 },
-                {% if PV1.6 and Location_ID_PV1_6 -%}
-                "status":"completed",
-                {% endif -%}
             },
         ],
         "type":
@@ -109,9 +109,6 @@
                 {
                     {% if PV1.7 and Practitioner_ID_PV1_7 -%}
                     "reference":"Practitioner/{{ Practitioner_ID_PV1_7 }}",
-                    {% endif -%}
-                    {% if PV2.13 and Practitioner.Value -%}
-                    "reference":"Practitioner|PractitionerRole/{{ Practitioner|PractitionerRole_ID_PV2_13 }}",
                     {% endif -%}
                 },
             },
@@ -256,14 +253,6 @@
             "start":"{{ PV1.44.Value | format_as_date_time }}",
             "end":"{{ PV1.45.Value | format_as_date_time }}",
         },
-        "episodeOfCare":
-        [
-            {
-                {% if PV1.54 and EpisodeOfCare_identifier_value_ID_PV1_54 -%}
-                "reference":"EpisodeOfCare.identifier.value/{{ EpisodeOfCare_identifier_value_ID_PV1_54 }}",
-                {% endif -%}
-            },
-        ],
         "reasonCode":
         [
             { {% include 'DataType/CWECodeableConcept' CWE: PV2.3 -%} },
@@ -291,6 +280,7 @@
             {
                 "use":
                 {
+                    {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
                     {% if DG1.6.Value == "admitting" -%}
                     {% endif -%}
                 },

@@ -3,9 +3,36 @@
     "resource":{
         "resourceType": "Specimen",
         "id":"{{ ID }}",
+        "collection":
+        {
+            {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+            "quantity":
+            {
+            },
+            "collector":
+            {
+                {% if OBR.10 and Practitioner_ID_OBR_10 -%}
+                "reference":"Practitioner/{{ Practitioner_ID_OBR_10 }}",
+                {% endif -%}
+            },
+            "method":
+            {
+                {% include 'DataType/CWECodeableConcept' CWE: SPM.7 -%}
+            },
+            "collectedPeriod":
+            {
+                {% if SPM.17.2 -%}
+                {% include 'DataType/DR' DR: SPM.17 -%}
+                {% endif -%}
+            },
+            {% if SPM.17.2 == null -%}
+            "collectedDateTime":"{{ SPM.17.Value | format_as_date_time }}",
+            {% endif -%}
+        },
         "receivedTime":"{{ OBR.14.Value | format_as_date_time }}",
         "receivedTime":"{{ SPM.18.Value | format_as_date_time }}",
         "receivedTime":"{{ OBR.13.Value | format_as_date_time }}",
+        {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
         "note":
         [
         ],
@@ -50,31 +77,6 @@
                 },
             },
         ],
-        "collection":
-        {
-            "quantity":
-            {
-            },
-            "collector":
-            {
-                {% if OBR.10 and Practitioner_ID_OBR_10 -%}
-                "reference":"Practitioner/{{ Practitioner_ID_OBR_10 }}",
-                {% endif -%}
-            },
-            "method":
-            {
-                {% include 'DataType/CWECodeableConcept' CWE: SPM.7 -%}
-            },
-            "collectedPeriod":
-            {
-                {% if SPM.17.2 -%}
-                {% include 'DataType/DR' DR: SPM.17 -%}
-                {% endif -%}
-            },
-            {% if SPM.17.2 == null -%}
-            "collectedDateTime":"{{ SPM.17.Value | format_as_date_time }}",
-            {% endif -%}
-        },
         "status":"{{ SPM.20.Value | get_property: 'CodeSystem/SpecimenAvailability', 'code' }}",
         "condition":
         [
@@ -84,14 +86,6 @@
         {
             {% include 'DataType/CX' CX: SPM.30.Repeats[0] -%}
         },
-        "parent":
-        [
-            {
-                {% if SPM.3 and Specimen_identifier_ID_SPM_3 -%}
-                "reference":"Specimen.identifier/{{ Specimen_identifier_ID_SPM_3 }}",
-                {% endif -%}
-            },
-        ],
     },
     "request":{
         "method":"PUT",

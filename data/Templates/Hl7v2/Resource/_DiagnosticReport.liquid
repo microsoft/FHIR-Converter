@@ -103,17 +103,8 @@
         "specimen":
         [
             {
-                {% if OBR.9 and Specimen_collection_quantity_ID_OBR_9 -%}
-                "reference":"Specimen.collection.quantity/{{ Specimen_collection_quantity_ID_OBR_9 }}",
-                {% endif -%}
                 {% if OBR.10 and Practitioner_ID_OBR_10 -%}
                 "reference":"Practitioner/{{ Practitioner_ID_OBR_10 }}",
-                {% endif -%}
-                {% if OBR.13 and Specimen_receivedTime_ID_OBR_13 -%}
-                "reference":"Specimen.receivedTime/{{ Specimen_receivedTime_ID_OBR_13 }}",
-                {% endif -%}
-                {% if OBR.39 and Specimen_note_ID_OBR_39 -%}
-                "reference":"Specimen.note/{{ Specimen_note_ID_OBR_39 }}",
                 {% endif -%}
             },
         ],

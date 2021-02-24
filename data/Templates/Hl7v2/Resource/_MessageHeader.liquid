@@ -31,6 +31,7 @@
         ],
         "meta":
         {
+            {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
             "security":
             [
             ],
@@ -48,9 +49,6 @@
         {
             {% if MSH.4 and Organization_ID_MSH_4 -%}
             "reference":"Organization/{{ Organization_ID_MSH_4 }}",
-            {% endif -%}
-            {% if MSH.17 and Organization_address_country_ID_MSH_17 -%}
-            "reference":"{{ "Organization.address.country/{{ Organization_address_country_ID_MSH_17 }}" | get_property: 'CodeSystem/Countries', 'code' }}",
             {% endif -%}
         },
         "responsible":
