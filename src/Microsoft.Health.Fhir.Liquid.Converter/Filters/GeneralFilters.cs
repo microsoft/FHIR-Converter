@@ -27,11 +27,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return null;
             }
 
-            var map = (context["CodeSystemMapping"] as CodeSystemMapping)?.Mapping;
-            var result = map?.GetValueOrDefault(mapping, null)
-                ?.GetValueOrDefault(originalCode, null)
-                ?.GetValueOrDefault(property, null);
-            return result ?? ((property.Equals("code") || property.Equals("display")) ? originalCode : null);
+            var map = (context["CodeSystemMapping"] as CodeSystemMapping)?.Mapping?.GetValueOrDefault(mapping, null);
+            var codeMapping = map?.GetValueOrDefault(originalCode, null) ?? map?.GetValueOrDefault("__default__", null);
+            return codeMapping?.GetValueOrDefault(property, null)
+                ?? ((property.Equals("code") || property.Equals("display")) ? originalCode : null);
         }
 
         public static string Evaluate(string input, string property)
