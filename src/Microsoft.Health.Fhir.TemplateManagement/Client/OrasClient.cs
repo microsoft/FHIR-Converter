@@ -120,6 +120,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
             else
             {
+                try
+                {
+                    process.Kill();
+                }
+                catch (Exception ex)
+                {
+                    throw new OrasException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout. Fail to kill oras process.", ex);
+                }
+
                 throw new OrasException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
             }
         }

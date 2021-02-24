@@ -41,8 +41,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
             _overlayFS.WriteBaseLayer(rawLayers[0]);
             var ociFileLayers = _overlayOperator.Extract(rawLayers);
-            var mergedFileLayer = _overlayOperator.Merge(ociFileLayers);
-            _overlayFS.WriteOCIFileLayer(mergedFileLayer);
+            var content = _overlayOperator.Merge(ociFileLayers);
+            _overlayFS.WriteOCIFileLayer(content);
         }
 
         public void PackOCIImage(bool ignoreBaseLayers = false)
