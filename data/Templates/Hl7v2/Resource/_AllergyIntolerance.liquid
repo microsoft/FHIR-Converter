@@ -16,7 +16,7 @@
         [
             {
                 {% if AL1.4.Value != "U" -%}
-                "severity":"{{ AL1.4.Value }}",
+                "severity":"{{ AL1.4.1.Value | get_property: 'CodeSystem/AllergyIntoleranceSeverity', 'code' }}",
                 {% endif -%}
                 "manifestation":
                 [
@@ -26,7 +26,7 @@
                 ],
             },
         ],
-        "criticality":"{{ AL1.4.Value }}",
+        "criticality":"{{ AL1.4.1.Value | get_property: 'CodeSystem/AllergyIntoleranceCriticality', 'code' }}",
         "onsetDateTime":"{{ AL1.6.Value | format_as_date_time }}",
     },
     "request":{
