@@ -1,7 +1,7 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
-  "timestamp": "20190504181205",
+  "timestamp": "2019-05-04T18:12:05Z",
   "identifier": {
     "value": "1270326314"
   },
@@ -21,6 +21,10 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "A04",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -177,7 +181,6 @@
             "value": "1234"
           }
         ],
-        "status": "active",
         "subject": [
           {
             "reference": "Patient/f7a9494a-3fac-e0e1-78d8-d7c20410ca33"
@@ -255,10 +258,10 @@
         "status": "unknown",
         "location": [
           {
+            "status": "active",
             "location": {
               "reference": "Location/a821376a-5d7b-7274-8d95-a3f7c7efaf1b"
-            },
-            "status": "active"
+            }
           }
         ],
         "participant": [
@@ -318,6 +321,16 @@
       "request": {
         "method": "PUT",
         "url": "Encounter/99425718-6c7d-d427-2df3-db51299fdb0b"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
       }
     },
     {

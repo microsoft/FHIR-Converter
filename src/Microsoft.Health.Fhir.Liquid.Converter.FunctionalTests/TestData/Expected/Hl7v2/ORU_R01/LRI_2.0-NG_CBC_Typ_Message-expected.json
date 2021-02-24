@@ -1,7 +1,7 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
-  "timestamp": "20110531140551-0500",
+  "timestamp": "2011-06-01T03:05:51+08:00",
   "identifier": {
     "value": "NIST-LRI-NG-002.00"
   },
@@ -21,6 +21,10 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "R01",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -100,7 +104,6 @@
       "resource": {
         "resourceType": "Account",
         "id": "d89caeaa-3e83-1bc6-de48-869aade1d077",
-        "status": "active",
         "subject": [
           {
             "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
@@ -276,8 +279,7 @@
             ],
             "city": "Los Angeles",
             "state": "CA",
-            "postalCode": "90067",
-            "use": "B"
+            "postalCode": "90067"
           },
           {
             "line": [
@@ -285,8 +287,7 @@
             ],
             "city": "Los Angeles",
             "state": "CA",
-            "postalCode": "90067",
-            "use": "B"
+            "postalCode": "90067"
           }
         ]
       },
@@ -2673,6 +2674,9 @@
       "resource": {
         "resourceType": "Specimen",
         "id": "a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963",
+        "collection": {
+          "collectedDateTime": "2011-01-04T06:34:28+08:00"
+        },
         "type": {
           "coding": [
             {
@@ -2682,9 +2686,6 @@
             }
           ],
           "text": "Blood"
-        },
-        "collection": {
-          "collectedDateTime": "2011-01-04T06:34:28+08:00"
         }
       },
       "request": {

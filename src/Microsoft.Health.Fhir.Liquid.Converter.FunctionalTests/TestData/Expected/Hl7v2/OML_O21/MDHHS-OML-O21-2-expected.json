@@ -1,7 +1,7 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
-  "timestamp": "20160309103205-0500",
+  "timestamp": "2016-03-09T23:32:05+08:00",
   "identifier": {
     "value": "TC14IG030107AA"
   },
@@ -16,6 +16,7 @@
         },
         "destination": [
           {
+            "name": "LAN"
           }
         ],
         "meta": {
@@ -25,6 +26,10 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "O21",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -63,7 +68,7 @@
             "state": "MI",
             "postalCode": "48917",
             "country": "USA",
-            "use": "H"
+            "use": "home"
           }
         ],
         "telecom": [
@@ -245,7 +250,6 @@
       "resource": {
         "resourceType": "Account",
         "id": "6143ab70-4f28-7863-6edf-704abf375c8d",
-        "status": "active",
         "subject": [
           {
             "reference": "Patient/daed9284-6d12-ca12-4260-9aad09e1f201"
@@ -269,6 +273,27 @@
       "request": {
         "method": "PUT",
         "url": "Encounter/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization",
+        "address": [
+          {
+            "line": [
+              "2405 Garden St"
+            ],
+            "city": "Detroit",
+            "state": "MI",
+            "postalCode": "48201",
+            "country": "USA"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
       }
     },
     {
@@ -404,7 +429,6 @@
             "value": "R-783274"
           }
         ],
-        "status": "NW",
         "authoredOn": "2016-02-23T22:37:05+08:00",
         "occurrenceDateTime": "2016-02-23T22:47:05+08:00",
         "requester": {
@@ -565,6 +589,9 @@
       "resource": {
         "resourceType": "Specimen",
         "id": "92af9b9a-bcfc-b6f6-ce19-bf5bc7b28707",
+        "collection": {
+          "collectedDateTime": "2016-03-08T23:32:05+08:00"
+        },
         "type": {
           "coding": [
             {
@@ -584,10 +611,7 @@
               ]
             }
           }
-        ],
-        "collection": {
-          "collectedDateTime": "2016-03-08T23:32:05+08:00"
-        }
+        ]
       },
       "request": {
         "method": "PUT",

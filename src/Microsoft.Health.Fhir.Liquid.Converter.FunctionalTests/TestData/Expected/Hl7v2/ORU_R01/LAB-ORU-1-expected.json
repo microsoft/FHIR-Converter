@@ -1,7 +1,7 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
-  "timestamp": "201410060645",
+  "timestamp": "2014-10-06T06:45:00Z",
   "identifier": {
     "value": "182"
   },
@@ -123,11 +123,31 @@
             }
           ]
         },
-        "deceasedBoolean": "NO"
+        "deceasedBoolean": "false"
       },
       "request": {
         "method": "PUT",
         "url": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
       }
     },
     {
@@ -172,7 +192,6 @@
             }
           }
         ],
-        "status": "active",
         "subject": [
           {
             "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
@@ -271,6 +290,16 @@
       "request": {
         "method": "PUT",
         "url": "DiagnosticReport/abc9f629-6e71-5ca8-488e-283e73338943"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
       }
     },
     {
@@ -574,6 +603,9 @@
       "resource": {
         "resourceType": "Specimen",
         "id": "7c7cbbd6-4a47-b606-9d5b-dc2d6a03e663",
+        "collection": {
+          "collectedDateTime": "2014-10-06T05:35:00Z"
+        },
         "receivedTime": "2014-10-06T08:21:00Z",
         "identifier": [
           {
@@ -594,9 +626,6 @@
               "code": "BLD"
             }
           ]
-        },
-        "collection": {
-          "collectedDateTime": "2014-10-06T05:35:00Z"
         },
         "status": "available"
       },

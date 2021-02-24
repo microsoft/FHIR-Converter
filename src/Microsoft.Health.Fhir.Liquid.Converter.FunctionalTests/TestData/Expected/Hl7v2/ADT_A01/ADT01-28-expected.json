@@ -1,7 +1,7 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
-  "timestamp": "198808181126",
+  "timestamp": "1988-08-18T11:26:00Z",
   "identifier": {
     "value": "MSG00001"
   },
@@ -16,6 +16,7 @@
         },
         "destination": [
           {
+            "name": "GHH LAB, INC."
           }
         ],
         "meta": {
@@ -25,6 +26,10 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "A01",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -196,7 +201,6 @@
             }
           }
         ],
-        "status": "active",
         "subject": [
           {
             "reference": "Patient/d5fe6802-a680-e762-8f43-9659340b00ac"
@@ -274,10 +278,10 @@
         "status": "unknown",
         "location": [
           {
+            "status": "active",
             "location": {
               "reference": "Location/29eb5214-21d0-ed82-39f9-da4e50277c80"
-            },
-            "status": "active"
+            }
           }
         ],
         "hospitalization": {
@@ -321,6 +325,16 @@
       "request": {
         "method": "PUT",
         "url": "Encounter/8add615d-1d8a-1bf3-bffc-9bd789bee0a3"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
       }
     },
     {

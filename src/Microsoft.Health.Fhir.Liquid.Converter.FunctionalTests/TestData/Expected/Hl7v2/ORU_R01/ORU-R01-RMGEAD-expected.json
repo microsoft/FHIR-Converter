@@ -1,7 +1,7 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
-  "timestamp": "200202150930",
+  "timestamp": "2002-02-15T09:30:00Z",
   "identifier": {
     "value": "CNTRL-3456"
   },
@@ -16,6 +16,7 @@
         },
         "destination": [
           {
+            "name": "GHH OE"
           }
         ],
         "meta": {
@@ -25,6 +26,10 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "R01",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -148,7 +153,6 @@
             "value": "AC555444444"
           }
         ],
-        "status": "active",
         "subject": [
           {
             "reference": "Patient/92bee074-a5c5-3c79-1905-2ed380528150"
@@ -221,6 +225,16 @@
     {
       "fullUrl": "urn:uuid:",
       "resource": {
+        "resourceType": "Organization"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
         "resourceType": "PractitionerRole"
       },
       "request": {
@@ -255,6 +269,7 @@
         "valueQuantity": {
           "unit": "mg/dl"
         },
+        "valueString": "  ",
         "interpretation": [
           {
             "coding": [
@@ -281,6 +296,7 @@
             "valueQuantity": {
               "unit": "mg/dl"
             },
+            "valueString": "  ",
             "referenceRange": [
               {
                 "text": "70_105"

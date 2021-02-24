@@ -1,7 +1,7 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
-  "timestamp": "20150624084727.655-0500",
+  "timestamp": "2015-06-24T21:47:27.655+08:00",
   "identifier": {
     "value": "NIST-IZ-AD-2.1_Send_V04_Z22"
   },
@@ -16,6 +16,7 @@
         },
         "destination": [
           {
+            "name": "NISTIISAPP"
           }
         ],
         "meta": {
@@ -25,6 +26,10 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "V04",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -278,7 +283,6 @@
       "resource": {
         "resourceType": "Account",
         "id": "99ce28f5-c743-ed2e-b88e-47f2e32d23d5",
-        "status": "active",
         "subject": [
           {
             "reference": "Patient/8dc947ee-0db3-5fa2-04bb-16fd7680cfbe"
@@ -402,6 +406,16 @@
       "request": {
         "method": "PUT",
         "url": "Organization/1d6edd62-0051-4efa-bc0b-db345da54f10"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
       }
     },
     {
