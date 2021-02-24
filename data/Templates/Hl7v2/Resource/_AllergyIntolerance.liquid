@@ -15,7 +15,7 @@
         "reaction":
         [
             {
-                {% if AL1.4.Value != "U" -%}
+                {% if AL1.4.1.Value != "U" -%}
                 "severity":"{{ AL1.4.1.Value | get_property: 'CodeSystem/AllergyIntoleranceSeverity', 'code' }}",
                 {% endif -%}
                 "manifestation":
