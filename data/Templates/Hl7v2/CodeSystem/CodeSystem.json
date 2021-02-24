@@ -1,2697 +1,3179 @@
 {
-    "resourceType": "Bundle",
-    "type": "batch",
-    "timestamp": "2011-06-01T03:05:51+08:00",
-    "identifier": {
-      "value": "NIST-LRI-NG-002.00"
-    },
-    "entry": [
-      {
-        "fullUrl": "urn:uuid:15cde54f-eadb-4bee-fe4c-0e8dbe4f4959",
-        "resource": {
-          "resourceType": "MessageHeader",
-          "id": "15cde54f-eadb-4bee-fe4c-0e8dbe4f4959",
-          "source": {
-            "name": "NIST Test Lab APP"
-          },
-          "meta": {
-            "tag": [
-              {
-                "code": "T",
-                "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-              }
-            ]
-          },
-          "eventCoding": {
-            "code": "R01",
-            "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "MessageHeader/15cde54f-eadb-4bee-fe4c-0e8dbe4f4959"
+    "Mapping": {
+        "CodeSystem/EncounterType": {
+            "C": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }, 
+            "B": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }, 
+            "E": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }, 
+            "I": {
+                "code": "unknown", 
+                "display": "", 
+                "system": ""
+            }, 
+            "O": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }, 
+            "N": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "planned", 
+                "display": "", 
+                "system": ""
+            }, 
+            "R": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "in-progress", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/UniversalIDType": {
+            "x500": {
+                "code": "x500", 
+                "display": "An X.500 directory name", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "DNS": {
+                "code": "DNS", 
+                "display": "An Internet host name, in accordance with RFC 1035; or an IP address. Either in ASCII or as integers, with periods between components (\u201cdotted\u201d notation).", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "CLIP": {
+                "code": "CLIP", 
+                "display": "Clinical laboratory Improvement Program. Allows for the ability to designate organization identifier as a \u201cCLIP\u201d assigned number (for labs). Used by US Department of Defense.", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "HL7": {
+                "code": "HL7", 
+                "display": "HL7 registration schemes", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "Random": {
+                "code": "Random", 
+                "display": "Usually a base64 encoded string of random bits. Note: Random IDs are typically used for instance identifiers, rather than an identifier of an Assigning Authority that issues instance identifiers", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "URI": {
+                "code": "URI", 
+                "display": "Uniform Resource Identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "x400": {
+                "code": "x400", 
+                "display": "An X.400 MHS identifier. Recommended format is in accordance with RFC 1649", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "ISO": {
+                "code": "ISO", 
+                "display": "An International Standards Organization Object Identifier (OID), in accordance with ISO/IEC 8824. Formatted as decimal digits separated by periods; recommended limit of 64 characters", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "HCD": {
+                "code": "HCD", 
+                "display": "The CEN Healthcare Coding Scheme Designator", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "CLIA": {
+                "code": "CLIA", 
+                "display": "Clinical Laboratory Improvement Amendments. Allows for the ability to designate organization identifier as a \u201cCLIA\u201d assigned number (for labs)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "EUI64": {
+                "code": "EUI64", 
+                "display": "IEEE 64-bit Extended Unique Identifier is comprised of a 24-bit company identifier and a 40-bit instance identifier. The value shall be formatted as 16 ASCII HEX digits, for example, \u201cAABBCC1122334455\u201d. The 24-bit company identifier, formally known as Organizationally Unique Identifier (OUI-24), is guaranteed to be globally unique. The 40-bit extensions are assigned by manufacturers. This identifier is often used in equipment interfaces (e.g., \u201cMAC\u201d address format for IPv4 & IPv6). [See http://standards.ieee.org/regauth/oui/tutorials/EUI64.html for a detailed explanation of the format.]", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "GUID": {
+                "code": "GUID", 
+                "display": "Same as UUID.", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }, 
+            "UUID": {
+                "code": "UUID", 
+                "display": "The DCE Universal Unique Identifier, in accordance with RFC 4122. Recommended format is 32 hexadecimal digits separated by hyphens, in the digit grouping 8-4-4-4-12", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+            }
+        }, 
+        "CodeSystem/ModeofArrival": {
+            "A": {
+                "code": "A", 
+                "display": "Ambulance", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }, 
+            "C": {
+                "code": "C", 
+                "display": "Car", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "On foot", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }, 
+            "H": {
+                "code": "H", 
+                "display": "Helicopter", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }, 
+            "O": {
+                "code": "O", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }, 
+            "P": {
+                "code": "P", 
+                "display": "Public Transport", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Unknown", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+            }
+        }, 
+        "CodeSystem/Religion": {}, 
+        "CodeSystem/AccessRestrictionValue": {
+            "JurisCUI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "LOC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAROACD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OPTIN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PersNSI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "42CFRPart2CD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "42CFRPart2": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PersPI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRPUBLICHEALTH": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRLEGALOBL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DEM": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAConsentCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SMD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgLDS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DRG": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgIP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OPTOUTE": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JurisUUI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JurisPI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIV": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NO": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRCONSENT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgDEID": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRVITALINTEREST": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAConsent": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "IMPLIEDD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JurisNSI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAAuth": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgPI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JurisIP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAResearchAuthCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgCUI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRCONTRACT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "COMMONRULE": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "STD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JurisDEID": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAPsyNotes": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GRANTORCHOICE": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRRESEARCH": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "EMRGONLY": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PersIP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAANOPP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRResearchCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "Title38Section7332": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRPUBLICINTEREST": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "IMPLIED": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRHLTHSOCSY": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgNSI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRLEGALCLAIM": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JurisLDS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAAuthCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OPTINR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAAROA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OO": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ALL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OrgUUI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NOCONSENT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PersDEID": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OPTOUT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PersLDS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NOPP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OIC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CompoundResearchCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PSY": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GDPRLEGITINTEREST": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OOS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OOC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OIS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HIPAASelfPay": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/EncounterPriority": {
+            "1": {
+                "code": "EM", 
+                "display": "emergency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActPriority"
+            }, 
+            "3": {
+                "code": "EL", 
+                "display": "elective", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActPriority"
+            }, 
+            "2": {
+                "code": "UR", 
+                "display": "urgent", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActPriority"
+            }
+        }, 
+        "CodeSystem/AddressType": {
+            "C": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "B": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "BA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "F": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "BDL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "V": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "M": {
+                "code": "postal", 
+                "display": "Postal", 
+                "system": "http://hl7.org/fhir/address-type"
+            }, 
+            "BI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "O": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "N": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "S": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SH": {
+                "code": "postal", 
+                "display": "Postal", 
+                "system": "http://hl7.org/fhir/address-type"
+            }, 
+            "BR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "H": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RH": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "TM": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "L": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/AddressUse": {
+            "H": {
+                "code": "home", 
+                "display": "Home", 
+                "system": ""
+            }, 
+            "BI": {
+                "code": "billing", 
+                "display": "Billing", 
+                "system": ""
+            },
+            "__default__": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/OrderType": {
+            "I": {
+                "code": "HOSP", 
+                "display": "Hospital", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "O": {
+                "code": "OF", 
+                "display": "Outpatient facility", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }
+        }, 
+        "CodeSystem/ValueType": {
+            "EIP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DIN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SNM": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "FT": {
+                "code": "valueString", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DTN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DTM": {
+                "code": "valueDateTime", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RFR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "JCC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CCP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "VH": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CNN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "FC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ERL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DT": {
+                "code": "valueDateTime", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ST": {
+                "code": "valueString", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DR": {
+                "code": "valuePeriod", 
+                "display": "", 
+                "system": ""
+            }, 
+            "LA1": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "HD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "XPN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NM": {
+                "code": "valueInteger or valueQuantity", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PPN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PTA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RMC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "TM": {
+                "code": "valueTime", 
+                "display": "", 
+                "system": ""
+            }, 
+            "LA2": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "TX": {
+                "code": "valueString", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PIP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NR": {
+                "code": "valueRange", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SCV": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SPD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "QIP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "XAD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "QSC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "EI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NDL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ICD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DLD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "AUI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ED": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "IS": {
+                "code": "valueCodeableConcept", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CF": {
+                "code": "valueCodeableConcept", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DLN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DDI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CX": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SRT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "DLT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CSU": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "XTN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GTS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CWE": {
+                "code": "valueCodeableConcept", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RPT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OCD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "WVS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "UVC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PRL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "VID": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MO": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MOP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "XCN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "VR": {
+                "code": "valueRange", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CNE": {
+                "code": "valueCodeableConcept", 
+                "display": "", 
+                "system": ""
+            }, 
+            "WVI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SN": {
+                "code": "valueInteger, valueRange or valueRatio", 
+                "display": "", 
+                "system": ""
+            }, 
+            "OSP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MOC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PLN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "XON": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MSG": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/CollectionMethodModifier": {
+            "R": {
+                "code": "COOL", 
+                "display": "Cool", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            }, 
+            "F": {
+                "code": "FROZ", 
+                "display": "Frozen", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            }
+        }, 
+        "CodeSystem/Operation": {
+            "A": {
+                "code": "POST", 
+                "display": "Create", 
+                "system": ""
+            }, 
+            "X": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "PATCH", 
+                "display": "", 
+                "system": ""
+            }, 
+            "D": {
+                "code": "DELETE", 
+                "display": "Delete", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/ReadmissionIndicator": {
+            "R": {
+                "code": "R", 
+                "display": "Re-admission", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0092"
+            }
+        }, 
+        "CodeSystem/CodeSystemUrl": {
+            "I9": {
+                "system": "http://hl7.org/fhir/sid/icd-9-cm"
+            }, 
+            "LN": {
+                "system": "http://loinc.org"
+            }, 
+            "SNM": {
+                "system": "http://snomed.info/sct"
+            }, 
+            "I10": {
+                "system": "http://hl7.org/fhir/sid/icd-10"
+            }
+        }, 
+        "CodeSystem/SpecimenAvailability": {
+            "Y": {
+                "code": "available", 
+                "display": "Available", 
+                "system": "http://hl7.org/fhir/specimen-status"
+            }, 
+            "N": {
+                "code": "unavailable", 
+                "display": "Unavailable", 
+                "system": "http://hl7.org/fhir/specimen-status"
+            }
+        }, 
+        "CodeSystem/SecurityLabelHandlingInstructions": {}, 
+        "CodeSystem/Yes_No": {
+            "Y": {
+                "code": "true", 
+                "display": "", 
+                "system": ""
+            }, 
+            "N": {
+                "code": "false", 
+                "display": "", 
+                "system": ""
+            }, 
+            "__default__": {
+                "code": "false",
+                "display": "",
+                "system": ""
+            }
+        }, 
+        "CodeSystem/Language": {}, 
+        "CodeSystem/OrderStatus": {
+            "RP": {
+                "code": "revoked", 
+                "display": "Revoked", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "CM": {
+                "code": "completed", 
+                "display": "Completed", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "IP": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "CA": {
+                "code": "revoked", 
+                "display": "Revoked", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "DC": {
+                "code": "revoked", 
+                "display": "Revoked", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "SC": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "HD": {
+                "code": "on-hold", 
+                "display": "On Hold", 
+                "system": "http://hl7.org/fhir/request-status"
+            }, 
+            "ER": {
+                "code": "entered-in-error", 
+                "display": "Entered in Error", 
+                "system": "http://hl7.org/fhir/request-status"
+            }
+        }, 
+        "CodeSystem/Relationship": {
+            "EXF": {
+                "code": "EXT", 
+                "display": "extended family member", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "SIS": {
+                "code": "SIS", 
+                "display": "sister", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "PAR": {
+                "code": "PRN", 
+                "display": "parent", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "OAD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "EMC": {
+                "code": "C", 
+                "display": "Emergency Contact", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "DOM": {
+                "code": "SIGOTHR", 
+                "display": "significant other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "DEP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "C": {
+                "code": "C", 
+                "display": "Emergency Contact", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "SIB": {
+                "code": "SIB", 
+                "display": "sibling", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "FND": {
+                "code": "FRND", 
+                "display": "unrelated friend", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "EMR": {
+                "code": "E", 
+                "display": "Employer", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "E": {
+                "code": "E", 
+                "display": "Employer", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "S": {
+                "code": "S", 
+                "display": "State Agency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "NCH": {
+                "code": "NCHILD", 
+                "display": "natural child", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "OWN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "SCH": {
+                "code": "STPCHLD", 
+                "display": "step child", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "ASC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "I": {
+                "code": "I", 
+                "display": "Insurance Company", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "SPO": {
+                "code": "SPS", 
+                "display": "spouse", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "FCH": {
+                "code": "CHLDFOST", 
+                "display": "foster child", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "SEL": {
+                "code": "ONESELF", 
+                "display": "self", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "CGV": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "WRD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "CHD": {
+                "code": "CHILD", 
+                "display": "child", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "GRP": {
+                "code": "GRPRN", 
+                "display": "grandparent", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "Federal Agency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "TRA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "GCH": {
+                "code": "GRNDCHILD", 
+                "display": "grandchild", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "O": {
+                "code": "O", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "N": {
+                "code": "N", 
+                "display": "Next-of-Kin", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "GRD": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Unknown", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "FTH": {
+                "code": "FTH", 
+                "display": "father", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "UNK": {
+                "code": "U", 
+                "display": "Unknown", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "OTH": {
+                "code": "O", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "NON": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "EME": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MTH": {
+                "code": "MTH", 
+                "display": "mother", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "BRO": {
+                "code": "BRO", 
+                "display": "brother", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "MGR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/Priority": {
+            "A": {
+                "code": "asap", 
+                "display": "ASAP", 
+                "system": "http://hl7.org/fhir/request-priority"
+            }, 
+            "C": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PRN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "S": {
+                "code": "stat", 
+                "display": "STAT", 
+                "system": "http://hl7.org/fhir/request-priority"
+            }, 
+            "R": {
+                "code": "routine", 
+                "display": "Routine", 
+                "system": "http://hl7.org/fhir/request-priority"
+            }, 
+            "T": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/Countries": {}, 
+        "CodeSystem/NameType": {
+            "BAD": {
+                "code": "old", 
+                "display": "Old", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "MSK": {
+                "code": "anonymous", 
+                "display": "Anonymous", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "REL": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "TEMP": {
+                "code": "temp", 
+                "display": "Temp", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "NB": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NOUSE": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "A": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "C": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "B": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "D": {
+                "code": "usual", 
+                "display": "Usual", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "F": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "I": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "K": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "M": {
+                "code": "maiden", 
+                "display": "Maiden", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "L": {
+                "code": "official", 
+                "display": "Official", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "N": {
+                "code": "nickname", 
+                "display": "Nickname", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "P": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "S": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "R": {
+                "code": "official", 
+                "display": "Official", 
+                "system": "http://hl7.org/fhir/name-use"
+            }, 
+            "U": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "T": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NAV": {
+                "code": "temp", 
+                "display": "temp", 
+                "system": "http://hl7.org/fhir/name-use"
+            }
+        }, 
+        "CodeSystem/SegmentActionCode": {
+            "A": {
+                "code": "POST", 
+                "display": "Create", 
+                "system": ""
+            }, 
+            "X": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "PATCH", 
+                "display": "", 
+                "system": ""
+            }, 
+            "D": {
+                "code": "DELETE", 
+                "display": "Delete", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/PreferredMethodofContact": {
+            "C": {
+                "code": "C", 
+                "display": "Cellular Phone Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0185"
+            }, 
+            "B": {
+                "code": "B", 
+                "display": "Beeper Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0185"
+            }, 
+            "E": {
+                "code": "E", 
+                "display": "E-Mail Address (for backward compatibility)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0185"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "FAX Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0185"
+            }, 
+            "H": {
+                "code": "H", 
+                "display": "Home Phone Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0185"
+            }, 
+            "O": {
+                "code": "O", 
+                "display": "Office Phone Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0185"
+            }
+        }, 
+        "CodeSystem/AdmissionType": {
+            "A": {
+                "code": "A", 
+                "display": "Accident", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }, 
+            "C": {
+                "code": "C", 
+                "display": "Elective", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }, 
+            "E": {
+                "code": "E", 
+                "display": "Emergency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }, 
+            "L": {
+                "code": "L", 
+                "display": "Labor and Delivery", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }, 
+            "N": {
+                "code": "N", 
+                "display": "Newborn (Birth in healthcare facility)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }, 
+            "R": {
+                "code": "R", 
+                "display": "Routine", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Urgent", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0007"
+            }
+        }, 
+        "CodeSystem/ContactRole": {
+            "C": {
+                "code": "C", 
+                "display": "Emergency Contact", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "E": {
+                "code": "E", 
+                "display": "Employer", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "Federal Agency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "I": {
+                "code": "I", 
+                "display": "Insurance Company", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "O": {
+                "code": "O", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "N": {
+                "code": "N", 
+                "display": "Next-of-Kin", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "S": {
+                "code": "S", 
+                "display": "State Agency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Unknown", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }
+        }, 
+        "CodeSystem/DurationUnit": {}, 
+        "CodeSystem/AllergyType": {
+            "AA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }, 
+            "MA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }, 
+            "MC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "LA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }, 
+            "EA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }, 
+            "DA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }, 
+            "FA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }, 
+            "PA": {
+                "code": "allergy", 
+                "display": "Allergy", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-type"
+            }
+        }, 
+        "CodeSystem/Role": {
+            "DP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RT": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RP": {
+                "code": "REF", 
+                "display": "referrer", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+            }, 
+            "VPS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "TR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "TN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "FHCP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MDIR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PH": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RO": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "AD": {
+                "code": "ADM", 
+                "display": "admitter", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+            }, 
+            "AI": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "IP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "VP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "AP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "VTS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "AT": {
+                "code": "ATND", 
+                "display": "attender", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+            }, 
+            "CP": {
+                "code": "CON", 
+                "display": "consultant", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+            }, 
+            "CLP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "EP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PI": {
+                "code": "translator", 
+                "display": "Translator", 
+                "system": "http://terminology.hl7.org/CodeSystem/participant-type"
+            }, 
+            "OP": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/ConsentStatus": {
+            "A": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/consent-state-codes"
+            }, 
+            "B": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "L": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/consent-state-codes"
+            }, 
+            "P": {
+                "code": "proposed", 
+                "display": "Proposed", 
+                "system": "http://hl7.org/fhir/consent-state-codes"
+            }, 
+            "R": {
+                "code": "rejected", 
+                "display": "Rejected", 
+                "system": "http://hl7.org/fhir/consent-state-codes"
+            }, 
+            "X": {
+                "code": "inactive", 
+                "display": "Inactivated", 
+                "system": "http://hl7.org/fhir/consent-state-codes"
+            }
+        }, 
+        "CodeSystem/StudentStatus": {
+            "P": {
+                "code": "P", 
+                "display": "Part-time student", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0231"
+            }, 
+            "N": {
+                "code": "N", 
+                "display": "Not a student", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0231"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "Full-time student", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0231"
+            }
+        }, 
+        "CodeSystem/Acknowledgements": {
+            "ER": {
+                "code": "on-error", 
+                "display": "Error/reject conditions only", 
+                "system": "http://hl7.org/fhir/messageheader-response-request"
+            }, 
+            "AL": {
+                "code": "always", 
+                "display": "Always", 
+                "system": "http://hl7.org/fhir/messageheader-response-request"
+            }, 
+            "SU": {
+                "code": "on-success", 
+                "display": "Successful completion only", 
+                "system": "http://hl7.org/fhir/messageheader-response-request"
+            }, 
+            "NE": {
+                "code": "never", 
+                "display": "Never", 
+                "system": "http://hl7.org/fhir/messageheader-response-request"
+            }
+        }, 
+        "CodeSystem/CompletionStatus": {
+            "RE": {
+                "code": "not-done", 
+                "display": "Not Done", 
+                "system": "http://hl7.org/fhir/event-status"
+            }, 
+            "CP": {
+                "code": "completed", 
+                "display": "Completed", 
+                "system": "http://hl7.org/fhir/event-status"
+            }, 
+            "PA": {
+                "code": "completed", 
+                "display": "Completed", 
+                "system": "http://hl7.org/fhir/event-status"
+            }, 
+            "NA": {
+                "code": "not-done", 
+                "display": "Not Done", 
+                "system": "http://hl7.org/fhir/event-status"
+            }
+        }, 
+        "CodeSystem/OrganizationUnitType": {
+            "H": {
+                "code": "H", 
+                "display": "Home", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }, 
+            "O": {
+                "code": "O", 
+                "display": "Office", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }, 
+            "1": {
+                "code": "1", 
+                "display": "Hospital", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }, 
+            "3": {
+                "code": "3", 
+                "display": "Long Term Care", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }, 
+            "2": {
+                "code": "2", 
+                "display": "Physician Clinic", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }, 
+            "5": {
+                "code": "5", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }, 
+            "4": {
+                "code": "4", 
+                "display": "Acute Care", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0406"
+            }
+        }, 
+        "CodeSystem/TelecomUseCode": {
+            "PRN": {
+                "code": "home", 
+                "display": "Home", 
+                "system": "http://hl7.org/fhir/contact-point-use"
+            }, 
+            "BPN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ORN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "WPN": {
+                "code": "work", 
+                "display": "Work", 
+                "system": "http://hl7.org/fhir/contact-point-use"
+            }, 
+            "VHN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "PRS": {
+                "code": "mobile", 
+                "display": "Mobile", 
+                "system": "http://hl7.org/fhir/contact-point-use"
+            }, 
+            "EMR": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NET": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "ASN": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/InterpretationCode": {
+            "AA": {
+                "code": "AA", 
+                "display": "Critical abnormal", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "TOX": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "W": {
+                "code": "W", 
+                "display": "Worse", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "CAR": {
+                "code": "CAR", 
+                "display": "Carrier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "DET": {
+                "code": "DET", 
+                "display": "Detected", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "HU": {
+                "code": "HU", 
+                "display": "Significantly high", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "HH": {
+                "code": "HH", 
+                "display": "Critical high", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "QCF": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "EXP": {
+                "code": "EXP", 
+                "display": "Expected", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "HM": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "null": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "RR": {
+                "code": "RR", 
+                "display": "Reactive", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "LL": {
+                "code": "LL", 
+                "display": "Critical low", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "ND": {
+                "code": "ND", 
+                "display": "Not detected", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "POS": {
+                "code": "POS", 
+                "display": "Positive", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "LU": {
+                "code": "LU", 
+                "display": "Significantly low", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "NEG": {
+                "code": "NEG", 
+                "display": "Negative", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "NR": {
+                "code": "NR", 
+                "display": "Non-reactive", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "NS": {
+                "code": "NS", 
+                "display": "Non-susceptible", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "A": {
+                "code": "A", 
+                "display": "Abnormal", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "AC": {
+                "code": "AC", 
+                "display": "Anti-complementary substances present", 
+                "system": "Get the pattern/value"
+            }, 
+            "B": {
+                "code": "B", 
+                "display": "Better", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "E": {
+                "code": "E", 
+                "display": "Equivocal", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "D": {
+                "code": "D", 
+                "display": "Significant change down", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "I": {
+                "code": "I", 
+                "display": "Intermediate", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "H": {
+                "code": "H", 
+                "display": "High", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "L": {
+                "code": "L", 
+                "display": "Low", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "N": {
+                "code": "N", 
+                "display": "Normal", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "S": {
+                "code": "S", 
+                "display": "Susceptible", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "R": {
+                "code": "R", 
+                "display": "Resistant", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Significant change up", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "EX": {
+                "code": "EX", 
+                "display": "outside threshold", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "OBX": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "IE": {
+                "code": "IE", 
+                "display": "Insufficient evidence", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "WR": {
+                "code": "WR", 
+                "display": "Weakly reactive", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "SDD": {
+                "code": "SDD", 
+                "display": "Susceptible-dose dependent", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "VS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "NCL": {
+                "code": "NCL", 
+                "display": "No CLSI defined breakpoint", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "MS": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "IND": {
+                "code": "IND", 
+                "display": "Indeterminate", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }, 
+            "UNE": {
+                "code": "UNE", 
+                "display": "Unexpected", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+            }
+        }, 
+        "CodeSystem/ObservationStatus": {
+            "A": {
+                "code": "ammended", 
+                "display": "Ammended", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "C": {
+                "code": "corrected", 
+                "display": "Corrected", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "B": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "D": {
+                "code": "entered-in-error", 
+                "display": "Entered in Error", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "F": {
+                "code": "final", 
+                "display": "Final", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "I": {
+                "code": "", 
+                "display": "Registered", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "O": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "N": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "preliminary", 
+                "display": "Preliminary", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "S": {
+                "code": "preliminary", 
+                "display": "Preliminary", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "R": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "W": {
+                "code": "entered-in-error", 
+                "display": "Entered in Error", 
+                "system": "http://hl7.org/fhir/observation-status"
+            }, 
+            "V": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "X": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/AccessRestrictionReasonCode": {}, 
+        "CodeSystem/AllergyCategory": {
+            "AA": {
+                "code": "environment", 
+                "display": "Environment", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-category"
+            }, 
+            "MA": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "MC": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "LA": {
+                "code": "environment", 
+                "display": "Environment", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-category"
+            }, 
+            "EA": {
+                "code": "environment", 
+                "display": "Environment", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-category"
+            }, 
+            "DA": {
+                "code": "medication", 
+                "display": "Medication", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-category"
+            }, 
+            "FA": {
+                "code": "food", 
+                "display": "Food", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-category"
+            }, 
+            "PA": {
+                "code": "environment", 
+                "display": "Environment", 
+                "system": "http://hl7.org/fhir/allergy-intolerance-category"
+            }
+        }, 
+        "CodeSystem/NameAssemblyOrder": {
+            "G": {
+                "code": "G", 
+                "display": "Prefix Given Family Suffix", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0444"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "Prefix Family Given Suffix", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0444"
+            }
+        }, 
+        "CodeSystem/MaritalStatus": {
+            "A": {
+                "code": "L", 
+                "display": "Legally Separated", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "C": {
+                "code": "C", 
+                "display": "Common Law", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "B": {
+                "code": "U", 
+                "display": "unmarried", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "E": {
+                "code": "L", 
+                "display": "Legally Separated", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "D": {
+                "code": "D", 
+                "display": "Divorced", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "G": {
+                "code": "T", 
+                "display": "Domestic partner", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "I": {
+                "code": "I", 
+                "display": "Interlocutory", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "M": {
+                "code": "M", 
+                "display": "Married", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "O": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "N": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "T", 
+                "display": "Domestic partner", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "S": {
+                "code": "S", 
+                "display": "Never Married", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "R": {
+                "code": "T", 
+                "display": "Domestic partner", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }, 
+            "U": {
+                "code": "UNK", 
+                "display": "unknown", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-NullFlavor"
+            }, 
+            "T": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "W": {
+                "code": "W", 
+                "display": "Widowed", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            }
+        }, 
+        "CodeSystem/Gender": {
+            "A": {
+                "code": "other", 
+                "display": "Other", 
+                "system": "http://hl7.org/fhir/administrative-gender"
+            }, 
+            "F": {
+                "code": "female", 
+                "display": "Female", 
+                "system": "http://hl7.org/fhir/administrative-gender"
+            }, 
+            "M": {
+                "code": "male", 
+                "display": "Male", 
+                "system": "http://hl7.org/fhir/administrative-gender"
+            }, 
+            "O": {
+                "code": "other", 
+                "display": "Other", 
+                "system": "http://hl7.org/fhir/administrative-gender"
+            }, 
+            "N": {
+                "code": "other", 
+                "display": "Other", 
+                "system": "http://hl7.org/fhir/administrative-gender"
+            }, 
+            "U": {
+                "code": "unknown", 
+                "display": "Unknown", 
+                "system": "http://hl7.org/fhir/administrative-gender"
+            }
+        }, 
+        "CodeSystem/ConfidentialityClassification": {}, 
+        "CodeSystem/EncounterClass": {
+            "C": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "B": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "E": {
+                "code": "EMER", 
+                "display": "emergency", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+            }, 
+            "I": {
+                "code": "IMP", 
+                "display": "inpatient encounter", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+            }, 
+            "O": {
+                "code": "AMB", 
+                "display": "ambulatory", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+            }, 
+            "N": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "PRENC", 
+                "display": "pre-admission", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+            }, 
+            "R": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/LivingWill": {
+            "Y": {
+                "code": "Y", 
+                "display": "Yes, patient has a living will", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0315"
+            }, 
+            "I": {
+                "code": "I", 
+                "display": "No, patient does not have a living will but information was provided", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0315"
+            }, 
+            "N": {
+                "code": "N", 
+                "display": "No, patient does not have a living will and no information was provided", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0315"
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Unknown", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0315"
+            }, 
+            "F": {
+                "code": "F", 
+                "display": "Yes, patient has a living will but it is not on file", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0315"
+            }
+        }, 
+        "CodeSystem/ResultStatus": {
+            "A": {
+                "code": "partial", 
+                "display": "Partial", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "C": {
+                "code": "corrected", 
+                "display": "Corrected", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "F": {
+                "code": "final", 
+                "display": "Final", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "I": {
+                "code": "registered", 
+                "display": "Registered", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "O": {
+                "code": "registered", 
+                "display": "Registered", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "P": {
+                "code": "preliminary", 
+                "display": "Preliminary", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "S": {
+                "code": "registered", 
+                "display": "Registered", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "R": {
+                "code": "partial", 
+                "display": "Partial", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "Y": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "X": {
+                "code": "cancelled", 
+                "display": "Cancelled", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "Z": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
+        "CodeSystem/ConsentRelationship": {
+            "3": {
+                "code": "N", 
+                "display": "Next-of-Kin", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "2": {
+                "code": "PRN", 
+                "display": "Parent", 
+                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+            }, 
+            "5": {
+                "code": "O", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }, 
+            "4": {
+                "code": "O", 
+                "display": "Other", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+            }
+        }, 
+        "CodeSystem/IDType": {
+            "WC": {
+                "code": "WC", 
+                "display": "WIC identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "BA": {
+                "code": "BA", 
+                "display": "Bank Account Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "BC": {
+                "code": "BC", 
+                "display": "Bank Card Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "BR": {
+                "code": "BR", 
+                "display": "Birth registry number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "SID": {
+                "code": "SID", 
+                "display": "Specimen ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "CONM": {
+                "code": "CONM", 
+                "display": "Change of Name Document", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PRC": {
+                "code": "PRC", 
+                "display": "Permanent Resident Card Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PC": {
+                "code": "PC", 
+                "display": "Parole Card", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PRN": {
+                "code": "PRN", 
+                "display": "Provider number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "TAX": {
+                "code": "TAX", 
+                "display": "Tax ID number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "RN": {
+                "code": "RN", 
+                "display": "Registered Nurse Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "XX": {
+                "code": "XX", 
+                "display": "Organization identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "RI": {
+                "code": "RI", 
+                "display": "Resource identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MRT": {
+                "code": "MRT", 
+                "display": "Temporary Medical Record Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "APRN": {
+                "code": "APRN", 
+                "display": "Advanced Practice Registered Nurse number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "LACSN": {
+                "code": "LACSN", 
+                "display": "Laboratory Accession ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "TPR": {
+                "code": "TPR", 
+                "display": "Temporary Permanent Resident (Canada)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "GN": {
+                "code": "GN", 
+                "display": "Guarantor external identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "GL": {
+                "code": "GL", 
+                "display": "General ledger number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "GI": {
+                "code": "GI", 
+                "display": "Guarantor internal identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NII": {
+                "code": "NII", 
+                "display": "National Insurance Organization Identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NPI": {
+                "code": "NPI", 
+                "display": "National provider identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "OD": {
+                "code": "OD", 
+                "display": "Optometrist license number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "SP": {
+                "code": "SP", 
+                "display": "Study Permit", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "WP": {
+                "code": "WP", 
+                "display": "Work Permit", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PCN": {
+                "code": "PCN", 
+                "display": "Penitentiary/correctional institution Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DEA": {
+                "code": "DEA", 
+                "display": "Drug Enforcement Administration registration number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PT": {
+                "code": "PT", 
+                "display": "Patient external identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "BRN": {
+                "code": "BRN", 
+                "display": "Breed Registry Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "AMA": {
+                "code": "AMA", 
+                "display": "American Medical Association Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NNxxx": {
+                "code": "NNxxx", 
+                "display": "National Person Identifier where the xxx is the ISO table 3166 3-character (alphabetic) country code", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PA": {
+                "code": "PA", 
+                "display": "Physician Assistant number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PE": {
+                "code": "PE", 
+                "display": "Living Subject Enterprise Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PI": {
+                "code": "PI", 
+                "display": "Patient internal identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PN": {
+                "code": "PN", 
+                "display": "Person number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "EN": {
+                "code": "EN", 
+                "display": "Employer number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "EI": {
+                "code": "EI", 
+                "display": "Employee number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DDS": {
+                "code": "DDS", 
+                "display": "Dentist license number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "AND": {
+                "code": "AND", 
+                "display": "Account number debitor", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MD": {
+                "code": "MD", 
+                "display": "Medical License number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MA": {
+                "code": "MA", 
+                "display": "Patient Medicaid number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "RR": {
+                "code": "RR", 
+                "display": "Railroad Retirement number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MC": {
+                "code": "MC", 
+                "display": "Patient\u2019s Medicare number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "ANC": {
+                "code": "ANC", 
+                "display": "Account number Creditor", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MI": {
+                "code": "MI", 
+                "display": "Military ID number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "ANT": {
+                "code": "ANT", 
+                "display": "Temporary Account Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "ANON": {
+                "code": "ANON", 
+                "display": "Anonymous identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MS": {
+                "code": "MS", 
+                "display": "MasterCard", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MR": {
+                "code": "MR", 
+                "display": "Medical record number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "IND": {
+                "code": "IND", 
+                "display": "Indigenous/Aboriginal", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "UPIN": {
+                "code": "UPIN", 
+                "display": "Medicare/CMS (formerly HCFA)\u2019s Universal Physician Identification numbers", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PEN": {
+                "code": "PEN", 
+                "display": "Pension Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "BCT": {
+                "code": "BCT", 
+                "display": "Birth Certificate", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "FI": {
+                "code": "FI", 
+                "display": "Facility ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NH": {
+                "code": "NH", 
+                "display": "National Health Plan Identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NI": {
+                "code": "NI", 
+                "display": "National unique individual identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "RRI": {
+                "code": "RRI", 
+                "display": "Regional registry ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NE": {
+                "code": "NE", 
+                "display": "National employer identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "LANR": {
+                "code": "LANR", 
+                "display": "Lifelong physician number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NP": {
+                "code": "NP", 
+                "display": "Nurse practitioner number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "RRP": {
+                "code": "RRP", 
+                "display": "Railroad Retirement Provider", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "CC": {
+                "code": "CC", 
+                "display": "Cost Center number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "CZ": {
+                "code": "CZ", 
+                "display": "Citizenship Card", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "CY": {
+                "code": "CY", 
+                "display": "County number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DFN": {
+                "code": "DFN", 
+                "display": "Drug Furnishing or prescriptive authority Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "SS": {
+                "code": "SS", 
+                "display": "Social Security number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "SR": {
+                "code": "SR", 
+                "display": "State registry ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MB": {
+                "code": "MB", 
+                "display": "Member Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PPIN": {
+                "code": "PPIN", 
+                "display": "Medicare/CMS Performing Provider Identification Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NIIP": {
+                "code": "NIIP", 
+                "display": "National Insurance Payor Identifier (Payor)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "SN": {
+                "code": "SN", 
+                "display": "Subscriber Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "SL": {
+                "code": "SL", 
+                "display": "State license", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DN": {
+                "code": "DN", 
+                "display": "Doctor number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DO": {
+                "code": "DO", 
+                "display": "Osteopathic License number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DL": {
+                "code": "DL", 
+                "display": "Driver\u2019s license number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "BSNR": {
+                "code": "BSNR", 
+                "display": "Primary physician office number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DI": {
+                "code": "DI", 
+                "display": "Diner\u2019s Club card", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "JHN": {
+                "code": "JHN", 
+                "display": "Jurisdictional health number (Canada)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "HC": {
+                "code": "HC", 
+                "display": "Health Card Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DPM": {
+                "code": "DPM", 
+                "display": "Podiatrist license number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DR": {
+                "code": "DR", 
+                "display": "Donor Registration Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DS": {
+                "code": "DS", 
+                "display": "Discover Card", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "DP": {
+                "code": "DP", 
+                "display": "Diplomatic Passport", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "USID": {
+                "code": "USID", 
+                "display": "Unique Specimen ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "LN": {
+                "code": "LN", 
+                "display": "License number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "ASID": {
+                "code": "ASID", 
+                "display": "Ancestor Specimen ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PPN": {
+                "code": "PPN", 
+                "display": "Passport number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "LI": {
+                "code": "LI", 
+                "display": "Labor and industries number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "TN": {
+                "code": "TN", 
+                "display": "Treaty Number/ (Canada)", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "ACSN": {
+                "code": "ACSN", 
+                "display": "Accession ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "LR": {
+                "code": "LR", 
+                "display": "Local Registry ID", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "RPH": {
+                "code": "RPH", 
+                "display": "Pharmacist license number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NBSNR": {
+                "code": "NBSNR", 
+                "display": "Secondary physician office number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "AM": {
+                "code": "AM", 
+                "display": "American Express", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "VN": {
+                "code": "VN", 
+                "display": "Visit number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "AN": {
+                "code": "AN", 
+                "display": "Account number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "VP": {
+                "code": "VP", 
+                "display": "Visitor Permit", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "VS": {
+                "code": "VS", 
+                "display": "VISA", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "U": {
+                "code": "U", 
+                "display": "Unspecified identifier", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "ESN": {
+                "code": "ESN", 
+                "display": "Staff Enterprise Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "WCN": {
+                "code": "WCN", 
+                "display": "Workers\u2019 Comp Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MCN": {
+                "code": "MCN", 
+                "display": "Microchip Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MCD": {
+                "code": "MCD", 
+                "display": "Practitioner Medicaid number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "NCT": {
+                "code": "NCT", 
+                "display": "Naturalization Certificate", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "PNT": {
+                "code": "PNT", 
+                "display": "Temporary Living Subject Number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "QA": {
+                "code": "QA", 
+                "display": "QA number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MCT": {
+                "code": "MCT", 
+                "display": "Marriage Certificate", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }, 
+            "MCR": {
+                "code": "MCR", 
+                "display": "Practitioner Medicare number", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }
+        }, 
+        "CodeSystem/RegistryStatus": {
+            "A": {
+                "code": "true", 
+                "display": "", 
+                "system": ""
+            }, 
+            "I": {
+                "code": "false", 
+                "display": "", 
+                "system": ""
+            }, 
+            "M": {
+                "code": "false", 
+                "display": "", 
+                "system": ""
+            }, 
+            "L": {
+                "code": "false", 
+                "display": "", 
+                "system": ""
+            }, 
+            "O": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }, 
+            "P": {
+                "code": "false", 
+                "display": "", 
+                "system": ""
+            }, 
+            "U": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
         }
-      },
-      {
-        "fullUrl": "urn:uuid:397de93b-65e0-b3b6-7a79-d7869d57a8aa",
-        "resource": {
-          "resourceType": "Patient",
-          "id": "397de93b-65e0-b3b6-7a79-d7869d57a8aa",
-          "identifier": [
-            {
-              "value": "PATID1234",
-              "type": {
-                "coding": [
-                  {
-                    "code": "MR",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                  }
-                ]
-              }
-            }
-          ],
-          "name": [
-            {
-              "family": "Jones",
-              "given": [
-                "William",
-                "A"
-              ]
-            }
-          ],
-          "birthDate": "1961-06-15",
-          "gender": "male"
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:",
-        "resource": {
-          "resourceType": "Practitioner"
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Practitioner/"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:",
-        "resource": {
-          "resourceType": "Location"
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Location/"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:2cae9944-334d-aa12-db0e-b76bf6379ba9",
-        "resource": {
-          "resourceType": "Provenance",
-          "id": "2cae9944-334d-aa12-db0e-b76bf6379ba9",
-          "recorded": "2011-06-01T03:05:51+08:00"
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Provenance/2cae9944-334d-aa12-db0e-b76bf6379ba9"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:d89caeaa-3e83-1bc6-de48-869aade1d077",
-        "resource": {
-          "resourceType": "Account",
-          "id": "d89caeaa-3e83-1bc6-de48-869aade1d077",
-          "subject": [
-            {
-              "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-            }
-          ]
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Account/d89caeaa-3e83-1bc6-de48-869aade1d077"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:",
-        "resource": {
-          "resourceType": "Encounter",
-          "status": "unknown",
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Encounter/"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:e5528a59-da05-4148-e016-5b99bdb33924",
-        "resource": {
-          "resourceType": "DiagnosticReport",
-          "id": "e5528a59-da05-4148-e016-5b99bdb33924",
-          "identifier": [
-            {
-              "type": {
-                "coding": [
-                  {
-                    "code": "FILL",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                  }
-                ]
-              }
-            },
-            {
-              "value": "ORD666555"
-            },
-            {
-              "value": "R-991133"
-            }
-          ],
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "code": {
-            "coding": [
-              {
-                "code": "57021-8",
-                "display": "CBC W Auto Differential panel in Blood",
-                "system": "LN"
-              },
-              {
-                "code": "4456544",
-                "display": "CBC",
-                "system": "99USI"
-              }
-            ],
-            "text": "CBC W Auto Differential panel in Blood"
-          },
-          "issued": "2011-01-05T09:00:28+08:00",
-          "status": "final",
-          "result": [
-            {
-              "reference": "Observation/b9018883-1320-3dfb-e157-cb46bb7a6679"
-            },
-            {
-              "reference": "Observation/becb609f-f513-876c-973a-98f4a3e25295"
-            },
-            {
-              "reference": "Observation/418e1d5b-7cf8-4f97-2f20-064f064073bf"
-            },
-            {
-              "reference": "Observation/63ebf56e-13b3-032c-04f0-0b0ae2596154"
-            },
-            {
-              "reference": "Observation/2fecfbb4-8bfc-33df-cc06-46079a214417"
-            },
-            {
-              "reference": "Observation/d88298c6-5018-0e69-8bff-bb2e57479ede"
-            },
-            {
-              "reference": "Observation/4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e"
-            },
-            {
-              "reference": "Observation/b1082ae5-5936-88dc-f6ab-906231b9c7f1"
-            },
-            {
-              "reference": "Observation/61c65289-d3f6-bd40-9fa1-33856ad2288f"
-            },
-            {
-              "reference": "Observation/69a93e5e-128e-1cd9-b510-a781f1af141a"
-            },
-            {
-              "reference": "Observation/95277a83-6195-ad8c-9492-f3489b45732b"
-            },
-            {
-              "reference": "Observation/4cd993fb-7522-ee9f-69de-3d12d06960a7"
-            },
-            {
-              "reference": "Observation/15122490-e5b2-954f-3960-d7c8f3f62632"
-            },
-            {
-              "reference": "Observation/612d5b88-0687-46f9-3ada-0fc9ba9b5fe0"
-            },
-            {
-              "reference": "Observation/0f40b9a3-8c63-ca5d-cc60-859cfa8a6660"
-            },
-            {
-              "reference": "Observation/d9a5816e-5c0e-15fe-cd9d-417f8abd7abb"
-            },
-            {
-              "reference": "Observation/db00b811-6280-5dad-bf61-07314b205438"
-            },
-            {
-              "reference": "Observation/0b77694d-87ce-5da4-90c4-4d451437d2d9"
-            },
-            {
-              "reference": "Observation/4c96bb15-0280-fea1-1715-e3f424cf55cc"
-            },
-            {
-              "reference": "Observation/19124803-ebc8-8a88-2acc-f5b890f8c5c5"
-            },
-            {
-              "reference": "Observation/6074e0a6-0ba6-b905-c957-13b2899a4dbe"
-            },
-            {
-              "reference": "Observation/700cce12-7f39-bbb0-94f3-689107732835"
-            },
-            {
-              "reference": "Observation/d198666f-2eae-1c28-ee17-d525a7a3ec85"
-            },
-            {
-              "reference": "Observation/db250a50-54ff-eacd-ef4f-8f05b79aecad"
-            },
-            {
-              "reference": "Observation/90c2203d-56d6-be20-2be4-9b879d3647a5"
-            },
-            {
-              "reference": "Observation/3260b2c2-a8f9-1a32-d09f-556192b37dcd"
-            },
-            {
-              "reference": "Observation/ff76c538-2861-d8cf-7fc6-418d7f0688ef"
-            },
-            {
-              "reference": "Observation/7cb9f3da-bf77-1317-12a2-d70c8577ca71"
-            }
-          ],
-          "specimen": [
-            {
-              "reference": "Specimen/a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963"
-            }
-          ]
-        },
-        "request": {
-          "method": "PUT",
-          "url": "DiagnosticReport/e5528a59-da05-4148-e016-5b99bdb33924"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:c8cd57a5-13a6-54d1-7dcd-d0a6b637c660",
-        "resource": {
-          "resourceType": "Organization",
-          "id": "c8cd57a5-13a6-54d1-7dcd-d0a6b637c660",
-          "address": [
-            {
-              "line": [
-                "2070 Test Park"
-              ],
-              "city": "Los Angeles",
-              "state": "CA",
-              "postalCode": "90067"
-            },
-            {
-              "line": [
-                "2070 Test Park"
-              ],
-              "city": "Los Angeles",
-              "state": "CA",
-              "postalCode": "90067"
-            }
-          ]
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8",
-        "resource": {
-          "resourceType": "PractitionerRole",
-          "id": "fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8",
-          "organization": {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:",
-        "resource": {
-          "resourceType": "Device"
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Device/"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:b9018883-1320-3dfb-e157-cb46bb7a6679",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "b9018883-1320-3dfb-e157-cb46bb7a6679",
-          "code": {
-            "coding": [
-              {
-                "code": "26453-1",
-                "display": "Erythrocytes [#/volume] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Erythrocytes [#/volume] in Blood"
-          },
-          "valueQuantity": {
-            "value": "4.41",
-            "code": "10*6/uL",
-            "unit": "million per microliter",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "26453-1",
-                    "display": "Erythrocytes [#/volume] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Erythrocytes [#/volume] in Blood"
-              },
-              "valueQuantity": {
-                "value": "4.41",
-                "code": "10*6/uL",
-                "unit": "million per microliter",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "4.3 to 6.2"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/b9018883-1320-3dfb-e157-cb46bb7a6679"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:becb609f-f513-876c-973a-98f4a3e25295",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "becb609f-f513-876c-973a-98f4a3e25295",
-          "code": {
-            "coding": [
-              {
-                "code": "718-7",
-                "display": "Hemoglobin [Mass/volume] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Hemoglobin [Mass/volume] in Blood"
-          },
-          "valueQuantity": {
-            "value": "12.5",
-            "code": "g/mL",
-            "unit": "grams per milliliter",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "L",
-                  "display": "Low",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "718-7",
-                    "display": "Hemoglobin [Mass/volume] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Hemoglobin [Mass/volume] in Blood"
-              },
-              "valueQuantity": {
-                "value": "12.5",
-                "code": "g/mL",
-                "unit": "grams per milliliter",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "13 to 18"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "L",
-                      "display": "Low",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/becb609f-f513-876c-973a-98f4a3e25295"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:418e1d5b-7cf8-4f97-2f20-064f064073bf",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "418e1d5b-7cf8-4f97-2f20-064f064073bf",
-          "code": {
-            "coding": [
-              {
-                "code": "20570-8",
-                "display": "Hematocrit [Volume Fraction] of Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Hematocrit [Volume Fraction] of Blood"
-          },
-          "valueQuantity": {
-            "value": "41",
-            "code": "%",
-            "unit": "percent",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "20570-8",
-                    "display": "Hematocrit [Volume Fraction] of Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Hematocrit [Volume Fraction] of Blood"
-              },
-              "valueQuantity": {
-                "value": "41",
-                "code": "%",
-                "unit": "percent",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "40 to 52"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/418e1d5b-7cf8-4f97-2f20-064f064073bf"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:63ebf56e-13b3-032c-04f0-0b0ae2596154",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "63ebf56e-13b3-032c-04f0-0b0ae2596154",
-          "code": {
-            "coding": [
-              {
-                "code": "26464-8",
-                "display": "Leukocytes [#/volume] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Leukocytes [#/volume] in Blood"
-          },
-          "valueQuantity": {
-            "value": "105600",
-            "code": "{cells}/uL",
-            "unit": "cells per microliter",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "HH",
-                  "display": "Critical high",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "26464-8",
-                    "display": "Leukocytes [#/volume] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Leukocytes [#/volume] in Blood"
-              },
-              "valueQuantity": {
-                "value": "105600",
-                "code": "{cells}/uL",
-                "unit": "cells per microliter",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "4300 to 10800"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "HH",
-                      "display": "Critical high",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/63ebf56e-13b3-032c-04f0-0b0ae2596154"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:2fecfbb4-8bfc-33df-cc06-46079a214417",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "2fecfbb4-8bfc-33df-cc06-46079a214417",
-          "code": {
-            "coding": [
-              {
-                "code": "26515-7",
-                "display": "Platelets [#/volume] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Platelets [#/volume] in Blood"
-          },
-          "valueQuantity": {
-            "value": "210000",
-            "code": "{cells}/uL",
-            "unit": "cells per microliter",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "26515-7",
-                    "display": "Platelets [#/volume] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Platelets [#/volume] in Blood"
-              },
-              "valueQuantity": {
-                "value": "210000",
-                "code": "{cells}/uL",
-                "unit": "cells per microliter",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "150000 to 350000"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/2fecfbb4-8bfc-33df-cc06-46079a214417"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:d88298c6-5018-0e69-8bff-bb2e57479ede",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "d88298c6-5018-0e69-8bff-bb2e57479ede",
-          "code": {
-            "coding": [
-              {
-                "code": "30428-7",
-                "display": "Erythrocyte mean corpuscular volume [Entitic volume]",
-                "system": "LN"
-              }
-            ],
-            "text": "Erythrocyte mean corpuscular volume [Entitic volume]"
-          },
-          "valueQuantity": {
-            "value": "91",
-            "code": "fL",
-            "unit": "femtoliter",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "30428-7",
-                    "display": "Erythrocyte mean corpuscular volume [Entitic volume]",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Erythrocyte mean corpuscular volume [Entitic volume]"
-              },
-              "valueQuantity": {
-                "value": "91",
-                "code": "fL",
-                "unit": "femtoliter",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "80 to 95"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/d88298c6-5018-0e69-8bff-bb2e57479ede"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e",
-          "code": {
-            "coding": [
-              {
-                "code": "28539-5",
-                "display": "Erythrocyte mean corpuscular hemoglobin [Entitic mass]",
-                "system": "LN"
-              }
-            ],
-            "text": "Erythrocyte mean corpuscular hemoglobin [Entitic mass]"
-          },
-          "valueQuantity": {
-            "value": "29",
-            "code": "pg/{cell}",
-            "unit": "picograms per cell",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "28539-5",
-                    "display": "Erythrocyte mean corpuscular hemoglobin [Entitic mass]",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Erythrocyte mean corpuscular hemoglobin [Entitic mass]"
-              },
-              "valueQuantity": {
-                "value": "29",
-                "code": "pg/{cell}",
-                "unit": "picograms per cell",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "27 to 31"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:b1082ae5-5936-88dc-f6ab-906231b9c7f1",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "b1082ae5-5936-88dc-f6ab-906231b9c7f1",
-          "code": {
-            "coding": [
-              {
-                "code": "28540-3",
-                "display": "Erythrocyte mean corpuscular hemoglobin concentration [Mass/volume]",
-                "system": "LN"
-              }
-            ],
-            "text": "Erythrocyte mean corpuscular hemoglobin concentration [Mass/volume]"
-          },
-          "valueQuantity": {
-            "value": "32.4",
-            "code": "g/dL",
-            "unit": "grams per deciliter",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "28540-3",
-                    "display": "Erythrocyte mean corpuscular hemoglobin concentration [Mass/volume]",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Erythrocyte mean corpuscular hemoglobin concentration [Mass/volume]"
-              },
-              "valueQuantity": {
-                "value": "32.4",
-                "code": "g/dL",
-                "unit": "grams per deciliter",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "32 to 36"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/b1082ae5-5936-88dc-f6ab-906231b9c7f1"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:61c65289-d3f6-bd40-9fa1-33856ad2288f",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "61c65289-d3f6-bd40-9fa1-33856ad2288f",
-          "code": {
-            "coding": [
-              {
-                "code": "30385-9",
-                "display": "Erythrocyte distribution width [Ratio]",
-                "system": "LN"
-              }
-            ],
-            "text": "Erythrocyte distribution width [Ratio]"
-          },
-          "valueQuantity": {
-            "value": "10.5",
-            "code": "%",
-            "unit": "percent",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "30385-9",
-                    "display": "Erythrocyte distribution width [Ratio]",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Erythrocyte distribution width [Ratio]"
-              },
-              "valueQuantity": {
-                "value": "10.5",
-                "code": "%",
-                "unit": "percent",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "10.2 to 14.5"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/61c65289-d3f6-bd40-9fa1-33856ad2288f"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:69a93e5e-128e-1cd9-b510-a781f1af141a",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "69a93e5e-128e-1cd9-b510-a781f1af141a",
-          "code": {
-            "coding": [
-              {
-                "code": "26444-0",
-                "display": "Basophils [#/volume] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Basophils [#/volume] in Blood"
-          },
-          "valueQuantity": {
-            "value": "0.1",
-            "code": "10*3/uL",
-            "unit": "thousand per microliter",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "26444-0",
-                    "display": "Basophils [#/volume] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Basophils [#/volume] in Blood"
-              },
-              "valueQuantity": {
-                "value": "0.1",
-                "code": "10*3/uL",
-                "unit": "thousand per microliter",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "0 to 0.3"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/69a93e5e-128e-1cd9-b510-a781f1af141a"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:95277a83-6195-ad8c-9492-f3489b45732b",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "95277a83-6195-ad8c-9492-f3489b45732b",
-          "code": {
-            "coding": [
-              {
-                "code": "30180-4",
-                "display": "Basophils/100 leukocytes in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Basophils/100 leukocytes in Blood"
-          },
-          "valueQuantity": {
-            "value": "0.1",
-            "code": "%",
-            "unit": "percent",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "30180-4",
-                    "display": "Basophils/100 leukocytes in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Basophils/100 leukocytes in Blood"
-              },
-              "valueQuantity": {
-                "value": "0.1",
-                "code": "%",
-                "unit": "percent",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "0 to 2"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/95277a83-6195-ad8c-9492-f3489b45732b"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:4cd993fb-7522-ee9f-69de-3d12d06960a7",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "4cd993fb-7522-ee9f-69de-3d12d06960a7",
-          "code": {
-            "coding": [
-              {
-                "code": "26484-6",
-                "display": "Monocytes [#/volume] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Monocytes [#/volume] in Blood"
-          },
-          "valueQuantity": {
-            "value": "3",
-            "code": "10*3/uL",
-            "unit": "thousand per microliter",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "26484-6",
-                    "display": "Monocytes [#/volume] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Monocytes [#/volume] in Blood"
-              },
-              "valueQuantity": {
-                "value": "3",
-                "code": "10*3/uL",
-                "unit": "thousand per microliter",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "0.0 to 13.0"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/4cd993fb-7522-ee9f-69de-3d12d06960a7"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:15122490-e5b2-954f-3960-d7c8f3f62632",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "15122490-e5b2-954f-3960-d7c8f3f62632",
-          "code": {
-            "coding": [
-              {
-                "code": "26485-3",
-                "display": "Monocytes/100 leukocytes in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Monocytes/100 leukocytes in Blood"
-          },
-          "valueQuantity": {
-            "value": "3",
-            "code": "%",
-            "unit": "percent",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "26485-3",
-                    "display": "Monocytes/100 leukocytes in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Monocytes/100 leukocytes in Blood"
-              },
-              "valueQuantity": {
-                "value": "3",
-                "code": "%",
-                "unit": "percent",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "0 to 10"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/15122490-e5b2-954f-3960-d7c8f3f62632"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:612d5b88-0687-46f9-3ada-0fc9ba9b5fe0",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "612d5b88-0687-46f9-3ada-0fc9ba9b5fe0",
-          "code": {
-            "coding": [
-              {
-                "code": "26449-9",
-                "display": "Eosinophils [#/volume] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Eosinophils [#/volume] in Blood"
-          },
-          "valueQuantity": {
-            "value": "2.1",
-            "code": "10*3/uL",
-            "unit": "thousand per microliter",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "HH",
-                  "display": "Critical high",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "26449-9",
-                    "display": "Eosinophils [#/volume] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Eosinophils [#/volume] in Blood"
-              },
-              "valueQuantity": {
-                "value": "2.1",
-                "code": "10*3/uL",
-                "unit": "thousand per microliter",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "0.0 to 0.45"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "HH",
-                      "display": "Critical high",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/612d5b88-0687-46f9-3ada-0fc9ba9b5fe0"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:0f40b9a3-8c63-ca5d-cc60-859cfa8a6660",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "0f40b9a3-8c63-ca5d-cc60-859cfa8a6660",
-          "code": {
-            "coding": [
-              {
-                "code": "26450-7",
-                "display": "Eosinophils/100 leukocytes in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Eosinophils/100 leukocytes in Blood"
-          },
-          "valueQuantity": {
-            "value": "2",
-            "code": "%",
-            "unit": "percent",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "26450-7",
-                    "display": "Eosinophils/100 leukocytes in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Eosinophils/100 leukocytes in Blood"
-              },
-              "valueQuantity": {
-                "value": "2",
-                "code": "%",
-                "unit": "percent",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "0 to 6"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/0f40b9a3-8c63-ca5d-cc60-859cfa8a6660"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:d9a5816e-5c0e-15fe-cd9d-417f8abd7abb",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "d9a5816e-5c0e-15fe-cd9d-417f8abd7abb",
-          "code": {
-            "coding": [
-              {
-                "code": "26474-7",
-                "display": "Lymphocytes [#/volume] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Lymphocytes [#/volume] in Blood"
-          },
-          "valueQuantity": {
-            "value": "41.2",
-            "code": "10*3/uL",
-            "unit": "thousand per microliter",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "HH",
-                  "display": "Critical high",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "26474-7",
-                    "display": "Lymphocytes [#/volume] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Lymphocytes [#/volume] in Blood"
-              },
-              "valueQuantity": {
-                "value": "41.2",
-                "code": "10*3/uL",
-                "unit": "thousand per microliter",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "1.0 to 4.8"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "HH",
-                      "display": "Critical high",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/d9a5816e-5c0e-15fe-cd9d-417f8abd7abb"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:db00b811-6280-5dad-bf61-07314b205438",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "db00b811-6280-5dad-bf61-07314b205438",
-          "code": {
-            "coding": [
-              {
-                "code": "26478-8",
-                "display": "Lymphocytes/100 leukocytes in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Lymphocytes/100 leukocytes in Blood"
-          },
-          "valueQuantity": {
-            "value": "39",
-            "code": "%",
-            "unit": "percent",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "26478-8",
-                    "display": "Lymphocytes/100 leukocytes in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Lymphocytes/100 leukocytes in Blood"
-              },
-              "valueQuantity": {
-                "value": "39",
-                "code": "%",
-                "unit": "percent",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "15.0 to 45.0"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/db00b811-6280-5dad-bf61-07314b205438"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:0b77694d-87ce-5da4-90c4-4d451437d2d9",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "0b77694d-87ce-5da4-90c4-4d451437d2d9",
-          "code": {
-            "coding": [
-              {
-                "code": "26499-4",
-                "display": "Neutrophils [#/volume] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Neutrophils [#/volume] in Blood"
-          },
-          "valueQuantity": {
-            "value": "58",
-            "code": "10*3/uL",
-            "unit": "thousand per microliter",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "HH",
-                  "display": "Critical high",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "26499-4",
-                    "display": "Neutrophils [#/volume] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Neutrophils [#/volume] in Blood"
-              },
-              "valueQuantity": {
-                "value": "58",
-                "code": "10*3/uL",
-                "unit": "thousand per microliter",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "1.5 to 7.0"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "HH",
-                      "display": "Critical high",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/0b77694d-87ce-5da4-90c4-4d451437d2d9"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:4c96bb15-0280-fea1-1715-e3f424cf55cc",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "4c96bb15-0280-fea1-1715-e3f424cf55cc",
-          "code": {
-            "coding": [
-              {
-                "code": "26511-6",
-                "display": "Neutrophils/100 leukocytes in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Neutrophils/100 leukocytes in Blood"
-          },
-          "valueQuantity": {
-            "value": "55",
-            "code": "%",
-            "unit": "percent",
-            "system": "UCUM"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "26511-6",
-                    "display": "Neutrophils/100 leukocytes in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Neutrophils/100 leukocytes in Blood"
-              },
-              "valueQuantity": {
-                "value": "55",
-                "code": "%",
-                "unit": "percent",
-                "system": "UCUM"
-              },
-              "referenceRange": [
-                {
-                  "text": "50 to 73"
-                }
-              ],
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/4c96bb15-0280-fea1-1715-e3f424cf55cc"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:19124803-ebc8-8a88-2acc-f5b890f8c5c5",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "19124803-ebc8-8a88-2acc-f5b890f8c5c5",
-          "code": {
-            "coding": [
-              {
-                "code": "38892-6",
-                "display": "Anisocytosis [Presence] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Anisocytosis [Presence] in Blood"
-          },
-          "valueCodeableConcept": {
-            "coding": [
-              {
-                "code": "260348001",
-                "display": "Present ++ out of ++++",
-                "system": "SCT"
-              }
-            ],
-            "text": "Moderate Anisocytosis"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "A",
-                  "display": "Abnormal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "38892-6",
-                    "display": "Anisocytosis [Presence] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Anisocytosis [Presence] in Blood"
-              },
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "A",
-                      "display": "Abnormal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/19124803-ebc8-8a88-2acc-f5b890f8c5c5"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:6074e0a6-0ba6-b905-c957-13b2899a4dbe",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "6074e0a6-0ba6-b905-c957-13b2899a4dbe",
-          "code": {
-            "coding": [
-              {
-                "code": "30400-6",
-                "display": "Hypochromia [Presence] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Hypochromia [Presence] in Blood"
-          },
-          "valueCodeableConcept": {
-            "coding": [
-              {
-                "code": "260415000",
-                "display": "not detected",
-                "system": "SCT"
-              }
-            ],
-            "text": "None seen"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "30400-6",
-                    "display": "Hypochromia [Presence] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Hypochromia [Presence] in Blood"
-              },
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/6074e0a6-0ba6-b905-c957-13b2899a4dbe"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:700cce12-7f39-bbb0-94f3-689107732835",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "700cce12-7f39-bbb0-94f3-689107732835",
-          "code": {
-            "coding": [
-              {
-                "code": "30424-6",
-                "display": "Macrocytes [Presence] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Macrocytes [Presence] in Blood"
-          },
-          "valueCodeableConcept": {
-            "coding": [
-              {
-                "code": "260415000",
-                "display": "not detected",
-                "system": "SCT"
-              }
-            ],
-            "text": "None seen"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "30424-6",
-                    "display": "Macrocytes [Presence] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Macrocytes [Presence] in Blood"
-              },
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/700cce12-7f39-bbb0-94f3-689107732835"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:d198666f-2eae-1c28-ee17-d525a7a3ec85",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "d198666f-2eae-1c28-ee17-d525a7a3ec85",
-          "code": {
-            "coding": [
-              {
-                "code": "30434-5",
-                "display": "Microcytes [Presence] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Microcytes [Presence] in Blood"
-          },
-          "valueCodeableConcept": {
-            "coding": [
-              {
-                "code": "260415000",
-                "display": "not detected",
-                "system": "SCT"
-              }
-            ],
-            "text": "None seen"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "30434-5",
-                    "display": "Microcytes [Presence] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Microcytes [Presence] in Blood"
-              },
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/d198666f-2eae-1c28-ee17-d525a7a3ec85"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:db250a50-54ff-eacd-ef4f-8f05b79aecad",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "db250a50-54ff-eacd-ef4f-8f05b79aecad",
-          "code": {
-            "coding": [
-              {
-                "code": "779-9",
-                "display": "Poikilocytosis [Presence] in Blood by Light microscopy",
-                "system": "LN"
-              }
-            ],
-            "text": "Poikilocytosis [Presence] in Blood by Light microscopy"
-          },
-          "valueCodeableConcept": {
-            "coding": [
-              {
-                "code": "260415000",
-                "display": "not detected",
-                "system": "SCT"
-              }
-            ],
-            "text": "None seen"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "779-9",
-                    "display": "Poikilocytosis [Presence] in Blood by Light microscopy",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Poikilocytosis [Presence] in Blood by Light microscopy"
-              },
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/db250a50-54ff-eacd-ef4f-8f05b79aecad"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:90c2203d-56d6-be20-2be4-9b879d3647a5",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "90c2203d-56d6-be20-2be4-9b879d3647a5",
-          "code": {
-            "coding": [
-              {
-                "code": "10378-8",
-                "display": "Polychromasia [Presence] in Blood by Light microscopy",
-                "system": "LN"
-              }
-            ],
-            "text": "Polychromasia [Presence] in Blood by Light microscopy"
-          },
-          "valueCodeableConcept": {
-            "coding": [
-              {
-                "code": "260415000",
-                "display": "not detected",
-                "system": "SCT"
-              }
-            ],
-            "text": "None seen"
-          },
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "N",
-                  "display": "Normal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "10378-8",
-                    "display": "Polychromasia [Presence] in Blood by Light microscopy",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Polychromasia [Presence] in Blood by Light microscopy"
-              },
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "N",
-                      "display": "Normal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/90c2203d-56d6-be20-2be4-9b879d3647a5"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:3260b2c2-a8f9-1a32-d09f-556192b37dcd",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "3260b2c2-a8f9-1a32-d09f-556192b37dcd",
-          "code": {
-            "coding": [
-              {
-                "code": "6742-1",
-                "display": "Erythrocyte morphology finding [Identifier] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Erythrocyte morphology finding [Identifier] in Blood"
-          },
-          "valueString": "Many spherocytes present.",
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "A",
-                  "display": "Abnormal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "6742-1",
-                    "display": "Erythrocyte morphology finding [Identifier] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Erythrocyte morphology finding [Identifier] in Blood"
-              },
-              "valueString": "Many spherocytes present.",
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "A",
-                      "display": "Abnormal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/3260b2c2-a8f9-1a32-d09f-556192b37dcd"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:ff76c538-2861-d8cf-7fc6-418d7f0688ef",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "ff76c538-2861-d8cf-7fc6-418d7f0688ef",
-          "code": {
-            "coding": [
-              {
-                "code": "11156-7",
-                "display": "Leukocyte morphology finding [Identifier] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Leukocyte morphology finding [Identifier] in Blood"
-          },
-          "valueString": "Reactive morphology in lymphoid cells.",
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "A",
-                  "display": "Abnormal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "11156-7",
-                    "display": "Leukocyte morphology finding [Identifier] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Leukocyte morphology finding [Identifier] in Blood"
-              },
-              "valueString": "Reactive morphology in lymphoid cells.",
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "A",
-                      "display": "Abnormal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/ff76c538-2861-d8cf-7fc6-418d7f0688ef"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:7cb9f3da-bf77-1317-12a2-d70c8577ca71",
-        "resource": {
-          "resourceType": "Observation",
-          "id": "7cb9f3da-bf77-1317-12a2-d70c8577ca71",
-          "code": {
-            "coding": [
-              {
-                "code": "11125-2",
-                "display": "Platelet morphology finding [Identifier] in Blood",
-                "system": "LN"
-              }
-            ],
-            "text": "Platelet morphology finding [Identifier] in Blood"
-          },
-          "valueString": "Platelets show defective granulation.",
-          "interpretation": [
-            {
-              "coding": [
-                {
-                  "code": "A",
-                  "display": "Abnormal",
-                  "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                }
-              ]
-            }
-          ],
-          "status": "final",
-          "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-          "performer": [
-            {
-              "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-            },
-            {
-              "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-            }
-          ],
-          "component": [
-            {
-              "code": {
-                "coding": [
-                  {
-                    "code": "11125-2",
-                    "display": "Platelet morphology finding [Identifier] in Blood",
-                    "system": "LN"
-                  }
-                ],
-                "text": "Platelet morphology finding [Identifier] in Blood"
-              },
-              "valueString": "Platelets show defective granulation.",
-              "interpretation": [
-                {
-                  "coding": [
-                    {
-                      "code": "A",
-                      "display": "Abnormal",
-                      "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                    }
-                  ]
-                }
-              ]
-            }
-          ],
-          "subject": {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Observation/7cb9f3da-bf77-1317-12a2-d70c8577ca71"
-        }
-      },
-      {
-        "fullUrl": "urn:uuid:a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963",
-        "resource": {
-          "resourceType": "Specimen",
-          "id": "a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963",
-          "collection": {
-            "collectedDateTime": "2011-01-04T06:34:28+08:00"
-          },
-          "type": {
-            "coding": [
-              {
-                "code": "119297000",
-                "display": "BLD",
-                "system": "SCT"
-              }
-            ],
-            "text": "Blood"
-          }
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Specimen/a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963"
-        }
-      }
-    ]
-  }
+    }
+}
