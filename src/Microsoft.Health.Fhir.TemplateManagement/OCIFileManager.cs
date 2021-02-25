@@ -72,7 +72,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         public async Task PushOCIImageAsync()
         {
-            await _orasClient.PushImageAsync(_overlayFS.WorkingImageLayerFolder);
+            var rawLayers = _overlayFS.ReadImageLayers();
+            var fileLayers = _overlayOperator.ExtractOCIFileLayers(rawLayers);
+            var sortedLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
+            await _orasClient.PushImageAsync(_overlayFS.WorkingImageLayerFolder, sortedLayers.Select(layer => layer.FileName).ToList());
         }
 
         private OCIFileLayer GenerateBaseFileLayer(List<OCIArtifactLayer> baseArtifactLayers)

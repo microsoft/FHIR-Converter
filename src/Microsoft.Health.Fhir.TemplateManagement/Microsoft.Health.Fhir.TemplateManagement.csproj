@@ -37,7 +37,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
+  
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="mkdir ..\..\bin &amp; tar -zcvf ../../bin/Hl7v2DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
   </Target>

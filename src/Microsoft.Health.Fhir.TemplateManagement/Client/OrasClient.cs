@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
@@ -30,18 +31,21 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
         }
 
-        public async Task PushImageAsync(string inputFolder)
+        public async Task PushImageAsync(string inputFolder, List<string> filePathList)
         {
             string argument = string.Empty;
             string command = $"push \"{_imageReference}\"";
 
-            var filePathToPush = Directory.EnumerateFiles(inputFolder, "*.tar.gz", SearchOption.AllDirectories);
-
             // In order to remove image's directory prefix. (e.g. "layers/layer1.tar.gz" --> "layer1.tar.gz"
             // Change oras working folder to inputFolder
-            foreach (var filePath in filePathToPush)
+            foreach (var filePath in filePathList)
             {
-                argument += $" \"{Path.GetRelativePath(inputFolder, filePath)}\"";
+                if (!File.Exists(Path.Combine(inputFolder, filePath)))
+                {
+                    throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "Image layer not found");
+                }
+
+                argument += $" \"{filePath}\"";
             }
 
             if (string.IsNullOrEmpty(argument))
