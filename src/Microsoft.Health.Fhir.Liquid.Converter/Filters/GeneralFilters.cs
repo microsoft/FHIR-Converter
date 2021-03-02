@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using DotLiquid;
@@ -26,13 +27,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return null;
             }
 
-            var map = (context["CodeSystemMapping"] as CodeSystemMapping)?.Mapping;
-            return map != null &&
-                map.ContainsKey(mapping) &&
-                map[mapping].ContainsKey(originalCode) &&
-                map[mapping][originalCode].ContainsKey(property) ?
-                map[mapping][originalCode][property] :
-                null;
+            var map = (context["CodeSystemMapping"] as CodeSystemMapping)?.Mapping?.GetValueOrDefault(mapping, null);
+            var codeMapping = map?.GetValueOrDefault(originalCode, null) ?? map?.GetValueOrDefault("__default__", null);
+            return codeMapping?.GetValueOrDefault(property, null)
+                ?? ((property.Equals("code") || property.Equals("display")) ? originalCode : null);
         }
 
         public static string Evaluate(string input, string property)

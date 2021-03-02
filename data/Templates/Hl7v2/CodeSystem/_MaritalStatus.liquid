@@ -68,8 +68,8 @@
     "display" : "Polygamous",
     "system" : "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus",
     {% else -%}
-    "code" : "",
-    "display" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
     "system" : "",
     {% endif -%}
 }

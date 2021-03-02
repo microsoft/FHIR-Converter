@@ -5,7 +5,7 @@
         "id":"{{ ID }}",
         "source":
         {
-            {% include 'DataType/HDMSH_3' HD: MSH.3 -%}
+            "name":"{{ MSH.3.1.Value }}",
             "endpoint":"{{ MSH.24.Value }}",
             "version":"{{ SFT.2.Value }}",
             "software":"{{ SFT.3.Value }}",
@@ -14,16 +14,24 @@
         [
             {
                 {% include 'DataType/HDMSH_5' HD: MSH.5 -%}
+                "endpoint":
+                [
+                    "{{ MSH.25.Value }}",
+                ],
                 "receiver":
                 {
                     {% if MSH.6 and Organization_ID_MSH_6 -%}
                     "reference":"Organization/{{ Organization_ID_MSH_6 }}",
+                    {% endif -%}
+                    {% if MSH.23 and Organization_ID_MSH_23 -%}
+                    "reference":"Organization/{{ Organization_ID_MSH_23 }}",
                     {% endif -%}
                 },
             },
         ],
         "meta":
         {
+            {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
             "security":
             [
             ],
@@ -32,14 +40,21 @@
                 {% include 'DataType/PT' PT: MSH.11 -%},
             ],
         },
+        "eventCoding":
+        {
+            {% include 'DataType/MSG' MSG: MSH.9 -%}
+        },
         "language":"{{ MSH.19.Value | get_property: 'CodeSystem/Language', 'code' }}",
         "sender":
         {
             {% if MSH.4 and Organization_ID_MSH_4 -%}
             "reference":"Organization/{{ Organization_ID_MSH_4 }}",
             {% endif -%}
-            {% if MSH.17 and Organization_address_country_ID_MSH_17 -%}
-            "reference":"{{ "Organization.address.country/{{ Organization_address_country_ID_MSH_17 }}" | get_property: 'CodeSystem/Countries', 'code' }}",
+        },
+        "responsible":
+        {
+            {% if MSH.22 and Organization_ID_MSH_22 -%}
+            "reference":"Organization/{{ Organization_ID_MSH_22 }}",
             {% endif -%}
         },
     },

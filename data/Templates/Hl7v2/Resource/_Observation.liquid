@@ -12,6 +12,9 @@
             {% if OBX.2.Value == "NM" -%}
             "value":"{{ OBX.5.Value }}",
             {% endif -%}
+            {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+            {% if OBX.2.Value == "SN" -%}
+            {% endif -%}
             {% if OBX.2.Value == "SN" -%}
             {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
             {% endif -%}
@@ -22,10 +25,19 @@
         {% if OBX.2.Value == "ST" or OBX.2.Value == "FT" or OBX.2.Value == "TX" -%}
         "valueString":"{{ OBX.5.Value }}",
         {% endif -%}
+        {% if OBX.2.Value == "VR" -%}
+        "valueString":"{{ OBX.5.1 }}-{{ OBX.5.2 }}",
+        {% endif -%}
+        {% if OBX.2.Value == "SN" -%}
+        "valueString":"{{ OBX.5.1 }} {{ OBX.5.2 }} {{ OBX.5.3 }}",
+        {% endif -%}
         "valueCodeableConcept":
         {
             {% if OBX.2.Value == "CF" or OBX.2.Value == "CNE" or OBX.2.Value == "CWE" or OBX.2.Value == "CE" -%}
             {% include 'DataType/CWECodeableConcept' CWE: OBX.5 -%}
+            {% endif -%}
+            {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+            {% if OBX.2.Value == "IS" -%}
             {% endif -%}
         },
         "valuePeriod":
@@ -64,6 +76,7 @@
         ],
         "status":"{{ OBX.11.Value | get_property: 'CodeSystem/ObservationStatus', 'code' }}",
         "effectiveDateTime":"{{ OBX.14.Value | format_as_date_time }}",
+        {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
         "method":
         {
         },
@@ -96,25 +109,19 @@
                 {% endif -%}
             },
             {
-                {% if OBX.24 and Organization_address_ID_OBX_24 -%}
-                "reference":"Organization.address/{{ Organization_address_ID_OBX_24 }}",
+                {% if OBX.23 and Organization_ID_OBX_23 -%}
+                "reference":"Organization/{{ Organization_ID_OBX_23 }}",
                 {% endif -%}
             },
             {
-                {% if OBX.24 and Organization_address_ID_OBX_24 -%}
-                "reference":"Organization.address/{{ Organization_address_ID_OBX_24 }}",
+                {% if OBX.23 and Organization_ID_OBX_23 -%}
+                "reference":"Organization/{{ Organization_ID_OBX_23 }}",
                 {% endif -%}
                 {% if OBX.25 and PractitionerRole_ID_OBX_25 -%}
                 "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_25 }}",
                 {% endif -%}
             },
         ],
-        "device":
-        {
-            {% if OBX.18 and Device_identifier_ID_OBX_18 -%}
-            "reference":"Device.identifier/{{ Device_identifier_ID_OBX_18 }}",
-            {% endif -%}
-        },
         "component":
         [
             {
@@ -127,6 +134,9 @@
                     {% if OBX.2.Value == "NM" -%}
                     "value":"{{ OBX.5.Value }}",
                     {% endif -%}
+                    {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+                    {% if OBX.2.Value == "SN" -%}
+                    {% endif -%}
                     {% if OBX.2.Value == "SN" -%}
                     {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
                     {% endif -%}
@@ -137,6 +147,21 @@
                 {% if OBX.2.Value == "ST" or OBX.2.Value == "FT" or OBX.2.Value == "TX" -%}
                 "valueString":"{{ OBX.5.Value }}",
                 {% endif -%}
+                {% if OBX.2.Value == "VR" -%}
+                "valueString":"{{ OBX.5.1 }}-{{ OBX.5.2}}",
+                {% endif -%}
+                {% if OBX.2.Value == "SN" -%}
+                "valueString":"{{ OBX.5.1 }} {{ OBX.5.2 }} {{ OBX.5.3 }}",
+                {% endif -%}
+                "valueCodeableConcept":
+                {
+                    {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+                    {% if OBX.2.Value == "CF" or OBX.2.Value == "CNE" or OBX.2.Value == "CWE" or OBX.2.Value == "CE" -%}
+                    {% endif -%}
+                    {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+                    {% if OBX.2.Value == "IS" -%}
+                    {% endif -%}
+                },
                 "valuePeriod":
                 {
                     {% if OBX.2.Value == "DR" -%}

@@ -32,8 +32,8 @@
     "display" : "Environment",
     "system" : "http://hl7.org/fhir/allergy-intolerance-category",
     {% else -%}
-    "code" : "",
-    "display" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
     "system" : "",
     {% endif -%}
 }

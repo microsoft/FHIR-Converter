@@ -1,6 +1,10 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
+  "timestamp": "2019-05-04T18:12:05Z",
+  "identifier": {
+    "value": "1270326314"
+  },
   "entry": [
     {
       "fullUrl": "urn:uuid:aa9b0327-0d9f-945a-888c-07658da974df",
@@ -17,6 +21,10 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "A04",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -83,6 +91,14 @@
             "use": "home"
           }
         ],
+        "maritalStatus": {
+          "coding": [
+            {
+              "code": "Married",
+              "display": "Married"
+            }
+          ]
+        },
         "contact": [
           {
             "name": {
@@ -104,6 +120,16 @@
               {
                 "value": "+19189368865"
               }
+            ],
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "code": "Emergency Contact",
+                    "display": "Emergency Contact"
+                  }
+                ]
+              }
             ]
           }
         ]
@@ -111,6 +137,88 @@
       "request": {
         "method": "PUT",
         "url": "Patient/f7a9494a-3fac-e0e1-78d8-d7c20410ca33"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:78421d2f-a405-2d71-ff9f-132539dbcdb5",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "78421d2f-a405-2d71-ff9f-132539dbcdb5"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/78421d2f-a405-2d71-ff9f-132539dbcdb5"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fb207bbb-3ad0-180c-bd53-8ca8fd3581ec",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "fb207bbb-3ad0-180c-bd53-8ca8fd3581ec"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/fb207bbb-3ad0-180c-bd53-8ca8fd3581ec"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:256cf56f-8ec4-5af5-cf3f-4f9a833482be",
+      "resource": {
+        "resourceType": "Account",
+        "id": "256cf56f-8ec4-5af5-cf3f-4f9a833482be",
+        "identifier": [
+          {
+            "value": "1234"
+          }
+        ],
+        "subject": [
+          {
+            "reference": "Patient/f7a9494a-3fac-e0e1-78d8-d7c20410ca33"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Account/256cf56f-8ec4-5af5-cf3f-4f9a833482be"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a821376a-5d7b-7274-8d95-a3f7c7efaf1b",
+      "resource": {
+        "resourceType": "Location",
+        "id": "a821376a-5d7b-7274-8d95-a3f7c7efaf1b",
+        "mode": "instance",
+        "physicalType": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/location-physical-type"
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/a821376a-5d7b-7274-8d95-a3f7c7efaf1b"
       }
     },
     {
@@ -138,22 +246,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:256cf56f-8ec4-5af5-cf3f-4f9a833482be",
-      "resource": {
-        "resourceType": "Account",
-        "id": "256cf56f-8ec4-5af5-cf3f-4f9a833482be",
-        "identifier": [
-          {
-            "value": "1234"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Account/256cf56f-8ec4-5af5-cf3f-4f9a833482be"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:99425718-6c7d-d427-2df3-db51299fdb0b",
       "resource": {
         "resourceType": "Encounter",
@@ -164,6 +256,14 @@
           "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
         },
         "status": "unknown",
+        "location": [
+          {
+            "status": "active",
+            "location": {
+              "reference": "Location/a821376a-5d7b-7274-8d95-a3f7c7efaf1b"
+            }
+          }
+        ],
         "participant": [
           {
             "type": [
@@ -176,7 +276,10 @@
                   }
                 ]
               }
-            ]
+            ],
+            "individual": {
+              "reference": "Practitioner/78421d2f-a405-2d71-ff9f-132539dbcdb5"
+            }
           },
           {
             "type": [
@@ -189,7 +292,10 @@
                 ],
                 "text": "referrer"
               }
-            ]
+            ],
+            "individual": {
+              "reference": "Practitioner/fb207bbb-3ad0-180c-bd53-8ca8fd3581ec"
+            }
           }
         ],
         "identifier": [
@@ -208,14 +314,6 @@
         "period": {
           "start": "2018-10-17T22:28:05Z"
         },
-        "location": [
-          {
-            "location": {
-              "reference": "Location/a821376a-5d7b-7274-8d95-a3f7c7efaf1b"
-            },
-            "status": "active"
-          }
-        ],
         "subject": {
           "reference": "Patient/f7a9494a-3fac-e0e1-78d8-d7c20410ca33"
         }
@@ -226,22 +324,13 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:a821376a-5d7b-7274-8d95-a3f7c7efaf1b",
+      "fullUrl": "urn:uuid:",
       "resource": {
-        "resourceType": "Location",
-        "id": "a821376a-5d7b-7274-8d95-a3f7c7efaf1b",
-        "mode": "instance",
-        "physicalType": {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/location-physical-type"
-            }
-          ]
-        }
+        "resourceType": "Organization"
       },
       "request": {
         "method": "PUT",
-        "url": "Location/a821376a-5d7b-7274-8d95-a3f7c7efaf1b"
+        "url": "Organization/"
       }
     },
     {
@@ -249,6 +338,24 @@
       "resource": {
         "resourceType": "RelatedPerson",
         "id": "ece287da-a00b-b349-5de5-c25906e7ac53",
+        "relationship": [
+          {
+            "coding": [
+              {
+                "code": "Mother",
+                "display": "Mother"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "Emergency Contact",
+                "display": "Emergency Contact"
+              }
+            ]
+          }
+        ],
         "address": [
           {
             "line": [
