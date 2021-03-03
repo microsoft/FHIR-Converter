@@ -16,29 +16,29 @@
         "location":
         [
             {
-                "location":
-                {
-                    {% if PV1.3 and Location_ID_PV1_3 -%}
-                    "reference":"Location/{{ Location_ID_PV1_3 }}",
-                    {% endif -%}
-                },
                 {% if PV1.2.1.Value != "P" and Location_ID_PV1_3 -%}
                 "status":"active",
                 {% endif -%}
                 {% if PV1.2.1.Value == "P" and Location_ID_PV1_3 -%}
                 "status":"planned",
                 {% endif -%}
+                "location":
+                {
+                    {% if PV1.3 and Location_ID_PV1_3 -%}
+                    "reference":"Location/{{ Location_ID_PV1_3 }}",
+                    {% endif -%}
+                },
             },
             {
+                {% if PV1.6 and Location_ID_PV1_6 -%}
+                "status":"completed",
+                {% endif -%}
                 "location":
                 {
                     {% if PV1.6 and Location_ID_PV1_6 -%}
                     "reference":"Location/{{ Location_ID_PV1_6 }}",
                     {% endif -%}
                 },
-                {% if PV1.6 and Location_ID_PV1_6 -%}
-                "status":"completed",
-                {% endif -%}
             },
         ],
         "type":
@@ -67,6 +67,12 @@
             [
                 { {% include 'DataType/CWECodeableConcept' CWE: PV1.38 -%} },
             ],
+            "destination":
+            {
+                {% if PV1.37 and Location_ID_PV1_37 -%}
+                "reference":"Location/{{ Location_ID_PV1_37 }}",
+                {% endif -%}
+            },
         },
         "participant":
         [
@@ -101,8 +107,8 @@
                 ],
                 "individual":
                 {
-                    {% if PV2.13 and Practitioner.Value -%}
-                    "reference":"Practitioner|PractitionerRole/{{ Practitioner|PractitionerRole_ID_PV2_13 }}",
+                    {% if PV1.7 and Practitioner_ID_PV1_7 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_PV1_7 }}",
                     {% endif -%}
                 },
             },
@@ -126,6 +132,12 @@
                         {% endif -%}
                     },
                 ],
+                "individual":
+                {
+                    {% if PV1.8 and Practitioner_ID_PV1_8 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_PV1_8 }}",
+                    {% endif -%}
+                },
             },
             {
                 "type":
@@ -147,6 +159,12 @@
                         {% endif -%}
                     },
                 ],
+                "individual":
+                {
+                    {% if PV1.9 and Practitioner_ID_PV1_9 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_PV1_9 }}",
+                    {% endif -%}
+                },
             },
             {
                 "type":
@@ -168,6 +186,12 @@
                         {% endif -%}
                     },
                 ],
+                "individual":
+                {
+                    {% if PV1.17 and Practitioner_ID_PV1_17 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_PV1_17 }}",
+                    {% endif -%}
+                },
             },
             {
                 "type":
@@ -189,6 +213,12 @@
                         {% endif -%}
                     },
                 ],
+                "individual":
+                {
+                    {% if PV1.52 and Practitioner_ID_PV1_52 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_PV1_52 }}",
+                    {% endif -%}
+                },
             },
         ],
         "serviceType":
@@ -223,14 +253,6 @@
             "start":"{{ PV1.44.Value | format_as_date_time }}",
             "end":"{{ PV1.45.Value | format_as_date_time }}",
         },
-        "episodeOfCare":
-        [
-            {
-                {% if PV1.54 and EpisodeOfCare_identifier_value_ID_PV1_54 -%}
-                "reference":"EpisodeOfCare.identifier.value/{{ EpisodeOfCare_identifier_value_ID_PV1_54 }}",
-                {% endif -%}
-            },
-        ],
         "reasonCode":
         [
             { {% include 'DataType/CWECodeableConcept' CWE: PV2.3 -%} },
@@ -253,6 +275,17 @@
         {
             {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/EncounterPriority', CWE: PV2.25 -%}
         },
+        "diagnosis":
+        [
+            {
+                "use":
+                {
+                    {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+                    {% if DG1.6.Value == "admitting" -%}
+                    {% endif -%}
+                },
+            },
+        ],
     },
     "request":{
         "method":"PUT",

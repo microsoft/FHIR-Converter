@@ -3,6 +3,10 @@
     "resource":{
         "resourceType": "AllergyIntolerance",
         "id":"{{ ID }}",
+        {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+        "category":
+        [
+        ],
         "type":"{{ AL1.2.Value | get_property: 'CodeSystem/AllergyType', 'code' }}",
         "code":
         {
@@ -11,6 +15,9 @@
         "reaction":
         [
             {
+                {% if AL1.4.1.Value != "U" -%}
+                "severity":"{{ AL1.4.1.Value | get_property: 'CodeSystem/AllergyIntoleranceSeverity', 'code' }}",
+                {% endif -%}
                 "manifestation":
                 [
                     {
@@ -19,6 +26,7 @@
                 ],
             },
         ],
+        "criticality":"{{ AL1.4.1.Value | get_property: 'CodeSystem/AllergyIntoleranceCriticality', 'code' }}",
         "onsetDateTime":"{{ AL1.6.Value | format_as_date_time }}",
     },
     "request":{

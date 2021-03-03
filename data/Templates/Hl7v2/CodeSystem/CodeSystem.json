@@ -618,6 +618,23 @@
                 "system": ""
             }
         }, 
+        "CodeSystem/AddressUse": {
+            "H": {
+                "code": "home", 
+                "display": "Home", 
+                "system": ""
+            }, 
+            "BI": {
+                "code": "billing", 
+                "display": "Billing", 
+                "system": ""
+            },
+            "__default__": {
+                "code": "", 
+                "display": "", 
+                "system": ""
+            }
+        }, 
         "CodeSystem/OrderType": {
             "I": {
                 "code": "HOSP", 
@@ -1100,6 +1117,11 @@
                 "code": "false", 
                 "display": "", 
                 "system": ""
+            }, 
+            "__default__": {
+                "code": "false",
+                "display": "",
+                "system": ""
             }
         }, 
         "CodeSystem/Language": {}, 
@@ -1143,6 +1165,11 @@
                 "code": "entered-in-error", 
                 "display": "Entered in Error", 
                 "system": "http://hl7.org/fhir/request-status"
+            },
+            "__default__": {
+                "code" : "unknown",
+                "display" : "Unknown",
+                "system" : ""
             }
         }, 
         "CodeSystem/Relationship": {

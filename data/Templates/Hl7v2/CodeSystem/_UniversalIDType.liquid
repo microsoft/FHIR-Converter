@@ -56,8 +56,8 @@
     "display" : "An X.500 directory name",
     "system" : "http://terminology.hl7.org/CodeSystem/v2-0301",
     {% else -%}
-    "code" : "",
-    "display" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
     "system" : "",
     {% endif -%}
 }
