@@ -3,7 +3,6 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
 using System.Net.Http.Headers;
 using System.Runtime.Caching;
 using EnsureThat;
@@ -43,7 +42,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         public ITemplateCollectionProvider CreateTemplateCollectionProvider(string imageReference, string token)
         {
-            // TODO: different default template for ccda
             EnsureArg.IsNotNull(imageReference, nameof(imageReference));
             EnsureArg.IsNotNull(token, nameof(token));
 
