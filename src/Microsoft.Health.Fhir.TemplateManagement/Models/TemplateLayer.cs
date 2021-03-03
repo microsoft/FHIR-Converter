@@ -18,11 +18,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
     {
         public Dictionary<string, Template> TemplateContent { get; set; }
 
-        public static TemplateLayer ReadFromEmbeddedResource()
+        public static TemplateLayer ReadFromEmbeddedResource(string templatePath = Constants.Hl7v2DefaultTemplatePath)
         {
             try
             {
-                var defaultTemplateResourceName = $"{typeof(Constants).Namespace}.{Constants.DefaultTemplatePath}";
+                var defaultTemplateResourceName = $"{typeof(Constants).Namespace}.{templatePath}";
                 using Stream resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(defaultTemplateResourceName);
                 return ReadFromStream(resourceStream);
             }
