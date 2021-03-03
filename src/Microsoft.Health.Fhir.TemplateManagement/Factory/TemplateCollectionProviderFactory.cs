@@ -4,7 +4,6 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using System.IO;
 using System.Net.Http.Headers;
 using System.Runtime.Caching;
 using EnsureThat;
@@ -14,7 +13,6 @@ using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
-using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement
 {
@@ -45,10 +43,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         public ITemplateCollectionProvider CreateTemplateCollectionProvider(string imageReference, string token)
         {
+            // TODO: different default template for ccda
             EnsureArg.IsNotNull(imageReference, nameof(imageReference));
             EnsureArg.IsNotNull(token, nameof(token));
 
-            if (!string.Equals(imageReference, ImageInfo.DefaultTemplateImageReference, StringComparison.InvariantCultureIgnoreCase)
+            if (!ImageInfo.IsDefaultTemplateImageReference(imageReference)
                     && !AuthenticationHeaderValue.TryParse(token, out _))
             {
                 throw new ContainerRegistryAuthenticationException(TemplateManagementErrorCode.RegistryUnauthorized, "Invalid authentication token");
@@ -61,15 +60,18 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         public void InitDefaultTemplates()
         {
-            TemplateLayer defaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource();
-            _templateCache.Set(ImageInfo.DefaultTemplateImageReference, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
-            _templateCache.Set(defaultTemplateLayer.Digest, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
+            TemplateLayer hl7v2DefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource(Constants.Hl7v2DefaultTemplatePath);
+            _templateCache.Set(ImageInfo.DefaultTemplateImageReference, hl7v2DefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = hl7v2DefaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
+            _templateCache.Set(ImageInfo.Hl7v2TemplateImageReference, hl7v2DefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = hl7v2DefaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
+            _templateCache.Set(hl7v2DefaultTemplateLayer.Digest, hl7v2DefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = hl7v2DefaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
+
+            TemplateLayer cdaDefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource(Constants.CdaDefaultTemplatePath);
+            _templateCache.Set(ImageInfo.CcdaTemplateImageReference, cdaDefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = cdaDefaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
+            _templateCache.Set(cdaDefaultTemplateLayer.Digest, cdaDefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = cdaDefaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
         }
 
         public void InitDefaultTemplates(string path)
         {
-            path ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Constants.DefaultTemplatePath);
-
             TemplateLayer defaultTemplateLayer = TemplateLayer.ReadFromFile(path);
             _templateCache.Set(ImageInfo.DefaultTemplateImageReference, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
             _templateCache.Set(defaultTemplateLayer.Digest, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });

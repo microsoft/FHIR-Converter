@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 
@@ -12,6 +13,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
     public class ImageInfo
     {
         public const string DefaultTemplateImageReference = "microsofthealth/fhirconverter:default";
+        public const string Hl7v2TemplateImageReference = "microsofthealth/hl7v2templates:default";
+        public const string CcdaTemplateImageReference = "microsofthealth/ccdatemplates:default";
+
+        private readonly Dictionary<string, string> _datatype2DefaultTemplateImageMap = new Dictionary<string, string>();
+
         private const char ImageDigestDelimiter = '@';
         private const char ImageTagDelimiter = ':';
         private const char ImageRegistryDelimiter = '/';
@@ -31,6 +37,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
             }
 
             ImageReference = string.Format(Constants.ImageReferenceFormat, Registry, ImageName, Label);
+            _datatype2DefaultTemplateImageMap.Add("Hl7v2", Hl7v2TemplateImageReference);
+            _datatype2DefaultTemplateImageMap.Add("Ccda", CcdaTemplateImageReference);
         }
 
         public string ImageName { get; set; }
@@ -48,14 +56,19 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public string ImageReference { get; set; }
 
+        public string GetDefaultTemplateImageReferenceByDatatype(string datatype)
+        {
+            return _datatype2DefaultTemplateImageMap.GetValueOrDefault(datatype);
+        }
+
         public bool IsDefaultTemplate()
         {
-            return string.Equals(ImageReference, DefaultTemplateImageReference, StringComparison.InvariantCultureIgnoreCase);
+            return string.Equals(ImageReference, DefaultTemplateImageReference, StringComparison.InvariantCultureIgnoreCase) || string.Equals(ImageReference, Hl7v2TemplateImageReference, StringComparison.InvariantCultureIgnoreCase) || string.Equals(ImageReference, CcdaTemplateImageReference, StringComparison.InvariantCultureIgnoreCase);
         }
 
         public static bool IsDefaultTemplateImageReference(string imageReference)
         {
-            return string.Equals(imageReference, DefaultTemplateImageReference, StringComparison.InvariantCultureIgnoreCase);
+            return string.Equals(imageReference, DefaultTemplateImageReference, StringComparison.InvariantCultureIgnoreCase) || string.Equals(imageReference, Hl7v2TemplateImageReference, StringComparison.InvariantCultureIgnoreCase) || string.Equals(imageReference, CcdaTemplateImageReference, StringComparison.InvariantCultureIgnoreCase);
         }
 
         public static bool IsValidImageReference(string imageReference)

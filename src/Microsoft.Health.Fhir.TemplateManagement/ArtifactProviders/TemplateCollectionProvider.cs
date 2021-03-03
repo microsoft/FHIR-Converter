@@ -106,7 +106,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
         private List<Dictionary<string, Template>> GetTemplateCollectionFromDefaultTemplates()
         {
-            if (_templateCache.Get(ImageInfo.DefaultTemplateImageReference) is TemplateLayer oneTemplateLayer)
+            if (_templateCache.Get(ImageInfo.ImageReference) is TemplateLayer oneTemplateLayer)
             {
                 return new List<Dictionary<string, Template>> { oneTemplateLayer.TemplateContent };
             }
