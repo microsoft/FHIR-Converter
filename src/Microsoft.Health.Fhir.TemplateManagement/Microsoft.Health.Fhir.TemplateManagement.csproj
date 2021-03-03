@@ -30,9 +30,9 @@
     <EmbeddedResource Include="../../bin/Hl7v2DefaultTemplates.tar.gz">
       <Link>Hl7v2DefaultTemplates.tar.gz</Link>
     </EmbeddedResource>
-	<EmbeddedResource Include="../../bin/CdaDefaultTemplates.tar.gz">
-		<Link>CdaDefaultTemplates.tar.gz</Link>
-	</EmbeddedResource>
+    <EmbeddedResource Include="../../bin/CdaDefaultTemplates.tar.gz">
+      <Link>CdaDefaultTemplates.tar.gz</Link>
+    </EmbeddedResource>
   </ItemGroup>
   
   <ItemGroup>
@@ -43,8 +43,7 @@
   
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="mkdir ..\..\bin &amp; tar -zcvf ../../bin/Hl7v2DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
-	<Exec Command="mkdir ..\..\bin &amp; tar -zcvf ../../bin/CdaDefaultTemplates.tar.gz -C ../../data/Templates/Cda ." />
-
+	  <Exec Command="mkdir ..\..\bin &amp; tar -zcvf ../../bin/CdaDefaultTemplates.tar.gz -C ../../data/Templates/Cda ." />
   </Target>
   
   <Target Name="DownloadOrasFile" BeforeTargets="Build">
