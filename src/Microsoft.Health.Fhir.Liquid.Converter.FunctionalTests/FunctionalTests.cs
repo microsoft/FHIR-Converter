@@ -76,13 +76,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             var traceInfo = new Hl7v2TraceInfo();
             var actualContent = hl7v2Processor.Convert(inputContent, rootTemplate, new Hl7v2TemplateProvider(templateDirectory), traceInfo);
 
-            // Remove ID
-            var regex = new Regex(@"(?<=(""urn:uuid:|""|/))([A-Za-z0-9\-]{36})(?="")");
-            expectedContent = regex.Replace(expectedContent, string.Empty);
-            actualContent = regex.Replace(actualContent, string.Empty);
-
-            // Normalize time zone
-            JsonSerializer serializer = new JsonSerializer { DateTimeZoneHandling = DateTimeZoneHandling.Utc };
+            JsonSerializer serializer = new JsonSerializer();
             var expectedObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(expectedContent)));
             var actualObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(actualContent)));
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));

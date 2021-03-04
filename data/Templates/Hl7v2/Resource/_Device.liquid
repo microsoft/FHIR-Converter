@@ -8,10 +8,23 @@
             { {% include 'DataType/EIIdentifier' EI: OBX.18.Repeats[0] -%} },
             { {% include 'DataType/EIIdentifier' EI: PRT.10 -%} },
         ],
+        "udiCarrier":
+        [
+            {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+            {
+            },
+            {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+            {
+            },
+        ],
         "manufactureDate":"{{ PRT.17.Value | format_as_date_time }}",
         "expirationDate":"{{ PRT.18.Value | format_as_date_time }}",
         "lotNumber":"{{ PRT.19.Value }}",
         "serialNumber":"{{ PRT.20.Value }}",
+        {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+        "type":
+        {
+        },
     },
     "request":{
         "method":"PUT",

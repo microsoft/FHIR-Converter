@@ -1,49 +1,30 @@
-﻿{
+{
   "resourceType": "Bundle",
   "type": "batch",
+  "timestamp": "2005-01-10T04:55:04Z",
+  "identifier": {
+    "value": "599102"
+  },
   "entry": [
-    {
-      "fullUrl": "urn:uuid:3fa041fd-9a00-f9ae-30ba-4e3ad5585603",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "3fa041fd-9a00-f9ae-30ba-4e3ad5585603",
-        "identifier": [
-          {
-            "value": "1"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/3fa041fd-9a00-f9ae-30ba-4e3ad5585603"
-      }
-    },
     {
       "fullUrl": "urn:uuid:d3171c25-5db7-e705-140c-19d0972f1ba2",
       "resource": {
         "resourceType": "MessageHeader",
         "id": "d3171c25-5db7-e705-140c-19d0972f1ba2",
         "source": {
-          "source": {
-            "name": "AccMgr"
-          }
+          "name": "AccMgr"
         },
         "meta": {
           "tag": [
             {
-              "meta": {
-                "tag": [
-                  {
-                    "code": "P",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-                  }
-                ]
-              }
+              "code": "P",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
         },
-        "sender": {
-          "reference": "Organization/3fa041fd-9a00-f9ae-30ba-4e3ad5585603"
+        "eventCoding": {
+          "code": "A01",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -118,9 +99,26 @@
         ],
         "communication": [
           {
+            "language": {
+              "coding": [
+                {
+                  "code": "1",
+                  "display": "1"
+                }
+              ]
+            },
             "preferred": true
           }
         ],
+        "maritalStatus": {
+          "coding": [
+            {
+              "code": "2",
+              "display": "2"
+            }
+          ]
+        },
+        "deceasedBoolean": "false",
         "contact": [
           {
             "name": {
@@ -141,6 +139,16 @@
               {
                 "value": "8885552222"
               }
+            ],
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "code": "Y",
+                    "display": "Y"
+                  }
+                ]
+              }
             ]
           }
         ]
@@ -148,6 +156,85 @@
       "request": {
         "method": "PUT",
         "url": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b065b233-8738-f1ec-1314-d61e4aac2c9e",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "b065b233-8738-f1ec-1314-d61e4aac2c9e"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/b065b233-8738-f1ec-1314-d61e4aac2c9e"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f70a39cb-cf13-6f75-885d-cf691752c711",
+      "resource": {
+        "resourceType": "Account",
+        "id": "f70a39cb-cf13-6f75-885d-cf691752c711",
+        "identifier": [
+          {
+            "value": "40007716",
+            "type": {
+              "coding": [
+                {
+                  "code": "VN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            }
+          }
+        ],
+        "subject": [
+          {
+            "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Account/f70a39cb-cf13-6f75-885d-cf691752c711"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9b2956e2-230b-9dd5-ad8d-0e697a8664c1",
+      "resource": {
+        "resourceType": "Location",
+        "id": "9b2956e2-230b-9dd5-ad8d-0e697a8664c1",
+        "mode": "instance",
+        "physicalType": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/location-physical-type"
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/9b2956e2-230b-9dd5-ad8d-0e697a8664c1"
       }
     },
     {
@@ -175,30 +262,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:f70a39cb-cf13-6f75-885d-cf691752c711",
-      "resource": {
-        "resourceType": "Account",
-        "id": "f70a39cb-cf13-6f75-885d-cf691752c711",
-        "identifier": [
-          {
-            "value": "40007716",
-            "type": {
-              "coding": [
-                {
-                  "code": "VN",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            }
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Account/f70a39cb-cf13-6f75-885d-cf691752c711"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:984ec8bc-49c4-56fe-100c-942e6c5a6e3c",
       "resource": {
         "resourceType": "Encounter",
@@ -209,6 +272,24 @@
           "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
         },
         "status": "unknown",
+        "location": [
+          {
+            "status": "active",
+            "location": {
+              "reference": "Location/9b2956e2-230b-9dd5-ad8d-0e697a8664c1"
+            }
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "code": "3",
+                "display": "3"
+              }
+            ]
+          }
+        ],
         "hospitalization": {
           "admitSource": {
             "coding": [
@@ -230,7 +311,10 @@
                   }
                 ]
               }
-            ]
+            ],
+            "individual": {
+              "reference": "Practitioner/b065b233-8738-f1ec-1314-d61e4aac2c9e"
+            }
           },
           {
             "type": [
@@ -243,7 +327,10 @@
                 ],
                 "text": "admitter"
               }
-            ]
+            ],
+            "individual": {
+              "reference": "Practitioner/b065b233-8738-f1ec-1314-d61e4aac2c9e"
+            }
           }
         ],
         "serviceType": {
@@ -272,14 +359,6 @@
         "period": {
           "start": "2005-01-10T04:52:53Z"
         },
-        "location": [
-          {
-            "location": {
-              "reference": "Location/9b2956e2-230b-9dd5-ad8d-0e697a8664c1"
-            },
-            "status": "active"
-          }
-        ],
         "subject": {
           "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
         },
@@ -297,22 +376,13 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:9b2956e2-230b-9dd5-ad8d-0e697a8664c1",
+      "fullUrl": "urn:uuid:",
       "resource": {
-        "resourceType": "Location",
-        "id": "9b2956e2-230b-9dd5-ad8d-0e697a8664c1",
-        "mode": "instance",
-        "physicalType": {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/location-physical-type"
-            }
-          ]
-        }
+        "resourceType": "Organization"
       },
       "request": {
         "method": "PUT",
-        "url": "Location/9b2956e2-230b-9dd5-ad8d-0e697a8664c1"
+        "url": "Organization/"
       }
     },
     {
@@ -320,6 +390,24 @@
       "resource": {
         "resourceType": "RelatedPerson",
         "id": "b8e7e176-84c6-7e2d-d422-a69df56229d8",
+        "relationship": [
+          {
+            "coding": [
+              {
+                "code": "SO",
+                "display": "SO"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "Y",
+                "display": "Y"
+              }
+            ]
+          }
+        ],
         "address": [
           {
             "line": [

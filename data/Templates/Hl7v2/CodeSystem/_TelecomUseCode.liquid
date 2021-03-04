@@ -36,8 +36,8 @@
     "display" : "Mobile",
     "system" : "http://hl7.org/fhir/contact-point-use",
     {% else -%}
-    "code" : "",
-    "display" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
     "system" : "",
     {% endif -%}
 }

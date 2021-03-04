@@ -32,8 +32,8 @@
     "display" : "Unknown",
     "system" : "http://terminology.hl7.org/CodeSystem/v2-0131",
     {% else -%}
-    "code" : "",
-    "display" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
     "system" : "",
     {% endif -%}
 }

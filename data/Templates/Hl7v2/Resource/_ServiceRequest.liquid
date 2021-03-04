@@ -3,6 +3,7 @@
     "resource":{
         "resourceType": "ServiceRequest",
         "id":"{{ ID }}",
+        "status":"{{ ORC.5.Value | get_property: 'CodeSystem/OrderStatus', 'code' }}",
         {% if ORC.1 -%}
         "intent":"order",
         {% endif -%}
@@ -91,7 +92,6 @@
             { {% include 'DataType/EIIdentifier' EI: OBR.3 -%} },
             { {% include 'DataType/EIIdentifier' EI: OBR.53 -%} },
         ],
-        "status":"{{ ORC.5.Value | get_property: 'CodeSystem/OrderStatus', 'code' }}",
         {% if ORC.1.Value -%}
         "authoredOn":"{{ ORC.9.Value | format_as_date_time }}",
         {% endif -%}
@@ -106,11 +106,8 @@
             {% if ORC.12 and PractitionerRole_ID_ORC_12 -%}
             "reference":"PractitionerRole/{{ PractitionerRole_ID_ORC_12 }}",
             {% endif -%}
-            {% if ORC.22 and Organization_address_ID_ORC_22 -%}
-            "reference":"Organization.address/{{ Organization_address_ID_ORC_22 }}",
-            {% endif -%}
-            {% if ORC.23 and Organization_telecom_ID_ORC_23 -%}
-            "reference":"Organization.telecom/{{ Organization_telecom_ID_ORC_23 }}",
+            {% if ORC.21 and Organization_ID_ORC_21 -%}
+            "reference":"Organization/{{ Organization_ID_ORC_21 }}",
             {% endif -%}
         },
         "quantityQuantity":
@@ -147,8 +144,11 @@
         "specimen":
         [
             {
-                {% if OBR.14 and Specimen_receivedTime_ID_OBR_14 -%}
-                "reference":"Specimen.receivedTime/{{ Specimen_receivedTime_ID_OBR_14 }}",
+                {% if OBR.10 and Practitioner_ID_OBR_10 -%}
+                "reference":"Practitioner/{{ Practitioner_ID_OBR_10 }}",
+                {% endif -%}
+                {% if OBR.15 and Specimen_ID_OBR_15 -%}
+                "reference":"Specimen/{{ Specimen_ID_OBR_15 }}",
                 {% endif -%}
             },
         ],

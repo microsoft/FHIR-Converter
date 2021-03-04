@@ -12,8 +12,8 @@
     "display" : "Room temperature",
     "system" : "http://terminology.hl7.org/CodeSystem/v2-0493",
     {% else -%}
-    "code" : "",
-    "display" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
     "system" : "",
     {% endif -%}
 }

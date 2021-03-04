@@ -1,87 +1,35 @@
-﻿{
+{
   "resourceType": "Bundle",
   "type": "batch",
+  "timestamp": "2001-01-01T00:00:00Z",
+  "identifier": {
+    "value": "Q123456789T123456789X123456"
+  },
   "entry": [
-    {
-      "fullUrl": "urn:uuid:37113002-8500-6f18-8ff4-95b962eeadfe",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "37113002-8500-6f18-8ff4-95b962eeadfe",
-        "identifier": [
-          {
-            "value": "NINTENDO"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "TESTFACILITY"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/37113002-8500-6f18-8ff4-95b962eeadfe"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5",
-        "identifier": [
-          {
-            "value": "NINTENDO"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "TESTFACILITY"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5"
-      }
-    },
     {
       "fullUrl": "urn:uuid:18548d54-14a8-815a-c1bb-396f35b37164",
       "resource": {
         "resourceType": "MessageHeader",
         "id": "18548d54-14a8-815a-c1bb-396f35b37164",
         "source": {
-          "source": {
-            "name": "NES"
-          }
+          "name": "NES"
         },
         "destination": [
           {
-            "destination": [
-              {
-                "name": "TESTSYSTEM"
-              }
-            ],
-            "receiver": {
-              "reference": "Organization/ff939fb2-65de-0b68-4a81-ce9cd8e6f5a5"
-            }
+            "name": "TESTSYSTEM"
           }
         ],
         "meta": {
           "tag": [
             {
-              "meta": {
-                "tag": [
-                  {
-                    "code": "P",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-                  }
-                ]
-              }
+              "code": "P",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
         },
-        "sender": {
-          "reference": "Organization/37113002-8500-6f18-8ff4-95b962eeadfe"
+        "eventCoding": {
+          "code": "A04",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -176,6 +124,16 @@
               {
                 "value": "(123)555-2345"
               }
+            ],
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "code": "NOK",
+                    "display": "NOK"
+                  }
+                ]
+              }
             ]
           },
           {
@@ -200,6 +158,16 @@
               {
                 "value": "(123)555-4567"
               }
+            ],
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "code": "EMC",
+                    "display": "EMC"
+                  }
+                ]
+              }
             ]
           }
         ]
@@ -210,27 +178,35 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:ab3d28cb-c909-4ba2-b02e-0a868895ef0b",
+      "fullUrl": "urn:uuid:",
       "resource": {
-        "resourceType": "Provenance",
-        "id": "ab3d28cb-c909-4ba2-b02e-0a868895ef0b",
-        "agent": [
-          {
-            "type": {
-              "coding": [
-                {
-                  "code": "author",
-                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
-                }
-              ]
-            }
-          }
-        ],
-        "recorded": "2001-01-01T00:00:00Z"
+        "resourceType": "Practitioner"
       },
       "request": {
         "method": "PUT",
-        "url": "Provenance/ab3d28cb-c909-4ba2-b02e-0a868895ef0b"
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:06328e17-a467-ce3f-48ba-28a3e3c21152",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "06328e17-a467-ce3f-48ba-28a3e3c21152"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/06328e17-a467-ce3f-48ba-28a3e3c21152"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:a5bcb90d-8151-7e13-dd82-9e837d506efa",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "a5bcb90d-8151-7e13-dd82-9e837d506efa"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/a5bcb90d-8151-7e13-dd82-9e837d506efa"
       }
     },
     {
@@ -242,6 +218,11 @@
           {
             "value": "12345678"
           }
+        ],
+        "subject": [
+          {
+            "reference": "Patient/5002eb07-c460-7112-6574-50303ae3b4a6"
+          }
         ]
       },
       "request": {
@@ -250,101 +231,13 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:1ffe7bbb-44ca-d195-1456-40d94950090b",
+      "fullUrl": "urn:uuid:",
       "resource": {
-        "resourceType": "Encounter",
-        "id": "1ffe7bbb-44ca-d195-1456-40d94950090b",
-        "class": {
-          "code": "AMB",
-          "display": "ambulatory",
-          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
-        },
-        "status": "unknown",
-        "participant": [
-          {
-            "type": [
-              {
-                "coding": [
-                  {
-                    "code": "ATND",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
-                    "display": "attender"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "type": [
-              {
-                "coding": [
-                  {
-                    "code": "REF",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
-                  }
-                ],
-                "text": "referrer"
-              }
-            ]
-          },
-          {
-            "type": [
-              {
-                "coding": [
-                  {
-                    "code": "ADM",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
-                  }
-                ],
-                "text": "admitter"
-              }
-            ]
-          }
-        ],
-        "serviceType": {
-          "coding": [
-            {
-              "code": "CRD"
-            }
-          ]
-        },
-        "identifier": [
-          {
-            "value": "0123456789",
-            "type": {
-              "coding": [
-                {
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ],
-              "text": "visit number"
-            }
-          }
-        ],
-        "period": {
-          "start": "2001-01-01T00:00:00Z"
-        },
-        "location": [
-          {
-            "location": {
-              "reference": "Location/1061dd71-d0a8-e8d0-7468-5be2eb4db1f8"
-            },
-            "status": "active"
-          },
-          {
-            "location": {
-              "reference": "Location/affd96b8-87bc-956b-0215-7db7a8c6a9b3"
-            },
-            "status": "completed"
-          }
-        ],
-        "subject": {
-          "reference": "Patient/5002eb07-c460-7112-6574-50303ae3b4a6"
-        }
+        "resourceType": "Location"
       },
       "request": {
         "method": "PUT",
-        "url": "Encounter/1ffe7bbb-44ca-d195-1456-40d94950090b"
+        "url": "Location/"
       }
     },
     {
@@ -378,10 +271,169 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:ab3d28cb-c909-4ba2-b02e-0a868895ef0b",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "ab3d28cb-c909-4ba2-b02e-0a868895ef0b",
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
+                }
+              ]
+            }
+          }
+        ],
+        "recorded": "2001-01-01T00:00:00Z"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Provenance/ab3d28cb-c909-4ba2-b02e-0a868895ef0b"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1ffe7bbb-44ca-d195-1456-40d94950090b",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "1ffe7bbb-44ca-d195-1456-40d94950090b",
+        "class": {
+          "code": "AMB",
+          "display": "ambulatory",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "status": "unknown",
+        "location": [
+          {
+            "status": "active",
+            "location": {
+              "reference": "Location/1061dd71-d0a8-e8d0-7468-5be2eb4db1f8"
+            }
+          },
+          {
+            "status": "completed",
+            "location": {
+              "reference": "Location/affd96b8-87bc-956b-0215-7db7a8c6a9b3"
+            }
+          }
+        ],
+        "participant": [
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ATND",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                    "display": "attender"
+                  }
+                ]
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/06328e17-a467-ce3f-48ba-28a3e3c21152"
+            }
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "REF",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+                  }
+                ],
+                "text": "referrer"
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/a5bcb90d-8151-7e13-dd82-9e837d506efa"
+            }
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ADM",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+                  }
+                ],
+                "text": "admitter"
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/06328e17-a467-ce3f-48ba-28a3e3c21152"
+            }
+          }
+        ],
+        "serviceType": {
+          "coding": [
+            {
+              "code": "CRD"
+            }
+          ]
+        },
+        "identifier": [
+          {
+            "value": "0123456789",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ],
+              "text": "visit number"
+            }
+          }
+        ],
+        "period": {
+          "start": "2001-01-01T00:00:00Z"
+        },
+        "subject": {
+          "reference": "Patient/5002eb07-c460-7112-6574-50303ae3b4a6"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/1ffe7bbb-44ca-d195-1456-40d94950090b"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:4e083e5f-53b4-194d-b6bd-6d51b5dab850",
       "resource": {
         "resourceType": "RelatedPerson",
         "id": "4e083e5f-53b4-194d-b6bd-6d51b5dab850",
+        "relationship": [
+          {
+            "coding": [
+              {
+                "code": "SO",
+                "display": "SO"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "NOK",
+                "display": "NOK"
+              }
+            ]
+          }
+        ],
         "address": [
           {
             "line": [
@@ -424,6 +476,14 @@
         "resourceType": "RelatedPerson",
         "id": "a7a01053-59be-eb80-1f54-591a69d5bc8e",
         "relationship": [
+          {
+            "coding": [
+              {
+                "code": "SO",
+                "display": "SO"
+              }
+            ]
+          },
           {
             "coding": [
               {

@@ -1,82 +1,30 @@
-﻿{
+{
   "resourceType": "Bundle",
   "type": "batch",
+  "timestamp": "2012-07-01T08:22:00Z",
+  "identifier": {
+    "value": "NIST-IZ-001.00"
+  },
   "entry": [
-    {
-      "fullUrl": "urn:uuid:8a4905a9-ae0d-541f-4fde-2e228bbb0f70",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "8a4905a9-ae0d-541f-4fde-2e228bbb0f70",
-        "identifier": [
-          {
-            "value": "X68"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "NIST Test Iz Reg"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/8a4905a9-ae0d-541f-4fde-2e228bbb0f70"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:57e4a003-b56b-2993-9714-18b188c68595",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "57e4a003-b56b-2993-9714-18b188c68595",
-        "identifier": [
-          {
-            "value": "X68"
-          }
-        ],
-        "destination": [
-          {
-            "endpoint": "NIST Test Iz Reg"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/57e4a003-b56b-2993-9714-18b188c68595"
-      }
-    },
     {
       "fullUrl": "urn:uuid:5cddb2d1-c441-ec21-1c0c-96605dd3a9c0",
       "resource": {
         "resourceType": "MessageHeader",
         "id": "5cddb2d1-c441-ec21-1c0c-96605dd3a9c0",
         "source": {
-          "source": {
-            "name": "Test EHR Application"
-          }
+          "name": "Test EHR Application"
         },
-        "destination": [
-          {
-            "receiver": {
-              "reference": "Organization/57e4a003-b56b-2993-9714-18b188c68595"
-            }
-          }
-        ],
         "meta": {
           "tag": [
             {
-              "meta": {
-                "tag": [
-                  {
-                    "code": "P",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-                  }
-                ]
-              }
+              "code": "P",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
         },
-        "sender": {
-          "reference": "Organization/8a4905a9-ae0d-541f-4fde-2e228bbb0f70"
+        "eventCoding": {
+          "code": "V04",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -183,6 +131,30 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner",
+        "identifier": [
+          {
+            "value": "57422"
+          }
+        ],
+        "name": [
+          {
+            "family": "RADON",
+            "given": [
+              "NICHOLAS"
+            ],
+            "use": "official"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:cdc6a323-66a4-19cb-ff4e-a5c9a5f5fd1b",
       "resource": {
         "resourceType": "Practitioner",
@@ -205,6 +177,16 @@
       "request": {
         "method": "PUT",
         "url": "Practitioner/cdc6a323-66a4-19cb-ff4e-a5c9a5f5fd1b"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
       }
     },
     {
@@ -251,11 +233,40 @@
       "fullUrl": "urn:uuid:82fcb02d-52a4-17af-a707-923501f587d1",
       "resource": {
         "resourceType": "Account",
-        "id": "82fcb02d-52a4-17af-a707-923501f587d1"
+        "id": "82fcb02d-52a4-17af-a707-923501f587d1",
+        "subject": [
+          {
+            "reference": "Patient/1b2dce0f-93ae-fae4-cc64-b90257c96f1b"
+          }
+        ]
       },
       "request": {
         "method": "PUT",
         "url": "Account/82fcb02d-52a4-17af-a707-923501f587d1"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Encounter",
+        "status": "unknown",
+        "subject": {
+          "reference": "Patient/1b2dce0f-93ae-fae4-cc64-b90257c96f1b"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
       }
     },
     {
@@ -375,6 +386,24 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:bcdbbced-4721-ecce-55fe-75020f5c6048",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "bcdbbced-4721-ecce-55fe-75020f5c6048",
+        "identifier": [
+          {
+            "value": "CSL",
+            "system": "MVX"
+          }
+        ],
+        "name": "CSL Behring"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/bcdbbced-4721-ecce-55fe-75020f5c6048"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:6389563f-944d-cf03-c166-cab811fa11b5",
       "resource": {
         "resourceType": "Practitioner",
@@ -400,21 +429,23 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:bcdbbced-4721-ecce-55fe-75020f5c6048",
+      "fullUrl": "urn:uuid:",
       "resource": {
-        "resourceType": "Organization",
-        "id": "bcdbbced-4721-ecce-55fe-75020f5c6048",
-        "identifier": [
-          {
-            "value": "CSL",
-            "system": "MVX"
-          }
-        ],
-        "name": "CSL Behring"
+        "resourceType": "PractitionerRole"
       },
       "request": {
         "method": "PUT",
-        "url": "Organization/bcdbbced-4721-ecce-55fe-75020f5c6048"
+        "url": "PractitionerRole/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Device"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Device/"
       }
     },
     {
