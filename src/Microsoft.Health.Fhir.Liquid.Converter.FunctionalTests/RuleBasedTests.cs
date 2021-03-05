@@ -12,6 +12,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Hl7.Fhir.Serialization;
+using Microsoft.Health.Fhir.Liquid.Converter.Cda;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -30,6 +32,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         private static readonly Hl7v2TemplateProvider _hl7TemplateProvider = new Hl7v2TemplateProvider(_hl7TemplateFolder);
         private static readonly CdaTemplateProvider _cdaTemplateProvider = new CdaTemplateProvider(_cdaTemplateFolder);
+
+        private static readonly FhirJsonParser _fhirParser = new FhirJsonParser();
 
         private static readonly int _maxRevealDepth = 1 << 7;
 
@@ -66,10 +70,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         {
             var cases = new List<object[]>
             {
-                new object[] { "CCD", "170.314B2_Amb_CCD.cda"},
-                new object[] { "CCD", "C-CDA_R2-1_CCD.xml.cda"},
-                new object[] { "CCD", "CCD.cda"},
-                new object[] { "CCD", "CCD-Parent-Document-Replace-C-CDAR2.1.cda"},
+                new object[] { "CCD", "170.314B2_Amb_CCD.cda" },
+                new object[] { "CCD", "C-CDA_R2-1_CCD.xml.cda" },
+                new object[] { "CCD", "CCD.cda" },
+                new object[] { "CCD", "CCD-Parent-Document-Replace-C-CDAR2.1.cda" },
             };
             return cases.Select(item => new object[]
             {
@@ -250,10 +254,27 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCCDACases))]
-        public async Task CheckPassFhirParser(string templateName, string samplePath)
+        [MemberData(nameof(GetCDACases))]
+        public async Task Hl7v2CheckPassFhirParser(string templateName, string samplePath)
         {
-            var result = await ConvertData(templateName, samplePath);
+            var result = await Hl7v2ConvertData(templateName, samplePath);
+            var jsonResult = JsonConvert.SerializeObject(result, Formatting.Indented);
+            try
+            {
+                var bundle = _fhirParser.Parse<Hl7.Fhir.Model.Bundle>(jsonResult);
+                Assert.NotNull(bundle);
+            }
+            catch (FormatException fe)
+            {
+                Assert.Null(fe);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetCDACases))]
+        public async Task CdaCheckPassFhirParser(string templateName, string samplePath)
+        {
+            var result = await CdaConvertData(templateName, samplePath);
             var jsonResult = JsonConvert.SerializeObject(result, Formatting.Indented);
             try
             {

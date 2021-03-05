@@ -347,7 +347,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             folderResultObject["entry"]?.Last()?.Remove();
 
             Assert.True(JToken.DeepEquals(imageResultObject, folderResultObject));
-
         }
 
         private void TestByTemplate(string inputFile, string entryTemplate, List<Dictionary<string, Template>> templateProvider)

@@ -3,107 +3,282 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
 using System.IO;
-using ICSharpCode.SharpZipLib.GZip;
-using ICSharpCode.SharpZipLib.Tar;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
-using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
-using Microsoft.Health.Fhir.TemplateManagement.Models;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Hl7.Fhir.Serialization;
+using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Xunit;
+using Xunit.Abstractions;
 
-namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
+namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 {
-    public class TemplateCollectionProviderFactoryTests
+    public class RuleBasedTests
     {
-        private readonly string templateFolder = @"..\..\..\..\..\data\Templates\Hl7v2";
-        private readonly TemplateCollectionConfiguration _config = new TemplateCollectionConfiguration();
-        private readonly string _token = "Basic FakeToken";
-        private readonly IMemoryCache _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 100000000 });
+        private static readonly string _hl7TemplateFolder = Path.Combine(Constants.TemplateDirectory, "Hl7v2");
+        private static readonly string _hl7DataFolder = Path.Combine(Constants.SampleDataDirectory, "Hl7v2");
 
-        public static IEnumerable<object[]> GetValidImageInfoWithTag()
+        private static readonly Hl7v2TemplateProvider _hl7TemplateProvider = new Hl7v2TemplateProvider(_hl7TemplateFolder);
+        private static readonly FhirJsonParser _fhirParser = new FhirJsonParser();
+
+        private static readonly int _maxRevealDepth = 1 << 7;
+
+        private readonly ITestOutputHelper _output;
+
+        public RuleBasedTests(ITestOutputHelper output)
         {
-            yield return new object[] { "testacr.azurecr.io/templateset:v1" };
-            yield return new object[] { "testacr.azurecr.io/templateset:v2" };
+            this._output = output;
         }
 
-        public static IEnumerable<object[]> GetValidImageInfoWithDigest()
+        public static IEnumerable<object[]> GetHL7V2Cases()
         {
-            yield return new object[] { "testacr.azurecr.io/templateset@sha256:87b600f187bde328de7a8fd98a4f3dad1ce71803c5fc4eced77b3349da136a5f" };
-            yield return new object[] { "testacr.azurecr.io/templateset@sha256:95074605bbe28f191fffd85a8e3a581d6fdbe440908c3b5f36dd1b532907a530" };
+            var cases = new List<object[]>
+            {
+                new object[] { "ADT_A01", "ADT01-23.hl7" },
+                new object[] { "ADT_A01", "ADT01-28.hl7" },
+                new object[] { "VXU_V04", "VXU.hl7" },
+                new object[] { "VXU_V04", "IZ_1_1.1_Admin_Child_Max_Message.hl7" },
+                new object[] { "ORU_R01", "LAB-ORU-1.hl7" },
+                new object[] { "ORU_R01", "LAB-ORU-2.hl7" },
+                new object[] { "ORU_R01", "LRI_2.0-NG_CBC_Typ_Message.hl7" },
+                new object[] { "ORU_R01", "ORU-R01-RMGEAD.hl7" },
+                new object[] { "OML_O21", "MDHHS-OML-O21-1.hl7" },
+                new object[] { "OML_O21", "MDHHS-OML-O21-2.hl7" },
+            };
+            return cases.Select(item => new object[]
+            {
+                Convert.ToString(item[0]),
+                Path.Combine(_hl7DataFolder, Convert.ToString(item[1])),
+            });
+        }
+
+        public static IEnumerable<object[]> GetCCDACases()
+        {
+            return new List<object[]>();
         }
 
         [Theory]
-        [MemberData(nameof(GetValidImageInfoWithTag))]
-        [MemberData(nameof(GetValidImageInfoWithDigest))]
-        public void GiveImageReference_WhenGetTemplateProvider_ACorrectTemplateProviderWillBeReturnedAsync(string imageReference)
+        [MemberData(nameof(GetHL7V2Cases))]
+        [MemberData(nameof(GetCCDACases))]
+        public async Task CheckOnePatient(string templateName, string samplePath)
         {
-            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            Assert.NotNull(factory.CreateProvider(imageReference, _token));
-            Assert.NotNull(factory.CreateTemplateCollectionProvider(imageReference, _token));
+            var result = await ConvertData(templateName, samplePath);
+            var patients = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Patient')].resource.id");
+            Assert.Equal(1, patients?.Count());
         }
 
-        [Fact]
-        public void GiveDefaultImageReference_WhenGetTemplateProviderWithEmptyToken_ADefaultTemplateProviderWillBeReturnedAsync()
+        [Theory]
+        [MemberData(nameof(GetHL7V2Cases))]
+        [MemberData(nameof(GetCCDACases))]
+        public async Task CheckNonemptyResource(string templateName, string samplePath)
         {
-            string imageReference = ImageInfo.DefaultTemplateImageReference;
-            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
-            Assert.NotNull(factory.CreateTemplateCollectionProvider(imageReference, string.Empty));
-        }
-
-        [Fact]
-        public void GivenAnInvalidToken_WhenGetTemplateProvider_AnExceptionWillBeThrown()
-        {
-            string imageReference = "testacr.azurecr.io/templates:test1";
-            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            Assert.Throws<ContainerRegistryAuthenticationException>(() => factory.CreateProvider(imageReference, string.Empty));
-            Assert.Throws<ContainerRegistryAuthenticationException>(() => factory.CreateProvider(imageReference, string.Empty));
-        }
-
-        [Fact]
-        public void GivenAWrongDefaultTemplatePath_WhenInitDefaultTemplate_ExceptionWillBeThrown()
-        {
-            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            Assert.Throws<DefaultTemplatesInitializeException>(() => factory.InitDefaultTemplates("WrongPath"));
-        }
-
-        [Fact]
-        public void GiveNewDefaultTemplateTarGzFile_WhenInitDefaultTemplate_DefaultTemplatesWillBeInit()
-        {
-            string imageReference = ImageInfo.DefaultTemplateImageReference;
-            CreateTarGz("NewDefaultTemplates.tar.gz", templateFolder);
-            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            factory.InitDefaultTemplates("NewDefaultTemplates.tar.gz");
-            Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
-        }
-
-        private void CreateTarGz(string outputTarFilename, string sourceDirectory)
-        {
-            using FileStream fs = new FileStream(outputTarFilename, FileMode.Create, FileAccess.Write, FileShare.None);
-            using Stream gzipStream = new GZipOutputStream(fs);
-            using TarArchive tarArchive = TarArchive.CreateOutputTarArchive(gzipStream);
-            AddDirectoryFilesToTar(tarArchive, sourceDirectory, true);
-        }
-
-        private void AddDirectoryFilesToTar(TarArchive tarArchive, string sourceDirectory, bool recurse)
-        {
-            if (recurse)
+            var result = await ConvertData(templateName, samplePath);
+            var resources = result.SelectTokens("$.entry..resource");
+            foreach (var resource in resources)
             {
-                string[] directories = Directory.GetDirectories(sourceDirectory);
-                foreach (string directory in directories)
-                {
-                    AddDirectoryFilesToTar(tarArchive, directory, recurse);
+                var properties = resource.ToObject<JObject>().Properties();
+                var propNames = properties.Select(p => p.Name).ToHashSet();
+                Assert.True(propNames?.Count() > 0);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetHL7V2Cases))]
+        [MemberData(nameof(GetCCDACases))]
+        public async Task CheckNonidenticalResources(string templateName, string samplePath)
+        {
+            var result = await ConvertData(templateName, samplePath);
+            var resourceIds = result.SelectTokens("$.entry..resource.id");
+            var uniqueResourceIds = resourceIds.Select(Convert.ToString).Distinct();
+            Assert.Equal(uniqueResourceIds.Count(), resourceIds.Count());
+        }
+
+        [Theory]
+        [MemberData(nameof(GetHL7V2Cases))]
+        [MemberData(nameof(GetCCDACases))]
+        public async Task CheckValuesRevealInOrigin(string templateName, string samplePath)
+        {
+            var sampleContent = await File.ReadAllTextAsync(samplePath, Encoding.UTF8);
+            var result = await ConvertData(templateName, samplePath);
+            RevealObjectValues(sampleContent, result, 0);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetHL7V2Cases))]
+        [MemberData(nameof(GetCCDACases))]
+        public async Task CheckPassOfficialValidator(string templateName, string samplePath)
+        {
+            (bool javaStatus, string javaMessage) = await ExecuteCommand("-version");
+            Assert.True(javaStatus, javaMessage);
+
+            var result = await ConvertData(templateName, samplePath);
+            var resultFolder = Path.GetFullPath(Path.Combine(@"AppData", "Temp"));
+            var resultPath = Path.Combine(resultFolder, $"{Guid.NewGuid().ToString("N")}.json");
+            if (!Directory.Exists(resultFolder))
+            {
+                Directory.CreateDirectory(resultFolder);
+            }
+
+            await File.WriteAllTextAsync(resultPath, JsonConvert.SerializeObject(result, Formatting.Indented), Encoding.UTF8);
+
+            var validatorPath = Path.GetFullPath(Path.Combine(@"ValidatorLib", "validator_cli.jar"));
+            var specPath = Path.GetFullPath(Path.Combine(@"ValidatorLib", "hl7.fhir.r4.core-4.0.1.tgz"));
+            var command = $"-jar {validatorPath} {resultPath} -version 4.0.1 -ig {specPath} -tx n/a";
+            (bool status, string message) = await ExecuteCommand(command);
+            Assert.False(status, "Currently the templates are still under development. By default we turn off this validator.");
+            if (!status)
+            {
+                _output.WriteLine(message);
+            }
+
+            Directory.Delete(resultFolder, true);
+        }
+
+        [Fact]
+        public async Task CheckParserFunctionality()
+        {
+            var jsonResult = await Task.FromResult(@"{
+                ""resourceType"": ""Observation"",
+                ""id"": ""209c8566-dafa-22b6-31f6-e4c00e649c61"",
+                ""valueQuantity"": {
+                    ""code"": ""mg/dl""
+                },
+                ""valueRange"": {	
+                    ""low"": {	
+                        ""value"": ""182""	
+                    }
                 }
+            }");
+            try
+            {
+                var bundle = _fhirParser.Parse<Hl7.Fhir.Model.Observation>(jsonResult);
+                Assert.Null(bundle);
+            }
+            catch (FormatException fe)
+            {
+                Assert.NotNull(fe);
+            }
+        }
+
+        [Theory]
+        [MemberData(nameof(GetHL7V2Cases))]
+        [MemberData(nameof(GetCCDACases))]
+        public async Task CheckPassFhirParser(string templateName, string samplePath)
+        {
+            var result = await ConvertData(templateName, samplePath);
+            var jsonResult = JsonConvert.SerializeObject(result, Formatting.Indented);
+            try
+            {
+                var bundle = _fhirParser.Parse<Hl7.Fhir.Model.Bundle>(jsonResult);
+                Assert.NotNull(bundle);
+            }
+            catch (FormatException fe)
+            {
+                Assert.Null(fe);
+            }
+        }
+
+        private async Task<JObject> ConvertData(string templateName, string samplePath)
+            => JObject.Parse(new Hl7v2Processor()
+                .Convert(await File.ReadAllTextAsync(samplePath, Encoding.UTF8), templateName, _hl7TemplateProvider));
+
+        private void RevealObjectValues(string origin, JToken resource, int level)
+        {
+            Assert.True(level < _maxRevealDepth, "Reveal depth shouldn't exceed limit.");
+            switch (resource)
+            {
+                case JArray array:
+                    array.ToList().ForEach(sub => RevealObjectValues(origin, sub, level + 1));
+                    break;
+                case JObject container:
+                    container.Properties().Select(p => p.Name).Where(key => ResourceFilter.NonCompareProperties.All(func => !func(key)))
+                        .Select(key => container[key]).ToList().ForEach(sub => RevealObjectValues(origin, sub, level + 1));
+                    break;
+                case JValue value:
+                    if (ResourceFilter.NonCompareValues.All(func => !func(value.ToString())))
+                    {
+                        Assert.Contains(value.ToString().Trim(), origin);
+                    }
+
+                    break;
+                default:
+                    Assert.True(false, $"Unexpected token {resource}, type {resource.Type}");
+                    break;
+            }
+        }
+
+        private async Task<(bool status, string message)> ExecuteCommand(string command)
+        {
+            var rawMessage = string.Empty;
+            var messages = new List<string>();
+            var lineSplitter = new Regex(@"\r|\n|\r\n");
+
+            var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    FileName = "java",
+                    Arguments = command,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true,
+                },
+            };
+
+            try
+            {
+                process.Start();
+                rawMessage = await process.StandardOutput.ReadToEndAsync();
+                process.WaitForExit();
+            }
+            catch (Exception e)
+            {
+                rawMessage = e.Message;
             }
 
-            string[] filenames = Directory.GetFiles(sourceDirectory);
-            foreach (string filename in filenames)
+            var lines = lineSplitter.Split(rawMessage ?? string.Empty).Select(line => line.Trim())
+                .Where(line => line.StartsWith("Error"));
+            messages.AddRange(lines);
+
+            return (process.ExitCode == 0, string.Join(Environment.NewLine, messages));
+        }
+
+        internal static class ResourceFilter
+        {
+            private static readonly HashSet<string> _explicitProps = new HashSet<string>
             {
-                TarEntry tarEntry = TarEntry.CreateEntryFromFile(filename);
-                tarArchive.WriteEntry(tarEntry, true);
-            }
+                "resourceType", "type", "fullUrl", "id", "method", "url", "reference", "system",
+                "code", "display", "gender", "use", "preferred", "status", "mode",
+            };
+
+            private static readonly HashSet<string> _explicitValues = new HashSet<string>
+            {
+                "order",
+            };
+
+            public static readonly List<Func<string, bool>> NonCompareProperties = new List<Func<string, bool>>
+            {
+                // Exlude all the properties whose value is written in mapping tables explicitly or peculiar to FHIR
+                _explicitProps.Contains,
+            };
+
+            public static readonly List<Func<string, bool>> NonCompareValues = new List<Func<string, bool>>
+            {
+                // Exlude all the explicit values written in mapping tables and values peculiar to FHIR
+                _explicitValues.Contains,
+
+                // Exclude datetime and boolean values because the format is transformed differently
+                (string input) => DateTime.TryParse(input, out _),
+                (string input) => bool.TryParse(input, out _),
+            };
         }
     }
 }
