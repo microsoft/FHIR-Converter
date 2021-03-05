@@ -11,7 +11,6 @@ using DotLiquid;
 using DotLiquid.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Newtonsoft.Json;
 
@@ -28,7 +27,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             Template.RegisterTag<Evaluate>("evaluate");
         }
 
-        public static Dictionary<string, Template> ParseHl7v2Templates(Dictionary<string, string> templates)
+        public static Dictionary<string, Template> ParseTemplates(Dictionary<string, string> templates)
         {
             var parsedTemplates = new Dictionary<string, Template>();
             foreach (var entry in templates)
@@ -37,6 +36,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                 if (string.Equals(formattedEntryKey, "CodeSystem/CodeSystem.json", StringComparison.InvariantCultureIgnoreCase))
                 {
                     parsedTemplates["CodeSystem/CodeSystem"] = ParseCodeSystemMapping(entry.Value);
+                }
+                else if (string.Equals(formattedEntryKey, "ValueSet/ValueSet.json", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    parsedTemplates["ValueSet/ValueSet"] = ParseCodeSystemMapping(entry.Value);
                 }
                 else if (string.Equals(Path.GetExtension(formattedEntryKey), TemplateFileExtension, StringComparison.InvariantCultureIgnoreCase))
                 {

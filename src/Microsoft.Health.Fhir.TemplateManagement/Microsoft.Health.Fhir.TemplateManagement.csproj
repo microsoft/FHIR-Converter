@@ -25,7 +25,16 @@
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Health.Fhir.Liquid.Converter\Microsoft.Health.Fhir.Liquid.Converter.csproj" />
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <EmbeddedResource Include="../../bin/Hl7v2DefaultTemplates.tar.gz">
+      <Link>Hl7v2DefaultTemplates.tar.gz</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="../../bin/CdaDefaultTemplates.tar.gz">
+      <Link>CdaDefaultTemplates.tar.gz</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+	
   <ItemGroup>
     <None Update="oras.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

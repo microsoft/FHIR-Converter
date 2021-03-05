@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DotLiquid;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
+namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 {
     public class CodeSystemMappingDocument : Document
     {

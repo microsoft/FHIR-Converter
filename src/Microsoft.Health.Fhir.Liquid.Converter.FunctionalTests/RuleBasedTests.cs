@@ -13,7 +13,6 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Hl7.Fhir.Serialization;
-using Microsoft.Health.Fhir.Liquid.Converter.Cda;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -27,12 +26,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         private static readonly string _hl7TemplateFolder = Path.Combine(Constants.TemplateDirectory, "Hl7v2");
         private static readonly string _hl7DataFolder = Path.Combine(Constants.SampleDataDirectory, "Hl7v2");
 
-        private static readonly string _cdaTemplateFolder = Path.Combine(Constants.TemplateDirectory, "Cda");
-        private static readonly string _cdaDataFolder = Path.Combine(Constants.SampleDataDirectory, "Cda");
-
         private static readonly Hl7v2TemplateProvider _hl7TemplateProvider = new Hl7v2TemplateProvider(_hl7TemplateFolder);
-        private static readonly CdaTemplateProvider _cdaTemplateProvider = new CdaTemplateProvider(_cdaTemplateFolder);
-
         private static readonly FhirJsonParser _fhirParser = new FhirJsonParser();
 
         private static readonly int _maxRevealDepth = 1 << 7;
@@ -66,59 +60,27 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
-        public static IEnumerable<object[]> GetCDACases()
+        public static IEnumerable<object[]> GetCCDACases()
         {
-            var cases = new List<object[]>
-            {
-                new object[] { "CCD", "170.314B2_Amb_CCD.cda" },
-                new object[] { "CCD", "C-CDA_R2-1_CCD.xml.cda" },
-                new object[] { "CCD", "CCD.cda" },
-                new object[] { "CCD", "CCD-Parent-Document-Replace-C-CDAR2.1.cda" },
-            };
-            return cases.Select(item => new object[]
-            {
-                Convert.ToString(item[0]),
-                Path.Combine(_cdaDataFolder, Convert.ToString(item[1])),
-            });
+            return new List<object[]>();
         }
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        public async Task Hl7v2CheckOnePatient(string templateName, string samplePath)
+        [MemberData(nameof(GetCCDACases))]
+        public async Task CheckOnePatient(string templateName, string samplePath)
         {
-            var result = await Hl7v2ConvertData(templateName, samplePath);
-            var patients = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Patient')].resource.id");
-            Assert.Equal(1, patients?.Count());
-        }
-
-        [Theory]
-        [MemberData(nameof(GetCDACases))]
-        public async Task CdaCheckOnePatient(string templateName, string samplePath)
-        {
-            var result = await CdaConvertData(templateName, samplePath);
+            var result = await ConvertData(templateName, samplePath);
             var patients = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Patient')].resource.id");
             Assert.Equal(1, patients?.Count());
         }
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        public async Task Hl7v2CheckNonemptyResource(string templateName, string samplePath)
+        [MemberData(nameof(GetCCDACases))]
+        public async Task CheckNonemptyResource(string templateName, string samplePath)
         {
-            var result = await Hl7v2ConvertData(templateName, samplePath);
-            var resources = result.SelectTokens("$.entry..resource");
-            foreach (var resource in resources)
-            {
-                var properties = resource.ToObject<JObject>().Properties();
-                var propNames = properties.Select(p => p.Name).ToHashSet();
-                Assert.True(propNames?.Count() > 0);
-            }
-        }
-
-        [Theory]
-        [MemberData(nameof(GetCDACases))]
-        public async Task CdaCheckNonemptyResource(string templateName, string samplePath)
-        {
-            var result = await CdaConvertData(templateName, samplePath);
+            var result = await ConvertData(templateName, samplePath);
             var resources = result.SelectTokens("$.entry..resource");
             foreach (var resource in resources)
             {
@@ -130,19 +92,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        public async Task Hl7v2CheckNonidenticalResources(string templateName, string samplePath)
+        [MemberData(nameof(GetCCDACases))]
+        public async Task CheckNonidenticalResources(string templateName, string samplePath)
         {
-            var result = await Hl7v2ConvertData(templateName, samplePath);
-            var resourceIds = result.SelectTokens("$.entry..resource.id");
-            var uniqueResourceIds = resourceIds.Select(Convert.ToString).Distinct();
-            Assert.Equal(uniqueResourceIds.Count(), resourceIds.Count());
-        }
-
-        [Theory]
-        [MemberData(nameof(GetCDACases))]
-        public async Task CdaCheckNonidenticalResources(string templateName, string samplePath)
-        {
-            var result = await CdaConvertData(templateName, samplePath);
+            var result = await ConvertData(templateName, samplePath);
             var resourceIds = result.SelectTokens("$.entry..resource.id");
             var uniqueResourceIds = resourceIds.Select(Convert.ToString).Distinct();
             Assert.Equal(uniqueResourceIds.Count(), resourceIds.Count());
@@ -150,60 +103,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        public async Task Hl7v2CheckValuesRevealInOrigin(string templateName, string samplePath)
+        [MemberData(nameof(GetCCDACases))]
+        public async Task CheckValuesRevealInOrigin(string templateName, string samplePath)
         {
             var sampleContent = await File.ReadAllTextAsync(samplePath, Encoding.UTF8);
-            var result = await Hl7v2ConvertData(templateName, samplePath);
-            RevealObjectValues(sampleContent, result, 0);
-        }
-
-        [Theory]
-        [MemberData(nameof(GetCDACases))]
-        public async Task CdaCheckValuesRevealInOrigin(string templateName, string samplePath)
-        {
-            var sampleContent = await File.ReadAllTextAsync(samplePath, Encoding.UTF8);
-            var result = await CdaConvertData(templateName, samplePath);
+            var result = await ConvertData(templateName, samplePath);
             RevealObjectValues(sampleContent, result, 0);
         }
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        public async Task Hl7v2CheckPassOfficialValidator(string templateName, string samplePath)
+        [MemberData(nameof(GetCCDACases))]
+        public async Task CheckPassOfficialValidator(string templateName, string samplePath)
         {
             (bool javaStatus, string javaMessage) = await ExecuteCommand("-version");
             Assert.True(javaStatus, javaMessage);
 
-            var result = await Hl7v2ConvertData(templateName, samplePath);
-            var resultFolder = Path.GetFullPath(Path.Combine(@"AppData", "Temp"));
-            var resultPath = Path.Combine(resultFolder, $"{Guid.NewGuid().ToString("N")}.json");
-            if (!Directory.Exists(resultFolder))
-            {
-                Directory.CreateDirectory(resultFolder);
-            }
-
-            await File.WriteAllTextAsync(resultPath, JsonConvert.SerializeObject(result, Formatting.Indented), Encoding.UTF8);
-
-            var validatorPath = Path.GetFullPath(Path.Combine(@"ValidatorLib", "validator_cli.jar"));
-            var specPath = Path.GetFullPath(Path.Combine(@"ValidatorLib", "hl7.fhir.r4.core-4.0.1.tgz"));
-            var command = $"-jar {validatorPath} {resultPath} -version 4.0.1 -ig {specPath} -tx n/a";
-            (bool status, string message) = await ExecuteCommand(command);
-            Assert.False(status, "Currently the templates are still under development. By default we turn off this validator.");
-            if (!status)
-            {
-                _output.WriteLine(message);
-            }
-
-            Directory.Delete(resultFolder, true);
-        }
-
-        [Theory]
-        [MemberData(nameof(GetCDACases))]
-        public async Task CdaCheckPassOfficialValidator(string templateName, string samplePath)
-        {
-            (bool javaStatus, string javaMessage) = await ExecuteCommand("-version");
-            Assert.True(javaStatus, javaMessage);
-
-            var result = await CdaConvertData(templateName, samplePath);
+            var result = await ConvertData(templateName, samplePath);
             var resultFolder = Path.GetFullPath(Path.Combine(@"AppData", "Temp"));
             var resultPath = Path.Combine(resultFolder, $"{Guid.NewGuid().ToString("N")}.json");
             if (!Directory.Exists(resultFolder))
@@ -254,10 +170,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCDACases))]
-        public async Task Hl7v2CheckPassFhirParser(string templateName, string samplePath)
+        [MemberData(nameof(GetCCDACases))]
+        public async Task CheckPassFhirParser(string templateName, string samplePath)
         {
-            var result = await Hl7v2ConvertData(templateName, samplePath);
+            var result = await ConvertData(templateName, samplePath);
             var jsonResult = JsonConvert.SerializeObject(result, Formatting.Indented);
             try
             {
@@ -270,30 +186,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             }
         }
 
-        [Theory]
-        [MemberData(nameof(GetCDACases))]
-        public async Task CdaCheckPassFhirParser(string templateName, string samplePath)
-        {
-            var result = await CdaConvertData(templateName, samplePath);
-            var jsonResult = JsonConvert.SerializeObject(result, Formatting.Indented);
-            try
-            {
-                var bundle = _fhirParser.Parse<Hl7.Fhir.Model.Bundle>(jsonResult);
-                Assert.NotNull(bundle);
-            }
-            catch (FormatException fe)
-            {
-                Assert.Null(fe);
-            }
-        }
-
-        private async Task<JObject> Hl7v2ConvertData(string templateName, string samplePath)
+        private async Task<JObject> ConvertData(string templateName, string samplePath)
             => JObject.Parse(new Hl7v2Processor()
                 .Convert(await File.ReadAllTextAsync(samplePath, Encoding.UTF8), templateName, _hl7TemplateProvider));
-
-        private async Task<JObject> CdaConvertData(string templateName, string samplePath)
-       => JObject.Parse(new CdaProcessor()
-           .Convert(await File.ReadAllTextAsync(samplePath, Encoding.UTF8), templateName, _cdaTemplateProvider));
 
         private void RevealObjectValues(string origin, JToken resource, int level)
         {

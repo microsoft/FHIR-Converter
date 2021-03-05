@@ -3,7 +3,6 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Runtime.Caching;
 using EnsureThat;
@@ -57,7 +56,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             return new TemplateCollectionProvider(imageInfo, client, _templateCache, _configuration);
         }
 
-        public void InitDefaultTemplates()
+        private void InitDefaultTemplates()
         {
             foreach (var templateInfo in Constants.DefultTemplateInfo)
             {

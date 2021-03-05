@@ -25,9 +25,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         {
             var containerRegistry = new ContainerRegistryInfo
             {
-                ContainerRegistryServer = "fhirtemplates.azurecr.io",
-                ContainerRegistryUsername = "fhirtemplates",
-                ContainerRegistryPassword = "1CYHGdZbTqAo+13HjmBCeGgytv9y0bsn",
+                ContainerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer"),
+                ContainerRegistryUsername = Environment.GetEnvironmentVariable("TestContainerRegistryServer")?.Split('.')[0],
+                ContainerRegistryPassword = Environment.GetEnvironmentVariable("TestContainerRegistryPassword"),
             };
             if (containerRegistry == null || string.IsNullOrEmpty(containerRegistry.ContainerRegistryServer))
             {

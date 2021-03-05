@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DotLiquid;
 using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
