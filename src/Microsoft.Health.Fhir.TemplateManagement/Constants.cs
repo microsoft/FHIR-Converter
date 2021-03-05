@@ -3,12 +3,24 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
+
 namespace Microsoft.Health.Fhir.TemplateManagement
 {
     internal static class Constants
     {
-        internal const string Hl7v2DefaultTemplatePath = "Hl7v2DefaultTemplates.tar.gz";
-        internal const string CdaDefaultTemplatePath = "CdaDefaultTemplates.tar.gz";
+        /// <summary>
+        /// The default templates infomation, key is datatype, value.item1 is tmeplate path, value.item2 is image reference.
+        /// </summary>
+        private static IReadOnlyDictionary<DataType, Tuple<string, string>> _defultTemplateInfo = new Dictionary<DataType, Tuple<string, string>>
+        {
+            { DataType.Hl7v2, Tuple.Create("Hl7v2DefaultTemplates.tar.gz", "microsofthealth/hl7v2templates:default") },
+            { DataType.Cda, Tuple.Create("CdaDefaultTemplates.tar.gz", "microsofthealth/ccdatemplates:default") },
+        };
+
+        internal const DataType DefaultDataType = DataType.Hl7v2;
 
         // Accept meidia type for manifest.
         internal const string MediatypeV2Manifest = "application/vnd.docker.distribution.manifest.v2+json";
@@ -30,5 +42,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         internal const int TimeOutMilliseconds = 30000;
 
         internal const string OrasFile = "oras";
+
+        internal static IReadOnlyDictionary<DataType, Tuple<string, string>> DefultTemplateInfo => _defultTemplateInfo;
     }
 }

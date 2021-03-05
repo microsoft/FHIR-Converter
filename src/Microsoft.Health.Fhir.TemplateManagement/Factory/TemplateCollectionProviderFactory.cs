@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Runtime.Caching;
 using EnsureThat;
@@ -58,14 +59,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         public void InitDefaultTemplates()
         {
-            TemplateLayer hl7v2DefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource(Constants.Hl7v2DefaultTemplatePath);
-            _templateCache.Set(ImageInfo.DefaultTemplateImageReference, hl7v2DefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = hl7v2DefaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
-            _templateCache.Set(ImageInfo.Hl7v2TemplateImageReference, hl7v2DefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = hl7v2DefaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
-            _templateCache.Set(hl7v2DefaultTemplateLayer.Digest, hl7v2DefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = hl7v2DefaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
-
-            TemplateLayer cdaDefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource(Constants.CdaDefaultTemplatePath);
-            _templateCache.Set(ImageInfo.CcdaTemplateImageReference, cdaDefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = cdaDefaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
-            _templateCache.Set(cdaDefaultTemplateLayer.Digest, cdaDefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = cdaDefaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
+            foreach (var templateInfo in Constants.DefultTemplateInfo)
+            {
+                TemplateLayer templateLayer = TemplateLayer.ReadFromEmbeddedResource(templateInfo.Value.Item1);
+                _templateCache.Set(templateInfo.Value.Item2, templateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = templateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
+                _templateCache.Set(templateLayer.Digest, templateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = templateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
+                if (templateInfo.Key == Constants.DefaultDataType)
+                {
+                    _templateCache.Set(ImageInfo.DefaultTemplateImageReference, templateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = templateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
+                }
+            }
         }
 
         public void InitDefaultTemplates(string path)

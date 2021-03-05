@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Microsoft.Health.Fhir.Liquid.Converter</id>
-    <version>$version$</version>
+    <version>10.0.1</version>
     <authors>Microsoft.Health.Fhir.Liquid.Converter</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Package Description</description>
@@ -26,15 +26,9 @@
         <dependency id="System.Runtime.Caching" version="4.7.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
-    <contentFiles>
-      <files include="any/netcoreapp3.1/Hl7v2DefaultTemplates.tar.gz" buildAction="EmbeddedResource"/>
-      <files include="any/netcoreapp3.1/CdaDefaultTemplates.tar.gz" buildAction="EmbeddedResource"/>
-	</contentFiles>
   </metadata>
   <files>
     <file src="bin\Release\netcoreapp3.1\Microsoft.Health.Fhir.Liquid.Converter.dll" target="lib\netcoreapp3.1" />
     <file src="bin\Release\netcoreapp3.1\Microsoft.Health.Fhir.TemplateManagement.dll" target="lib\netcoreapp3.1" />
-    <file src="..\..\bin\Hl7v2DefaultTemplates.tar.gz" target="contentFiles\any\netcoreapp3.1" />
-	<file src="..\..\bin\CdaDefaultTemplates.tar.gz" target="contentFiles\any\netcoreapp3.1" />
   </files>
 </package>

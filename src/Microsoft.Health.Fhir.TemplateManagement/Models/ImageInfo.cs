@@ -5,7 +5,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
@@ -13,10 +15,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
     public class ImageInfo
     {
         public const string DefaultTemplateImageReference = "microsofthealth/fhirconverter:default";
-        public const string Hl7v2TemplateImageReference = "microsofthealth/hl7v2templates:default";
-        public const string CcdaTemplateImageReference = "microsofthealth/ccdatemplates:default";
-
-        private static readonly Dictionary<string, string> _datatype2DefaultTemplateImageMap = new Dictionary<string, string>() { { "Hl7v2", Hl7v2TemplateImageReference }, { "Ccda", CcdaTemplateImageReference } };
 
         private const char ImageDigestDelimiter = '@';
         private const char ImageTagDelimiter = ':';
@@ -56,17 +54,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public bool IsDefaultTemplate()
         {
-            return string.Equals(ImageReference, DefaultTemplateImageReference, StringComparison.InvariantCultureIgnoreCase) || string.Equals(ImageReference, Hl7v2TemplateImageReference, StringComparison.InvariantCultureIgnoreCase) || string.Equals(ImageReference, CcdaTemplateImageReference, StringComparison.InvariantCultureIgnoreCase);
+            return string.Equals(ImageReference, DefaultTemplateImageReference, StringComparison.InvariantCultureIgnoreCase) || Constants.DefultTemplateInfo.Values.Any(value => string.Equals(ImageReference, value.Item2, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        public static string GetDefaultTemplateImageReferenceByDatatype(string datatype)
+        public static string GetDefaultTemplateImageReferenceByDatatype(DataType datatype)
         {
-            return _datatype2DefaultTemplateImageMap.GetValueOrDefault(datatype);
+            return Constants.DefultTemplateInfo.GetValueOrDefault(datatype).Item2;
         }
 
         public static bool IsDefaultTemplateImageReference(string imageReference)
         {
-            return string.Equals(imageReference, DefaultTemplateImageReference, StringComparison.InvariantCultureIgnoreCase) || string.Equals(imageReference, Hl7v2TemplateImageReference, StringComparison.InvariantCultureIgnoreCase) || string.Equals(imageReference, CcdaTemplateImageReference, StringComparison.InvariantCultureIgnoreCase);
+            return string.Equals(imageReference, DefaultTemplateImageReference, StringComparison.InvariantCultureIgnoreCase) || Constants.DefultTemplateInfo.Values.Any(value => string.Equals(imageReference, value.Item2, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public static bool IsValidImageReference(string imageReference)

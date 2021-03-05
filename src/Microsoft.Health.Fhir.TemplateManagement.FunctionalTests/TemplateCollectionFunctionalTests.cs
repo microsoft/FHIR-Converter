@@ -13,10 +13,13 @@ using System.Threading.Tasks;
 using DotLiquid;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Microsoft.Health.Fhir.Liquid.Converter.Cda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
@@ -107,6 +110,23 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             {
                 Path.Join(_sampleDataDirectory, "Hl7v2", Convert.ToString(item[0])),
                 Path.Join(_templateDirectory, "Hl7v2"),
+                Convert.ToString(item[1]),
+            });
+        }
+
+        public static IEnumerable<object[]> GetCdaDataAndTemplateSources()
+        {
+            var data = new List<object[]>
+            {
+                new object[] { @"170.314B2_Amb_CCD.cda", @"CCD" },
+                new object[] { @"C-CDA_R2-1_CCD.xml.cda", @"CCD" },
+                new object[] { @"CCD.cda", @"CCD" },
+                new object[] { @"CCD-Parent-Document-Replace-C-CDAR2.1.cda", @"CCD" },
+            };
+            return data.Select(item => new object[]
+            {
+                Path.Join(_sampleDataDirectory, "Cda", Convert.ToString(item[0])),
+                Path.Join(_templateDirectory, "Cda"),
                 Convert.ToString(item[1]),
             });
         }
@@ -287,7 +307,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         // Conversion results of DefaultTemplates.tar.gz and default template folder should be the same.
         [Theory]
         [MemberData(nameof(GetHl7v2DataAndTemplateSources))]
-        public async Task GivenSameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
+        public async Task GivenHl7v2SameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
         {
             var folderTemplateProvider = new Hl7v2TemplateProvider(defaultTemplateDirectory);
 
@@ -301,6 +321,33 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var imageResult = hl7v2Processor.Convert(inputContent, rootTemplate, imageTemplateProvider);
             var folderResult = hl7v2Processor.Convert(inputContent, rootTemplate, folderTemplateProvider);
             Assert.Equal(imageResult, folderResult);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetCdaDataAndTemplateSources))]
+        public async Task GivenCdaSameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
+        {
+            var folderTemplateProvider = new CdaTemplateProvider(defaultTemplateDirectory);
+
+            var templateProviderFactory = new TemplateCollectionProviderFactory(new MemoryCache(new MemoryCacheOptions()), Options.Create(new TemplateCollectionConfiguration()));
+            var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(ImageInfo.GetDefaultTemplateImageReferenceByDatatype(DataType.Cda), string.Empty);
+            var imageTemplateProvider = new CdaTemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
+
+            var cdaProcessor = new CdaProcessor();
+            var inputContent = File.ReadAllText(inputFile);
+
+            var imageResult = cdaProcessor.Convert(inputContent, rootTemplate, imageTemplateProvider);
+            var folderResult = cdaProcessor.Convert(inputContent, rootTemplate, folderTemplateProvider);
+
+            var imageResultObject = JObject.Parse(imageResult);
+            var folderResultObject = JObject.Parse(folderResult);
+
+            // Remove DocumentReference, where date is different every time conversion is run and gzip result is OS dependent
+            imageResultObject["entry"]?.Last()?.Remove();
+            folderResultObject["entry"]?.Last()?.Remove();
+
+            Assert.True(JToken.DeepEquals(imageResultObject, folderResultObject));
+
         }
 
         private void TestByTemplate(string inputFile, string entryTemplate, List<Dictionary<string, Template>> templateProvider)
