@@ -1,0 +1,21 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Medication",
+        "id":"{{ ID }}",
+        "code":
+        {
+            {% assign translations = medication.code.translation | to_array -%}
+            {% if translations.first -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: translations.first -%}
+            {% endif -%}
+            {% if translations.first == null -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: medication.code -%}
+            {% endif -%}
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Medication/{{ ID }}",
+    },
+},

@@ -20,7 +20,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     /// </summary>
     public partial class Filters
     {
-        public static string GetProperty(Context context, string originalCode, string mapping, string property)
+        public static string GetProperty(Context context, string originalCode, string mapping, string property = "code")
         {
             if (string.IsNullOrEmpty(originalCode) || string.IsNullOrEmpty(mapping) || string.IsNullOrEmpty(property))
             {

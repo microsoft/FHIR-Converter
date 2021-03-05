@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Xunit;
@@ -88,6 +89,38 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         public void GivenAnInvalidHl7v2DateTime_WhenFormatAsDateTime_ExceptionShouldBeThrown(string input)
         {
             Assert.Throws<RenderException>(() => Filters.FormatAsDateTime(input));
+        }
+
+        [Fact]
+        public void NowTest()
+        {
+            // FHIR DateTime format
+            var dateTime = DateTime.Parse(Filters.Now(string.Empty));
+            Assert.True(dateTime.Year > 2020);
+            Assert.True(dateTime.Month >= 1 && dateTime.Month < 13);
+            Assert.True(dateTime.Day >= 1 && dateTime.Day < 32);
+
+            // Standard DateTime format, "d" stands for short day pattern
+            var nowWithStandardFormat = Filters.Now(string.Empty, "d");
+            Assert.Contains("/", nowWithStandardFormat);
+
+            // Customized DateTime format
+            var days = new List<string> { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+            var nowWithCustomizedFormat = Filters.Now(string.Empty, "dddd, dd MMMM yyyy HH:mm:ss");
+            Assert.Contains(days, day => nowWithCustomizedFormat.StartsWith(day));
+
+            // Null and empty format will lead to default format, which is short day with long time
+            dateTime = DateTime.Parse(Filters.Now(string.Empty, null));
+            Assert.True(dateTime.Year > 2020);
+            Assert.True(dateTime.Month >= 1 && dateTime.Month < 13);
+            Assert.True(dateTime.Day >= 1 && dateTime.Day < 32);
+            dateTime = DateTime.Parse(Filters.Now(string.Empty, string.Empty));
+            Assert.True(dateTime.Year > 2020);
+            Assert.True(dateTime.Month >= 1 && dateTime.Month < 13);
+            Assert.True(dateTime.Day >= 1 && dateTime.Day < 32);
+
+            // Invalid DateTime format
+            Assert.Throws<FormatException>(() => Filters.Now(string.Empty, "a"));
         }
     }
 }

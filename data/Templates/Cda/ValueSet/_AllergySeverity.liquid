@@ -1,0 +1,11 @@
+{% if code == 'fatal' -%}
+"severe",
+{% elsif code == 'moderate to severe' -%}
+"severe",
+{% elsif code == 'mild to moderate' -%}
+"moderate",
+{% elsif code == 'mild' -%}
+"mild",
+{% else -%}
+"{{ code }}",
+{% endif -%}

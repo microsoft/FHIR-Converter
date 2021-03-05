@@ -15,7 +15,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
 {
     public class Hl7v2DataParserTests
     {
-        private Hl7v2DataParser _parser = new Hl7v2DataParser();
+        private readonly Hl7v2DataParser _parser = new Hl7v2DataParser();
 
         public static IEnumerable<object[]> GetNullOrEmptyHl7v2Message()
         {
@@ -25,7 +25,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
 
         [Theory]
         [MemberData(nameof(GetNullOrEmptyHl7v2Message))]
-        public void GivenNullOrEmptyHl7v2Message_WhenParse_CorrectHl7v2DataShouldBeReturned(string input)
+        public void GivenNullOrEmptyHl7v2Message_WhenParse_ExceptionShouldBeThrown(string input)
         {
             var exception = Assert.Throws<DataParseException>(() => _parser.Parse(input));
             Assert.Equal(FhirConverterErrorCode.InputParsingError, exception.FhirConverterErrorCode);
