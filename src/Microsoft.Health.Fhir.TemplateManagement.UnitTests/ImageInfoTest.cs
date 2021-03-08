@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Xunit;
@@ -38,6 +39,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "testacr.azurecr.io/invalid....set" };
             yield return new object[] { "testacr.azurecr.io/invalid._set" };
             yield return new object[] { "testacr.azurecr.io/_invalid" };
+            yield return new object[] { "testacr.azurecr.io/Templateset:v1" };
         }
 
         public static IEnumerable<object[]> GetValidImageReference()
@@ -51,6 +53,53 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "testacr.azurecr.io/org/template__set" };
             yield return new object[] { "testacr.azurecr.io/org/template-----set" };
             yield return new object[] { "testacr.azurecr.io/org/template-set_set.set" };
+            yield return new object[] { "Testacr.azurecr.io/templateset:v1" };
+            yield return new object[] { "testacr.azurecr.io/templateset:V1" };
+        }
+
+        public static IEnumerable<object[]> GetDefaultTemplateReference()
+        {
+            yield return new object[] { "microsofthealth/fhirconverter:default" };
+            yield return new object[] { "microsofthealth/hl7v2templates:default" };
+            yield return new object[] { "microsofthealth/ccdatemplates:default" };
+        }
+
+        public static IEnumerable<object[]> GetUnDefaultTemplateReference()
+        {
+            yield return new object[] { "testacr.azurecr.io/templateset:v1" };
+            yield return new object[] { "testacr.azurecr.io/templateset@sha256:e6dcff9eaf7604aa7a855e52b2cda22c5cfc5cadaa035892557c4ff19630b612" };
+            yield return new object[] { "testacr.azurecr.io/templateset" };
+        }
+
+        public static IEnumerable<object[]> GetValidDefaultTemplateReference()
+        {
+            yield return new object[] { "microsofthealth/fhirconverter:default" };
+            yield return new object[] { "microsofthealth/hl7v2templates:default" };
+            yield return new object[] { "microsofthealth/ccdatemplates:default" };
+        }
+
+        public static IEnumerable<object[]> GetInvalidDefaultTemplateReference()
+        {
+            yield return new object[] { "MICROSOFTHEALTH/FHIRCONVERTER:DEFAULT" };
+            yield return new object[] { "MicrosoftHealth/Hl7v2Templates:default" };
+            yield return new object[] { "MicrosoftHealth/CcdaTemplates:default" };
+            yield return new object[] { "MicrosoftHealth/FhirConverter:tag" };
+            yield return new object[] { "MicrosoftHealth" };
+            yield return new object[] { "MicrosoftHealth/FhirConverter" };
+            yield return new object[] { "FhirConverter:tag" };
+            yield return new object[] { "MicrosoftHealth//FhirConverter:default" };
+            yield return new object[] { "icrosoftHealth/FhirConverter:default" };
+            yield return new object[] { "MicrosoftHealth/FhirConverter@default" };
+            yield return new object[] { "MicrosoftHealth/Hl7v2Templates" };
+            yield return new object[] { "MicrosoftHealth/Hl7v2Templates@default" };
+            yield return new object[] { "MicrosoftHealth/templates:default" };
+            yield return new object[] { "test" };
+        }
+
+        public static IEnumerable<object[]> GetValidDataType()
+        {
+            yield return new object[] { DataType.Hl7v2, "microsofthealth/hl7v2templates:default" };
+            yield return new object[] { DataType.Cda, "microsofthealth/ccdatemplates:default" };
         }
 
         [Theory]
@@ -86,18 +135,42 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             Assert.True(ImageInfo.IsValidImageReference(imageReference));
         }
 
-        [Fact]
-        public void GivenDefaultTemplateReference_WhenCheckIsDefaultImageReference_TrueResultWillBeReturned()
+        [Theory]
+        [MemberData(nameof(GetDefaultTemplateReference))]
+        public void GivenADefaultTemplateReferenceAsImageReference_WhenCheckIsDefaultTemplate_IsTrueResultWillBeReturned(string imageReference)
         {
-            var imageReference = "MicrosoftHealth/FhirConverter:default";
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            Assert.True(imageInfo.IsDefaultTemplate());
+        }
+
+        [Theory]
+        [MemberData(nameof(GetUnDefaultTemplateReference))]
+        public void GivenAUnDefaultTemplateReferenceAsImageReference_WhenCheckIsDefaultTemplate_IsFalseResultWillBeReturned(string imageReference)
+        {
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            Assert.False(imageInfo.IsDefaultTemplate());
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidDefaultTemplateReference))]
+        public void GivenValidDefaultTemplateReference_WhenCheckIsDefaultImageReference_IsTrueResultWillBeReturned(string imageReference)
+        {
             Assert.True(ImageInfo.IsDefaultTemplateImageReference(imageReference));
         }
 
-        [Fact]
-        public void GivenUnDefaultTemplateReference_WhenCheckIsDefaultImageReference_TrueResultWillBeReturned()
+        [Theory]
+        [MemberData(nameof(GetInvalidDefaultTemplateReference))]
+        public void GivenInvalidDefaultTemplateReference_WhenCheckIsDefaultImageReference_IsFalseResultWillBeReturned(string imageReference)
         {
-            var imageReference = "test";
             Assert.False(ImageInfo.IsDefaultTemplateImageReference(imageReference));
         }
+
+        [Theory]
+        [MemberData(nameof(GetValidDataType))]
+        public void GivenValidDataType_WhenGetDefaultTemplateImageReferenceByDatatype_ACorrectDefaultTemplateImageReferenceWillBeReturned(DataType datatype, string defaultTemplates)
+        {
+            Assert.Equal(ImageInfo.GetDefaultTemplateImageReferenceByDatatype(datatype), defaultTemplates);
+        }
+
     }
 }

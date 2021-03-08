@@ -15,7 +15,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
     public class ImageInfo
     {
         public const string DefaultTemplateImageReference = "microsofthealth/fhirconverter:default";
-
         private const char ImageDigestDelimiter = '@';
         private const char ImageTagDelimiter = ':';
         private const char ImageRegistryDelimiter = '/';
@@ -54,7 +53,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public bool IsDefaultTemplate()
         {
-            return string.Equals(ImageReference, DefaultTemplateImageReference, StringComparison.InvariantCultureIgnoreCase) || Constants.DefultTemplateInfo.Values.Any(value => string.Equals(ImageReference, value.Item2, StringComparison.InvariantCultureIgnoreCase));
+            return IsDefaultTemplateImageReference(ImageReference);
         }
 
         public static string GetDefaultTemplateImageReferenceByDatatype(DataType datatype)
@@ -64,7 +63,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public static bool IsDefaultTemplateImageReference(string imageReference)
         {
-            return string.Equals(imageReference, DefaultTemplateImageReference, StringComparison.InvariantCultureIgnoreCase) || Constants.DefultTemplateInfo.Values.Any(value => string.Equals(imageReference, value.Item2, StringComparison.InvariantCultureIgnoreCase));
+            return string.Equals(imageReference, DefaultTemplateImageReference, StringComparison.InvariantCulture) || Constants.DefultTemplateInfo.Values.Any(value => string.Equals(imageReference, value.Item2, StringComparison.InvariantCulture));
         }
 
         public static bool IsValidImageReference(string imageReference)
