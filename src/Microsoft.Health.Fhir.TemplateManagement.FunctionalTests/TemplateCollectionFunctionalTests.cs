@@ -148,6 +148,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             yield return new object[] { "testacr.azurecr.io/name@" };
         }
 
+        public static IEnumerable<object[]> GetDefaultTemplatesInfo()
+        {
+            yield return new object[] { "microsofthealth/fhirconverter:default", 839 };
+            yield return new object[] { "microsofthealth/hl7v2templates:default", 839 };
+            yield return new object[] { "microsofthealth/ccdatemplates:default", 757 };
+        }
+
         [Fact]
         public async Task GiveImageReference_WhenGetTemplateCollection_IfImageTooLarge_ExceptionWillBeThrownAsync()
         {
@@ -287,21 +294,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             await Assert.ThrowsAsync<RenderException>(async () => TestByTemplate(hl7v2Data, entryTemplate, await templateCollectionProvider.GetTemplateCollectionAsync()));
         }
 
-        [Fact]
-        public async Task GiveDefaultImageReference_WhenGetTemplateCollectionWithEmptyToken_DefaultTemplatesWillBeReturnedAsync()
+        [Theory]
+        [MemberData(nameof(GetDefaultTemplatesInfo))]
+        public async Task GiveDefaultImageReference_WhenGetTemplateCollectionWithEmptyToken_DefaultTemplatesWillBeReturnedAsync(string imageReference, int expectedTemplatesCounts)
         {
             if (_containerRegistryInfo == null)
             {
                 return;
             }
 
-            int defaultTemplatesCounts = 838;
-            string imageReference = ImageInfo.DefaultTemplateImageReference;
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
             var templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, string.Empty);
             var templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
             Assert.Single(templateCollection);
-            Assert.Equal(defaultTemplatesCounts, templateCollection.First().Count());
+            Assert.Equal(expectedTemplatesCounts, templateCollection.First().Count());
         }
 
         // Conversion results of DefaultTemplates.tar.gz and default template folder should be the same.

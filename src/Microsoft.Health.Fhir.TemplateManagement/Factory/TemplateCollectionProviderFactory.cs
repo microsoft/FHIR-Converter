@@ -3,6 +3,9 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Net.Http.Headers;
 using System.Runtime.Caching;
 using EnsureThat;
@@ -72,6 +75,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         public void InitDefaultTemplates(string path)
         {
+            path ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Constants.DefultTemplateInfo.GetValueOrDefault(Constants.DefaultDataType).Item1);
+
             TemplateLayer defaultTemplateLayer = TemplateLayer.ReadFromFile(path);
             _templateCache.Set(ImageInfo.DefaultTemplateImageReference, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
             _templateCache.Set(defaultTemplateLayer.Digest, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });

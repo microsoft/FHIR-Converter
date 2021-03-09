@@ -28,8 +28,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         public TemplateCollectionProviderTests()
         {
-            TemplateLayer defaultTempalteLayer = TemplateLayer.ReadFromEmbeddedResource();
-            _cache.Set(ImageInfo.DefaultTemplateImageReference, defaultTempalteLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
+            TemplateLayer hl7v2defaultTempalteLayer = TemplateLayer.ReadFromEmbeddedResource("Hl7v2DefaultTemplates.tar.gz");
+            _cache.Set(ImageInfo.DefaultTemplateImageReference, hl7v2defaultTempalteLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
+            _cache.Set("microsofthealth/hl7v2templates:default", hl7v2defaultTempalteLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
+            TemplateLayer cdadefaultTempalteLayer = TemplateLayer.ReadFromEmbeddedResource("CdaDefaultTemplates.tar.gz");
+            _cache.Set("microsofthealth/ccdatemplates:default", cdadefaultTempalteLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
 
             PushLargeSizeManifest();
         }
@@ -70,6 +73,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             yield return new object[] { "mockregistry/testimagename:v1", new List<int> { 813, 817 } };
             yield return new object[] { "mockregistry/testimagename:v2", new List<int> { 767, 817 } };
             yield return new object[] { "mockregistry/testimagename:default", new List<int> { 817 } };
+        }
+
+        public static IEnumerable<object[]> GetDefaultTemplatesInfo()
+        {
+            yield return new object[] { "microsofthealth/fhirconverter:default", 839 };
+            yield return new object[] { "microsofthealth/hl7v2templates:default", 839 };
+            yield return new object[] { "microsofthealth/ccdatemplates:default", 757 };
         }
 
         [Theory]
@@ -182,14 +192,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             Assert.Equal(0, smallCache.Count);
         }
 
-        [Fact]
-        public async Task GivenDefaultTemplateReference_WhenGetTemplateCollectionFromTemplateProvider_DefaultTemplateCollectionWillBeReturned()
+        [Theory]
+        [MemberData(nameof(GetDefaultTemplatesInfo))]
+        public async Task GivenDefaultTemplateReference_WhenGetTemplateCollectionFromTemplateProvider_DefaultTemplateCollectionWillBeReturned(string imageReference, int expectedTemplatesCounts)
         {
-            string imageReference = ImageInfo.DefaultTemplateImageReference;
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var newTemplateCollectionProvider = new TemplateCollectionProvider(imageInfo, _emptyClient, _cache, _defaultConfig);
             var templateCollection = await newTemplateCollectionProvider.GetTemplateCollectionAsync();
-            Assert.Equal(839, templateCollection.First().Count());
+            Assert.Equal(expectedTemplatesCounts, templateCollection.First().Count());
         }
 
         [Fact]
