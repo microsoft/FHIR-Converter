@@ -4,10 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Overlay;
@@ -28,10 +25,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             _overlayOperator = new OverlayOperator();
         }
 
-        public async Task PullOCIImageAsync()
+        public async Task<OCIOperationResult> PullOCIImageAsync()
         {
             _overlayFS.ClearImageLayerFolder();
-            await _orasClient.PullImageAsync(_overlayFS.WorkingImageLayerFolder);
+            return await _orasClient.PullImageAsync(_overlayFS.WorkingImageLayerFolder);
         }
 
         public void UnpackOCIImage()
@@ -42,53 +39,30 @@ namespace Microsoft.Health.Fhir.TemplateManagement
                 return;
             }
 
-            var fileLayers = _overlayOperator.ExtractOCIFileLayers(rawLayers);
-            var sortedLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
-            _overlayFS.WriteBaseLayers(sortedLayers.GetRange(0, 1).Cast<OCIArtifactLayer>().ToList());
-            var mergedFileLayer = _overlayOperator.MergeOCIFileLayers(sortedLayers);
-            _overlayFS.WriteMergedOCIFileLayer(mergedFileLayer);
+            _overlayFS.WriteBaseLayer(rawLayers[0]);
+            var ociFileLayers = _overlayOperator.Extract(rawLayers);
+            var content = _overlayOperator.Merge(ociFileLayers);
+            _overlayFS.WriteOCIFileLayer(content);
         }
 
         public void PackOCIImage(bool ignoreBaseLayers = false)
         {
-            var mergedLayer = _overlayFS.ReadMergedOCIFileLayer();
-            var baseArtifactLayers = new List<OCIArtifactLayer>();
+            var ociFileLayer = _overlayFS.ReadOCIFileLayer();
+            OCIArtifactLayer baseArtifactLayer = new OCIFileLayer();
             if (!ignoreBaseLayers)
             {
-                baseArtifactLayers = _overlayFS.ReadBaseLayers();
+                baseArtifactLayer = _overlayFS.ReadBaseLayer();
             }
 
-            var snapshotLayer = GenerateBaseFileLayer(baseArtifactLayers);
-            var diffLayer = _overlayOperator.GenerateDiffLayer(mergedLayer, snapshotLayer);
-            var diffArtifactLayer = _overlayOperator.ArchiveOCIFileLayer(diffLayer);
-            if (baseArtifactLayers.Count == 0)
-            {
-                _overlayFS.WriteBaseLayers(new List<OCIArtifactLayer> { diffArtifactLayer });
-            }
-
-            baseArtifactLayers.Add(diffArtifactLayer);
-            _overlayFS.WriteImageLayers(baseArtifactLayers);
+            var extractedBaseLayer = _overlayOperator.Extract(baseArtifactLayer);
+            var diffLayer = _overlayOperator.GenerateDiffLayer(ociFileLayer, extractedBaseLayer);
+            var diffArtifactLayer = _overlayOperator.Archive(diffLayer);
+            _overlayFS.WriteImageLayers(new List<OCIArtifactLayer> { baseArtifactLayer, diffArtifactLayer });
         }
 
-        public async Task PushOCIImageAsync()
+        public async Task<OCIOperationResult> PushOCIImageAsync()
         {
-            var rawLayers = _overlayFS.ReadImageLayers();
-            var fileLayers = _overlayOperator.ExtractOCIFileLayers(rawLayers);
-            var sortedLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
-            await _orasClient.PushImageAsync(_overlayFS.WorkingImageLayerFolder, sortedLayers.Select(layer => layer.FileName).ToList());
-        }
-
-        private OCIFileLayer GenerateBaseFileLayer(List<OCIArtifactLayer> baseArtifactLayers)
-        {
-            if (baseArtifactLayers == null || baseArtifactLayers.Count == 0)
-            {
-                return null;
-            }
-
-            var fileLayers = _overlayOperator.ExtractOCIFileLayers(baseArtifactLayers);
-            var sortedFileLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
-            var mergedFileLayer = _overlayOperator.MergeOCIFileLayers(sortedFileLayers);
-            return mergedFileLayer;
+            return await _orasClient.PushImageAsync(_overlayFS.WorkingImageLayerFolder);
         }
     }
 }

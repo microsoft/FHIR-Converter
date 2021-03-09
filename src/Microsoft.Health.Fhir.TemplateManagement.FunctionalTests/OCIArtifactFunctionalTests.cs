@@ -82,7 +82,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         private async Task PushMultiLayersWithInValidSequenceNumberAsync()
         {
-            string command = $"push {_testMultiLayersWithInValidSequenceNumberImageReference} {_emptySequenceNumberLayerPath} {_userLayerTemplatePath}";
+            string command = $"push {_testMultiLayersWithInValidSequenceNumberImageReference} {_baseLayerTemplatePath} {_emptySequenceNumberLayerPath}";
             await ExecuteOrasCommandAsync(command);
         }
 
@@ -106,22 +106,22 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         // Pull one layer image with valid sequence number, successfully pulled with base layer copied.
         [Fact]
-        public async Task GivenOneLayerImageWithValidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
+        public async Task GivenOneLayerImage_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
-            string imageReference = _testOneLayerWithValidSequenceNumberImageReference;
+            var imageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithValidSequenceNumber";
             var testManager = new OCIFileManager(imageReference, outputFolder);
             await testManager.PullOCIImageAsync();
             testManager.UnpackOCIImage();
-            Assert.Equal(842, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Equal(843, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
             ClearFolder(outputFolder);
         }
 
-        // Pull one layer image without sequence number, successfully pulled without base layer copied.
+        // Pull one layer image without sequence number, successfully pulled with base layer copied.
         [Fact]
-        public async Task GivenOneLayerImageWithoutSequenceNumber_WhenPulled_ArtifactsWillBePulledWithoutBaseLayerCopiedAsync()
+        public async Task GivenOneLayerImageWithoutSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testOneLayerWithoutSequenceNumberImageReference;
@@ -129,21 +129,23 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var testManager = new OCIFileManager(imageReference, outputFolder);
             await testManager.PullOCIImageAsync();
             testManager.UnpackOCIImage();
-            Assert.Equal(2, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
-            Assert.False(Directory.Exists(Path.Combine(outputFolder, ".image", "base")));
+            Assert.Equal(4, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
             ClearFolder(outputFolder);
         }
 
-        // Pull one layer image with invalid sequence number, exception will be thrown.
+        // Pull one layer image with invalid sequence number, successfully pulled with base layer copied.
         [Fact]
-        public async Task GivenOneLayerImageWithInvalidSequenceNumber_WhenPulled_ExceptionWillBeThrownAsync()
+        public async Task GivenOneLayerImageWithInvalidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testOneLayerWithInValidSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithInValidSequenceNumber";
             var testManager = new OCIFileManager(imageReference, outputFolder);
             await testManager.PullOCIImageAsync();
-            Assert.Throws<OverlayException>(() => testManager.UnpackOCIImage());
+            testManager.UnpackOCIImage();
+            Assert.Equal(4, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
             ClearFolder(outputFolder);
         }
 
@@ -157,21 +159,23 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var testManager = new OCIFileManager(imageReference, outputFolder);
             await testManager.PullOCIImageAsync();
             testManager.UnpackOCIImage();
-            Assert.Equal(9, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Equal(10, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
             ClearFolder(outputFolder);
         }
 
-        // Pull multi-layers with invalid sequence numbers, exception will be thrown.
+        // Pull multi-layers with invalid sequence numbers, successfully pulled with base layer copied.
         [Fact]
-        public async Task GivenMultiLayersImageWithInvalidSequenceNumber_WhenPulled_ExceptionWillBeThrownAsync()
+        public async Task GivenMultiLayersImageWithInvalidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testMultiLayersWithInValidSequenceNumberImageReference;
             string outputFolder = "TestData/testMultiLayersWithInValidSequenceNumber";
             var testManager = new OCIFileManager(imageReference, outputFolder);
             await testManager.PullOCIImageAsync();
-            Assert.Throws<OverlayException>(() => testManager.UnpackOCIImage());
+            testManager.UnpackOCIImage();
+            Assert.Equal(32, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
             ClearFolder(outputFolder);
         }
 
@@ -287,12 +291,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
 
-            // Pull an image
-            string initImageReference = _testOneLayerWithoutSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder4";
-            var testManager = new OCIFileManager(initImageReference, initInputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
+            Directory.CreateDirectory(initInputFolder);
 
             // Modified by user
             File.WriteAllText(Path.Combine(initInputFolder, "add"), "add");

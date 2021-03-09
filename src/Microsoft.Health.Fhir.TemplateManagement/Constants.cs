@@ -29,5 +29,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         internal const int TimeOutMilliseconds = 30000;
 
         internal const string OrasFile = "oras";
+
+        internal const string OrasCacheEnvironmentVariableName = "ORAS_CACHE";
+
+        internal const string DefaultOrasCacheEnvironmentVariable = ".oras/cache";
+
+        internal const string ManifestFileName = "manifest";
     }
 }

@@ -4,9 +4,9 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
@@ -17,46 +17,69 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
     public class OrasClient : IOrasClient
     {
         private readonly string _imageReference;
+        private readonly Regex _digestRegex = new Regex("(?<algorithm>[A-Za-z][A-Za-z0-9]*([+.-_][A-Za-z][A-Za-z0-9]*)*):(?<hex>[0-9a-fA-F]{32,})");
 
         public OrasClient(string imageReference)
         {
             EnsureArg.IsNotNull(imageReference, nameof(imageReference));
 
             _imageReference = imageReference;
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName)))
+            {
+                Environment.SetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName, Constants.DefaultOrasCacheEnvironmentVariable);
+            }
         }
 
-        public async Task PullImageAsync(string outputFolder)
+        public async Task<OCIOperationResult> PullImageAsync(string outputFolder)
         {
             string command = $"pull  \"{_imageReference}\" -o \"{outputFolder}\"";
-            await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+            string output = await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+            string digest;
+            try
+            {
+                digest = _digestRegex.Matches(output)[0].Groups["hex"].ToString();
+            }
+            catch (Exception ex)
+            {
+                throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, "Return image digest failed.", ex);
+            }
+
+            if (!Directory.Exists(outputFolder))
+            {
+                throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, "Pull image failed or image is empty.");
+            }
+
+            File.WriteAllText(Path.Combine(outputFolder, Constants.ManifestFileName), LoadManifestContentFromCache(digest));
+            return new OCIOperationResult() { ClientResponse = output };
         }
 
-        public async Task PushImageAsync(string inputFolder, List<string> filePathList)
+        public async Task<OCIOperationResult> PushImageAsync(string inputFolder)
         {
+            if (!Directory.Exists(inputFolder))
+            {
+                throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "Image folder not found.");
+            }
+
             string argument = string.Empty;
             string command = $"push \"{_imageReference}\"";
+            var filePathesToPush = Directory.EnumerateFiles(inputFolder, "*.tar.gz", SearchOption.AllDirectories);
 
-            // In order to remove image's directory prefix. (e.g. "layers/layer1.tar.gz" --> "layer1.tar.gz"
+            // In order to remove image's directory prefix. (e.g. "layers/layer1" --> "layer1"
             // Change oras working folder to inputFolder
-            foreach (var filePath in filePathList)
+            foreach (var filePath in filePathesToPush)
             {
-                if (!File.Exists(Path.Combine(inputFolder, filePath)))
-                {
-                    throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "Image layer not found");
-                }
-
-                argument += $" \"{filePath}\"";
+                argument += $" \"{Path.GetRelativePath(inputFolder, filePath)}\"";
             }
 
             if (string.IsNullOrEmpty(argument))
             {
-                throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file for push.");
+                throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file to push.");
             }
 
-            await OrasExecutionAsync(string.Concat(command, argument), inputFolder);
+            return new OCIOperationResult() { ClientResponse = await OrasExecutionAsync(string.Concat(command, argument), inputFolder) };
         }
 
-        public static async Task OrasExecutionAsync(string command, string orasWorkingDirectory)
+        public static async Task<string> OrasExecutionAsync(string command, string orasWorkingDirectory)
         {
             TaskCompletionSource<bool> eventHandled = new TaskCompletionSource<bool>();
 
@@ -67,6 +90,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             process.StartInfo.Arguments = command;
             process.StartInfo.RedirectStandardError = true;
+            process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.WorkingDirectory = orasWorkingDirectory;
             process.EnableRaisingEvents = true;
 
@@ -82,6 +106,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
 
             StreamReader errStreamReader = process.StandardError;
+            StreamReader outputStreamReader = process.StandardOutput;
             await Task.WhenAny(eventHandled.Task, Task.Delay(Constants.TimeOutMilliseconds));
             if (process.HasExited)
             {
@@ -90,10 +115,34 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 {
                     throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, error);
                 }
+
+                return outputStreamReader.ReadToEnd();
             }
             else
             {
+                try
+                {
+                    process.Kill();
+                }
+                catch (Exception ex)
+                {
+                    throw new OrasException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout. Fail to kill oras process.", ex);
+                }
+
                 throw new OrasException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
+            }
+        }
+
+        private string LoadManifestContentFromCache(string digest)
+        {
+            try
+            {
+                var cachePath = Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName);
+                return File.ReadAllText(Path.Combine(cachePath, "blobs", "sha256", digest));
+            }
+            catch (Exception ex)
+            {
+                throw new OrasException(TemplateManagementErrorCode.OrasCacheFailed, "Read manifest from oras cache failed.", ex);
             }
         }
     }

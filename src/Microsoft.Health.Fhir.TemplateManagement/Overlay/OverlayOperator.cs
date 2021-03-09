@@ -21,7 +21,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
     public class OverlayOperator : IOverlayOperator
     {
-        public OCIFileLayer ExtractOCIFileLayer(OCIArtifactLayer artifactLayer)
+        public OCIFileLayer Extract(OCIArtifactLayer artifactLayer)
         {
             EnsureArg.IsNotNull(artifactLayer, nameof(artifactLayer));
 
@@ -56,25 +56,21 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             };
         }
 
-        public List<OCIFileLayer> ExtractOCIFileLayers(List<OCIArtifactLayer> artifactLayers)
+        public List<OCIFileLayer> Extract(List<OCIArtifactLayer> artifactLayers)
         {
             EnsureArg.IsNotNull(artifactLayers, nameof(artifactLayers));
 
-            return artifactLayers.Select(ExtractOCIFileLayer).ToList();
+            return artifactLayers.Select(Extract).ToList();
         }
 
-        public List<OCIFileLayer> SortOCIFileLayersBySequenceNumber(List<OCIFileLayer> fileLayers)
-        {
-            EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
-
-            var sortedLayers = fileLayers.OrderBy(layer => layer.SequenceNumber <= -1 ? int.MaxValue : layer.SequenceNumber).ToList();
-            ValidateSortedLayersBySequenceNumber(sortedLayers);
-            return sortedLayers;
-        }
-
-        public OCIFileLayer MergeOCIFileLayers(List<OCIFileLayer> sortedLayers)
+        public OCIFileLayer Merge(List<OCIFileLayer> sortedLayers)
         {
             EnsureArg.IsNotNull(sortedLayers, nameof(sortedLayers));
+
+            if (!sortedLayers.Any())
+            {
+                return null;
+            }
 
             List<string> removedFiles = new List<string>();
             Dictionary<string, byte[]> mergedFiles = new Dictionary<string, byte[]> { };
@@ -165,13 +161,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return diffLayer;
         }
 
-        public OCIArtifactLayer ArchiveOCIFileLayer(OCIFileLayer fileLayer)
+        public OCIArtifactLayer Archive(OCIFileLayer fileLayer)
         {
             EnsureArg.IsNotNull(fileLayer, nameof(fileLayer));
 
             if (fileLayer.FileContent.Count == 0)
             {
-                return new OCIArtifactLayer();
+                return fileLayer;
             }
 
             var fileContents = fileLayer.FileContent;
@@ -185,31 +181,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 }
             }
 
-            var resultLayer = new OCIArtifactLayer() { SequenceNumber = fileLayer.SequenceNumber, Content = resultStream.ToArray(), FileName = fileLayer.FileName };
-            return resultLayer;
+            fileLayer.Content = resultStream.ToArray();
+            return fileLayer;
         }
 
-        public List<OCIArtifactLayer> ArchiveOCIFileLayers(List<OCIFileLayer> fileLayers)
+        public List<OCIArtifactLayer> Archive(List<OCIFileLayer> fileLayers)
         {
             EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
 
-            return fileLayers.Select(ArchiveOCIFileLayer).ToList();
-        }
-
-        private void ValidateSortedLayersBySequenceNumber(List<OCIFileLayer> sortedLayers)
-        {
-            for (var index = 1; index <= sortedLayers.Count(); index++)
-            {
-                if (index == sortedLayers.Count() && sortedLayers[index - 1].SequenceNumber == -1)
-                {
-                    continue;
-                }
-
-                if (sortedLayers[index - 1].SequenceNumber != index)
-                {
-                    throw new OverlayException(TemplateManagementErrorCode.SortLayersFailed, "Some layer's sequence number are invalid. Layers could not be sorted and merged.");
-                }
-            }
+            return fileLayers.Select(Archive).ToList();
         }
     }
 }
