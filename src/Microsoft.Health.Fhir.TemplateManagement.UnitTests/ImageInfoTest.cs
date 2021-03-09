@@ -171,6 +171,5 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             Assert.Equal(ImageInfo.GetDefaultTemplateImageReferenceByDatatype(datatype), defaultTemplates);
         }
-
     }
 }
