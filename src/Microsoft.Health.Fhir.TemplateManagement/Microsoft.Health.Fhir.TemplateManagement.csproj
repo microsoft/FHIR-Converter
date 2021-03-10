@@ -5,7 +5,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>true</IsPackable>
     <NuspecFile>Microsoft.Health.Fhir.Liquid.Converter.nuspec</NuspecFile>
-    <OrasWinUrl>https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_windows_amd64.tar.gz</OrasWinUrl>
+    <OrasVersion>0.8.1</OrasVersion>
+    <OsEnvironment Condition="'$(OS)' == 'Windows_NT'">windows</OsEnvironment>
+    <OsEnvironment Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))'">darwin</OsEnvironment>
+    <OsEnvironment Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'">linux</OsEnvironment>
   </PropertyGroup>
   
   <ItemGroup>
@@ -31,21 +34,23 @@
       <Link>Hl7v2DefaultTemplates.tar.gz</Link>
     </EmbeddedResource>
   </ItemGroup>
-  
+
   <ItemGroup>
-    <None Update="oras.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Condition="'$(OsEnvironment)' == 'windows'" Include="oras.exe" CopyToOutputDirectory="PreserveNewest" />
+    <None Condition="'$(OsEnvironment)' != 'windows'" Include="oras" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="mkdir ..\..\bin &amp; tar -zcvf ../../bin/Hl7v2DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
+    <Exec Condition="'$(OsEnvironment)' == 'windows'" Command="mkdir ../../bin &amp; tar -zcvf ../../bin/Hl7v2DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
+    <Exec Condition="'$(OsEnvironment)' != 'windows'" Command="mkdir ../../bin ; tar -zcvf ../../bin/Hl7v2DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
   </Target>
-  
-  <Target Name="DownloadOrasFile" BeforeTargets="Build">
-    <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="../../bin">
+
+  <Target Name="DownloadOrasFile" BeforeTargets="PreBuildEvent">
+    <DownloadFile SourceUrl="https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_$(OsEnvironment)_amd64.tar.gz" DestinationFolder="../../bin">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
-    <Exec Command="tar -xvf ..\..\bin\oras_0.8.1_windows_amd64.tar.gz -C ..\..\bin &amp; copy ..\..\bin\oras.exe ." />
+    <Exec Condition="'$(OsEnvironment)' == 'windows'" Command="tar -xzvf ..\..\bin\oras_$(OrasVersion)_windows_amd64.tar.gz -C ..\..\bin &amp; copy ..\..\bin\oras.exe ." />
+    <Exec Condition="'$(OsEnvironment)' != 'windows'" Command="tar -xzvf ../../bin/oras_$(OrasVersion)_$(OsEnvironment)_amd64.tar.gz -C ../../bin ; cp ../../bin/oras ." />
   </Target>
+  
 </Project>

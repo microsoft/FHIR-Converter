@@ -36,11 +36,18 @@ To use docker login, you should install docker first. Docker provides packages t
 ```
 * Oras Login
 
-The [oras](https://github.com/deislabs/oras) tool oras.exe for windows is packed in our repo, users can directly use it for login as follows.
+The [oras](https://github.com/deislabs/oras) tool is downloaded during a build. Users can directly use it for login as follows
 
+Windows:
 ```
 >.\oras.exe login <acrName.azurecr.io> -u <username> -p <password>
 ```
+
+Linux or macOS:
+```
+$ ./oras login <acrName.azurecr.io> -u <username> -p <password>
+```
+
 
 If using service principal's identity for authentication, you need to create a [service principal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal) to access your registry. Ensure that the service principal is assigned a role such as AcrPush so that it has permissions to push and pull artifacts.
 ## Push

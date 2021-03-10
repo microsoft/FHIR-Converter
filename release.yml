@@ -20,6 +20,7 @@ variables:
   bulidnum: $[counter(format('{0}.{1}',variables['major'],variables['minor']), 100)]
   revision: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
   version: $(major).$(minor).$(bulidnum).$(revision)
+  orasVersion: 0.8.1
 
 stages:
 - stage: Build
@@ -171,11 +172,11 @@ stages:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
-        curl -LO https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_linux_amd64.tar.gz
+        curl -LO https://github.com/deislabs/oras/releases/download/v$(orasVersion)/oras_$(orasVersion)_linux_amd64.tar.gz
         mkdir -p oras-install/
-        tar -zxf oras_0.8.1_*.tar.gz -C oras-install/
+        tar -zxf oras_$(orasVersion)_*.tar.gz -C oras-install/
         mv oras-install/oras /usr/local/bin/
-        rm -rf oras_0.8.1_*.tar.gz oras-install/
+        rm -rf oras_$(orasVersion)_*.tar.gz oras-install/
         docker run --rm -d -p 5000:5000 --name registry registry:2
       displayName: start registry
     - script: |
