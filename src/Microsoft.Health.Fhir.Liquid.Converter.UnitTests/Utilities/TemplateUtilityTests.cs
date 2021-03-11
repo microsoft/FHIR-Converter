@@ -31,8 +31,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
             Assert.Equal("b", parsedTemplates["Resource/Patient"].Render());
             Assert.Equal("c", parsedTemplates["Resource/Encounter"].Render());
 
-            var codeSystemMapping = (CodeSystemMapping)parsedTemplates["CodeSystem/CodeSystem"].Root.NodeList.First();
-            Assert.Equal("d", codeSystemMapping.Mapping["a"]["b"]["c"]);
+            var codeMapping = (CodeMapping)parsedTemplates["CodeSystem/CodeSystem"].Root.NodeList.First();
+            Assert.Equal("d", codeMapping.Mapping["a"]["b"]["c"]);
 
             templates["Resource/_Patient.liquid"] = null;
             templates["CodeSystem/CodeSystem.json"] = null;
@@ -57,8 +57,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
             Assert.Equal("b", parsedTemplates["Resource/Patient"].Render());
             Assert.Equal("c", parsedTemplates["Resource/Encounter"].Render());
 
-            var codeSystemMapping = (CodeSystemMapping)parsedTemplates["ValueSet/ValueSet"].Root.NodeList.First();
-            Assert.Equal("d", codeSystemMapping.Mapping["a"]["b"]["c"]);
+            var codeMapping = (CodeMapping)parsedTemplates["ValueSet/ValueSet"].Root.NodeList.First();
+            Assert.Equal("d", codeMapping.Mapping["a"]["b"]["c"]);
 
             templates["Resource/_Patient.liquid"] = null;
             templates["ValueSet/ValueSet.json"] = null;
@@ -79,18 +79,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
             // Invalid JSON
             templates = new Dictionary<string, string> { { "CodeSystem/CodeSystem.json", @"{""a""" } };
             exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
-            Assert.Equal(FhirConverterErrorCode.InvalidCodeSystemMapping, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.InvalidCodeMapping, exception.FhirConverterErrorCode);
             Assert.True(exception.InnerException is JsonException);
 
             // Null CodeSystemMapping
             templates = new Dictionary<string, string> { { "CodeSystem/CodeSystem.json", string.Empty } };
             exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
-            Assert.Equal(FhirConverterErrorCode.InvalidCodeSystemMapping, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.InvalidCodeMapping, exception.FhirConverterErrorCode);
 
             // Null CodeSystemMapping.Mapping
             templates = new Dictionary<string, string> { { "CodeSystem/CodeSystem.json", @"{""a"": ""b""}" } };
             exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
-            Assert.Equal(FhirConverterErrorCode.InvalidCodeSystemMapping, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.InvalidCodeMapping, exception.FhirConverterErrorCode);
         }
 
         [Fact]
@@ -105,18 +105,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
             // Invalid JSON
             templates = new Dictionary<string, string> { { "ValueSet/ValueSet.json", @"{""a""" } };
             exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
-            Assert.Equal(FhirConverterErrorCode.InvalidCodeSystemMapping, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.InvalidCodeMapping, exception.FhirConverterErrorCode);
             Assert.True(exception.InnerException is JsonException);
 
-            // Null CodeSystemMapping
+            // Null ValueSetMapping
             templates = new Dictionary<string, string> { { "ValueSet/ValueSet.json", string.Empty } };
             exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
-            Assert.Equal(FhirConverterErrorCode.InvalidCodeSystemMapping, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.InvalidCodeMapping, exception.FhirConverterErrorCode);
 
-            // Null CodeSystemMapping.Mapping
+            // Null ValueSetMapping.Mapping
             templates = new Dictionary<string, string> { { "ValueSet/ValueSet.json", @"{""a"": ""b""}" } };
             exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
-            Assert.Equal(FhirConverterErrorCode.InvalidCodeSystemMapping, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.InvalidCodeMapping, exception.FhirConverterErrorCode);
         }
     }
 }

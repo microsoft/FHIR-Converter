@@ -30,13 +30,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             var context = new Context(CultureInfo.InvariantCulture);
             Assert.Null(Filters.GetProperty(context, null, null, null));
 
-            // context with null CodeSystemMapping
+            // context with null CodemMapping
             context = new Context(new List<Hash>(), new Hash(), new Hash(), ErrorsOutputMode.Rethrow, 0, 0, CultureInfo.InvariantCulture);
-            context["CodeSystemMapping"] = null;
+            context["CodeMapping"] = null;
             Assert.Equal("M", Filters.GetProperty(context, "M", "Gender", "code"));
 
-            // context with valid CodeSystemMapping
-            context["CodeSystemMapping"] = new CodeSystemMapping(new Dictionary<string, Dictionary<string, Dictionary<string, string>>>
+            // context with valid CodeMapping
+            context["CodeMapping"] = new CodeMapping(new Dictionary<string, Dictionary<string, Dictionary<string, string>>>
             {
                 {
                     "CodeSystem/Gender", new Dictionary<string, Dictionary<string, string>>

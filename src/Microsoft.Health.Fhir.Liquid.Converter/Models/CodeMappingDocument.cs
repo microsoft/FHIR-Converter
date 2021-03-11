@@ -9,9 +9,9 @@ using DotLiquid;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 {
-    public class CodeSystemMappingDocument : Document
+    public class CodeMappingDocument : Document
     {
-        public CodeSystemMappingDocument(List<CodeSystemMapping> mapping)
+        public CodeMappingDocument(List<CodeMapping> mapping)
         {
             NodeList = mapping.Cast<object>().ToList();
         }

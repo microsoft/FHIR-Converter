@@ -12,9 +12,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement
     internal static class Constants
     {
         /// <summary>
-        /// The default templates infomation, key is datatype, value.item1 is tmeplate path, value.item2 is image reference.
+        /// The default templates information, key is datatype, value.item1 is template path, value.item2 is image reference.
         /// </summary>
-        private static IReadOnlyDictionary<DataType, Tuple<string, string>> _defultTemplateInfo = new Dictionary<DataType, Tuple<string, string>>
+        private static IReadOnlyDictionary<DataType, Tuple<string, string>> _defaultTemplateInfo = new Dictionary<DataType, Tuple<string, string>>
         {
             { DataType.Hl7v2, Tuple.Create("Hl7v2DefaultTemplates.tar.gz", "microsofthealth/hl7v2templates:default") },
             { DataType.Cda, Tuple.Create("CdaDefaultTemplates.tar.gz", "microsofthealth/ccdatemplates:default") },
@@ -43,6 +43,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         internal const string OrasFile = "oras";
 
-        internal static IReadOnlyDictionary<DataType, Tuple<string, string>> DefultTemplateInfo => _defultTemplateInfo;
+        internal static IReadOnlyDictionary<DataType, Tuple<string, string>> DefultTemplateInfo => _defaultTemplateInfo;
     }
 }

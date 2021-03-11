@@ -26,7 +26,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return null;
             }
 
-            var map = (context["CodeSystemMapping"] as CodeSystemMapping)?.Mapping?.GetValueOrDefault(mapping, null);
+            var map = (context["CodeMapping"] as CodeMapping)?.Mapping?.GetValueOrDefault(mapping, null);
             var codeMapping = map?.GetValueOrDefault(originalCode, null) ?? map?.GetValueOrDefault("__default__", null);
             return codeMapping?.GetValueOrDefault(property, null)
                 ?? ((property.Equals("code") || property.Equals("display")) ? originalCode : null);

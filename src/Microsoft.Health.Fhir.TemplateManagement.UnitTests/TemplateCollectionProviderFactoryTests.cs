@@ -93,30 +93,33 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public void GiveNewDefaultTemplateTarGzFile_WhenInitDefaultTemplate_DefaultTemplatesWillBeInit()
         {
+            var targzName = "NewDefaultTemplates.tar.gz";
             string imageReference = ImageInfo.DefaultTemplateImageReference;
-            CreateTarGz("NewDefaultTemplates.tar.gz", hl7v2TemplateFolder);
+            CreateTarGz(targzName, hl7v2TemplateFolder);
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            factory.InitDefaultTemplates("NewDefaultTemplates.tar.gz");
+            factory.InitDefaultTemplates(targzName);
             Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
         }
 
         [Fact]
         public void GiveHl7v2NewDefaultTemplateTarGzFile_WhenInitDefaultTemplate_DefaultTemplatesWillBeInit()
         {
+            var targzName = "Hl7v2NewDefaultTemplates.tar.gz";
             string imageReference = ImageInfo.GetDefaultTemplateImageReferenceByDatatype(DataType.Hl7v2);
-            CreateTarGz("Hl7v2NewDefaultTemplates.tar.gz", hl7v2TemplateFolder);
+            CreateTarGz(targzName, hl7v2TemplateFolder);
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            factory.InitDefaultTemplates("Hl7v2NewDefaultTemplates.tar.gz");
+            factory.InitDefaultTemplates(targzName);
             Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
         }
 
         [Fact]
         public void GiveCdaNewDefaultTemplateTarGzFile_WhenInitDefaultTemplate_DefaultTemplatesWillBeInit()
         {
+            var targzName = "CdaNewDefaultTemplates.tar.gz";
             string imageReference = ImageInfo.GetDefaultTemplateImageReferenceByDatatype(DataType.Cda);
-            CreateTarGz("CdaNewDefaultTemplates.tar.gz", cdaTemplateFolder);
+            CreateTarGz(targzName, cdaTemplateFolder);
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            factory.InitDefaultTemplates("CdaNewDefaultTemplates.tar.gz");
+            factory.InitDefaultTemplates(targzName);
             Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
         }
 
