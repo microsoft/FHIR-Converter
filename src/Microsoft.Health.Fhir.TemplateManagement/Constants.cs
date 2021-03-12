@@ -43,6 +43,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         internal const string OrasFile = "oras";
 
-        internal static IReadOnlyDictionary<DataType, Tuple<string, string>> DefultTemplateInfo => _defaultTemplateInfo;
+        internal static IReadOnlyDictionary<DataType, Tuple<string, string>> DefaultTemplateInfo => _defaultTemplateInfo;
     }
 }
