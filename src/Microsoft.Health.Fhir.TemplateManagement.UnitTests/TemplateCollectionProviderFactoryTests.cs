@@ -18,9 +18,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 {
     public class TemplateCollectionProviderFactoryTests
     {
-        private readonly string hl7v2TemplateFolder = @"..\..\..\..\..\data\Templates\Hl7v2";
-        private readonly string cdaTemplateFolder = @"..\..\..\..\..\data\Templates\Cda";
-
         private readonly TemplateCollectionConfiguration _config = new TemplateCollectionConfiguration();
         private readonly string _token = "Basic FakeToken";
         private readonly IMemoryCache _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 100000000 });
@@ -35,6 +32,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             yield return new object[] { "testacr.azurecr.io/templateset@sha256:87b600f187bde328de7a8fd98a4f3dad1ce71803c5fc4eced77b3349da136a5f" };
             yield return new object[] { "testacr.azurecr.io/templateset@sha256:95074605bbe28f191fffd85a8e3a581d6fdbe440908c3b5f36dd1b532907a530" };
+        }
+
+        public static IEnumerable<object[]> GetDefaultTemplateTarGzFile()
+        {
+            yield return new object[] { "NewDefaultTemplates.tar.gz", ImageInfo.DefaultTemplateImageReference, @"..\..\..\..\..\data\Templates\Hl7v2" };
+            yield return new object[] { "Hl7v2NewDefaultTemplates.tar.gz", ImageInfo.GetDefaultTemplateImageReferenceByDatatype(DataType.Hl7v2), @"..\..\..\..\..\data\Templates\Hl7v2" };
+            yield return new object[] { "CdaNewDefaultTemplates.tar.gz", ImageInfo.GetDefaultTemplateImageReferenceByDatatype(DataType.Cda), @"..\..\..\..\..\data\Templates\Cda" };
         }
 
         [Theory]
@@ -90,34 +94,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             Assert.Throws<DefaultTemplatesInitializeException>(() => factory.InitDefaultTemplates("WrongPath"));
         }
 
-        [Fact]
-        public void GiveNewDefaultTemplateTarGzFile_WhenInitDefaultTemplate_DefaultTemplatesWillBeInit()
-        {
-            var targzName = "NewDefaultTemplates.tar.gz";
-            string imageReference = ImageInfo.DefaultTemplateImageReference;
-            CreateTarGz(targzName, hl7v2TemplateFolder);
-            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            factory.InitDefaultTemplates(targzName);
-            Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
-        }
+        [Theory]
+        [MemberData(nameof(GetDefaultTemplateTarGzFile))]
 
-        [Fact]
-        public void GiveHl7v2NewDefaultTemplateTarGzFile_WhenInitDefaultTemplate_DefaultTemplatesWillBeInit()
+        public void GiveNewDefaultTemplateTarGzFile_WhenInitDefaultTemplate_DefaultTemplatesWillBeInit(string targzName, string imageReference, string templateFolder)
         {
-            var targzName = "Hl7v2NewDefaultTemplates.tar.gz";
-            string imageReference = ImageInfo.GetDefaultTemplateImageReferenceByDatatype(DataType.Hl7v2);
-            CreateTarGz(targzName, hl7v2TemplateFolder);
-            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            factory.InitDefaultTemplates(targzName);
-            Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
-        }
-
-        [Fact]
-        public void GiveCdaNewDefaultTemplateTarGzFile_WhenInitDefaultTemplate_DefaultTemplatesWillBeInit()
-        {
-            var targzName = "CdaNewDefaultTemplates.tar.gz";
-            string imageReference = ImageInfo.GetDefaultTemplateImageReferenceByDatatype(DataType.Cda);
-            CreateTarGz(targzName, cdaTemplateFolder);
+            CreateTarGz(targzName, templateFolder);
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
             factory.InitDefaultTemplates(targzName);
             Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
