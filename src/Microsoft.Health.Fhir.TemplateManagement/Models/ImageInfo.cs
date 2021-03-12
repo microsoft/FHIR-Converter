@@ -58,12 +58,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public static string GetDefaultTemplateImageReferenceByDatatype(DataType datatype)
         {
-            return Constants.DefultTemplateInfo.GetValueOrDefault(datatype).Item2;
+            return Constants.DefaultTemplateInfo.GetValueOrDefault(datatype).Item2;
         }
 
         public static bool IsDefaultTemplateImageReference(string imageReference)
         {
-            return string.Equals(imageReference, DefaultTemplateImageReference, StringComparison.InvariantCulture) || Constants.DefultTemplateInfo.Values.Any(value => string.Equals(imageReference, value.Item2, StringComparison.InvariantCulture));
+            return string.Equals(imageReference, DefaultTemplateImageReference, StringComparison.InvariantCulture) || Constants.DefaultTemplateInfo.Values.Any(value => string.Equals(imageReference, value.Item2, StringComparison.InvariantCulture));
         }
 
         public static bool IsValidImageReference(string imageReference)

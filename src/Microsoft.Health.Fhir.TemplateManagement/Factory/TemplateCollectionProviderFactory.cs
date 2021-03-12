@@ -61,7 +61,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         private void InitDefaultTemplates()
         {
-            foreach (var templateInfo in Constants.DefultTemplateInfo)
+            foreach (var templateInfo in Constants.DefaultTemplateInfo)
             {
                 TemplateLayer templateLayer = TemplateLayer.ReadFromEmbeddedResource(templateInfo.Value.Item1);
                 _templateCache.Set(templateInfo.Value.Item2, templateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = templateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
@@ -75,7 +75,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         public void InitDefaultTemplates(string path)
         {
-            path ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Constants.DefultTemplateInfo.GetValueOrDefault(Constants.DefaultDataType).Item1);
+            path ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, Constants.DefaultTemplateInfo.GetValueOrDefault(Constants.DefaultDataType).Item1);
 
             TemplateLayer defaultTemplateLayer = TemplateLayer.ReadFromFile(path);
             _templateCache.Set(ImageInfo.DefaultTemplateImageReference, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
