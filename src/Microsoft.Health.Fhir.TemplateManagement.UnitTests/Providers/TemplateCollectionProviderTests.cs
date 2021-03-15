@@ -28,11 +28,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         public TemplateCollectionProviderTests()
         {
-            TemplateLayer hl7v2defaultTempalteLayer = TemplateLayer.ReadFromEmbeddedResource("Hl7v2DefaultTemplates.tar.gz");
-            _cache.Set(ImageInfo.DefaultTemplateImageReference, hl7v2defaultTempalteLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
-            _cache.Set("microsofthealth/hl7v2templates:default", hl7v2defaultTempalteLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
-            TemplateLayer cdadefaultTempalteLayer = TemplateLayer.ReadFromEmbeddedResource("CdaDefaultTemplates.tar.gz");
-            _cache.Set("microsofthealth/ccdatemplates:default", cdadefaultTempalteLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
+            TemplateLayer hl7V2DefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource("Hl7v2DefaultTemplates.tar.gz");
+            _cache.Set(ImageInfo.DefaultTemplateImageReference, hl7V2DefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
+            _cache.Set("microsofthealth/hl7v2templates:default", hl7V2DefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
+            TemplateLayer cdaDefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource("CdaDefaultTemplates.tar.gz");
+            _cache.Set("microsofthealth/ccdatemplates:default", cdaDefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
 
             PushLargeSizeManifest();
         }
