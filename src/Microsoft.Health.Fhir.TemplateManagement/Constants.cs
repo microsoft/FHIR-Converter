@@ -11,15 +11,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 {
     internal static class Constants
     {
-        /// <summary>
-        /// The default templates information, key is datatype, value.item1 is template path, value.item2 is image reference.
-        /// </summary>
-        private static IReadOnlyDictionary<DataType, Tuple<string, string>> _defaultTemplateInfo = new Dictionary<DataType, Tuple<string, string>>
-        {
-            { DataType.Hl7v2, Tuple.Create("Hl7v2DefaultTemplates.tar.gz", "microsofthealth/hl7v2templates:default") },
-            { DataType.Cda, Tuple.Create("CdaDefaultTemplates.tar.gz", "microsofthealth/ccdatemplates:default") },
-        };
-
         internal const DataType DefaultDataType = DataType.Hl7v2;
 
         // Accept meidia type for manifest.
@@ -42,7 +33,5 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         internal const int TimeOutMilliseconds = 30000;
 
         internal const string OrasFile = "oras";
-
-        internal static IReadOnlyDictionary<DataType, Tuple<string, string>> DefaultTemplateInfo => _defaultTemplateInfo;
     }
 }

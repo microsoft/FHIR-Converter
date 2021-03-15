@@ -22,7 +22,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         {
             try
             {
-                templatePath ??= Constants.DefaultTemplateInfo.GetValueOrDefault(Constants.DefaultDataType).Item1;
+                templatePath ??= DefaultTemplateInfo.DefaultTemplateMap.GetValueOrDefault(Constants.DefaultDataType).TemplatePath;
                 var defaultTemplateResourceName = $"{typeof(Constants).Namespace}.{templatePath}";
                 using Stream resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(defaultTemplateResourceName);
                 return ReadFromStream(resourceStream);
