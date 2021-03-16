@@ -30,7 +30,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
         {
             MemoryCacheEntryOptions memoryOption = new MemoryCacheEntryOptions()
                 {
-                    AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, 
+                    AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration,
                     Size = 0,
                 };
 

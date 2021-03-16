@@ -48,7 +48,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             yield return new object[] { _defaultTemplateImageReference };
             yield return new object[] { _defaultHl7v2TemplateImageReference };
-            yield return new object[] {_defaultCcdaTemplateImageReference};
+            yield return new object[] { _defaultCcdaTemplateImageReference };
         }
 
         [Theory]

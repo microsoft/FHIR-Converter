@@ -22,7 +22,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         public static IEnumerable<object[]> GetSupportedImageReference()
         {
-            yield return new object[] { "microsofthealth/fhirconverter:default"};
+            yield return new object[] { "microsofthealth/fhirconverter:default" };
             yield return new object[] { "microsofthealth/hl7v2templates:default" };
             yield return new object[] { "microsofthealth/ccdatemplates:default" };
         }
