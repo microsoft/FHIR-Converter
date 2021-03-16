@@ -21,6 +21,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         private readonly TemplateCollectionConfiguration _config = new TemplateCollectionConfiguration();
         private readonly string _token = "Basic FakeToken";
         private readonly IMemoryCache _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 100000000 });
+        private static readonly string _defaultTemplateImageReference = "microsofthealth/fhirconverter:default";
+        private static readonly string _defaultHl7v2TemplateImageReference = "microsofthealth/hl7v2templates:default";
+        private static readonly string _defaultCcdaTemplateImageReference = "microsofthealth/ccdatemplates:default";
 
         public static IEnumerable<object[]> GetValidImageInfoWithTag()
         {
@@ -36,9 +39,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         public static IEnumerable<object[]> GetDefaultTemplateTarGzFile()
         {
-            yield return new object[] { "NewDefaultTemplates.tar.gz", ImageInfo.DefaultTemplateImageReference, @"..\..\..\..\..\data\Templates\Hl7v2" };
-            yield return new object[] { "Hl7v2NewDefaultTemplates.tar.gz", ImageInfo.GetDefaultTemplateImageReferenceByDatatype(DataType.Hl7v2), @"..\..\..\..\..\data\Templates\Hl7v2" };
-            yield return new object[] { "CdaNewDefaultTemplates.tar.gz", ImageInfo.GetDefaultTemplateImageReferenceByDatatype(DataType.Cda), @"..\..\..\..\..\data\Templates\Cda" };
+            yield return new object[] { "NewDefaultTemplates.tar.gz", _defaultTemplateImageReference, @"..\..\..\..\..\data\Templates\Hl7v2" };
+            yield return new object[] { "Hl7v2NewDefaultTemplates.tar.gz", _defaultHl7v2TemplateImageReference, @"..\..\..\..\..\data\Templates\Hl7v2" };
+            yield return new object[] { "CdaNewDefaultTemplates.tar.gz", _defaultCcdaTemplateImageReference, @"..\..\..\..\..\data\Templates\Cda" };
+        }
+
+        public static IEnumerable<object[]> GetDefaultImageReference()
+        {
+            yield return new object[] { _defaultTemplateImageReference };
+            yield return new object[] { _defaultHl7v2TemplateImageReference };
+            yield return new object[] {_defaultCcdaTemplateImageReference};
         }
 
         [Theory]
@@ -49,33 +59,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
             Assert.NotNull(factory.CreateProvider(imageReference, _token));
             Assert.NotNull(factory.CreateTemplateCollectionProvider(imageReference, _token));
-        }
-
-        [Fact]
-        public void GiveDefaultImageReference_WhenGetTemplateProviderWithEmptyToken_ADefaultTemplateProviderWillBeReturnedAsync()
-        {
-            string imageReference = ImageInfo.DefaultTemplateImageReference;
-            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
-            Assert.NotNull(factory.CreateTemplateCollectionProvider(imageReference, string.Empty));
-        }
-
-        [Fact]
-        public void GiveHl7v2DefaultImageReference_WhenGetTemplateProviderWithEmptyToken_ADefaultTemplateProviderWillBeReturnedAsync()
-        {
-            string imageReference = ImageInfo.GetDefaultTemplateImageReferenceByDatatype(DataType.Hl7v2);
-            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
-            Assert.NotNull(factory.CreateTemplateCollectionProvider(imageReference, string.Empty));
-        }
-
-        [Fact]
-        public void GiveCdaDefaultImageReference_WhenGetTemplateProviderWithEmptyToken_ADefaultTemplateProviderWillBeReturnedAsync()
-        {
-            string imageReference = ImageInfo.GetDefaultTemplateImageReferenceByDatatype(DataType.Cda);
-            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
-            Assert.NotNull(factory.CreateTemplateCollectionProvider(imageReference, string.Empty));
         }
 
         [Fact]
@@ -91,7 +74,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         public void GivenAWrongDefaultTemplatePath_WhenInitDefaultTemplate_ExceptionWillBeThrown()
         {
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            Assert.Throws<DefaultTemplatesInitializeException>(() => factory.InitDefaultTemplates("WrongPath"));
+            DefaultTemplateInfo templateInfo = new DefaultTemplateInfo(DataType.Hl7v2, _defaultTemplateImageReference, "WrongPath");
+            Assert.Throws<DefaultTemplatesInitializeException>(() => factory.InitDefaultTemplates(templateInfo));
+        }
+
+        [Theory]
+        [MemberData(nameof(GetDefaultImageReference))]
+        public void GiveDefaultImageReference_WhenGetTemplateProviderWithEmptyToken_ADefaultTemplateProviderWillBeReturnedAsync(string imageReference)
+        {
+            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
+            Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
+            Assert.NotNull(factory.CreateTemplateCollectionProvider(imageReference, string.Empty));
         }
 
         [Theory]
@@ -101,7 +94,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             CreateTarGz(targzName, templateFolder);
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
-            factory.InitDefaultTemplates(targzName);
+            DefaultTemplateInfo templateInfo = new DefaultTemplateInfo(DataType.Hl7v2, imageReference, targzName);
+            factory.InitDefaultTemplates(templateInfo);
             Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
         }
 

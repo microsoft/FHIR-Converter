@@ -16,7 +16,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.Health.Fhir.Liquid.Converter.Cda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
-using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Newtonsoft.Json.Linq;
@@ -33,6 +32,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string userLayerTemplatePath = "TestData/TarGzFiles/userV2.tar.gz";
         private readonly string invalidTarGzPath = "TestData/TarGzFiles/invalid1.tar.gz";
         private readonly string invalidTemplatePath = "TestData/TarGzFiles/invalidTemplates.tar.gz";
+        private readonly string _defaultTemplateImageReference = "microsofthealth/fhirconverter:default";
+        private readonly string _defaultHl7v2TemplateImageReference = "microsofthealth/hl7v2templates:default";
+        private readonly string _defaultCcdaTemplateImageReference = "microsofthealth/ccdatemplates:default";
         private readonly string testOneLayerImageReference;
         private readonly string testMultiLayerImageReference;
         private readonly string testInvalidImageReference;
@@ -318,7 +320,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var folderTemplateProvider = new Hl7v2TemplateProvider(defaultTemplateDirectory);
 
             var templateProviderFactory = new TemplateCollectionProviderFactory(new MemoryCache(new MemoryCacheOptions()), Options.Create(new TemplateCollectionConfiguration()));
-            var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(ImageInfo.DefaultTemplateImageReference, string.Empty);
+            var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultTemplateImageReference, string.Empty);
             var imageTemplateProvider = new Hl7v2TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
             var hl7v2Processor = new Hl7v2Processor();
@@ -336,7 +338,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var folderTemplateProvider = new CdaTemplateProvider(defaultTemplateDirectory);
 
             var templateProviderFactory = new TemplateCollectionProviderFactory(new MemoryCache(new MemoryCacheOptions()), Options.Create(new TemplateCollectionConfiguration()));
-            var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(ImageInfo.GetDefaultTemplateImageReferenceByDatatype(DataType.Cda), string.Empty);
+            var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultCcdaTemplateImageReference, string.Empty);
             var imageTemplateProvider = new CdaTemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
             var cdaProcessor = new CdaProcessor();

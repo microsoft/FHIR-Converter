@@ -3,17 +3,11 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using Microsoft.Health.Fhir.Liquid.Converter.Models;
-
 namespace Microsoft.Health.Fhir.TemplateManagement
 {
     internal static class Constants
     {
-        internal const DataType DefaultDataType = DataType.Hl7v2;
-
-        // Accept meidia type for manifest.
+        // Accept media type for manifest.
         internal const string MediatypeV2Manifest = "application/vnd.docker.distribution.manifest.v2+json";
 
         internal const string ImageReferenceFormat = "{0}/{1}:{2}";

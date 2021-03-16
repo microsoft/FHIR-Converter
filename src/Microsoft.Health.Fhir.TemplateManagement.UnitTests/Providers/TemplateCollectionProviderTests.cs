@@ -28,11 +28,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         public TemplateCollectionProviderTests()
         {
+            MemoryCacheEntryOptions memoryOption = new MemoryCacheEntryOptions()
+                {
+                    AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, 
+                    Size = 0,
+                };
+
             TemplateLayer hl7V2DefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource("Hl7v2DefaultTemplates.tar.gz");
-            _cache.Set(ImageInfo.DefaultTemplateImageReference, hl7V2DefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
-            _cache.Set("microsofthealth/hl7v2templates:default", hl7V2DefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
+            _cache.Set("microsofthealth/fhirconverter:default", hl7V2DefaultTemplateLayer, memoryOption);
+            _cache.Set("microsofthealth/hl7v2templates:default", hl7V2DefaultTemplateLayer, memoryOption);
             TemplateLayer cdaDefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource("CdaDefaultTemplates.tar.gz");
-            _cache.Set("microsofthealth/ccdatemplates:default", cdaDefaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
+            _cache.Set("microsofthealth/ccdatemplates:default", cdaDefaultTemplateLayer, memoryOption);
 
             PushLargeSizeManifest();
         }
@@ -205,7 +211,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
         [Fact]
         public async Task GivenDefaultTemplateReference_WhenGetTemplateCollectionFromTemplateProvider_IfNotInitialized_ExceptionWillBeThrown()
         {
-            string imageReference = ImageInfo.DefaultTemplateImageReference;
+            string imageReference = "microsofthealth/fhirconverter:default";
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var emptyCache = new MemoryCache(new MemoryCacheOptions());
             var newTemplateCollectionProvider = new TemplateCollectionProvider(imageInfo, _emptyClient, emptyCache, _defaultConfig);

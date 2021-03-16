@@ -11,15 +11,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
     public class DefaultTemplateInfo
     {
-        /// <summary>
-        /// The default templates map, key is datatype, defulat templates information.
-        /// </summary>
-        private static IReadOnlyDictionary<DataType, DefaultTemplateInfo> _defaultTemplateMap = new Dictionary<DataType, DefaultTemplateInfo>
-        {
-            { DataType.Hl7v2, new DefaultTemplateInfo(DataType.Hl7v2, "microsofthealth/hl7v2templates:default", "Hl7v2DefaultTemplates.tar.gz") },
-            { DataType.Cda, new DefaultTemplateInfo(DataType.Cda, "microsofthealth/ccdatemplates:default", "CdaDefaultTemplates.tar.gz") },
-        };
-
         public DefaultTemplateInfo(DataType dataType, string imageReference, string templatePath)
         {
             DataType = dataType;
@@ -27,7 +18,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
             TemplatePath = templatePath;
         }
 
-        public static IReadOnlyDictionary<DataType, DefaultTemplateInfo> DefaultTemplateMap => _defaultTemplateMap;
+        /// <summary>
+        /// The default templates map, key is image reference, value is default templates information.
+        /// </summary>
+        public static IReadOnlyDictionary<string, DefaultTemplateInfo> DefaultTemplateMap { get; } = new Dictionary<string, DefaultTemplateInfo>(StringComparer.OrdinalIgnoreCase)
+        {
+            { "microsofthealth/fhirconverter:default", new DefaultTemplateInfo(DataType.Hl7v2, "microsofthealth/fhirconverter:default", "Hl7v2DefaultTemplates.tar.gz") },
+            { "microsofthealth/hl7v2templates:default", new DefaultTemplateInfo(DataType.Hl7v2, "microsofthealth/hl7v2templates:default", "Hl7v2DefaultTemplates.tar.gz") },
+            { "microsofthealth/ccdatemplates:default", new DefaultTemplateInfo(DataType.Cda, "microsofthealth/ccdatemplates:default", "CdaDefaultTemplates.tar.gz") },
+        };
 
         public DataType DataType { get; set; }
 

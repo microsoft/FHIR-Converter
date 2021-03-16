@@ -3,9 +3,6 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Net.Http.Headers;
 using System.Runtime.Caching;
 using EnsureThat;
@@ -68,19 +65,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement
                 memoryOption.SetSize(templateLayer.Size);
                 _templateCache.Set(templateInfo.Value.ImageReference, templateLayer, memoryOption);
                 _templateCache.Set(templateLayer.Digest, templateLayer, memoryOption);
-                if (templateInfo.Key == Constants.DefaultDataType)
-                {
-                    _templateCache.Set(ImageInfo.DefaultTemplateImageReference, templateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = templateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
-                }
             }
         }
 
-        public void InitDefaultTemplates(string path)
+        public void InitDefaultTemplates(DefaultTemplateInfo templateInfo)
         {
-            path ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, DefaultTemplateInfo.DefaultTemplateMap.GetValueOrDefault(Constants.DefaultDataType).TemplatePath);
-
-            TemplateLayer defaultTemplateLayer = TemplateLayer.ReadFromFile(path);
-            _templateCache.Set(ImageInfo.DefaultTemplateImageReference, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
+            TemplateLayer defaultTemplateLayer = TemplateLayer.ReadFromFile(templateInfo.TemplatePath);
+            _templateCache.Set(templateInfo.ImageReference, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
             _templateCache.Set(defaultTemplateLayer.Digest, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
         }
     }

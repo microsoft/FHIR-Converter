@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using DotLiquid;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
@@ -18,11 +19,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
     {
         public Dictionary<string, Template> TemplateContent { get; set; }
 
-        public static TemplateLayer ReadFromEmbeddedResource(string templatePath = null)
+        public static TemplateLayer ReadFromEmbeddedResource(string templatePath)
         {
             try
             {
-                templatePath ??= DefaultTemplateInfo.DefaultTemplateMap.GetValueOrDefault(Constants.DefaultDataType).TemplatePath;
                 var defaultTemplateResourceName = $"{typeof(Constants).Namespace}.{templatePath}";
                 using Stream resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream(defaultTemplateResourceName);
                 return ReadFromStream(resourceStream);

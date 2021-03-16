@@ -4,7 +4,6 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Xunit;
@@ -20,7 +19,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "testacr.azurecr.io/templateset", "testacr.azurecr.io", "templateset", "latest", null, "latest" };
         }
 
-        public static IEnumerable<object[]> GetInValidImageReferenceInfo()
+        public static IEnumerable<object[]> GetInValidImageReference()
         {
             yield return new object[] { "testacr.azurecr.io@v1" };
             yield return new object[] { "testacr.azurecr.io:templateset:v1" };
@@ -42,6 +41,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "testacr.azurecr.io/Templateset:v1" };
         }
 
+        public static IEnumerable<object[]> GetInValidImageReferenceWithCaseSensitive()
+        {
+            yield return new object[] { "testacr.azurecr.io/Templateset:v1" };
+            yield return new object[] { "testacr.azurecr.io/TEMPLATESET:v1" };
+        }
+
         public static IEnumerable<object[]> GetValidImageReference()
         {
             yield return new object[] { "testacr.azurecr.io/templateset:v1" };
@@ -57,11 +62,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "testacr.azurecr.io/templateset:V1" };
         }
 
-        public static IEnumerable<object[]> GetDefaultTemplateReference()
+        public static IEnumerable<object[]> GetValidImageReferenceWithCaseSensitive()
         {
-            yield return new object[] { "microsofthealth/fhirconverter:default" };
-            yield return new object[] { "microsofthealth/hl7v2templates:default" };
-            yield return new object[] { "microsofthealth/ccdatemplates:default" };
+            yield return new object[] { "Testacr.azurecr.io/templateset:v1" };
+            yield return new object[] { "TESTACR.azurecr.io/templateset:v1" };
+            yield return new object[] { "testacr.Azurecr.io/templateset:v1" };
+            yield return new object[] { "testacr.azurecr.IO/templateset:v1" };
+            yield return new object[] { "testacr.azurecr.io/templateset:V1" };
         }
 
         public static IEnumerable<object[]> GetUnDefaultTemplateReference()
@@ -71,18 +78,25 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "testacr.azurecr.io/templateset" };
         }
 
-        public static IEnumerable<object[]> GetValidDefaultTemplateReference()
+        public static IEnumerable<object[]> GetDefaultTemplateReference()
         {
             yield return new object[] { "microsofthealth/fhirconverter:default" };
             yield return new object[] { "microsofthealth/hl7v2templates:default" };
             yield return new object[] { "microsofthealth/ccdatemplates:default" };
         }
 
-        public static IEnumerable<object[]> GetInvalidDefaultTemplateReference()
+        public static IEnumerable<object[]> GetDefaultTemplateReferenceWithCaseInsensitive()
         {
+            yield return new object[] { "Microsofthealth/fhirconverter:default" };
+            yield return new object[] { "microsofthealth/Fhirconverter:default" };
+            yield return new object[] { "microsofthealth/fhirconverter:Default" };
             yield return new object[] { "MICROSOFTHEALTH/FHIRCONVERTER:DEFAULT" };
             yield return new object[] { "MicrosoftHealth/Hl7v2Templates:default" };
-            yield return new object[] { "MicrosoftHealth/CcdaTemplates:default" };
+            yield return new object[] { "microsoftHealth/CcdaTemplates:default" };
+        }
+
+        public static IEnumerable<object[]> GetInvalidDefaultTemplateReference()
+        {
             yield return new object[] { "MicrosoftHealth/FhirConverter:tag" };
             yield return new object[] { "MicrosoftHealth" };
             yield return new object[] { "MicrosoftHealth/FhirConverter" };
@@ -96,15 +110,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "test" };
         }
 
-        public static IEnumerable<object[]> GetValidDataType()
-        {
-            yield return new object[] { DataType.Hl7v2, "microsofthealth/hl7v2templates:default" };
-            yield return new object[] { DataType.Cda, "microsofthealth/ccdatemplates:default" };
-        }
-
         [Theory]
         [MemberData(nameof(GetValidImageReferenceInfo))]
-        public void GivenAValidImageReference_WhenConctructImageInfo_ACorrectImageInfoShouldBeConstructed(string imageReference, string registry, string imageName, string tag, string digest, string label)
+        public void GivenAValidImageReference_WhenConstructImageInfo_ACorrectImageInfoShouldBeConstructed(string imageReference, string registry, string imageName, string tag, string digest, string label)
         {
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             Assert.Equal(registry, imageInfo.Registry);
@@ -115,14 +123,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(GetInValidImageReferenceInfo))]
-        public void GivenAnInValidImageReference_WhenConctructImageInfo_ExceptionShouldBeThrown(string imageReference)
+        [MemberData(nameof(GetInValidImageReference))]
+        [MemberData(nameof(GetInValidImageReferenceWithCaseSensitive))]
+        public void GivenAnInValidImageReference_WhenConstructImageInfo_ExceptionShouldBeThrown(string imageReference)
         {
             Assert.Throws<ImageReferenceException>(() => ImageInfo.CreateFromImageReference(imageReference));
         }
 
         [Theory]
-        [MemberData(nameof(GetInValidImageReferenceInfo))]
+        [MemberData(nameof(GetInValidImageReference))]
+        [MemberData(nameof(GetInValidImageReferenceWithCaseSensitive))]
         public void GivenAnInValidImageReference_WhenCheckImageReference_IsInvalidResultWillBeReturned(string imageReference)
         {
             Assert.False(ImageInfo.IsValidImageReference(imageReference));
@@ -130,6 +140,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         [Theory]
         [MemberData(nameof(GetValidImageReference))]
+        [MemberData(nameof(GetValidImageReferenceWithCaseSensitive))]
         public void GivenAValidImageReference_WhenCheckImageReference_IsValidResultWillBeReturned(string imageReference)
         {
             Assert.True(ImageInfo.IsValidImageReference(imageReference));
@@ -137,7 +148,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         [Theory]
         [MemberData(nameof(GetDefaultTemplateReference))]
+        [MemberData(nameof(GetDefaultTemplateReferenceWithCaseInsensitive))]
         public void GivenADefaultTemplateReferenceAsImageReference_WhenCheckIsDefaultTemplate_IsTrueResultWillBeReturned(string imageReference)
+        {
+            Assert.True(ImageInfo.IsDefaultTemplateImageReference(imageReference));
+        }
+
+        [Theory]
+        [MemberData(nameof(GetDefaultTemplateReference))]
+        [MemberData(nameof(GetDefaultTemplateReferenceWithCaseInsensitive))]
+        public void GivenADefaultTemplateReferenceAsImageReference_WhenCreateImageInfoAndCheckIsDefaultTemplate_IsTrueResultWillBeReturned(string imageReference)
         {
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             Assert.True(imageInfo.IsDefaultTemplate());
@@ -152,24 +172,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(GetValidDefaultTemplateReference))]
-        public void GivenValidDefaultTemplateReference_WhenCheckIsDefaultImageReference_IsTrueResultWillBeReturned(string imageReference)
-        {
-            Assert.True(ImageInfo.IsDefaultTemplateImageReference(imageReference));
-        }
-
-        [Theory]
         [MemberData(nameof(GetInvalidDefaultTemplateReference))]
         public void GivenInvalidDefaultTemplateReference_WhenCheckIsDefaultImageReference_IsFalseResultWillBeReturned(string imageReference)
         {
             Assert.False(ImageInfo.IsDefaultTemplateImageReference(imageReference));
-        }
-
-        [Theory]
-        [MemberData(nameof(GetValidDataType))]
-        public void GivenValidDataType_WhenGetDefaultTemplateImageReferenceByDatatype_ACorrectDefaultTemplateImageReferenceWillBeReturned(DataType datatype, string defaultTemplates)
-        {
-            Assert.Equal(ImageInfo.GetDefaultTemplateImageReferenceByDatatype(datatype), defaultTemplates);
         }
     }
 }
