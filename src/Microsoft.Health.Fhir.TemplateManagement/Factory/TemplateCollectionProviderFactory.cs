@@ -58,7 +58,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         private void InitDefaultTemplates()
         {
-            var memoryOption = new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove };
+            var memoryOption = new MemoryCacheEntryOptions()
+            {
+                AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration,
+                Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove,
+            };
             foreach (var templateInfo in DefaultTemplateInfo.DefaultTemplateMap)
             {
                 TemplateLayer templateLayer = TemplateLayer.ReadFromEmbeddedResource(templateInfo.Value.TemplatePath);
@@ -71,8 +75,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         public void InitDefaultTemplates(DefaultTemplateInfo templateInfo)
         {
             TemplateLayer defaultTemplateLayer = TemplateLayer.ReadFromFile(templateInfo.TemplatePath);
-            _templateCache.Set(templateInfo.ImageReference, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
-            _templateCache.Set(defaultTemplateLayer.Digest, defaultTemplateLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration, Size = defaultTemplateLayer.Size, Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove });
+            var memoryOption = new MemoryCacheEntryOptions()
+            {
+                AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration,
+                Size = defaultTemplateLayer.Size,
+                Priority = Extensions.Caching.Memory.CacheItemPriority.NeverRemove,
+            };
+            _templateCache.Set(templateInfo.ImageReference, defaultTemplateLayer, memoryOption);
+            _templateCache.Set(defaultTemplateLayer.Digest, defaultTemplateLayer, memoryOption);
         }
     }
 }
