@@ -17,7 +17,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             yield return new object[] { DataType.Hl7v2, "microsofthealth/fhirconverter:default", "Hl7v2DefaultTemplates.tar.gz" };
             yield return new object[] { DataType.Hl7v2, "microsofthealth/hl7v2templates:default", "Hl7v2DefaultTemplates.tar.gz" };
-            yield return new object[] { DataType.Cda, "microsofthealth/ccdatemplates:default", "CdaDefaultTemplates.tar.gz" };
+            yield return new object[] { DataType.Ccda, "microsofthealth/ccdatemplates:default", "CcdaDefaultTemplates.tar.gz" };
         }
 
         public static IEnumerable<object[]> GetSupportedImageReference()

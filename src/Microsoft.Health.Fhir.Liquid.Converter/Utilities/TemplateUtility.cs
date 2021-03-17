@@ -28,7 +28,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
         }
 
         /// <summary>
-        /// Parse templates from string, "CodeSystem/CodeSystem.json" and "ValueSet/ValueSet.json" are used for Hl7v2 and C-CDA datatype code mapping respectively
+        /// Parse templates from string, "CodeSystem/CodeSystem.json" and "ValueSet/ValueSet.json" are used for Hl7v2 and C-CDA data type code mapping respectively
         /// </summary>
         /// <param name="templates">A dictionary, key is the name, value is the template content in string format</param>
         /// <returns>A dictionary, key is the name, value is Template</returns>

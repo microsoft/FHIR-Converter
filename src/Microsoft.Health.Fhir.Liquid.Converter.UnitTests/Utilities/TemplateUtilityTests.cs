@@ -42,7 +42,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
         }
 
         [Fact]
-        public void GivenValidCdaTemplateContents_WhenParseTemplates_CorrectResultShouldBeReturned()
+        public void GivenValidCcdaTemplateContents_WhenParseTemplates_CorrectResultShouldBeReturned()
         {
             var templates = new Dictionary<string, string>
             {
@@ -94,7 +94,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
         }
 
         [Fact]
-        public void GivenInvalidCdaTemplateContents_WhenParseTemplates_ExceptionsShouldBeThrown()
+        public void GivenInvalidCcdaTemplateContents_WhenParseTemplates_ExceptionsShouldBeThrown()
         {
             // Invalid DotLiquid template
             var templates = new Dictionary<string, string> { { "CCD.liquid", "{{" } };

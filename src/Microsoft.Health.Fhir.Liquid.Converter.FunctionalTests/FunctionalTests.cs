@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Cda;
+using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
@@ -46,7 +46,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
-        public static IEnumerable<object[]> GetDataForCda()
+        public static IEnumerable<object[]> GetDataForCcda()
         {
             var data = new List<string[]>
             {
@@ -58,8 +58,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             return data.Select(item => new[]
             {
                 item[0],
-                Path.Join(Constants.SampleDataDirectory, "Cda", item[1]),
-                Path.Join(Constants.ExpectedDataFolder, "Cda", item[0], item[2]),
+                Path.Join(Constants.SampleDataDirectory, "Ccda", item[1]),
+                Path.Join(Constants.ExpectedDataFolder, "Ccda", item[0], item[2]),
             });
         }
 
@@ -83,15 +83,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         }
 
         [Theory]
-        [MemberData(nameof(GetDataForCda))]
-        public void GivenCdaDocument_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
+        [MemberData(nameof(GetDataForCcda))]
+        public void GivenCcdaDocument_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
         {
-            var cdaProcessor = new CdaProcessor();
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Cda");
+            var ccdaProcessor = new CcdaProcessor();
+            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Ccda");
 
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
-            var actualContent = cdaProcessor.Convert(inputContent, rootTemplate, new CdaTemplateProvider(templateDirectory));
+            var actualContent = ccdaProcessor.Convert(inputContent, rootTemplate, new CcdaTemplateProvider(templateDirectory));
 
             var expectedObject = JObject.Parse(expectedContent);
             var actualObject = JObject.Parse(actualContent);

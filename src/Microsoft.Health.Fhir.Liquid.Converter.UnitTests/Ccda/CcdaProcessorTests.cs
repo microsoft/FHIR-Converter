@@ -8,27 +8,27 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Cda;
+using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Xunit;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Cda
+namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
 {
-    public class CdaProcessorTests
+    public class CcdaProcessorTests
     {
         private static readonly string TestData;
 
-        static CdaProcessorTests()
+        static CcdaProcessorTests()
         {
-            TestData = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Cda", "CCD.cda"));
+            TestData = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Ccda", "CCD.cda"));
         }
 
         [Fact]
         public void GivenAValidTemplateDirectory_WhenConvert_CorrectResultShouldBeReturned()
         {
-            var processor = new CdaProcessor();
-            var templateProvider = new CdaTemplateProvider(Constants.CdaTemplateDirectory);
+            var processor = new CcdaProcessor();
+            var templateProvider = new CcdaTemplateProvider(Constants.CcdaTemplateDirectory);
             var result = processor.Convert(TestData, "CCD", templateProvider);
             Assert.True(result.Length > 0);
         }
@@ -36,7 +36,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Cda
         [Fact]
         public void GivenAValidTemplateCollection_WhenConvert_CorrectResultShouldBeReturned()
         {
-            var processor = new CdaProcessor();
+            var processor = new CcdaProcessor();
             var templateCollection = new List<Dictionary<string, Template>>
             {
                 new Dictionary<string, Template>
@@ -45,7 +45,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Cda
                 },
             };
 
-            var templateProvider = new CdaTemplateProvider(templateCollection);
+            var templateProvider = new CcdaTemplateProvider(templateCollection);
             var result = processor.Convert(TestData, "TemplateName", templateProvider);
             Assert.True(result.Length > 0);
         }
@@ -53,7 +53,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Cda
         [Fact]
         public void GivenInvalidTemplateProviderOrName_WhenConvert_ExceptionsShouldBeThrown()
         {
-            var processor = new CdaProcessor();
+            var processor = new CcdaProcessor();
             var templateCollection = new List<Dictionary<string, Template>>
             {
                 new Dictionary<string, Template>
@@ -62,7 +62,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Cda
                 },
             };
 
-            var templateProvider = new CdaTemplateProvider(templateCollection);
+            var templateProvider = new CcdaTemplateProvider(templateCollection);
 
             // Null, empty or nonexistent root template
             var exception = Assert.Throws<RenderException>(() => processor.Convert(TestData, null, templateProvider));
@@ -83,13 +83,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Cda
         public void GivenProcessorSettings_WhenConvert_CorrectResultsShouldBeReturned()
         {
             // Null ProcessorSettings: no time out
-            var processor = new CdaProcessor(null);
-            var templateProvider = new CdaTemplateProvider(Constants.CdaTemplateDirectory);
+            var processor = new CcdaProcessor(null);
+            var templateProvider = new CcdaTemplateProvider(Constants.CcdaTemplateDirectory);
             var result = processor.Convert(TestData, "CCD", templateProvider);
             Assert.True(result.Length > 0);
 
             // Default ProcessorSettings: no time out
-            processor = new CdaProcessor(new ProcessorSettings());
+            processor = new CcdaProcessor(new ProcessorSettings());
             result = processor.Convert(TestData, "CCD", templateProvider);
             Assert.True(result.Length > 0);
 
@@ -99,7 +99,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Cda
                 TimeOut = 1,
             };
 
-            processor = new CdaProcessor(settings);
+            processor = new CcdaProcessor(settings);
             var exception = Assert.Throws<RenderException>(() => processor.Convert(TestData, "CCD", templateProvider));
             Assert.Equal(FhirConverterErrorCode.TimeoutError, exception.FhirConverterErrorCode);
             Assert.True(exception.InnerException is TimeoutException);
@@ -110,7 +110,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Cda
                 TimeOut = -1,
             };
 
-            processor = new CdaProcessor(settings);
+            processor = new CcdaProcessor(settings);
             result = processor.Convert(TestData, "CCD", templateProvider);
             Assert.True(result.Length > 0);
         }
@@ -118,8 +118,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Cda
         [Fact]
         public void GivenCancellationToken_WhenConvert_CorrectResultsShouldBeReturned()
         {
-            var processor = new CdaProcessor();
-            var templateProvider = new CdaTemplateProvider(Constants.CdaTemplateDirectory);
+            var processor = new CcdaProcessor();
+            var templateProvider = new CcdaTemplateProvider(Constants.CcdaTemplateDirectory);
             var cts = new CancellationTokenSource();
             var result = processor.Convert(TestData, "CCD", templateProvider, cts.Token);
             Assert.True(result.Length > 0);

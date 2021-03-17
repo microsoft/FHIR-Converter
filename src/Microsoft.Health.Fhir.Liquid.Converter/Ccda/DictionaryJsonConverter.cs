@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
+namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
 {
     /// <summary>
     /// One-way JsonConverter to deserialize JSON string to IDictionary

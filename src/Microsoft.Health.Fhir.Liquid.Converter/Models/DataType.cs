@@ -8,6 +8,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
     public enum DataType
     {
         Hl7v2,
-        Cda,
+        Ccda,
     }
 }

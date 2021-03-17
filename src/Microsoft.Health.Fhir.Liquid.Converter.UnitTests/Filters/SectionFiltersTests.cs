@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Cda;
+using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
@@ -15,7 +15,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
     public class SectionFiltersTests
     {
         [Fact]
-        public void GetFirstCdaSectionsTests()
+        public void GetFirstCcdaSectionsTests()
         {
             const string sectionNameContent = "Problems|Medications|Foo";
 
@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         }
 
         [Fact]
-        public void GetCdaSectionListsTests()
+        public void GetCcdaSectionListsTests()
         {
             const string sectionNameContent = "Problems|Medications|Foo";
 
@@ -64,7 +64,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         }
 
         [Fact]
-        public void GetFirstCdaSectionsByTemplateIdTests()
+        public void GetFirstCcdaSectionsByTemplateIdTests()
         {
             const string templateIdContent = "2.16.840.1.113883.10.20.22.2.6.1";
 
@@ -88,8 +88,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         private static IDictionary<string, object> LoadTestData()
         {
-            var parser = new CdaDataParser();
-            var dataContent = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Cda", "170.314B2_Amb_CCD.cda"));
+            var parser = new CcdaDataParser();
+            var dataContent = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Ccda", "170.314B2_Amb_CCD.cda"));
             return parser.Parse(dataContent);
         }
     }
