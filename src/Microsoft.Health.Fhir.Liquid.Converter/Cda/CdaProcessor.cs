@@ -51,10 +51,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
         {
             // Load value set mapping
             var context = base.CreateContext(templateProvider, cdaData);
-            var codeSystemMapping = templateProvider.GetTemplate("ValueSet/ValueSet");
-            if (codeSystemMapping?.Root?.NodeList?.First() != null)
+            var codeMapping = templateProvider.GetTemplate("ValueSet/ValueSet");
+            if (codeMapping?.Root?.NodeList?.First() != null)
             {
-                context["CodeSystemMapping"] = codeSystemMapping.Root.NodeList.First();
+                context["CodeMapping"] = codeMapping.Root.NodeList.First();
             }
 
             return context;

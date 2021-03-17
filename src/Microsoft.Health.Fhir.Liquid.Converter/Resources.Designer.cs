@@ -88,11 +88,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The code system mapping file is invalid..
+        ///   Looks up a localized string similar to The code mapping file is invalid..
         /// </summary>
-        internal static string InvalidCodeSystemMapping {
+        internal static string InvalidCodeMapping {
             get {
-                return ResourceManager.GetString("InvalidCodeSystemMapping", resourceCulture);
+                return ResourceManager.GetString("InvalidCodeMapping", resourceCulture);
             }
         }
         

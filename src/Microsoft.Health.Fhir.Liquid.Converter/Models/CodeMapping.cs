@@ -6,11 +6,11 @@
 using System.Collections.Generic;
 using DotLiquid;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
+namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 {
-    public class CodeSystemMapping : Drop
+    public class CodeMapping : Drop
     {
-        public CodeSystemMapping(Dictionary<string, Dictionary<string, Dictionary<string, string>>> mapping)
+        public CodeMapping(Dictionary<string, Dictionary<string, Dictionary<string, string>>> mapping)
         {
             Mapping = mapping;
         }

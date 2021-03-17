@@ -15,7 +15,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
         // InitializeException
         TemplateFolderNotFound = 1101,
         TemplateLoadingError = 1102,
-        InvalidCodeSystemMapping = 1103,
+        InvalidCodeMapping = 1103,
         TemplateSyntaxError = 1104,
 
         // DataParseException

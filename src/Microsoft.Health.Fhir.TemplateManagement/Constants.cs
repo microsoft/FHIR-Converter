@@ -7,9 +7,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 {
     internal static class Constants
     {
-        internal const string DefaultTemplatePath = "Hl7v2DefaultTemplates.tar.gz";
-
-        // Accept meidia type for manifest.
+        // Accept media type for manifest.
         internal const string MediatypeV2Manifest = "application/vnd.docker.distribution.manifest.v2+json";
 
         internal const string ImageReferenceFormat = "{0}/{1}:{2}";
