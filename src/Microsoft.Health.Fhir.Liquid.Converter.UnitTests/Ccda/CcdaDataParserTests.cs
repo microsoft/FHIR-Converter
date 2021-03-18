@@ -53,7 +53,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
         public void GivenCcdaDocument_WhenParse_CorrectResultShouldBeReturned()
         {
             // Sample CCD document
-            var document = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Ccda", "CCD.cda"));
+            var document = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Ccda", "CCD.ccda"));
             var data = _parser.Parse(document);
             Assert.NotNull(data);
             Assert.NotNull(((Dictionary<string, object>)data).GetValueOrDefault("msg"));

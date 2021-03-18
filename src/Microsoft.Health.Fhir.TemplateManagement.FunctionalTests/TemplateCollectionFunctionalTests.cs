@@ -119,10 +119,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         {
             var data = new List<object[]>
             {
-                new object[] { @"170.314B2_Amb_CCD.cda", @"CCD" },
-                new object[] { @"C-CDA_R2-1_CCD.xml.cda", @"CCD" },
-                new object[] { @"CCD.cda", @"CCD" },
-                new object[] { @"CCD-Parent-Document-Replace-C-CDAR2.1.cda", @"CCD" },
+                new object[] { @"170.314B2_Amb_CCD.ccda", @"CCD" },
+                new object[] { @"C-CDA_R2-1_CCD.xml.ccda", @"CCD" },
+                new object[] { @"CCD.ccda", @"CCD" },
+                new object[] { @"CCD-Parent-Document-Replace-C-CDAR2.1.ccda", @"CCD" },
             };
             return data.Select(item => new object[]
             {

@@ -50,10 +50,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         {
             var data = new List<string[]>
             {
-                new[] { @"CCD", @"170.314B2_Amb_CCD.cda", @"170.314B2_Amb_CCD-expected.json" },
-                new[] { @"CCD", @"C-CDA_R2-1_CCD.xml.cda", @"C-CDA_R2-1_CCD.xml-expected.json" },
-                new[] { @"CCD", @"CCD.cda", @"CCD-expected.json" },
-                new[] { @"CCD", @"CCD-Parent-Document-Replace-C-CDAR2.1.cda", @"CCD-Parent-Document-Replace-C-CDAR2.1-expected.json" },
+                new[] { @"CCD", @"170.314B2_Amb_CCD.ccda", @"170.314B2_Amb_CCD-expected.json" },
+                new[] { @"CCD", @"C-CDA_R2-1_CCD.xml.ccda", @"C-CDA_R2-1_CCD.xml-expected.json" },
+                new[] { @"CCD", @"CCD.ccda", @"CCD-expected.json" },
+                new[] { @"CCD", @"CCD-Parent-Document-Replace-C-CDAR2.1.ccda", @"CCD-Parent-Document-Replace-C-CDAR2.1-expected.json" },
             };
             return data.Select(item => new[]
             {

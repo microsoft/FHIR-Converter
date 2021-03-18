@@ -21,7 +21,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
 
         static CcdaProcessorTests()
         {
-            TestData = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Ccda", "CCD.cda"));
+            TestData = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Ccda", "CCD.ccda"));
         }
 
         [Fact]
