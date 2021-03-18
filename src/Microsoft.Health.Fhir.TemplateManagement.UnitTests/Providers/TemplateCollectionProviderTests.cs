@@ -37,8 +37,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             TemplateLayer hl7V2DefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource("Hl7v2DefaultTemplates.tar.gz");
             _cache.Set("microsofthealth/fhirconverter:default", hl7V2DefaultTemplateLayer, memoryOption);
             _cache.Set("microsofthealth/hl7v2templates:default", hl7V2DefaultTemplateLayer, memoryOption);
-            TemplateLayer cdaDefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource("CdaDefaultTemplates.tar.gz");
-            _cache.Set("microsofthealth/ccdatemplates:default", cdaDefaultTemplateLayer, memoryOption);
+            TemplateLayer ccdaDefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource("CcdaDefaultTemplates.tar.gz");
+            _cache.Set("microsofthealth/ccdatemplates:default", ccdaDefaultTemplateLayer, memoryOption);
 
             PushLargeSizeManifest();
         }

@@ -10,13 +10,13 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessor;
 using Newtonsoft.Json;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
+namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
 {
-    public class CdaProcessor : BaseProcessor
+    public class CcdaProcessor : BaseProcessor
     {
-        private readonly CdaDataParser _dataParser = new CdaDataParser();
+        private readonly CcdaDataParser _dataParser = new CcdaDataParser();
 
-        public CdaProcessor(ProcessorSettings processorSettings = null)
+        public CcdaProcessor(ProcessorSettings processorSettings = null)
             : base(processorSettings)
         {
         }
@@ -39,18 +39,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
             }
 
-            var cdaData = _dataParser.Parse(data);
-            var context = CreateContext(templateProvider, cdaData);
+            var ccdaData = _dataParser.Parse(data);
+            var context = CreateContext(templateProvider, ccdaData);
             var rawResult = RenderTemplates(template, context);
             var result = PostProcessor.Process(rawResult);
 
             return result.ToString(Formatting.Indented);
         }
 
-        protected override Context CreateContext(ITemplateProvider templateProvider, object cdaData)
+        protected override Context CreateContext(ITemplateProvider templateProvider, object ccdaData)
         {
             // Load value set mapping
-            var context = base.CreateContext(templateProvider, cdaData);
+            var context = base.CreateContext(templateProvider, ccdaData);
             var codeMapping = templateProvider.GetTemplate("ValueSet/ValueSet");
             if (codeMapping?.Root?.NodeList?.First() != null)
             {

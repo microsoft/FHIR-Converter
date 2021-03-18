@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Cda;
+using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
@@ -15,43 +15,43 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
     public class SectionFiltersTests
     {
         [Fact]
-        public void GetFirstCdaSectionsTests()
+        public void GetFirstCcdaSectionsTests()
         {
             const string sectionNameContent = "Problems|Medications|Foo";
 
             // Empty data
-            Assert.Empty(Filters.GetFirstCdaSections(new Hash(), sectionNameContent));
+            Assert.Empty(Filters.GetFirstCcdaSections(new Hash(), sectionNameContent));
 
             // Empty section name content
             var data = LoadTestData() as Dictionary<string, object>;
             var msg = data?.GetValueOrDefault("msg") as IDictionary<string, object>;
-            Assert.Empty(Filters.GetFirstCdaSections(Hash.FromDictionary(msg), string.Empty));
+            Assert.Empty(Filters.GetFirstCcdaSections(Hash.FromDictionary(msg), string.Empty));
 
             // Valid data and section name content
-            var sections = Filters.GetFirstCdaSections(Hash.FromDictionary(msg), sectionNameContent);
+            var sections = Filters.GetFirstCcdaSections(Hash.FromDictionary(msg), sectionNameContent);
             Assert.Equal(2, sections.Count);
             Assert.Equal(5, ((Dictionary<string, object>)sections["Problems"]).Count);
 
             // Null data or section name content
-            Assert.Throws<NullReferenceException>(() => Filters.GetFirstCdaSections(null, sectionNameContent));
-            Assert.Throws<NullReferenceException>(() => Filters.GetFirstCdaSections(new Hash(), null));
+            Assert.Throws<NullReferenceException>(() => Filters.GetFirstCcdaSections(null, sectionNameContent));
+            Assert.Throws<NullReferenceException>(() => Filters.GetFirstCcdaSections(new Hash(), null));
         }
 
         [Fact]
-        public void GetCdaSectionListsTests()
+        public void GetCcdaSectionListsTests()
         {
             const string sectionNameContent = "Problems|Medications|Foo";
 
             // Empty data
-            Assert.Empty(Filters.GetCdaSectionLists(new Hash(), sectionNameContent));
+            Assert.Empty(Filters.GetCcdaSectionLists(new Hash(), sectionNameContent));
 
             // Empty section name content
             var data = LoadTestData() as Dictionary<string, object>;
             var msg = data?.GetValueOrDefault("msg") as IDictionary<string, object>;
-            Assert.Empty(Filters.GetCdaSectionLists(Hash.FromDictionary(msg), string.Empty));
+            Assert.Empty(Filters.GetCcdaSectionLists(Hash.FromDictionary(msg), string.Empty));
 
             // Valid data and section name content
-            var sectionLists = Filters.GetCdaSectionLists(Hash.FromDictionary(msg), sectionNameContent);
+            var sectionLists = Filters.GetCcdaSectionLists(Hash.FromDictionary(msg), sectionNameContent);
             Assert.Equal(2, sectionLists.Count);
 
             var sections = (List<object>)sectionLists["Problems"];
@@ -59,37 +59,37 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             Assert.Equal(5, ((Dictionary<string, object>)sections[0]).Count);
 
             // Null data or section name content
-            Assert.Throws<NullReferenceException>(() => Filters.GetCdaSectionLists(null, sectionNameContent));
-            Assert.Throws<NullReferenceException>(() => Filters.GetCdaSectionLists(new Hash(), null));
+            Assert.Throws<NullReferenceException>(() => Filters.GetCcdaSectionLists(null, sectionNameContent));
+            Assert.Throws<NullReferenceException>(() => Filters.GetCcdaSectionLists(new Hash(), null));
         }
 
         [Fact]
-        public void GetFirstCdaSectionsByTemplateIdTests()
+        public void GetFirstCcdaSectionsByTemplateIdTests()
         {
             const string templateIdContent = "2.16.840.1.113883.10.20.22.2.6.1";
 
             // Empty data
-            Assert.Empty(Filters.GetFirstCdaSectionsByTemplateId(new Hash(), templateIdContent));
+            Assert.Empty(Filters.GetFirstCcdaSectionsByTemplateId(new Hash(), templateIdContent));
 
             // Empty template id content
             var data = LoadTestData() as Dictionary<string, object>;
             var msg = data?.GetValueOrDefault("msg") as IDictionary<string, object>;
-            Assert.Empty(Filters.GetFirstCdaSectionsByTemplateId(Hash.FromDictionary(msg), string.Empty));
+            Assert.Empty(Filters.GetFirstCcdaSectionsByTemplateId(Hash.FromDictionary(msg), string.Empty));
 
             // Valid data and template id content
-            var sections = Filters.GetFirstCdaSectionsByTemplateId(Hash.FromDictionary(msg), templateIdContent);
+            var sections = Filters.GetFirstCcdaSectionsByTemplateId(Hash.FromDictionary(msg), templateIdContent);
             Assert.Single(sections);
             Assert.Equal(5, ((Dictionary<string, object>)sections["2_16_840_1_113883_10_20_22_2_6_1"]).Count);
 
             // Null data or template id content
-            Assert.Throws<NullReferenceException>(() => Filters.GetFirstCdaSectionsByTemplateId(null, templateIdContent));
-            Assert.Throws<NullReferenceException>(() => Filters.GetFirstCdaSectionsByTemplateId(new Hash(), null));
+            Assert.Throws<NullReferenceException>(() => Filters.GetFirstCcdaSectionsByTemplateId(null, templateIdContent));
+            Assert.Throws<NullReferenceException>(() => Filters.GetFirstCcdaSectionsByTemplateId(new Hash(), null));
         }
 
         private static IDictionary<string, object> LoadTestData()
         {
-            var parser = new CdaDataParser();
-            var dataContent = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Cda", "170.314B2_Amb_CCD.cda"));
+            var parser = new CcdaDataParser();
+            var dataContent = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Ccda", "170.314B2_Amb_CCD.ccda"));
             return parser.Parse(dataContent);
         }
     }

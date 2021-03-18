@@ -12,6 +12,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
         public static readonly string SampleDataDirectory = Path.Join("..", "..", "data", "SampleData");
         public static readonly string TemplateDirectory = Path.Join("..", "..", "data", "Templates");
         public static readonly string Hl7v2TemplateDirectory = Path.Join(TemplateDirectory, "Hl7v2");
-        public static readonly string CdaTemplateDirectory = Path.Join(TemplateDirectory, "Cda");
+        public static readonly string CcdaTemplateDirectory = Path.Join(TemplateDirectory, "Ccda");
     }
 }

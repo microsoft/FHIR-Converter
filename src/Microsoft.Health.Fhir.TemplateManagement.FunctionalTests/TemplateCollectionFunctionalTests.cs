@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using DotLiquid;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using Microsoft.Health.Fhir.Liquid.Converter.Cda;
+using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
@@ -115,19 +115,19 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             });
         }
 
-        public static IEnumerable<object[]> GetCdaDataAndTemplateSources()
+        public static IEnumerable<object[]> GetCcdaDataAndTemplateSources()
         {
             var data = new List<object[]>
             {
-                new object[] { @"170.314B2_Amb_CCD.cda", @"CCD" },
-                new object[] { @"C-CDA_R2-1_CCD.xml.cda", @"CCD" },
-                new object[] { @"CCD.cda", @"CCD" },
-                new object[] { @"CCD-Parent-Document-Replace-C-CDAR2.1.cda", @"CCD" },
+                new object[] { @"170.314B2_Amb_CCD.ccda", @"CCD" },
+                new object[] { @"C-CDA_R2-1_CCD.xml.ccda", @"CCD" },
+                new object[] { @"CCD.ccda", @"CCD" },
+                new object[] { @"CCD-Parent-Document-Replace-C-CDAR2.1.ccda", @"CCD" },
             };
             return data.Select(item => new object[]
             {
-                Path.Join(_sampleDataDirectory, "Cda", Convert.ToString(item[0])),
-                Path.Join(_templateDirectory, "Cda"),
+                Path.Join(_sampleDataDirectory, "Ccda", Convert.ToString(item[0])),
+                Path.Join(_templateDirectory, "Ccda"),
                 Convert.ToString(item[1]),
             });
         }
@@ -331,20 +331,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         }
 
         [Theory]
-        [MemberData(nameof(GetCdaDataAndTemplateSources))]
-        public async Task GivenCdaSameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
+        [MemberData(nameof(GetCcdaDataAndTemplateSources))]
+        public async Task GivenCcdaSameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
         {
-            var folderTemplateProvider = new CdaTemplateProvider(defaultTemplateDirectory);
+            var folderTemplateProvider = new CcdaTemplateProvider(defaultTemplateDirectory);
 
             var templateProviderFactory = new TemplateCollectionProviderFactory(new MemoryCache(new MemoryCacheOptions()), Options.Create(new TemplateCollectionConfiguration()));
             var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultCcdaTemplateImageReference, string.Empty);
-            var imageTemplateProvider = new CdaTemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
+            var imageTemplateProvider = new CcdaTemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
-            var cdaProcessor = new CdaProcessor();
+            var ccdaProcessor = new CcdaProcessor();
             var inputContent = File.ReadAllText(inputFile);
 
-            var imageResult = cdaProcessor.Convert(inputContent, rootTemplate, imageTemplateProvider);
-            var folderResult = cdaProcessor.Convert(inputContent, rootTemplate, folderTemplateProvider);
+            var imageResult = ccdaProcessor.Convert(inputContent, rootTemplate, imageTemplateProvider);
+            var folderResult = ccdaProcessor.Convert(inputContent, rootTemplate, folderTemplateProvider);
 
             var imageResultObject = JObject.Parse(imageResult);
             var folderResultObject = JObject.Parse(folderResult);

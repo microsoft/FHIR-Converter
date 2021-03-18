@@ -12,9 +12,9 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Newtonsoft.Json;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
+namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
 {
-    public class CdaDataParser
+    public class CcdaDataParser
     {
         public IDictionary<string, object> Parse(string document)
         {

@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.Health.Fhir.Liquid.Converter.Cda;
+using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -19,7 +19,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
     internal static class ConverterLogicHandler
     {
         private const string MetadataFileName = "metadata.json";
-        private static readonly List<string> CdaExtensions = new List<string> { ".cda", ".xml" };
+        private static readonly List<string> CcdaExtensions = new List<string> { ".ccda", ".xml" };
 
         internal static void Convert(ConverterOptions options)
         {
@@ -97,7 +97,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             return dataType switch
             {
                 DataType.Hl7v2 => new Hl7v2Processor(),
-                DataType.Cda => new CdaProcessor(),
+                DataType.Ccda => new CcdaProcessor(),
                 _ => throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported")
             };
         }
@@ -107,7 +107,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             return dataType switch
             {
                 DataType.Hl7v2 => new Hl7v2TemplateProvider(templateDirectory),
-                DataType.Cda => new CdaTemplateProvider(templateDirectory),
+                DataType.Ccda => new CcdaTemplateProvider(templateDirectory),
                 _ => throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported")
             };
         }
@@ -122,8 +122,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             return dataType switch
             {
                 DataType.Hl7v2 => Directory.EnumerateFiles(inputDataFolder, "*.hl7", SearchOption.AllDirectories).ToList(),
-                DataType.Cda => Directory.EnumerateFiles(inputDataFolder, "*.*", SearchOption.AllDirectories)
-                    .Where(x => CdaExtensions.Contains(Path.GetExtension(x).ToLower())).ToList(),
+                DataType.Ccda => Directory.EnumerateFiles(inputDataFolder, "*.*", SearchOption.AllDirectories)
+                    .Where(x => CcdaExtensions.Contains(Path.GetExtension(x).ToLower())).ToList(),
                 _ => new List<string>(),
             };
         }

@@ -6,7 +6,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Cda;
+using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
@@ -44,7 +44,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
                     { "foo", Template.Parse("{{ i }} ") },
                 },
             };
-            var templateProvider = new CdaTemplateProvider(templateCollection);
+            var templateProvider = new CcdaTemplateProvider(templateCollection);
             context = new Context(
                 new List<Hash>(),
                 new Hash(),
