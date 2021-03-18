@@ -11,7 +11,6 @@ using DotLiquid;
 using DotLiquid.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Newtonsoft.Json;
 
@@ -28,7 +27,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             Template.RegisterTag<Evaluate>("evaluate");
         }
 
-        public static Dictionary<string, Template> ParseHl7v2Templates(Dictionary<string, string> templates)
+        /// <summary>
+        /// Parse templates from string, "CodeSystem/CodeSystem.json" and "ValueSet/ValueSet.json" are used for Hl7v2 and C-CDA data type code mapping respectively
+        /// </summary>
+        /// <param name="templates">A dictionary, key is the name, value is the template content in string format</param>
+        /// <returns>A dictionary, key is the name, value is Template</returns>
+        public static Dictionary<string, Template> ParseTemplates(Dictionary<string, string> templates)
         {
             var parsedTemplates = new Dictionary<string, Template>();
             foreach (var entry in templates)
@@ -36,7 +40,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                 var formattedEntryKey = FormatRegex.Replace(entry.Key, "/");
                 if (string.Equals(formattedEntryKey, "CodeSystem/CodeSystem.json", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    parsedTemplates["CodeSystem/CodeSystem"] = ParseCodeSystemMapping(entry.Value);
+                    parsedTemplates["CodeSystem/CodeSystem"] = ParseCodeMapping(entry.Value);
+                }
+                else if (string.Equals(formattedEntryKey, "ValueSet/ValueSet.json", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    parsedTemplates["ValueSet/ValueSet"] = ParseCodeMapping(entry.Value);
                 }
                 else if (string.Equals(Path.GetExtension(formattedEntryKey), TemplateFileExtension, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -48,7 +56,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             return parsedTemplates;
         }
 
-        public static Template ParseCodeSystemMapping(string content)
+        public static Template ParseCodeMapping(string content)
         {
             if (content == null)
             {
@@ -57,19 +65,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
 
             try
             {
-                var mapping = JsonConvert.DeserializeObject<CodeSystemMapping>(content);
+                var mapping = JsonConvert.DeserializeObject<CodeMapping>(content);
                 if (mapping == null || mapping.Mapping == null)
                 {
-                    throw new ConverterInitializeException(FhirConverterErrorCode.InvalidCodeSystemMapping, Resources.InvalidCodeSystemMapping);
+                    throw new ConverterInitializeException(FhirConverterErrorCode.InvalidCodeMapping, Resources.InvalidCodeMapping);
                 }
 
                 var template = Template.Parse(string.Empty);
-                template.Root = new CodeSystemMappingDocument(new List<CodeSystemMapping>() { mapping });
+                template.Root = new CodeMappingDocument(new List<CodeMapping>() { mapping });
                 return template;
             }
             catch (JsonException ex)
             {
-                throw new ConverterInitializeException(FhirConverterErrorCode.InvalidCodeSystemMapping, Resources.InvalidCodeSystemMapping, ex);
+                throw new ConverterInitializeException(FhirConverterErrorCode.InvalidCodeMapping, Resources.InvalidCodeMapping, ex);
             }
         }
 

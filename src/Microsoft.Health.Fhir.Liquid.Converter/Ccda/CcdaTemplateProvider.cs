@@ -9,18 +9,18 @@ using DotLiquid.FileSystems;
 using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Cda
+namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
 {
-    public class CdaTemplateProvider : ITemplateProvider
+    public class CcdaTemplateProvider : ITemplateProvider
     {
         private readonly IFhirConverterTemplateFileSystem _fileSystem;
 
-        public CdaTemplateProvider(string templateDirectory)
+        public CcdaTemplateProvider(string templateDirectory)
         {
-            _fileSystem = new TemplateLocalFileSystem(templateDirectory, DataType.Cda);
+            _fileSystem = new TemplateLocalFileSystem(templateDirectory, DataType.Ccda);
         }
 
-        public CdaTemplateProvider(List<Dictionary<string, Template>> templateCollection)
+        public CcdaTemplateProvider(List<Dictionary<string, Template>> templateCollection)
         {
             _fileSystem = new MemoryFileSystem(templateCollection);
         }

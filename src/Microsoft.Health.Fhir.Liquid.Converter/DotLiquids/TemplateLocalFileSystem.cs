@@ -78,11 +78,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
         private void LoadMappingTemplate(DataType dataType)
         {
             var mappingFileType = dataType == DataType.Hl7v2 ? "CodeSystem" : "ValueSet";
-            var codeSystemMappingPath = Path.Join(_templateDirectory, mappingFileType, $"{mappingFileType}.json");
-            if (File.Exists(codeSystemMappingPath))
+            var codeMappingPath = Path.Join(_templateDirectory, mappingFileType, $"{mappingFileType}.json");
+            if (File.Exists(codeMappingPath))
             {
-                var content = LoadTemplate(codeSystemMappingPath);
-                var template = TemplateUtility.ParseCodeSystemMapping(content);
+                var content = LoadTemplate(codeMappingPath);
+                var template = TemplateUtility.ParseCodeMapping(content);
                 _templateCache[$"{mappingFileType}/{mappingFileType}"] = template;
             }
         }

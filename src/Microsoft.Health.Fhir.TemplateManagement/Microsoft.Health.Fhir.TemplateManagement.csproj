@@ -28,21 +28,25 @@
   <ItemGroup>
     <ProjectReference Include="..\Microsoft.Health.Fhir.Liquid.Converter\Microsoft.Health.Fhir.Liquid.Converter.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <EmbeddedResource Include="../../bin/Hl7v2DefaultTemplates.tar.gz">
       <Link>Hl7v2DefaultTemplates.tar.gz</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="../../bin/CcdaDefaultTemplates.tar.gz">
+      <Link>CcdaDefaultTemplates.tar.gz</Link>
+    </EmbeddedResource>
   </ItemGroup>
-
   <ItemGroup>
     <None Condition="'$(OsEnvironment)' == 'windows'" Include="oras.exe" CopyToOutputDirectory="PreserveNewest" />
     <None Condition="'$(OsEnvironment)' != 'windows'" Include="oras" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Condition="'$(OsEnvironment)' == 'windows'" Command="mkdir ../../bin &amp; tar -zcvf ../../bin/Hl7v2DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
-    <Exec Condition="'$(OsEnvironment)' != 'windows'" Command="mkdir ../../bin ; tar -zcvf ../../bin/Hl7v2DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
+    <Exec Condition="'$(OsEnvironment)' == 'windows'" Command="if not exist ..\..\bin mkdir ..\..\bin" />
+    <Exec Condition="'$(OsEnvironment)' != 'windows'" Command="mkdir -p ../../bin" />
+    <Exec Command="tar -zcvf ../../bin/Hl7v2DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
+    <Exec Command="tar -zcvf ../../bin/CcdaDefaultTemplates.tar.gz -C ../../data/Templates/Ccda ." />
   </Target>
 
   <Target Name="DownloadOrasFile" BeforeTargets="PreBuildEvent">

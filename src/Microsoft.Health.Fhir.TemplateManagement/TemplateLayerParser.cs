@@ -37,7 +37,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
                 var fileContent = content.ToDictionary(
                     item => item.Key,
                     item => item.Value == null ? null : GetContentWithoutBOM(item.Value));
-                var parsedTemplate = TemplateUtility.ParseHl7v2Templates(fileContent);
+                var parsedTemplate = TemplateUtility.ParseTemplates(fileContent);
                 return parsedTemplate;
             }
             catch (Exception ex)

@@ -56,10 +56,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
         {
             // Load code system mapping
             var context = base.CreateContext(templateProvider, hl7v2Data);
-            var codeSystemMapping = templateProvider.GetTemplate("CodeSystem/CodeSystem");
-            if (codeSystemMapping?.Root?.NodeList?.First() != null)
+            var codeMapping = templateProvider.GetTemplate("CodeSystem/CodeSystem");
+            if (codeMapping?.Root?.NodeList?.First() != null)
             {
-                context["CodeSystemMapping"] = codeSystemMapping.Root.NodeList.First();
+                context["CodeMapping"] = codeMapping.Root.NodeList.First();
             }
 
             return context;
