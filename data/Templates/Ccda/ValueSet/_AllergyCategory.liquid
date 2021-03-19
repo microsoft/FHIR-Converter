@@ -1,0 +1,19 @@
+{% if code == '416098002' -%}
+"medication",
+{% elsif code == '59037007' -%}
+"medication",
+{% elsif code == '419511003' -%}
+"medication",
+{% elsif code == '414285001' -%}
+"food",
+{% elsif code == '232347008' -%}
+"environment",
+{% elsif code == '420134006' -%}
+"other",
+{% elsif code == '418038007' -%}
+"other",
+{% elsif code == '419199007' -%}
+"other",
+{% else -%}
+"{{ code }}",
+{% endif -%}

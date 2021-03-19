@@ -5,11 +5,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
@@ -153,6 +156,23 @@ SPM|1|||119297000^BLD^SCT^^^^^^Blood|||||||||||||20110103143428-0800
 
             cts.Cancel();
             Assert.Throws<OperationCanceledException>(() => processor.Convert(TestData, "ORU_R01", templateProvider, cts.Token));
+        }
+
+        [Fact]
+        public void GivenEscapedMessage_WhenConverting_ExpectedCharacterShouldBeReturned()
+        {
+            var hl7v2Processor = new Hl7v2Processor();
+            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Hl7v2");
+            var inputContent = string.Join("\n", new List<string>
+            {
+                @"MSH|^~\&|FOO|BAR|FOO|BAR|20201225000000|FOO|ADT^A01|123456|P|2.3|||||||||||",
+                @"PR1|1|FOO|FOO^ESCAPED ONE \T\ ESCAPED TWO^BAR|ESCAPED THREE \T\ ESCAPED FOUR|20201225000000||||||||||",
+            });
+            var result = JObject.Parse(hl7v2Processor.Convert(inputContent, "ADT_A01", new Hl7v2TemplateProvider(templateDirectory)));
+
+            var texts = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Procedure')].resource.code.text").Select(Convert.ToString);
+            var expected = new List<string> { "ESCAPED ONE & ESCAPED TWO", "ESCAPED THREE & ESCAPED FOUR" };
+            Assert.NotEmpty(texts.Intersect(expected));
         }
     }
 }

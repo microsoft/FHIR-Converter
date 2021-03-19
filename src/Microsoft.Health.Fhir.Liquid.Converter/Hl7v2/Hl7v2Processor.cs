@@ -3,11 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
@@ -17,17 +13,16 @@ using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 {
-    public class Hl7v2Processor : IFhirConverter
+    public class Hl7v2Processor : BaseProcessor
     {
         private readonly Hl7v2DataParser _dataParser = new Hl7v2DataParser();
-        private readonly ProcessorSettings _settings;
 
         public Hl7v2Processor(ProcessorSettings processorSettings = null)
+            : base(processorSettings)
         {
-            _settings = processorSettings;
         }
 
-        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             if (string.IsNullOrEmpty(rootTemplate))
             {
@@ -57,57 +52,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             return result.ToString(Formatting.Indented);
         }
 
-        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, CancellationToken cancellationToken, TraceInfo traceInfo = null)
+        protected override Context CreateContext(ITemplateProvider templateProvider, object hl7v2Data)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            return Convert(data, rootTemplate, templateProvider, traceInfo);
-        }
-
-        private Context CreateContext(ITemplateProvider templateProvider, Hl7v2Data hl7v2Data)
-        {
-            // Load data and templates
-            var timeout = _settings?.TimeOut ?? 0;
-            var context = new Context(
-                environments: new List<Hash>() { Hash.FromDictionary(new Dictionary<string, object>() { { "hl7v2Data", hl7v2Data } }) },
-                outerScope: new Hash(),
-                registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
-                errorsOutputMode: ErrorsOutputMode.Rethrow,
-                maxIterations: 0,
-                timeout: timeout,
-                formatProvider: CultureInfo.InvariantCulture);
-
             // Load code system mapping
-            var codeSystemMapping = templateProvider.GetTemplate("CodeSystem/CodeSystem");
-            if (codeSystemMapping?.Root?.NodeList?.First() != null)
+            var context = base.CreateContext(templateProvider, hl7v2Data);
+            var codeMapping = templateProvider.GetTemplate("CodeSystem/CodeSystem");
+            if (codeMapping?.Root?.NodeList?.First() != null)
             {
-                context["CodeSystemMapping"] = codeSystemMapping.Root.NodeList.First();
+                context["CodeMapping"] = codeMapping.Root.NodeList.First();
             }
-
-            // Load filters
-            context.AddFilters(typeof(Filters));
 
             return context;
-        }
-
-        private string RenderTemplates(Template template, Context context)
-        {
-            try
-            {
-                template.MakeThreadSafe();
-                return template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture));
-            }
-            catch (TimeoutException ex)
-            {
-                throw new RenderException(FhirConverterErrorCode.TimeoutError, Resources.TimeoutError, ex);
-            }
-            catch (RenderException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-                throw new RenderException(FhirConverterErrorCode.TemplateRenderingError, string.Format(Resources.TemplateRenderingError, ex.Message), ex);
-            }
         }
     }
 }

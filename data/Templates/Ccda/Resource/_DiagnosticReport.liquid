@@ -1,0 +1,34 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "DiagnosticReport",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = diagnosticReport.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "status":"{{ diagnosticReport.statusCode.code | get_property: 'ValueSet/DiagnosticReportStatus' }}",
+        "code":
+        {
+            {% if diagReport.code.translation -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: diagnosticReport.code.translation -%}
+            {% endif -%}
+            {% if diagReport.code.translation == null -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: diagnosticReport.code -%}
+            {% endif -%}
+        },
+        "effectivePeriod":
+        {
+            "start":"{{ diagnosticReport.effectiveTime.low.value | format_as_date_time }}",
+            "end":"{{ diagnosticReport.effectiveTime.high.value | format_as_date_time }}",
+        },
+        "effectiveDateTime":"{{ diagnosticReport.effectiveTime.value | format_as_date_time }}",
+    },
+    "request":{
+        "method":"PUT",
+        "url":"DiagnosticReport/{{ ID }}",
+    },
+},

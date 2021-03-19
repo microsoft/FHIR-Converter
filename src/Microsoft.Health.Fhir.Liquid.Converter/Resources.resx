@@ -126,8 +126,8 @@
   <data name="InputParsingError" xml:space="preserve">
     <value>The input data could not be parsed correctly: {0}</value>
   </data>
-  <data name="InvalidCodeSystemMapping" xml:space="preserve">
-    <value>The code system mapping file is invalid.</value>
+  <data name="InvalidCodeMapping" xml:space="preserve">
+    <value>The code mapping file is invalid.</value>
   </data>
   <data name="InvalidDateTimeFormat" xml:space="preserve">
     <value>The format of Date or DateTime is invalid: {0}.</value>
@@ -188,5 +188,11 @@
   </data>
   <data name="TraceInfoError" xml:space="preserve">
     <value>Error happened when processing TraceInfo: {0}</value>
+  </data>
+  <data name="UnexpectedJsonConvertEnd" xml:space="preserve">
+    <value>Unexpected end when reading IDictionary&lt;string, object&gt;.</value>
+  </data>
+  <data name="UnexpectedJsonConvertToken" xml:space="preserve">
+    <value>Unexpected token when converting IDictionary&lt;string, object&gt;.</value>
   </data>
 </root>

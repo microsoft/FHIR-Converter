@@ -1,0 +1,23 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Coverage",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = payerEntry.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "status":"{{ payerEntry.statusCode.code | get_property: 'ValueSet/FMStatus' }}",
+        "relationship":
+        {
+            {% include 'DataType/CodeableConcept' CodeableConcept: payerEntry.code -%}
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Coverage/{{ ID }}",
+    },
+},

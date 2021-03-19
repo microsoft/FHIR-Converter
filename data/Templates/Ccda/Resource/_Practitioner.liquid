@@ -1,0 +1,55 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Practitioner",
+        "id":"{{ ID }}",
+        "meta":
+        {
+            "profile":
+            [
+                "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner",
+            ],
+        },
+        "identifier":
+        [
+            {% assign ids = practitioner.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "name":
+        [
+            {% assign names = practitioner.assignedPerson.name | to_array -%}
+            {% for name in names -%}
+            { {% include 'DataType/HumanName' HumanName: name -%} },
+            {% endfor -%}
+        ],
+        "address":
+        [
+            {% assign addrs = practitioner.addr | to_array -%}
+            {% for addr in addrs -%}
+            { {% include 'DataType/Address' Address: addr -%} },
+            {% endfor -%}
+        ],
+        "telecom":
+        [
+            {% assign telecoms = practitioner.telecom | to_array -%}
+            {% for telecom in telecoms -%}
+            { {% include 'DataType/ContactPoint' ContactPoint: telecom -%} },
+            {% endfor -%}
+        ],
+        "qualification":
+        [
+            {% assign codes = practitioner.code | to_array -%}
+            {% for code in codes -%}
+            {
+                "code": { {% include 'DataType/CodeableConcept' CodeableConcept: code -%} },
+            },
+            {% endfor -%}
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Practitioner/{{ ID }}",
+    },
+},

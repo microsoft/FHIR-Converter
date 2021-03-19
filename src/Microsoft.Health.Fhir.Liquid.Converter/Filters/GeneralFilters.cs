@@ -9,7 +9,6 @@ using System.Security.Cryptography;
 using System.Text;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Newtonsoft.Json.Linq;
 
@@ -20,14 +19,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     /// </summary>
     public partial class Filters
     {
-        public static string GetProperty(Context context, string originalCode, string mapping, string property)
+        public static string GetProperty(Context context, string originalCode, string mapping, string property = "code")
         {
             if (string.IsNullOrEmpty(originalCode) || string.IsNullOrEmpty(mapping) || string.IsNullOrEmpty(property))
             {
                 return null;
             }
 
-            var map = (context["CodeSystemMapping"] as CodeSystemMapping)?.Mapping?.GetValueOrDefault(mapping, null);
+            var map = (context["CodeMapping"] as CodeMapping)?.Mapping?.GetValueOrDefault(mapping, null);
             var codeMapping = map?.GetValueOrDefault(originalCode, null) ?? map?.GetValueOrDefault("__default__", null);
             return codeMapping?.GetValueOrDefault(property, null)
                 ?? ((property.Equals("code") || property.Equals("display")) ? originalCode : null);

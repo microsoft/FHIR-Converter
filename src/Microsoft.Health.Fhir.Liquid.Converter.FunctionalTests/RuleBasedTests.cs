@@ -60,14 +60,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
-        public static IEnumerable<object[]> GetCCDACases()
+        public static IEnumerable<object[]> GetCcdaCases()
         {
             return new List<object[]>();
         }
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCCDACases))]
+        [MemberData(nameof(GetCcdaCases))]
         public async Task CheckOnePatient(string templateName, string samplePath)
         {
             var result = await ConvertData(templateName, samplePath);
@@ -77,7 +77,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCCDACases))]
+        [MemberData(nameof(GetCcdaCases))]
         public async Task CheckNonemptyResource(string templateName, string samplePath)
         {
             var result = await ConvertData(templateName, samplePath);
@@ -92,7 +92,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCCDACases))]
+        [MemberData(nameof(GetCcdaCases))]
         public async Task CheckNonidenticalResources(string templateName, string samplePath)
         {
             var result = await ConvertData(templateName, samplePath);
@@ -103,7 +103,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCCDACases))]
+        [MemberData(nameof(GetCcdaCases))]
         public async Task CheckValuesRevealInOrigin(string templateName, string samplePath)
         {
             var sampleContent = await File.ReadAllTextAsync(samplePath, Encoding.UTF8);
@@ -113,7 +113,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCCDACases))]
+        [MemberData(nameof(GetCcdaCases))]
         public async Task CheckPassOfficialValidator(string templateName, string samplePath)
         {
             (bool javaStatus, string javaMessage) = await ExecuteCommand("-version");
@@ -170,7 +170,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCCDACases))]
+        [MemberData(nameof(GetCcdaCases))]
         public async Task CheckPassFhirParser(string templateName, string samplePath)
         {
             var result = await ConvertData(templateName, samplePath);

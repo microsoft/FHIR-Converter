@@ -88,11 +88,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The code system mapping file is invalid..
+        ///   Looks up a localized string similar to The code mapping file is invalid..
         /// </summary>
-        internal static string InvalidCodeSystemMapping {
+        internal static string InvalidCodeMapping {
             get {
-                return ResourceManager.GetString("InvalidCodeSystemMapping", resourceCulture);
+                return ResourceManager.GetString("InvalidCodeMapping", resourceCulture);
             }
         }
         
@@ -273,6 +273,24 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         internal static string TraceInfoError {
             get {
                 return ResourceManager.GetString("TraceInfoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected end when reading IDictionary&lt;string, object&gt;..
+        /// </summary>
+        internal static string UnexpectedJsonConvertEnd {
+            get {
+                return ResourceManager.GetString("UnexpectedJsonConvertEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected token when converting IDictionary&lt;string, object&gt;..
+        /// </summary>
+        internal static string UnexpectedJsonConvertToken {
+            get {
+                return ResourceManager.GetString("UnexpectedJsonConvertToken", resourceCulture);
             }
         }
     }

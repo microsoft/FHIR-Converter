@@ -26,13 +26,9 @@
         <dependency id="System.Runtime.Caching" version="4.7.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
-    <contentFiles>
-      <files include="any/netcoreapp3.1/Hl7v2DefaultTemplates.tar.gz" buildAction="EmbeddedResource"/>
-    </contentFiles>
   </metadata>
   <files>
     <file src="bin\Release\netcoreapp3.1\Microsoft.Health.Fhir.Liquid.Converter.dll" target="lib\netcoreapp3.1" />
     <file src="bin\Release\netcoreapp3.1\Microsoft.Health.Fhir.TemplateManagement.dll" target="lib\netcoreapp3.1" />
-    <file src="..\..\data\Templates\Hl7v2DefaultTemplates.tar.gz" target="contentFiles\any\netcoreapp3.1" />
   </files>
 </package>
