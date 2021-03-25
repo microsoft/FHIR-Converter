@@ -38,6 +38,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
         TimeoutError = 1306,
         InvalidDateTimeFormat = 1307,
         InvalidIdGenerationInput = 1308,
+        InvalidTimeZoneHandling = 1309,
 
         // PostprocessException
         JsonParsingError = 1401,

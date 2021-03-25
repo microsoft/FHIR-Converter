@@ -45,7 +45,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.OutputProcessor
             ParseTreeWalker.Default.Walk(listener, tree);
             var result = listener.GetResult().ToString();
 
-            return JObject.Parse(result);
+            return JsonConvert.DeserializeObject<JObject>(result, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
         }
 
         public static JObject MergeJson(JObject obj)

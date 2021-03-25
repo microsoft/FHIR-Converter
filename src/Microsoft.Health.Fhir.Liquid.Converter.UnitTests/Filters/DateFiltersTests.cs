@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
@@ -24,13 +25,32 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         public static IEnumerable<object[]> GetValidDataForFormatAsDateTime()
         {
-            yield return new object[] { null, null };
-            yield return new object[] { string.Empty, string.Empty };
-            yield return new object[] { @"2001", @"2001" };
-            yield return new object[] { @"200101", @"2001-01" };
-            yield return new object[] { @"20050110045253", @"2005-01-10T04:52:53Z" };
-            yield return new object[] { @"20110103143428-0800", @"2011-01-03T14:34:28-08:00" };
-            yield return new object[] { @"19701231115959+0600", @"1970-12-31T11:59:59+06:00" };
+            // TimeZoneHandling does not affect dateTime without time
+            yield return new object[] { null, "preserve", null };
+            yield return new object[] { null, "utc", null };
+            yield return new object[] { null, "local", null };
+            yield return new object[] { string.Empty, "preserve", string.Empty };
+            yield return new object[] { string.Empty, "utc", string.Empty };
+            yield return new object[] { string.Empty, "local", string.Empty };
+            yield return new object[] { @"2001", "preserve", @"2001" };
+            yield return new object[] { @"2001", "utc", @"2001" };
+            yield return new object[] { @"2001", "local", @"2001" };
+            yield return new object[] { @"200101", "preserve", @"2001-01" };
+            yield return new object[] { @"200101", "utc", @"2001-01" };
+            yield return new object[] { @"200101", "local", @"2001-01" };
+
+            // If no time zone provided, it is treated as local
+            yield return new object[] { @"20050110045253", "preserve", @"2005-01-10T04:52:53" };
+            yield return new object[] { @"20050110045253", "utc", @"2005-01-09T20:52:53Z" };
+            yield return new object[] { @"20050110045253", "local", @"2005-01-10T04:52:53" };
+
+            // If time zone provided, it should be formatted according to TimeZoneHandling
+            yield return new object[] { @"20110103143428-0800", "preserve", @"2011-01-03T14:34:28-08:00" };
+            yield return new object[] { @"20110103143428-0800", "utc", @"2011-01-03T22:34:28Z" };
+            yield return new object[] { @"20110103143428-0800", "local", @"2011-01-04T06:34:28+08:00" };
+            yield return new object[] { @"19701231115959+0600", "preserve", @"1970-12-31T11:59:59+06:00" };
+            yield return new object[] { @"19701231115959+0600", "utc", @"1970-12-31T05:59:59Z" };
+            yield return new object[] { @"19701231115959+0600", "local", @"1970-12-31T13:59:59+08:00" };
         }
 
         public static IEnumerable<object[]> GetInvalidDataForAddHyphensDate()
@@ -61,9 +81,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { @"20200101101080" };
         }
 
+        public static IEnumerable<object[]> GetInvalidTimeZoneHandling()
+        {
+            yield return new object[] { @"20050110045253", null };
+            yield return new object[] { @"20110103143428-0800", string.Empty };
+            yield return new object[] { @"19701231115959+0600", "abc" };
+        }
+
         [Theory]
         [MemberData(nameof(GetValidDataForAddHyphensDate))]
-        public void GivenAnHl7v2Date_WhenAddHyphensDate_ConvertedDateShouldBeReturned(string input, string expected)
+        public void GivenADate_WhenAddHyphensDate_ConvertedDateShouldBeReturned(string input, string expected)
         {
             var result = Filters.AddHyphensDate(input);
             Assert.Equal(expected, result);
@@ -71,24 +98,34 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         [Theory]
         [MemberData(nameof(GetValidDataForFormatAsDateTime))]
-        public void GivenAnHl7v2DateTime_WhenFormatAsDateTime_ConvertedDateShouldBeReturned(string input, string expected)
+        public void GivenADateTime_WhenFormatAsDateTime_ConvertedDateShouldBeReturned(string input, string timeZoneHandling, string expected)
         {
-            var result = Filters.FormatAsDateTime(input);
+            var result = Filters.FormatAsDateTime(input, timeZoneHandling);
             Assert.Equal(expected, result);
         }
 
         [Theory]
         [MemberData(nameof(GetInvalidDataForAddHyphensDate))]
-        public void GivenAnInvalidHl7v2DateTime_WhenAddHyphensDate_ExceptionShouldBeThrown(string input)
+        public void GivenAnInvalidDateTime_WhenAddHyphensDate_ExceptionShouldBeThrown(string input)
         {
-            Assert.Throws<RenderException>(() => Filters.AddHyphensDate(input));
+            var exception = Assert.Throws<RenderException>(() => Filters.AddHyphensDate(input));
+            Assert.Equal(FhirConverterErrorCode.InvalidDateTimeFormat, exception.FhirConverterErrorCode);
         }
 
         [Theory]
         [MemberData(nameof(GetInvalidDataForFormatAsDateTime))]
-        public void GivenAnInvalidHl7v2DateTime_WhenFormatAsDateTime_ExceptionShouldBeThrown(string input)
+        public void GivenAnInvalidDateTime_WhenFormatAsDateTime_ExceptionShouldBeThrown(string input)
         {
-            Assert.Throws<RenderException>(() => Filters.FormatAsDateTime(input));
+            var exception = Assert.Throws<RenderException>(() => Filters.FormatAsDateTime(input));
+            Assert.Equal(FhirConverterErrorCode.InvalidDateTimeFormat, exception.FhirConverterErrorCode);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInvalidTimeZoneHandling))]
+        public void GivenAnInvalidTimeZoneHandling_WhenFormatAsDateTime_ExceptionShouldBeThrown(string input, string timeZoneHandling)
+        {
+            var exception = Assert.Throws<RenderException>(() => Filters.FormatAsDateTime(input, timeZoneHandling));
+            Assert.Equal(FhirConverterErrorCode.InvalidTimeZoneHandling, exception.FhirConverterErrorCode);
         }
 
         [Fact]
