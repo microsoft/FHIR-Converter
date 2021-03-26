@@ -73,6 +73,7 @@ module.exports = function (app) {
     // Adding auth middleware after static routes and API documentation
     app.use(authApiKey.validateApiKey);
 
+
     // Enable git endpoint, we are only allowing a single repo on the "root"
     // Note: This is added after the API key middleware, so a key will be required
     //       git config --local http.http://localhost:2019/git.extraheader "X-MS-CONVERSION-API-KEY: 123"
@@ -192,9 +193,10 @@ module.exports = function (app) {
                 res.json(errorMessage(errorCodes.NotFound, "Sample data not found"));
             });
     });
+    
 
     /**
-     * @swagger
+     * swagger // Disabled by removing @
      * /api/templates/git/status:
      *   get:
      *     description: Lists uncommitted changes
@@ -216,15 +218,16 @@ module.exports = function (app) {
      *         description: Current list of changes
      *       401:
      *         description: Unauthorized
-     */
+     *
     app.get('/api/templates/git/status', function (req, res) {
         gfs.getStatus().then(function (status) {
             res.json(status);
         });
     });
+    */
 
     /**
-     * @swagger
+     * swagger // Disabled by removing @
      * /api/templates/git/branches:
      *   get:
      *     description: Lists of branches
@@ -246,15 +249,16 @@ module.exports = function (app) {
      *         description: List of branches
      *       401:
      *         description: Unauthorized
-     */
+     *
     app.get('/api/templates/git/branches', function (req, res) {
         gfs.getBranches().then(function (branches) {
             res.json(branches);
         });
     });
+    */
 
     /**
-     * @swagger
+     * swagger // Disabled by removing @
      * /api/templates/git/branches:
      *   post:
      *     description: Create new branch (from head)
@@ -294,7 +298,7 @@ module.exports = function (app) {
      *         description: Unauthorized
      *       409:
      *         description: Conflict (unable to create branch)
-     */
+     *
     app.post('/api/templates/git/branches', function (req, res) {
         if (!req.body.name) {
             res.status(400);
@@ -311,9 +315,10 @@ module.exports = function (app) {
                 });
         }
     });
+    */
 
     /**
-     * @swagger
+     * swagger // Disabled by removing @
      * /api/templates/git/checkout:
      *   post:
      *     description: Checkout branch
@@ -350,7 +355,7 @@ module.exports = function (app) {
      *         description: Unauthorized
      *       404:
      *         description: Branch not found
-     */
+     *
     app.post('/api/templates/git/checkout', function (req, res) {
         if (!req.body.name) {
             res.status(400);
@@ -377,9 +382,10 @@ module.exports = function (app) {
             });
         }
     });
+    */
 
     /**
-     * @swagger
+     * swagger // Disabled by removing @
      * /api/templates/git/commit:
      *   post:
      *     description: Commit ALL changes
@@ -418,7 +424,7 @@ module.exports = function (app) {
      *         description: Unauthorized
      *       409:
      *         description: Conflict (no changes to commit)
-     */
+     *
     app.post('/api/templates/git/commit', function (req, res) {
         gfs.getStatus().then(function (status) {
             if (status.length > 0) {
@@ -436,6 +442,7 @@ module.exports = function (app) {
             }
         });
     });
+    */
 
     /**
      * @swagger
@@ -636,31 +643,50 @@ module.exports = function (app) {
      *         description: Forbidden
      */
     app.post('/api/UpdateBaseTemplates', function (req, res) {
-        let tempFolderName = path.join(constants.TEMPLATE_FILES_LOCATION, `.temp${new Date().getTime()}`);
-        fse.ensureDirSync(tempFolderName);
+        var git_url = process.env.TEMPLATE_GIT_URL || ""
+        var template_path = process.env.TEMPLATE_GIT_PATH || ""
 
-        // Rename (instead of delete) to avoid timeout.
-        var existingFiles = fs.readdirSync(constants.TEMPLATE_FILES_LOCATION);
-        existingFiles.forEach(function (fl) {
-            if (!fl.startsWith('.')) {
-                fse.renameSync(path.join(constants.TEMPLATE_FILES_LOCATION, fl), path.join(tempFolderName, fl));
-            }
-        });
+        if (git_url != "") {
+            console.log("Let's go!")
+            gfs.getTemplatesFromRepo(git_url, template_path)
+                .then(function () {
+                    templateCache.clear();
+                    workerPool.broadcast({ 'type': 'templatesUpdated' });
+                    res.status(201)
+                    res.end();
+                })
+                .catch(function (err) {
+                    res.status(500)
+                    res.json(errorMessage("updateError", err.message));
+                })
+        }
+        else {
+            let tempFolderName = path.join(constants.TEMPLATE_FILES_LOCATION, `.temp${new Date().getTime()}`);
+            fse.ensureDirSync(tempFolderName);
 
-        // Using ncp since fs/fs-extra failed randomly with ENOENT for src files.
-        ncp.limit = 16;
-        ncp(constants.BASE_TEMPLATE_FILES_LOCATION, constants.TEMPLATE_FILES_LOCATION, function (err) {
-            if (err) {
-                res.status(403);
-                res.json(errorMessage(errorCodes.WriteError, err.message));
-            }
-            else {
-                templateCache.clear();
-                workerPool.broadcast({ 'type': 'templatesUpdated' });
-                res.status(200);
-                res.end();
-            }
-        });
+            // Rename (instead of delete) to avoid timeout.
+            var existingFiles = fs.readdirSync(constants.TEMPLATE_FILES_LOCATION);
+            existingFiles.forEach(function (fl) {
+                if (!fl.startsWith('.')) {
+                    fse.renameSync(path.join(constants.TEMPLATE_FILES_LOCATION, fl), path.join(tempFolderName, fl));
+                }
+            });
+
+            // Using ncp since fs/fs-extra failed randomly with ENOENT for src files.
+            ncp.limit = 16;
+            ncp(constants.BASE_TEMPLATE_FILES_LOCATION, constants.TEMPLATE_FILES_LOCATION, function (err) {
+                if (err) {
+                    res.status(403);
+                    res.json(errorMessage(errorCodes.WriteError, err.message));
+                }
+                else {
+                    templateCache.clear();
+                    workerPool.broadcast({ 'type': 'templatesUpdated' });
+                    res.status(200);
+                    res.end();
+                }
+            });
+        }
     });
 
     /**

@@ -3,7 +3,7 @@
 #########################################
 FROM node:10 AS build
 ARG version=v2.1.0
-RUN git clone --depth=1 --branch ${version} https://github.com/microsoft/FHIR-Converter.git /app
+copy . /app
 WORKDIR /app
 RUN npm install --only=production --no-fund --no-optional --no-audit
 

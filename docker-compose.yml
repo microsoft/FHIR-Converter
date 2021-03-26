@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  fhir-converter:
+    build: .
+    ports:
+      - "2019:2019"
+    volumes:
+      - .:/app
+      # Use node_modules inside the container
+      - /app/node_modules
+    environment: 
+      # Use values from .env
+      - CONVERSION_API_KEYS
+      - TEMPLATE_GIT_URL
+      - TEMPLATE_GIT_BRANCH
+      - TEMPLATE_GIT_PATH
