@@ -15,22 +15,22 @@ jobs:
     - name: Create ACR
       id: create-acr
       run: |
-        az acr create -n fhirconverterregistrytest2 -g appsvc_linux_centralus --location "Central US" --sku Standard --admin-enabled
+        az acr create -n myregistryfhirconverter -g appsvc_linux_centralus --location "Central US" --sku Standard --admin-enabled
         echo "::set-output name=acr_username::`az acr credential show -n myregistryfhirconverter --query username | xargs`"
         echo "::set-output name=acr_password::`az acr credential show -n myregistryfhirconverter --query passwords[0].value | xargs`"
         echo "::add-mask::`az acr credential show -n myregistryfhirconverter --query passwords[0].value | xargs`"
     
     - uses: azure/docker-login@v1
       with:
-        login-server: fhirconverterregistrytest2.azurecr.io
+        login-server: myregistryfhirconverter.azurecr.io
         username: ${{ steps.create-acr.outputs.acr_username }}
         password: ${{ steps.create-acr.outputs.acr_password }}
     
     - name: Build and push image to ACR
       id: build-image
       run: |
-        docker build "$GITHUB_WORKSPACE/" -f  "Dockerfile" -t fhirconverterregistrytest2.azurecr.io/fhirconverternew-img:${{ github.sha }}
-        docker push fhirconverterregistrytest2.azurecr.io/fhirconvertertest2-img:${{ github.sha }}
+        docker build "$GITHUB_WORKSPACE/" -f  "Dockerfile" -t myregistryfhirconverter.azurecr.io/fhirconvertertest2-img:${{ github.sha }}
+        docker push myregistryfhirconverter.azurecr.io/fhirconvertertest2-img:${{ github.sha }}
       
     - name: Set Web App ACR authentication
       uses: Azure/appservice-settings@v1
@@ -40,7 +40,7 @@ jobs:
           [
             {
               "name": "DOCKER_REGISTRY_SERVER_URL",
-              "value": "fhirconverterregistrytest2.azurecr.io",
+              "value": "myregistryfhirconverter.azurecr.io",
               "slotSetting": false
             },
             {
@@ -58,4 +58,4 @@ jobs:
     - uses: azure/webapps-deploy@v2
       with:
         app-name: fhirconverternew
-        images: fhirconverterregistrytest2.azurecr.io/fhirconverternew-img:${{ github.sha }}
+        images: myregistryfhirconverter.azurecr.io/fhirconvertertest2-img:${{ github.sha }}
