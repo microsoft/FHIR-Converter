@@ -34,7 +34,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return ConvertDate(input, groups);
         }
 
-        public static string FormatAsDateTime(string input)
+        public static string FormatAsDateTime(string input, string timeZoneHandling = "local")
         {
             if (string.IsNullOrEmpty(input))
             {
@@ -48,28 +48,33 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
 
             var groups = matches[0].Groups;
-            if (groups["time"].Success)
+            if (!groups["time"].Success)
             {
-                // Convert DateTime with time zone
-                string result = ConvertDateTime(input, groups);
-                if (groups["timeZone"].Success)
-                {
-                    int timeZoneHour = int.Parse(groups["timeZoneHour"].Value);
-                    int timeZoneMinute = int.Parse(groups["timeZoneMinute"].Value);
-                    result += groups["sign"].Value + new TimeSpan(timeZoneHour, timeZoneMinute, 0).ToString(@"hh\:mm");
-                }
-                else
-                {
-                    result += "Z";
-                }
-
-                return result;
-            }
-            else
-            {
-                // Convert Date
                 return ConvertDate(input, groups);
             }
+
+            // Convert DateTime with time zone
+            var result = ConvertDateTime(input, groups);
+            if (groups["timeZone"].Success)
+            {
+                var timeZoneHour = int.Parse(groups["timeZoneHour"].Value);
+                var timeZoneMinute = int.Parse(groups["timeZoneMinute"].Value);
+                result += groups["sign"].Value + new TimeSpan(timeZoneHour, timeZoneMinute, 0).ToString(@"hh\:mm");
+            }
+
+            if (!DateTime.TryParse(result, out var parsedResult))
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
+            }
+
+            var dateTimeFormat = parsedResult.Millisecond == 0 ? "yyyy-MM-ddTHH:mm:ss%K" : "yyyy-MM-ddTHH:mm:ss.fff%K";
+            return timeZoneHandling?.ToLower() switch
+            {
+                "preserve" => result,
+                "utc" => TimeZoneInfo.ConvertTimeToUtc(parsedResult).ToString(dateTimeFormat),
+                "local" => parsedResult.ToString(dateTimeFormat),
+                _ => throw new RenderException(FhirConverterErrorCode.InvalidTimeZoneHandling, Resources.InvalidTimeZoneHandling),
+            };
         }
 
         public static string Now(string input, string format = "yyyy-MM-ddTHH:mm:ss.FFFZ")

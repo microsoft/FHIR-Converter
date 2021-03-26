@@ -142,6 +142,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TimeZoneHandling only supports &apos;local&apos;, &apos;utc&apos; and &apos;preserve&apos;..
+        /// </summary>
+        internal static string InvalidTimeZoneHandling {
+            get {
+                return ResourceManager.GetString("InvalidTimeZoneHandling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error happened when merging JSON: {0}.
         /// </summary>
         internal static string JsonMergingError {
