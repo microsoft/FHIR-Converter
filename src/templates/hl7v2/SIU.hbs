@@ -1,0 +1,15 @@
+{
+    "resourceType": "Bundle",
+    "type": "transaction",
+    "entry": [
+        {{assert (hasSegments msg.v2 'PID' 'SCH') "One or more of PID, SCH, PV1 Segment missing"}}
+
+    
+        {{#with (getFirstSegments msg.v2 'PID' 'SCH' 'PV1' 'NTE' 'AIL' 'AIP')}}
+            
+            {{>Resources/Appointment.hbs PID=PID SCH=SCH PV1=PV1 NTE=NTE AIL=AIL}}
+
+        {{/with}}
+        }
+    ] 
+}

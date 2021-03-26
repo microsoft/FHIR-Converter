@@ -1,0 +1,26 @@
+{   
+    "resource": {
+        "identifier":{
+          {{>DataType/EIIdentifier.hbs EI=SCH-2}}
+        },
+        "reasonCode": "{{SCH-7}}"
+        "status": "{{toLower SCH-25}}",
+        "minutesDuration": {{SCH-9}},
+        "comment": "{{NTE-3}}"
+        {{>DataType/TQAppointment.hbs TQ=SCH-11}},
+        "created": "{{formatAsDateTime PV1-44}}",
+        "participant": [
+        {{>References/Patient/appointment.hbs PID=PID STATUS='accepted'}},
+        {{#if AIL}}
+            {{>References/Location/appointment.hbs AIL=AIL STATUS='accepted'}}
+        {{/if}},
+        {{#if AIP}}
+            {{>References/Practitioner/appointment.hbs AIP=AIP STATUS='accepted'}}
+        {{/if}}
+        ]
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Appointment/{{ID}}",
+    },
+}
