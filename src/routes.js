@@ -21,6 +21,10 @@ var fileSystemCache = require('./lib/fsCache/cache');
 var handlebarsHelpers = require('./lib/handlebars-converter/handlebars-helpers').external;
 var ncp = require('ncp').ncp;
 
+var gitUrl = process.env.TEMPLATE_GIT_URL || ""
+var templatePath = process.env.TEMPLATE_GIT_PATH || ""
+var gitBranch = process.env.TEMPLATE_GIT_BRANCH || ""
+
 module.exports = function (app) {
     const workerPool = new WorkerPool('./src/lib/workers/worker.js', require('os').cpus().length);
     let templateCache = new fileSystemCache(constants.TEMPLATE_FILES_LOCATION);
@@ -196,7 +200,7 @@ module.exports = function (app) {
     
 
     /**
-     * swagger // Disabled by removing @
+     * @swagger
      * /api/templates/git/status:
      *   get:
      *     description: Lists uncommitted changes
@@ -218,16 +222,21 @@ module.exports = function (app) {
      *         description: Current list of changes
      *       401:
      *         description: Unauthorized
-     *
+     */
     app.get('/api/templates/git/status', function (req, res) {
+        if (gitUrl != "") {
+            res.status(200);
+            res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
+            return
+        }
         gfs.getStatus().then(function (status) {
             res.json(status);
         });
     });
-    */
+    
 
     /**
-     * swagger // Disabled by removing @
+     * @swagger
      * /api/templates/git/branches:
      *   get:
      *     description: Lists of branches
@@ -249,16 +258,20 @@ module.exports = function (app) {
      *         description: List of branches
      *       401:
      *         description: Unauthorized
-     *
+     */
     app.get('/api/templates/git/branches', function (req, res) {
+        if (gitUrl != "") {
+            res.status(200);
+            res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
+            return
+        }
         gfs.getBranches().then(function (branches) {
             res.json(branches);
         });
     });
-    */
 
     /**
-     * swagger // Disabled by removing @
+     * @swagger
      * /api/templates/git/branches:
      *   post:
      *     description: Create new branch (from head)
@@ -298,8 +311,13 @@ module.exports = function (app) {
      *         description: Unauthorized
      *       409:
      *         description: Conflict (unable to create branch)
-     *
+     */
     app.post('/api/templates/git/branches', function (req, res) {
+        if (gitUrl != "") {
+            res.status(200);
+            res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
+            return
+        }
         if (!req.body.name) {
             res.status(400);
             res.json(errorMessage(errorCodes.BadRequest, 'Branch name required'));
@@ -315,10 +333,9 @@ module.exports = function (app) {
                 });
         }
     });
-    */
 
     /**
-     * swagger // Disabled by removing @
+     * @swagger
      * /api/templates/git/checkout:
      *   post:
      *     description: Checkout branch
@@ -355,8 +372,13 @@ module.exports = function (app) {
      *         description: Unauthorized
      *       404:
      *         description: Branch not found
-     *
+     */
     app.post('/api/templates/git/checkout', function (req, res) {
+        if (gitUrl != "") {
+            res.status(200);
+            res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
+            return
+        }
         if (!req.body.name) {
             res.status(400);
             res.json(errorMessage(errorCodes.BadRequest, 'Branch name required'));
@@ -382,10 +404,9 @@ module.exports = function (app) {
             });
         }
     });
-    */
 
     /**
-     * swagger // Disabled by removing @
+     * @swagger
      * /api/templates/git/commit:
      *   post:
      *     description: Commit ALL changes
@@ -424,8 +445,13 @@ module.exports = function (app) {
      *         description: Unauthorized
      *       409:
      *         description: Conflict (no changes to commit)
-     *
+     */
     app.post('/api/templates/git/commit', function (req, res) {
+        if (gitUrl != "") {
+            res.status(200);
+            res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
+            return
+        }
         gfs.getStatus().then(function (status) {
             if (status.length > 0) {
                 gfs.commitAllChanges(req.body.message, req.body.name, req.body.email)
@@ -442,7 +468,6 @@ module.exports = function (app) {
             }
         });
     });
-    */
 
     /**
      * @swagger
@@ -643,12 +668,10 @@ module.exports = function (app) {
      *         description: Forbidden
      */
     app.post('/api/UpdateBaseTemplates', function (req, res) {
-        var git_url = process.env.TEMPLATE_GIT_URL || ""
-        var template_path = process.env.TEMPLATE_GIT_PATH || ""
 
-        if (git_url != "") {
+        if (gitUrl != "") {
             console.log("Let's go!")
-            gfs.getTemplatesFromRepo(git_url, template_path)
+            gfs.getTemplatesFromRepo(gitUrl, gitBranch, templatePath)
                 .then(function () {
                     templateCache.clear();
                     workerPool.broadcast({ 'type': 'templatesUpdated' });

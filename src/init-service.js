@@ -8,13 +8,15 @@ var fse = require('fs-extra');
 var gfs = require('./lib/git-filesystem/git-filesystem')(constants.TEMPLATE_FILES_LOCATION);
 var path = require('path');
 
-var git_url = process.env.TEMPLATE_GIT_URL || ""
-var template_path = process.env.TEMPLATE_GIT_PATH || ""
-var git_branch = process.env.TEMPLATE_GIT_BRANCH || ""
+var gitUrl = process.env.TEMPLATE_GIT_URL || ""
+var gitTemplatePath = process.env.TEMPLATE_GIT_PATH || ""
+var gitBranch = process.env.TEMPLATE_GIT_BRANCH || ""
 
-if (git_url != "") {
-    gfs.getTemplatesFromRepo(git_url, git_branch, template_path)
-        .then("Cloned repo " + git_url + " branch " + git_branch + " path " + template_path)
+if (gitUrl != "") {
+    gfs.getTemplatesFromRepo(gitUrl, gitBranch, gitTemplatePath)
+        .then(function () {
+            console.log("Cloned repo " + gitUrl + " branch " + gitBranch + " path " + gitTemplatePath)
+        })
         .catch(function (err) {
             throw new Error('Unable to clone repo: ' + err);
         })

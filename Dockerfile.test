@@ -1,0 +1,12 @@
+#########################################
+### Base Image                         ##
+#########################################
+FROM node:10
+ARG version=v2.1.0
+RUN apt-get update && apt install libcurl4-gnutls-dev default-jdk -y && apt autoremove -y
+
+COPY . /app
+WORKDIR /app
+
+RUN npm install && npm run build --if-present
+CMD npm test

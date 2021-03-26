@@ -1,0 +1,35 @@
+{
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "resource": {
+        "identifier": {
+          "value": "26991"
+        },
+        "reasonCode": "87086",
+        "status": "cancelled",
+        "minutesDuration": 32,
+        "start": "2020-02-13T02:45:00.000Z",
+        "end": "2020-02-13T03:17:00.000Z",
+        "created": "2020-01-19T21:12:00.000Z",
+        "participant": [
+          {
+            "status": "accepted",
+            "actor": {
+              "type": "Patient",
+              "identifier": {
+                "value": "20-10004"
+              },
+              "display": "ERIC EXAMPLE"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Appointment/"
+      }
+    }
+  ]
+}

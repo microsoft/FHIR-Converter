@@ -48,20 +48,20 @@ var setRepoPath = function (repositoryPath) {
     repoInstance = undefined;
 };
 
-var getTemplatesFromRepo = function (git_url, git_branch, template_path) {
+var getTemplatesFromRepo = function (gitUrl, gitBranch, templatePath) {
     var cloneOptions = new NodeGit.CloneOptions()
-    cloneOptions.checkoutBranch = git_branch
+    cloneOptions.checkoutBranch = gitBranch
     return new Promise(function(fulfill, reject) {
         fse.emptyDir(tempRepoPath)
             .then(function () {
-                return NodeGit.Clone(git_url, tempRepoPath, cloneOptions)
+                return NodeGit.Clone(gitUrl, tempRepoPath, cloneOptions)
             })
             .then(function () {
                 // Empty the templates folder
                 return fse.emptyDir(repoPath)
             })
             .then(function () {
-                return fse.copy(path.join(tempRepoPath, template_path), repoPath)
+                return fse.copy(path.join(tempRepoPath, templatePath), repoPath)
             })
             .then(function () {
                 fulfill()

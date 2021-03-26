@@ -11,6 +11,8 @@ const patterns = [
     { template: 'VXU_V04.hbs', data: [ 'VXU.hl7', 'IZ_1_1.1_Admin_Child_Max_Message.hl7' ] },
     { template: 'ORU_R01.hbs', data: [ 'LAB-ORU-1.hl7', 'LAB-ORU-2.hl7', 'LRI_2.0-NG_CBC_Typ_Message.hl7', 'ORU-R01-RMGEAD.hl7' ] },
     { template: 'OML_O21.hbs', data: [ 'MDHHS-OML-O21-1.hl7', 'MDHHS-OML-O21-2.hl7' ] }
+    // The SIU template does not generate separate patient and other resources which are required by rules
+    // { template: 'SIU.hbs', data: [ 'SIU-S12.hl7', 'SIU-S13.hl7', 'SIU-S15.hl7' ] }
 ];
 
 module.exports = () => {
