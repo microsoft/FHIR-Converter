@@ -41,16 +41,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
             // If no time zone provided, it is treated as local
             yield return new object[] { @"20050110045253", "preserve", @"2005-01-10T04:52:53" };
-            yield return new object[] { @"20050110045253", "utc", @"2005-01-09T20:52:53Z" };
             yield return new object[] { @"20050110045253", "local", @"2005-01-10T04:52:53" };
 
             // If time zone provided, it should be formatted according to TimeZoneHandling
             yield return new object[] { @"20110103143428-0800", "preserve", @"2011-01-03T14:34:28-08:00" };
             yield return new object[] { @"20110103143428-0800", "utc", @"2011-01-03T22:34:28Z" };
-            yield return new object[] { @"20110103143428-0800", "local", @"2011-01-04T06:34:28+08:00" };
             yield return new object[] { @"19701231115959+0600", "preserve", @"1970-12-31T11:59:59+06:00" };
             yield return new object[] { @"19701231115959+0600", "utc", @"1970-12-31T05:59:59Z" };
-            yield return new object[] { @"19701231115959+0600", "local", @"1970-12-31T13:59:59+08:00" };
+
+            // Skip this test in pipeline, as the local time zone is different
+            // yield return new object[] { @"20050110045253", "utc", @"2005-01-09T20:52:53Z" };
+            // yield return new object[] { @"20110103143428-0800", "local", @"2011-01-04T06:34:28+08:00" };
+            // yield return new object[] { @"19701231115959+0600", "local", @"1970-12-31T13:59:59+08:00" };
         }
 
         public static IEnumerable<object[]> GetInvalidDataForAddHyphensDate()
