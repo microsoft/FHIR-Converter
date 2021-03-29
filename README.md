@@ -1,3 +1,24 @@
+# FHIR Converter fork
+
+In this version FHIR converter version the git functionalities/endpoints have been removed. Instead, at startup the service will clone the repository given as environment variable and take the templates from src/templates into use. The latest templates can be pulled from the repo via the /apu/UpdateBaseTemplates endpoint.
+
+## Setup
+
+Take development env variables into use by `cp .env.dev .env` and look that the env variables have desired values. If `TEMPLATE_GIT_URL` is left empty, then the local `src/templates` folder will be used rather than clone any repo. 
+
+Start it by `docker-compose up` and you should be able to access it from `localhost:2019`. 
+
+## Env variables
+
+* CONVERSION_API_KEYS API keys separated by ;
+* TEMPLATE_GIT_URL url to the repository with the conversion templates. If left empty, then local ´src/templates` is used.
+- TEMPLATE_GIT_BRANCH repo branch to be used
+- TEMPLATE_GIT_PATH path inside the repo to the templates folder
+
+
+⚠⚠⚠ **This repo is a fork, original readme below**⚠⚠⚠
+
+
 ⚠ **This document applies to the Handlebars engine. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/dotliquid) link for the documentation of Liquid engine.** <br></br>
 
 # FHIR® Converter (Handlebars engine)

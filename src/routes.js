@@ -21,6 +21,10 @@ var fileSystemCache = require('./lib/fsCache/cache');
 var handlebarsHelpers = require('./lib/handlebars-converter/handlebars-helpers').external;
 var ncp = require('ncp').ncp;
 
+var gitUrl = process.env.TEMPLATE_GIT_URL || ""
+var templatePath = process.env.TEMPLATE_GIT_PATH || ""
+var gitBranch = process.env.TEMPLATE_GIT_BRANCH || ""
+
 module.exports = function (app) {
     const workerPool = new WorkerPool('./src/lib/workers/worker.js', require('os').cpus().length);
     let templateCache = new fileSystemCache(constants.TEMPLATE_FILES_LOCATION);
@@ -72,6 +76,7 @@ module.exports = function (app) {
 
     // Adding auth middleware after static routes and API documentation
     app.use(authApiKey.validateApiKey);
+
 
     // Enable git endpoint, we are only allowing a single repo on the "root"
     // Note: This is added after the API key middleware, so a key will be required
@@ -192,6 +197,7 @@ module.exports = function (app) {
                 res.json(errorMessage(errorCodes.NotFound, "Sample data not found"));
             });
     });
+    
 
     /**
      * @swagger
@@ -218,10 +224,16 @@ module.exports = function (app) {
      *         description: Unauthorized
      */
     app.get('/api/templates/git/status', function (req, res) {
+        if (gitUrl != "") {
+            res.status(200);
+            res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
+            return
+        }
         gfs.getStatus().then(function (status) {
             res.json(status);
         });
     });
+    
 
     /**
      * @swagger
@@ -248,6 +260,11 @@ module.exports = function (app) {
      *         description: Unauthorized
      */
     app.get('/api/templates/git/branches', function (req, res) {
+        if (gitUrl != "") {
+            res.status(200);
+            res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
+            return
+        }
         gfs.getBranches().then(function (branches) {
             res.json(branches);
         });
@@ -296,6 +313,11 @@ module.exports = function (app) {
      *         description: Conflict (unable to create branch)
      */
     app.post('/api/templates/git/branches', function (req, res) {
+        if (gitUrl != "") {
+            res.status(200);
+            res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
+            return
+        }
         if (!req.body.name) {
             res.status(400);
             res.json(errorMessage(errorCodes.BadRequest, 'Branch name required'));
@@ -352,6 +374,11 @@ module.exports = function (app) {
      *         description: Branch not found
      */
     app.post('/api/templates/git/checkout', function (req, res) {
+        if (gitUrl != "") {
+            res.status(200);
+            res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
+            return
+        }
         if (!req.body.name) {
             res.status(400);
             res.json(errorMessage(errorCodes.BadRequest, 'Branch name required'));
@@ -420,6 +447,11 @@ module.exports = function (app) {
      *         description: Conflict (no changes to commit)
      */
     app.post('/api/templates/git/commit', function (req, res) {
+        if (gitUrl != "") {
+            res.status(200);
+            res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
+            return
+        }
         gfs.getStatus().then(function (status) {
             if (status.length > 0) {
                 gfs.commitAllChanges(req.body.message, req.body.name, req.body.email)
@@ -636,31 +668,48 @@ module.exports = function (app) {
      *         description: Forbidden
      */
     app.post('/api/UpdateBaseTemplates', function (req, res) {
-        let tempFolderName = path.join(constants.TEMPLATE_FILES_LOCATION, `.temp${new Date().getTime()}`);
-        fse.ensureDirSync(tempFolderName);
 
-        // Rename (instead of delete) to avoid timeout.
-        var existingFiles = fs.readdirSync(constants.TEMPLATE_FILES_LOCATION);
-        existingFiles.forEach(function (fl) {
-            if (!fl.startsWith('.')) {
-                fse.renameSync(path.join(constants.TEMPLATE_FILES_LOCATION, fl), path.join(tempFolderName, fl));
-            }
-        });
+        if (gitUrl != "") {
+            console.log("Let's go!")
+            gfs.getTemplatesFromRepo(gitUrl, gitBranch, templatePath)
+                .then(function () {
+                    templateCache.clear();
+                    workerPool.broadcast({ 'type': 'templatesUpdated' });
+                    res.status(201)
+                    res.end();
+                })
+                .catch(function (err) {
+                    res.status(500)
+                    res.json(errorMessage("updateError", err.message));
+                })
+        }
+        else {
+            let tempFolderName = path.join(constants.TEMPLATE_FILES_LOCATION, `.temp${new Date().getTime()}`);
+            fse.ensureDirSync(tempFolderName);
 
-        // Using ncp since fs/fs-extra failed randomly with ENOENT for src files.
-        ncp.limit = 16;
-        ncp(constants.BASE_TEMPLATE_FILES_LOCATION, constants.TEMPLATE_FILES_LOCATION, function (err) {
-            if (err) {
-                res.status(403);
-                res.json(errorMessage(errorCodes.WriteError, err.message));
-            }
-            else {
-                templateCache.clear();
-                workerPool.broadcast({ 'type': 'templatesUpdated' });
-                res.status(200);
-                res.end();
-            }
-        });
+            // Rename (instead of delete) to avoid timeout.
+            var existingFiles = fs.readdirSync(constants.TEMPLATE_FILES_LOCATION);
+            existingFiles.forEach(function (fl) {
+                if (!fl.startsWith('.')) {
+                    fse.renameSync(path.join(constants.TEMPLATE_FILES_LOCATION, fl), path.join(tempFolderName, fl));
+                }
+            });
+
+            // Using ncp since fs/fs-extra failed randomly with ENOENT for src files.
+            ncp.limit = 16;
+            ncp(constants.BASE_TEMPLATE_FILES_LOCATION, constants.TEMPLATE_FILES_LOCATION, function (err) {
+                if (err) {
+                    res.status(403);
+                    res.json(errorMessage(errorCodes.WriteError, err.message));
+                }
+                else {
+                    templateCache.clear();
+                    workerPool.broadcast({ 'type': 'templatesUpdated' });
+                    res.status(200);
+                    res.end();
+                }
+            });
+        }
     });
 
     /**

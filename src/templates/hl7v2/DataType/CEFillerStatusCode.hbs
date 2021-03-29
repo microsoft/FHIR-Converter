@@ -1,0 +1,13 @@
+{{#if (eq (toLower CE) ('deleted')}},
+    "status" : "cancelled",
+{{else if (eq (toLower CE) ('complete')}},
+    "status" : "fulfilled",
+{{else if (eq (toLower CE) ('dc')}},
+    "status" : "cancelled",
+{{else if (eq (toLower CE) ('started')}},
+    "status" : "fulfilled",
+{{else if (eq (toLower CE) ('complete')}},
+    "status" : "fulfilled",
+{{else}},
+    "status": "{{toLower CE-1}}"
+{{/if}},

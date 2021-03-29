@@ -28,7 +28,7 @@ describe('git-filesystem (initialization and status)', function () {
     const repoPath1 = path.join(repoRootPath, 'repo1');
     const repoPath2 = path.join(repoRootPath, 'repo2');
     const repoPath3 = path.join(repoRootPath, 'repo3');
-
+    
     before(function () {
         fse.ensureDirSync(repoPath2);
 
@@ -419,5 +419,47 @@ describe('git-filesystem (branches)', function () {
     after(function () {
         fse.removeSync(repoPath);
     });
+
+});
+
+describe('git-filesystem (clone repo from url)', function () {
+    const repoPath = path.join(repoRootPath, 'repo1');
+    
+    const gitUrl = "http://github.com/netMedi/FHIR-Converter"
+    const gitBranch = "handlebars"
+    const gitTemplatePath = "src/templates"
+
+    before(function () {
+        fse.ensureDirSync(repoPath);
+        fse.writeFileSync(path.join(repoPath, 'file.txt'), 'some text');
+        gfs.setRepoPath(repoPath);
+    });
+
+    it('should not fail when cloning a repository', function (done) {
+        gfs.getTemplatesFromRepo(gitUrl, gitBranch, gitTemplatePath)
+            .then(function () {
+                done()
+            })
+            .catch(function(err) {
+                done(new Error('Error while cloning repo' + err))
+            })
+    }).timeout(60000)
+
+
+    it('should fail when cloning a repository with invalid URL', function (done) {
+        const invalidGitUrl = "invalid"
+        gfs.getTemplatesFromRepo(invalidGitUrl, gitBranch, gitTemplatePath)
+            .then(function () {
+                done(new Error('Promise was not rejected with invalid git url'))
+            })
+            .catch(function() {
+                done()
+            })
+    }).timeout(10000)
+
+    after(function () {
+        this.timeout(5000)
+        fse.removeSync(repoPath);
+    })
 
 });

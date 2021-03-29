@@ -1,0 +1,13 @@
+{
+    "status": "{{STATUS}}",
+    "actor":{
+        "type": "Practitioner",
+        "display": "{{AIP-3-3}} {{AIP-3-2}}"
+    },
+    {{#if AIP-4}}
+    "extension": {
+        "system": "role",
+        "valueString": "{{AIP-4-2}}"
+    }
+    {{/if}}
+}

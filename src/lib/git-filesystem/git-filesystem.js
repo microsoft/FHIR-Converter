@@ -18,6 +18,7 @@ var repoPath;
 var reposRoot;
 var repoName;
 var repoInstance;
+var tempRepoPath = '/tmp/template_repo';
 
 module.exports = function (repositoryPath) {
     setRepoPath(repositoryPath);
@@ -32,7 +33,8 @@ module.exports = function (repositoryPath) {
         createBranch: createBranch,
         checkoutBranch: checkoutBranch,
         setRepoPath: setRepoPath,
-        commitAllChanges: commitAllChanges
+        commitAllChanges: commitAllChanges,
+        getTemplatesFromRepo: getTemplatesFromRepo
     };
 };
 
@@ -45,6 +47,31 @@ var setRepoPath = function (repositoryPath) {
     // Invalidate a cached reference
     repoInstance = undefined;
 };
+
+var getTemplatesFromRepo = function (gitUrl, gitBranch, templatePath) {
+    var cloneOptions = new NodeGit.CloneOptions()
+    cloneOptions.checkoutBranch = gitBranch
+    return new Promise(function(fulfill, reject) {
+        fse.emptyDir(tempRepoPath)
+            .then(function () {
+                return NodeGit.Clone(gitUrl, tempRepoPath, cloneOptions)
+            })
+            .then(function () {
+                // Empty the templates folder
+                return fse.emptyDir(repoPath)
+            })
+            .then(function () {
+                return fse.copy(path.join(tempRepoPath, templatePath), repoPath)
+            })
+            .then(function () {
+                fulfill()
+            })
+            .catch(function(err) {
+                reject(err)
+            })
+        })
+        
+}
 
 var getRepository = function () {
     return new Promise(function (fulfill, reject) {
