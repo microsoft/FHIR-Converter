@@ -4,10 +4,21 @@
   "entry": [
     {
       "resource": {
-        "identifier": {
-          "value": "26991"
-        },
-        "reasonCode": "87086",
+        "resourceType": "Appointment",
+        "identifier": [
+          {
+            "value": "26991"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "87086"
+              }
+            ]
+          }
+        ],
         "status": "cancelled",
         "minutesDuration": 32,
         "start": "2020-02-13T02:45:00.000Z",
