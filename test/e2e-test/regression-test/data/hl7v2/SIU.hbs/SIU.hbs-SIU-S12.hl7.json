@@ -1,54 +1,67 @@
 {
-    "resourceType": "Bundle",
-    "type": "transaction",
-    "entry": [
-      {
-        "resource": {
-          "identifier": {
+  "resourceType": "Bundle",
+  "type": "transaction",
+  "entry": [
+    {
+      "resource": {
+        "resourceType": "Appointment",
+        "identifier": [
+          {
             "value": "26998"
-          },
-          "reasonCode": "85041",
-          "status": "booked",
-          "minutesDuration": 30,
-          "comment": "Comment",
-          "start": "2020-02-13T04:45:00.000Z",
-          "end": "2020-02-13T05:15:00.000Z",
-          "created": "2020-01-19T21:12:00.000Z",
-          "participant": [
-            {
-              "status": "accepted",
-              "actor": {
-                "type": "Patient",
-                "identifier": {
-                  "value": "20-10004"
-                },
-                "display": "ERIC EXAMPLE"
+          }
+        ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "code": "85041"
               }
-            },
-            {
-              "status": "accepted",
-              "actor": {
-                "type": "Location",
-                "display": "Conference Room 1"
-              }
-            },
-            {
-              "status": "accepted",
-              "actor": {
-                "type": "Practitioner",
-                "display": "MARGARET HOULIHAN"
+            ]
+          }
+        ],
+        "status": "booked",
+        "minutesDuration": 30,
+        "comment": "Comment",
+        "start": "2020-02-13T04:45:00.000Z",
+        "end": "2020-02-13T05:15:00.000Z",
+        "created": "2020-01-19T21:12:00.000Z",
+        "participant": [
+          {
+            "status": "accepted",
+            "actor": {
+              "type": "Patient",
+              "identifier": {
+                "value": "20-10004"
               },
-              "extension": {
-                "system": "role",
+              "display": "ERIC EXAMPLE"
+            }
+          },
+          {
+            "status": "accepted",
+            "actor": {
+              "type": "Location",
+              "display": "Conference Room 1"
+            }
+          },
+          {
+            "status": "accepted",
+            "actor": {
+              "type": "Practitioner",
+              "display": "MARGARET HOULIHAN"
+            },
+            "extension": [
+              {
+                "url": "role",
                 "valueString": "Medical Onc"
               }
-            }
-          ]
-        },
-        "request": {
-          "method": "PUT",
-          "url": "Appointment/"
-        }
+            ]
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Appointment/"
       }
-    ]
-  }
+    }
+  ]
+}

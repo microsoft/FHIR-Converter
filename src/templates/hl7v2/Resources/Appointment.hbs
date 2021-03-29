@@ -1,9 +1,16 @@
 {   
     "resource": {
-        "identifier":{
-          {{>DataType/EIIdentifier.hbs EI=SCH-2}}
-        },
-        "reasonCode": "{{SCH-7}}"
+        "resourceType": "Appointment",
+        "identifier":[
+            { {{>DataType/EIIdentifier.hbs EI=SCH-2}} }
+        ],
+        "reasonCode": [
+            {
+                "coding": [{
+                    "code": "{{SCH-7}}"
+                }]
+            }
+            ]
         "status": "{{toLower SCH-25}}",
         "minutesDuration": {{SCH-9}},
         "comment": "{{NTE-3}}"
