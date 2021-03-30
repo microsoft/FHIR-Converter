@@ -1,9 +1,12 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
-  "timestamp": "2001-01-01T00:00:00Z",
+  "timestamp": "2001-01-01T00:00:00",
   "identifier": {
     "value": "Q123456789T123456789X123456"
+  },
+  "meta": {
+    "versionId": "3.5.1"
   },
   "entry": [
     {
@@ -287,7 +290,7 @@
             }
           }
         ],
-        "recorded": "2001-01-01T00:00:00Z"
+        "recorded": "2001-01-01T00:00:00"
       },
       "request": {
         "method": "PUT",
@@ -390,7 +393,7 @@
           }
         ],
         "period": {
-          "start": "2001-01-01T00:00:00Z"
+          "start": "2001-01-01T00:00:00"
         },
         "subject": {
           "reference": "Patient/5002eb07-c460-7112-6574-50303ae3b4a6"
