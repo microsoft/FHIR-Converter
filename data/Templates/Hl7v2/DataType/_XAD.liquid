@@ -1,3 +1,5 @@
+{% if XAD -%}
+
 "line":
 [
     "{{ XAD.1.1 }}",
@@ -27,3 +29,5 @@
     "end":"{{ XAD.12.2 | format_as_date_time }}",
     "end":"{{ XAD.14.Value | format_as_date_time }}",
 },
+
+{% endif -%}
