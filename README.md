@@ -12,7 +12,7 @@ The following table compares the two converter engines:
 | ----- | ----- | ----- |
 | **Template language** | [Handlebars](https://handlebarsjs.com/) | [Liquid](https://shopify.github.io/liquid/) |
 | **Template authoring tool** | Self-hosted web-app | [VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-health-fhir-converter)|
-| **Supported conversions** | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR | 1. HL7 v2 to FHIR <br> 2. *C-CDA to FHIR (to be released soon)*|
+| **Supported conversions** | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR | 1. HL7 v2 to FHIR <br> 2. C-CDA to FHIR |
 | **Available as** | 1. Self-deployed web service <br> (on-prem or on Azure)| 1. Command line tool <br> 2. $convert-data operation in  FHIR Server for Azure <br> 3. $convert-data operation in Azure API for FHIR.|
 
 
