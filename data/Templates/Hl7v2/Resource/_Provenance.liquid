@@ -1,8 +1,19 @@
+{% assign generationInstant = "{{ "" | now }}" -%}
+{% assign templateVersion = "3.5.1" -%}
+{% assign rootTemplate = Root_Template -%}
+{% capture templateUrl -%}https://github.com/microsoft/FHIR-Converter/releases/download/v{{ templateVersion }}/Hl7v2DefaultTemplates.tar.gz{% endcapture -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
         "resourceType": "Provenance",
         "id":"{{ ID }}",
+        {% if Root_Template -%}
+        "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on {{ generationInstant }} using Microsoft FHIR Converter.</span><span>Template Version: {{ templateVersion }}.</span><span>Template URL: {{ templateUrl }}.</span><span>Root template: {{ rootTemplate }}.</span></p><p>Disclaimer: Real world HL7 messages vary in richness and level of conformance with the spec. The output of converter depends on the templates as well as the quality and richness of input messages. Therefore, it is important that you review and validate the Converter output before using those in production.</p></div>"
+        },
+        {% endif -%}
         "agent":
         [
             {
