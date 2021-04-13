@@ -78,6 +78,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             JsonSerializer serializer = new JsonSerializer();
             var expectedObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(expectedContent)));
             var actualObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(actualContent)));
+
+            new List<string>
+            {
+                "$.entry[?(@.resource.resourceType=='Provenance')].resource.text.div",
+            }.ForEach(path =>
+            {
+                expectedObject.SelectToken(path).Parent.Remove();
+                actualObject.SelectToken(path).Parent.Remove();
+            });
+
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
             Assert.True(traceInfo.UnusedSegments.Count > 0);
         }
