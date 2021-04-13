@@ -92,6 +92,14 @@ stages:
         archiveType: 'tar'
         tarCompression: 'gz'
         archiveFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2DefaultTemplates.tar.gz'
+        
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Ccda'
+        includeRootFolder: false
+        archiveType: 'tar'
+        tarCompression: 'gz'
+        archiveFile: '$(Build.SourcesDirectory)/data/Templates/CcdaDefaultTemplates.tar.gz'
 
     - task: CopyFiles@2
       displayName: 'copy DefaultTemplates to artifacts'
@@ -213,6 +221,7 @@ stages:
         assets: |
           $(System.DefaultWorkingDirectory)/FhirConverterBuild/bin/**
           $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/Hl7v2DefaultTemplates.tar.gz
+          $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/CcdaDefaultTemplates.tar.gz
 
 
 
