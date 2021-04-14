@@ -106,9 +106,8 @@
                     {% include 'Resource/Device' OBX: obxSegment, ID: deviceId_OBX_18 -%}
 
                     {% evaluate observationId using 'ID/Observation' OBX: obxSegment, baseId: patientId -%}
-                    {% include 'Resource/Observation' OBX: obxSegment, Practitioner_ID_OBX_16: practitionerId_OBX_16, PractitionerRole_ID_OBX_25: practitionerRoleId_OBX_25, Organization_ID_OBX_23: organizationId_OBX_23, ID: observationId -%}
+                    {% include 'Resource/Observation' OBX: obxSegment, Observation_Subject_ID: fullPatientId, Practitioner_ID_OBX_16: practitionerId_OBX_16, PractitionerRole_ID_OBX_25: practitionerRoleId_OBX_25, Organization_ID_OBX_23: organizationId_OBX_23, ID: observationId -%}
                     {% include 'Reference/Observation/PartOf' ID: observationId, REF: fullImmunizationId -%}
-                    {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
                 {% endfor -%}
             {% endfor -%}
         {% endfor -%}
