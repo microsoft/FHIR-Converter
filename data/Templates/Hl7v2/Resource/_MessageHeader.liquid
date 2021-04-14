@@ -14,10 +14,7 @@
         [
             {
                 {% include 'DataType/HDMSH_5' HD: MSH.5 -%}
-                "endpoint":
-                [
-                    "{{ MSH.25.Value }}",
-                ],
+                "endpoint":"{{ MSH.25.Value }}",
                 "receiver":
                 {
                     {% if MSH.6 and Organization_ID_MSH_6 -%}
@@ -56,6 +53,21 @@
             {% if MSH.22 and Organization_ID_MSH_22 -%}
             "reference":"Organization/{{ Organization_ID_MSH_22 }}",
             {% endif -%}
+        },
+        "enterer":
+        {
+            "reference":"{{ MessageHeader_Enterer_ID }}",
+        },
+        "author":
+        {
+            "reference":"{{ MessageHeader_Author_ID }}",
+        },
+        "response":
+        {
+            "details":
+            {
+                "reference":"{{ MessageHeader_Response_Details_ID }}",
+            },
         },
     },
     "request":{
