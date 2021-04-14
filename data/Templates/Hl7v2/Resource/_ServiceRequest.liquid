@@ -152,6 +152,14 @@
                 {% endif -%}
             },
         ],
+        "subject":
+        {
+            "reference":"{{ ServiceRequest_Subject_ID }}",
+        },
+        "encounter":
+        {
+            "reference":"{{ ServiceRequest_Encounter_ID }}",
+        },
     },
     "request":{
         "method":"PUT",

@@ -88,8 +88,7 @@
 
             {% evaluate serviceRequestId using 'ID/ServiceRequest' ORC: orcSegment, baseId: patientId -%}
             {% assign fullServiceRequestId = serviceRequestId | prepend: 'ServiceRequest/' -%}
-            {% include 'Resource/ServiceRequest' ORC: orcSegment, Organization_ID_ORC_21: organizationId_ORC_21, ID: serviceRequestId -%}
-            {% include 'Reference/ServiceRequest/Subject' ID: serviceRequestId, REF: fullPatientId -%}
+            {% include 'Resource/ServiceRequest' ORC: orcSegment, ServiceRequest_Subject_ID: fullPatientId, Organization_ID_ORC_21: organizationId_ORC_21, ID: serviceRequestId -%}
 
             {% evaluate provenanceId using 'ID/Provenance' ORC: orcSegment, baseId: patientId -%}
             {% include 'Resource/Provenance' ORC: orcSegment, Organization_ID_ORC_17: organizationId_ORC_17, ID: provenanceId -%}
