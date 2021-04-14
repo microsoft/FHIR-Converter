@@ -83,6 +83,10 @@
             },
         ],
         {% include 'DataType/XCNRelatedPerson' XCN: PRT.5.Repeats[0] -%}
+        "patient":
+        {
+            "reference":"{{ RelatedPerson_Patient_ID }}",
+        },
     },
     "request":{
         "method":"PUT",
