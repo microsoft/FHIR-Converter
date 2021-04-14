@@ -50,6 +50,22 @@
                 {% endif -%}
             },
         ],
+        "subject":
+        {
+            "reference":"{{ Procedure_Subject_ID }}",
+        },
+        "encounter":
+        {
+            "reference":"{{ Procedure_Encounter_ID }}",
+        },
+        "recorder":
+        {
+            "reference":"{{ Procedure_Recorder_ID }}",
+        },
+        "asserter":
+        {
+            "reference":"{{ Procedure_Asserter_ID }}",
+        },
     },
     "request":{
         "method":"PUT",

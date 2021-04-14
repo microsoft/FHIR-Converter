@@ -65,8 +65,7 @@
             {% include 'Resource/Location' PL: pr1Segment.23, ID: locationId_PR1_23 -%}
             
             {% evaluate procedureId using 'ID/Procedure' PR1: pr1Segment, baseId: patientId -%}
-            {% include 'Resource/Procedure' PR1: pr1Segment, ID: procedureId -%}
-            {% include 'Reference/Procedure/Subject' ID: procedureId, REF: fullPatientId -%}
+            {% include 'Resource/Procedure' PR1: pr1Segment, Procedure_Subject_ID: fullPatientId, ID: procedureId -%}
         {% endfor -%}
 
         {% for nk1Segment in nk1SegmentLists.NK1 -%}
