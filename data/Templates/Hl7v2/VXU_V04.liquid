@@ -76,8 +76,7 @@
 
             {% evaluate immunizationId using 'ID/Immunization' ORC: orcSegment, baseId: patientId -%}
             {% assign fullImmunizationId = immunizationId | prepend: 'Immunization/' -%}
-            {% include 'Resource/Immunization' ORC: orcSegment, Practitioner_ID_ORC_12: practitionerId_ORC_12, ID: immunizationId -%}
-            {% include 'Reference/Immunization/Patient' ID: immunizationId, REF: fullPatientId -%}
+            {% include 'Resource/Immunization' ORC: orcSegment, Immunization_Patient_ID: fullPatientId, Practitioner_ID_ORC_12: practitionerId_ORC_12, ID: immunizationId -%}
 
             {% for rxaSegment in rxaSegmentLists.RXA -%}
                 {% assign obxSegmentLists = hl7v2Data | get_related_segment_list: rxaSegment, 'OBX' -%}

@@ -116,6 +116,14 @@
         {
             {% include 'DataType/CWECodeableConcept' CWE: RXR.2 -%}
         },
+        "patient":
+        {
+            "reference":"{{ Immunization_Patient_ID }}",
+        },
+        "encounter":
+        {
+            "reference":"{{ Immunization_Encounter_ID }}",
+        },
     },
     "request":{
         "method":"PUT",
