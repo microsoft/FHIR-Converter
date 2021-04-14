@@ -34,6 +34,18 @@
             "reference":"Practitioner/{{ Practitioner_ID_DG1_16 }}",
             {% endif -%}
         },
+        "subject":
+        {
+            "reference":"{{ Condition_Subject_ID }}",
+        },
+        "encounter":
+        {
+            "reference":"{{ Condition_Encounter_ID }}",
+        },
+        "recorder":
+        {
+            "reference":"{{ Condition_Recorder_ID }}",
+        },
     },
     "request":{
         "method":"PUT",
