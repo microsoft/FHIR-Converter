@@ -77,8 +77,7 @@
             {% include 'Resource/Practitioner' OBR: obrSegment, ID: practitionerId_OBR_10 -%}
 
             {% evaluate diagnosticId using 'ID/DiagnosticReport' OBR: obrSegment, baseId: patientId -%}
-            {% include 'Resource/DiagnosticReport' OBR: obrSegment, Practitioner_ID_OBR_10: practitionerId_OBR_10, ID: diagnosticId -%}
-            {% include 'Reference/DiagnosticReport/Encounter' ID: diagnosticId, REF: fullEncounterId -%}
+            {% include 'Resource/DiagnosticReport' OBR: obrSegment, DiagnosticReport_Encounter_ID: fullEncounterId, Practitioner_ID_OBR_10: practitionerId_OBR_10, ID: diagnosticId -%}
 
             {% for obxSegment in obxSegmentLists.OBX -%}
                 {% evaluate organizationId_OBX_23 using 'ID/Organization' XON: obxSegment.23 -%}
