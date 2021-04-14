@@ -1,0 +1,19 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "DeviceMetric",
+        "id":"{{ ID }}",
+        "source":
+        {
+            "reference":"{{ DeviceMetric_Source_ID }}",
+        },
+        "parent":
+        {
+            "reference":"{{ DeviceMetric_Parent_ID }}",
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"DeviceMetric/{{ ID }}",
+    },
+},

@@ -1,0 +1,23 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "DeviceDefinition",
+        "id":"{{ ID }}",
+        "manufacturerReference":
+        {
+            "reference":"{{ DeviceDefinition_ManufacturerReference_ID }}",
+        },
+        "owner":
+        {
+            "reference":"{{ DeviceDefinition_Owner_ID }}",
+        },
+        "parentDevice":
+        {
+            "reference":"{{ DeviceDefinition_ParentDevice_ID }}",
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"DeviceDefinition/{{ ID }}",
+    },
+},

@@ -1,0 +1,23 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "DeviceUseStatement",
+        "id":"{{ ID }}",
+        "subject":
+        {
+            "reference":"{{ DeviceUseStatement_Subject_ID }}",
+        },
+        "source":
+        {
+            "reference":"{{ DeviceUseStatement_Source_ID }}",
+        },
+        "device":
+        {
+            "reference":"{{ DeviceUseStatement_Device_ID }}",
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"DeviceUseStatement/{{ ID }}",
+    },
+},

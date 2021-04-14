@@ -1,0 +1,31 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "DeviceRequest",
+        "id":"{{ ID }}",
+        "codeReference":
+        {
+            "reference":"{{ DeviceRequest_CodeReference_ID }}",
+        },
+        "subject":
+        {
+            "reference":"{{ DeviceRequest_Subject_ID }}",
+        },
+        "encounter":
+        {
+            "reference":"{{ DeviceRequest_Encounter_ID }}",
+        },
+        "requester":
+        {
+            "reference":"{{ DeviceRequest_Requester_ID }}",
+        },
+        "performer":
+        {
+            "reference":"{{ DeviceRequest_Performer_ID }}",
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"DeviceRequest/{{ ID }}",
+    },
+},
