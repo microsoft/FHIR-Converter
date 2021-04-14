@@ -28,6 +28,22 @@
         ],
         "criticality":"{{ AL1.4.1.Value | get_property: 'CodeSystem/AllergyIntoleranceCriticality', 'code' }}",
         "onsetDateTime":"{{ AL1.6.Value | format_as_date_time }}",
+        "patient":
+        {
+            "reference":"{{ AllergyIntolerance_Patient_ID }}",
+        },
+        "encounter":
+        {
+            "reference":"{{ AllergyIntolerance_Encounter_ID }}",
+        },
+        "recorder":
+        {
+            "reference":"{{ AllergyIntolerance_Recorder_ID }}",
+        },
+        "asserter":
+        {
+            "reference":"{{ AllergyIntolerance_Asserter_ID }}",
+        },
     },
     "request":{
         "method":"PUT",

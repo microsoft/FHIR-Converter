@@ -100,8 +100,7 @@
 
         {% for al1Segment in al1SegmentLists.AL1 -%}
             {% evaluate allergyIntoleranceId using 'ID/AllergyIntolerance' AL1: al1Segment, baseId: patientId -%}
-            {% include 'Resource/AllergyIntolerance' AL1: al1Segment, ID: allergyIntoleranceId -%}
-            {% include 'Reference/AllergyIntolerance/Patient' ID: allergyIntoleranceId, REF: fullPatientId -%}
+            {% include 'Resource/AllergyIntolerance' AL1: al1Segment, ID: allergyIntoleranceId, AllergyIntolerance_Patient_ID: fullPatientId -%}
         {% endfor -%}
 
         {% for dg1Segment in dg1SegmentLists.DG1 -%}
