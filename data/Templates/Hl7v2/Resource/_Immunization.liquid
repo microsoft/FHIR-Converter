@@ -1,3 +1,14 @@
+{% comment -%}
+The following are references ID accepted by this template.
+
+Practitioner_ID_ORC_12: A resource Id, used to fill "performer.actor.reference" property. The resource is of "Practitioner" type and generated based on "ORC.12" HL7 V2 identifier.
+Practitioner_ID_RXA_10: A resource Id, used to fill "performer.actor.reference" property. The resource is of "Practitioner" type and generated based on "RXA.10" HL7 V2 identifier.
+Organization_ID_RXA_17: A resource Id, used to fill "manufacturer.reference" property. The resource is of "Organization" type and generated based on "RXA.17" HL7 V2 identifier.
+Location_ID_RXA_27: A resource Id, used to fill "location.reference" property. The resource is of "Location" type and generated based on "RXA.27" HL7 V2 identifier.
+Immunization_Patient_ID: A resource Id, used to fill "patient.reference" property.
+Immunization_Encounter_ID: A resource Id, used to fill "encounter.reference" property.
+{% endcomment -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{

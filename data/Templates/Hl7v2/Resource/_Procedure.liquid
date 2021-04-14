@@ -1,3 +1,14 @@
+{% comment -%}
+The following are references ID accepted by this template.
+
+Location_ID_PR1_23: A resource Id, used to fill "location.reference" property. The resource is of "Location" type and generated based on "PR1.23" HL7 V2 identifier.
+Procedure_ID_PR1_25: A resource Id, used to fill "partOf.reference" property. The resource is of "Procedure" type and generated based on "PR1.25" HL7 V2 identifier.
+Procedure_Subject_ID: A resource Id, used to fill "subject.reference" property.
+Procedure_Encounter_ID: A resource Id, used to fill "encounter.reference" property.
+Procedure_Recorder_ID: A resource Id, used to fill "recorder.reference" property.
+Procedure_Asserter_ID: A resource Id, used to fill "asserter.reference" property.
+{% endcomment -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{

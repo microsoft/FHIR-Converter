@@ -1,3 +1,14 @@
+{% comment -%}
+The following are references ID accepted by this template.
+
+PractitionerRole_ID_ORC_12: A resource Id, used to fill "requester.reference" property. The resource is of "PractitionerRole" type and generated based on "ORC.12" HL7 V2 identifier.
+Organization_ID_ORC_21: A resource Id, used to fill "requester.reference" property. The resource is of "Organization" type and generated based on "ORC.21" HL7 V2 identifier.
+Practitioner_ID_OBR_10: A resource Id, used to fill "specimen.reference" property. The resource is of "Practitioner" type and generated based on "OBR.10" HL7 V2 identifier.
+Specimen_ID_OBR_15: A resource Id, used to fill "specimen.reference" property. The resource is of "Practitioner" type and generated based on "OBR.15" HL7 V2 identifier.
+ServiceRequest_Subject_ID: A resource Id, used to fill "subject.reference" property.
+ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" property.
+{% endcomment -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
