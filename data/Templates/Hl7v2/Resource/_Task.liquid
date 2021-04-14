@@ -35,6 +35,30 @@
             "reference":"Practitioner/{{ Practitioner_ID_ORC_12 }}",
             {% endif -%}
         },
+        "focus":
+        {
+            "reference":"{{ Task_Focus_ID }}",
+        },
+        "for":
+        {
+            "reference":"{{ Task_For_ID }}",
+        },
+        "encounter":
+        {
+            "reference":"{{ Task_Encounter_ID }}",
+        },
+        "owner":
+        {
+            "reference":"{{ Task_Owner_ID }}",
+        },
+        "location":
+        {
+            "reference":"{{ Task_Location_ID }}",
+        },
+        "reasonReference":
+        {
+            "reference":"{{ Task_ReasonReference_ID }}",
+        },
     },
     "request":{
         "method":"PUT",
