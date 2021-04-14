@@ -86,6 +86,10 @@
         {
             {% include 'DataType/CX' CX: SPM.30.Repeats[0] -%}
         },
+        "subject":
+        {
+            "reference":"{{ Specimen_Subject_ID }}",
+        },
     },
     "request":{
         "method":"PUT",
