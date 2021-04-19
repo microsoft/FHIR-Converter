@@ -113,7 +113,7 @@
             {% include 'Resource/Practitioner' DG1: dg1Segment, ID: practitionerId_DG1_16 -%}
 
             {% evaluate conditionId using 'ID/Condition' DG1: dg1Segment, baseId: patientId -%}
-            {% include 'Resource/Condition' DG1: dg1Segment, Condition_Subject_ID: fullPatientId, Practitioner_ID_DG1_16: practitionerId_DG1_16, ID: conditionId -%}
+            {% include 'Resource/Condition' DG1: dg1Segment, Condition_Subject_ID: fullPatientId, ID: conditionId -%}
 
             {% assign fullConditionId = conditionId | prepend: 'Condition/' -%}
             {% include 'Reference/Encounter/Diagnosis_Condition' ID: encounterId, REF: fullConditionId -%}
