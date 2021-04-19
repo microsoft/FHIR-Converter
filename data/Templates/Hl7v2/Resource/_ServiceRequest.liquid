@@ -9,6 +9,9 @@ ServiceRequest_Subject_ID: A resource Id, used to fill "subject.reference" prope
 ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" property.
 {% endcomment -%}
 
+{% evaluate Organization_ID_ORC_21 using 'ID/Organization' CWE: ORC.21 -%}
+{% evaluate Practitioner_ID_OBR_10 using 'ID/Practitioner' XCN: OBR.10 -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
