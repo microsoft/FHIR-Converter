@@ -56,7 +56,7 @@
         {% include 'Reference/Account/Subject' ID: accountId, REF: fullPatientId -%}
 
         {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
-        {% include 'Resource/Encounter' PV1: firstSegments.PV1, PV2: firstSegments.PV2, Location_ID_PV1_3: locationId3_PV1_3, Location_ID_PV1_6: locationId3_PV1_6, Practitioner_ID_PV1_7: practitionerId7_PV1_7, Practitioner_ID_PV1_8: practitionerId7_PV1_8, Practitioner_ID_PV1_9: practitionerId7_PV1_9, Practitioner_ID_PV1_17: practitionerId7_PV1_17, Practitioner_ID_PV1_52: practitionerId7_PV1_52, ID: encounterId -%}
+        {% include 'Resource/Encounter' PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
         {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
 
         {% for al1Segment in al1SegmentLists.AL1 -%}

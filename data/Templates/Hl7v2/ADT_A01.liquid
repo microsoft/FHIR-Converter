@@ -57,7 +57,7 @@
         {% include 'Resource/Provenance' Root_Template: 'ADT_A01', MSH: firstSegments.MSH, ORC: firstSegments.ORC, ID: provenanceId -%}
 
         {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
-        {% include 'Resource/Encounter' PV1: firstSegments.PV1, PV2: firstSegments.PV2, Location_ID_PV1_3: locationId_PV1_3, Location_ID_PV1_6: locationId_PV1_6, Practitioner_ID_PV1_7: practitionerId_PV1_7, Practitioner_ID_PV1_8: practitionerId_PV1_8, Practitioner_ID_PV1_9: practitionerId_PV1_9, Practitioner_ID_PV1_17: practitionerId_PV1_17, Practitioner_ID_PV1_52: practitionerId_PV1_52, ID: encounterId -%}
+        {% include 'Resource/Encounter' PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
         {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
 
         {% for pr1Segment in pr1SegmentLists.PR1 -%}
