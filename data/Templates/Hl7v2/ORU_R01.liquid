@@ -62,7 +62,7 @@
             {% evaluate organizationId_NK1_13 using 'ID/Organization' XON: nk1Segment.13 -%}
             {% include 'Resource/Organization' NK1: nk1Segment, ID: organizationId_NK1_13 -%}
 
-            {% include 'Resource/Patient' NK1: nk1Segment, Organization_ID_NK1_13: organizationId_NK1_13, ID: patientId -%}
+            {% include 'Resource/Patient' NK1: nk1Segment, ID: patientId -%}
 
             {% evaluate relatedPersonId using 'ID/RelatedPerson' NK1: nk1Segment, baseId: patientId -%}
             {% include 'Resource/RelatedPerson' NK1: nk1Segment, RelatedPerson_Patient_ID: fullPatientId, ID: relatedPersonId -%}
