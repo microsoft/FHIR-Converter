@@ -47,7 +47,7 @@
         {% include 'Resource/Location' ORC: firstSegments.ORC, ID: locationId_ORC_21 -%}
 
         {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseId: patientId -%}
-        {% include 'Resource/Provenance' Root_Template: 'ORU_R01', MSH: firstSegments.MSH, ORC: firstSegments.ORC, Practitioner_ID_ORC_10: practitionerId10_ORC_10, Practitioner_ID_ORC_11: practitionerId10_ORC_11, Practitioner_ID_ORC_12: practitionerId10_ORC_12, Location_ID_ORC_21: locationId_ORC_21, ID: provenanceId -%}
+        {% include 'Resource/Provenance' Root_Template: 'ORU_R01', MSH: firstSegments.MSH, ORC: firstSegments.ORC, ID: provenanceId -%}
 
         {% evaluate accountId using 'ID/Account' CX: firstSegments.PID.3 -%}
         {% include 'Resource/Account' PID: firstSegments.PID, ID: accountId -%}
