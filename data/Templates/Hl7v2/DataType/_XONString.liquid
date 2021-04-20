@@ -1,4 +1,8 @@
+{% if XON -%}
+
 "string":"{{ XON.1.Value }}",
 {% if XON.1 == null -%}
 "string":"{{ XON.10.Value }}",
+{% endif -%}
+
 {% endif -%}
