@@ -64,8 +64,7 @@
             {% include 'Resource/Patient' NK1: nk1Segment, Organization_ID_NK1_13: organizationId_NK1_13, ID: patientId -%}
 
             {% evaluate relatedPersonId using 'ID/RelatedPerson' NK1: nk1Segment, baseId: patientId -%}
-            {% include 'Resource/RelatedPerson' NK1: nk1Segment, ID: relatedPersonId -%}
-            {% include 'Reference/RelatedPerson/Patient' ID: relatedPersonId, REF: fullPatientId -%}
+            {% include 'Resource/RelatedPerson' NK1: nk1Segment, RelatedPerson_Patient_ID: fullPatientId, ID: relatedPersonId -%}
         {% endfor -%}
 
         {% for orcSegment in orcSegmentLists.ORC -%}
@@ -76,8 +75,7 @@
 
             {% evaluate immunizationId using 'ID/Immunization' ORC: orcSegment, baseId: patientId -%}
             {% assign fullImmunizationId = immunizationId | prepend: 'Immunization/' -%}
-            {% include 'Resource/Immunization' ORC: orcSegment, Practitioner_ID_ORC_12: practitionerId_ORC_12, ID: immunizationId -%}
-            {% include 'Reference/Immunization/Patient' ID: immunizationId, REF: fullPatientId -%}
+            {% include 'Resource/Immunization' ORC: orcSegment, Immunization_Patient_ID: fullPatientId, Practitioner_ID_ORC_12: practitionerId_ORC_12, ID: immunizationId -%}
 
             {% for rxaSegment in rxaSegmentLists.RXA -%}
                 {% assign obxSegmentLists = hl7v2Data | get_related_segment_list: rxaSegment, 'OBX' -%}
@@ -107,9 +105,8 @@
                     {% include 'Resource/Device' OBX: obxSegment, ID: deviceId_OBX_18 -%}
 
                     {% evaluate observationId using 'ID/Observation' OBX: obxSegment, baseId: patientId -%}
-                    {% include 'Resource/Observation' OBX: obxSegment, Practitioner_ID_OBX_16: practitionerId_OBX_16, PractitionerRole_ID_OBX_25: practitionerRoleId_OBX_25, Organization_ID_OBX_23: organizationId_OBX_23, ID: observationId -%}
+                    {% include 'Resource/Observation' OBX: obxSegment, Observation_Subject_ID: fullPatientId, Practitioner_ID_OBX_16: practitionerId_OBX_16, PractitionerRole_ID_OBX_25: practitionerRoleId_OBX_25, Organization_ID_OBX_23: organizationId_OBX_23, ID: observationId -%}
                     {% include 'Reference/Observation/PartOf' ID: observationId, REF: fullImmunizationId -%}
-                    {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
                 {% endfor -%}
             {% endfor -%}
         {% endfor -%}

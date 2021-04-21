@@ -1,3 +1,14 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+Practitioner_ID_OBX_16: A resource Id, used to fill "performer.reference" property. The resource is of "Practitioner" type and generated based on "OBX.16" HL7 V2 identifier.
+Organization_ID_OBX_23: A resource Id, used to fill "performer.reference" property. The resource is of "Organization" type and generated based on "OBX.23" HL7 V2 identifier.
+PractitionerRole_ID_OBX_25: A resource Id, used to fill "performer.reference" property. The resource is of "PractitionerRole" type and generated based on "OBX.25" HL7 V2 identifier.
+Observation_Subject_ID: A resource Id, used to fill "subject.reference" property.
+Observation_Encounter_ID: A resource Id, used to fill "encounter.reference" property.
+Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" property.
+{% endcomment -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
@@ -204,6 +215,18 @@
                 ],
             },
         ],
+        "subject":
+        {
+            "reference":"{{ Observation_Subject_ID }}",
+        },
+        "encounter":
+        {
+            "reference":"{{ Observation_Encounter_ID }}",
+        },
+        "specimen":
+        {
+            "reference":"{{ Observation_Specimen_ID }}",
+        },
     },
     "request":{
         "method":"PUT",

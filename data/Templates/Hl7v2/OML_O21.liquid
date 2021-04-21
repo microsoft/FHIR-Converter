@@ -61,8 +61,7 @@
 
         {% for al1Segment in al1SegmentLists.AL1 -%}
             {% evaluate allergyIntoleranceId using 'ID/AllergyIntolerance' AL1: al1Segment, baseId: patientId -%}
-            {% include 'Resource/AllergyIntolerance' AL1: al1Segment, ID: allergyIntoleranceId -%}
-            {% include 'Reference/AllergyIntolerance/Patient' ID: allergyIntoleranceId, REF: fullPatientId -%}
+            {% include 'Resource/AllergyIntolerance' AL1: al1Segment, ID: allergyIntoleranceId, AllergyIntolerance_Patient_ID: fullPatientId -%}
         {% endfor -%}
 
         {% for nk1Segment in nk1SegmentLists.NK1 -%}
@@ -72,8 +71,7 @@
             {% include 'Resource/Patient' NK1: nk1Segment, Organization_ID_NK1_13: organizationId_NK1_13, ID: patientId -%}
 
             {% evaluate relatedPersonId using 'ID/RelatedPerson' NK1: nk1Segment, baseId: patientId -%}
-            {% include 'Resource/RelatedPerson' NK1: nk1Segment, ID: relatedPersonId -%}
-            {% include 'Reference/RelatedPerson/Patient' ID: relatedPersonId, REF: fullPatientId -%}
+            {% include 'Resource/RelatedPerson' NK1: nk1Segment, RelatedPerson_Patient_ID: fullPatientId, ID: relatedPersonId -%}
         {% endfor -%}
 
         {% for orcSegment in orcSegmentLists.ORC -%}
@@ -90,8 +88,7 @@
 
             {% evaluate serviceRequestId using 'ID/ServiceRequest' ORC: orcSegment, baseId: patientId -%}
             {% assign fullServiceRequestId = serviceRequestId | prepend: 'ServiceRequest/' -%}
-            {% include 'Resource/ServiceRequest' ORC: orcSegment, Organization_ID_ORC_21: organizationId_ORC_21, ID: serviceRequestId -%}
-            {% include 'Reference/ServiceRequest/Subject' ID: serviceRequestId, REF: fullPatientId -%}
+            {% include 'Resource/ServiceRequest' ORC: orcSegment, ServiceRequest_Subject_ID: fullPatientId, Organization_ID_ORC_21: organizationId_ORC_21, ID: serviceRequestId -%}
 
             {% evaluate provenanceId using 'ID/Provenance' ORC: orcSegment, baseId: patientId -%}
             {% include 'Resource/Provenance' ORC: orcSegment, Organization_ID_ORC_17: organizationId_ORC_17, ID: provenanceId -%}
@@ -122,8 +119,7 @@
                 {% include 'Resource/Device' OBX: obxSegment, ID: deviceId_OBX_18 -%}
 
                 {% evaluate observationId using 'ID/Observation' OBX: obxSegment, baseId: patientId -%}
-                {% include 'Resource/Observation' OBX: obxSegment, Practitioner_ID_OBX_16: practitionerId_OBX_16, PractitionerRole_ID_OBX_25: practitionerRoleId_OBX_25, Organization_ID_OBX_23: organizationId_OBX_23, ID: observationId -%}
-                {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
+                {% include 'Resource/Observation' OBX: obxSegment, Observation_Subject_ID: fullPatientId, Practitioner_ID_OBX_16: practitionerId_OBX_16, PractitionerRole_ID_OBX_25: practitionerRoleId_OBX_25, Organization_ID_OBX_23: organizationId_OBX_23, ID: observationId -%}
 
                 {% assign fullObservationId = observationId | prepend: 'Observation/' -%}
                 {% include 'Reference/ServiceRequest/SupportingInfo' ID: serviceRequestId, REF: fullObservationId -%}
@@ -134,8 +130,7 @@
                 {% include 'Resource/Practitioner' DG1: dg1Segment, ID: practitionerId_DG1_16 -%}
 
                 {% evaluate conditionId using 'ID/Condition' DG1: dg1Segment, baseId: patientId -%}
-                {% include 'Resource/Condition' DG1: obxSegment, Practitioner_ID_DG1_16: practitionerId_DG1_16, ID: conditionId -%}
-                {% include 'Reference/Condition/Subject' ID: conditionId, REF: fullPatientId -%}
+                {% include 'Resource/Condition' DG1: obxSegment, Condition_Subject_ID: fullPatientId, Practitioner_ID_DG1_16: practitionerId_DG1_16, ID: conditionId -%}
 
                 {% assign fullConditionId = conditionId | prepend: 'Condition/' -%}
                 {% include 'Reference/ServiceRequest/ReasonReference' ID: serviceRequestId, REF: fullConditionId -%}
