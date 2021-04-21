@@ -1,3 +1,15 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+Organization_ID_MSH_6: A resource Id, used to fill "destination.receiver.reference" property. The resource is of "Organization" type and generated based on "MSH.6" HL7 V2 identifier.
+Organization_ID_MSH_23: A resource Id, used to fill "destination.receiver.reference" property. The resource is of "Organization" type and generated based on "MSH.23" HL7 V2 identifier.
+Organization_ID_MSH_4: A resource Id, used to fill "sender.reference" property. The resource is of "Organization" type and generated based on "MSH.4" HL7 V2 identifier.
+Organization_ID_MSH_22: A resource Id, used to fill "responsible.reference" property. The resource is of "Organization" type and generated based on "MSH.22" HL7 V2 identifier.
+MessageHeader_Enterer_ID: A resource Id, used to fill "enterer.reference" property.
+MessageHeader_Author_ID: A resource Id, used to fill "author.reference" property.
+MessageHeader_Response_Details_ID: A resource Id, used to fill "response.details.reference" property.
+{% endcomment -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
@@ -14,10 +26,7 @@
         [
             {
                 {% include 'DataType/HDMSH_5' HD: MSH.5 -%}
-                "endpoint":
-                [
-                    "{{ MSH.25.Value }}",
-                ],
+                "endpoint":"{{ MSH.25.Value }}",
                 "receiver":
                 {
                     {% if MSH.6 and Organization_ID_MSH_6 -%}
@@ -56,6 +65,21 @@
             {% if MSH.22 and Organization_ID_MSH_22 -%}
             "reference":"Organization/{{ Organization_ID_MSH_22 }}",
             {% endif -%}
+        },
+        "enterer":
+        {
+            "reference":"{{ MessageHeader_Enterer_ID }}",
+        },
+        "author":
+        {
+            "reference":"{{ MessageHeader_Author_ID }}",
+        },
+        "response":
+        {
+            "details":
+            {
+                "reference":"{{ MessageHeader_Response_Details_ID }}",
+            },
         },
     },
     "request":{

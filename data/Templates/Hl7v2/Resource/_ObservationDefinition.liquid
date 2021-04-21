@@ -1,0 +1,37 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+ObservationDefinition_ValidCodedValueSet_ID: A resource Id, used to fill "validCodedValueSet.reference" property.
+ObservationDefinition_NormalCodedValueSet_ID: A resource Id, used to fill "normalCodedValueSet.reference" property.
+ObservationDefinition_AbnormalCodedValueSet_ID: A resource Id, used to fill "abnormalCodedValueSet.reference" property.
+ObservationDefinition_CriticalCodedValueSet_ID: A resource Id, used to fill "criticalCodedValueSet.reference" property.
+{% endcomment -%}
+
+
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "ObservationDefinition",
+        "id":"{{ ID }}",
+        "validCodedValueSet":
+        {
+            "reference":"{{ ObservationDefinition_ValidCodedValueSet_ID }}",
+        },
+        "normalCodedValueSet":
+        {
+            "reference":"{{ ObservationDefinition_NormalCodedValueSet_ID }}",
+        },
+        "abnormalCodedValueSet":
+        {
+            "reference":"{{ ObservationDefinition_AbnormalCodedValueSet_ID }}",
+        },
+        "criticalCodedValueSet":
+        {
+            "reference":"{{ ObservationDefinition_CriticalCodedValueSet_ID }}",
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"ObservationDefinition/{{ ID }}",
+    },
+},

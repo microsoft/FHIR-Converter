@@ -65,8 +65,7 @@
             {% include 'Resource/Patient' NK1: nk1Segment, Organization_ID_NK1_13: organizationId_NK1_13, ID: patientId -%}
 
             {% evaluate relatedPersonId using 'ID/RelatedPerson' NK1: nk1Segment, baseId: patientId -%}
-            {% include 'Resource/RelatedPerson' NK1: nk1Segment, ID: relatedPersonId -%}
-            {% include 'Reference/RelatedPerson/Patient' ID: relatedPersonId, REF: fullPatientId -%}
+            {% include 'Resource/RelatedPerson' NK1: nk1Segment, RelatedPerson_Patient_ID: fullPatientId, ID: relatedPersonId -%}
         {% endfor -%}
 
         {% for obrSegment in obrSegmentLists.OBR -%}
@@ -77,8 +76,7 @@
             {% include 'Resource/Practitioner' OBR: obrSegment, ID: practitionerId_OBR_10 -%}
 
             {% evaluate diagnosticId using 'ID/DiagnosticReport' OBR: obrSegment, baseId: patientId -%}
-            {% include 'Resource/DiagnosticReport' OBR: obrSegment, Practitioner_ID_OBR_10: practitionerId_OBR_10, ID: diagnosticId -%}
-            {% include 'Reference/DiagnosticReport/Encounter' ID: diagnosticId, REF: fullEncounterId -%}
+            {% include 'Resource/DiagnosticReport' OBR: obrSegment, DiagnosticReport_Encounter_ID: fullEncounterId, Practitioner_ID_OBR_10: practitionerId_OBR_10, ID: diagnosticId -%}
 
             {% for obxSegment in obxSegmentLists.OBX -%}
                 {% evaluate organizationId_OBX_23 using 'ID/Organization' XON: obxSegment.23 -%}
@@ -102,8 +100,7 @@
                 {% endif -%}
 
                 {% evaluate observationId using 'ID/Observation' OBX: obxSegment, baseId: patientId -%}
-                {% include 'Resource/Observation' OBX: obxSegment, Practitioner_ID_OBX_16: practitionerId_OBX_16, PractitionerRole_ID_OBX_25: practitionerRoleId, Organization_ID_OBX_23: organizationId_OBX_23, ID: observationId -%}
-                {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
+                {% include 'Resource/Observation' OBX: obxSegment, Observation_Subject_ID: fullPatientId, Practitioner_ID_OBX_16: practitionerId_OBX_16, PractitionerRole_ID_OBX_25: practitionerRoleId, Organization_ID_OBX_23: organizationId_OBX_23, ID: observationId -%}
 
                 {% assign fullObservationId = observationId | prepend: 'Observation/' -%}
                 {% include 'Reference/DiagnosticReport/Result' ID: diagnosticId, REF: fullObservationId -%}

@@ -1,0 +1,31 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+DeviceDefinition_ManufacturerReference_ID: A resource Id used to fill "manufacturerReference.reference" property.
+DeviceDefinition_Owner_ID: A resource Id used to fill "owner.reference" property.
+DeviceDefinition_ParentDevice_ID: A resource Id used to fill "parentDevice.reference" property.
+{% endcomment -%}
+
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "DeviceDefinition",
+        "id":"{{ ID }}",
+        "manufacturerReference":
+        {
+            "reference":"{{ DeviceDefinition_ManufacturerReference_ID }}",
+        },
+        "owner":
+        {
+            "reference":"{{ DeviceDefinition_Owner_ID }}",
+        },
+        "parentDevice":
+        {
+            "reference":"{{ DeviceDefinition_ParentDevice_ID }}",
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"DeviceDefinition/{{ ID }}",
+    },
+},

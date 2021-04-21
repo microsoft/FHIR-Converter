@@ -1,3 +1,14 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+ServiceRequest_ID_ORC_2: A resource Id, used to fill "basedOn.reference" property. The resource is of "ServiceRequest" type and generated based on "ORC.2" HL7 V2 identifier.
+Practitioner_ID_OBR_10: A resource Id, used to fill "specimen.reference" property. The resource is of "Practitioner" type and generated based on "OBR.10" HL7 V2 identifier.
+PractitionerRole_ID_OBR_34: A resource Id, used to fill "performer.reference" property. The resource is of "PractitionerRole" type and generated based on "OBR.34" HL7 V2 identifier.
+PractitionerRole_ID_OBR_35: A resource Id, used to fill "performer.reference" property. The resource is of "PractitionerRole" type and generated based on "OBR.35" HL7 V2 identifier.
+DiagnosticReport_Subject_ID: A resource Id, used to fill "subject.reference" property.
+DiagnosticReport_Encounter_ID: A resource Id, used to fill "encounter.reference" property.
+{% endcomment -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
@@ -119,6 +130,14 @@
                 {% endif -%}
             },
         ],
+        "subject":
+        {
+            "reference":"{{ DiagnosticReport_Subject_ID }}",
+        },
+        "encounter":
+        {
+            "reference":"{{ DiagnosticReport_Encounter_ID }}",
+        },
     },
     "request":{
         "method":"PUT",
