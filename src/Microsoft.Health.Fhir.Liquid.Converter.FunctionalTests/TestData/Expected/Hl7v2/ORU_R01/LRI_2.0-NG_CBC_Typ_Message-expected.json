@@ -272,6 +272,49 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:c8cd57a5-13a6-54d1-7dcd-d0a6b637c660",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "c8cd57a5-13a6-54d1-7dcd-d0a6b637c660",
+        "address": [
+          {
+            "line": [
+              "2070 Test Park"
+            ],
+            "city": "Los Angeles",
+            "state": "CA",
+            "postalCode": "90067"
+          },
+          {
+            "line": [
+              "2070 Test Park"
+            ],
+            "city": "Los Angeles",
+            "state": "CA",
+            "postalCode": "90067"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8",
+      "resource": {
+        "resourceType": "PractitionerRole",
+        "id": "fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8",
+        "organization": {
+          "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:b9018883-1320-3dfb-e157-cb46bb7a6679",
       "resource": {
         "resourceType": "Observation",
