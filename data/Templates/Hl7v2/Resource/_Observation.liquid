@@ -125,9 +125,6 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                 {% endif -%}
             },
             {
-                {% if OBX.23 and Organization_ID_OBX_23 -%}
-                "reference":"Organization/{{ Organization_ID_OBX_23 }}",
-                {% endif -%}
                 {% if OBX.25 and PractitionerRole_ID_OBX_25 -%}
                 "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_25 }}",
                 {% endif -%}

@@ -80,16 +80,24 @@
 
         {% for obxSegment in obxSegmentLists.OBX -%}
             {% evaluate organizationId_OBX_23 using 'ID/Organization' XON: obxSegment.23 -%}
-            {% include 'Resource/Organization' OBX: obxSegment, ID: organizationId_OBX_23 -%}
+            {% if obxSegment.24 or obxSegment.25 -%}
+                {% include 'Resource/Organization' OBX: obxSegment, ID: organizationId_OBX_23 -%}
+            {% endif -%}
 
             {% evaluate practitionerId_OBX_16 using 'ID/Practitioner' XCN: obxSegment.16 -%}
-            {% include 'Resource/Practitioner' OBX: obxSegment, ID: practitionerId_OBX_16 -%}
+            {% if obxSegment.16 -%}
+                {% include 'Resource/Practitioner' OBX: obxSegment, ID: practitionerId_OBX_16 -%}
+            {% endif -%}
 
             {% evaluate practitionerRoleId_OBX_25 using 'ID/PractitionerRole' XCN: obxSegment.25 -%}
-            {% include 'Resource/PractitionerRole' OBX: obxSegment, Practitioner_ID_OBX_16: practitionerId_OBX_16, Organization_ID_OBX_23: organizationId_OBX_23, ID: practitionerRoleId_OBX_25 -%}
+            {% if obxSegment.16 or obxSegment.23 or obxSegment.25 -%}
+                {% include 'Resource/PractitionerRole' OBX: obxSegment, Practitioner_ID_OBX_16: practitionerId_OBX_16, Organization_ID_OBX_23: organizationId_OBX_23, ID: practitionerRoleId_OBX_25 -%}
+            {% endif -%}
 
             {% evaluate deviceId_OBX_18 using 'ID/Device' HD: obxSegment.18 -%}
-            {% include 'Resource/Device' OBX: obxSegment, ID: deviceId_OBX_18 -%}
+            {% if obxSegment.18 -%}
+                {% include 'Resource/Device' OBX: obxSegment, ID: deviceId_OBX_18 -%}
+            {% endif -%}
 
             {% evaluate observationId using 'ID/Observation' OBX: obxSegment, baseId: patientId -%}
             {% include 'Resource/Observation' OBX: obxSegment, Observation_Subject_ID: fullPatientId, Practitioner_ID_OBX_16: practitionerId_OBX_16, PractitionerRole_ID_OBX_25: practitionerRoleId_OBX_25, Organization_ID_OBX_23: organizationId_OBX_23, ID: observationId -%}

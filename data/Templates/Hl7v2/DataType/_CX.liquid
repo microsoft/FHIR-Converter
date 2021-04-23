@@ -1,3 +1,5 @@
+{% if CX -%}
+
 "value":"{{ CX.1.Value }}",
 "type":
 {
@@ -14,3 +16,5 @@
     "start":"{{ CX.7.Value | format_as_date_time }}",
     "end":"{{ CX.8.Value | format_as_date_time }}",
 },
+
+{% endif -%}
