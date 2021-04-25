@@ -17,7 +17,7 @@ Location_ID_ORC_21: A resource Id, used to fill "location.onBehalfOf" property. 
         "id":"{{ ID }}",
         {% if Root_Template -%}
         {% assign generationInstant = "{{ "" | now }}" -%}
-        {% assign templateVersion = "3.5" -%}
+        {% assign templateVersion = "TEMPLATE_VERSION_PLACEHOLDER" -%}
         "text": {
             "status": "generated",
             "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on {{ generationInstant }} using Microsoft FHIR Converter.</span><span>Template Version: {{ templateVersion }}.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/v{{ templateVersion }}/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: {{ Root_Template }}.</span></p></div>"
