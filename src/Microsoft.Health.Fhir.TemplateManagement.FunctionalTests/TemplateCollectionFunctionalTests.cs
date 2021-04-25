@@ -329,7 +329,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var imageResult = hl7v2Processor.Convert(inputContent, rootTemplate, imageTemplateProvider);
             var folderResult = hl7v2Processor.Convert(inputContent, rootTemplate, folderTemplateProvider);
 
-            var regex = new Regex(@"Resource bundle generated on .* Template Version: .*\.");
+            var regex = new Regex(@"<div .*>.*</div>");
             imageResult = regex.Replace(imageResult, string.Empty);
             folderResult = regex.Replace(folderResult, string.Empty);
 
