@@ -9,6 +9,11 @@ Immunization_Patient_ID: A resource Id, used to fill "patient.reference" propert
 Immunization_Encounter_ID: A resource Id, used to fill "encounter.reference" property.
 {% endcomment -%}
 
+{% evaluate Practitioner_ID_ORC_12 using 'ID/Practitioner' XCN: ORC.12 -%}
+{% evaluate Organization_ID_RXA_17 using 'ID/Organization' CWE: RXA.17 -%}
+{% evaluate Location_ID_RXA_27 using 'ID/Location' CWE: RXA.27 -%}
+{% evaluate Practitioner_ID_RXA_10 using 'ID/Practitioner' XCN: RXA.10 -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{

@@ -8,6 +8,9 @@ Organization_ID_PRT_8: A resource Id, used to fill "organization.reference" prop
 Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" property. The resource is of "Organization" type and generated based on "ORC.21" HL7 V2 identifier.
 {% endcomment -%}
 
+{% evaluate Practitioner_ID_OBX_16 using 'ID/Practitioner' XCN: OBX.16 -%}
+{% evaluate Organization_ID_OBX_23 using 'ID/Organization' XON: OBX.23 -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{

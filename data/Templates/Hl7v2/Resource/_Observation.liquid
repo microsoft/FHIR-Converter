@@ -9,6 +9,10 @@ Observation_Encounter_ID: A resource Id, used to fill "encounter.reference" prop
 Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" property.
 {% endcomment -%}
 
+{% evaluate Practitioner_ID_OBX_16 using 'ID/Practitioner' XCN: OBX.16 -%}
+{% evaluate Organization_ID_OBX_23 using 'ID/Organization' XON: OBX.23 -%}
+{% evaluate PractitionerRole_ID_OBX_25 using 'ID/PractitionerRole' XCN: OBX.25 -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
