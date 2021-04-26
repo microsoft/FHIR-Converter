@@ -7,6 +7,8 @@ Condition_Encounter_ID: A resource Id, used to fill "encounter.reference" proper
 Condition_Recorder_ID: A resource Id, used to fill "recorder.reference" property.
 {% endcomment -%}
 
+{% evaluate Practitioner_ID_DG1_16 using 'ID/Practitioner' XCN: DG1.16 -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
