@@ -1,26 +1,27 @@
-{% if code == 'en' -%}
+{% assign downcaseCode = code | downcase -%}
+{% if downcaseCode == 'en' -%}
 "English",
-{% elsif code == 'en-au' -%}
+{% elsif downcaseCode == 'en-au' -%}
 "English (Australia)",
-{% elsif code == 'en-ca' -%}
+{% elsif downcaseCode == 'en-ca' -%}
 "English (Canada)",
-{% elsif code == 'en-in' -%}
+{% elsif downcaseCode == 'en-in' -%}
 "English (India)",
-{% elsif code == 'en-gb' -%}
+{% elsif downcaseCode == 'en-gb' -%}
 "English (Great Britain)",
-{% elsif code == 'en-nz' -%}
+{% elsif downcaseCode == 'en-nz' -%}
 "English (New Zeland)",
-{% elsif code == 'en-sg' -%}
+{% elsif downcaseCode == 'en-sg' -%}
 "English (Singapore)",
-{% elsif code == 'en-us' -%}
+{% elsif downcaseCode == 'en-us' -%}
 "English (United States)",
-{% elsif code == 'es' -%}
+{% elsif downcaseCode == 'es' -%}
 "Spanish",
-{% elsif code == 'de' -%}
+{% elsif downcaseCode == 'de' -%}
 "German",
-{% elsif code == 'da' -%}
+{% elsif downcaseCode == 'da' -%}
 "Danish",
-{% elsif code == 'fr' -%}
+{% elsif downcaseCode == 'fr' -%}
 "French",
 {% else -%}
 "{{ code }}",

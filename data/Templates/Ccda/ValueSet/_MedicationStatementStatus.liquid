@@ -1,4 +1,5 @@
-{% if code == 'aborted' -%}
+{% assign downcaseCode = code | downcase -%}
+{% if downcaseCode == 'aborted' -%}
 "stopped",
 {% else -%}
 "{{ code }}",
