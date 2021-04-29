@@ -6,4 +6,4 @@
     {% assign fullPractitionerId = practitionerId | prepend: 'Practitioner/' -%}
     {% include 'Reference/DiagnosticReport/Performer' ID: diagnosticId, REF: fullPractitionerId -%}
 {% endif -%}
-{{ entry.organizer.component | to_array | batch_render: 'Entry/Results/entry_organizer_component', 'component' }}
+{{ entry.organizer.component | to_array | batch_render: 'Entry/Result/entry_organizer_component', 'component' }}

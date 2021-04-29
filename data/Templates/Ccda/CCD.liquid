@@ -5,12 +5,12 @@
         {% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}
         {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
         {% include 'Header' -%}
-        {% include 'Section/AllergiesAndAdverseReactions' -%}
+        {% include 'Section/AllergiesAndAdverseReaction' -%}
         {% include 'Section/Medication' -%}
         {% include 'Section/Problem' -%}
-        {% include 'Section/Results' -%}
+        {% include 'Section/Result' -%}
         {% include 'Section/SocialHistory' -%}
-    	{% include 'Section/VitalSigns' -%}
+    	{% include 'Section/VitalSign' -%}
 
         {% include 'Section/Procedure' -%}
         {% include 'Section/Encounter' -%}
