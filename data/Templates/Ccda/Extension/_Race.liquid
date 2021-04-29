@@ -23,7 +23,7 @@
                 {% else -%}
                     {% if r.code == '1002-5' or r.code == '2028-9' or r.code == '2054-5' or r.code == '2076-8' or r.code == '2106-3' -%}
                         "url" : "ombCategory",
-                    {% else %}
+                    {% else -%}
                         "url" : "detailed",
                     {% endif -%}
                     "valueCoding": { {% include 'DataType/Coding' Coding: r -%} },
@@ -38,7 +38,7 @@
                 {% assign normalizedCode = Race.raceCode.nullFlavor | upcase -%}
                 {% if normalizedCode == 'ASKU' -%}
                     "valueString":"Asked but no answer",
-                {% else %}
+                {% else -%}
                     "valueString":"Unknown",
                 {% endif -%}
             {% else -%}
