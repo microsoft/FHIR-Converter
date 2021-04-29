@@ -475,8 +475,8 @@
             "use": "mobile"
           },
           {
-            "system": "phone",
-            "value": "mailto://Isbella.Jones.CCD@gmail.com"
+            "system": "email",
+            "value": "//Isbella.Jones.CCD@gmail.com"
           }
         ],
         "communication": [
@@ -490,7 +490,7 @@
                 }
               ]
             },
-            "preferred": "true"
+            "preferred": true
           },
           {
             "language": {
@@ -502,7 +502,7 @@
                 }
               ]
             },
-            "preferred": "false"
+            "preferred": false
           }
         ]
       },
@@ -583,19 +583,6 @@
             }
           ]
         },
-        "reaction": [
-          {
-            "substance": {
-              "coding": [
-                {
-                  "code": "105590001",
-                  "display": "Substance",
-                  "system": "http://snomed.info/sct"
-                }
-              ]
-            }
-          }
-        ],
         "patient": {
           "reference": "Patient/03a91833-bc93-2b74-b2a0-7851c2c34ebc"
         }
@@ -779,7 +766,7 @@
         },
         "effectiveDateTime": "2014-10-01T23:30:26+08:00",
         "valueQuantity": {
-          "value": "120",
+          "value": 120,
           "unit": "mm[Hg]"
         },
         "subject": {
@@ -829,7 +816,7 @@
         },
         "effectiveDateTime": "2014-10-01T23:30:26+08:00",
         "valueQuantity": {
-          "value": "80",
+          "value": 80,
           "unit": "mm[Hg]"
         },
         "subject": {
@@ -879,7 +866,7 @@
         },
         "effectiveDateTime": "2014-10-01T23:30:26+08:00",
         "valueQuantity": {
-          "value": "80",
+          "value": 80,
           "unit": "/min"
         },
         "subject": {
@@ -929,7 +916,7 @@
         },
         "effectiveDateTime": "2014-10-01T23:30:26+08:00",
         "valueQuantity": {
-          "value": "37.2",
+          "value": 37.2,
           "unit": "Cel"
         },
         "subject": {
@@ -979,7 +966,7 @@
         },
         "effectiveDateTime": "2014-10-01T23:30:26+08:00",
         "valueQuantity": {
-          "value": "18",
+          "value": 18,
           "unit": "/min"
         },
         "subject": {
@@ -1029,7 +1016,7 @@
         },
         "effectiveDateTime": "2014-10-01T23:30:26+08:00",
         "valueQuantity": {
-          "value": "170.2",
+          "value": 170.2,
           "unit": "cm"
         },
         "subject": {
@@ -1079,7 +1066,7 @@
         },
         "effectiveDateTime": "2014-10-01T23:30:26+08:00",
         "valueQuantity": {
-          "value": "108.863",
+          "value": 108.863,
           "unit": "kg"
         },
         "subject": {
@@ -1129,7 +1116,7 @@
         },
         "effectiveDateTime": "2014-10-01T23:30:26+08:00",
         "valueQuantity": {
-          "value": "37.58",
+          "value": 37.58,
           "unit": "kg/m2"
         },
         "subject": {
@@ -1179,7 +1166,7 @@
         },
         "effectiveDateTime": "2014-10-01T23:30:26+08:00",
         "valueQuantity": {
-          "value": "98",
+          "value": 98,
           "unit": "%"
         },
         "subject": {
@@ -1189,6 +1176,143 @@
       "request": {
         "method": "PUT",
         "url": "Observation/4df6e5aa-37bd-3362-a85e-21765757598b"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:33f2f449-46aa-ffc7-5296-5a16dbbcdb64",
+      "resource": {
+        "resourceType": "Procedure",
+        "id": "33f2f449-46aa-ffc7-5296-5a16dbbcdb64",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:64af26d5-88ef-4169-ba16-c6ef16a1824f"
+          }
+        ],
+        "status": "completed",
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "code": "181255000",
+                "display": "Entire Appendix",
+                "system": "http://snomed.info/sct"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/03a91833-bc93-2b74-b2a0-7851c2c34ebc"
+        },
+        "performer": [
+          {
+            "actor": {
+              "reference": "Organization/059bb96e-4186-63b4-3185-3a473aa37437"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Procedure/33f2f449-46aa-ffc7-5296-5a16dbbcdb64"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:059bb96e-4186-63b4-3185-3a473aa37437",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "059bb96e-4186-63b4-3185-3a473aa37437",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:2.16.840.1.113883.19.5.9999.1393"
+          }
+        ],
+        "name": "Community Health and Hospitals",
+        "address": [
+          {
+            "line": [
+              "1001 Village Avenue"
+            ],
+            "city": "Portland",
+            "state": "OR",
+            "country": "US",
+            "postalCode": "99123"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/059bb96e-4186-63b4-3185-3a473aa37437"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:4e9ad89e-1036-e527-d560-2dc1f0003c15",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "4e9ad89e-1036-e527-d560-2dc1f0003c15",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:c03e5445-af1b-4911-a419-e2782f21448c"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "procedure"
+              }
+            ]
+          }
+        ],
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "code": "268400002",
+              "display": "12 lead ECG",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
+        "effectiveDateTime": "2014-10-01T23:30:26+08:00",
+        "bodySite": {
+          "coding": [
+            {
+              "code": "302509004",
+              "display": "Entire Heart",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
+        "valueCodeableConcept": {
+          "coding": [
+            {
+              "code": "251135002",
+              "display": "Borderline normal ECG",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/03a91833-bc93-2b74-b2a0-7851c2c34ebc"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Observation/4e9ad89e-1036-e527-d560-2dc1f0003c15"
       }
     },
     {
@@ -1205,7 +1329,7 @@
             }
           ]
         },
-        "date": "2021-03-04T04:07:04.887Z",
+        "date": "2021-04-29T03:37:46.758Z",
         "status": "current",
         "content": [
           {
