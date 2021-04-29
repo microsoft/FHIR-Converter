@@ -47,6 +47,12 @@
       "fatal": {
         "code": "severe"
       },
+      "moderate to severe": {
+        "code": "severe"
+      },
+      "mild to moderate": {
+        "code": "moderate"
+      },
       "mild": {
         "code": "mild"
       }
@@ -84,6 +90,9 @@
       "replaced": {
         "code": "amended"
       },
+      "ntered-in-error": {
+        "code": "entered-in-error"
+      },
       "error": {
         "code": "entered-in-error"
       }
@@ -118,6 +127,9 @@
       },
       "abandoned": {
         "code": "cancelled"
+      },
+      "entered-in-error": {
+        "code": "entered-in-error"
       },
       "error": {
         "code": "entered-in-error"
@@ -163,6 +175,9 @@
       "abandoned": {
         "code": "cancelled"
       },
+      "entered-in-error": {
+        "code": "entered-in-error"
+      },
       "error": {
         "code": "entered-in-error"
       },
@@ -180,10 +195,19 @@
       "active": {
         "code": "in-progress"
       },
+      "in-progress": {
+        "code": "in-progress"
+      },
       "abandoned": {
         "code": "not-done"
       },
+      "not-done": {
+        "code": "not-done"
+      },
       "suspended": {
+        "code": "on-hold"
+      },
+      "on-hold": {
         "code": "on-hold"
       },
       "failed": {
@@ -197,6 +221,9 @@
       },
       "complete": {
         "code": "completed"
+      },
+      "entered-in-error": {
+        "code": "entered-in-error"
       },
       "error": {
         "code": "entered-in-error"
@@ -215,6 +242,9 @@
       "abandonded": {
         "code": "cancelled"
       },
+      "entered-in-error": {
+        "code": "entered-in-error"
+      },
       "error": {
         "code": "entered-in-error"
       },
@@ -225,6 +255,27 @@
     "ValueSet/Language": {
       "en": {
         "code": "English"
+      },
+      "en-au": {
+        "code": "English (Australia)"
+      },
+      "en-ca": {
+        "code": "English (Canada)"
+      },
+      "en-in": {
+        "code": "English (India)"
+      },
+      "en-gb": {
+        "code": "English (Great Britain)"
+      },
+      "en-nz": {
+        "code": "English (New Zeland)"
+      },
+      "en-sg": {
+        "code": "English (Singapore)"
+      },
+      "en-us": {
+        "code": "English (United States)"
       },
       "es": {
         "code": "Spanish"
@@ -283,6 +334,9 @@
       "abandoned": {
         "code": "cancelled"
       },
+      "entered-in-error": {
+        "code": "entered-in-error"
+      },
       "error": {
         "code": "entered-in-error"
       },
@@ -300,6 +354,9 @@
       "suspended": {
         "code": "on-hold"
       },
+      "on-hold": {
+        "code": "on-hold"
+      },
       "failed": {
         "code": "revoked"
       },
@@ -308,6 +365,9 @@
       },
       "completed": {
         "code": "completed"
+      },
+      "entered-in-error": {
+        "code": "entered-in-error"
       },
       "error": {
         "code": "entered-in-error"
