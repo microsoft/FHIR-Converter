@@ -1,3 +1,5 @@
+{% if DLN -%}
+
 "value":"{{ DLN.1.Value }}",
 "type":
 {
@@ -15,3 +17,5 @@
 {
     "end":"{{ DLN.3.Value | format_as_date_time }}",
 },
+
+{% endif -%}

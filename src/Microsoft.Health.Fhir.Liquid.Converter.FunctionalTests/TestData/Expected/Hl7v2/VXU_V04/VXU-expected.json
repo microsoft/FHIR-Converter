@@ -259,6 +259,9 @@
             },
             "who": {
               "reference": "Practitioner/9d113ef1-15cf-ec5c-6e04-230bf6b8bf71"
+            },
+            "onBehalfOf": {
+              "reference": "Organization/a5fe12ca-fd28-0fba-c0f7-b103adb9eb92"
             }
           },
           {
@@ -410,36 +413,6 @@
       "request": {
         "method": "PUT",
         "url": "Organization/1d6edd62-0051-4efa-bc0b-db345da54f10"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Organization"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "PractitionerRole"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "PractitionerRole/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Device"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Device/"
       }
     },
     {
@@ -679,6 +652,16 @@
       "request": {
         "method": "PUT",
         "url": "Immunization/c82d117c-dc9d-e431-dc92-6ca91243da07"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
       }
     },
     {

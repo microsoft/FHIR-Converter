@@ -1,3 +1,9 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" property.
+{% endcomment -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
@@ -83,6 +89,10 @@
             },
         ],
         {% include 'DataType/XCNRelatedPerson' XCN: PRT.5.Repeats[0] -%}
+        "patient":
+        {
+            "reference":"{{ RelatedPerson_Patient_ID }}",
+        },
     },
     "request":{
         "method":"PUT",

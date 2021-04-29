@@ -1,3 +1,14 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+Organization_ID_PD1_3: A resource Id, used to fill "generalPractitioner.reference" property. The resource is of "Organization" type and generated based on "PD1.3" HL7 V2 identifier.
+PractitionerRole_ID_PD1_4: A resource Id, used to fill "generalPractitioner.reference" property. The resource is of "PractitionerRole" type and generated based on "PD1.4" HL7 V2 identifier.
+Organization_ID_NK1_13: A resource Id, used to fill "contact.organization.reference" property. The resource is of "Organization" type and generated based on "NK1.13" HL7 V2 identifier.
+Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganization.reference" property.
+{% endcomment -%}
+
+{% evaluate Organization_ID_NK1_13 using 'ID/Organization' XON: NK1.13 -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
@@ -179,6 +190,10 @@
                 ],
             },
         ],
+        "managingOrganization":
+        {
+            "reference":"{{ Patient_ManagingOrganization_ID }}",
+        },
     },
     "request":{
         "method":"PUT",

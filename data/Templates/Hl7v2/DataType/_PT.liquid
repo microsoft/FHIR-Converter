@@ -1,3 +1,5 @@
+{% if PT -%}
+
 {
     "code":"{{ PT.1.Value }}",
     {% if PT.1 -%}
@@ -10,3 +12,5 @@
     "system":"http://terminology.hl7.org/CodeSystem/v2-0207",
     {% endif -%}
 },
+
+{% endif -%}
