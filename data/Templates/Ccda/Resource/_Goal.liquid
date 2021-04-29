@@ -32,11 +32,13 @@
                     {% include 'DataType/CodeableConcept' CodeableConcept: goalEntry.code -%}
                     {% endif -%}
                 },
-                "detailQuantity":
-                {
-                    "value":"{{ goalEntry.value.low.value }}",
-                    "unit":"{{ goalEntry.value.low.unit }}",
-                },
+                {% if goalEntry.value.low.value -%}
+                    "detailQuantity":
+                    {
+                        "value":{{ goalEntry.value.low.value }},
+                        "unit":"{{ goalEntry.value.low.unit }}",
+                    },
+                {% endif -%}
                 "dueDate":"{{ goalEntry.effectiveTime.value | add_hyphens_date }}",
             },
         ],

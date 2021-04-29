@@ -22,16 +22,20 @@
             {
                 {% include 'DataType/CodeableConcept' CodeableConcept: medicationAdministration.routeCode -%}
             },
-            "dose":
-            {
-                "value":"{{ medicationAdministration.doseQuantity.value }}",
-                "unit":"{{ medicationAdministration.doseQuantity.unit }}",
-            },
-            "rateQuantity":
-            {
-                "value":"{{ medicationAdministration.rateQuantity.value }}",
-                "unit":"{{ medicationAdministration.rateQuantity.unit }}",
-            },
+            {% if medicationAdministration.doseQuantity.value -%}
+                "dose":
+                {
+                    "value":{{ medicationAdministration.doseQuantity.value }},
+                    "unit":"{{ medicationAdministration.doseQuantity.unit }}",
+                },
+            {% endif -%}
+            {% if medicationAdministration.rateQuantity.value -%}
+                "rateQuantity":
+                {
+                    "value":{{ medicationAdministration.rateQuantity.value }},
+                    "unit":"{{ medicationAdministration.rateQuantity.unit }}",
+                },
+            {% endif -%}
         },
     },
     "request":{
