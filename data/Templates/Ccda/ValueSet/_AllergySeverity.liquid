@@ -1,10 +1,11 @@
-{% if code == 'fatal' -%}
+{% assign downcaseCode = code | downcase -%}
+{% if downcaseCode == 'fatal' -%}
 "severe",
-{% elsif code == 'moderate to severe' -%}
+{% elsif downcaseCode == 'moderate to severe' -%}
 "severe",
-{% elsif code == 'mild to moderate' -%}
+{% elsif downcaseCode == 'mild to moderate' -%}
 "moderate",
-{% elsif code == 'mild' -%}
+{% elsif downcaseCode == 'mild' -%}
 "mild",
 {% else -%}
 "{{ code }}",

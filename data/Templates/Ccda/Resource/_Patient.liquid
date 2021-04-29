@@ -61,7 +61,9 @@
                         },
                     ],
                 },
-                "preferred":"{{ languageCommunication.preferenceInd.value }}",
+                {% if languageCommunication.preferenceInd.value -%}
+                    "preferred": {{ languageCommunication.preferenceInd.value }},
+                {% endif -%}
             },
             {% endfor -%}
         ],

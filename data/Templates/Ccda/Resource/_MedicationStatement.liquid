@@ -22,11 +22,13 @@
                 "doseAndRate":
                 [
                     {
-                        "doseQuantity":
-                        {
-                            "value":"{{ medicationStatement.doseQuantity.value }}",
-                            "unit":"{{ medicationStatement.doseQuantity.unit }}",
-                        },
+                        {% if medicationStatement.doseQuantity.value -%}
+                            "doseQuantity":
+                            {
+                                "value":{{ medicationStatement.doseQuantity.value }},
+                                "unit":"{{ medicationStatement.doseQuantity.unit }}",
+                            },
+                        {% endif -%}
                     },
                 ],
             },
