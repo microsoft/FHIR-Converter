@@ -21,9 +21,9 @@ var fileSystemCache = require('./lib/fsCache/cache');
 var handlebarsHelpers = require('./lib/handlebars-converter/handlebars-helpers').external;
 var ncp = require('ncp').ncp;
 
-var gitUrl = process.env.TEMPLATE_GIT_URL || ""
-var templatePath = process.env.TEMPLATE_GIT_PATH || ""
-var gitBranch = process.env.TEMPLATE_GIT_BRANCH || ""
+var gitUrl = process.env.TEMPLATE_GIT_URL || "";
+var templatePath = process.env.TEMPLATE_GIT_PATH || "";
+var gitBranch = process.env.TEMPLATE_GIT_BRANCH || "";
 
 module.exports = function (app) {
     const workerPool = new WorkerPool('./src/lib/workers/worker.js', require('os').cpus().length);
@@ -227,7 +227,7 @@ module.exports = function (app) {
         if (gitUrl != "") {
             res.status(200);
             res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
-            return
+            return;
         }
         gfs.getStatus().then(function (status) {
             res.json(status);
@@ -263,7 +263,7 @@ module.exports = function (app) {
         if (gitUrl != "") {
             res.status(200);
             res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
-            return
+            return;
         }
         gfs.getBranches().then(function (branches) {
             res.json(branches);
@@ -316,7 +316,7 @@ module.exports = function (app) {
         if (gitUrl != "") {
             res.status(200);
             res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
-            return
+            return;
         }
         if (!req.body.name) {
             res.status(400);
@@ -377,7 +377,7 @@ module.exports = function (app) {
         if (gitUrl != "") {
             res.status(200);
             res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
-            return
+            return;
         }
         if (!req.body.name) {
             res.status(400);
@@ -450,7 +450,7 @@ module.exports = function (app) {
         if (gitUrl != "") {
             res.status(200);
             res.json(errorMessage(400, "Git endpoints not in use if GIT_TEMPLATE_URL is set"));
-            return
+            return;
         }
         gfs.getStatus().then(function (status) {
             if (status.length > 0) {
@@ -670,18 +670,18 @@ module.exports = function (app) {
     app.post('/api/UpdateBaseTemplates', function (req, res) {
 
         if (gitUrl != "") {
-            console.log("Let's go!")
+            console.log("Let's go!");
             gfs.getTemplatesFromRepo(gitUrl, gitBranch, templatePath)
                 .then(function () {
                     templateCache.clear();
                     workerPool.broadcast({ 'type': 'templatesUpdated' });
-                    res.status(201)
+                    res.status(201);
                     res.end();
                 })
                 .catch(function (err) {
-                    res.status(500)
+                    res.status(500);
                     res.json(errorMessage("updateError", err.message));
-                })
+                });
         }
         else {
             let tempFolderName = path.join(constants.TEMPLATE_FILES_LOCATION, `.temp${new Date().getTime()}`);

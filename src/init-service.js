@@ -8,18 +8,18 @@ var fse = require('fs-extra');
 var gfs = require('./lib/git-filesystem/git-filesystem')(constants.TEMPLATE_FILES_LOCATION);
 var path = require('path');
 
-var gitUrl = process.env.TEMPLATE_GIT_URL || ""
-var gitTemplatePath = process.env.TEMPLATE_GIT_PATH || ""
-var gitBranch = process.env.TEMPLATE_GIT_BRANCH || ""
+var gitUrl = process.env.TEMPLATE_GIT_URL || "";
+var gitTemplatePath = process.env.TEMPLATE_GIT_PATH || "";
+var gitBranch = process.env.TEMPLATE_GIT_BRANCH || "";
 
 if (gitUrl != "") {
     gfs.getTemplatesFromRepo(gitUrl, gitBranch, gitTemplatePath)
         .then(function () {
-            console.log("Cloned repo " + gitUrl + " branch " + gitBranch + " path " + gitTemplatePath)
+            console.log("Cloned repo " + gitUrl + " branch " + gitBranch + " path " + gitTemplatePath);
         })
         .catch(function (err) {
             throw new Error('Unable to clone repo: ' + err);
-        })
+        });
 }
 else {
     fse.ensureDir(constants.TEMPLATE_FILES_LOCATION).then(function () {

@@ -425,9 +425,9 @@ describe('git-filesystem (branches)', function () {
 describe('git-filesystem (clone repo from url)', function () {
     const repoPath = path.join(repoRootPath, 'repo1');
     
-    const gitUrl = "http://github.com/netMedi/FHIR-Converter"
-    const gitBranch = "handlebars"
-    const gitTemplatePath = "src/templates"
+    const gitUrl = "http://github.com/netMedi/FHIR-Converter";
+    const gitBranch = "handlebars";
+    const gitTemplatePath = "src/templates";
 
     before(function () {
         fse.ensureDirSync(repoPath);
@@ -438,28 +438,28 @@ describe('git-filesystem (clone repo from url)', function () {
     it('should not fail when cloning a repository', function (done) {
         gfs.getTemplatesFromRepo(gitUrl, gitBranch, gitTemplatePath)
             .then(function () {
-                done()
+                done();
             })
             .catch(function(err) {
-                done(new Error('Error while cloning repo' + err))
-            })
-    }).timeout(60000)
+                done(new Error('Error while cloning repo' + err));
+            });
+    }).timeout(60000);
 
 
     it('should fail when cloning a repository with invalid URL', function (done) {
-        const invalidGitUrl = "invalid"
+        const invalidGitUrl = "invalid";
         gfs.getTemplatesFromRepo(invalidGitUrl, gitBranch, gitTemplatePath)
             .then(function () {
-                done(new Error('Promise was not rejected with invalid git url'))
+                done(new Error('Promise was not rejected with invalid git url'));
             })
             .catch(function() {
-                done()
-            })
-    }).timeout(10000)
+                done();
+            });
+    }).timeout(10000);
 
     after(function () {
-        this.timeout(5000)
+        this.timeout(5000);
         fse.removeSync(repoPath);
-    })
+    });
 
 });

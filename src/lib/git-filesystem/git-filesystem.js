@@ -49,29 +49,28 @@ var setRepoPath = function (repositoryPath) {
 };
 
 var getTemplatesFromRepo = function (gitUrl, gitBranch, templatePath) {
-    var cloneOptions = new NodeGit.CloneOptions()
-    cloneOptions.checkoutBranch = gitBranch
+    var cloneOptions = new NodeGit.CloneOptions();
+    cloneOptions.checkoutBranch = gitBranch;
     return new Promise(function(fulfill, reject) {
         fse.emptyDir(tempRepoPath)
             .then(function () {
-                return NodeGit.Clone(gitUrl, tempRepoPath, cloneOptions)
+                return NodeGit.Clone(gitUrl, tempRepoPath, cloneOptions);
             })
             .then(function () {
                 // Empty the templates folder
-                return fse.emptyDir(repoPath)
+                return fse.emptyDir(repoPath);
             })
             .then(function () {
-                return fse.copy(path.join(tempRepoPath, templatePath), repoPath)
+                return fse.copy(path.join(tempRepoPath, templatePath), repoPath);
             })
             .then(function () {
-                fulfill()
+                fulfill();
             })
             .catch(function(err) {
-                reject(err)
-            })
-        })
-        
-}
+                reject(err);
+            });
+        });
+};
 
 var getRepository = function () {
     return new Promise(function (fulfill, reject) {
