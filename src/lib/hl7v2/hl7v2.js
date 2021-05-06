@@ -47,7 +47,7 @@ function doesElementExistFactory(type, line) {
 }
 
 function parseHL7v2(msg) {
-    var segments = msg.split(/\r?\n/);
+    var segments = msg.split(/\r\n|\n|\r/);
     if (segments[0].substring(0, 3) !== "MSH") {
         throw new Error("Invalid HL7 v2 message, first segment id = " + segments[0].substring(0, 3));
     }
