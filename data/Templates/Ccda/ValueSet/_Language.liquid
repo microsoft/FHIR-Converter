@@ -1,28 +1,29 @@
 {% assign downcaseCode = code | downcase -%}
-{% if downcaseCode == 'en' -%}
-"English",
-{% elsif downcaseCode == 'en-au' -%}
-"English (Australia)",
-{% elsif downcaseCode == 'en-ca' -%}
-"English (Canada)",
-{% elsif downcaseCode == 'en-in' -%}
-"English (India)",
-{% elsif downcaseCode == 'en-gb' -%}
-"English (Great Britain)",
-{% elsif downcaseCode == 'en-nz' -%}
-"English (New Zeland)",
-{% elsif downcaseCode == 'en-sg' -%}
-"English (Singapore)",
-{% elsif downcaseCode == 'en-us' -%}
-"English (United States)",
-{% elsif downcaseCode == 'es' -%}
-"Spanish",
-{% elsif downcaseCode == 'de' -%}
-"German",
-{% elsif downcaseCode == 'da' -%}
-"Danish",
-{% elsif downcaseCode == 'fr' -%}
-"French",
-{% else -%}
-"{{ code }}",
-{% endif -%}
+{% case downcaseCode -%}
+    {% when "en" -%}
+        "English",
+    {% when "en-au" -%}
+        "English (Australia)",
+    {% when "en-ca" -%}
+        "English (Canada)",
+    {% when "en-in" -%}
+        "English (India)",
+    {% when "en-gb" -%}
+        "English (Great Britain)",
+    {% when "en-nz" -%}
+        "English (New Zeland)",
+    {% when "en-sg" -%}
+        "English (Singapore)",
+    {% when "en-us" -%}
+        "English (United States)",
+    {% when "es" -%}
+        "Spanish",
+    {% when "de" -%}
+        "German",
+    {% when "da" -%}
+        "Danish",
+    {% when "fr" -%}
+        "French",
+    {% else -%}
+        "{{ code }}",
+{% endcase -%}

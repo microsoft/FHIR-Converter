@@ -1,23 +1,24 @@
-{% if code == 'draft' -%}
-"draft",
-{% elsif code == 'active' -%}
-"active",
-{% elsif code == 'suspended' -%}
-"on-hold",
-{% elsif code == 'on-hold' -%}
-"on-hold",
-{% elsif code == 'failed' -%}
-"revoked",
-{% elsif code == 'revoked' -%}
-"revoked",
-{% elsif code == 'completed' -%}
-"completed",
-{% elsif code == 'entered-in-error' -%}
-"entered-in-error",
-{% elsif code == 'error' -%}
-"entered-in-error",
-{% elsif code == 'unknown' -%}
-"unknown",
-{% else -%}
-"{{ code }}",
-{% endif -%}
+{% case code -%}
+    {% when "draft" -%}
+        "draft",
+    {% when "active" -%}
+        "active",
+    {% when "suspended" -%}
+        "on-hold",
+    {% when "on-hold" -%}
+        "on-hold",
+    {% when "failed" -%}
+        "revoked",
+    {% when "revoked" -%}
+        "revoked",
+    {% when "completed" -%}
+        "completed",
+    {% when "entered-in-error" -%}
+        "entered-in-error",
+    {% when "error" -%}
+        "entered-in-error",
+    {% when "unknown" -%}
+        "unknown",
+    {% else -%}
+        "{{ code }}",
+{% endcase -%}
