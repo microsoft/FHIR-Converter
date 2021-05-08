@@ -1,10 +1,10 @@
 {% assign observationId = entry.observation | to_json_string | generate_uuid -%}
-{% if entry.observation.templateId | to_json_string | contains: '2.16.840.1.113883.10.20.22.4.4' -%}
+{% if entry.observation.templateId.root == '2.16.840.1.113883.10.20.22.4.4' -%}
     {% include 'Resource/Condition' conditionEntry: entry.observation, ID: observationId -%}
     {% include 'Reference/Condition/Subject' ID: observationId, REF: fullPatientId -%}
 {% endif -%}
 
-{% if entry.observation.templateId | to_json_string | contains: '2.16.840.1.113883.10.20.22.4.2' -%}
+{% if entry.observation.templateId.root == '2.16.840.1.113883.10.20.22.4.2' -%}
     {% include 'Resource/Observation' observationEntry: entry.observation, ID: observationId -%}
     {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
 {% endif -%}
