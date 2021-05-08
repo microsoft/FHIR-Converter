@@ -44,6 +44,6 @@ If these filters do not meet your needs, you can also write your own filters.
 ### Miscellaneous filters
 | Filter | Description | Syntax |
 |-|-|-|
-| get_property | Returns a specific property of code system with mapping file | `{{ PID.8.Value \| get_property: 'CodeSystem/Gender', 'code' }}` |
-| evaluate | Returns a specific property of code system with template | `{{ input \| evaluate: 'code' }}` |
-| generate_uuid | Generates an ID based on input object, which can be a segment, field, component or string in HL7 v2 | `{% assign patientId = firstSegments.PID.3.1.Value \| generate_uuid -%}` |
+| get_property | Returns a specific property of a coding with mapping file [CodeSystem.json](../data/Templates/Hl7v2/CodeSystem/CodeSystem.json) | `{{ PID.8.Value \| get_property: 'CodeSystem/Gender', 'code' }}` |
+| evaluate | Returns a specific property of a coding in template [DataType/String](../data/Templates/Hl7v2/DataType/_String.liquid). It is a legacy template of Handlebars engine and obsolete now. | `{{ input \| evaluate: 'code' }}` |
+| generate_uuid | Generates an ID based on an input string | `{% assign patientId = firstSegments.PID.3.1.Value \| generate_uuid -%}` |
