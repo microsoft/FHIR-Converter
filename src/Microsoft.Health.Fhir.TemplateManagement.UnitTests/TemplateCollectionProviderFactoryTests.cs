@@ -39,9 +39,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         public static IEnumerable<object[]> GetDefaultTemplateTarGzFile()
         {
-            yield return new object[] { "NewDefaultTemplates.tar.gz", _defaultTemplateImageReference, @"..\..\..\..\..\data\Templates\Hl7v2" };
-            yield return new object[] { "Hl7v2NewDefaultTemplates.tar.gz", _defaultHl7v2TemplateImageReference, @"..\..\..\..\..\data\Templates\Hl7v2" };
-            yield return new object[] { "CcdaNewDefaultTemplates.tar.gz", _defaultCcdaTemplateImageReference, @"..\..\..\..\..\data\Templates\Ccda" };
+            yield return new object[] { "NewDefaultTemplates.tar.gz", _defaultTemplateImageReference, Path.Join(new[] { "..", "..", "..", "..", "..", "data", "Templates", "Hl7v2" }) };
+            yield return new object[] { "Hl7v2NewDefaultTemplates.tar.gz", _defaultHl7v2TemplateImageReference, Path.Join(new[] { "..", "..", "..", "..", "..", "data", "Templates", "Hl7v2" }) };
+            yield return new object[] { "CcdaNewDefaultTemplates.tar.gz", _defaultCcdaTemplateImageReference, Path.Join(new[] { "..", "..", "..", "..", "..", "data", "Templates", "Ccda" }) };
         }
 
         public static IEnumerable<object[]> GetDefaultImageReference()

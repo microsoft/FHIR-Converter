@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,26 +16,26 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
 {
     public class StreamUtilityTests
     {
-        private readonly string _tarGzFilePath = "TestData/TarGzFiles/testdecompress.tar.gz";
-        private readonly string _decompressedFileFolder = "TestData/DecompressedFiles";
+        private readonly string _tarGzFilePath = Path.Join(new[] { "TestData", "TarGzFiles", "testdecompress.tar.gz" });
+        private readonly string _decompressedFileFolder = Path.Join(new[] { "TestData", "DecompressedFiles" });
 
         public static IEnumerable<object[]> GetFilePathWithDigest()
         {
-            yield return new object[] { "TestData/DecompressedFiles/ADT_A01.liquid", "sha256:74a970505314dee5b9827af6c12145a4992573f490b9d2ee3a3126f0b352425f" };
-            yield return new object[] { "TestData/DecompressedFiles/ORU_R01.liquid", "sha256:4100086beb8df1e414a301c33066c1689e4156a2d9b718e3bc8146096d197032" };
-            yield return new object[] { "TestData/DecompressedFiles/.wh.VXU_V04.liquid", "sha256:837ccb607e312b170fac7383d7ccfd61fa5072793f19a25e75fbacb56539b86b" };
+            yield return new object[] { Path.Join(new[] { "TestData", "DecompressedFiles", "ADT_A01.liquid" }), "sha256:056748739aef34bb6e4140cdbf87d9f728597bc40b19e1021085985dd9684b54" };
+            yield return new object[] { Path.Join(new[] { "TestData", "DecompressedFiles", "ORU_R01.liquid" }), "sha256:46b9ca04c69e6a6bd7a1c73c3d070095a2c2551437de405558c1206bc720f473" };
+            yield return new object[] { Path.Join(new[] { "TestData", "DecompressedFiles", ".wh.VXU_V04.liquid" }), "sha256:f2ca1bb6c7e907d06dafe4687e579fce76b37e4e93b7605022da52e6ccc26fd2" };
         }
 
         public static IEnumerable<object[]> GetTarGzFilePathWithCountsOfFiles()
         {
-            yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 814 };
-            yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 768 };
+            yield return new object[] { Path.Join(new[] { "TestData", "TarGzFiles", "userV1.tar.gz" }), 814 };
+            yield return new object[] { Path.Join(new[] { "TestData", "TarGzFiles", "userV2.tar.gz" }), 768 };
         }
 
         public static IEnumerable<object[]> GetInvalidTarGzFilePath()
         {
-            yield return new object[] { "TestData/TarGzFiles/invalid1.tar.gz" };
-            yield return new object[] { "TestData/TarGzFiles/invalid2.tar.gz" };
+            yield return new object[] { Path.Join(new[] { "TestData", "TarGzFiles", "invalid1.tar.gz" }) };
+            yield return new object[] { Path.Join(new[] { "TestData", "TarGzFiles", "invalid2.tar.gz" }) };
         }
 
         [Fact]

@@ -142,16 +142,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         [Fact]
         public void GivenAOCIFileLayer_WhenGenerateDiffOCIFileLayerWithSnapshot_ADiffOCIFileLayerShouldBeReturned()
         {
-            var overlayFs = new OverlayFileSystem("TestData/UserFolder");
+            var overlayFs = new OverlayFileSystem("TestData" + Path.DirectorySeparatorChar + "UserFolder");
             overlayFs.ClearImageLayerFolder();
-            Directory.CreateDirectory("TestData/UserFolder/.image/base");
-            File.Copy("TestData/Snapshot/baselayer.tar.gz", "TestData/UserFolder/.image/base/layer1.tar.gz", true);
+            Directory.CreateDirectory(Path.Join(new[] { "TestData", "UserFolder", ".image", "base" }));
+            File.Copy(Path.Join(new[] { "TestData", "Snapshot", "baselayer.tar.gz" }), Path.Join(new[] { "TestData", "UserFolder", ".image", "base", "layer1.tar.gz" }), true);
             var fileLayer = overlayFs.ReadMergedOCIFileLayer();
             var baseFileLayer = GenerateBaseFileLayer(overlayFs);
             var diffLayers = _overlayOperator.GenerateDiffLayer(fileLayer, baseFileLayer);
 
-            File.Delete("TestData/UserFolder/.image/base/defaultlayer.tar.gz");
-            Assert.Equal(819, diffLayers.FileContent.Count());
+            File.Delete(Path.Join(new[] { "TestData", "UserFolder", ".image", "base", "defaultlayer.tar.gz" }));
+            Assert.Equal(820, diffLayers.FileContent.Count());
             Assert.Equal(2, diffLayers.SequenceNumber);
         }
 
