@@ -5,7 +5,7 @@ The Template Management CLI tool is mean to pull, push, and manage the templates
 Template OCI image is a layer based structure similar to docker image and uses [overlayfs](https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html?highlight=overlayfs) concept to organize templates. For custom templates, we use two layers image structure to organize template collection: base layer and user layer (The user layer could be extended to multi-layers in the future if necessary). Base layer packs Microsoft published templates and user layer packs all modified templates from users. Each layer will be compressed into "*.tar.gz" file before pushing to ACR.
 # Using Template Management CLI
 
-The command-line tool can be used to pull and push a template collection from/to Azure Container Registry. For now we only support windows, and will support other OSs soon.
+The command-line tool can be used to pull and push a template collection from/to Azure Container Registry.
 
 ## Prerequisites
 * Azure container registry - Create a container registry in your Azure subscription if you do not have one. This is the registry where you want to keep your Liquid templates. You can use the [Azure portal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) or the [Azure CLI](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-azure-cli).
@@ -13,7 +13,7 @@ The command-line tool can be used to pull and push a template collection from/to
 
 ## Authentication
 
-Before pull & push operations, azure authentication is required for private registries. Customers can directly use individual login with Azure AD through [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli) or use identity (individual identity or Azure AD [service principal identity](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal)) to sign in the registry. 
+Before pull & push operations, azure authentication is required for private registries. Customers can directly use individual login with Azure AD through [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli) or use identity (individual identity or Azure AD [service principal identity](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal)) to sign in the registry.
 
 ### Login Using Azure CLI
 
@@ -36,15 +36,21 @@ To use docker login, you should install docker first. Docker provides packages t
 ```
 * Oras Login
 
-The [oras](https://github.com/deislabs/oras) tool oras.exe for windows is packed in our repo, users can directly use it for login as follows.
+The [oras](https://github.com/deislabs/oras) tool is downloaded during our build. Users can directly use it for login as follows.
 
+Windows:
 ```
 >.\oras.exe login <acrName.azurecr.io> -u <username> -p <password>
 ```
 
+OSX/Linux:
+```
+>./oras login <acrName.azurecr.io> -u <username> -p <password>
+```
+
 If using service principal's identity for authentication, you need to create a [service principal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal) to access your registry. Ensure that the service principal is assigned a role such as AcrPush so that it has permissions to push and pull artifacts.
 ## Push
-To push a template collection, the command is: 
+To push a template collection, the command is:
 
 ```
 push <ImageReference> InputTemplateFolder [ -n | --NewBaseLayer]
@@ -76,8 +82,8 @@ Pushed testacr.azurecr.io/templatetest:default
 Digest: sha256:412ea84f1bb1a9d98345efb7b427ba89616ec29ac332d543eff9a2161ca12a58
 ```
 
-## Pull 
-For pull operation, the command is 
+## Pull
+For pull operation, the command is
 
 ```
 pull <ImageReference> <OutputTemplateFolder> [ -f | --ForceOverride]
@@ -100,5 +106,4 @@ Example usage of pulling an image of templates in a folder:
 
 After a collection of templates is pulled, a hidden folder ".image/" which contains information of metadata and layers is also created in the output folder. Users shouldn't modify this hidden folder which may lead to unexpected results.
 
-Image tags are mutable and could be overwritten unintentionally. We recommend you write down the image digest and use the immutable image digest as the template reference. Users should remember the image digest when pushing or find digest from ACR, since it won't be searched by our tool for now.   
-
+Image tags are mutable and could be overwritten unintentionally. We recommend you write down the image digest and use the immutable image digest as the template reference. Users should remember the image digest when pushing or find digest from ACR, since it won't be searched by our tool for now.
