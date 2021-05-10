@@ -1,3 +1,25 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+Location_ID_PV1_3: A resource Id, used to fill "location.location.reference" property. The resource is of "Location" type and generated based on "PV1.3" HL7 V2 identifier.
+Location_ID_PV1_6: A resource Id, used to fill "location.location.reference" property. The resource is of "Location" type and generated based on "PV1.6" HL7 V2 identifier.
+Location_ID_PV1_37: A resource Id, used to fill "hospitalization.destination.reference" property. The resource is of "Location" type and generated based on "PV1.37" HL7 V2 identifier.
+Encounter_Hospitalization_Origin_ID: A resource Id, used to fill "hospitalization.origin.reference" property.
+Practitioner_ID_PV1_7: A resource Id, used to fill "participant.individual.reference" property. The resource is of "Practitioner" type and generated based on "PV1.7" HL7 V2 identifier.
+Practitioner_ID_PV1_8: A resource Id, used to fill "participant.individual.reference" property. The resource is of "Practitioner" type and generated based on "PV1.8" HL7 V2 identifier.
+Practitioner_ID_PV1_9: A resource Id, used to fill "participant.individual.reference" property. The resource is of "Practitioner" type and generated based on "PV1.9" HL7 V2 identifier.
+Practitioner_ID_PV1_17: A resource Id, used to fill "participant.individual.reference" property. The resource is of "Practitioner" type and generated based on "PV1.17" HL7 V2 identifier.
+Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.reference" property. The resource is of "Practitioner" type and generated based on "PV1.52" HL7 V2 identifier.
+{% endcomment -%}
+
+{% evaluate Location_ID_PV1_3 using 'ID/Location' PL: PV1.3 -%}
+{% evaluate Location_ID_PV1_6 using 'ID/Location' PL: PV1.6 -%}
+{% evaluate Practitioner_ID_PV1_7 using 'ID/Practitioner' XCN: PV1.7 -%}
+{% evaluate Practitioner_ID_PV1_8 using 'ID/Practitioner' XCN: PV1.8 -%}
+{% evaluate Practitioner_ID_PV1_9 using 'ID/Practitioner' XCN: PV1.9 -%}
+{% evaluate Practitioner_ID_PV1_17 using 'ID/Practitioner' XCN: PV1.17 -%}
+{% evaluate Practitioner_ID_PV1_52 using 'ID/Practitioner' XCN: PV1.52 -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
@@ -72,6 +94,10 @@
                 {% if PV1.37 and Location_ID_PV1_37 -%}
                 "reference":"Location/{{ Location_ID_PV1_37 }}",
                 {% endif -%}
+            },
+            "origin":
+            {
+                "reference":"{{ Encounter_Hospitalization_Origin_ID }}",
             },
         },
         "participant":

@@ -211,6 +211,10 @@
       "resource": {
         "resourceType": "Provenance",
         "id": "6c7ff591-59e1-e0f7-5b51-bc264d138a56",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on GENERATED_INSTANT_PLACEHOLDER using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: TEMPLATE_URL_PLACEHOLDER.</span><span>Root template: OML_O21.</span></p></div>"
+        },
         "agent": [
           {
             "type": {
@@ -501,6 +505,9 @@
                   "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
                 }
               ]
+            },
+            "who": {
+              "reference": "Practitioner/0ac4aa7e-de74-bd40-3b64-97a1c0f3a414"
             }
           }
         ],
@@ -514,6 +521,9 @@
           ]
         },
         "occurredDateTime": "2016-02-23T22:37:05+08:00",
+        "location": {
+          "reference": "Location/8d21e8ca-50c4-05e7-edb8-9f74c624369e"
+        },
         "target": [
           {
             "reference": "ServiceRequest/bafe469c-5cc7-f800-feae-81b33cf36940"
@@ -523,26 +533,6 @@
       "request": {
         "method": "PUT",
         "url": "Provenance/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "PractitionerRole"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "PractitionerRole/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Device"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Device/"
       }
     },
     {

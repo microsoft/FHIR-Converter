@@ -1,3 +1,16 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+Location_ID_ROL_13: A resource Id, used to fill "location.reference" property. The resource is of "Location" type and generated based on "ROL.13" HL7 V2 identifier.
+Practitioner_ID_OBX_16: A resource Id, used to fill "practitioner.reference" property. The resource is of "Practitioner" type and generated based on "OBX.16" HL7 V2 identifier.
+Organization_ID_OBX_23: A resource Id, used to fill "organization.reference" property. The resource is of "Organization" type and generated based on "OBX.23" HL7 V2 identifier.
+Organization_ID_PRT_8: A resource Id, used to fill "organization.reference" property. The resource is of "Organization" type and generated based on "PRT.8" HL7 V2 identifier.
+Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" property. The resource is of "Organization" type and generated based on "ORC.21" HL7 V2 identifier.
+{% endcomment -%}
+
+{% evaluate Practitioner_ID_OBX_16 using 'ID/Practitioner' XCN: OBX.16 -%}
+{% evaluate Organization_ID_OBX_23 using 'ID/Organization' XON: OBX.23 -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{

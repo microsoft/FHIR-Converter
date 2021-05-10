@@ -1,3 +1,5 @@
+{% if XPN -%}
+
 "family":"{{ XPN.1.1 }}",
 "given":
 [
@@ -22,3 +24,5 @@
     "end":"{{ XPN.10.2 | format_as_date_time }}",
     "end":"{{ XPN.13.Value | format_as_date_time }}",
 },
+
+{% endif -%}

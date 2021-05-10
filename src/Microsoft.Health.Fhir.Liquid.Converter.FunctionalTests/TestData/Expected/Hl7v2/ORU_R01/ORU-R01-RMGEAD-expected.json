@@ -1,7 +1,7 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
-  "timestamp": "2002-02-15T09:30:00Z",
+  "timestamp": "2002-02-15T09:30:00",
   "identifier": {
     "value": "CNTRL-3456"
   },
@@ -124,6 +124,10 @@
       "resource": {
         "resourceType": "Provenance",
         "id": "66170fe1-2ab4-a3a0-672a-dd146b9bee1b",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on GENERATED_INSTANT_PLACEHOLDER using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: TEMPLATE_URL_PLACEHOLDER.</span><span>Root template: ORU_R01.</span></p></div>"
+        },
         "agent": [
           {
             "type": {
@@ -136,7 +140,7 @@
             }
           }
         ],
-        "recorded": "2002-02-15T09:30:00Z"
+        "recorded": "2002-02-15T09:30:00"
       },
       "request": {
         "method": "PUT",
@@ -201,7 +205,7 @@
             "value": "1045813"
           }
         ],
-        "effectiveDateTime": "2002-02-15T07:30:00Z",
+        "effectiveDateTime": "2002-02-15T07:30:00",
         "code": {
           "coding": [
             {
@@ -220,36 +224,6 @@
       "request": {
         "method": "PUT",
         "url": "DiagnosticReport/0ca81c8f-6cb0-10b0-91e8-7528b98f5691"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Organization"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "PractitionerRole"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "PractitionerRole/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Device"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Device/"
       }
     },
     {
