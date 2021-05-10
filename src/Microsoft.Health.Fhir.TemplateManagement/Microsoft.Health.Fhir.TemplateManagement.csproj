@@ -69,7 +69,7 @@
     <DownloadFile SourceUrl="$(OrasUrl)" DestinationFolder="../../bin">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
-    <Exec Command="tar -xvf ..\..\bin\oras_$(OrasVersion)_$(OsEnv)_amd64.tar.gz -C ..\..\bin &amp; $(CopyExecutable) ..\..\bin\$(OrasExecutable) ." Condition=" '$(OS)' == 'windows' " />
-    <Exec Command="tar -xvf ../../bin/oras_$(OrasVersion)_$(OsEnv)_amd64.tar.gz -C ../../bin &amp;&amp; $(CopyExecutable) ../../bin/$(OrasExecutable) ." Condition=" '$(OS)' != 'windows' " />
+    <Exec Command="tar -xvf ..\..\bin\oras_$(OrasVersion)_$(OsEnv)_amd64.tar.gz -C ..\..\bin &amp; $(CopyExecutable) ..\..\bin\$(OrasExecutable) ." Condition=" '$(OsEnv)' == 'windows' " />
+    <Exec Command="tar -xvf ../../bin/oras_$(OrasVersion)_$(OsEnv)_amd64.tar.gz -C ../../bin &amp;&amp; $(CopyExecutable) ../../bin/$(OrasExecutable) ." Condition=" '$(OsEnv)' != 'windows' " />
   </Target>
 </Project>
