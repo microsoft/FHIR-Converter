@@ -5,9 +5,28 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>true</IsPackable>
     <NuspecFile>Microsoft.Health.Fhir.Liquid.Converter.nuspec</NuspecFile>
-    <OrasWinUrl>https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_windows_amd64.tar.gz</OrasWinUrl>
+    <OrasVersion>0.8.1</OrasVersion>
   </PropertyGroup>
-  
+
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <OsEnv>windows</OsEnv>
+    <OrasUrl>https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_windows_amd64.tar.gz</OrasUrl>
+    <OrasExecutable>oras.exe</OrasExecutable>
+    <CopyExecutable>copy</CopyExecutable>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'">
+    <OsEnv>linux</OsEnv>
+    <OrasUrl>https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_linux_amd64.tar.gz</OrasUrl>
+    <OrasExecutable>oras</OrasExecutable>
+    <CopyExecutable>cp</CopyExecutable>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))'">
+    <OsEnv>darwin</OsEnv>
+    <OrasUrl>https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_darwin_amd64.tar.gz</OrasUrl>
+    <OrasExecutable>oras</OrasExecutable>
+    <CopyExecutable>cp</CopyExecutable>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Ensure.That" Version="9.2.0" />
     <PackageReference Include="Microsoft.Azure.ContainerRegistry" Version="1.0.0-preview.1" />
@@ -34,22 +53,23 @@
       <Link>CcdaDefaultTemplates.tar.gz</Link>
     </EmbeddedResource>
   </ItemGroup>
-	
+
   <ItemGroup>
     <None Update="oras.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="mkdir ..\..\bin &amp; tar -zcvf ../../bin/Hl7v2DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
     <Exec Command="tar -zcvf ../../bin/CcdaDefaultTemplates.tar.gz -C ../../data/Templates/Ccda ." />
   </Target>
-  
+
   <Target Name="DownloadOrasFile" BeforeTargets="Build">
-    <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="../../bin">
+    <DownloadFile SourceUrl="$(OrasUrl)" DestinationFolder="../../bin">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
-    <Exec Command="tar -xvf ..\..\bin\oras_0.8.1_windows_amd64.tar.gz -C ..\..\bin &amp; copy ..\..\bin\oras.exe ." />
+    <Exec Command="tar -xvf ..\..\bin\oras_$(OrasVersion)_$(OsEnv)_amd64.tar.gz -C ..\..\bin &amp; $(CopyExecutable) ..\..\bin\$(OrasExecutable) ." Condition=" '$(OS)' == 'windows' " />
+    <Exec Command="tar -xvf ../../bin/oras_$(OrasVersion)_$(OsEnv)_amd64.tar.gz -C ../../bin &amp;&amp; $(CopyExecutable) ../../bin/$(OrasExecutable) ." Condition=" '$(OS)' != 'windows' " />
   </Target>
 </Project>
