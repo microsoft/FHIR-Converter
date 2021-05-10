@@ -20,6 +20,7 @@ variables:
   bulidnum: $[counter(format('{0}.{1}',variables['major'],variables['minor']), 100)]
   revision: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
   version: $(major).$(minor).$(bulidnum).$(revision)
+  orasVer: 0.8.1
 
 stages:
 - stage: Build
@@ -45,15 +46,15 @@ stages:
         command: build
         projects: '$(solution)'
         arguments: '--configuration $(buildConfiguration) -p:Version=$(version)'
-            
+
     - task: DotNetCoreCLI@2
       displayName: 'dotnet test'
       inputs:
         command: test
         projects: '$(unitTestProjects)'
         arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-        nobuild: true     
-        
+        nobuild: true
+
 
     - task: DotNetCoreCLI@2
       displayName: 'publish win_x64 bin'
@@ -109,18 +110,18 @@ stages:
           --output $(Build.BinariesDirectory)/nupkgs
           --no-build
           -p:NuspecProperties="version=$(version)"
-    
+
     - task: PublishBuildArtifacts@1
       displayName: 'publish nuget artifacts'
       inputs:
         pathToPublish: '$(Build.BinariesDirectory)/nupkgs'
         artifactName: 'nuget'
-        publishLocation: 'container'     
-    
+        publishLocation: 'container'
+
     - task: PublishBuildArtifacts@1
       displayName: 'publish artifacts'
       inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)' 
+        pathToPublish: '$(Build.ArtifactStagingDirectory)'
         artifactName: 'FhirConverterBuild'
 
 - stage: FunctionalTests
@@ -171,11 +172,11 @@ stages:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
-        curl -LO https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_linux_amd64.tar.gz
+        curl -LO https://github.com/deislabs/oras/releases/download/v$(orasVer)/oras_$(orasVer)_linux_amd64.tar.gz
         mkdir -p oras-install/
-        tar -zxf oras_0.8.1_*.tar.gz -C oras-install/
+        tar -zxf oras_$(orasVer)_*.tar.gz -C oras-install/
         mv oras-install/oras /usr/local/bin/
-        rm -rf oras_0.8.1_*.tar.gz oras-install/
+        rm -rf oras_$(orasVer)_*.tar.gz oras-install/
         docker run --rm -d -p 5000:5000 --name registry registry:2
       displayName: start registry
     - script: |
@@ -187,7 +188,7 @@ stages:
       inputs:
         command: stop
         container: registry
-  
+
 - stage: Release
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
   jobs:
@@ -202,18 +203,14 @@ stages:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
 
-    - task: GithubRelease@0 
-      displayName: 'Create GitHub Release'      
+    - task: GithubRelease@0
+      displayName: 'Create GitHub Release'
       inputs:
         gitHubConnection: githubpipeline
         repositoryName: microsoft/FHIR-Converter
         isDraft: true
         tagSource: manual
-        tag: v$(major).$(minor).$(bulidnum)      
+        tag: v$(major).$(minor).$(bulidnum)
         assets: |
           $(System.DefaultWorkingDirectory)/FhirConverterBuild/bin/**
           $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/Hl7v2DefaultTemplates.tar.gz
-
-
-
-
