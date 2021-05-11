@@ -19,6 +19,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
         [Option('c', "InputDataContent", Required = false, HelpText = "Input data content. Please specify OutputDataFile to get the results.")]
         public string InputDataContent { get; set; }
 
+        [Option('n', "InputDataFile", Required = false, HelpText = "Input data file. Please specify OutputDataFile to get the results.")]
+        public string InputDataFile { get; set; }
+
         [Option('f', "OutputDataFile", Required = false, HelpText = "Output data file")]
         public string OutputDataFile { get; set; }
 
