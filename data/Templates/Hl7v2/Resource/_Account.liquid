@@ -7,6 +7,11 @@
         [
             { {% include 'DataType/CX' CX: PID.18 -%} },
         ],
+        {% if PID.18 %}
+        "status": "active",
+        {% else %}
+        "status": "unknown",
+        {% endif %}
         "subject":
         [
             {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
