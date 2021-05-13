@@ -1124,7 +1124,13 @@
                 "system": ""
             }
         }, 
-        "CodeSystem/Language": {}, 
+        "CodeSystem/Language": {
+            "__default__": {
+                "code": "en-US",
+                "display": "English (United States)",
+                "system": ""
+            }
+        }, 
         "CodeSystem/OrderStatus": {
             "RP": {
                 "code": "revoked", 
@@ -1979,8 +1985,13 @@
                 "system": "http://hl7.org/fhir/contact-point-use"
             }, 
             "EMR": {
-                "code": "", 
-                "display": "", 
+                "code": "emergency", 
+                "display": "Emergency", 
+                "system": ""
+            }, 
+            "FAX": {
+                "code": "fax", 
+                "display": "Fax", 
                 "system": ""
             }, 
             "NET": {
