@@ -11,20 +11,30 @@ RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" proper
         "id":"{{ ID }}",
         "identifier":
         [
-            { {% include 'DataType/CX' CX: PID.21 -%} },
-            { {% include 'DataType/EIIdentifier' EI: ROL.1 -%} },
+            {
+                {% include 'DataType/CX' CX: PID.21 -%}
+            },
+            {
+                {% include 'DataType/EIIdentifier' EI: ROL.1 -%}
+            },
             {
                 {% include 'DataType/PLN' PLN: PRT.24 -%}
             },
         ],
         "relationship":
         [
-            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Role', CWE: ROL.3 -%} },
-            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Relationship', CWE: NK1.3 -%} },
+            {
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Relationship', CWE: NK1.3 -%}
+            },
+            {
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Role', CWE: ROL.3 -%}
+            },
             {
                 {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Relationship', CWE: NK1.7 -%}
             },
-            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: PRT.4 -%} },
+            {
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: PRT.4 -%}
+            },
         ],
         {% include 'DataType/XCNRelatedPerson' XCN: ROL.4 -%}
         "period":
@@ -38,27 +48,33 @@ RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" proper
         },
         "address":
         [
-            { {% include 'DataType/XAD' XAD: ROL.11 -%} },
+            {
+                {% include 'DataType/XAD' XAD: ROL.11 -%}
+            },
             {
                 {% include 'DataType/XAD' XAD: NK1.4.Repeats[0] -%}
             },
             {
                 {% include 'DataType/XAD' XAD: NK1.32 -%}
             },
-            { {% include 'DataType/XAD' XAD: PRT.14.Repeats[0] -%} },
+            {
+                {% include 'DataType/XAD' XAD: PRT.14.Repeats[0] -%}
+            },
         ],
         "telecom":
         [
-            { {% include 'DataType/XTN' XTN: ROL.12 -%} },
-            {% for n in NK1.5.Repeats -%}
             {
-                {% include 'DataType/XTN' XTN: n -%}
+                {% include 'DataType/XTN' XTN: ROL.12 -%}
             },
+            {% for n in NK1.5.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: n -%}
+                },
             {% endfor -%}
             {
                 {% include 'DataType/XTN' XTN: NK1.6 -%}
                 {% if NK1.6 -%}
-                "use":"work",
+                    "use":"work",
                 {% endif -%}
             },
             {
@@ -70,12 +86,18 @@ RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" proper
             {
                 {% include 'DataType/XTN' XTN: NK1.41 -%}
             },
-            { {% include 'DataType/XTN' XTN: PRT.15.Repeats[0] -%} },
+            {
+                {% include 'DataType/XTN' XTN: PRT.15.Repeats[0] -%}
+            },
         ],
         "name":
         [
-            { {% include 'DataType/XPN' XPN: NK1.2.Repeats[0] -%} },
-            { {% include 'DataType/XPN' XPN: NK1.30 -%} },
+            {
+                {% include 'DataType/XPN' XPN: NK1.2.Repeats[0] -%}
+            },
+            {
+                {% include 'DataType/XPN' XPN: NK1.30 -%}
+            },
         ],
         "gender":"{{ NK1.15.Value | get_property: 'CodeSystem/Gender', 'code' }}",
         "birthDate":"{{ NK1.16.Value | add_hyphens_date }}",

@@ -25,31 +25,31 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
         "valueQuantity":
         {
             {% if OBX.2.Value == "NM" -%}
-            "value":"{{ OBX.5.Value }}",
+                "value":"{{ OBX.5.Value }}",
             {% endif -%}
             {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
             {% if OBX.2.Value == "SN" -%}
             {% endif -%}
             {% if OBX.2.Value == "SN" -%}
-            {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
             {% endif -%}
             {% if OBX.2.Value == "NA" or OBX.2.Value == "NM" -%}
-            {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
             {% endif -%}
         },
         {% if OBX.2.Value == "ST" or OBX.2.Value == "FT" or OBX.2.Value == "TX" -%}
-        "valueString":"{{ OBX.5.Value }}",
+            "valueString":"{{ OBX.5.Value }}",
         {% endif -%}
         {% if OBX.2.Value == "VR" -%}
-        "valueString":"{{ OBX.5.1 }}-{{ OBX.5.2 }}",
+            "valueString":"{{ OBX.5.1 }}-{{ OBX.5.2 }}",
         {% endif -%}
         {% if OBX.2.Value == "SN" -%}
-        "valueString":"{{ OBX.5.1 }} {{ OBX.5.2 }} {{ OBX.5.3 }}",
+            "valueString":"{{ OBX.5.1 }} {{ OBX.5.2 }} {{ OBX.5.3 }}",
         {% endif -%}
         "valueCodeableConcept":
         {
             {% if OBX.2.Value == "CF" or OBX.2.Value == "CNE" or OBX.2.Value == "CWE" or OBX.2.Value == "CE" -%}
-            {% include 'DataType/CWECodeableConcept' CWE: OBX.5 -%}
+                {% include 'DataType/CWECodeableConcept' CWE: OBX.5 -%}
             {% endif -%}
             {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
             {% if OBX.2.Value == "IS" -%}
@@ -58,36 +58,38 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
         "valuePeriod":
         {
             {% if OBX.2.Value == "DR" -%}
-            {% include 'DataType/DR' DR: OBX.5 -%}
+                {% include 'DataType/DR' DR: OBX.5 -%}
             {% endif -%}
         },
         {% if OBX.2.Value == "DTM" or OBX.2.Value == "DT" -%}
-        "valueDateTime":"{{ OBX.5.Value | format_as_date_time }}",
+            "valueDateTime":"{{ OBX.5.Value | format_as_date_time }}",
         {% endif -%}
         {% if OBX.2.Value == "TM" -%}
-        "valueTime":"{{ OBX.5.Value }}",
+            "valueTime":"{{ OBX.5.Value }}",
         {% endif -%}
         "valueRatio":
         {
             {% if OBX.2.Value == "SN" -%}{% if OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
-            {% include 'DataType/SNRatio' SN: OBX.5 -%}
+                {% include 'DataType/SNRatio' SN: OBX.5 -%}
             {% endif -%}{% endif -%}
             "numerator":
             {
                 {% if OBX.2.Value == "SN" -%}{% if OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
-                {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                    {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
                 {% endif -%}{% endif -%}
             },
             "denominator":
             {
                 {% if OBX.2.Value == "SN" -%}{% if OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
-                {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                    {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
                 {% endif -%}{% endif -%}
             },
         },
         "interpretation":
         [
-            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/InterpretationCode', CWE: OBX.8 -%} },
+            {
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/InterpretationCode', CWE: OBX.8 -%}
+            },
         ],
         "status":"{{ OBX.11.Value | get_property: 'CodeSystem/ObservationStatus', 'code' }}",
         "effectiveDateTime":"{{ OBX.14.Value | format_as_date_time }}",
@@ -101,7 +103,9 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
         },
         "identifier":
         [
-            { {% include 'DataType/EIIdentifier' EI: OBX.21 -%} },
+            {
+                {% include 'DataType/EIIdentifier' EI: OBX.21 -%}
+            },
             {
                 "type":
                 {
@@ -109,7 +113,7 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                     [
                         {
                             {% if OBX.21 -%}
-                            "code":"FILL",
+                                "code":"FILL",
                             {% endif -%}
                         },
                     ],
@@ -120,17 +124,17 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
         [
             {
                 {% if OBX.16 and Practitioner_ID_OBX_16 -%}
-                "reference":"Practitioner/{{ Practitioner_ID_OBX_16 }}",
+                    "reference":"Practitioner/{{ Practitioner_ID_OBX_16 }}",
                 {% endif -%}
             },
             {
                 {% if OBX.23 and Organization_ID_OBX_23 -%}
-                "reference":"Organization/{{ Organization_ID_OBX_23 }}",
+                    "reference":"Organization/{{ Organization_ID_OBX_23 }}",
                 {% endif -%}
             },
             {
                 {% if OBX.25 and PractitionerRole_ID_OBX_25 -%}
-                "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_25 }}",
+                    "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_25 }}",
                 {% endif -%}
             },
         ],
@@ -144,26 +148,26 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                 "valueQuantity":
                 {
                     {% if OBX.2.Value == "NM" -%}
-                    "value":"{{ OBX.5.Value }}",
+                        "value":"{{ OBX.5.Value }}",
                     {% endif -%}
                     {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
                     {% if OBX.2.Value == "SN" -%}
                     {% endif -%}
                     {% if OBX.2.Value == "SN" -%}
-                    {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                        {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
                     {% endif -%}
                     {% if OBX.2.Value == "NA" or OBX.2.Value == "NM" -%}
-                    {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                        {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
                     {% endif -%}
                 },
                 {% if OBX.2.Value == "ST" or OBX.2.Value == "FT" or OBX.2.Value == "TX" -%}
-                "valueString":"{{ OBX.5.Value }}",
+                    "valueString":"{{ OBX.5.Value }}",
                 {% endif -%}
                 {% if OBX.2.Value == "VR" -%}
-                "valueString":"{{ OBX.5.1 }}-{{ OBX.5.2}}",
+                    "valueString":"{{ OBX.5.1 }}-{{ OBX.5.2}}",
                 {% endif -%}
                 {% if OBX.2.Value == "SN" -%}
-                "valueString":"{{ OBX.5.1 }} {{ OBX.5.2 }} {{ OBX.5.3 }}",
+                    "valueString":"{{ OBX.5.1 }} {{ OBX.5.2 }} {{ OBX.5.3 }}",
                 {% endif -%}
                 "valueCodeableConcept":
                 {
@@ -177,30 +181,30 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                 "valuePeriod":
                 {
                     {% if OBX.2.Value == "DR" -%}
-                    {% include 'DataType/DR' DR: OBX.5 -%}
+                        {% include 'DataType/DR' DR: OBX.5 -%}
                     {% endif -%}
                 },
                 {% if OBX.2.Value == "DTM" or OBX.2.Value == "DT" -%}
-                "valueDateTime":"{{ OBX.5.Value | format_as_date_time }}",
+                    "valueDateTime":"{{ OBX.5.Value | format_as_date_time }}",
                 {% endif -%}
                 {% if OBX.2.Value == "TM" -%}
-                "valueTime":"{{ OBX.5.Value }}",
+                    "valueTime":"{{ OBX.5.Value }}",
                 {% endif -%}
                 "valueRatio":
                 {
                     {% if OBX.2.Value == "SN" -%}{% if OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
-                    {% include 'DataType/SNRatio' SN: OBX.5 -%}
+                        {% include 'DataType/SNRatio' SN: OBX.5 -%}
                     {% endif -%}{% endif -%}
                     "numerator":
                     {
                         {% if OBX.2.Value == "SN" -%}{% if OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
-                        {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                            {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
                         {% endif -%}{% endif -%}
                     },
                     "denominator":
                     {
                         {% if OBX.2.Value == "SN" -%}{% if OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
-                        {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                            {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
                         {% endif -%}{% endif -%}
                     },
                 },
@@ -212,7 +216,9 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                 ],
                 "interpretation":
                 [
-                    { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/InterpretationCode', CWE: OBX.8 -%} },
+                    {
+                        {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/InterpretationCode', CWE: OBX.8 -%}
+                    },
                 ],
             },
         ],
