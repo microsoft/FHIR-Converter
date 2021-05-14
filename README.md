@@ -21,7 +21,7 @@ The following table compares the two converter engines:
 The Converter makes use of templates that define the mappings between different data formats.
 The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/FiltersSummary.md), which make it easy with work with HL7 v2 messages.
 
-The converter comes with ready to use templates for HL7v2 to FHIR conversion. These templates are based on the [spreadsheet](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk/edit#gid=0) created by the HL7 [2-To-FHIR project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project). If needed, you can create new, or modify existing templates to meet your specific conversion requirements.
+The converter comes with a few ready to use templates for HL7v2 to FHIR conversion. These templates are based on the [spreadsheet](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk/edit#gid=0) created by the HL7 [2-To-FHIR project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project). If needed, you can create new, or modify existing templates to meet your specific conversion requirements.
 
 FHIR Converter with DotLiquid engine is integrated into the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/), and [FHIR Server for Azure](https://github.com/microsoft/fhir-server) as the [$convert-data](https://docs.microsoft.com/en-us/azure/healthcare-apis/convert-data) operation. In addition, it is also available as a command-line tool. The converter transforms the input data into FHIR bundles that can be persisted to a FHIR server.
 
@@ -49,6 +49,7 @@ Here are the parameters that the tool accepts:
 | -d | TemplateDirectory | Required | | Root directory of templates. |
 | -r | RootTemplate | Required | | Name of root template. Valid values are ADT_A01, OML_O21, ORU_R01, VXU_V04. |
 | -c | InputDataContent | Optional| | Input data content. Specify OutputDataFile to get the results. |
+| -n | InputDataFile | Optional| | Input data file. Specify OutputDataFile to get the results. |
 | -f | OutputDataFile | Optional | | Output data file. |
 | -i | InputDataFolder | Optional | | Input data folder. Specify OutputDataFolder to get the results. |
 | -o | OutputDataFolder | Optional | | Output data folder. |
