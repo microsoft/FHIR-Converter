@@ -1,4 +1,4 @@
-{% assign ids = obj.id | to_array %}
+{% assign ids = obj.id | to_array -%}
 {% if ids.first.root and ids.first.extension -%}
 {{ ids.first.root | append: '|' | append: ids.first.extension | generate_uuid }}
 {% elsif ids.first.root -%}

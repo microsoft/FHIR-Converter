@@ -34,9 +34,9 @@
         "provision":
         {
             "code":
-            {
-                {% include 'DataType/CodeableConcept' CodeableConcept: consentEntry.component.observation.value -%}
-            },
+            [
+                { {% include 'DataType/CodeableConcept' CodeableConcept: consentEntry.component.observation.value -%} },
+            ]
         },
     },
     "request":{

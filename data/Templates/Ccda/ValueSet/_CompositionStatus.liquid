@@ -1,19 +1,20 @@
-{% if code == 'draft' -%}
-"preliminary",
-{% elsif code == 'preliminary' -%}
-"preliminary",
-{% elsif code == 'final' -%}
-"final",
-{% elsif code == 'completed' -%}
-"final",
-{% elsif code == 'amended' -%}
-"amended",
-{% elsif code == 'replaced' -%}
-"amended",
-{% elsif code == 'entered-in-error' -%}
-"entered-in-error",
-{% elsif code == 'error' -%}
-"entered-in-error",
-{% else -%}
-"{{ code }}",
-{% endif -%}
+{% case code -%}
+    {% when "draft" -%}
+        "preliminary",
+    {% when "preliminary" -%}
+        "preliminary",
+    {% when "final" -%}
+        "final",
+    {% when "completed" -%}
+        "final",
+    {% when "amended" -%}
+        "amended",
+    {% when "replaced" -%}
+        "amended",
+    {% when "entered-in-error" -%}
+        "entered-in-error",
+    {% when "error" -%}
+        "entered-in-error",
+    {% else -%}
+        "{{ code }}",
+{% endcase -%}

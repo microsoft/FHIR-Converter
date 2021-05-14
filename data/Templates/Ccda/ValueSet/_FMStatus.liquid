@@ -1,15 +1,16 @@
-{% if code == 'active' -%}
-"active",
-{% elsif code == 'cancelled' -%}
-"cancelled",
-{% elsif code == 'abandonded' -%}
-"cancelled",
-{% elsif code == 'entered-in-error' -%}
-"entered-in-error",
-{% elsif code == 'error' -%}
-"entered-in-error",
-{% elsif code == 'draft' -%}
-"draft",
-{% else -%}
-"{{ code }}",
-{% endif -%}
+{% case code -%}
+    {% when "active" -%}
+        "active",
+    {% when "cancelled" -%}
+        "cancelled",
+    {% when "abandonded" -%}
+        "cancelled",
+    {% when "entered-in-error" -%}
+        "entered-in-error",
+    {% when "error" -%}
+        "entered-in-error",
+    {% when "draft" -%}
+        "draft",
+    {% else -%}
+        "{{ code }}",
+{% endcase -%}

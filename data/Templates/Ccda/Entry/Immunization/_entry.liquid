@@ -1,0 +1,14 @@
+{% assign immunizationId = entry | to_json_string | generate_uuid -%}
+{% include 'Resource/Immunization' immunization: entry.substanceAdministration, ID: immunizationId -%}
+
+{% if entry.substanceAdministration.informant.assignedEntity.id.root == 'FACILITY' -%}
+    {% if entry.substanceAdministration.informant.assignedEntity.representedOrganization.name._ -%}
+        {% assign organizationId = substanceAdministration.informant.assignedEntity.representedOrganization | to_json_string | generate_uuid -%}
+        {% include 'Resource/Organization' organization: entry.substanceAdministration.informant.assignedEntity.representedOrganization, ID: organizationId -%}
+        {% assign fullOrganizationId = organizationId | prepend: 'Organization/' -%}
+        {% include 'Reference/Immunization/Performer_Actor' ID: immunizationId, REF: fullOrganizationId -%}
+    {% endif -%}
+{% endif -%}
+
+{% include 'Reference/Immunization/Patient' ID: immunizationId, REF: fullPatientId -%}
+

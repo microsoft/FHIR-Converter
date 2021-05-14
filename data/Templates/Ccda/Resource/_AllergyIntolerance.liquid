@@ -22,33 +22,38 @@
         },
         "reaction":
         [
+            {% assign relationships = allergyEntry.entryRelationship | to_array -%}
+            {% for r in relationships -%}
             {
-                "substance":{ {% include 'DataType/CodeableConcept' CodeableConcept: allergyEntry.participant.participantRole.playingEntity.code -%} },
-                "substance":{ {% include 'DataType/CodeableConcept' CodeableConcept: allergyEntry.participant.participantRole.playingEntity.code.translation -%} },
+                {% if allergyEntry.participant.participantRole.playingEntity.code.translation -%}
+                    "substance":{ {% include 'DataType/CodeableConcept' CodeableConcept: allergyEntry.participant.participantRole.playingEntity.code.translation -%} },
+                {% else -%}
+                    "substance":{ {% include 'DataType/CodeableConcept' CodeableConcept: allergyEntry.participant.participantRole.playingEntity.code -%} },
+                {% endif -%}
 
-                {% assign relationships = allergyEntry.entryRelationship | to_array -%}
-                {% for r in relationships -%}
-                    {% if r.observation.templateId | to_json_string | contains: '2.16.840.1.113883.10.20.22.4.9' -%}
-                        "manifestation":
-                        [
-                            {% if r.observation.value.translation -%}
-                                { {% include 'DataType/CodeableConcept' CodeableConcept: r.observation.value.translation -%} },
-                            {% else -%}
-                                { {% include 'DataType/CodeableConcept' CodeableConcept: r.observation.value -%} },
-                            {% endif -%}
-                        ],
-                        "onset": "{{ r.observation.effectiveTime.low.value | format_as_date_time }}", 
-                    {% endif -%}
-
-                    {% if r.observation.templateId | to_json_string | contains: '2.16.840.1.113883.10.20.22.4.8' -%}
+                
+                {% if r.observation.templateId | to_json_string | contains: '2.16.840.1.113883.10.20.22.4.9' -%}
+                    "manifestation":
+                    [
                         {% if r.observation.value.translation -%}
-                            "severity":{% include 'ValueSet/AllergySeverity' code: r.observation.value.translation.displayName -%},
+                            { {% include 'DataType/CodeableConcept' CodeableConcept: r.observation.value.translation -%} },
                         {% else -%}
-                            "severity":{% include 'ValueSet/AllergySeverity' code: r.observation.value.displayName -%},
+                            { {% include 'DataType/CodeableConcept' CodeableConcept: r.observation.value -%} },
                         {% endif -%}
+                    ],
+                    "onset": "{{ r.observation.effectiveTime.low.value | format_as_date_time }}", 
+                {% endif -%}
+
+                {% if r.observation.templateId | to_json_string | contains: '2.16.840.1.113883.10.20.22.4.8' -%}
+                    {% if r.observation.value.translation -%}
+                        "severity":{% include 'ValueSet/AllergySeverity' code: r.observation.value.translation.displayName -%},
+                    {% else -%}
+                        "severity":{% include 'ValueSet/AllergySeverity' code: r.observation.value.displayName -%},
                     {% endif -%}
-                {% endfor -%}
+                {% endif -%}
             },
+            {% endfor -%}
+
         ],
         "onsetDateTime":"{{ allergyEntry.effectiveTime.low.value | format_as_date_time }}",
     },

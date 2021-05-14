@@ -12,11 +12,13 @@
         ],
         "status":"{{ medicationDispense.statusCode.code }}",
         "whenPrepared":"{{ medicationDispense.effectiveTime.value | format_as_date_time }}",
-        "quantity":
-        {
-            "value":"{{ medicationDispense.quantity.value }}",
-            "unit":"{{ medicationDispense.quantity.unit }}",
-        },
+        {% if medicationDispense.quantity.value -%}
+            "quantity":
+            {
+                "value":{{ medicationDispense.quantity.value }},
+                "unit":"{{ medicationDispense.quantity.unit }}",
+            },
+        {% endif -%}
     },
     "request":{
         "method":"PUT",

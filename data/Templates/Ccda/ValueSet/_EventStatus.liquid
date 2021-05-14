@@ -1,33 +1,34 @@
-{% if code == 'preparation' -%}
-"preparation",
-{% elsif code == 'planned' -%}
-"preparation",
-{% elsif code == 'active' -%}
-"in-progress",
-{% elsif code == 'in-progress' -%}
-"in-progress",
-{% elsif code == 'abandoned' -%}
-"not-done",
-{% elsif code == 'not-done' -%}
-"not-done",
-{% elsif code == 'suspended' -%}
-"on-hold",
-{% elsif code == 'on-hold' -%}
-"on-hold",
-{% elsif code == 'failed' -%}
-"stopped",
-{% elsif code == 'stopped' -%}
-"stopped",
-{% elsif code == 'completed' -%}
-"completed",
-{% elsif code == 'complete' -%}
-"completed",
-{% elsif code == 'entered-in-error' -%}
-"entered-in-error",
-{% elsif code == 'error' -%}
-"entered-in-error",
-{% elsif code == 'unknown' -%}
-"unknown",
-{% else -%}
-"{{ code }}",
-{% endif -%}
+{% case code -%}
+    {% when "preparation" -%}
+        "preparation",
+    {% when "planned" -%}
+        "preparation",
+    {% when "active" -%}
+        "in-progress",
+    {% when "in-progress" -%}
+        "in-progress",
+    {% when "abandoned" -%}
+        "not-done",
+    {% when "not-done" -%}
+        "not-done",
+    {% when "suspended" -%}
+        "on-hold",
+    {% when "on-hold" -%}
+        "on-hold",
+    {% when "failed" -%}
+        "stopped",
+    {% when "stopped" -%}
+        "stopped",
+    {% when "completed" -%}
+        "completed",
+    {% when "complete" -%}
+        "completed",
+    {% when "entered-in-error" -%}
+        "entered-in-error",
+    {% when "error" -%}
+        "entered-in-error",
+    {% when "unknown" -%}
+        "unknown",
+    {% else -%}
+        "{{ code }}",
+{% endcase -%}
