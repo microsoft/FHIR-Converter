@@ -10,7 +10,7 @@
             { {% include 'DataType/Identifier' Identifier: id -%} },
             {% endfor -%}
         ],
-        "status":"{{ medicationStatement.statusCode.code | get_property: 'ValueSet/MedicationStatementStatus' }}",
+        "status":"{{ medicationStatement.statusCode.code | downcase | get_property: 'ValueSet/MedicationStatementStatus' }}",
         "effectivePeriod":
         {
             "start":"{{ medicationStatement.effectiveTime.low.value | format_as_date_time }}",
@@ -22,11 +22,13 @@
                 "doseAndRate":
                 [
                     {
-                        "doseQuantity":
-                        {
-                            "value":"{{ medicationStatement.doseQuantity.value }}",
-                            "unit":"{{ medicationStatement.doseQuantity.unit }}",
-                        },
+                        {% if medicationStatement.doseQuantity.value -%}
+                            "doseQuantity":
+                            {
+                                "value":{{ medicationStatement.doseQuantity.value }},
+                                "unit":"{{ medicationStatement.doseQuantity.unit }}",
+                            },
+                        {% endif -%}
                     },
                 ],
             },
