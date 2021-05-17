@@ -25,7 +25,7 @@ AllergyIntolerance_Asserter_ID: A resource Id, used to fill "asserter.reference"
         [
             {
                 {% if AL1.4.1.Value != "U" -%}
-                "severity":"{{ AL1.4.1.Value | get_property: 'CodeSystem/AllergyIntoleranceSeverity', 'code' }}",
+                    "severity":"{{ AL1.4.1.Value | get_property: 'CodeSystem/AllergyIntoleranceSeverity', 'code' }}",
                 {% endif -%}
                 "manifestation":
                 [

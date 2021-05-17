@@ -16,13 +16,13 @@ Task_ReasonReference_ID: A resource Id, used to fill "reasonReference.reference"
         "resourceType": "Task",
         "id":"{{ ID }}",
         {% if ORC.1 -%}
-        "status":"requested",
+            "status":"requested",
         {% endif -%}
         {% if ORC.1 -%}
-        "status":"cancelled",
+            "status":"cancelled",
         {% endif -%}
         {% if ORC.1 -%}
-        "intent":"order",
+            "intent":"order",
         {% endif -%}
         "code":
         {
@@ -30,10 +30,10 @@ Task_ReasonReference_ID: A resource Id, used to fill "reasonReference.reference"
             [
                 {
                     {% if ORC.1 -%}
-                    "code":"fulfill",
+                        "code":"fulfill",
                     {% endif -%}
                     {% if ORC.1 -%}
-                    "system":"http://hl7.org/fhir/CodeSystem/task-code",
+                        "system":"http://hl7.org/fhir/CodeSystem/task-code",
                     {% endif -%}
                 },
             ],
@@ -44,7 +44,7 @@ Task_ReasonReference_ID: A resource Id, used to fill "reasonReference.reference"
         "requester":
         {
             {% if ORC.12 and Practitioner_ID_ORC_12 -%}
-            "reference":"Practitioner/{{ Practitioner_ID_ORC_12 }}",
+                "reference":"Practitioner/{{ Practitioner_ID_ORC_12 }}",
             {% endif -%}
         },
         "focus":
