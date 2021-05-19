@@ -17,22 +17,22 @@ Procedure_Asserter_ID: A resource Id, used to fill "asserter.reference" property
         "code":
         {
             {% if PR1.3.9 == null -%}
-            "text":"{{ PR1.4.Value }}",
+                "text":"{{ PR1.4.Value }}",
             {% endif -%}
         },
         {% if PR1.7 == null -%}
-        "performedDateTime":"{{ PR1.5.Value | format_as_date_time }}",
+            "performedDateTime":"{{ PR1.5.Value | format_as_date_time }}",
         {% endif -%}
         {% if PR1.7 and PR1.5.5 == null -%}
-        "performedDateTime":"{{ PR1.5.Value | format_as_date_time }}",
+            "performedDateTime":"{{ PR1.5.Value | format_as_date_time }}",
         {% endif -%}
         "performedPeriod":
         {
             {% if PR1.7 and PR1.5.5 -%}
-            "start":"{{ PR1.5.Value | format_as_date_time }}",
+                "start":"{{ PR1.5.Value | format_as_date_time }}",
             {% endif -%}
             {% if PR1.5.5.Value -%}
-            "end":Procedure.performedPeriod.start+PR1-7,
+                "end":Procedure.performedPeriod.start+PR1-7,
             {% endif -%}
         },
         "category":
@@ -41,23 +41,27 @@ Procedure_Asserter_ID: A resource Id, used to fill "asserter.reference" property
         },
         "reasonCode":
         [
-            { {% include 'DataType/CWECodeableConcept' CWE: PR1.15 -%} },
+            {
+                {% include 'DataType/CWECodeableConcept' CWE: PR1.15 -%}
+            },
         ],
         "identifier":
         [
-            { {% include 'DataType/EIIdentifier' EI: PR1.19 -%} },
+            {
+                {% include 'DataType/EIIdentifier' EI: PR1.19 -%}
+            },
         ],
         "location":
         {
             {% if PR1.23 and Location_ID_PR1_23 -%}
-            "reference":"Location/{{ Location_ID_PR1_23 }}",
+                "reference":"Location/{{ Location_ID_PR1_23 }}",
             {% endif -%}
         },
         "partOf":
         [
             {
                 {% if PR1.25 and Procedure_ID_PR1_25 -%}
-                "reference":"Procedure/{{ Procedure_ID_PR1_25 }}",
+                    "reference":"Procedure/{{ Procedure_ID_PR1_25 }}",
                 {% endif -%}
             },
         ],

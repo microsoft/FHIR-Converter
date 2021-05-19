@@ -1,9 +1,7 @@
 {% if NDL -%}
-
-"period":
-{
-    "start":"{{ NDL.2.Value | format_as_date_time }}",
-    "end":"{{ NDL.3.Value | format_as_date_time }}",
-},
-
+    "period":
+    {
+        "start":"{{ NDL.2.Value | format_as_date_time }}",
+        "end":"{{ NDL.3.Value | format_as_date_time }}",
+    },
 {% endif -%}

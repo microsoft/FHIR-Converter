@@ -38,22 +38,22 @@ Location_ID_ORC_21: A resource Id, used to fill "location.onBehalfOf" property. 
                     [
                         {
                             {% if MSH.21 == null -%}
-                            "code":"author",
+                                "code":"author",
                             {% endif -%}
                             {% if MSH.22 -%}
-                            "code":"author",
+                                "code":"author",
                             {% endif -%}
                             {% if ORC.10 -%}
-                            "code":"enterer",
+                                "code":"enterer",
                             {% endif -%}
                             {% if MSH.21 == null -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                                "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
                             {% endif -%}
                             {% if MSH.22 -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                                "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
                             {% endif -%}
                             {% if ORC.10 -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                                "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
                             {% endif -%}
                         },
                     ],
@@ -61,19 +61,19 @@ Location_ID_ORC_21: A resource Id, used to fill "location.onBehalfOf" property. 
                 "who":
                 {
                     {% if MSH.4 and Organization_ID_MSH_4 -%}
-                    "reference":"Organization/{{ Organization_ID_MSH_4 }}",
+                        "reference":"Organization/{{ Organization_ID_MSH_4 }}",
                     {% endif -%}
                     {% if MSH.22 and Organization_ID_MSH_22 -%}
-                    "reference":"Organization/{{ Organization_ID_MSH_22 }}",
+                        "reference":"Organization/{{ Organization_ID_MSH_22 }}",
                     {% endif -%}
                     {% if ORC.10 and Practitioner_ID_ORC_10 -%}
-                    "reference":"Practitioner/{{ Practitioner_ID_ORC_10 }}",
+                        "reference":"Practitioner/{{ Practitioner_ID_ORC_10 }}",
                     {% endif -%}
                 },
                 "onBehalfOf":
                 {
                     {% if ORC.17 and Organization_ID_ORC_17 -%}
-                    "reference":"Organization/{{ Organization_ID_ORC_17 }}",
+                        "reference":"Organization/{{ Organization_ID_ORC_17 }}",
                     {% endif -%}
                 },
             },
@@ -84,10 +84,10 @@ Location_ID_ORC_21: A resource Id, used to fill "location.onBehalfOf" property. 
                     [
                         {
                             {% if ORC.11 -%}
-                            "code":"verifier",
+                                "code":"verifier",
                             {% endif -%}
                             {% if ORC.11 -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                                "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
                             {% endif -%}
                         },
                     ],
@@ -95,7 +95,7 @@ Location_ID_ORC_21: A resource Id, used to fill "location.onBehalfOf" property. 
                 "who":
                 {
                     {% if ORC.11 and Practitioner_ID_ORC_11 -%}
-                    "reference":"Practitioner/{{ Practitioner_ID_ORC_11 }}",
+                        "reference":"Practitioner/{{ Practitioner_ID_ORC_11 }}",
                     {% endif -%}
                 },
             },
@@ -106,10 +106,10 @@ Location_ID_ORC_21: A resource Id, used to fill "location.onBehalfOf" property. 
                     [
                         {
                             {% if ORC.12 -%}
-                            "code":"author",
+                                "code":"author",
                             {% endif -%}
                             {% if ORC.12 -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                                "system":"http://terminology.hl7.org/CodeSystem/provenance-participant-type",
                             {% endif -%}
                         },
                     ],
@@ -117,7 +117,7 @@ Location_ID_ORC_21: A resource Id, used to fill "location.onBehalfOf" property. 
                 "who":
                 {
                     {% if ORC.12 and Practitioner_ID_ORC_12 -%}
-                    "reference":"Practitioner/{{ Practitioner_ID_ORC_12 }}",
+                        "reference":"Practitioner/{{ Practitioner_ID_ORC_12 }}",
                     {% endif -%}
                 },
             },
@@ -130,22 +130,22 @@ Location_ID_ORC_21: A resource Id, used to fill "location.onBehalfOf" property. 
             [
                 {
                     {% if ORC.1.Value == "NW" -%}
-                    "code":"CREATE",
+                        "code":"CREATE",
                     {% endif -%}
                     {% if ORC.1.Value == "SC" -%}
-                    "code":"UPDATE",
+                        "code":"UPDATE",
                     {% endif -%}
                     {% if ORC.1.Value == "OC" or ORC.1.Value == "CA" -%}
-                    "code":"DELETE",
+                        "code":"DELETE",
                     {% endif -%}
                     {% if ORC.1.Value == "NW" -%}
-                    "system":"http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+                        "system":"http://terminology.hl7.org/CodeSystem/v3-DataOperation",
                     {% endif -%}
                     {% if ORC.1.Value == "SC" -%}
-                    "system":"http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+                        "system":"http://terminology.hl7.org/CodeSystem/v3-DataOperation",
                     {% endif -%}
                     {% if ORC.1.Value == "OC" or ORC.1.Value == "CA" -%}
-                    "system":"http://terminology.hl7.org/CodeSystem/v3-DataOperation",
+                        "system":"http://terminology.hl7.org/CodeSystem/v3-DataOperation",
                     {% endif -%}
                 },
             ],
@@ -154,7 +154,7 @@ Location_ID_ORC_21: A resource Id, used to fill "location.onBehalfOf" property. 
         "location":
         {
             {% if ORC.21 and Location_ID_ORC_21 -%}
-            "reference":"Location/{{ Location_ID_ORC_21 }}",
+                "reference":"Location/{{ Location_ID_ORC_21 }}",
             {% endif -%}
         },
     },

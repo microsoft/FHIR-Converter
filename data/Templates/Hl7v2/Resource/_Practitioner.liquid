@@ -5,9 +5,15 @@
         "id":"{{ ID }}",
         "address":
         [
-            { {% include 'DataType/XAD' XAD: ROL.11 -%} },
-            { {% include 'DataType/XAD' XAD: PRT.14.Repeats[0] -%} },
-            { {% include 'DataType/XAD' XAD: ORC.24.Repeats[0] -%} },
+            {
+                {% include 'DataType/XAD' XAD: ROL.11 -%}
+            },
+            {
+                {% include 'DataType/XAD' XAD: PRT.14.Repeats[0] -%}
+            },
+            {
+                {% include 'DataType/XAD' XAD: ORC.24.Repeats[0] -%}
+            },
         ],
         {% include 'DataType/XCNPractitionerRole' XCN: OBX.16 -%}
         {% include 'DataType/XCNPractitioner' XCN: DG1.16.Repeats[0] -%}
