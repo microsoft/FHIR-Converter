@@ -10,14 +10,20 @@
             {
                 "country":"{{ MSH.17.Value | get_property: 'CodeSystem/Countries', 'code' }}",
             },
-            { {% include 'DataType/XAD' XAD: OBX.24 -%} },
+            {
+                {% include 'DataType/XAD' XAD: OBX.24 -%}
+            },
             {% if OBX.25 -%}
-            { {% include 'DataType/XAD' XAD: OBX.24 -%} },
+                {
+                    {% include 'DataType/XAD' XAD: OBX.24 -%}
+                },
             {% endif -%}
-            { {% include 'DataType/XAD' XAD: ORC.22.Repeats[0] -%} },
+            {
+                {% include 'DataType/XAD' XAD: ORC.22.Repeats[0] -%}
+            },
         ],
         {% if MSH.21 == null -%}
-        {% include 'DataType/HDOrganization' HD: MSH.4 -%}
+            {% include 'DataType/HDOrganization' HD: MSH.4 -%}
         {% endif -%}
         {% include 'DataType/HDOrganization' HD: MSH.22 -%}
         {% include 'DataType/XONOrganization' XON: ROL.14 -%}
@@ -30,7 +36,9 @@
                 },
                 "telecom":
                 [
-                    { {% include 'DataType/XTN' XTN: NK1.31 -%} },
+                    {
+                        {% include 'DataType/XTN' XTN: NK1.31 -%}
+                    },
                 ],
                 "address":
                 {
@@ -40,12 +48,16 @@
         ],
         "type":
         [
-            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/OrganizationUnitType', CWE: PRT.7 -%} },
+            {
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/OrganizationUnitType', CWE: PRT.7 -%}
+            },
         ],
         {% include 'DataType/XONOrganization' XON: PRT.8.Repeats[0] -%}
         "telecom":
         [
-            { {% include 'DataType/XTN' XTN: ORC.23.Repeats[0] -%} },
+            {
+                {% include 'DataType/XTN' XTN: ORC.23.Repeats[0] -%}
+            },
         ],
         {% include 'DataType/CWEOrganization' CWE: RXA.17.Repeats[0] -%}
     },

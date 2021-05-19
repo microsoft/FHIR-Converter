@@ -30,10 +30,10 @@ MessageHeader_Response_Details_ID: A resource Id, used to fill "response.details
                 "receiver":
                 {
                     {% if MSH.6 and Organization_ID_MSH_6 -%}
-                    "reference":"Organization/{{ Organization_ID_MSH_6 }}",
+                        "reference":"Organization/{{ Organization_ID_MSH_6 }}",
                     {% endif -%}
                     {% if MSH.23 and Organization_ID_MSH_23 -%}
-                    "reference":"Organization/{{ Organization_ID_MSH_23 }}",
+                        "reference":"Organization/{{ Organization_ID_MSH_23 }}",
                     {% endif -%}
                 },
             },
@@ -57,13 +57,13 @@ MessageHeader_Response_Details_ID: A resource Id, used to fill "response.details
         "sender":
         {
             {% if MSH.4 and Organization_ID_MSH_4 -%}
-            "reference":"Organization/{{ Organization_ID_MSH_4 }}",
+                "reference":"Organization/{{ Organization_ID_MSH_4 }}",
             {% endif -%}
         },
         "responsible":
         {
             {% if MSH.22 and Organization_ID_MSH_22 -%}
-            "reference":"Organization/{{ Organization_ID_MSH_22 }}",
+                "reference":"Organization/{{ Organization_ID_MSH_22 }}",
             {% endif -%}
         },
         "enterer":

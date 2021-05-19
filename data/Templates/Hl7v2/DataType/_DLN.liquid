@@ -1,21 +1,19 @@
 {% if DLN -%}
-
-"value":"{{ DLN.1.Value }}",
-"type":
-{
-    "coding":
-    [
-        {
-            {% if DLN.1 -%}
-            "code":"DL",
-            {% endif -%}
-        },
-    ],
-},
-"system":"{{ DLN.2.Value }}",
-"period":
-{
-    "end":"{{ DLN.3.Value | format_as_date_time }}",
-},
-
+    "value":"{{ DLN.1.Value }}",
+    "type":
+    {
+        "coding":
+        [
+            {
+                {% if DLN.1 -%}
+                    "code":"DL",
+                {% endif -%}
+            },
+        ],
+    },
+    "system":"{{ DLN.2.Value }}",
+    "period":
+    {
+        "end":"{{ DLN.3.Value | format_as_date_time }}",
+    },
 {% endif -%}

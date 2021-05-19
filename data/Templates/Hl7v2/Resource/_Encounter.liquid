@@ -30,42 +30,44 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
             {% include 'DataType/CWECoding' mapping: 'CodeSystem/EncounterClass', CWE: PV1.2 -%}
         },
         {% if PV1.45 == null -%}
-        "status":"unknown",
+            "status":"unknown",
         {% endif -%}
         {% if PV1.45 -%}
-        "status":"finished",
+            "status":"finished",
         {% endif -%}
         "location":
         [
             {
                 {% if PV1.2.1.Value != "P" and Location_ID_PV1_3 -%}
-                "status":"active",
+                    "status":"active",
                 {% endif -%}
                 {% if PV1.2.1.Value == "P" and Location_ID_PV1_3 -%}
-                "status":"planned",
+                    "status":"planned",
                 {% endif -%}
                 "location":
                 {
                     {% if PV1.3 and Location_ID_PV1_3 -%}
-                    "reference":"Location/{{ Location_ID_PV1_3 }}",
+                        "reference":"Location/{{ Location_ID_PV1_3 }}",
                     {% endif -%}
                 },
             },
             {
                 {% if PV1.6 and Location_ID_PV1_6 -%}
-                "status":"completed",
+                    "status":"completed",
                 {% endif -%}
                 "location":
                 {
                     {% if PV1.6 and Location_ID_PV1_6 -%}
-                    "reference":"Location/{{ Location_ID_PV1_6 }}",
+                        "reference":"Location/{{ Location_ID_PV1_6 }}",
                     {% endif -%}
                 },
             },
         ],
         "type":
         [
-            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/AdmissionType', CWE: PV1.4 -%} },
+            {
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/AdmissionType', CWE: PV1.4 -%}
+            },
         ],
         "hospitalization":
         {
@@ -87,12 +89,14 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
             },
             "dietPreference":
             [
-                { {% include 'DataType/CWECodeableConcept' CWE: PV1.38 -%} },
+                {
+                    {% include 'DataType/CWECodeableConcept' CWE: PV1.38 -%}
+                },
             ],
             "destination":
             {
                 {% if PV1.37 and Location_ID_PV1_37 -%}
-                "reference":"Location/{{ Location_ID_PV1_37 }}",
+                    "reference":"Location/{{ Location_ID_PV1_37 }}",
                 {% endif -%}
             },
             "origin":
@@ -110,31 +114,31 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                         [
                             {
                                 {% if PV1.7 -%}
-                                "code":"ATND",
+                                    "code":"ATND",
                                 {% endif -%}
                                 {% if PV2.13 -%}
-                                "code":"REF",
+                                    "code":"REF",
                                 {% endif -%}
                                 {% if PV1.7 -%}
-                                "system":"http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                                    "system":"http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
                                 {% endif -%}
                                 {% if PV2.13 -%}
-                                "system":"http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                                    "system":"http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
                                 {% endif -%}
                                 {% if PV1.7 -%}
-                                "display":"attender",
+                                    "display":"attender",
                                 {% endif -%}
                             },
                         ],
                         {% if PV2.13 -%}
-                        "text":"referrer",
+                            "text":"referrer",
                         {% endif -%}
                     },
                 ],
                 "individual":
                 {
                     {% if PV1.7 and Practitioner_ID_PV1_7 -%}
-                    "reference":"Practitioner/{{ Practitioner_ID_PV1_7 }}",
+                        "reference":"Practitioner/{{ Practitioner_ID_PV1_7 }}",
                     {% endif -%}
                 },
             },
@@ -146,22 +150,22 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                         [
                             {
                                 {% if PV1.8 -%}
-                                "code":"REF",
+                                    "code":"REF",
                                 {% endif -%}
                                 {% if PV1.8 -%}
-                                "system":"http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                                    "system":"http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
                                 {% endif -%}
                             },
                         ],
                         {% if PV1.8 -%}
-                        "text":"referrer",
+                            "text":"referrer",
                         {% endif -%}
                     },
                 ],
                 "individual":
                 {
                     {% if PV1.8 and Practitioner_ID_PV1_8 -%}
-                    "reference":"Practitioner/{{ Practitioner_ID_PV1_8 }}",
+                        "reference":"Practitioner/{{ Practitioner_ID_PV1_8 }}",
                     {% endif -%}
                 },
             },
@@ -173,22 +177,22 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                         [
                             {
                                 {% if PV1.9 -%}
-                                "code":"CON",
+                                    "code":"CON",
                                 {% endif -%}
                                 {% if PV1.9 -%}
-                                "system":"http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                                    "system":"http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
                                 {% endif -%}
                             },
                         ],
                         {% if PV1.9 -%}
-                        "text":"consultant",
+                            "text":"consultant",
                         {% endif -%}
                     },
                 ],
                 "individual":
                 {
                     {% if PV1.9 and Practitioner_ID_PV1_9 -%}
-                    "reference":"Practitioner/{{ Practitioner_ID_PV1_9 }}",
+                        "reference":"Practitioner/{{ Practitioner_ID_PV1_9 }}",
                     {% endif -%}
                 },
             },
@@ -200,22 +204,22 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                         [
                             {
                                 {% if PV1.17 -%}
-                                "code":"ADM",
+                                    "code":"ADM",
                                 {% endif -%}
                                 {% if PV1.17 -%}
-                                "system":"http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                                    "system":"http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
                                 {% endif -%}
                             },
                         ],
                         {% if PV1.17 -%}
-                        "text":"admitter",
+                            "text":"admitter",
                         {% endif -%}
                     },
                 ],
                 "individual":
                 {
                     {% if PV1.17 and Practitioner_ID_PV1_17 -%}
-                    "reference":"Practitioner/{{ Practitioner_ID_PV1_17 }}",
+                        "reference":"Practitioner/{{ Practitioner_ID_PV1_17 }}",
                     {% endif -%}
                 },
             },
@@ -227,22 +231,22 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                         [
                             {
                                 {% if PV1.52 -%}
-                                "code":"PART",
+                                    "code":"PART",
                                 {% endif -%}
                                 {% if PV1.52 -%}
-                                "system":"http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                                    "system":"http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
                                 {% endif -%}
                             },
                         ],
                         {% if PV1.52 -%}
-                        "text":"Participation",
+                            "text":"Participation",
                         {% endif -%}
                     },
                 ],
                 "individual":
                 {
                     {% if PV1.52 and Practitioner_ID_PV1_52 -%}
-                    "reference":"Practitioner/{{ Practitioner_ID_PV1_52 }}",
+                        "reference":"Practitioner/{{ Practitioner_ID_PV1_52 }}",
                     {% endif -%}
                 },
             },
@@ -261,12 +265,12 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                     [
                         {
                             {% if PV1.19 -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
                             {% endif -%}
                         },
                     ],
                     {% if PV1.19 -%}
-                    "text":"visit number",
+                        "text":"visit number",
                     {% endif -%}
                 },
             },
@@ -281,16 +285,18 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
         },
         "reasonCode":
         [
-            { {% include 'DataType/CWECodeableConcept' CWE: PV2.3 -%} },
+            {
+                {% include 'DataType/CWECodeableConcept' CWE: PV2.3 -%}
+            },
         ],
         "length":
         {
             "value":"{{ PV2.11.Value }}",
             {% if PV2.11 -%}
-            "unit":"d",
+                "unit":"d",
             {% endif -%}
             {% if PV2.11 -%}
-            "system":"http://unitsofmeasure.org/",
+                "system":"http://unitsofmeasure.org/",
             {% endif -%}
         },
         "text":
