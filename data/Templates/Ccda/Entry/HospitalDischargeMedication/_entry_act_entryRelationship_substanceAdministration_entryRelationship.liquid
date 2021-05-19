@@ -22,5 +22,5 @@
     {% assign fullPractitionerId = practitionerId | prepend: 'Practitioner/' -%}
     {% include 'Reference/MedicationDispense/Performer_Actor' ID: supplyId, REF: fullPractitionerId -%}
     {% include 'Reference/MedicationDispense/MedicationReference' ID: supplyId, REF: fullManufacturedMaterialId -%}
-    {% include 'Reference/medicationDispense/Subject' ID: supplyId, REF: fullPatientId -%}
+    {% include 'Reference/MedicationDispense/Subject' ID: supplyId, REF: fullPatientId -%}
 {% endif -%}

@@ -4,5 +4,5 @@
     {% evaluate practitionerId using 'Utils/GenerateId' obj: entry.act.author.assignedAuthor -%}
     {% include 'Resource/Practitioner' practitioner: entry.act.author.assignedAuthor, ID: practitionerId -%}
     {% assign fullPractitionerId = practitionerId | prepend: 'Practitioner/' -%}
-    {% include 'Reference/ServiceRequest/requester' ID: actId, REF: fullPractitionerId -%}
+    {% include 'Reference/ServiceRequest/Requester' ID: actId, REF: fullPractitionerId -%}
 {% endif -%}
