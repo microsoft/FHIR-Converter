@@ -1290,6 +1290,41 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:f02faa7a-9472-70c5-2aa4-ecad5340bc01",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "f02faa7a-9472-70c5-2aa4-ecad5340bc01",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "333444444"
+          }
+        ],
+        "qualification": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "246Q00000X",
+                  "display": "Technician, Pathology",
+                  "system": "http://nucc.org/provider-taxonomy"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/f02faa7a-9472-70c5-2aa4-ecad5340bc01"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:a2f4b922-1477-a6c3-abf2-f4ca2b280e47",
       "resource": {
         "resourceType": "Observation",
@@ -3818,7 +3853,7 @@
             }
           ]
         },
-        "date": "2021-05-14T02:11:15.85Z",
+        "date": "2021-05-21T05:22:18.758Z",
         "status": "current",
         "content": [
           {

@@ -1070,53 +1070,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:64b2ed0f-c85d-bd64-19f0-0a56aedb4a3f",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "64b2ed0f-c85d-bd64-19f0-0a56aedb4a3f",
-        "meta": {
-          "profile": [
-            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
-          ]
-        },
-        "identifier": [
-          {
-            "system": "urn:ietf:rfc:3986",
-            "value": "urn:uuid:08edb7c0-2111-43f2-a784-9a5fdfaa67f0"
-          }
-        ],
-        "status": "final",
-        "code": {
-          "coding": [
-            {
-              "code": "54522-8",
-              "display": "Functional Status",
-              "system": "http://snomed.info/sct"
-            }
-          ]
-        },
-        "effectivePeriod": {
-          "start": "2007-02"
-        },
-        "valueCodeableConcept": {
-          "coding": [
-            {
-              "code": "267036007",
-              "display": "dyspnea",
-              "system": "http://snomed.info/sct"
-            }
-          ]
-        },
-        "subject": {
-          "reference": "Patient/5510eaa6-2ad2-b82b-248b-aba749e28fa1"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/64b2ed0f-c85d-bd64-19f0-0a56aedb4a3f"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:85b7187b-e715-a386-b36e-e6da3acc1e4b",
       "resource": {
         "resourceType": "Condition",
@@ -1754,7 +1707,7 @@
             }
           ]
         },
-        "date": "2021-05-08T06:19:47.39Z",
+        "date": "2021-05-21T05:21:43.072Z",
         "status": "current",
         "content": [
           {

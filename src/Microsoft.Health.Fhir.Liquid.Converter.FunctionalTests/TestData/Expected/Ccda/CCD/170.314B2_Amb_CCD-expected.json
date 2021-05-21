@@ -908,6 +908,57 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:7aa34e67-c584-ddc5-64b5-17988d4d9fab",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "7aa34e67-c584-ddc5-64b5-17988d4d9fab",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "urn:oid:1.3.6.1.4.1.22812.3.99930.3",
+            "value": "3333"
+          }
+        ],
+        "name": [
+          {
+            "family": "Nightingale",
+            "given": [
+              "Nancy"
+            ],
+            "suffix": [
+              "RN"
+            ]
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "Get Well Clinic",
+              "1004 Healthcare Dr."
+            ],
+            "city": "Portland",
+            "state": "OR",
+            "country": "US",
+            "postalCode": "97005"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+1-(555)555-1014"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/7aa34e67-c584-ddc5-64b5-17988d4d9fab"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:57b3e387-7bc2-a581-a668-b22cace62a33",
       "resource": {
         "resourceType": "Observation",
@@ -1117,160 +1168,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:d8b4def3-1c0b-ae36-3c47-3402339cbe34",
-      "resource": {
-        "resourceType": "Condition",
-        "id": "d8b4def3-1c0b-ae36-3c47-3402339cbe34",
-        "identifier": [
-          {
-            "system": "urn:oid:1.3.6.1.4.1.22812.3.99930.3.4.1.2.1",
-            "value": "2007"
-          }
-        ],
-        "code": {
-          "coding": [
-            {
-              "code": "66557003",
-              "display": "No Impairment",
-              "system": "http://snomed.info/sct"
-            }
-          ]
-        },
-        "onsetDateTime": "2012-08-15",
-        "subject": {
-          "reference": "Patient/a656b459-dec5-7b46-77eb-41c20c9a5901"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Condition/d8b4def3-1c0b-ae36-3c47-3402339cbe34"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:d8b4def3-1c0b-ae36-3c47-3402339cbe34",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "d8b4def3-1c0b-ae36-3c47-3402339cbe34",
-        "meta": {
-          "profile": [
-            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
-          ]
-        },
-        "identifier": [
-          {
-            "system": "urn:oid:1.3.6.1.4.1.22812.3.99930.3.4.1.2.1",
-            "value": "2007"
-          }
-        ],
-        "status": "final",
-        "code": {
-          "coding": [
-            {
-              "code": "248536006",
-              "display": "Functional limitation",
-              "system": "http://snomed.info/sct"
-            }
-          ]
-        },
-        "effectivePeriod": {
-          "start": "2012-08-15"
-        },
-        "valueCodeableConcept": {
-          "coding": [
-            {
-              "code": "66557003",
-              "display": "No Impairment",
-              "system": "http://snomed.info/sct"
-            }
-          ]
-        },
-        "subject": {
-          "reference": "Patient/a656b459-dec5-7b46-77eb-41c20c9a5901"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/d8b4def3-1c0b-ae36-3c47-3402339cbe34"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:6509be51-47bd-d926-5814-9283a724de60",
-      "resource": {
-        "resourceType": "Condition",
-        "id": "6509be51-47bd-d926-5814-9283a724de60",
-        "identifier": [
-          {
-            "system": "urn:oid:1.3.6.1.4.1.22812.3.99930.3.4.1.2.1",
-            "value": "2007"
-          }
-        ],
-        "code": {
-          "coding": [
-            {
-              "code": "66557003",
-              "display": "No Impairment",
-              "system": "http://snomed.info/sct"
-            }
-          ]
-        },
-        "onsetDateTime": "2012-08-15",
-        "subject": {
-          "reference": "Patient/a656b459-dec5-7b46-77eb-41c20c9a5901"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Condition/6509be51-47bd-d926-5814-9283a724de60"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:6509be51-47bd-d926-5814-9283a724de60",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "6509be51-47bd-d926-5814-9283a724de60",
-        "meta": {
-          "profile": [
-            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
-          ]
-        },
-        "identifier": [
-          {
-            "system": "urn:oid:1.3.6.1.4.1.22812.3.99930.3.4.1.2.1",
-            "value": "2007"
-          }
-        ],
-        "status": "final",
-        "code": {
-          "coding": [
-            {
-              "code": "373930000",
-              "display": "Cognitive function finding",
-              "system": "http://snomed.info/sct"
-            }
-          ]
-        },
-        "effectivePeriod": {
-          "start": "2012-08-15"
-        },
-        "valueCodeableConcept": {
-          "coding": [
-            {
-              "code": "66557003",
-              "display": "No Impairment",
-              "system": "http://snomed.info/sct"
-            }
-          ]
-        },
-        "subject": {
-          "reference": "Patient/a656b459-dec5-7b46-77eb-41c20c9a5901"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/6509be51-47bd-d926-5814-9283a724de60"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:663b2cfe-5d57-4748-bbc9-48a96c35a7f7",
       "resource": {
         "resourceType": "DocumentReference",
@@ -1284,7 +1181,7 @@
             }
           ]
         },
-        "date": "2021-05-19T10:26:05.695Z",
+        "date": "2021-05-21T05:21:29.32Z",
         "status": "current",
         "content": [
           {
