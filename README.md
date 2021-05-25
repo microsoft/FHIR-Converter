@@ -62,7 +62,7 @@ Once this completes, you can access the UI and the service at http://localhost:2
 
 ## Using the FHIR Converter
 
-HL7v2 to FHIR, and CCDA to FHIR conversion templates come pre-installed on the FHIR converter. You can test the default conversion behavior of the service either by using the [UI](docs/web-ui-summary.md), or the [API](docs/web-ui-summary.md). In case the default templates do not meet your requirements, you can modify the templates by following [How to create templates](docs/template-creation-how-to-guide.md) document.
+HL7v2 to FHIR, and CCDA to FHIR conversion templates come pre-installed on the FHIR converter. You can test the default conversion behavior of the service either by using the [UI](docs/web-ui-summary.md), or the [API](docs/api-summary.md). In case the default templates do not meet your requirements, you can modify the templates by following [How to create templates](docs/template-creation-how-to-guide.md) document.
 
 ### Sample pipeline using FHIR converter
 
