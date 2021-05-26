@@ -27,4 +27,4 @@ jobs:
     
     - run: |
         docker build . -t healthplatformregistry.azurecr.io/fhirconverter:branch-${{ steps.extractbranchname.outputs.short_ref }}
-        docker push healthplatformregistry.azurecr.io/fhirconverter
+        docker push healthplatformregistry.azurecr.io/fhirconverter:branch-${{ steps.extractbranchname.outputs.short_ref }}
