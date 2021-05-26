@@ -1,2 +1,4 @@
-"contentType":"{{ ED.2.Value }}",
-"data":"{{ ED.5.Value }}",
+{% if ED -%}
+    "contentType":"{{ ED.2.Value }}",
+    "data":"{{ ED.5.Value }}",
+{% endif -%}

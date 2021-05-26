@@ -1,0 +1,13 @@
+{% if component.observation -%}
+    {% assign observationId = component.observation | to_json_string | generate_uuid -%}
+    {% include 'Resource/Observation' observationCategory: 'laboratory', observationEntry: component.observation, ID: observationId -%}
+    {% assign fullObservationId = observationId | prepend: 'Observation/' -%}
+    {% include 'Reference/DiagnosticReport/Result' ID: diagnosticId, REF: fullObservationId -%}
+    {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
+    {% if component.observation.author.assignedAuthor -%}
+        {% evaluate practitionerId using 'Utils/GenerateId' obj: component.observation.author.assignedAuthor -%}
+        {% include 'Resource/Practitioner' practitioner: component.observation.author.assignedAuthor, ID: practitionerId -%}
+        {% assign fullPractitionerId = practitionerId | prepend: 'Practitioner/' -%}
+        {% include 'Reference/Observation/Performer' ID: observationId, REF: fullPractitionerId -%}
+    {% endif -%}
+{% endif -%}

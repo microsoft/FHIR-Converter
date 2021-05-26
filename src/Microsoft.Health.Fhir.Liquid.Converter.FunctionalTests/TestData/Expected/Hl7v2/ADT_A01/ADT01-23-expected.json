@@ -1,7 +1,7 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
-  "timestamp": "2005-01-10T04:55:04Z",
+  "timestamp": "2005-01-10T04:55:04",
   "identifier": {
     "value": "599102"
   },
@@ -242,6 +242,10 @@
       "resource": {
         "resourceType": "Provenance",
         "id": "b5aae309-4caf-c2cd-b087-0fd6db6dd058",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on GENERATED_INSTANT_PLACEHOLDER using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: TEMPLATE_URL_PLACEHOLDER.</span><span>Root template: ADT_A01.</span></p></div>"
+        },
         "agent": [
           {
             "type": {
@@ -254,7 +258,7 @@
             }
           }
         ],
-        "recorded": "2005-01-10T04:55:04Z"
+        "recorded": "2005-01-10T04:55:04"
       },
       "request": {
         "method": "PUT",
@@ -357,7 +361,7 @@
           }
         ],
         "period": {
-          "start": "2005-01-10T04:52:53Z"
+          "start": "2005-01-10T04:52:53"
         },
         "subject": {
           "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"

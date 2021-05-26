@@ -36,6 +36,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             {
                 ConvertSingleFile(dataProcessor, templateProvider, dataType, options.RootTemplate, options.InputDataContent, options.OutputDataFile, options.IsTraceInfo);
             }
+            else if (!string.IsNullOrEmpty(options.InputDataFile))
+            {
+                var fileContent = File.ReadAllText(options.InputDataFile);
+                ConvertSingleFile(dataProcessor, templateProvider, dataType, options.RootTemplate, fileContent, options.OutputDataFile, options.IsTraceInfo);
+            }
             else
             {
                 ConvertBatchFiles(dataProcessor, templateProvider, dataType, options.RootTemplate, options.InputDataFolder, options.OutputDataFolder, options.IsTraceInfo);
@@ -140,17 +145,31 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
         private static bool IsValidOptions(ConverterOptions options)
         {
             var contentToFile = !string.IsNullOrEmpty(options.InputDataContent) &&
-                !string.IsNullOrEmpty(options.OutputDataFile) &&
-                string.IsNullOrEmpty(options.InputDataFolder) &&
-                string.IsNullOrEmpty(options.OutputDataFolder);
+                                string.IsNullOrEmpty(options.InputDataFile) &&
+                                !string.IsNullOrEmpty(options.OutputDataFile) &&
+                                string.IsNullOrEmpty(options.InputDataFolder) &&
+                                string.IsNullOrEmpty(options.OutputDataFolder);
+
+            var fileToFile = string.IsNullOrEmpty(options.InputDataContent) &&
+                                !string.IsNullOrEmpty(options.InputDataFile) &&
+                                !string.IsNullOrEmpty(options.OutputDataFile) &&
+                                string.IsNullOrEmpty(options.InputDataFolder) &&
+                                string.IsNullOrEmpty(options.OutputDataFolder) &&
+                                !IsSameFile(options.InputDataFile, options.OutputDataFile);
 
             var folderToFolder = string.IsNullOrEmpty(options.InputDataContent) &&
-                string.IsNullOrEmpty(options.OutputDataFile) &&
-                !string.IsNullOrEmpty(options.InputDataFolder) &&
-                !string.IsNullOrEmpty(options.OutputDataFolder) &&
-                !IsSameDirectory(options.InputDataFolder, options.OutputDataFolder);
+                                 string.IsNullOrEmpty(options.InputDataFile) &&
+                                 string.IsNullOrEmpty(options.OutputDataFile) &&
+                                 !string.IsNullOrEmpty(options.InputDataFolder) &&
+                                 !string.IsNullOrEmpty(options.OutputDataFolder) &&
+                                 !IsSameDirectory(options.InputDataFolder, options.OutputDataFolder);
 
-            return contentToFile || folderToFolder;
+            return contentToFile || fileToFile || folderToFolder;
+        }
+
+        private static bool IsSameFile(string inputFile, string outputFile)
+        {
+            return string.Equals(inputFile, outputFile, StringComparison.InvariantCultureIgnoreCase);
         }
 
         private static bool IsSameDirectory(string inputFolder, string outputFolder)

@@ -1,11 +1,12 @@
-{% if code == 'active' -%}
-"active",
-{% elsif code == 'aborted' -%}
-"resolved",
-{% elsif code == 'completed' -%}
-"resolved",
-{% elsif code == 'suspended' -%}
-"inactive",
-{% else -%}
-"{{ code }}",
-{% endif -%}
+{% case code -%}
+    {% when "active" -%}
+        "active",
+    {% when "aborted" -%}
+        "resolved",
+    {% when "completed" -%}
+        "resolved",
+    {% when "suspended" -%}
+        "inactive",
+    {% else -%}
+        "{{ code }}",
+{% endcase -%}

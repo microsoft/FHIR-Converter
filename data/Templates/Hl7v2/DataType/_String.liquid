@@ -1,2 +1,6 @@
-{% capture outCode -%}{% include mapping with inCode: inString -%}{% endcapture -%}
-{{outCode | evaluate: member}}
+{% if inString -%}
+    {% capture outCode -%}
+        {% include mapping with inCode: inString -%}
+    {% endcapture -%}
+    {{outCode | evaluate: member}}
+{% endif -%}

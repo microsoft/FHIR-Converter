@@ -1,1 +1,3 @@
-"endpoint":"{{ HD.1.Value }}",
+{% if HD -%}
+    "endpoint":"{{ HD.1.Value }}",
+{% endif -%}

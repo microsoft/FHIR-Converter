@@ -1,0 +1,12 @@
+{% assign observationId = entry.observation | to_json_string | generate_uuid -%}
+{{ entry.observation.templateId | to_array | batch_render: 'Entry/HospitalDischargeDiagnosis/entry_act_entryRelationship', 'relationship' }}
+{% for templateId in entry.observation.templateId -%}
+    {% if templateId.root == "2.16.840.1.113883.10.20.22.4.4" -%}
+        {% include 'Resource/Condition' conditionEntry: entry.observation, ID: observationId -%}
+        {% include 'Reference/Condition/Subject' ID: observationId, REF: fullPatientId -%}
+    {% endif -%}
+    {% if templateId.root == "2.16.840.1.113883.10.20.22.4.2" -%}
+        {% include 'Resource/Observation' observationEntry: entry.observation, ID: observationId -%}
+        {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
+    {% endif -%}
+{% endfor -%}

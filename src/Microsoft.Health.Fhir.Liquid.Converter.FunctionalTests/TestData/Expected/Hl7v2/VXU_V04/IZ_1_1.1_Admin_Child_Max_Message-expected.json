@@ -1,7 +1,7 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
-  "timestamp": "2012-07-01T08:22:00Z",
+  "timestamp": "2012-07-01T08:22:00",
   "identifier": {
     "value": "NIST-IZ-001.00"
   },
@@ -194,6 +194,10 @@
       "resource": {
         "resourceType": "Provenance",
         "id": "df475b46-a50f-6a66-3a9a-2aca2b31a5bb",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on GENERATED_INSTANT_PLACEHOLDER using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: TEMPLATE_URL_PLACEHOLDER.</span><span>Root template: VXU_V04.</span></p></div>"
+        },
         "agent": [
           {
             "type": {
@@ -222,7 +226,7 @@
             }
           }
         ],
-        "recorded": "2012-07-01T08:22:00Z"
+        "recorded": "2012-07-01T08:22:00"
       },
       "request": {
         "method": "PUT",
@@ -426,26 +430,6 @@
       "request": {
         "method": "PUT",
         "url": "Practitioner/6389563f-944d-cf03-c166-cab811fa11b5"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "PractitionerRole"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "PractitionerRole/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Device"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Device/"
       }
     },
     {

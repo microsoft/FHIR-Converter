@@ -1,16 +1,18 @@
-"identifier":
-[
-    {
-        "value":"{{ HD.1.Value }}",
-    },
-    {
-        "value":"{{ HD.2.Value }}",
-        {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
-        "type":
+{% if HD -%}
+    "identifier":
+    [
         {
+            "value":"{{ HD.1.Value }}",
         },
-        {% if HD.3 -%}
-        "system":"{{ "urn:ietf:rfc:3986" | get_property: 'CodeSystem/UniversalIDType', 'system' }}",
-        {% endif -%}
-    },
-],
+        {
+            "value":"{{ HD.2.Value }}",
+            {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+            "type":
+            {
+            },
+            {% if HD.3 -%}
+                "system":"{{ "urn:ietf:rfc:3986" | get_property: 'CodeSystem/UniversalIDType', 'system' }}",
+            {% endif -%}
+        },
+    ],
+{% endif -%}

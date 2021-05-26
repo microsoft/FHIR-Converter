@@ -1,9 +1,10 @@
-{% if code == 'C' -%}
-"usual",
-{% elsif code == 'L' -%}
-"usual",
-{% elsif code == 'P' -%}
-"nickname",
-{% else -%}
-"{{ code }}",
-{% endif -%}
+{% case code -%}
+    {% when "C" -%}
+        "usual",
+    {% when "L" -%}
+        "usual",
+    {% when "P" -%}
+        "nickname",
+    {% else -%}
+        "{{ code }}",
+{% endcase -%}

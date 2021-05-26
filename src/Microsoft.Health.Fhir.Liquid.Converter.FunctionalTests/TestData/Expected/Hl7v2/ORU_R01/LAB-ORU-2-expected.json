@@ -1,7 +1,7 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
-  "timestamp": "2014-10-06T09:31:00Z",
+  "timestamp": "2014-10-06T09:31:00",
   "identifier": {
     "value": "ControlID"
   },
@@ -156,6 +156,10 @@
       "resource": {
         "resourceType": "Provenance",
         "id": "1e298a0f-e932-5a4a-e5e0-e910a77f7949",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on GENERATED_INSTANT_PLACEHOLDER using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: TEMPLATE_URL_PLACEHOLDER.</span><span>Root template: ORU_R01.</span></p></div>"
+        },
         "agent": [
           {
             "type": {
@@ -168,7 +172,7 @@
             }
           }
         ],
-        "recorded": "2014-10-06T09:31:00Z"
+        "recorded": "2014-10-06T09:31:00"
       },
       "request": {
         "method": "PUT",
@@ -293,36 +297,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Organization"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "PractitionerRole"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "PractitionerRole/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Device"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Device/"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:24b96f9a-359e-fc62-bf8a-45e4f1b4c6e9",
       "resource": {
         "resourceType": "Observation",
@@ -352,7 +326,7 @@
           }
         ],
         "status": "final",
-        "effectiveDateTime": "2014-10-06T08:30:00Z",
+        "effectiveDateTime": "2014-10-06T08:30:00",
         "component": [
           {
             "code": {
@@ -420,7 +394,7 @@
           }
         ],
         "status": "final",
-        "effectiveDateTime": "2014-10-06T08:30:00Z",
+        "effectiveDateTime": "2014-10-06T08:30:00",
         "component": [
           {
             "code": {
@@ -488,7 +462,7 @@
           }
         ],
         "status": "final",
-        "effectiveDateTime": "2014-10-06T08:30:00Z",
+        "effectiveDateTime": "2014-10-06T08:30:00",
         "component": [
           {
             "code": {
@@ -556,7 +530,7 @@
           }
         ],
         "status": "final",
-        "effectiveDateTime": "2014-10-06T08:30:00Z",
+        "effectiveDateTime": "2014-10-06T08:30:00",
         "component": [
           {
             "code": {
@@ -624,7 +598,7 @@
           }
         ],
         "status": "final",
-        "effectiveDateTime": "2014-10-06T08:30:00Z",
+        "effectiveDateTime": "2014-10-06T08:30:00",
         "component": [
           {
             "code": {
@@ -668,9 +642,9 @@
         "resourceType": "Specimen",
         "id": "6006d57e-e0a3-d90e-7d9b-546ed575c527",
         "collection": {
-          "collectedDateTime": "2014-10-06T05:35:00Z"
+          "collectedDateTime": "2014-10-06T05:35:00"
         },
-        "receivedTime": "2014-10-06T06:21:00Z",
+        "receivedTime": "2014-10-06T06:21:00",
         "identifier": [
           {
             "value": "SpecimenID",
@@ -791,7 +765,7 @@
           }
         ],
         "status": "final",
-        "effectiveDateTime": "2014-10-06T08:30:00Z",
+        "effectiveDateTime": "2014-10-06T08:30:00",
         "component": [
           {
             "code": {
@@ -859,7 +833,7 @@
           }
         ],
         "status": "final",
-        "effectiveDateTime": "2014-10-06T08:30:00Z",
+        "effectiveDateTime": "2014-10-06T08:30:00",
         "component": [
           {
             "code": {
@@ -927,7 +901,7 @@
           }
         ],
         "status": "final",
-        "effectiveDateTime": "2014-10-06T08:30:00Z",
+        "effectiveDateTime": "2014-10-06T08:30:00",
         "component": [
           {
             "code": {
@@ -995,7 +969,7 @@
           }
         ],
         "status": "final",
-        "effectiveDateTime": "2014-10-06T08:30:00Z",
+        "effectiveDateTime": "2014-10-06T08:30:00",
         "component": [
           {
             "code": {
@@ -1063,7 +1037,7 @@
           }
         ],
         "status": "final",
-        "effectiveDateTime": "2014-10-06T08:30:00Z",
+        "effectiveDateTime": "2014-10-06T08:30:00",
         "component": [
           {
             "code": {
