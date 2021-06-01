@@ -163,7 +163,8 @@ module.exports = function (app) {
     app.get('/api/sample-data', function (req, res) {
         messageCache.keys()
             .then((files) => res.json({ messages: files.map(f => { return { messageName: f }; }) }))
-            .catch(() => {
+            .catch((err) => {
+                console.log("Sample-data error: " + err);
                 res.status(404);
                 res.json(errorMessage(errorCodes.NotFound, 'Unable to access sample data location'));
             });
@@ -201,7 +202,8 @@ module.exports = function (app) {
     app.get('/api/sample-data/:file(*)', function (req, res) {
         messageCache.get(req.params.file)
             .then((content) => res.end(content.toString()))
-            .catch(() => {
+            .catch((err) => {
+                console.log(err);
                 res.status(404);
                 res.json(errorMessage(errorCodes.NotFound, "Sample data not found"));
             });
@@ -507,7 +509,8 @@ module.exports = function (app) {
     app.get('/api/templates', function (req, res) {
         templateCache.keys()
             .then((files) => res.json({ templates: files.map(f => { return { templateName: f }; }) }))
-            .catch(() => {
+            .catch((err) => {
+                console.log("Templates error: " + err);
                 res.status(404);
                 res.json(errorMessage(errorCodes.NotFound, 'Unable to access templates location'));
             });
@@ -547,7 +550,8 @@ module.exports = function (app) {
     app.get('/api/templates/:file(*)', function (req, res) {
         templateCache.get(req.params.file)
             .then((content) => res.end(content.toString()))
-            .catch(() => {
+            .catch((err) => {
+                console.log("Templates/file error: " + err);
                 res.status(404);
                 res.json(errorMessage(errorCodes.NotFound, "Template not found"));
             });
@@ -601,7 +605,8 @@ module.exports = function (app) {
                         res.status(exists ? 200 : 201);
                         res.end();
                     })
-                    .catch(() => {
+                    .catch((err) => {
+                        console.log("Templates/file error: " + err);
                         res.status(403);
                         res.json(errorMessage(errorCodes.WriteError, 'Unable to write template ' + req.params.file));
                     });
@@ -644,7 +649,8 @@ module.exports = function (app) {
                 res.status(204);
                 res.end();
             })
-            .catch(() => {
+            .catch((err) => {
+                console.log("Templates/file error: " + err);
                 res.status(404);
                 res.json(errorMessage(errorCodes.NotFound, 'Unable to find a template with name ' + req.params.file + ' to delete.'));
             });
