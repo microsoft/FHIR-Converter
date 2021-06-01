@@ -18,6 +18,8 @@ if (gitUrl != "") {
             console.log("Cloned repo " + gitUrl + " branch " + gitBranch + " path " + gitTemplatePath);
         })
         .catch(function (err) {
+            console.log('Unable to clone repo: ');
+            console.log(err);
             throw new Error('Unable to clone repo: ' + err);
         });
 }

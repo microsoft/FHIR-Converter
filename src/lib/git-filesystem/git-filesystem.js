@@ -69,7 +69,7 @@ var getTemplatesFromRepo = function (gitUrl, gitBranch, templatePath) {
             .catch(function(err) {
                 reject(err);
             });
-        });
+    });
 };
 
 var getRepository = function () {
