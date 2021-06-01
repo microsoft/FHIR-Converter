@@ -26,6 +26,15 @@ var templatePath = process.env.TEMPLATE_GIT_PATH || "";
 var gitBranch = process.env.TEMPLATE_GIT_BRANCH || "";
 
 module.exports = function (app) {
+
+    // Make sure init-service succeeded and we have service-templates
+    fs.access(constants.TEMPLATE_FILES_LOCATION, function(err) {
+        if (err) {
+            throw new Error("service-templates directory does not exists " + err);
+        } 
+    });
+
+
     const workerPool = new WorkerPool('./src/lib/workers/worker.js', require('os').cpus().length);
     let templateCache = new fileSystemCache(constants.TEMPLATE_FILES_LOCATION);
     templateCache.init();
