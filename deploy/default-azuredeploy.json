@@ -32,7 +32,7 @@
       ],
       "defaultValue": "B2"
     },
-    "imageTag": {
+    "imagePath": {
       "type": "string",
       "defaultValue": "healthplatformregistry.azurecr.io/fhirconverter:v2.1.0"
     }
@@ -103,7 +103,7 @@
               "value": "true"
             }
           ],
-          "linuxFxVersion": "[concat('DOCKER|', parameters('imageTag'))]",
+          "linuxFxVersion": "[concat('DOCKER|', parameters('imagePath'))]",
           "appCommandLine": "./deploy/webapp.sh",
           "alwaysOn": true
         },
