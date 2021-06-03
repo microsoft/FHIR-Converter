@@ -513,7 +513,7 @@
                 }
               ]
             },
-            "preferred": "true"
+            "preferred": true
           }
         ]
       },
@@ -609,6 +609,29 @@
               {
                 "coding": [
                   {
+                    "code": "371924009",
+                    "display": "Moderate to severe",
+                    "system": "http://snomed.info/sct"
+                  }
+                ]
+              }
+            ],
+            "severity": "severe"
+          },
+          {
+            "substance": {
+              "coding": [
+                {
+                  "code": "70618",
+                  "display": "Penicillin",
+                  "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+                }
+              ]
+            },
+            "manifestation": [
+              {
+                "coding": [
+                  {
                     "code": "422587007",
                     "display": "Nausea",
                     "system": "http://snomed.info/sct"
@@ -616,8 +639,8 @@
                 ]
               }
             ],
-            "severity": "Nausea",
-            "onset": "2008-02-27T00:05:00+08:00"
+            "onset": "2008-02-27T00:05:00+08:00",
+            "severity": "Nausea"
           }
         ],
         "onsetDateTime": "1998-05-01",
@@ -664,6 +687,29 @@
               {
                 "coding": [
                   {
+                    "code": "56018004",
+                    "display": "Wheezing",
+                    "system": "http://snomed.info/sct"
+                  }
+                ]
+              }
+            ],
+            "severity": "Wheezing"
+          },
+          {
+            "substance": {
+              "coding": [
+                {
+                  "code": "2670",
+                  "display": "Codeine",
+                  "system": "http://www.nlm.nih.gov/research/umls/rxnorm"
+                }
+              ]
+            },
+            "manifestation": [
+              {
+                "coding": [
+                  {
                     "code": "255604002",
                     "display": "Mild",
                     "system": "http://snomed.info/sct"
@@ -671,7 +717,7 @@
                 ]
               }
             ],
-            "severity": "Mild"
+            "severity": "mild"
           }
         ],
         "patient": {
@@ -700,7 +746,7 @@
             "doseAndRate": [
               {
                 "doseQuantity": {
-                  "value": "2"
+                  "value": 2
                 }
               }
             ]
@@ -802,7 +848,7 @@
             "doseAndRate": [
               {
                 "doseQuantity": {
-                  "value": "1"
+                  "value": 1
                 }
               }
             ]
@@ -1049,17 +1095,17 @@
         },
         "effectiveDateTime": "2008-03-20T00:30:00+08:00",
         "valueQuantity": {
-          "value": "13.2",
+          "value": 13.2,
           "unit": "g/dL"
         },
         "referenceRange": [
           {
             "low": {
-              "value": "12.0",
+              "value": 12.0,
               "unit": "g/dL"
             },
             "high": {
-              "value": "15.5",
+              "value": 15.5,
               "unit": "g/dL"
             }
           }
@@ -1076,11 +1122,51 @@
         ],
         "subject": {
           "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
-        }
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/f02faa7a-9472-70c5-2aa4-ecad5340bc01"
+          }
+        ]
       },
       "request": {
         "method": "PUT",
         "url": "Observation/eb4ec292-00c7-9a02-09b7-69e980dafd83"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f02faa7a-9472-70c5-2aa4-ecad5340bc01",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "f02faa7a-9472-70c5-2aa4-ecad5340bc01",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "333444444"
+          }
+        ],
+        "qualification": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "246Q00000X",
+                  "display": "Technician, Pathology",
+                  "system": "http://nucc.org/provider-taxonomy"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/f02faa7a-9472-70c5-2aa4-ecad5340bc01"
       }
     },
     {
@@ -1121,17 +1207,17 @@
         },
         "effectiveDateTime": "2008-03-20T00:30:00+08:00",
         "valueQuantity": {
-          "value": "6.7",
+          "value": 6.7,
           "unit": "10*9/L"
         },
         "referenceRange": [
           {
             "low": {
-              "value": "4.3",
+              "value": 4.3,
               "unit": "10*9/L"
             },
             "high": {
-              "value": "10.8",
+              "value": 10.8,
               "unit": "10*9/L"
             }
           }
@@ -1148,7 +1234,12 @@
         ],
         "subject": {
           "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
-        }
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/f02faa7a-9472-70c5-2aa4-ecad5340bc01"
+          }
+        ]
       },
       "request": {
         "method": "PUT",
@@ -1193,17 +1284,17 @@
         },
         "effectiveDateTime": "2008-03-20T00:30:00+08:00",
         "valueQuantity": {
-          "value": "123",
+          "value": 123,
           "unit": "10*9/L"
         },
         "referenceRange": [
           {
             "low": {
-              "value": "150",
+              "value": 150,
               "unit": "10*9/L"
             },
             "high": {
-              "value": "350",
+              "value": 350,
               "unit": "10*9/L"
             }
           }
@@ -1220,7 +1311,12 @@
         ],
         "subject": {
           "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
-        }
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/f02faa7a-9472-70c5-2aa4-ecad5340bc01"
+          }
+        ]
       },
       "request": {
         "method": "PUT",
@@ -1265,17 +1361,17 @@
         },
         "effectiveDateTime": "2008-03-20T00:30:00+08:00",
         "valueQuantity": {
-          "value": "35.3",
+          "value": 35.3,
           "unit": "%"
         },
         "referenceRange": [
           {
             "low": {
-              "value": "34.9",
+              "value": 34.9,
               "unit": "%"
             },
             "high": {
-              "value": "44.5",
+              "value": 44.5,
               "unit": "%"
             }
           }
@@ -1292,7 +1388,12 @@
         ],
         "subject": {
           "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
-        }
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/f02faa7a-9472-70c5-2aa4-ecad5340bc01"
+          }
+        ]
       },
       "request": {
         "method": "PUT",
@@ -1337,17 +1438,17 @@
         },
         "effectiveDateTime": "2008-03-20T00:30:00+08:00",
         "valueQuantity": {
-          "value": "4.21",
+          "value": 4.21,
           "unit": "10*12/L"
         },
         "referenceRange": [
           {
             "low": {
-              "value": "3.90",
+              "value": 3.9,
               "unit": "10*12/L"
             },
             "high": {
-              "value": "5.03",
+              "value": 5.03,
               "unit": "10*12/L"
             }
           }
@@ -1364,7 +1465,12 @@
         ],
         "subject": {
           "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
-        }
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/f02faa7a-9472-70c5-2aa4-ecad5340bc01"
+          }
+        ]
       },
       "request": {
         "method": "PUT",
@@ -1609,7 +1715,7 @@
           "start": "2012-02-15"
         },
         "valueQuantity": {
-          "value": "12"
+          "value": 12
         },
         "subject": {
           "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
@@ -1658,7 +1764,7 @@
         },
         "effectiveDateTime": "2012-09-10",
         "valueQuantity": {
-          "value": "177",
+          "value": 177,
           "unit": "cm"
         },
         "interpretation": [
@@ -1718,7 +1824,7 @@
         },
         "effectiveDateTime": "2012-09-10",
         "valueQuantity": {
-          "value": "86",
+          "value": 86,
           "unit": "kg"
         },
         "interpretation": [
@@ -1778,7 +1884,7 @@
         },
         "effectiveDateTime": "2012-09-10",
         "valueQuantity": {
-          "value": "132",
+          "value": 132,
           "unit": "mm[Hg]"
         },
         "interpretation": [
@@ -1838,7 +1944,7 @@
         },
         "effectiveDateTime": "2012-09-10",
         "valueQuantity": {
-          "value": "88",
+          "value": 88,
           "unit": "mm[Hg]"
         },
         "interpretation": [
@@ -1898,7 +2004,7 @@
         },
         "effectiveDateTime": "2011-09-01",
         "valueQuantity": {
-          "value": "177",
+          "value": 177,
           "unit": "cm"
         },
         "interpretation": [
@@ -1958,7 +2064,7 @@
         },
         "effectiveDateTime": "2011-09-01",
         "valueQuantity": {
-          "value": "88",
+          "value": 88,
           "unit": "kg"
         },
         "interpretation": [
@@ -2018,7 +2124,7 @@
         },
         "effectiveDateTime": "2011-09-01",
         "valueQuantity": {
-          "value": "128",
+          "value": 128,
           "unit": "mm[Hg]"
         },
         "interpretation": [
@@ -2078,7 +2184,7 @@
         },
         "effectiveDateTime": "2011-09-01",
         "valueQuantity": {
-          "value": "80",
+          "value": 80,
           "unit": "mm[Hg]"
         },
         "interpretation": [
@@ -2101,6 +2207,927 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:8b5ca81e-2e07-f683-5540-b02214070847",
+      "resource": {
+        "resourceType": "Procedure",
+        "id": "8b5ca81e-2e07-f683-5540-b02214070847",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:d68b7e32-7810-4f5b-9cc2-acd54b0fd85d"
+          }
+        ],
+        "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "code": "73761001",
+              "display": "Colonoscopy",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
+        "performedDateTime": "2012-05-12",
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "code": "appropriate_code",
+                "display": "colon",
+                "system": "http://snomed.info/sct"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
+        },
+        "performer": [
+          {
+            "actor": {
+              "reference": "Organization/059bb96e-4186-63b4-3185-3a473aa37437"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Procedure/8b5ca81e-2e07-f683-5540-b02214070847"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:059bb96e-4186-63b4-3185-3a473aa37437",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "059bb96e-4186-63b4-3185-3a473aa37437",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:2.16.840.1.113883.19.5.9999.1393"
+          }
+        ],
+        "name": "Community Health and Hospitals",
+        "address": [
+          {
+            "line": [
+              "1001 Village Avenue"
+            ],
+            "city": "Portland",
+            "state": "OR",
+            "country": "US",
+            "postalCode": "99123"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/059bb96e-4186-63b4-3185-3a473aa37437"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2b1dd5fc-5399-63d1-915f-3358337d23a7",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "2b1dd5fc-5399-63d1-915f-3358337d23a7",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "urn:oid:2.16.840.1.113883.19",
+            "value": "123456789"
+          }
+        ],
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                "code": "procedure"
+              }
+            ]
+          }
+        ],
+        "status": "aborted",
+        "code": {
+          "coding": [
+            {
+              "code": "274025005",
+              "display": "Colonic polypectomy",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
+        "effectiveDateTime": "2011-02-03",
+        "bodySite": {
+          "coding": [
+            {
+              "code": "416949008",
+              "display": "Abdomen and pelvis",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Observation/2b1dd5fc-5399-63d1-915f-3358337d23a7"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f2fe2c86-9b7a-92e6-cd9e-5c0227342f7c",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "f2fe2c86-9b7a-92e6-cd9e-5c0227342f7c",
+        "status": "unknown",
+        "class": {
+          "code": "99213",
+          "display": "Office outpatient visit 15 minutes",
+          "system": "urn:oid:2.16.840.1.113883.6.12"
+        },
+        "type": [
+          {
+            "coding": [
+              {
+                "code": "99213",
+                "display": "Office outpatient visit 15 minutes",
+                "system": "urn:oid:2.16.840.1.113883.6.12"
+              }
+            ]
+          }
+        ],
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:2a620155-9d11-439e-92b3-5d9815ff4de8"
+          }
+        ],
+        "subject": {
+          "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
+        },
+        "participant": [
+          {
+            "individual": {
+              "reference": "Practitioner/0ef51f13-0410-a467-311c-80185ea60201"
+            }
+          }
+        ],
+        "location": [
+          {
+            "location": {
+              "reference": "Location/770f5de0-1d99-6322-44e6-fe6fa9dadeb4"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/f2fe2c86-9b7a-92e6-cd9e-5c0227342f7c"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:0ef51f13-0410-a467-311c-80185ea60201",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "0ef51f13-0410-a467-311c-80185ea60201",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "http://hl7.org/fhir/sid/us-npi",
+            "value": "333444555"
+          }
+        ],
+        "qualification": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "59058001",
+                  "display": "General Physician",
+                  "system": "http://snomed.info/sct"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/0ef51f13-0410-a467-311c-80185ea60201"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:770f5de0-1d99-6322-44e6-fe6fa9dadeb4",
+      "resource": {
+        "resourceType": "Location",
+        "id": "770f5de0-1d99-6322-44e6-fe6fa9dadeb4",
+        "name": "Good Health Urgent Care",
+        "address": {
+          "line": [
+            "1007 Health Drive"
+          ],
+          "city": "Portland",
+          "state": "OR",
+          "country": "US",
+          "postalCode": "99123"
+        },
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+1(555)555-1030",
+            "use": "work"
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "code": "1160-1",
+                "display": "Urgent Care Center",
+                "system": "urn:oid:2.16.840.1.113883.6.259"
+              }
+            ]
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/770f5de0-1d99-6322-44e6-fe6fa9dadeb4"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:40f6a7a8-341c-87e7-dc6f-05ef1b53c4e1",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "40f6a7a8-341c-87e7-dc6f-05ef1b53c4e1",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:e6f1ba43-c0ed-4b9b-9f12-f435d8ad8f92"
+          }
+        ],
+        "occurrenceDateTime": "1999-11",
+        "vaccineCode": {
+          "coding": [
+            {
+              "code": "88",
+              "display": "Influenza virus vaccine",
+              "system": "http://hl7.org/fhir/sid/cvx"
+            }
+          ]
+        },
+        "status": "completed",
+        "route": {
+          "coding": [
+            {
+              "code": "C28161",
+              "display": "Intramuscular injection",
+              "system": "urn:oid:2.16.840.1.113883.3.26.1.1"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Immunization/40f6a7a8-341c-87e7-dc6f-05ef1b53c4e1"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:706fb9fc-6ba8-db01-d9e4-2a474f9ef204",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "706fb9fc-6ba8-db01-d9e4-2a474f9ef204",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:e6f1ba43-c0ed-4b9b-9f12-f435d8ad8f92"
+          }
+        ],
+        "occurrenceDateTime": "1998-12-15",
+        "vaccineCode": {
+          "coding": [
+            {
+              "code": "88",
+              "display": "Influenza virus vaccine",
+              "system": "http://hl7.org/fhir/sid/cvx"
+            }
+          ]
+        },
+        "status": "completed",
+        "route": {
+          "coding": [
+            {
+              "code": "C28161",
+              "display": "Intramuscular injection",
+              "system": "urn:oid:2.16.840.1.113883.3.26.1.1"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Immunization/706fb9fc-6ba8-db01-d9e4-2a474f9ef204"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fc8bfb05-2b7b-f2ee-caf7-bc2fa330bd84",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "fc8bfb05-2b7b-f2ee-caf7-bc2fa330bd84",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:e6f1ba43-c0ed-4b9b-9f12-f435d8ad8f92"
+          }
+        ],
+        "occurrenceDateTime": "1998-12-15",
+        "vaccineCode": {
+          "coding": [
+            {
+              "code": "33",
+              "display": "Pneumococcal polysaccharide vaccine",
+              "system": "http://hl7.org/fhir/sid/cvx"
+            }
+          ]
+        },
+        "status": "completed",
+        "route": {
+          "coding": [
+            {
+              "code": "C28161",
+              "display": "Intramuscular injection",
+              "system": "urn:oid:2.16.840.1.113883.3.26.1.1"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Immunization/fc8bfb05-2b7b-f2ee-caf7-bc2fa330bd84"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e293803b-1c08-2aa2-9f43-bb6ebfa0b3fe",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "e293803b-1c08-2aa2-9f43-bb6ebfa0b3fe",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:e6f1ba43-c0ed-4b9b-9f12-f435d8ad8f92"
+          }
+        ],
+        "statusReason": {
+          "coding": [
+            {
+              "code": "PATOBJ",
+              "display": "Patient Objection",
+              "system": "urn:oid:2.16.840.1.113883.5.8"
+            }
+          ]
+        },
+        "occurrenceDateTime": "1998-12-15",
+        "vaccineCode": {
+          "coding": [
+            {
+              "code": "103",
+              "display": "Tetanus and diphtheria toxoids - preservative free",
+              "system": "http://hl7.org/fhir/sid/cvx"
+            }
+          ]
+        },
+        "status": "completed",
+        "route": {
+          "coding": [
+            {
+              "code": "C28161",
+              "display": "Intramuscular injection",
+              "system": "urn:oid:2.16.840.1.113883.3.26.1.1"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Immunization/e293803b-1c08-2aa2-9f43-bb6ebfa0b3fe"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:75596e28-c990-9c26-c378-0370c8b9375f",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "75596e28-c990-9c26-c378-0370c8b9375f",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:de10790f-1496-4719-8fe6-f1b87b6219f7"
+          }
+        ],
+        "occurrenceDateTime": "2013-08-01",
+        "vaccineCode": {
+          "coding": [
+            {
+              "code": "45",
+              "display": "Hepatitis B vaccine",
+              "system": "http://hl7.org/fhir/sid/cvx"
+            }
+          ]
+        },
+        "status": "completed",
+        "route": {
+          "coding": [
+            {
+              "code": "C28161",
+              "display": "Intramuscular injection",
+              "system": "urn:oid:2.16.840.1.113883.3.26.1.1"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Immunization/75596e28-c990-9c26-c378-0370c8b9375f"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:01aa5198-a2bd-60c8-de09-af2d2d4584b7",
+      "resource": {
+        "resourceType": "FamilyMemberHistory",
+        "id": "01aa5198-a2bd-60c8-de09-af2d2d4584b7",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:d42ebf70-5c89-11db-b0de-0855200c9a66"
+          }
+        ],
+        "status": "completed",
+        "relationship": {
+          "coding": [
+            {
+              "code": "FTH",
+              "display": "Father",
+              "system": "urn:oid:2.16.840.1.113883.5.111"
+            }
+          ]
+        },
+        "sex": {
+          "coding": [
+            {
+              "code": "M",
+              "display": "Male",
+              "system": "urn:oid:2.16.840.1.113883.1.11.1"
+            }
+          ]
+        },
+        "bornString": "1910",
+        "condition": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "22298006",
+                  "display": "Myocardial infarction",
+                  "system": "http://snomed.info/sct"
+                }
+              ]
+            },
+            "contributedToDeath": true,
+            "onsetAge": {
+              "value": 57,
+              "system": "http://unitsofmeasure.org",
+              "code": "a"
+            }
+          },
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "44054006",
+                  "display": "Diabetes mellitus type 2",
+                  "system": "http://snomed.info/sct"
+                }
+              ]
+            },
+            "contributedToDeath": true,
+            "onsetAge": {
+              "value": 40,
+              "system": "http://unitsofmeasure.org",
+              "code": "a"
+            }
+          }
+        ],
+        "patient": {
+          "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "FamilyMemberHistory/01aa5198-a2bd-60c8-de09-af2d2d4584b7"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:e34c3df8-98f5-e96f-af41-34e0c618e90e",
+      "resource": {
+        "resourceType": "Consent",
+        "id": "e34c3df8-98f5-e96f-af41-34e0c618e90e",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:af6ebdf2-d996-11e2-a5b8-f23c91aec05e"
+          }
+        ],
+        "status": "active",
+        "scope": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/consentscope",
+              "code": "adr"
+            }
+          ]
+        },
+        "category": [
+          {
+            "coding": [
+              {
+                "code": "45473-6",
+                "display": "advance directive - living will",
+                "system": "http://loinc.org"
+              }
+            ]
+          }
+        ],
+        "dateTime": "2011-02-19",
+        "provision": {
+          "code": [
+            {
+              "coding": [
+                {
+                  "code": "304253006",
+                  "display": "Do not resuscitate",
+                  "system": "http://snomed.info/sct"
+                }
+              ]
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
+        },
+        "sourceReference": {
+          "reference": "DocumentReference/6c331bac-8912-acaf-9373-b44c33e75e1a"
+        },
+        "performer": [
+          {
+            "reference": "Practitioner/2cc9a3a8-789c-1981-1868-ed0f20d85191"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Consent/e34c3df8-98f5-e96f-af41-34e0c618e90e"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6c331bac-8912-acaf-9373-b44c33e75e1a",
+      "resource": {
+        "resourceType": "DocumentReference",
+        "id": "6c331bac-8912-acaf-9373-b44c33e75e1a",
+        "status": "current",
+        "content": [
+          {
+            "attachment": {
+              "contentType": "application/pdf",
+              "url": "AdvanceDirective.b50b7910.pdf"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "DocumentReference/6c331bac-8912-acaf-9373-b44c33e75e1a"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2cc9a3a8-789c-1981-1868-ed0f20d85191",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "2cc9a3a8-789c-1981-1868-ed0f20d85191",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:20cf14fb-b65c-4c8c-a54d-b0cca834c18c"
+          }
+        ],
+        "name": [
+          {
+            "family": "Nightingale",
+            "given": [
+              "Nurse"
+            ],
+            "suffix": [
+              "RN"
+            ]
+          }
+        ],
+        "qualification": [
+          {
+            "code": {
+              "coding": [
+                {
+                  "code": "163W00000X",
+                  "display": "Registered nurse",
+                  "system": "http://nucc.org/provider-taxonomy"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/2cc9a3a8-789c-1981-1868-ed0f20d85191"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:38b62015-54a1-cc1e-a9d8-a03bb267c50d",
+      "resource": {
+        "resourceType": "Device",
+        "id": "38b62015-54a1-cc1e-a9d8-a03bb267c50d",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:3e414708-0e61-4d48-8863-484a2d473a02"
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "40388003",
+              "display": "Implant",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Device/38b62015-54a1-cc1e-a9d8-a03bb267c50d"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:be8b0c5a-7747-9c4f-6bdb-9be9bab1dd54",
+      "resource": {
+        "resourceType": "Device",
+        "id": "be8b0c5a-7747-9c4f-6bdb-9be9bab1dd54",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:39b5f1b4-a8e1-4ad7-8849-0deab10c97b1"
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "14106009",
+              "display": "cardiac pacemaker, device (physical object)",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
+        "manufacturer": "Good Health Durable Medical Equipment"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Device/be8b0c5a-7747-9c4f-6bdb-9be9bab1dd54"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:336b3fa8-f155-22b6-75ef-4746136c07c0",
+      "resource": {
+        "resourceType": "Device",
+        "id": "336b3fa8-f155-22b6-75ef-4746136c07c0",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:39b5f1b4-a8e1-4ad7-8849-0deab10c97b1"
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "303406003",
+              "display": "upper gastrointestinal prosthesis (physical object)",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
+        "manufacturer": "Good Health Durable Medical Equipment"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Device/336b3fa8-f155-22b6-75ef-4746136c07c0"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:2747cb4b-eac8-74ae-2de3-852147d3b59f",
+      "resource": {
+        "resourceType": "Device",
+        "id": "2747cb4b-eac8-74ae-2de3-852147d3b59f",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:cf75f5be-1da0-4256-8276-94b7fc73f9f9"
+          }
+        ],
+        "type": {
+          "coding": [
+            {
+              "code": "87405001",
+              "display": "cane",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
+        "manufacturer": "Good Health Durable Medical Equipment"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Device/2747cb4b-eac8-74ae-2de3-852147d3b59f"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:5820ea7a-9778-3661-8e06-734c08aae31b",
+      "resource": {
+        "resourceType": "Procedure",
+        "id": "5820ea7a-9778-3661-8e06-734c08aae31b",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:d5b614bd-01ce-410d-8726-e1fd01dcc72a"
+          }
+        ],
+        "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "code": "103716009",
+              "display": "Stent Placement",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
+        "performedDateTime": "2013-05-12",
+        "bodySite": [
+          {
+            "coding": [
+              {
+                "code": "28273000",
+                "display": "bile duct",
+                "system": "http://snomed.info/sct"
+              }
+            ]
+          }
+        ],
+        "subject": {
+          "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
+        },
+        "performer": [
+          {
+            "actor": {
+              "reference": "Organization/306c4c51-3243-1d4d-fb8e-717b94d56e23"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Procedure/5820ea7a-9778-3661-8e06-734c08aae31b"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:306c4c51-3243-1d4d-fb8e-717b94d56e23",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "306c4c51-3243-1d4d-fb8e-717b94d56e23",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:2.16.840.1.113883.19.5"
+          }
+        ],
+        "name": "Community Health and Hospitals",
+        "address": [
+          {
+            "line": [
+              "1003 Health Care Drive"
+            ],
+            "city": "Ann Arbor",
+            "state": "MI",
+            "country": "US",
+            "postalCode": "02368"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+1(555)-555-5005",
+            "use": "work"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/306c4c51-3243-1d4d-fb8e-717b94d56e23"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:c93f90b9-1403-0e0e-a581-bf4a7d72b408",
+      "resource": {
+        "resourceType": "Coverage",
+        "id": "c93f90b9-1403-0e0e-a581-bf4a7d72b408",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:3e676a50-7aac-11db-9fe1-0800200c9a66"
+          }
+        ],
+        "status": "completed"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Coverage/c93f90b9-1403-0e0e-a581-bf4a7d72b408"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:96234c12-f825-7e78-5c23-911e87bac91f",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "96234c12-f825-7e78-5c23-911e87bac91f",
+        "name": "Good Health Insurance",
+        "address": [
+          {
+            "use": "work",
+            "line": [
+              "9009 Health Drive"
+            ],
+            "city": "Portland",
+            "state": "OR",
+            "postalCode": "99123"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "+1(555)555-1515",
+            "use": "work"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/96234c12-f825-7e78-5c23-911e87bac91f"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:dea4254d-9e3d-cc2b-5008-447871e3f2eb",
       "resource": {
         "resourceType": "DocumentReference",
@@ -2114,7 +3141,7 @@
             }
           ]
         },
-        "date": "2021-03-04T04:07:04.613Z",
+        "date": "2021-05-21T05:21:29.584Z",
         "status": "current",
         "content": [
           {

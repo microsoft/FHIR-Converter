@@ -59,37 +59,37 @@
         {
             {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.targetSiteCode -%}
         },
-        "valueCodeableConcept":
-        {
-            {% if observationEntry.value.code -%}
-            {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.value -%}
-            {% endif -%}
-        },
-        "valueQuantity":
-        {
-            {% if observationEntry.value.value -%}
-            "value":"{{ observationEntry.value.value }}",
-            {% endif -%}
-            {% if observationEntry.value.value -%}
-            "unit":"{{ observationEntry.value.unit }}",
-            {% endif -%}
-        },
-        {% if observationEntry.value.code == null and observationEntry.value.value == null -%}
-        "valueString":"{{ observationEntry.value._ }}",
+        {% if observationEntry.value.code -%}
+            "valueCodeableConcept":
+            {
+                {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.value -%}
+            },
+        {% elsif observationEntry.value.value -%}
+            "valueQuantity":
+            {
+                "value":{{ observationEntry.value.value }},
+                "unit":"{{ observationEntry.value.unit }}",
+            },
+        {% else -%}
+            "valueString":"{{ observationEntry.value._ }}",
         {% endif -%}
         "referenceRange":
         [
             {
-                "low":
-                {
-                    "value":"{{ observationEntry.referenceRange.observationRange.value.low.value }}",
-                    "unit":"{{ observationEntry.referenceRange.observationRange.value.low.unit }}",
-                },
-                "high":
-                {
-                    "value":"{{ observationEntry.referenceRange.observationRange.value.high.value }}",
-                    "unit":"{{ observationEntry.referenceRange.observationRange.value.high.unit }}",
-                },
+                {% if observationEntry.referenceRange.observationRange.value.low.value -%}
+                    "low":
+                    {
+                        "value":{{ observationEntry.referenceRange.observationRange.value.low.value }},
+                        "unit":"{{ observationEntry.referenceRange.observationRange.value.low.unit }}",
+                    },
+                {% endif -%}
+                {% if observationEntry.referenceRange.observationRange.value.high.value -%}
+                    "high":
+                    {
+                        "value":{{ observationEntry.referenceRange.observationRange.value.high.value }},
+                        "unit":"{{ observationEntry.referenceRange.observationRange.value.high.unit }}",
+                    },
+                {% endif -%}
             },
         ],
         "interpretation":

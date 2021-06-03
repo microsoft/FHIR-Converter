@@ -682,7 +682,7 @@
                 }
               ]
             },
-            "preferred": "true"
+            "preferred": true
           }
         ]
       },
@@ -898,6 +898,62 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:2458abdd-0359-8097-d703-80a33fabea1c",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "2458abdd-0359-8097-d703-80a33fabea1c",
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:de10790f-1496-4729-8fe6-f1b87b6219f7"
+          }
+        ],
+        "status": "active",
+        "patient": {
+          "reference": "Patient/89236d99-8509-7d3a-9dfb-a82c6b81d268"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Immunization/2458abdd-0359-8097-d703-80a33fabea1c"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:20bee81f-d6d0-543f-61c1-69eb26b5d9e9",
+      "resource": {
+        "resourceType": "Procedure",
+        "id": "20bee81f-d6d0-543f-61c1-69eb26b5d9e9",
+        "meta": {
+          "profile": [
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure"
+          ]
+        },
+        "identifier": [
+          {
+            "system": "urn:ietf:rfc:3986",
+            "value": "urn:uuid:d5b614bd-01ce-410d-8728-e1fd01dcc72a"
+          }
+        ],
+        "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "code": "71388002",
+              "display": "Procedure",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/89236d99-8509-7d3a-9dfb-a82c6b81d268"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Procedure/20bee81f-d6d0-543f-61c1-69eb26b5d9e9"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:55ca462c-a6b4-0708-dffc-b5eaced1242d",
       "resource": {
         "resourceType": "DocumentReference",
@@ -911,7 +967,7 @@
             }
           ]
         },
-        "date": "2021-03-04T04:07:04.769Z",
+        "date": "2021-04-29T03:37:46.724Z",
         "status": "current",
         "content": [
           {

@@ -1,29 +1,30 @@
-{% if code == 'registered' -%}
-"registered",
-{% elsif code == 'received' -%}
-"registered",
-{% elsif code == 'preliminary' -%}
-"preliminary",
-{% elsif code == 'final' -%}
-"final",
-{% elsif code == 'completed' -%}
-"final",
-{% elsif code == 'amended' -%}
-"amended",
-{% elsif code == 'corrected' -%}
-"corrected",
-{% elsif code == 'appended' -%}
-"appended",
-{% elsif code == 'cancelled' -%}
-"cancelled",
-{% elsif code == 'abandoned' -%}
-"cancelled",
-{% elsif code == 'entered-in-error' -%}
-"entered-in-error",
-{% elsif code == 'error' -%}
-"entered-in-error",
-{% elsif code == 'unknown' -%}
-"unknown",
-{% else -%}
-"{{ code }}",
-{% endif -%}
+{% case code -%}
+    {% when "registered" -%}
+        "registered",
+    {% when "received" -%}
+        "registered",
+    {% when "preliminary" -%}
+        "preliminary",
+    {% when "final" -%}
+        "final",
+    {% when "completed" -%}
+        "final",
+    {% when "amended" -%}
+        "amended",
+    {% when "corrected" -%}
+        "corrected",
+    {% when "appended" -%}
+        "appended",
+    {% when "cancelled" -%}
+        "cancelled",
+    {% when "abandoned" -%}
+        "cancelled",
+    {% when "entered-in-error" -%}
+        "entered-in-error",
+    {% when "error" -%}
+        "entered-in-error",
+    {% when "unknown" -%}
+        "unknown",
+    {% else -%}
+        "{{ code }}",
+{% endcase -%}

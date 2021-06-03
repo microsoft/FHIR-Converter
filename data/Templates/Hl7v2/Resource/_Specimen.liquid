@@ -19,7 +19,7 @@ Specimen_Subject_ID: A resource Id, used to fill "subject.reference" property.
             "collector":
             {
                 {% if OBR.10 and Practitioner_ID_OBR_10 -%}
-                "reference":"Practitioner/{{ Practitioner_ID_OBR_10 }}",
+                    "reference":"Practitioner/{{ Practitioner_ID_OBR_10 }}",
                 {% endif -%}
             },
             "method":
@@ -29,11 +29,11 @@ Specimen_Subject_ID: A resource Id, used to fill "subject.reference" property.
             "collectedPeriod":
             {
                 {% if SPM.17.2 -%}
-                {% include 'DataType/DR' DR: SPM.17 -%}
+                    {% include 'DataType/DR' DR: SPM.17 -%}
                 {% endif -%}
             },
             {% if SPM.17.2 == null -%}
-            "collectedDateTime":"{{ SPM.17.Value | format_as_date_time }}",
+                "collectedDateTime":"{{ SPM.17.Value | format_as_date_time }}",
             {% endif -%}
         },
         "receivedTime":"{{ OBR.14.Value | format_as_date_time }}",
@@ -48,7 +48,9 @@ Specimen_Subject_ID: A resource Id, used to fill "subject.reference" property.
             {
                 {% include 'DataType/EIPIdentifier' EIP: SPM.2 -%}
             },
-            { {% include 'DataType/EIPIdentifier' EIP: SPM.3 -%} },
+            {
+                {% include 'DataType/EIPIdentifier' EIP: SPM.3 -%}
+            },
             {
                 {% include 'DataType/CX' CX: SPM.31 -%}
             },
@@ -60,7 +62,7 @@ Specimen_Subject_ID: A resource Id, used to fill "subject.reference" property.
                     [
                         {
                             {% if SPM.32 -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
                             {% endif -%}
                         },
                     ],
@@ -87,7 +89,9 @@ Specimen_Subject_ID: A resource Id, used to fill "subject.reference" property.
         "status":"{{ SPM.20.Value | get_property: 'CodeSystem/SpecimenAvailability', 'code' }}",
         "condition":
         [
-            { {% include 'DataType/CWECodeableConcept' CWE: SPM.24 -%} },
+            {
+                {% include 'DataType/CWECodeableConcept' CWE: SPM.24 -%}
+            },
         ],
         "accessionIdentifier":
         {

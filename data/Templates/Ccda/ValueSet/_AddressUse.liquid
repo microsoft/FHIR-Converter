@@ -1,13 +1,14 @@
-{% if code == 'HP' -%}
-"home",
-{% elsif code == 'H' -%}
-"home",
-{% elsif code == 'WP' -%}
-"work",
-{% elsif code == 'TMP' -%}
-"temp",
-{% elsif code == 'BAD' -%}
-"old",
-{% else -%}
-"{{ code }}",
-{% endif -%}
+{% case code -%}
+    {% when "HP" -%}
+        "home",
+    {% when "H" -%}
+        "home",
+    {% when 'WP' -%}
+        "work",
+    {% when "TMP" -%}
+        "temp",
+    {% when "BAD" -%}
+        "old",
+    {% else -%}
+        "{{ code }}",
+{% endcase %}

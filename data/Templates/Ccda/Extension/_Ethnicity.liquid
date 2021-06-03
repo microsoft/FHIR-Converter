@@ -16,7 +16,7 @@
                         {% assign normalizedCode = e.nullFlavor | upcase -%}
                         {% if normalizedCode == 'ASKU' -%}
                             "display":"Asked but no answer",
-                        {% else %}
+                        {% else -%}
                             "display":"Unknown",
                         {% endif -%}
                     },
