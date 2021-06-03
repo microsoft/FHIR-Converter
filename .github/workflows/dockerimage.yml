@@ -3,7 +3,7 @@ name: Docker Image CI
 on: 
   push:
     branches:
-      - master
+      - handlebars
   schedule:
     - cron: '0 9 * * 1'
 
