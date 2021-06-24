@@ -1,0 +1,58 @@
+version: "3.9"
+services:
+  fhir-converter:
+    container_name: fhir-converter
+    restart: unless-stopped
+    build: ./
+    ports:
+      - "2019:2019"
+    # tty: true
+    # stdin_open: true
+    # entrypoint: bash
+
+  ###
+  # OpenHIM
+  ###
+  openhim-core:
+    container_name: openhim-core
+    image: jembi/openhim-core:latest
+    restart: unless-stopped
+    environment:
+      mongo_url: "mongodb://mongo-db/openhim"
+      mongo_atnaUrl: "mongodb://mongo-db/openhim"
+      NODE_ENV: "development"
+    ports:
+      - 8080:8080
+      - "5000:5000"
+      - "5001:5001"
+    healthcheck:
+      test: "curl -sSk https://openhim-core:8080/heartbeat || exit 1"
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  openhim-console:
+    container_name: openhim-console
+    image: jembi/openhim-console:latest
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    #volumes:
+      # - ./configs/openhim-console/default.json:/usr/share/nginx/html/config/default.json
+    healthcheck:
+      test: "curl -sS http://openhim-console || exit 1"
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  mongo-db:
+    container_name: mongo-db
+    image: mongo:3.4
+    ports:
+      - 27017:27017
+    volumes:
+      - "mongo-data:/data/db"
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
