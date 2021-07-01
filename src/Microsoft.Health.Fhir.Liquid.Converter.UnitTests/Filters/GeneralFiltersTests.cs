@@ -109,5 +109,13 @@ EVN|A01|20050110045502|||||",
             var exception = Assert.Throws<RenderException>(() => Filters.GenerateIdInput("NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| ", "RelatedPerson", true, null));
             Assert.Equal(FhirConverterErrorCode.InvalidIdGenerationInput, exception.FhirConverterErrorCode);
         }
+
+        [Fact]
+        public void ToHtmlTest()
+        {
+            string input = "a & b";
+            Assert.Equal("a &amp; b", Filters.ToHtml(input));
+        }
+
     }
 }

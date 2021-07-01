@@ -13,8 +13,11 @@
         "status":"{{ medicationAdministration.statusCode.code }}",
         "effectivePeriod":
         {
-            "start":"{{ medicationAdministration.effectiveTime.low.value | format_as_date_time }}",
-            "end":"{{ medicationAdministration.effectiveTime.high.value | format_as_date_time }}",
+            {% for effectiveTime in medicationAdministration.effectiveTime -%}
+            "start":"{{ effectiveTime.low.value | format_as_date_time }}",
+            "end":"{{ effectiveTime.high.value | format_as_date_time }}",
+            {% endfor -%}
+            
         },
         "dosage":
         {

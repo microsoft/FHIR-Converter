@@ -15,6 +15,9 @@
       },
       "BAD": {
         "code": "old"
+      },
+      "__default__": {
+        "code": "temp"
       }
     },
     "ValueSet/AllergyCategory": {
@@ -41,6 +44,9 @@
       },
       "419199007": {
         "code": "other"
+      },
+      "__default__": {
+        "code": ""
       }
     },
     "ValueSet/AllergySeverity": {
@@ -69,6 +75,9 @@
       },
       "suspended": {
         "code": "inactive"
+      },
+      "__default__": {
+        "code": ""
       }
     },
     "ValueSet/CompositionStatus": {
@@ -95,6 +104,9 @@
       },
       "error": {
         "code": "entered-in-error"
+      },
+      "__default__": {
+        "code": "preliminary"
       }
     },
     "ValueSet/DiagnosticReportStatus": {
@@ -135,6 +147,9 @@
         "code": "entered-in-error"
       },
       "unknown": {
+        "code": "unknown"
+      },
+      "__default__": {
         "code": "unknown"
       }
     },
@@ -183,6 +198,9 @@
       },
       "unknown": {
         "code": "unknown"
+      },
+      "__default__": {
+        "code": "unknown"
       }
     },
     "ValueSet/EventStatus": {
@@ -230,6 +248,9 @@
       },
       "unknown": {
         "code": "unknown"
+      },
+      "__default__": {
+        "code": "unknown"
       }
     },
     "ValueSet/FMStatus": {
@@ -250,44 +271,93 @@
       },
       "draft": {
         "code": "draft"
+      },
+      "__default__": {
+        "code": "active"
+      }
+    },
+    "ValueSet/Gender": {
+      "F": {
+        "code": "female"
+      },
+      "M": {
+        "code": "male"
+      },
+      "UN": {
+        "code": "unknown"
+      },
+      "__default__": {
+        "code": "unknown"
       }
     },
     "ValueSet/Language": {
       "en": {
-        "code": "English"
+        "code": "en",
+        "display": "English"
+      },
+      "eng": {
+        "code": "en",
+        "display": "English"
       },
       "en-au": {
-        "code": "English (Australia)"
+        "code": "en-au",
+        "display": "English (Australia)"
       },
       "en-ca": {
-        "code": "English (Canada)"
+        "code": "en-ca",
+        "display": "English (Canada)"
       },
       "en-in": {
-        "code": "English (India)"
+        "code": "en-in",
+        "display": "English (India)"
       },
       "en-gb": {
-        "code": "English (Great Britain)"
+        "code": "en-gb",
+        "display": "English (Great Britain)"
       },
       "en-nz": {
-        "code": "English (New Zeland)"
+        "code": "en-nz",
+        "display": "English (New Zeland)"
       },
       "en-sg": {
-        "code": "English (Singapore)"
+        "code": "en-sg",
+        "display": "English (Singapore)"
       },
       "en-us": {
-        "code": "English (United States)"
+        "code": "en-us",
+        "display": "English (United States)"
       },
       "es": {
-        "code": "Spanish"
+        "code": "es",
+        "display": "Spanish"
       },
       "de": {
-        "code": "German"
+        "code": "de",
+        "display": "German"
       },
       "da": {
-        "code": "Danish"
+        "code": "da",
+        "display": "Danish"
       },
       "fr": {
-        "code": "French"
+        "code": "fr",
+        "display": "French"
+      },
+      "it": {
+        "code": "it",
+        "display": "Italian"
+      },
+      "ita": {
+        "code": "it",
+        "display": "Italian"
+      },
+      "spa": {
+        "code": "es",
+        "display": "Spanish"
+      },
+      "__default__": {
+        "code": "",
+        "display": ""
       }
     },
     "ValueSet/MedicationStatementStatus": {
@@ -304,6 +374,9 @@
       },
       "P": {
         "code": "nickname"
+      },
+      "__default__": {
+        "code": ""
       }
     },
     "ValueSet/ObservationStatus": {
@@ -342,6 +415,9 @@
       },
       "unknown": {
         "code": "unknown"
+      },
+      "__default__": {
+        "code": "unknown"
       }
     },
     "ValueSet/RequestStatus": {
@@ -374,6 +450,9 @@
       },
       "unknown": {
         "code": "unknown"
+      },
+      "__default__": {
+        "code": "unknown"
       }
     },
     "ValueSet/TelecomUse": {
@@ -394,6 +473,9 @@
       },
       "MC": {
         "code": "mobile"
+      },
+      "__default__": {
+        "code": "temp"
       }
     }
   }
