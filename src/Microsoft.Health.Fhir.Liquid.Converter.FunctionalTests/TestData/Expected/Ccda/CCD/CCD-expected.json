@@ -36,7 +36,8 @@
         "event": [
           {
             "period": {
-              "start": "2014-10-01"
+              "start": "2014-10-01",
+              "end": "2014-10-15T23:30:26+08:00"
             }
           }
         ],
@@ -172,9 +173,6 @@
           },
           {
             "reference": "Device/d51e0d43-a5bb-d53e-b265-6a569b79e5ec"
-          },
-          {
-            "reference": "Practitioner/[nullFlavor, NI]"
           }
         ]
       },
@@ -348,40 +346,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:[nullFlavor, NI]",
-      "resource": {
-        "resourceType": "Practitioner",
-        "id": "[nullFlavor, NI]",
-        "meta": {
-          "profile": [
-            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
-          ]
-        },
-        "address": [
-          {
-            "line": [
-              "1004 Healthcare Drive "
-            ],
-            "city": "Portland",
-            "state": "OR",
-            "country": "US",
-            "postalCode": "99123"
-          }
-        ],
-        "telecom": [
-          {
-            "system": "phone",
-            "value": "+1(555)555-1004",
-            "use": "work"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Practitioner/[nullFlavor, NI]"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:03a91833-bc93-2b74-b2a0-7851c2c34ebc",
       "resource": {
         "resourceType": "Patient",
@@ -420,16 +384,14 @@
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2106-3",
-                  "display": "White",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "White"
                 }
               },
               {
                 "url": "detailed",
                 "valueCoding": {
                   "code": "2114-7",
-                  "display": "Italian",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "Italian"
                 }
               },
               {
@@ -445,8 +407,7 @@
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2186-5",
-                  "display": "Not Hispanic or Latino",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "Not Hispanic or Latino"
                 }
               },
               {
@@ -485,8 +446,8 @@
               "coding": [
                 {
                   "system": "urn:ietf:bcp:47",
-                  "code": "ita",
-                  "display": "ita"
+                  "code": "it",
+                  "display": "Italian"
                 }
               ]
             },
@@ -497,8 +458,8 @@
               "coding": [
                 {
                   "system": "urn:ietf:bcp:47",
-                  "code": "eng",
-                  "display": "eng"
+                  "code": "en",
+                  "display": "English"
                 }
               ]
             },
@@ -603,7 +564,7 @@
             "value": "urn:uuid:7d5a02b0-67a4-11db-bd13-0800200c9a66"
           }
         ],
-        "status": "active",
+        "status": "unknown",
         "code": {
           "coding": [
             {
@@ -653,7 +614,7 @@
             ]
           }
         ],
-        "status": "active",
+        "status": "unknown",
         "code": {
           "coding": [
             {
@@ -1195,6 +1156,19 @@
           }
         ],
         "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "code": "6025007",
+              "display": "Laparoscopic appendectomy",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
+        "performedPeriod": {
+          "start": "2014-10-02T23:30:26+08:00",
+          "end": "2014-10-03T01:42:45+08:00"
+        },
         "bodySite": [
           {
             "coding": [
@@ -1329,7 +1303,7 @@
             }
           ]
         },
-        "date": "2021-04-29T03:37:46.758Z",
+        "date": "2021-07-02T05:38:36.225Z",
         "status": "current",
         "content": [
           {

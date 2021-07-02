@@ -36,7 +36,8 @@
         "event": [
           {
             "period": {
-              "start": "2015-07-23T07:00:00+08:00"
+              "start": "2015-07-23T07:00:00+08:00",
+              "end": "2015-07-23T12:00:00+08:00"
             }
           }
         ],
@@ -383,9 +384,6 @@
         "subject": {
           "reference": "Patient/89236d99-8509-7d3a-9dfb-a82c6b81d268"
         },
-        "encounter": {
-          "reference": "Encounter/c98de50d-6b03-5072-e3db-0d3352273824"
-        },
         "custodian": {
           "reference": "Organization/60584e77-f1e2-7864-31ce-931c9781c1dc"
         },
@@ -449,28 +447,6 @@
       "request": {
         "method": "PUT",
         "url": "Practitioner/94866a00-1f48-91e8-9327-cc1da205e69b"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:c98de50d-6b03-5072-e3db-0d3352273824",
-      "resource": {
-        "resourceType": "Encounter",
-        "id": "c98de50d-6b03-5072-e3db-0d3352273824",
-        "status": "unknown",
-        "identifier": [
-          {
-            "system": "urn:oid:2.16.840.1.113883.19",
-            "value": "9937012"
-          }
-        ],
-        "period": {
-          "start": "2015-07-23T07:00:00+08:00",
-          "end": "2015-07-23T12:00:00+08:00"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Encounter/c98de50d-6b03-5072-e3db-0d3352273824"
       }
     },
     {
@@ -908,6 +884,15 @@
             "value": "urn:uuid:de10790f-1496-4729-8fe6-f1b87b6219f7"
           }
         ],
+        "vaccineCode": {
+          "coding": [
+            {
+              "code": "71181003",
+              "display": "vaccine",
+              "system": "http://snomed.info/sct"
+            }
+          ]
+        },
         "status": "active",
         "patient": {
           "reference": "Patient/89236d99-8509-7d3a-9dfb-a82c6b81d268"
@@ -967,7 +952,7 @@
             }
           ]
         },
-        "date": "2021-04-29T03:37:46.724Z",
+        "date": "2021-07-02T05:38:36.183Z",
         "status": "current",
         "content": [
           {
