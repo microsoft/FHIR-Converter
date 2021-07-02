@@ -39,32 +39,6 @@ class jsonCustomListener extends jsonListener {
         //this.printState();
     }
 
-    exitJson() {
-        let childText = this.stack.pop();
-        if (childText === undefined) {
-            throw "unexpected state!";
-        }
-        this.stack.push(childText ? childText : '{}'); // top object
-    }
-
-    exitObj(ctx) {
-        //console.log('obj');
-        //this.dumpCtx(ctx);
-    
-        var pairArr = [];
-        for (var i = 0; i < ctx.getChildCount(); ++i) {
-            if (ctx.getChild(i).getChildCount() == 3) {
-                let pairText = this.stack.pop();
-                if (pairText) {
-                    pairArr.push(pairText);
-                }
-            }
-        }
-        let finalText = pairArr.reverse().join();
-        this.stack.push(finalText ? `{${finalText}}` : null);
-        //this.printState();
-    }
-
     exitArray(ctx) {
         //console.log('array');
         //this.dumpCtx(ctx);

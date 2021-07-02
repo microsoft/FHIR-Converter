@@ -456,7 +456,7 @@ describe('/api/templates/git', function () {
         app.setConstants(constants);
     });
 
-    it('should return return an array from status', function (done) {
+    it('should return an array from status', function (done) {
         supertest(app)
             .get("/api/templates/git/status")
             .set(API_KEY_HEADER, apiKeys[0])
@@ -475,7 +475,7 @@ describe('/api/templates/git', function () {
             });
     });
 
-    it('should return return an array from branches', function (done) {
+    it('should return an array from branches', function (done) {
         supertest(app)
             .get("/api/templates/git/branches")
             .set(API_KEY_HEADER, apiKeys[0])
@@ -844,7 +844,7 @@ describe('POST /api/convert/hl7v2 (inline conversion)', function () {
             .expect(400, {
                 error: {
                     code: "BadRequest",
-                    message: "Unable to parse input data. The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type undefined"
+                    message: "Unable to parse input data. The first argument must be of type string or an instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined"
                 }
             })
             .end(function (err) {
