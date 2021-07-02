@@ -10,19 +10,19 @@
 
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
     <OsEnv>windows</OsEnv>
-    <OrasUrl>https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_windows_amd64.tar.gz</OrasUrl>
+    <OrasUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_windows_amd64.tar.gz</OrasUrl>
     <OrasExecutable>oras.exe</OrasExecutable>
     <CopyExecutable>copy</CopyExecutable>
   </PropertyGroup>
   <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'">
     <OsEnv>linux</OsEnv>
-    <OrasUrl>https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_linux_amd64.tar.gz</OrasUrl>
+    <OrasUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_linux_amd64.tar.gz</OrasUrl>
     <OrasExecutable>oras</OrasExecutable>
     <CopyExecutable>cp</CopyExecutable>
   </PropertyGroup>
   <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))'">
     <OsEnv>darwin</OsEnv>
-    <OrasUrl>https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_darwin_amd64.tar.gz</OrasUrl>
+    <OrasUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_darwin_amd64.tar.gz</OrasUrl>
     <OrasExecutable>oras</OrasExecutable>
     <CopyExecutable>cp</CopyExecutable>
   </PropertyGroup>
