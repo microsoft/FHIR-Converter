@@ -15,8 +15,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 {
     public class Hl7v2Processor : BaseProcessor
     {
-        private readonly Hl7v2DataParser _dataParser = new Hl7v2DataParser();
-
         public Hl7v2Processor(ProcessorSettings processorSettings = null)
             : base(processorSettings)
         {
@@ -40,7 +38,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
             }
 
-            var hl7v2Data = _dataParser.Parse(data);
+            var hl7v2Data = Hl7v2DataParser.Parse(data);
             var context = CreateContext(templateProvider, hl7v2Data);
             var rawResult = RenderTemplates(template, context);
             var result = PostProcessor.Process(rawResult);

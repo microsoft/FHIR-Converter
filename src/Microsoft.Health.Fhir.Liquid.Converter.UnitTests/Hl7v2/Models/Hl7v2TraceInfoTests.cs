@@ -45,8 +45,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2.Models
             // Valid Hl7v2Data before render
             var content = @"MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3||| 
 PID|1||10006579^^^1^MR^1||DUCK^DONALD^D||19241010|M||1|111 DUCK ST^^FOWL^CA^999990000^^M|1|8885551212|8885551212|1|2||40007716^^^AccMgr^VN^1|123121234|||||||||||NO ";
-            var parser = new Hl7v2DataParser();
-            data = parser.Parse(content);
+            data = Hl7v2DataParser.Parse(content);
             traceInfo = Hl7v2TraceInfo.CreateTraceInfo(data);
             Assert.Equal(2, traceInfo.UnusedSegments.Count);
             Assert.Equal(27, traceInfo.UnusedSegments[1].Components.Count);

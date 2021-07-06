@@ -14,8 +14,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
 {
     public class CcdaProcessor : BaseProcessor
     {
-        private readonly CcdaDataParser _dataParser = new CcdaDataParser();
-
         public CcdaProcessor(ProcessorSettings processorSettings = null)
             : base(processorSettings)
         {
@@ -39,7 +37,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
             }
 
-            var ccdaData = _dataParser.Parse(data);
+            var ccdaData = CcdaDataParser.Parse(data);
             var context = CreateContext(templateProvider, ccdaData);
             var rawResult = RenderTemplates(template, context);
             var result = PostProcessor.Process(rawResult);

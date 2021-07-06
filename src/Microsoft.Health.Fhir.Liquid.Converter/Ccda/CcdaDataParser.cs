@@ -14,17 +14,17 @@ using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
 {
-    public class CcdaDataParser
+    public static class CcdaDataParser
     {
-        public IDictionary<string, object> Parse(string document)
+        public static IDictionary<string, object> Parse(string document)
         {
+            if (string.IsNullOrEmpty(document))
+            {
+                throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
+            }
+
             try
             {
-                if (string.IsNullOrEmpty(document))
-                {
-                    throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
-                }
-
                 var xDocument = XDocument.Parse(document);
 
                 // Remove redundant namespaces to avoid appending namespace prefix before elements

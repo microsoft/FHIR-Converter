@@ -13,23 +13,24 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 {
-    public class Hl7v2DataParser
+    public static class Hl7v2DataParser
     {
-        private readonly Hl7v2DataValidator _validator = new Hl7v2DataValidator();
+        private static readonly Hl7v2DataValidator Validator = new Hl7v2DataValidator();
         private static readonly string[] SegmentSeparators = { "\r\n", "\r", "\n" };
 
-        public Hl7v2Data Parse(string message)
+        public static Hl7v2Data Parse(string message)
         {
-            var result = new Hl7v2Data(message);
+            if (string.IsNullOrEmpty(message))
+            {
+                throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
+            }
+
             try
             {
-                if (string.IsNullOrEmpty(message))
-                {
-                    throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
-                }
+                var result = new Hl7v2Data(message);
 
                 var segments = message.Split(SegmentSeparators, StringSplitOptions.RemoveEmptyEntries);
-                _validator.ValidateMessageHeader(segments[0]);
+                Validator.ValidateMessageHeader(segments[0]);
                 var encodingCharacters = ParseHl7v2EncodingCharacters(segments[0]);
                 result.EncodingCharacters = encodingCharacters;
 
@@ -40,13 +41,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                     result.Meta.Add(fields.First()?.Value ?? string.Empty);
                     result.Data.Add(segment);
                 }
+
+                return result;
             }
             catch (Exception ex)
             {
                 throw new DataParseException(FhirConverterErrorCode.InputParsingError, string.Format(Resources.InputParsingError, ex.Message), ex);
             }
-
-            return result;
         }
 
         private static List<Hl7v2Field> ParseFields(string dataString, Hl7v2EncodingCharacters encodingCharacters, bool isHeaderSegment = false)
