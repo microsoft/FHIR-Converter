@@ -66,7 +66,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             try
             {
                 var mapping = JsonConvert.DeserializeObject<CodeMapping>(content);
-                if (mapping == null || mapping.Mapping == null)
+                if (mapping?.Mapping == null)
                 {
                     throw new ConverterInitializeException(FhirConverterErrorCode.InvalidCodeMapping, Resources.InvalidCodeMapping);
                 }

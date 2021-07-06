@@ -50,7 +50,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
         }
 
         [Fact]
-        public void GivenCcdaDocument_WhenParse_CorrectResultShouldBeReturned()
+        public void GivenValidCcdaDocument_WhenParse_CorrectResultShouldBeReturned()
         {
             // Sample CCD document
             var document = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Ccda", "CCD.ccda"));

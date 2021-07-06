@@ -87,7 +87,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
         }
 
-        private string LoadTemplate(string templatePath)
+        private static string LoadTemplate(string templatePath)
         {
             try
             {

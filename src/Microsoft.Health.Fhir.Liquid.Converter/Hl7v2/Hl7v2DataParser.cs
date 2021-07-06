@@ -49,7 +49,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             return result;
         }
 
-        private List<Hl7v2Field> ParseFields(string dataString, Hl7v2EncodingCharacters encodingCharacters, bool isHeaderSegment = false)
+        private static List<Hl7v2Field> ParseFields(string dataString, Hl7v2EncodingCharacters encodingCharacters, bool isHeaderSegment = false)
         {
             var fields = new List<Hl7v2Field>();
             var fieldValues = dataString.Split(encodingCharacters.FieldSeparator);
@@ -69,12 +69,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                     fields.Add(fieldSeparatorField);
 
                     // encoding characters
-                    var seperatorFieldComponents = new List<Hl7v2Component>
+                    var separatorFieldComponents = new List<Hl7v2Component>
                     {
                         null,
                         new Hl7v2Component(fieldValues[f], new List<string> { null, fieldValues[f] }),
                     };
-                    var separatorField = new Hl7v2Field(fieldValues[f], seperatorFieldComponents);
+                    var separatorField = new Hl7v2Field(fieldValues[f], separatorFieldComponents);
                     fields.Add(separatorField);
                 }
                 else
@@ -114,7 +114,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             return fields;
         }
 
-        private List<Hl7v2Component> ParseComponents(string dataString, Hl7v2EncodingCharacters encodingCharacters)
+        private static List<Hl7v2Component> ParseComponents(string dataString, Hl7v2EncodingCharacters encodingCharacters)
         {
             // Add a null value at first to keep consistent indexes with HL7 v2 spec
             var components = new List<Hl7v2Component> { null };
@@ -136,7 +136,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             return components;
         }
 
-        private List<string> ParseSubcomponents(string dataString, Hl7v2EncodingCharacters encodingCharacters)
+        private static List<string> ParseSubcomponents(string dataString, Hl7v2EncodingCharacters encodingCharacters)
         {
             // Add a null value at first to keep consistent indexes with HL7 v2 spec
             var subcomponents = new List<string>() { null };
@@ -149,7 +149,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             return subcomponents;
         }
 
-        private Hl7v2EncodingCharacters ParseHl7v2EncodingCharacters(string headerSegment)
+        private static Hl7v2EncodingCharacters ParseHl7v2EncodingCharacters(string headerSegment)
         {
             return new Hl7v2EncodingCharacters
             {
@@ -161,7 +161,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             };
         }
 
-        private string NormalizeText(string value, Hl7v2EncodingCharacters encodingCharacters)
+        private static string NormalizeText(string value, Hl7v2EncodingCharacters encodingCharacters)
         {
             var semanticalUnescape = Hl7v2EscapeSequenceProcessor.Unescape(value, encodingCharacters);
             var grammarEscape = SpecialCharProcessor.Escape(semanticalUnescape);

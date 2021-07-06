@@ -89,6 +89,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.OutputProcessor
             {
                 MergeArrayHandling = MergeArrayHandling.Union,
             };
+
             obj1.Merge(obj2, setting);
 
             return obj1;
