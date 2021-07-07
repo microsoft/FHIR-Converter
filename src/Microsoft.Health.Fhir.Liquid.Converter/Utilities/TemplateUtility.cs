@@ -68,7 +68,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                 var mapping = JsonConvert.DeserializeObject<CodeMapping>(content);
                 if (mapping?.Mapping == null)
                 {
-                    throw new ConverterInitializeException(FhirConverterErrorCode.InvalidCodeMapping, Resources.InvalidCodeMapping);
+                    throw new TemplateLoadException(FhirConverterErrorCode.InvalidCodeMapping, Resources.InvalidCodeMapping);
                 }
 
                 var template = Template.Parse(string.Empty);
@@ -77,7 +77,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             }
             catch (JsonException ex)
             {
-                throw new ConverterInitializeException(FhirConverterErrorCode.InvalidCodeMapping, Resources.InvalidCodeMapping, ex);
+                throw new TemplateLoadException(FhirConverterErrorCode.InvalidCodeMapping, Resources.InvalidCodeMapping, ex);
             }
         }
 
@@ -94,7 +94,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             }
             catch (SyntaxException ex)
             {
-                throw new ConverterInitializeException(FhirConverterErrorCode.TemplateSyntaxError, string.Format(Resources.TemplateSyntaxError, templateName, ex.Message), ex);
+                throw new TemplateLoadException(FhirConverterErrorCode.TemplateSyntaxError, string.Format(Resources.TemplateSyntaxError, templateName, ex.Message), ex);
             }
         }
     }

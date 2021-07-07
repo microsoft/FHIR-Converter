@@ -66,7 +66,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [MemberData(nameof(GetInvalidEvaluateTemplateContents))]
         public void GivenInvalidEvaluateTemplateContent_WhenParse_ExceptionsShouldBeThrown(string templateContent)
         {
-            Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplate(TemplateName, templateContent));
+            Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplate(TemplateName, templateContent));
         }
 
         [Fact]

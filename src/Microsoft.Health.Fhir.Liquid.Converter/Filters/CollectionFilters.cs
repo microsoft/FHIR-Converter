@@ -8,6 +8,8 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using DotLiquid;
+using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
 {
@@ -33,13 +35,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static string BatchRender(Context context, List<object> collection, string templateName, string variableName)
         {
-            var sb = new StringBuilder();
             var templateFileSystem = context.Registers["file_system"] as IFhirConverterTemplateFileSystem;
             var template = templateFileSystem?.GetTemplate(templateName);
+
+            if (template == null)
+            {
+                throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, templateName));
+            }
+
+            var sb = new StringBuilder();
             collection?.ForEach(entry =>
             {
                 context[variableName] = entry;
-                sb.Append(template?.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
+                sb.Append(template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
             });
 
             return sb.ToString();

@@ -22,8 +22,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
             Assert.NotNull(templateProvider.GetTemplate("ADT_A01"));
 
             // Invalid template directory
-            Assert.Throws<ConverterInitializeException>(() => new Hl7v2TemplateProvider(string.Empty));
-            Assert.Throws<ConverterInitializeException>(() => new Hl7v2TemplateProvider(Path.Join("a", "b", "c")));
+            Assert.Throws<TemplateLoadException>(() => new Hl7v2TemplateProvider(string.Empty));
+            Assert.Throws<TemplateLoadException>(() => new Hl7v2TemplateProvider(Path.Join("a", "b", "c")));
 
             // Template collection
             var collection = new List<Dictionary<string, Template>>()
