@@ -22,8 +22,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
             Assert.NotNull(templateProvider.GetTemplate("CCD"));
 
             // Invalid template directory
-            Assert.Throws<ConverterInitializeException>(() => new CcdaTemplateProvider(string.Empty));
-            Assert.Throws<ConverterInitializeException>(() => new CcdaTemplateProvider(Path.Join("a", "b", "c")));
+            Assert.Throws<TemplateLoadException>(() => new CcdaTemplateProvider(string.Empty));
+            Assert.Throws<TemplateLoadException>(() => new CcdaTemplateProvider(Path.Join("a", "b", "c")));
 
             // Template collection
             var collection = new List<Dictionary<string, Template>>()

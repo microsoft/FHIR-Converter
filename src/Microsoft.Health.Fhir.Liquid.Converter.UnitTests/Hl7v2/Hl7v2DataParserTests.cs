@@ -15,8 +15,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
 {
     public class Hl7v2DataParserTests
     {
-        private readonly Hl7v2DataParser _parser = new Hl7v2DataParser();
-
         public static IEnumerable<object[]> GetNullOrEmptyHl7v2Message()
         {
             yield return new object[] { null };
@@ -27,12 +25,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
         [MemberData(nameof(GetNullOrEmptyHl7v2Message))]
         public void GivenNullOrEmptyHl7v2Message_WhenParse_ExceptionShouldBeThrown(string input)
         {
-            var exception = Assert.Throws<DataParseException>(() => _parser.Parse(input));
-            Assert.Equal(FhirConverterErrorCode.InputParsingError, exception.FhirConverterErrorCode);
-
-            var innerException = exception.InnerException as FhirConverterException;
-            Assert.True(innerException is DataParseException);
-            Assert.Equal(FhirConverterErrorCode.NullOrEmptyInput, innerException.FhirConverterErrorCode);
+            var exception = Assert.Throws<DataParseException>(() => Hl7v2DataParser.Parse(input));
+            Assert.Equal(FhirConverterErrorCode.NullOrEmptyInput, exception.FhirConverterErrorCode);
         }
 
         [Fact]
@@ -42,7 +36,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
 NK1|1|JOHNSON^CONWAY^^^^^L|SPOUS||(130) 724-0433^PRN^PH^^^431^2780404~(330) 274-8214^ORN^PH^^^330^2748214||EMERGENCY
 ||E|||||12345^Johnson^Peter|||||||||||||||||||||||||||||||||||||201905020700";
 
-            var hl7v2Data = _parser.Parse(input);
+            var hl7v2Data = Hl7v2DataParser.Parse(input);
             Assert.Equal(3, hl7v2Data.Meta.Count);
             Assert.Equal("MSH", hl7v2Data.Meta[0]);
             Assert.Equal("NK1", hl7v2Data.Meta[1]);

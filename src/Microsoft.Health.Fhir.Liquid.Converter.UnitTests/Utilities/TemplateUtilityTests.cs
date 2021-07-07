@@ -72,24 +72,24 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
         {
             // Invalid DotLiquid template
             var templates = new Dictionary<string, string> { { "ADT_A01.liquid", "{{" } };
-            var exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
+            var exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
             Assert.Equal(FhirConverterErrorCode.TemplateSyntaxError, exception.FhirConverterErrorCode);
             Assert.True(exception.InnerException is SyntaxException);
 
             // Invalid JSON
             templates = new Dictionary<string, string> { { "CodeSystem/CodeSystem.json", @"{""a""" } };
-            exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
+            exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
             Assert.Equal(FhirConverterErrorCode.InvalidCodeMapping, exception.FhirConverterErrorCode);
             Assert.True(exception.InnerException is JsonException);
 
             // Null CodeSystemMapping
             templates = new Dictionary<string, string> { { "CodeSystem/CodeSystem.json", string.Empty } };
-            exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
+            exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
             Assert.Equal(FhirConverterErrorCode.InvalidCodeMapping, exception.FhirConverterErrorCode);
 
             // Null CodeSystemMapping.Mapping
             templates = new Dictionary<string, string> { { "CodeSystem/CodeSystem.json", @"{""a"": ""b""}" } };
-            exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
+            exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
             Assert.Equal(FhirConverterErrorCode.InvalidCodeMapping, exception.FhirConverterErrorCode);
         }
 
@@ -98,24 +98,24 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
         {
             // Invalid DotLiquid template
             var templates = new Dictionary<string, string> { { "CCD.liquid", "{{" } };
-            var exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
+            var exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
             Assert.Equal(FhirConverterErrorCode.TemplateSyntaxError, exception.FhirConverterErrorCode);
             Assert.True(exception.InnerException is SyntaxException);
 
             // Invalid JSON
             templates = new Dictionary<string, string> { { "ValueSet/ValueSet.json", @"{""a""" } };
-            exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
+            exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
             Assert.Equal(FhirConverterErrorCode.InvalidCodeMapping, exception.FhirConverterErrorCode);
             Assert.True(exception.InnerException is JsonException);
 
             // Null ValueSetMapping
             templates = new Dictionary<string, string> { { "ValueSet/ValueSet.json", string.Empty } };
-            exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
+            exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
             Assert.Equal(FhirConverterErrorCode.InvalidCodeMapping, exception.FhirConverterErrorCode);
 
             // Null ValueSetMapping.Mapping
             templates = new Dictionary<string, string> { { "ValueSet/ValueSet.json", @"{""a"": ""b""}" } };
-            exception = Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplates(templates));
+            exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
             Assert.Equal(FhirConverterErrorCode.InvalidCodeMapping, exception.FhirConverterErrorCode);
         }
     }

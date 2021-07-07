@@ -5,34 +5,20 @@
 
 using System.Collections.Generic;
 using DotLiquid;
-using DotLiquid.FileSystems;
-using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
 {
-    public class CcdaTemplateProvider : ITemplateProvider
+    public class CcdaTemplateProvider : TemplateProvider
     {
-        private readonly IFhirConverterTemplateFileSystem _fileSystem;
-
         public CcdaTemplateProvider(string templateDirectory)
+            : base(templateDirectory, DataType.Ccda)
         {
-            _fileSystem = new TemplateLocalFileSystem(templateDirectory, DataType.Ccda);
         }
 
         public CcdaTemplateProvider(List<Dictionary<string, Template>> templateCollection)
+            : base(templateCollection)
         {
-            _fileSystem = new MemoryFileSystem(templateCollection);
-        }
-
-        public Template GetTemplate(string templateName)
-        {
-            return _fileSystem.GetTemplate(templateName);
-        }
-
-        public ITemplateFileSystem GetTemplateFileSystem()
-        {
-            return _fileSystem;
         }
     }
 }
