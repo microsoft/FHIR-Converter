@@ -121,7 +121,8 @@ RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical 
 
         private static Hl7v2Data LoadTestData()
         {
-            return Hl7v2DataParser.Parse(TestData);
+            var data = Hl7v2DataParser.Parse(TestData);
+            return data["hl7v2Data"] as Hl7v2Data;
         }
     }
 }

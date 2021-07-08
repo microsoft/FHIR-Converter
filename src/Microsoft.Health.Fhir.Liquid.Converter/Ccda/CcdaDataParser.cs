@@ -49,7 +49,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
                 // Remove line breaks in original data
                 dataDictionary["_originalData"] = Regex.Replace(document, @"\r\n?|\n", string.Empty);
 
-                return new Dictionary<string, object>()
+                return new Dictionary<string, object>
                 {
                     { "msg", dataDictionary },
                 };

@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Linq;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
@@ -45,7 +46,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
             return result.ToString(Formatting.Indented);
         }
 
-        protected override Context CreateContext(ITemplateProvider templateProvider, object ccdaData)
+        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> ccdaData)
         {
             // Load value set mapping
             var context = base.CreateContext(templateProvider, ccdaData);

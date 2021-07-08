@@ -18,7 +18,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
         private static readonly Hl7v2DataValidator Validator = new Hl7v2DataValidator();
         private static readonly string[] SegmentSeparators = { "\r\n", "\r", "\n" };
 
-        public static Hl7v2Data Parse(string message)
+        public static IDictionary<string, object> Parse(string message)
         {
             if (string.IsNullOrEmpty(message))
             {
@@ -42,7 +42,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
                     result.Data.Add(segment);
                 }
 
-                return result;
+                return new Dictionary<string, object>
+                {
+                    { "hl7v2Data", result },
+                };
             }
             catch (Exception ex)
             {
