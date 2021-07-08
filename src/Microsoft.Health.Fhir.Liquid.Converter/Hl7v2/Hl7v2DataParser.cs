@@ -15,6 +15,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 {
     public static class Hl7v2DataParser
     {
+        public const string Hl7v2DataKey = "hl7v2Data";
         private static readonly Hl7v2DataValidator Validator = new Hl7v2DataValidator();
         private static readonly string[] SegmentSeparators = { "\r\n", "\r", "\n" };
 
@@ -44,7 +45,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 
                 return new Dictionary<string, object>
                 {
-                    { "hl7v2Data", result },
+                    { Hl7v2DataKey, result },
                 };
             }
             catch (Exception ex)
