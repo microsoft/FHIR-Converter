@@ -5,6 +5,7 @@ FROM node:14 AS build
 WORKDIR /app
 COPY . /app
 RUN ls
+RUN cat package.json
 RUN npm install --only=production --no-fund --no-optional --no-audit
 
 #########################################

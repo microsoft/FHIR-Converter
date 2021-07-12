@@ -1,7 +1,7 @@
 name: Docker Image CI
 
 on: 
-  release:
+  push:
     branches:
       - handlebars
   schedule:
@@ -26,6 +26,10 @@ jobs:
     - name: get-npm-version
       id: package-version
       uses: martinbeentjes/npm-get-version-action@v1.0.0
+
+    - uses: azure/docker-login@v2
+      with:
+        ref: v2.1.0
 
     - name: Build the Docker image
       env:
