@@ -27,7 +27,6 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - name: get-npm-version
-      needs: 'Checkout Github Action'
       id: package-version
       uses: martinbeentjes/npm-get-version-action
 
