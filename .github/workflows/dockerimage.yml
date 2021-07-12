@@ -1,6 +1,9 @@
 name: Docker Image CI
 
 on: 
+  pull-request:
+    branches:
+      - handlebars
   push:
     branches:
       - handlebars
