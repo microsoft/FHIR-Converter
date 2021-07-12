@@ -13,10 +13,7 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    steps:
-    - name: 'Checkout Github Action'
-      uses: actions/checkout@master
-      
+    steps:      
     - uses: azure/docker-login@v1
       with:
         login-server: healthplatformregistry.azurecr.io
@@ -24,12 +21,15 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - name: get-npm-version
+      needs: 'Checkout Github Action'
       id: package-version
-      uses: martinbeentjes/npm-get-version-action@v1.0.0
+      uses: martinbeentjes/npm-get-version-action@handlebars
 
     - name: Build the Docker image
       env:
         IMAGE_NAME: healthplatformregistry.azurecr.io/fhirconverter
       run: |
         docker build . -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:v${{ steps.package-version.outputs.current-version }} -t $IMAGE_NAME:latest
+        docker push $IMAGE_NAME:v${{ steps.package-version.outputs.current-version }}
         docker push $IMAGE_NAME
+
