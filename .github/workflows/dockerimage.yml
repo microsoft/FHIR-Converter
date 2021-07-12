@@ -28,7 +28,7 @@ jobs:
 
     - name: get-npm-version
       id: package-version
-      uses: martinbeentjes/npm-get-version-action
+      uses: martinbeentjes/npm-get-version-action@v1.0.0
 
     # From now you can access the version
     - name: Print version
