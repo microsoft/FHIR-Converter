@@ -24,7 +24,6 @@ jobs:
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
     - name: get-npm-version
-      needs: 'Checkout Github Action'
       id: package-version
       uses: martinbeentjes/npm-get-version-action@handlebars
 
@@ -33,5 +32,6 @@ jobs:
         IMAGE_NAME: healthplatformregistry.azurecr.io/fhirconverter
       run: |
         docker build . -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:v${{ steps.package-version.outputs.current-version }} -t $IMAGE_NAME:latest
+        echo ${{ steps.package-version.outputs.current-version }}
         docker push $IMAGE_NAME:v${{ steps.package-version.outputs.current-version }}
         docker push $IMAGE_NAME
