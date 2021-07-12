@@ -447,7 +447,42 @@
                         "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
                     ]
                 },
-                "id": "9594155f-9967-3c61-8f07-d1bf404cea31"
+                "id": "9594155f-9967-3c61-8f07-d1bf404cea31",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "999998899"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Seven",
+                        "given": [
+                            "Henry"
+                        ],
+                        "prefix": [
+                            "Dr"
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "1002 Healthcare Dr"
+                        ],
+                        "city": "Portland",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "97266"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "+1(555)-555-1002",
+                        "use": "work"
+                    }
+                ]
             },
             "request": {
                 "method": "PUT",
@@ -1000,7 +1035,7 @@
                         }
                     ]
                 },
-                "date": "2020-09-30T03:00:41.664Z",
+                "date": "2021-07-02T05:58:06.114Z",
                 "status": "current",
                 "content": [
                     {
