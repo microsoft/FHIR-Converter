@@ -17,6 +17,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: 'Checkout Github Action'
+      uses: actions/checkout@master
+      
     - uses: azure/docker-login@v1
       with:
         login-server: healthplatformregistry.azurecr.io
