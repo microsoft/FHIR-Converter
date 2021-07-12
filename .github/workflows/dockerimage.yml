@@ -32,11 +32,12 @@ jobs:
 
     - uses: actions/checkout@v2
       with:
-        ref: v2.1.0
+        ref: v${{ steps.package-version.outputs.current-version }}
 
     - name: Build the Docker image
       env:
         IMAGE_NAME: healthplatformregistry.azurecr.io/fhirconverter
       run: |
         docker build . -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:v${{ steps.package-version.outputs.current-version }} -t $IMAGE_NAME:latest
-        
+        docker push $IMAGE_NAME:v${{ steps.package-version.outputs.current-version }}
+        docker push $IMAGE_NAME
