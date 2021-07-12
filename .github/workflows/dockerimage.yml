@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - handlebars
+  pull_request:
+    branches:
+      - handlebars
   schedule:
     - cron: '0 9 * * 1'
 
