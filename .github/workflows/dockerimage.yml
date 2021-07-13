@@ -1,9 +1,12 @@
 name: Docker Image CI
 
 on: 
+  pull_request:
+    branches:
+      - handlebars
   release:
     types:
-      - created
+      - published
 
 jobs:
 
