@@ -51,10 +51,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             return result.ToString(Formatting.Indented);
         }
 
-        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> hl7v2Data)
+        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load code system mapping
-            var context = base.CreateContext(templateProvider, hl7v2Data);
+            var context = base.CreateContext(templateProvider, data);
             var codeMapping = templateProvider.GetTemplate("CodeSystem/CodeSystem");
             if (codeMapping?.Root?.NodeList?.First() != null)
             {

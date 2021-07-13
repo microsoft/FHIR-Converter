@@ -46,10 +46,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
             return result.ToString(Formatting.Indented);
         }
 
-        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> ccdaData)
+        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load value set mapping
-            var context = base.CreateContext(templateProvider, ccdaData);
+            var context = base.CreateContext(templateProvider, data);
             var codeMapping = templateProvider.GetTemplate("ValueSet/ValueSet");
             if (codeMapping?.Root?.NodeList?.First() != null)
             {
