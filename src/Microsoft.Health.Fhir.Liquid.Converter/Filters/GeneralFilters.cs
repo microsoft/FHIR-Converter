@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
-using System.Net;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -77,14 +76,5 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         }
 
-        public static string ToHtml(string input)
-        {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                return null;
-            }
-
-            return WebUtility.HtmlEncode(input);
-        }
     }
 }

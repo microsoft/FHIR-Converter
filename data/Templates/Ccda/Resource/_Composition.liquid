@@ -60,9 +60,9 @@
                     {
                         "status":"generated",
                         {% if component.section.title._ -%}
-                            "div":"<div xmlns=\"http://www.w3.org/1999/xhtml\">{{ component.section.title._ | to_html }}</div>",
+                            "div":"<div xmlns=\"http://www.w3.org/1999/xhtml\">{{ component.section.title._ | to_html_escaped_string }}</div>",
                         {% else -%}
-                            "div":"<div xmlns=\"http://www.w3.org/1999/xhtml\">{{ component.section.code.displayName | to_html}}</div>",
+                            "div":"<div xmlns=\"http://www.w3.org/1999/xhtml\">{{ component.section.code.displayName | to_html_escaped_string}}</div>",
                         {% endif -%}
                     },
                     "code":
