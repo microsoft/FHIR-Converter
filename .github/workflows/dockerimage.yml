@@ -4,9 +4,9 @@ on:
   pull_request:
     branches:
       - handlebars
-  push:
-    branches:
-      - handlebars
+  release:
+    types:
+      - published
   schedule:
     - cron: '0 9 * * 1'
 
@@ -29,10 +29,6 @@ jobs:
     - name: get-npm-version
       id: package-version
       uses: martinbeentjes/npm-get-version-action@v1.0.0
-
-    - uses: actions/checkout@v2
-      with:
-        ref: v${{ steps.package-version.outputs.current-version }}
 
     - name: Build the Docker image
       env:
