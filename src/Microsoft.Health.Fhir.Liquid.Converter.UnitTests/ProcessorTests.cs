@@ -23,14 +23,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
 
         static ProcessorTests()
         {
-            _hl7v2TestData = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Hl7v2", "LRI_2.0-NG_CBC_Typ_Message.hl7"));
-            _ccdaTestData = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Ccda", "CCD.ccda"));
+            _hl7v2TestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Hl7v2", "LRI_2.0-NG_CBC_Typ_Message.hl7"));
+            _ccdaTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Ccda", "CCD.ccda"));
         }
 
         public static IEnumerable<object[]> GetValidInputsWithTemplateDirectory()
         {
-            yield return new object[] { new Hl7v2Processor(), new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory), _hl7v2TestData, "ORU_R01", };
-            yield return new object[] { new CcdaProcessor(), new CcdaTemplateProvider(Constants.CcdaTemplateDirectory), _ccdaTestData, "CCD", };
+            yield return new object[] { new Hl7v2Processor(), new Hl7v2TemplateProvider(TestConstants.Hl7v2TemplateDirectory), _hl7v2TestData, "ORU_R01", };
+            yield return new object[] { new CcdaProcessor(), new CcdaTemplateProvider(TestConstants.CcdaTemplateDirectory), _ccdaTestData, "CCD", };
         }
 
         public static IEnumerable<object[]> GetValidInputsWithTemplateCollection()

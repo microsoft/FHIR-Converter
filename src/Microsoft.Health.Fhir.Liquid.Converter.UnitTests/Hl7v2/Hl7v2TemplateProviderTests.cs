@@ -18,7 +18,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
         public void GivenATemplateDirectory_WhenLoadTemplates_CorrectResultsShouldBeReturned()
         {
             // Valid template directory
-            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
+            var templateProvider = new Hl7v2TemplateProvider(TestConstants.Hl7v2TemplateDirectory);
             Assert.NotNull(templateProvider.GetTemplate("ADT_A01"));
 
             // Invalid template directory

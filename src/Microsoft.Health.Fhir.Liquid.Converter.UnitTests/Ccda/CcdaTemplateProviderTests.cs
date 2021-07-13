@@ -18,7 +18,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
         public void GivenATemplateDirectory_WhenLoadTemplates_CorrectResultsShouldBeReturned()
         {
             // Valid template directory
-            var templateProvider = new CcdaTemplateProvider(Constants.CcdaTemplateDirectory);
+            var templateProvider = new CcdaTemplateProvider(TestConstants.CcdaTemplateDirectory);
             Assert.NotNull(templateProvider.GetTemplate("CCD"));
 
             // Invalid template directory

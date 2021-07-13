@@ -47,10 +47,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
         public void GivenValidCcdaDocument_WhenParse_CorrectResultShouldBeReturned()
         {
             // Sample CCD document
-            var document = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Ccda", "CCD.ccda"));
+            var document = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Ccda", "CCD.ccda"));
             var data = CcdaDataParser.Parse(document);
             Assert.NotNull(data);
-            Assert.NotNull(((Dictionary<string, object>)data).GetValueOrDefault("msg"));
+            Assert.NotNull(((Dictionary<string, object>)data).GetValueOrDefault(Constants.CcdaDataKey));
 
             // Document that contains redundant namespaces "xmlns:cda"
             // It is removed in the parsed data
@@ -59,7 +59,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
             data = CcdaDataParser.Parse(document);
             var contents =
                 ((data as Dictionary<string, object>)
-                ?.GetValueOrDefault("msg") as Dictionary<string, object>)
+                ?.GetValueOrDefault(Constants.CcdaDataKey) as Dictionary<string, object>)
                 ?.GetValueOrDefault("ClinicalDocument") as Dictionary<string, object>;
             Assert.Equal(3, contents?.Count);
             Assert.Equal("http://www.w3.org/2001/XMLSchema-instance", contents?["xmlns:xsi"]);
@@ -74,7 +74,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
             data = CcdaDataParser.Parse(document);
             contents =
                 ((data as Dictionary<string, object>)
-                    ?.GetValueOrDefault("msg") as Dictionary<string, object>)
+                    ?.GetValueOrDefault(Constants.CcdaDataKey) as Dictionary<string, object>)
                 ?.GetValueOrDefault("ClinicalDocument") as Dictionary<string, object>;
             Assert.NotNull(contents?["sdtc_raceCode"]);
         }

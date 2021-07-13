@@ -45,7 +45,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             var result = PostProcessor.Process(rawResult);
             if (traceInfo is Hl7v2TraceInfo hl7V2TraceInfo)
             {
-                hl7V2TraceInfo.UnusedSegments = Hl7v2TraceInfo.CreateTraceInfo(hl7v2Data[Hl7v2DataParser.Hl7v2DataKey] as Hl7v2Data).UnusedSegments;
+                hl7V2TraceInfo.UnusedSegments = Hl7v2TraceInfo.CreateTraceInfo(hl7v2Data[Constants.Hl7v2DataKey] as Hl7v2Data).UnusedSegments;
             }
 
             return result.ToString(Formatting.Indented);

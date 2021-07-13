@@ -51,7 +51,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
 
                 return new Dictionary<string, object>
                 {
-                    { "msg", dataDictionary },
+                    { Constants.CcdaDataKey, dataDictionary },
                 };
             }
             catch (Exception ex)
