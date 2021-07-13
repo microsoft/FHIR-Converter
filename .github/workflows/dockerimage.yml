@@ -3,9 +3,7 @@ name: Docker Image CI
 on: 
   release:
     types:
-      - published
-  schedule:
-    - cron: '0 9 * * 1'
+      - created
 
 jobs:
 
