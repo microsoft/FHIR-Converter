@@ -36,7 +36,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
 NK1|1|JOHNSON^CONWAY^^^^^L|SPOUS||(130) 724-0433^PRN^PH^^^431^2780404~(330) 274-8214^ORN^PH^^^330^2748214||EMERGENCY
 ||E|||||12345^Johnson^Peter|||||||||||||||||||||||||||||||||||||201905020700";
 
-            var hl7v2Data = Hl7v2DataParser.Parse(input);
+            var hl7v2Data = Hl7v2DataParser.Parse(input)[Constants.Hl7v2DataKey] as Hl7v2Data;
             Assert.Equal(3, hl7v2Data.Meta.Count);
             Assert.Equal("MSH", hl7v2Data.Meta[0]);
             Assert.Equal("NK1", hl7v2Data.Meta[1]);

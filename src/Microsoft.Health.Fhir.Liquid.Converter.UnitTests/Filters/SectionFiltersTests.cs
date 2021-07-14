@@ -24,7 +24,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
             // Empty section name content
             var data = LoadTestData() as Dictionary<string, object>;
-            var msg = data?.GetValueOrDefault("msg") as IDictionary<string, object>;
+            var msg = data?.GetValueOrDefault(Constants.CcdaDataKey) as IDictionary<string, object>;
             Assert.Empty(Filters.GetFirstCcdaSections(Hash.FromDictionary(msg), string.Empty));
 
             // Valid data and section name content
@@ -47,7 +47,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
             // Empty section name content
             var data = LoadTestData() as Dictionary<string, object>;
-            var msg = data?.GetValueOrDefault("msg") as IDictionary<string, object>;
+            var msg = data?.GetValueOrDefault(Constants.CcdaDataKey) as IDictionary<string, object>;
             Assert.Empty(Filters.GetCcdaSectionLists(Hash.FromDictionary(msg), string.Empty));
 
             // Valid data and section name content
@@ -73,7 +73,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
             // Empty template id content
             var data = LoadTestData() as Dictionary<string, object>;
-            var msg = data?.GetValueOrDefault("msg") as IDictionary<string, object>;
+            var msg = data?.GetValueOrDefault(Constants.CcdaDataKey) as IDictionary<string, object>;
             Assert.Empty(Filters.GetFirstCcdaSectionsByTemplateId(Hash.FromDictionary(msg), string.Empty));
 
             // Valid data and template id content
@@ -88,7 +88,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         private static IDictionary<string, object> LoadTestData()
         {
-            var dataContent = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Ccda", "170.314B2_Amb_CCD.ccda"));
+            var dataContent = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Ccda", "170.314B2_Amb_CCD.ccda"));
             return CcdaDataParser.Parse(dataContent);
         }
     }

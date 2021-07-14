@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
 using System.Linq;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
@@ -44,16 +45,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             var result = PostProcessor.Process(rawResult);
             if (traceInfo is Hl7v2TraceInfo hl7V2TraceInfo)
             {
-                hl7V2TraceInfo.UnusedSegments = Hl7v2TraceInfo.CreateTraceInfo(hl7v2Data).UnusedSegments;
+                hl7V2TraceInfo.UnusedSegments = Hl7v2TraceInfo.CreateTraceInfo(hl7v2Data[Constants.Hl7v2DataKey] as Hl7v2Data).UnusedSegments;
             }
 
             return result.ToString(Formatting.Indented);
         }
 
-        protected override Context CreateContext(ITemplateProvider templateProvider, object hl7v2Data)
+        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load code system mapping
-            var context = base.CreateContext(templateProvider, hl7v2Data);
+            var context = base.CreateContext(templateProvider, data);
             var codeMapping = templateProvider.GetTemplate("CodeSystem/CodeSystem");
             if (codeMapping?.Root?.NodeList?.First() != null)
             {
