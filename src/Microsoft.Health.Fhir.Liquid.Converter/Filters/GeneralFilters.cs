@@ -75,6 +75,5 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return new Guid(guid).ToString();
 
         }
-
     }
 }
