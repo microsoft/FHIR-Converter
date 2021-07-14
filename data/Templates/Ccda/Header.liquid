@@ -7,7 +7,7 @@
     {% include 'Resource/Practitioner' practitioner: msg.ClinicalDocument.legalAuthenticator.assignedEntity ID: practitionerId -%}
 {% endif -%}
 
-{% if msg.ClinicalDocument.componentOf.encompassingEncounter.code -%}
+{% if msg.ClinicalDocument.componentOf.encompassingEncounter -%}
     {% assign encounterId = msg.ClinicalDocument.componentOf.encompassingEncounter | to_json_string | generate_uuid -%}
     {% include 'Resource/Encounter' encounter: msg.ClinicalDocument.componentOf.encompassingEncounter ID: encounterId -%}
     {% assign fullEncounterId = encounterId | prepend: 'Encounter/' -%}

@@ -400,6 +400,9 @@
         "subject": {
           "reference": "Patient/5510eaa6-2ad2-b82b-248b-aba749e28fa1"
         },
+        "encounter": {
+          "reference": "Encounter/b7410a36-7001-7e87-c604-11bd1669c440"
+        },
         "custodian": {
           "reference": "Organization/434467b1-a822-ba9b-a59a-e4bdab20cae5"
         },
@@ -463,6 +466,57 @@
       "request": {
         "method": "PUT",
         "url": "Practitioner/151bd63c-93e9-9838-dd94-f74d3b63be52"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b7410a36-7001-7e87-c604-11bd1669c440",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "b7410a36-7001-7e87-c604-11bd1669c440",
+        "status": "unknown",
+        "identifier": [
+          {
+            "system": "urn:oid:2.16.840.1.113883.19",
+            "value": "9937012"
+          }
+        ],
+        "period": {
+          "start": "2014-09-10T08:04:00+08:00",
+          "end": "2014-09-17T08:04:00+08:00"
+        },
+        "hospitalization": {
+          "dischargeDisposition": {
+            "coding": [
+              {
+                "code": "01",
+                "display": "Routine Discharge",
+                "system": "urn:oid:2.16.840.1.113883.12.112"
+              }
+            ]
+          }
+        },
+        "location": [
+          {
+            "location": {
+              "reference": "Location/6dfdc7c6-e225-71eb-cec1-75870e529061"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/b7410a36-7001-7e87-c604-11bd1669c440"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:6dfdc7c6-e225-71eb-cec1-75870e529061",
+      "resource": {
+        "resourceType": "Location",
+        "id": "6dfdc7c6-e225-71eb-cec1-75870e529061"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/6dfdc7c6-e225-71eb-cec1-75870e529061"
       }
     },
     {

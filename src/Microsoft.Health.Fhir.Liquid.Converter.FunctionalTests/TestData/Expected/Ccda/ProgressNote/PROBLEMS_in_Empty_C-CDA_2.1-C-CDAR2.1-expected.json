@@ -384,6 +384,9 @@
         "subject": {
           "reference": "Patient/89236d99-8509-7d3a-9dfb-a82c6b81d268"
         },
+        "encounter": {
+          "reference": "Encounter/adcab029-7e17-83ea-f6fd-de590f2deae8"
+        },
         "custodian": {
           "reference": "Organization/60584e77-f1e2-7864-31ce-931c9781c1dc"
         },
@@ -447,6 +450,28 @@
       "request": {
         "method": "PUT",
         "url": "Practitioner/94866a00-1f48-91e8-9327-cc1da205e69b"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:adcab029-7e17-83ea-f6fd-de590f2deae8",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "adcab029-7e17-83ea-f6fd-de590f2deae8",
+        "status": "unknown",
+        "identifier": [
+          {
+            "system": "urn:oid:2.16.840.1.113883.19",
+            "value": "9937012"
+          }
+        ],
+        "period": {
+          "start": "2015-07-23T07:00:00+08:00",
+          "end": "2015-07-23T09:00:00+08:00"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/adcab029-7e17-83ea-f6fd-de590f2deae8"
       }
     },
     {
