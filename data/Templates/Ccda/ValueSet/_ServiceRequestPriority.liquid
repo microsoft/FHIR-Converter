@@ -1,0 +1,10 @@
+{% case code -%}
+    {% when "A " -%}
+        "asap",
+    {% when "EM" -%}
+        "stat",
+    {% when "R" -%}
+        "routine",    
+    {% else -%}
+        "",
+{% endcase -%}

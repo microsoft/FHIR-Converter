@@ -113,44 +113,11 @@
       }
     },
     "ValueSet/DiagnosticReportStatus": {
-      "registered": {
-        "code": "registered"
-      },
-      "received": {
-        "code": "registered"
-      },
-      "preliminary": {
-        "code": "preliminary"
-      },
-      "final": {
-        "code": "final"
-      },
       "completed": {
         "code": "final"
       },
-      "amended": {
-        "code": "amended"
-      },
-      "corrected": {
-        "code": "corrected"
-      },
-      "appended": {
-        "code": "appended"
-      },
       "cancelled": {
         "code": "cancelled"
-      },
-      "abandoned": {
-        "code": "cancelled"
-      },
-      "entered-in-error": {
-        "code": "entered-in-error"
-      },
-      "error": {
-        "code": "entered-in-error"
-      },
-      "unknown": {
-        "code": "unknown"
       },
       "__default__": {
         "code": ""
@@ -293,6 +260,17 @@
         "code": ""
       }
     },
+    "ValueSet/ImmunizationStatus": {
+      "cancelled": {
+        "code": "not-done"
+      },
+      "completed": {
+        "code": "completed"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
     "ValueSet/Language": {
       "en": {
         "code": "en",
@@ -361,6 +339,23 @@
       "__default__": {
         "code": "",
         "display": ""
+      }
+    },
+    "ValueSet/MedicationAdministrationStatus": {
+      "aborted": {
+        "code": "stopped"
+      },
+      "active": {
+        "code": "in-progress"
+      },
+      "completed": {
+        "code": "completed"
+      },
+      "suspended": {
+        "code": "on-hold"
+      },
+      "__default__": {
+        "code": ""
       }
     },
     "ValueSet/MedicationStatementStatus": {
@@ -456,6 +451,20 @@
       },
       "unknown": {
         "code": "unknown"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/ServiceRequestPriority": {
+      "A": {
+        "code": "asap"
+      },
+      "EM": {
+        "code": "stat"
+      },
+      "R": {
+        "code": "routine"
       },
       "__default__": {
         "code": ""

@@ -39,7 +39,7 @@
             {% endfor -%}
         {% endfor -%}
 
-        "status":"{{immunization.statusCode.code}}",
+        "status":"{{immunization.statusCode.code | get_property: 'ValueSet/ImmunizationStatus' }}",
         "route":{ {% include 'DataType/CodeableConcept' CodeableConcept: immunization.routeCode -%}},
         "site":{ {% include 'DataType/CodeableConcept' CodeableConcept: immunization.approachSiteCode -%} },      
     },
