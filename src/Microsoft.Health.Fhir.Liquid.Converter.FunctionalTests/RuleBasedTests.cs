@@ -192,7 +192,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCcdaCases))]
+
+        // comment out the fhir validator for ccda since it takes too much time
+        // [MemberData(nameof(GetCcdaCases))]
         public async Task CheckPassOfficialValidator(string templateName, string samplePath, DataType dataType)
         {
             (bool javaStatus, string javaMessage) = await ExecuteCommand("-version");
