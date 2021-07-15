@@ -1,12 +1,12 @@
 {% case code -%}
+    {% when "aborted " -%}
+        "stopped",
     {% when "active" -%}
-        "active",
-    {% when "aborted" -%}
-        "resolved",
+        "in-progress",
     {% when "completed" -%}
-        "resolved",
+        "completed",    
     {% when "suspended" -%}
-        "inactive",
+        "on-hold",
     {% else -%}
         "",
 {% endcase -%}
