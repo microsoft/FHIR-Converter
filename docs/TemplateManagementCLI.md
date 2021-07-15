@@ -30,7 +30,7 @@ You should first sign in to the Azure CLI with your identity, and then use the A
 
 * Docker login
 
-To use docker login, you should install docker first. Docker provides packages that easily configure Docker on any [macOS](https://docs.docker.com/docker-for-mac/), [Windows](https://docs.docker.com/docker-for-windows/), or [Linux](https://docs.docker.com/engine/install/) system.
+To use docker login, you should install docker first.
 ```
 > docker login <acrName.azurecr.io> -u <username> -p <password>
 ```
