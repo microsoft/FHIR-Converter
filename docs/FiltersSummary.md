@@ -16,6 +16,13 @@ If these filters do not meet your needs, you can also write your own filters.
 | get_parent_segment | Given a child segment name and overall message index, returns the first matched parent segment | `{% assign result = hl7v2Data \| get_parent_segment: 'childSegmentName', 3, 'parentSegmentName' -%}` |
 | has_segments | Checks if HL7 v2 message has segments | `{% assign result = hl7v2Data \| has_segments: 'segment1\|segment2\|...' -%}` | 
 
+### C-CDA specific filters
+| Filter | Description | Syntax |
+|-|-|-|
+| get_first_cda_sections | Returns first instance (non-alphanumeric chars replace by '_' in name) of the sections | `{% assign firstSections = msg \| get_first_cda_sections: 'Problems' -%}` |
+| get_cda_section_lists | Returns instance list (non-alphanumeric chars replace by '_' in name) for the given sections | `{% assign sections = msg \| get_cda_section_lists: 'Problems' -%}` |
+| get_first_cda_sections_by_template_id | Returns first instance (non-alphanumeric chars replace by '_' in name) of the sections by template id | `{% assign firstSections = msg \| get_first_cda_sections_by_template_id: '2.16.840.1.113883.10.20.22.2.5.1' -%}` |
+
 ### String Filters
 | Filter | Description | Syntax |
 |-|-|-|
@@ -23,6 +30,13 @@ If these filters do not meet your needs, you can also write your own filters.
 | contains | Returns true if a string includes another string | `{{ 'foo' \| contains: 'fo' }} #=> true` |
 | escape_special_chars | Returns string with special chars escaped | `{{ '\E' \| escape_special_chars }} #=> '\\E'` |
 | unescape_special_chars | Returns string after removing escaping of special char | `{{ '\\E' \| unescape_special_chars }} #=> '\E'` |
+| match | Returns an array containing matches with a regular expression | `{% assign m = code \| match: '[0123456789.]+' -%}` |
+| to_json_string | Converts to JSON string | `{% assign msgJsonString = msg \| to_json_string -%}` |
+| base64_encode | Returns base64 encoded string | `{{ decodedData \| base64_encode }}` |
+| base64_decode | Returns base64 decoded string | `{{ encodedData \| base64_decode }}` |
+| sha1_hash | Returns SHA1 hash (in hex) of given string | `{{ inputData \| sha1_hash }}` |
+| gzip | Returns compressed string | `{{ uncompressedData \| gzip }}` |
+| gunzip | Returns decompressed string | `{{ compressedData \| gunzip }}` |
 
 ### Math filters
 | Filter | Description | Syntax |
@@ -40,6 +54,14 @@ If these filters do not meet your needs, you can also write your own filters.
 |-|-|-|
 | add_hyphens_date | Adds hyphens to a date without hyphens | `{{ PID.7.Value \| add_hyphens_date }}` |
 | format_as_date_time | Convert an YYYYMMDDHHmmssSSS string, e.g. 20040629175400000 to dateTime format, e.g. 2004-06-29T17:54:00.000z | `{{ PID.29.Value \| format_as_date_time }}` |
+| now | Provides current UTC time in "yyyy-MM-ddTHH:mm:ss.FFFZ" format | `{{ "" \| now }}` |
+
+#### Collection filters
+| Filter | Description | Syntax |
+|-|-|-|
+| to_array | Returns an array created (if needed) from given object | `{% assign authors = msg.ClinicalDocument.author \| to_array -%}` |
+| concat | Returns the concatenation of provided arrays | `{% assign ethnicCodes = ethnicCodes1 \| concat: ethnicCodes2 -%}` |
+| batch_render | Render every entry in a collection with a snippet and a variable name set in snippet | `{{ firstSections.2_16_840_1_113883_10_20_22_2_5_1.entry \| to_array \| batch_render: 'Entry/Problem/entry', 'entry' }}` |
 
 ### Miscellaneous filters
 | Filter | Description | Syntax |
