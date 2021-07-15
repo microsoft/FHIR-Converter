@@ -11,6 +11,7 @@ using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
+using Microsoft.Health.Fhir.Liquid.Converter.Json;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Xunit;
 
@@ -20,17 +21,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
     {
         private static readonly string _hl7v2TestData;
         private static readonly string _ccdaTestData;
+        private static readonly string _jsonTestData;
 
         static ProcessorTests()
         {
             _hl7v2TestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Hl7v2", "LRI_2.0-NG_CBC_Typ_Message.hl7"));
             _ccdaTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Ccda", "CCD.ccda"));
+            _jsonTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Json", "SimplePatient.json"));
         }
 
         public static IEnumerable<object[]> GetValidInputsWithTemplateDirectory()
         {
-            yield return new object[] { new Hl7v2Processor(), new Hl7v2TemplateProvider(TestConstants.Hl7v2TemplateDirectory), _hl7v2TestData, "ORU_R01", };
-            yield return new object[] { new CcdaProcessor(), new CcdaTemplateProvider(TestConstants.CcdaTemplateDirectory), _ccdaTestData, "CCD", };
+            yield return new object[] { new Hl7v2Processor(), new Hl7v2TemplateProvider(TestConstants.Hl7v2TemplateDirectory), _hl7v2TestData, "ORU_R01" };
+            yield return new object[] { new CcdaProcessor(), new CcdaTemplateProvider(TestConstants.CcdaTemplateDirectory), _ccdaTestData, "CCD" };
+            yield return new object[] { new JsonProcessor(), new JsonTemplateProvider(TestConstants.JsonTemplateDirectory), _jsonTestData, "SimplePatient" };
         }
 
         public static IEnumerable<object[]> GetValidInputsWithTemplateCollection()
@@ -43,8 +47,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
                 },
             };
 
-            yield return new object[] { new Hl7v2Processor(), new Hl7v2TemplateProvider(templateCollection), _hl7v2TestData, };
-            yield return new object[] { new CcdaProcessor(), new CcdaTemplateProvider(templateCollection), _ccdaTestData, };
+            yield return new object[] { new Hl7v2Processor(), new Hl7v2TemplateProvider(templateCollection), _hl7v2TestData };
+            yield return new object[] { new CcdaProcessor(), new CcdaTemplateProvider(templateCollection), _ccdaTestData };
+            yield return new object[] { new JsonProcessor(), new JsonTemplateProvider(templateCollection), _jsonTestData };
         }
 
         public static IEnumerable<object[]> GetValidInputsWithProcessSettings()
@@ -62,12 +67,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
             yield return new object[]
             {
                 new Hl7v2Processor(null), new Hl7v2Processor(new ProcessorSettings()), new Hl7v2Processor(positiveTimeOutSettings), new Hl7v2Processor(negativeTimeOutSettings),
-                new Hl7v2TemplateProvider("TestTemplates"), _hl7v2TestData,
+                new Hl7v2TemplateProvider("TestTemplates"), _hl7v2TestData
             };
             yield return new object[]
             {
                 new CcdaProcessor(null), new CcdaProcessor(new ProcessorSettings()), new CcdaProcessor(positiveTimeOutSettings), new CcdaProcessor(negativeTimeOutSettings),
-                new CcdaTemplateProvider("TestTemplates"), _ccdaTestData,
+                new CcdaTemplateProvider("TestTemplates"), _ccdaTestData
+            };
+            yield return new object[]
+            {
+                new JsonProcessor(null), new JsonProcessor(new ProcessorSettings()), new JsonProcessor(positiveTimeOutSettings), new JsonProcessor(negativeTimeOutSettings),
+                new JsonTemplateProvider("TestTemplates"), _jsonTestData
             };
         }
 

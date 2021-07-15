@@ -9,5 +9,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
     {
         Hl7v2,
         Ccda,
+        Json,
     }
 }

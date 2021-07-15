@@ -18,7 +18,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
     {
         public static IDictionary<string, object> Parse(string document)
         {
-            if (string.IsNullOrEmpty(document))
+            if (string.IsNullOrWhiteSpace(document))
             {
                 throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
             }
@@ -43,7 +43,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
 
                 // Convert to json dictionary
                 var jsonString = JsonConvert.SerializeXNode(xDocument);
-                var dataDictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonString, new DictionaryJsonConverter()) ??
+                var dataDictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonString, new XmlDictionaryJsonConverter()) ??
                                      new Dictionary<string, object>();
 
                 // Remove line breaks in original data
