@@ -16,7 +16,6 @@
             {% assign effectiveTimes = medicationAdministration.effectiveTime | to_array -%}
             "start":"{{ effectiveTimes.first.low.value | format_as_date_time }}",
             "end":"{{ effectiveTimes.first.high.value | format_as_date_time }}",
-            
         },
         "dosage":
         {
