@@ -134,7 +134,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         [MemberData(nameof(GetCcdaCases))]
         public async Task CheckReferenceResourceId(string templateName, string samplePath, DataType dataType)
         {
-            Dictionary<string, string> resourceIdMapping = new Dictionary<string, string>();
+            HashSet<string> referenceResources = new HashSet<string>();
             var result = await ConvertData(templateName, samplePath, dataType);
             var resources = result.SelectTokens("$.entry..resource");
 
@@ -143,14 +143,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             {
                 var resourceId = resource.SelectTokens("$.id").First().ToString();
                 var resouceType = resource.SelectTokens("$.resourceType").First().ToString();
-                Assert.False(resourceIdMapping.ContainsKey(resourceId));
-                resourceIdMapping.Add(resourceId, resouceType);
+                var referenceStr = $"{resourceId}/{resouceType}";
+                Assert.DoesNotContain(referenceStr, referenceResources);
+                referenceResources.Add(referenceStr);
             }
 
             // check reference resouce id exists
             foreach (var resource in resources)
             {
-                RevealObject(resource, 0, resourceIdMapping);
+                RevealReferences(resource, 0, referenceResources);
             }
         }
 
@@ -268,13 +269,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             }
         }
 
-        private void RevealObject(JToken resource, int level, Dictionary<string, string> resourceIdMapping)
+        private void RevealReferences(JToken resource, int level, HashSet<string> referenceResources)
         {
             Assert.True(level < _maxRevealDepth, "Reveal depth shouldn't exceed limit.");
             switch (resource)
             {
                 case JArray array:
-                    array.ToList().ForEach(sub => RevealObject(sub, level + 1, resourceIdMapping));
+                    array.ToList().ForEach(sub => RevealReferences(sub, level + 1, referenceResources));
                     break;
                 case JObject container:
                     var properties = container.Properties();
@@ -282,18 +283,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                     {
                         if (property.Value.Children().Count() > 0)
                         {
-                            RevealObject(property.Value, level + 1, resourceIdMapping);
+                            RevealReferences(property.Value, level + 1, referenceResources);
                         }
                         else if (property.Name == "reference")
                         {
-                            var s = property.Value.ToString().Split('/');
-                            if (!resourceIdMapping.ContainsKey(s[1]) || resourceIdMapping[s[1]] != s[0])
-                            {
-                                Console.WriteLine(property.Value.ToString());
-                            }
-
-                            Assert.True(resourceIdMapping.ContainsKey(s[1]));
-                            Assert.Equal(resourceIdMapping[s[1]], s[0]);
+                            var s = property.Value.ToString();
+                            Assert.Contains(s, referenceResources);
                         }
                     }
 
