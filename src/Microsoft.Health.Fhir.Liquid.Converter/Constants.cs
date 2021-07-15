@@ -9,5 +9,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     {
         public const string Hl7v2DataKey = "hl7v2Data";
         public const string CcdaDataKey = "msg";
+        public const string JsonDataKey = "msg";
     }
 }

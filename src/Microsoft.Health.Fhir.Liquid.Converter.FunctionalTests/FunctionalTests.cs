@@ -12,6 +12,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
@@ -81,6 +82,21 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
+        public static IEnumerable<object[]> GetDataForJson()
+        {
+            var data = new List<string[]>
+            {
+                new[] { @"SimplePatient", @"SimplePatient.json", @"SimplePatient-expected.json" },
+                new[] { @"Stu3ChargeItem", @"Stu3ChargeItem.json", @"Stu3ChargeItem-expected.json" },
+            };
+            return data.Select(item => new[]
+            {
+                item[0],
+                Path.Join(Constants.SampleDataDirectory, "Json", item[1]),
+                Path.Join(Constants.ExpectedDataFolder, "Json", item[2]),
+            });
+        }
+
         [Theory]
         [MemberData(nameof(GetDataForHl7v2))]
         public void GivenHl7v2Message_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
@@ -127,6 +143,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             // Remove DocumentReference, where date is different every time conversion is run and gzip result is OS dependent
             expectedObject["entry"]?.Last()?.Remove();
             actualObject["entry"]?.Last()?.Remove();
+
+            Assert.True(JToken.DeepEquals(expectedObject, actualObject));
+        }
+
+        [Theory]
+        [MemberData(nameof(GetDataForJson))]
+        public void GivenJsonData_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
+        {
+            var jsonProcessor = new JsonProcessor();
+            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Json");
+
+            var inputContent = File.ReadAllText(inputFile);
+            var expectedContent = File.ReadAllText(expectedFile);
+            var actualContent = jsonProcessor.Convert(inputContent, rootTemplate, new JsonTemplateProvider(templateDirectory));
+
+            var expectedObject = JObject.Parse(expectedContent);
+            var actualObject = JObject.Parse(actualContent);
 
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
         }

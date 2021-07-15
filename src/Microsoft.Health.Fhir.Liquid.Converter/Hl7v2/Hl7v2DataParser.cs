@@ -20,7 +20,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 
         public static IDictionary<string, object> Parse(string message)
         {
-            if (string.IsNullOrEmpty(message))
+            if (string.IsNullOrWhiteSpace(message))
             {
                 throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
             }

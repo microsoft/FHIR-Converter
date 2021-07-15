@@ -18,11 +18,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
         {
             yield return new object[] { null };
             yield return new object[] { string.Empty };
+            yield return new object[] { " " };
+            yield return new object[] { "\n" };
         }
 
         public static IEnumerable<object[]> GetInvalidCcdaDocument()
         {
-            yield return new object[] { "\n" };
             yield return new object[] { "abc" };
             yield return new object[] { @"<templateId root=""2.16.840.1.113883.10.20.22.1.1""/><templateId root = ""2.16.840.1.113883.10.20.22.1.2""/>" };
         }

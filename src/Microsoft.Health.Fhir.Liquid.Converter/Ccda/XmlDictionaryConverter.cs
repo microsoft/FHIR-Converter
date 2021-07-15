@@ -3,29 +3,19 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using Microsoft.Health.Fhir.Liquid.Converter.Json;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
 {
     /// <summary>
-    /// One-way JsonConverter to deserialize JSON string to IDictionary
+    /// One-way JsonConverter to deserialize XML-converted JSON string to IDictionary
     /// </summary>
-    public class DictionaryJsonConverter : JsonConverter
+    public class XmlDictionaryJsonConverter : DictionaryJsonConverter
     {
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            return ReadValue(reader);
-        }
-
-        private object ReadValue(JsonReader reader)
+        protected override object ReadValue(JsonReader reader)
         {
             while (reader.TokenType == JsonToken.Comment)
             {
@@ -43,6 +33,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
                     return ReadArray(reader);
                 case JsonToken.String:
                     // Remove line breaks to avoid invalid line breaks in json value
+                    // A line break is a normal character in XML but invalid in JSON
                     return Regex.Replace(reader.Value.ToString(), @"\r\n?|\n", string.Empty);
                 case JsonToken.Integer:
                 case JsonToken.Float:
@@ -57,31 +48,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
             }
         }
 
-        private object ReadArray(JsonReader reader)
+        protected override object ReadObject(JsonReader reader)
         {
-            IList<object> list = new List<object>();
-
-            while (reader.Read())
-            {
-                switch (reader.TokenType)
-                {
-                    case JsonToken.Comment:
-                        break;
-                    case JsonToken.EndArray:
-                        return list;
-                    default:
-                        var v = ReadValue(reader);
-                        list.Add(v);
-                        break;
-                }
-            }
-
-            throw new JsonSerializationException(Resources.UnexpectedJsonConvertEnd);
-        }
-
-        private object ReadObject(JsonReader reader)
-        {
-            var obj = new Dictionary<string, object>();
+            IDictionary<string, object> obj = new Dictionary<string, object>();
 
             while (reader.Read())
             {
@@ -95,7 +64,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
                             throw new JsonSerializationException(Resources.UnexpectedJsonConvertEnd);
                         }
 
-                        // Remove "@" if it is attribute
+                        // Remove "@" for XML attributes
                         if (propertyName.StartsWith("@"))
                         {
                             propertyName = propertyName[1..];
@@ -112,11 +81,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
             }
 
             throw new JsonSerializationException(Resources.UnexpectedJsonConvertEnd);
-        }
-
-        public override bool CanConvert(Type objectType)
-        {
-            return typeof(IDictionary<string, object>).IsAssignableFrom(objectType);
         }
     }
 }

@@ -19,6 +19,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Hl7v2
         {
             yield return new object[] { null };
             yield return new object[] { string.Empty };
+            yield return new object[] { " " };
+            yield return new object[] { "\n" };
         }
 
         [Theory]
