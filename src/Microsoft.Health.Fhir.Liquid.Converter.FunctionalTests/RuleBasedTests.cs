@@ -143,7 +143,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             {
                 var resourceId = resource.SelectTokens("$.id").First().ToString();
                 var resouceType = resource.SelectTokens("$.resourceType").First().ToString();
-                var referenceStr = $"{resourceId}/{resouceType}";
+                var referenceStr = $"{resouceType}/{resourceId}";
                 Assert.DoesNotContain(referenceStr, referenceResources);
                 referenceResources.Add(referenceStr);
             }
