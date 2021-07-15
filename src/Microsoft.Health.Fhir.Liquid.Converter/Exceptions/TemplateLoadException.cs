@@ -8,14 +8,14 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Exceptions
 {
-    public class ConverterInitializeException : FhirConverterException
+    public class TemplateLoadException : FhirConverterException
     {
-        public ConverterInitializeException(FhirConverterErrorCode fhirConverterErrorCode, string message)
+        public TemplateLoadException(FhirConverterErrorCode fhirConverterErrorCode, string message)
             : base(fhirConverterErrorCode, message)
         {
         }
 
-        public ConverterInitializeException(FhirConverterErrorCode fhirConverterErrorCode, string message, Exception innerException)
+        public TemplateLoadException(FhirConverterErrorCode fhirConverterErrorCode, string message, Exception innerException)
             : base(fhirConverterErrorCode, message, innerException)
         {
         }

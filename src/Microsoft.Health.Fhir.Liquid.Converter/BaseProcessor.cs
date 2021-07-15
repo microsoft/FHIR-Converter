@@ -30,17 +30,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public abstract string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
 
-        protected virtual Context CreateContext(ITemplateProvider templateProvider, object data)
+        protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load data and templates
             var timeout = _settings?.TimeOut ?? 0;
-            var dataDictionary = data is IDictionary<string, object> dictionary
-                ? dictionary
-                : new Dictionary<string, object>() { { "hl7v2Data", data } };
             var context = new Context(
-                environments: new List<Hash>() { Hash.FromDictionary(dataDictionary) },
+                environments: new List<Hash> { Hash.FromDictionary(data) },
                 outerScope: new Hash(),
-                registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
+                registers: Hash.FromDictionary(new Dictionary<string, object> { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
                 timeout: timeout,

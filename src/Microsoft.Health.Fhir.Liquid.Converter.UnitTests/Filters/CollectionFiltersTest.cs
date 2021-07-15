@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
+using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
@@ -32,10 +34,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         [Fact]
         public void BatchRenderTests()
         {
-            // No template file system and null collection
-            var context = new Context(CultureInfo.InvariantCulture);
-            Assert.Equal(string.Empty, Filters.BatchRender(context, null, "foo", "bar"));
-
             // Valid template file system and template
             var templateCollection = new List<Dictionary<string, Template>>
             {
@@ -44,8 +42,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
                     { "foo", Template.Parse("{{ i }} ") },
                 },
             };
+
             var templateProvider = new CcdaTemplateProvider(templateCollection);
-            context = new Context(
+            var context = new Context(
                 new List<Hash>(),
                 new Hash(),
                 Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
@@ -59,8 +58,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             // Valid template file system but null collection
             Assert.Equal(string.Empty, Filters.BatchRender(context, null, "foo", "i"));
 
+            // No template file system
+            context = new Context(CultureInfo.InvariantCulture);
+            var exception = Assert.Throws<RenderException>(() => Filters.BatchRender(context, null, "foo", "bar"));
+            Assert.Equal(FhirConverterErrorCode.TemplateNotFound, exception.FhirConverterErrorCode);
+
             // Valid template file system but non-existing template
-            Assert.Equal(string.Empty, Filters.BatchRender(context, collection, "bar", "i"));
+            exception = Assert.Throws<RenderException>(() => Filters.BatchRender(context, collection, "bar", "i"));
+            Assert.Equal(FhirConverterErrorCode.TemplateNotFound, exception.FhirConverterErrorCode);
         }
     }
 }

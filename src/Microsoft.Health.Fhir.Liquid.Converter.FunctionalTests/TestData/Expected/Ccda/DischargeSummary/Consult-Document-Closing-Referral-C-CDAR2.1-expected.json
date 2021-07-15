@@ -24,15 +24,6 @@
         "date": "2018-06-24T01:00:00+08:00",
         "title": "Community Health Consult Note",
         "confidentiality": "N",
-        "section": [
-          {
-            "text": {
-              "status": "generated",
-              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"></div>"
-            },
-            "mode": "snapshot"
-          }
-        ],
         "subject": {
           "reference": "Patient/75d72dd1-7f86-8a14-d4db-94b59ddc3627"
         },
@@ -62,19 +53,8 @@
         "class": {
           "code": "99213",
           "display": "Evaluation and Management",
-          "system": "urn:oid:2.16.840.1.113883.6.12"
+          "system": "http://www.ama-assn.org/go/cpt"
         },
-        "type": [
-          {
-            "coding": [
-              {
-                "code": "99213",
-                "display": "Evaluation and Management",
-                "system": "urn:oid:2.16.840.1.113883.6.12"
-              }
-            ]
-          }
-        ],
         "identifier": [
           {
             "system": "urn:oid:2.16.840.1.113883.19",
@@ -232,7 +212,6 @@
             ]
           },
           {
-            "use": "SRCH",
             "family": "Everywoman",
             "given": [
               "Eve"
@@ -249,16 +228,14 @@
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2106-3",
-                  "display": "White",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "White"
                 }
               },
               {
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2076-8",
-                  "display": "Hawaiian or Other Pacific Islander",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "Hawaiian or Other Pacific Islander"
                 }
               },
               {
@@ -274,8 +251,7 @@
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2186-5",
-                  "display": "Not Hispanic or Latino",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "Not Hispanic or Latino"
                 }
               },
               {
@@ -310,8 +286,8 @@
               "coding": [
                 {
                   "system": "urn:ietf:bcp:47",
-                  "code": "eng",
-                  "display": "eng"
+                  "code": "en",
+                  "display": "English"
                 }
               ]
             },
@@ -391,7 +367,7 @@
             }
           ]
         },
-        "date": "2021-05-08T06:19:47.222Z",
+        "date": "2021-07-02T05:38:40.839Z",
         "status": "current",
         "content": [
           {

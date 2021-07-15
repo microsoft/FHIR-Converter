@@ -19,10 +19,6 @@
             {% include 'DataType/Coding' Coding: encounter.code -%}
             {% endif -%}
         },
-        "type":
-        [
-            { {% include 'DataType/CodeableConcept' CodeableConcept: encounter.code -%} },
-        ],
         "identifier":
         [
             {% assign ids = encounter.id | to_array -%}

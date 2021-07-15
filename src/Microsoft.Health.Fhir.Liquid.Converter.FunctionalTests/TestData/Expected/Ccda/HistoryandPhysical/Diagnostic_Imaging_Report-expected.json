@@ -1,4 +1,4 @@
- {
+{
   "resourceType": "Bundle",
   "type": "batch",
   "entry": [
@@ -337,6 +337,7 @@
           }
         ],
         "birthDate": "1954-11-25",
+        "gender": "male",
         "extension": [
           {
             "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
@@ -345,8 +346,7 @@
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2106-3",
-                  "display": "White",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "White"
                 }
               },
               {
@@ -362,8 +362,7 @@
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2186-5",
-                  "display": "Not Hispanic or Latino",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "Not Hispanic or Latino"
                 }
               },
               {
@@ -397,9 +396,7 @@
             "language": {
               "coding": [
                 {
-                  "system": "urn:ietf:bcp:47",
-                  "code": "fr-CN",
-                  "display": "fr-cn"
+                  "system": "urn:ietf:bcp:47"
                 }
               ]
             },
@@ -478,7 +475,7 @@
             }
           ]
         },
-        "date": "2021-05-08T08:17:16.691Z",
+        "date": "2021-07-02T05:38:42.848Z",
         "status": "current",
         "content": [
           {

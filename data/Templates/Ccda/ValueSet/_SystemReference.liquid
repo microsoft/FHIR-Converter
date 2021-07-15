@@ -22,7 +22,11 @@
         {% when "2.16.840.1.113883.6.59" -%}
             "http://hl7.org/fhir/sid/cvx"
         {% when "2.16.840.1.113883.6.101" -%}
-            "http://nucc.org/provider-taxonomy"            
+            "http://nucc.org/provider-taxonomy"
+        {% when "2.16.840.1.113883.6.238" -%}
+            "" 
+        {% when "2.16.840.1.113883.6.12" -%}
+            "http://www.ama-assn.org/go/cpt"
         {% else -%}
             {% if s == 1%}
                 "urn:oid:{{ code }}"

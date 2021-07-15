@@ -36,9 +36,6 @@
           },
           {
             "reference": "Device/ce77e7d1-5b1b-2009-1f47-760c5df20c50"
-          },
-          {
-            "reference": "Practitioner/70c15f61-97e5-a6df-6af7-2a959e230fd4"
           }
         ]
       },
@@ -227,47 +224,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:70c15f61-97e5-a6df-6af7-2a959e230fd4",
-      "resource": {
-        "resourceType": "Practitioner",
-        "id": "70c15f61-97e5-a6df-6af7-2a959e230fd4",
-        "meta": {
-          "profile": [
-            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
-          ]
-        },
-        "identifier": [
-          {
-            "system": "http://hl7.org/fhir/sid/us-npi",
-            "value": "66660"
-          }
-        ],
-        "address": [
-          {
-            "use": "work",
-            "line": [
-              "P.O. Box 832624"
-            ],
-            "city": "Richardson",
-            "state": "TX",
-            "country": "US",
-            "postalCode": "75083"
-          }
-        ],
-        "telecom": [
-          {
-            "system": "phone",
-            "value": "+1(202)776-7700",
-            "use": "work"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Practitioner/70c15f61-97e5-a6df-6af7-2a959e230fd4"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:007bb6b5-fac8-7a95-8d44-ecebd8320f23",
       "resource": {
         "resourceType": "Patient",
@@ -307,8 +263,7 @@
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2106-3",
-                  "display": "White",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "White"
                 }
               },
               {
@@ -324,8 +279,7 @@
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2186-5",
-                  "display": "Not Hispanic or Latino",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "Not Hispanic or Latino"
                 }
               },
               {
@@ -364,8 +318,8 @@
               "coding": [
                 {
                   "system": "urn:ietf:bcp:47",
-                  "code": "eng",
-                  "display": "eng"
+                  "code": "en",
+                  "display": "English"
                 }
               ]
             }
@@ -391,7 +345,7 @@
             }
           ]
         },
-        "date": "2021-05-06T07:59:47.575Z",
+        "date": "2021-07-02T05:38:38.901Z",
         "status": "current",
         "content": [
           {

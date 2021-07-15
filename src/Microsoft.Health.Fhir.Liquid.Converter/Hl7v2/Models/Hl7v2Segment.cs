@@ -34,23 +34,24 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
                 }
 
                 var indexString = index.ToString();
+
                 if (string.Equals(indexString, "Value", StringComparison.InvariantCultureIgnoreCase))
                 {
                     SetAccessForAllComponents();
                     return Value;
                 }
-                else if (string.Equals(indexString, "Fields", StringComparison.InvariantCultureIgnoreCase))
+
+                if (string.Equals(indexString, "Fields", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return Fields;
                 }
-                else if (int.TryParse(indexString, out int result))
+
+                if (int.TryParse(indexString, out int result))
                 {
                     return (Hl7v2Field)Fields[result];
                 }
-                else
-                {
-                    throw new RenderException(FhirConverterErrorCode.PropertyNotFound, string.Format(Resources.PropertyNotFound, indexString, this.GetType().Name));
-                }
+
+                throw new RenderException(FhirConverterErrorCode.PropertyNotFound, string.Format(Resources.PropertyNotFound, indexString, this.GetType().Name));
             }
         }
 

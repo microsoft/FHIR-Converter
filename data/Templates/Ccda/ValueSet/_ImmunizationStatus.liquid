@@ -1,8 +1,8 @@
 {% case code -%}
-    {% when "completed " -%}
-        "final",
     {% when "cancelled" -%}
-        "cancelled",
+        "not-done",
+    {% when "completed " -%}
+        "completed",
     {% else -%}
         "",
 {% endcase -%}

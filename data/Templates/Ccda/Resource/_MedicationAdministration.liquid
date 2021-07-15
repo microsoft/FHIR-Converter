@@ -10,11 +10,12 @@
             { {% include 'DataType/Identifier' Identifier: id -%} },
             {% endfor -%}
         ],
-        "status":"{{ medicationAdministration.statusCode.code }}",
+        "status":"{{ medicationAdministration.statusCode.code | get_property: 'ValueSet/MedicationAdministrationStatus' }}",
         "effectivePeriod":
         {
-            "start":"{{ medicationAdministration.effectiveTime.low.value | format_as_date_time }}",
-            "end":"{{ medicationAdministration.effectiveTime.high.value | format_as_date_time }}",
+            {% assign effectiveTimes = medicationAdministration.effectiveTime | to_array -%}
+            "start":"{{ effectiveTimes.first.low.value | format_as_date_time }}",
+            "end":"{{ effectiveTimes.first.high.value | format_as_date_time }}",
         },
         "dosage":
         {

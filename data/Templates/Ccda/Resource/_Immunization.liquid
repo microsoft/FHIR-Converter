@@ -29,13 +29,17 @@
             {% assign manufacturedProducts = consumable.manufacturedProduct | to_array -%}
             {% for manufacturedProduct in manufacturedProducts -%}
                 {% if manufacturedProduct.templateId | to_json_string | contains '"2.16.840.1.113883.10.20.22.4.54"' -%}
-                    "vaccineCode":{ {% include 'DataType/CodeableConcept' CodeableConcept: manufacturedProduct.manufacturedMaterial.code -%} },
+                    {% if manufacturedProduct.manufacturedMaterial.code.translation -%}
+                        "vaccineCode":{ {% include 'DataType/CodeableConcept' CodeableConcept: manufacturedProduct.manufacturedMaterial.code.translation -%} },
+                    {% else -%}
+                        "vaccineCode":{ {% include 'DataType/CodeableConcept' CodeableConcept: manufacturedProduct.manufacturedMaterial.code -%} },
+                    {% endif -%}
                     "lotNumber":"{{ manufacturedProduct.manufacturedMaterial.IotNumberText._ }}",
                 {% endif -%}
             {% endfor -%}
         {% endfor -%}
 
-        "status":"{{immunization.statusCode.code}}",
+        "status":"{{immunization.statusCode.code | get_property: 'ValueSet/ImmunizationStatus' }}",
         "route":{ {% include 'DataType/CodeableConcept' CodeableConcept: immunization.routeCode -%}},
         "site":{ {% include 'DataType/CodeableConcept' CodeableConcept: immunization.approachSiteCode -%} },      
     },

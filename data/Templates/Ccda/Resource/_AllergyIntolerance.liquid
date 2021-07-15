@@ -16,7 +16,7 @@
             [
                 {
                     "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
-                    "code":{% include 'ValueSet/AllergyStatus' code: allergyStatus.code -%},
+                    "code":"{{ allergyStatus.code | get_property: 'ValueSet/AllergyStatus' }}",
                 }
             ]
         },
@@ -31,7 +31,6 @@
                     "substance":{ {% include 'DataType/CodeableConcept' CodeableConcept: allergyEntry.participant.participantRole.playingEntity.code -%} },
                 {% endif -%}
 
-                
                 {% if r.observation.templateId | to_json_string | contains: '"2.16.840.1.113883.10.20.22.4.9"' -%}
                     "manifestation":
                     [
@@ -43,14 +42,15 @@
                     ],
                     "onset": "{{ r.observation.effectiveTime.low.value | format_as_date_time }}", 
                 {% endif -%}
-
-                {% if r.observation.templateId | to_json_string | contains: '"2.16.840.1.113883.10.20.22.4.8"' -%}
-                    {% if r.observation.value.translation -%}
-                        "severity":{% include 'ValueSet/AllergySeverity' code: r.observation.value.translation.displayName -%},
-                    {% else -%}
-                        "severity":{% include 'ValueSet/AllergySeverity' code: r.observation.value.displayName -%},
+                {% for templateId in r.observation.templateId -%}
+                    {% if templateId.root == "2.16.840.1.113883.10.20.22.4.8" -%}
+                        {% if r.observation.value.translation -%}
+                            "severity":"{{ r.observation.value.translation.displayName | downcase | get_property: 'ValueSet/AllergySeverity' }}",
+                        {% else -%}
+                            "severity":"{{ r.observation.value.displayName | downcase | get_property: 'ValueSet/AllergySeverity' }}",
+                        {% endif -%}
                     {% endif -%}
-                {% endif -%}
+                {% endfor -%}
             },
             {% endfor -%}
 

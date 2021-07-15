@@ -1,4 +1,4 @@
- {
+{
   "resourceType": "Bundle",
   "type": "batch",
   "entry": [
@@ -36,7 +36,8 @@
         "event": [
           {
             "period": {
-              "start": "2013-07-20"
+              "start": "2013-07-20",
+              "end": "2013-08-15"
             }
           }
         ],
@@ -205,17 +206,6 @@
           "display": "Inpatient",
           "system": "urn:oid:2.16.840.1.113883.5.4"
         },
-        "type": [
-          {
-            "coding": [
-              {
-                "code": "IMP",
-                "display": "Inpatient",
-                "system": "urn:oid:2.16.840.1.113883.5.4"
-              }
-            ]
-          }
-        ],
         "identifier": [
           {
             "system": "urn:oid:2.16.840.1.113883.19",
@@ -311,7 +301,6 @@
             ]
           },
           {
-            "use": "SRCH",
             "family": "Everywoman",
             "given": [
               "Eve"
@@ -328,16 +317,14 @@
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2106-3",
-                  "display": "White",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "White"
                 }
               },
               {
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2076-8",
-                  "display": "Hawaiian or Other Pacific Islander",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "Hawaiian or Other Pacific Islander"
                 }
               },
               {
@@ -353,8 +340,7 @@
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2186-5",
-                  "display": "Not Hispanic or Latino",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "Not Hispanic or Latino"
                 }
               },
               {
@@ -389,8 +375,8 @@
               "coding": [
                 {
                   "system": "urn:ietf:bcp:47",
-                  "code": "eng",
-                  "display": "eng"
+                  "code": "en",
+                  "display": "English"
                 }
               ]
             },
@@ -470,7 +456,7 @@
             }
           ]
         },
-        "date": "2021-05-06T07:59:47.463Z",
+        "date": "2021-07-02T05:38:38.755Z",
         "status": "current",
         "content": [
           {

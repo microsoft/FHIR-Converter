@@ -17,14 +17,17 @@
         "status":"{{ procedureEntry.statusCode.code }}",
         "code":
         {
-            {% if procedureEntry.code.translation -%}
-            {% include 'DataType/CodeableConcept' CodeableConcept: procedureEntry.code.translation -%}
-            {% endif -%}
-            {% if procedureEntry.code.translation == null -%}
             {% include 'DataType/CodeableConcept' CodeableConcept: procedureEntry.code -%}
-            {% endif -%}
         },
-        "performedDateTime":"{{ procedureEntry.effectiveTime.value | format_as_date_time }}",
+        {% if procedureEntry.effectiveTime.value -%}
+            "performedDateTime":"{{ procedureEntry.effectiveTime.value | format_as_date_time }}",
+        {% else -%}
+            "performedPeriod": 
+            {
+                "start":"{{ procedureEntry.effectiveTime.low.value | format_as_date_time }}",
+                "end":"{{ procedureEntry.effectiveTime.high.value | format_as_date_time }}",
+            },
+        {% endif -%}
         "bodySite":
         [
             { {% include 'DataType/CodeableConcept' CodeableConcept: procedureEntry.targetSiteCode -%} },

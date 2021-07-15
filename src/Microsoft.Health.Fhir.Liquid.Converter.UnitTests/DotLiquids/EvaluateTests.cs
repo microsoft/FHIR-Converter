@@ -49,7 +49,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             Assert.True(template.Root.NodeList.Count > 0);
 
             // Template should be rendered correctly
-            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
+            var templateProvider = new Hl7v2TemplateProvider(TestConstants.Hl7v2TemplateDirectory);
             var context = new Context(
                 environments: new List<Hash>(),
                 outerScope: new Hash(),
@@ -66,7 +66,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [MemberData(nameof(GetInvalidEvaluateTemplateContents))]
         public void GivenInvalidEvaluateTemplateContent_WhenParse_ExceptionsShouldBeThrown(string templateContent)
         {
-            Assert.Throws<ConverterInitializeException>(() => TemplateUtility.ParseTemplate(TemplateName, templateContent));
+            Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplate(TemplateName, templateContent));
         }
 
         [Fact]
@@ -86,7 +86,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
 
             // Valid template file system but no such template
             template = TemplateUtility.ParseTemplate(TemplateName, @"{% evaluate bundleId using 'ID/Foo' Data: hl7v2Data -%}");
-            var templateProvider = new Hl7v2TemplateProvider(Constants.Hl7v2TemplateDirectory);
+            var templateProvider = new Hl7v2TemplateProvider(TestConstants.Hl7v2TemplateDirectory);
             context = new Context(
                 environments: new List<Hash>(),
                 outerScope: new Hash(),

@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
 {
-    public static class Constants
+    public static class TestConstants
     {
         public static readonly string SampleDataDirectory = Path.Join("..", "..", "data", "SampleData");
         public static readonly string TemplateDirectory = Path.Join("..", "..", "data", "Templates");
