@@ -6,7 +6,7 @@
 using DotLiquid;
 using DotLiquid.FileSystems;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter
+namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 {
     public interface IFhirConverterTemplateFileSystem : ITemplateFileSystem
     {

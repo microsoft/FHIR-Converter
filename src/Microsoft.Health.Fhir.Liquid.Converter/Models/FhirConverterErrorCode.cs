@@ -12,7 +12,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
     /// </summary>
     public enum FhirConverterErrorCode
     {
-        // InitializeException
+        // TemplateLoadException
         TemplateFolderNotFound = 1101,
         TemplateLoadingError = 1102,
         InvalidCodeMapping = 1103,

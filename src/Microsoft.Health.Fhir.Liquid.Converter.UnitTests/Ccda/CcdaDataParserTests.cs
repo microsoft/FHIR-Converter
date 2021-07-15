@@ -14,8 +14,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
 {
     public class CcdaDataParserTests
     {
-        private readonly CcdaDataParser _parser = new CcdaDataParser();
-
         public static IEnumerable<object[]> GetNullOrEmptyCcdaDocument()
         {
             yield return new object[] { null };
@@ -33,39 +31,35 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
         [MemberData(nameof(GetNullOrEmptyCcdaDocument))]
         public void GivenNullOrEmptyData_WhenParse_ExceptionShouldBeThrown(string input)
         {
-            var exception = Assert.Throws<DataParseException>(() => _parser.Parse(input));
-            Assert.Equal(FhirConverterErrorCode.InputParsingError, exception.FhirConverterErrorCode);
-
-            var innerException = exception.InnerException as FhirConverterException;
-            Assert.True(innerException is DataParseException);
-            Assert.Equal(FhirConverterErrorCode.NullOrEmptyInput, innerException.FhirConverterErrorCode);
+            var exception = Assert.Throws<DataParseException>(() => CcdaDataParser.Parse(input));
+            Assert.Equal(FhirConverterErrorCode.NullOrEmptyInput, exception.FhirConverterErrorCode);
         }
 
         [Theory]
         [MemberData(nameof(GetInvalidCcdaDocument))]
         public void GivenInvalidCcdaDocument_WhenParse_ExceptionShouldBeThrown(string input)
         {
-            var exception = Assert.Throws<DataParseException>(() => _parser.Parse(input));
+            var exception = Assert.Throws<DataParseException>(() => CcdaDataParser.Parse(input));
             Assert.Equal(FhirConverterErrorCode.InputParsingError, exception.FhirConverterErrorCode);
         }
 
         [Fact]
-        public void GivenCcdaDocument_WhenParse_CorrectResultShouldBeReturned()
+        public void GivenValidCcdaDocument_WhenParse_CorrectResultShouldBeReturned()
         {
             // Sample CCD document
-            var document = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "Ccda", "CCD.ccda"));
-            var data = _parser.Parse(document);
+            var document = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Ccda", "CCD.ccda"));
+            var data = CcdaDataParser.Parse(document);
             Assert.NotNull(data);
-            Assert.NotNull(((Dictionary<string, object>)data).GetValueOrDefault("msg"));
+            Assert.NotNull(((Dictionary<string, object>)data).GetValueOrDefault(Constants.CcdaDataKey));
 
             // Document that contains redundant namespaces "xmlns:cda"
             // It is removed in the parsed data
             document = "<ClinicalDocument xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns = \"urn:hl7-org:v3\" xmlns:cda = \"urn:hl7-org:v3\" xmlns:sdtc = \"urn:hl7-org:sdtc\">" +
                        "</ClinicalDocument>";
-            data = _parser.Parse(document);
+            data = CcdaDataParser.Parse(document);
             var contents =
                 ((data as Dictionary<string, object>)
-                ?.GetValueOrDefault("msg") as Dictionary<string, object>)
+                ?.GetValueOrDefault(Constants.CcdaDataKey) as Dictionary<string, object>)
                 ?.GetValueOrDefault("ClinicalDocument") as Dictionary<string, object>;
             Assert.Equal(3, contents?.Count);
             Assert.Equal("http://www.w3.org/2001/XMLSchema-instance", contents?["xmlns:xsi"]);
@@ -77,10 +71,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
             document = "<ClinicalDocument xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns = \"urn:hl7-org:v3\" xmlns:sdtc = \"urn:hl7-org:sdtc\">" +
                        "<sdtc:raceCode code=\"2076-8\" displayName=\"Hawaiian or Other Pacific Islander\" codeSystem=\"2.16.840.1.113883.6.238\" codeSystemName=\"Race &amp; Ethnicity - CDC\"/>" +
                        "</ClinicalDocument>";
-            data = _parser.Parse(document);
+            data = CcdaDataParser.Parse(document);
             contents =
                 ((data as Dictionary<string, object>)
-                    ?.GetValueOrDefault("msg") as Dictionary<string, object>)
+                    ?.GetValueOrDefault(Constants.CcdaDataKey) as Dictionary<string, object>)
                 ?.GetValueOrDefault("ClinicalDocument") as Dictionary<string, object>;
             Assert.NotNull(contents?["sdtc_raceCode"]);
         }
