@@ -99,15 +99,5 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             var bytes = Convert.FromBase64String(data);
             return Encoding.UTF8.GetString(bytes);
         }
-
-        public static string ToHtmlEscapedString(string input)
-        {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                return null;
-            }
-
-            return WebUtility.HtmlEncode(input);
-        }
     }
 }

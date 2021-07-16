@@ -110,12 +110,5 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
             Assert.Throws<ArgumentNullException>(() => Filters.Base64Decode(null));
         }
-
-        [Fact]
-        public void ToHtmlEscapedStringTest()
-        {
-            string input = "a & b";
-            Assert.Equal("a &amp; b", Filters.ToHtmlEscapedString(input));
-        }
     }
 }
