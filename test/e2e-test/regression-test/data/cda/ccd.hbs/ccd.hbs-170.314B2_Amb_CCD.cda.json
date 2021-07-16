@@ -337,7 +337,43 @@
                         "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
                     ]
                 },
-                "id": "c479e34b-fd7d-3990-8450-1746cb2d2fc9"
+                "id": "c479e34b-fd7d-3990-8450-1746cb2d2fc9",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "1111111111"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Khan",
+                        "given": [
+                            "Samir"
+                        ],
+                        "prefix": [
+                            "Dr"
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "Get Well Clinic",
+                            "1004 Healthcare Dr."
+                        ],
+                        "city": "Portland",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "97005"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "+1-(555)555-1004",
+                        "use": "temp"
+                    }
+                ]
             },
             "request": {
                 "method": "PUT",
@@ -995,10 +1031,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:ffda565d-3f08-36ba-99aa-107d25db3f9e",
+            "fullUrl": "urn:uuid:4a7e0a3f-476b-3bce-b536-15c8483e9400",
             "resource": {
                 "resourceType": "DocumentReference",
-                "id": "ffda565d-3f08-36ba-99aa-107d25db3f9e",
+                "id": "4a7e0a3f-476b-3bce-b536-15c8483e9400",
                 "type": {
                     "coding": [
                         {
@@ -1008,7 +1044,7 @@
                         }
                     ]
                 },
-                "date": "2020-08-27T04:06:08.170Z",
+                "date": "2021-07-02T05:58:00.954Z",
                 "status": "current",
                 "content": [
                     {
@@ -1022,7 +1058,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "DocumentReference/ffda565d-3f08-36ba-99aa-107d25db3f9e"
+                "url": "DocumentReference/4a7e0a3f-476b-3bce-b536-15c8483e9400"
             }
         }
     ]
