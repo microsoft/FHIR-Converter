@@ -1,5 +1,8 @@
 # FHIR® Converter 
 ## Handlebars Engine & OpenHIM Mediator
+[![Create and publish a Docker image](https://github.com/B-TECHBW/FHIR-Converter/actions/workflows/publish.yml/badge.svg)](https://github.com/B-TECHBW/FHIR-Converter/actions/workflows/publish.yml)
+
+[![Node.js CI](https://github.com/B-TECHBW/FHIR-Converter/actions/workflows/nodejs.yml/badge.svg)](https://github.com/B-TECHBW/FHIR-Converter/actions/workflows/nodejs.yml)
 
 FHIR® Converter is an open source project that enables the conversion of health data from legacy format to FHIR. Currently it supports HL7v2, and CCDA, to FHIR conversion.
 
