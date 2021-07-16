@@ -12,13 +12,12 @@
     {% include 'Resource/Encounter' encounter: msg.ClinicalDocument.componentOf.encompassingEncounter ID: encounterId -%}
     {% assign fullEncounterId = encounterId | prepend: 'Encounter/' -%}
     {% include 'Reference/Composition/Encounter' ID: compositionId, REF: fullEncounterId -%}
-{% endif -%}
-
-{% if msg.ClinicalDocument.componentOf.encompassingEncounter.location -%}
-    {% assign locationId = msg.ClinicalDocument.componentOf.encompassingEncounter.location | to_json_string | generate_uuid -%}
-    {% include 'Resource/Location' location: msg.ClinicalDocument.componentOf.encompassingEncounter.location ID: locationId -%}
-    {% assign fullLocationId = locationId | prepend: 'Location/' -%}
-    {% include 'Reference/Encounter/Location_Location' ID: encounterId, REF: fullLocationId -%}
+    {% if msg.ClinicalDocument.componentOf.encompassingEncounter.location -%}
+        {% assign locationId = msg.ClinicalDocument.componentOf.encompassingEncounter.location | to_json_string | generate_uuid -%}
+        {% include 'Resource/Location' location: msg.ClinicalDocument.componentOf.encompassingEncounter.location ID: locationId -%}
+        {% assign fullLocationId = locationId | prepend: 'Location/' -%}
+        {% include 'Reference/Encounter/Location_Location' ID: encounterId, REF: fullLocationId -%}
+    {% endif -%}
 {% endif -%}
 
 {% if msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization.name._ -%}
@@ -46,7 +45,7 @@
         {% endif -%}
     {% endif -%}
 
-    {% if author.assignedAuthor -%}
+    {% if author.assignedAuthor.assignedPerson -%}
         {% evaluate practitionerId using 'Utils/GenerateId' obj: author.assignedAuthor -%}
         {% include 'Resource/Practitioner' practitioner: author.assignedAuthor ID: practitionerId -%}
         {% assign fullPractitionerId = practitionerId | prepend: 'Practitioner/' -%}

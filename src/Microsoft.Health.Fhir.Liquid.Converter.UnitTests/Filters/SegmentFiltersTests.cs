@@ -119,10 +119,10 @@ RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical 
             Assert.Throws<NullReferenceException>(() => Filters.HasSegments(new Hl7v2Data(), null));
         }
 
-        private Hl7v2Data LoadTestData()
+        private static Hl7v2Data LoadTestData()
         {
-            var parser = new Hl7v2DataParser();
-            return parser.Parse(TestData);
+            var data = Hl7v2DataParser.Parse(TestData);
+            return data[Constants.Hl7v2DataKey] as Hl7v2Data;
         }
     }
 }

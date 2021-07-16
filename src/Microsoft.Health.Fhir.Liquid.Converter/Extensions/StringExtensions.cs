@@ -22,7 +22,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Extensions
                 .Skip(n - 1)
                 .FirstOrDefault();
 
-            return result != null ? result.Index : -1;
+            return result?.Index ?? -1;
         }
     }
 }

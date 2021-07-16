@@ -7,7 +7,7 @@ using System.Globalization;
 using DotLiquid;
 using Xunit;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
+namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 {
     public class FiltersRenderingTests
     {
