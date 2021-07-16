@@ -24,13 +24,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
         {
             if (!Directory.Exists(templateDirectory))
             {
-                throw new ConverterInitializeException(FhirConverterErrorCode.TemplateFolderNotFound, string.Format(Resources.TemplateFolderNotFound, templateDirectory));
+                throw new TemplateLoadException(FhirConverterErrorCode.TemplateFolderNotFound, string.Format(Resources.TemplateFolderNotFound, templateDirectory));
             }
 
             _templateDirectory = templateDirectory;
             _templateCache = new Dictionary<string, Template>();
-
-            LoadMappingTemplate(dataType);
         }
 
         public string ReadTemplateFile(Context context, string templateName)
@@ -63,39 +61,28 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
 
             // If not cached, search local file system
-            var templatePath = GetAbsoluteTemplatePath(templateName);
-            if (File.Exists(templatePath))
+            var templateContent = ReadTemplateFile(templateName);
+            var template = IsCodeMappingTemplate(templateName) ? TemplateUtility.ParseCodeMapping(templateContent) : TemplateUtility.ParseTemplate(templateName, templateContent);
+            var key = IsCodeMappingTemplate(templateName) ? $"{templateName}/{templateName}" : templateName;
+
+            if (template != null)
             {
-                var templateContent = LoadTemplate(templatePath);
-                var template = TemplateUtility.ParseTemplate(templateName, templateContent);
-                _templateCache[templateName] = template;
-                return template;
+                _templateCache[key] = template;
             }
 
-            return null;
+            return template;
         }
 
-        private void LoadMappingTemplate(DataType dataType)
-        {
-            var mappingFileType = dataType == DataType.Hl7v2 ? "CodeSystem" : "ValueSet";
-            var codeMappingPath = Path.Join(_templateDirectory, mappingFileType, $"{mappingFileType}.json");
-            if (File.Exists(codeMappingPath))
-            {
-                var content = LoadTemplate(codeMappingPath);
-                var template = TemplateUtility.ParseCodeMapping(content);
-                _templateCache[$"{mappingFileType}/{mappingFileType}"] = template;
-            }
-        }
-
-        private string LoadTemplate(string templatePath)
+        private string ReadTemplateFile(string templateName)
         {
             try
             {
-                return File.ReadAllText(templatePath);
+                var templatePath = GetAbsoluteTemplatePath(templateName);
+                return File.Exists(templatePath) ? File.ReadAllText(templatePath) : null;
             }
             catch (Exception ex)
             {
-                throw new ConverterInitializeException(FhirConverterErrorCode.TemplateLoadingError, string.Format(Resources.TemplateLoadingError, ex.Message), ex);
+                throw new TemplateLoadException(FhirConverterErrorCode.TemplateLoadingError, string.Format(Resources.TemplateLoadingError, ex.Message), ex);
             }
         }
 
@@ -111,9 +98,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
 
             // Snippets
-            pathSegments[^1] = $"_{pathSegments[^1]}.liquid";
+            pathSegments[^1] = IsCodeMappingTemplate(templateName) ? $"{pathSegments[^1]}.json" : $"_{pathSegments[^1]}.liquid";
 
             return pathSegments.Aggregate(result, Path.Join);
+        }
+
+        private static bool IsCodeMappingTemplate(string templateName)
+        {
+            return string.Equals("CodeSystem/CodeSystem", templateName, StringComparison.InvariantCultureIgnoreCase) ||
+                   string.Equals("ValueSet/ValueSet", templateName, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

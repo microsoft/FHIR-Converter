@@ -38,22 +38,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models
 
                 IsAccessed = true;
                 var indexString = index.ToString();
+
                 if (string.Equals(indexString, "Value", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return Value;
                 }
-                else if (string.Equals(indexString, "Subcomponents", StringComparison.InvariantCultureIgnoreCase))
+
+                if (string.Equals(indexString, "Subcomponents", StringComparison.InvariantCultureIgnoreCase))
                 {
                     return Subcomponents;
                 }
-                else if (int.TryParse(indexString, out int result))
+
+                if (int.TryParse(indexString, out int result))
                 {
                     return (string)Subcomponents[result];
                 }
-                else
-                {
-                    throw new RenderException(FhirConverterErrorCode.PropertyNotFound, string.Format(Resources.PropertyNotFound, indexString, this.GetType().Name));
-                }
+
+                throw new RenderException(FhirConverterErrorCode.PropertyNotFound, string.Format(Resources.PropertyNotFound, indexString, this.GetType().Name));
             }
         }
     }
