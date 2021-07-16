@@ -6,7 +6,7 @@
 
         {{#if this.legalAuthenticator}}
             {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=this.legalAuthenticator.assignedEntity) as |practitionerId|}}
-                {{>Resources/Practitioner.hbs practitioner=this.legalAuthenticator.assignedEntity ID=practitionerId.Id}},
+                {{>Resources/Practitioner.hbs practitioner=../legalAuthenticator.assignedEntity ID=practitionerId.Id}},
             {{/with}}
         {{/if}}
     

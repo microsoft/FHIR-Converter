@@ -48,7 +48,7 @@ If you need to view or edit your API Key later, take the following steps:
 
 ### Deploy on-prem
 
-Make sure that you have Node.js >=10.10.0 < 11.0 installed
+Make sure that you have Node.js >=14.0 < 15.0 installed
 
 ```
 git clone https://github.com/microsoft/FHIR-Converter/

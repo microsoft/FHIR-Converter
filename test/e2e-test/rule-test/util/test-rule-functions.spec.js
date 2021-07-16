@@ -240,7 +240,7 @@ describe('testRule', function () {
         const reqJson = null;
         const resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample3-right.json')));
         assert.ok(testRules.officialValidator(reqJson, resJson).valid);
-    }).timeout(180 * 1000);
+    }).timeout(300 * 1000);
 
     it('Rule officialValidator should return an object with invalid status and error message when the resource is invalid.', () => {
         const reqJson = null;
@@ -250,5 +250,5 @@ describe('testRule', function () {
         const errorMessage = "Error @ Bundle.entry[1].resource.ofType(Practitioner) (line 57, col26) : Profile http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner, Element 'Bundle.entry[1].resource.ofType(Practitioner).identifier': minimum required = 1, but only found 0\nError @ Bundle.entry[1].resource.ofType(Practitioner) (line 57, col26) : Profile http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner, Element 'Bundle.entry[1].resource.ofType(Practitioner).name': minimum required = 1, but only found 0";
         assert.strictEqual(result.valid, false);
         assert.strictEqual(result.errorMessage, errorMessage);
-    }).timeout(180 * 1000);
+    }).timeout(300 * 1000);
 });
