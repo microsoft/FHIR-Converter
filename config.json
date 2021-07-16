@@ -1,0 +1,33 @@
+{
+  "auth": {
+    "secret": "23221o43-71bc-4247-86e4-ea210af89c28",
+    "tokenDuration": 5400
+  },
+  "logLevel": "info",
+  "app": {
+    "port": 2019
+  },
+  "mediator": {
+    "api": {
+      "username": "root@openhim.org",
+      "password": "bw-openhim",
+      "apiURL": "https://core.moh.org.bw",
+      "trustSelfSigned": false,
+      "urn": "urn:mediator:hl7v2tofhir_translator"
+    }
+  },
+  "mediatorConfig": {
+    "urn": "urn:mediator:hl7v2tofhir_translator",
+    "version": "2.3.1",
+    "name": "HL7v2 to FHIR Translator",
+    "description": "HL7v2 to FHIR Translator",
+    "endpoints": [
+      {
+        "name": "HL7v2 to FHIR Translator",
+        "host": "localhost",
+        "port": "2019",
+        "type": "http"
+      }
+    ]
+  }
+}

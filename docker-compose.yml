@@ -6,9 +6,12 @@ services:
     build: ./
     ports:
       - "2019:2019"
-    # tty: true
+    volumes:
+      - ./config.json:/app/config.json
+      # tty: true
     # stdin_open: true
     # entrypoint: bash
+    
 
   ###
   # OpenHIM
