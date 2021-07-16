@@ -93,7 +93,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             {
                 item[0],
                 Path.Join(Constants.SampleDataDirectory, "Json", item[1]),
-                Path.Join(Constants.ExpectedDataFolder, "Json", item[2]),
+                Path.Join(Constants.ExpectedDataFolder, "Json", item[0], item[2]),
             });
         }
 
