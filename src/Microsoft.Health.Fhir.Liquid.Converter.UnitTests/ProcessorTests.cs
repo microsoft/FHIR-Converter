@@ -67,17 +67,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
             yield return new object[]
             {
                 new Hl7v2Processor(null), new Hl7v2Processor(new ProcessorSettings()), new Hl7v2Processor(positiveTimeOutSettings), new Hl7v2Processor(negativeTimeOutSettings),
-                new Hl7v2TemplateProvider("TestTemplates"), _hl7v2TestData
+                new Hl7v2TemplateProvider(TestConstants.TestTemplateDirectory), _hl7v2TestData
             };
             yield return new object[]
             {
                 new CcdaProcessor(null), new CcdaProcessor(new ProcessorSettings()), new CcdaProcessor(positiveTimeOutSettings), new CcdaProcessor(negativeTimeOutSettings),
-                new CcdaTemplateProvider("TestTemplates"), _ccdaTestData
+                new CcdaTemplateProvider(TestConstants.TestTemplateDirectory), _ccdaTestData
             };
             yield return new object[]
             {
                 new JsonProcessor(null), new JsonProcessor(new ProcessorSettings()), new JsonProcessor(positiveTimeOutSettings), new JsonProcessor(negativeTimeOutSettings),
-                new JsonTemplateProvider("TestTemplates"), _jsonTestData
+                new JsonTemplateProvider(TestConstants.TestTemplateDirectory), _jsonTestData
             };
         }
 

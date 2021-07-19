@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Json
+namespace Microsoft.Health.Fhir.Liquid.Converter
 {
     /// <summary>
     /// One-way JsonConverter to deserialize JSON string to IDictionary

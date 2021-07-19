@@ -5,7 +5,6 @@
 
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-using Microsoft.Health.Fhir.Liquid.Converter.Json;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
