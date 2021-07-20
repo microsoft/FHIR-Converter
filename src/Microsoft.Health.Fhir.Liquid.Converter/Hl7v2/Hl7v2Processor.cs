@@ -6,11 +6,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
-using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessor;
-using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 {
@@ -23,32 +20,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 
         public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
-            if (string.IsNullOrEmpty(rootTemplate))
-            {
-                throw new RenderException(FhirConverterErrorCode.NullOrEmptyRootTemplate, Resources.NullOrEmptyRootTemplate);
-            }
-
-            if (templateProvider == null)
-            {
-                throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
-            }
-
-            var template = templateProvider.GetTemplate(rootTemplate);
-            if (template == null)
-            {
-                throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
-            }
-
             var hl7v2Data = Hl7v2DataParser.Parse(data);
-            var context = CreateContext(templateProvider, hl7v2Data);
-            var rawResult = RenderTemplates(template, context);
-            var result = PostProcessor.Process(rawResult);
-            if (traceInfo is Hl7v2TraceInfo hl7V2TraceInfo)
-            {
-                hl7V2TraceInfo.UnusedSegments = Hl7v2TraceInfo.CreateTraceInfo(hl7v2Data[Constants.Hl7v2DataKey] as Hl7v2Data).UnusedSegments;
-            }
-
-            return result.ToString(Formatting.Indented);
+            return Convert(hl7v2Data, rootTemplate, templateProvider, traceInfo);
         }
 
         protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
@@ -62,6 +35,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
             }
 
             return context;
+        }
+
+        protected override void CreateTraceInfo(IDictionary<string, object> data, TraceInfo traceInfo)
+        {
+            if (traceInfo is Hl7v2TraceInfo hl7v2TraceInfo)
+            {
+                hl7v2TraceInfo.UnusedSegments = Hl7v2TraceInfo.CreateTraceInfo(data[Constants.Hl7v2DataKey] as Hl7v2Data).UnusedSegments;
+            }
         }
     }
 }

@@ -86,7 +86,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         {
             var data = new List<string[]>
             {
-                new[] { @"SimplePatient", @"SimplePatient.json", @"SimplePatient-expected.json" },
+                new[] { @"ExamplePatient", @"ExamplePatient.json", @"ExamplePatient-expected.json" },
                 new[] { @"Stu3ChargeItem", @"Stu3ChargeItem.json", @"Stu3ChargeItem-expected.json" },
             };
             return data.Select(item => new[]

@@ -28,7 +28,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
 
             yield return new object[] { new Hl7v2TemplateProvider(TestConstants.Hl7v2TemplateDirectory), new Hl7v2TemplateProvider(collection), "ADT_A01" };
             yield return new object[] { new CcdaTemplateProvider(TestConstants.CcdaTemplateDirectory), new CcdaTemplateProvider(collection), "CCD" };
-            yield return new object[] { new JsonTemplateProvider(TestConstants.JsonTemplateDirectory), new JsonTemplateProvider(collection), "SimplePatient" };
+            yield return new object[] { new JsonTemplateProvider(TestConstants.JsonTemplateDirectory), new JsonTemplateProvider(collection), "ExamplePatient" };
         }
 
         public static IEnumerable<object[]> GetInvalidTemplateDirectory()

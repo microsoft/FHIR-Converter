@@ -6,10 +6,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
-using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessor;
-using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
 {
@@ -22,28 +19,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
 
         public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
-            if (string.IsNullOrEmpty(rootTemplate))
-            {
-                throw new RenderException(FhirConverterErrorCode.NullOrEmptyRootTemplate, Resources.NullOrEmptyRootTemplate);
-            }
-
-            if (templateProvider == null)
-            {
-                throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
-            }
-
-            var template = templateProvider.GetTemplate(rootTemplate);
-            if (template == null)
-            {
-                throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
-            }
-
             var ccdaData = CcdaDataParser.Parse(data);
-            var context = CreateContext(templateProvider, ccdaData);
-            var rawResult = RenderTemplates(template, context);
-            var result = PostProcessor.Process(rawResult);
-
-            return result.ToString(Formatting.Indented);
+            return Convert(ccdaData, rootTemplate, templateProvider, traceInfo);
         }
 
         protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)

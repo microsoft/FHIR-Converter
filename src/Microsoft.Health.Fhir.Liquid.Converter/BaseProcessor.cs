@@ -10,6 +10,8 @@ using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessor;
+using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
 {
@@ -47,6 +49,36 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             context.AddFilters(typeof(Filters));
 
             return context;
+        }
+
+        protected virtual void CreateTraceInfo(IDictionary<string, object> data, TraceInfo traceInfo)
+        {
+        }
+
+        protected string Convert(IDictionary<string, object> data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        {
+            if (string.IsNullOrEmpty(rootTemplate))
+            {
+                throw new RenderException(FhirConverterErrorCode.NullOrEmptyRootTemplate, Resources.NullOrEmptyRootTemplate);
+            }
+
+            if (templateProvider == null)
+            {
+                throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
+            }
+
+            var template = templateProvider.GetTemplate(rootTemplate);
+            if (template == null)
+            {
+                throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
+            }
+
+            var context = CreateContext(templateProvider, data);
+            var rawResult = RenderTemplates(template, context);
+            var result = PostProcessor.Process(rawResult);
+            CreateTraceInfo(data, traceInfo);
+
+            return result.ToString(Formatting.Indented);
         }
 
         protected string RenderTemplates(Template template, Context context)
