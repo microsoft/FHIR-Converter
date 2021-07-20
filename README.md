@@ -33,7 +33,7 @@ In the API call request body, you would include the following parameters:
 | ----------- | ----------- | ----------- |
 | inputData      | Data to be converted. | A valid JSON String|
 | inputDataType   | Data type of input. | ```HL7v2```, ``Ccda`` |
-| templateCollectionReference | Reference to an [OCI image ](https://github.com/opencontainers/image-spec) template collection on [Azure Container Registry (ACR)](https://azure.microsoft.com/en-us/services/container-registry/). It is the image containing Liquid templates to use for conversion. | For default templates:<br>```microsofthealth/fhirconverter:default``` <br>For HL7v2 default templates: ``microsofthealth/hl7v2templates:default``<br>For C-CDA default templates: ``microsofthealth/ccdatemplates:default`` <br>\<RegistryServer\>/\<imageName\>@\<imageDigest\>, \<RegistryServer\>/\<imageName\>:\<imageTag\> |
+| templateCollectionReference | Reference to an [OCI image ](https://github.com/opencontainers/image-spec) template collection on [Azure Container Registry (ACR)](https://azure.microsoft.com/en-us/services/container-registry/). It is the image containing Liquid templates to use for conversion. | For HL7v2 default templates: <br>```microsofthealth/fhirconverter:default``` <br>``microsofthealth/hl7v2templates:default``<br>For C-CDA default templates: ``microsofthealth/ccdatemplates:default`` <br>\<RegistryServer\>/\<imageName\>@\<imageDigest\>, \<RegistryServer\>/\<imageName\>:\<imageTag\> |
 | rootTemplate | The root template to use while transforming the data. | For HL7v2:<br>```ADT_A01```, ```OML_O21```, ```ORU_R01```, ```VXU_V04```<br> For C-CDA:<br>```CCD```, `ConsultationNote`, `DischargeSummary`, `HistoryandPhysical`, `OperativeNote`, `ProcedureNote`, `ProgressNote`, `ReferralNote`, `TransferSummary` |
 
 For more information on configuring and using `$convert-data` operation on your server, please refer to these documentation:
@@ -114,7 +114,7 @@ The syntax is `{% evaluate [id] using [template] [variables] -%}`.
 
 ## Resource validation and post-processing
 
-Real world HL7 messages vary in richness and level of conformance with the spec. The output of converter depends on the templates as well as the quality and richness of input messages. Therefore, it is important that you review and validate the Converter output before using those in production.
+The output of converter depends on the templates as well as the quality and richness of input messages. Therefore, it is important that you review and validate the Converter output before using those in production.
 
 In general, you can use [HL7 FHIR validator](https://wiki.hl7.org/Using_the_FHIR_Validator) to validate a FHIR resource. You may be able to fix some of the conversion issues by appropriately changing the templates. For other issues, you may need to have a post-processing step in your pipeline.
 
