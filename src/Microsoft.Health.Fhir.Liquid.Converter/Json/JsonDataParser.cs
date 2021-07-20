@@ -15,13 +15,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Json
     {
         public IDictionary<string, object> Parse(string json)
         {
+            if (string.IsNullOrWhiteSpace(json))
+            {
+                throw new DataParseException(FhirConverterErrorCode.NullOrWhiteSpaceInput, Resources.NullOrWhiteSpaceInput);
+            }
+
             try
             {
-                if (string.IsNullOrWhiteSpace(json))
-                {
-                    throw new DataParseException(FhirConverterErrorCode.NullOrWhiteSpaceInput, Resources.NullOrWhiteSpaceInput);
-                }
-
                 var data = JsonConvert.DeserializeObject<object>(json, new JsonSerializerSettings { ContractResolver = new DictionaryContractResolver() });
 
                 return new Dictionary<string, object>

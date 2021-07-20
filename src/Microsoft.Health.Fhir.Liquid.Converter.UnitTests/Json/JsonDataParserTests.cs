@@ -68,11 +68,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Json
         public void GivenNullOrEmptyData_WhenParse_ExceptionShouldBeThrown(string input)
         {
             var exception = Assert.Throws<DataParseException>(() => _parser.Parse(input));
-            Assert.Equal(FhirConverterErrorCode.InputParsingError, exception.FhirConverterErrorCode);
-
-            var innerException = exception.InnerException as FhirConverterException;
-            Assert.True(innerException is DataParseException);
-            Assert.Equal(FhirConverterErrorCode.NullOrWhiteSpaceInput, innerException.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.NullOrWhiteSpaceInput, exception.FhirConverterErrorCode);
         }
 
         [Theory]
