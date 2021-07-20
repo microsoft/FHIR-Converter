@@ -14,17 +14,17 @@ using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
 {
-    public class CcdaDataParser
+    public static class CcdaDataParser
     {
-        public IDictionary<string, object> Parse(string document)
+        public static IDictionary<string, object> Parse(string document)
         {
+            if (string.IsNullOrEmpty(document))
+            {
+                throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
+            }
+
             try
             {
-                if (string.IsNullOrEmpty(document))
-                {
-                    throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
-                }
-
                 var xDocument = XDocument.Parse(document);
 
                 // Remove redundant namespaces to avoid appending namespace prefix before elements
@@ -49,9 +49,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
                 // Remove line breaks in original data
                 dataDictionary["_originalData"] = Regex.Replace(document, @"\r\n?|\n", string.Empty);
 
-                return new Dictionary<string, object>()
+                return new Dictionary<string, object>
                 {
-                    { "msg", dataDictionary },
+                    { Constants.CcdaDataKey, dataDictionary },
                 };
             }
             catch (Exception ex)

@@ -20,8 +20,8 @@
             {% include 'DataType/CodeableConcept' CodeableConcept: serviceEntry.code -%}
             {% endif -%}
         },
-        "priority":"{{ serviceEntry.priorityCode.displayName }}",
-        "occuranceDateTime":"{{serviceEntry.effectiveTime.value | format_as_date_time }}",
+        "priority":"{{ serviceEntry.priorityCode.code  | get_property: 'ValueSet/ServiceRequestPriority' }}",
+        "occurrenceDateTime":"{{serviceEntry.effectiveTime.value | format_as_date_time }}",
     },
     "request":{
         "method":"PUT",

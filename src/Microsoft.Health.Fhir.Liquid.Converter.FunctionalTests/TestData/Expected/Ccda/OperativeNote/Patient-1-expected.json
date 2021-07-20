@@ -36,7 +36,8 @@
         "event": [
           {
             "period": {
-              "start": "2010-03-31T10:00:00"
+              "start": "2010-03-31T10:00:00",
+              "end": "2010-10-24T10:00:00"
             }
           }
         ],
@@ -45,7 +46,7 @@
             "title": "Allergies,  Adverse Reactions & Alerts",
             "text": {
               "status": "generated",
-              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Allergies,  Adverse Reactions & Alerts</div>"
+              "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Allergies,  Adverse Reactions &amp; Alerts</div>"
             },
             "code": {
               "coding": [
@@ -399,8 +400,7 @@
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2054-5",
-                  "display": "Black or African American",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "Black or African American"
                 }
               },
               {
@@ -416,8 +416,7 @@
                 "url": "ombCategory",
                 "valueCoding": {
                   "code": "2186-5",
-                  "display": "Not Hispanic or Latino",
-                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                  "display": "Not Hispanic or Latino"
                 }
               },
               {
@@ -452,8 +451,8 @@
               "coding": [
                 {
                   "system": "urn:ietf:bcp:47",
-                  "code": "spa",
-                  "display": "spa"
+                  "code": "es",
+                  "display": "Spanish"
                 }
               ]
             },
@@ -538,6 +537,15 @@
           }
         ],
         "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "code": "97802",
+              "display": "Medical nutrition, indiv, in",
+              "system": "http://www.ama-assn.org/go/cpt"
+            }
+          ]
+        },
         "performedDateTime": "2010-03-31T10:00:00",
         "subject": {
           "reference": "Patient/5510eaa6-2ad2-b82b-248b-aba749e28fa1"
@@ -565,6 +573,15 @@
           }
         ],
         "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "code": "S9451",
+              "display": "Exercise class",
+              "system": "urn:oid:2.16.840.1.113883.6.13"
+            }
+          ]
+        },
         "performedDateTime": "2010-03-31T10:00:00",
         "subject": {
           "reference": "Patient/5510eaa6-2ad2-b82b-248b-aba749e28fa1"
@@ -595,9 +612,9 @@
         "code": {
           "coding": [
             {
-              "code": "363680008",
-              "display": "Radiographic imaging procedure (procedure)",
-              "system": "http://snomed.info/sct"
+              "code": "76499",
+              "display": "Radiographic procedure",
+              "system": "http://www.ama-assn.org/go/cpt"
             }
           ]
         },
@@ -633,7 +650,7 @@
             {
               "code": "93543",
               "display": "Injection for heart x-rays",
-              "system": "urn:oid:2.16.840.1.113883.6.12"
+              "system": "http://www.ama-assn.org/go/cpt"
             }
           ]
         },
@@ -772,6 +789,15 @@
           }
         ],
         "status": "completed",
+        "code": {
+          "coding": [
+            {
+              "code": "92012",
+              "display": "Eye exam established pat",
+              "system": "http://www.ama-assn.org/go/cpt"
+            }
+          ]
+        },
         "performedDateTime": "2010-07-30T10:00:00",
         "subject": {
           "reference": "Patient/5510eaa6-2ad2-b82b-248b-aba749e28fa1"
@@ -832,7 +858,7 @@
             }
           ]
         },
-        "date": "2021-05-13T08:08:32.491Z",
+        "date": "2021-07-02T05:38:44.498Z",
         "status": "current",
         "content": [
           {
