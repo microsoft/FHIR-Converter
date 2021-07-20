@@ -22,7 +22,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
         {
             if (string.IsNullOrWhiteSpace(message))
             {
-                throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
+                throw new DataParseException(FhirConverterErrorCode.NullOrWhiteSpaceInput, Resources.NullOrWhiteSpaceInput);
             }
 
             try

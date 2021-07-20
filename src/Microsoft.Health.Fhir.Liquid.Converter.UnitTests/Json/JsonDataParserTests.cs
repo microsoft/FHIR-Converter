@@ -72,7 +72,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Json
 
             var innerException = exception.InnerException as FhirConverterException;
             Assert.True(innerException is DataParseException);
-            Assert.Equal(FhirConverterErrorCode.NullOrEmptyInput, innerException.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.NullOrWhiteSpaceInput, innerException.FhirConverterErrorCode);
         }
 
         [Theory]

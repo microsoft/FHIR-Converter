@@ -20,7 +20,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Ccda
         {
             if (string.IsNullOrWhiteSpace(document))
             {
-                throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
+                throw new DataParseException(FhirConverterErrorCode.NullOrWhiteSpaceInput, Resources.NullOrWhiteSpaceInput);
             }
 
             try

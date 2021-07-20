@@ -17,9 +17,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Hl7v2
 
         public void ValidateMessageHeader(string headerSegment)
         {
-            if (string.IsNullOrEmpty(headerSegment))
+            if (string.IsNullOrWhiteSpace(headerSegment))
             {
-                throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
+                throw new DataParseException(FhirConverterErrorCode.NullOrWhiteSpaceInput, Resources.NullOrWhiteSpaceInput);
             }
 
             if (headerSegment.Length < HeaderSegmentId.Length)

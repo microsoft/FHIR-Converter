@@ -19,7 +19,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Json
             {
                 if (string.IsNullOrWhiteSpace(json))
                 {
-                    throw new DataParseException(FhirConverterErrorCode.NullOrEmptyInput, Resources.NullOrEmptyInput);
+                    throw new DataParseException(FhirConverterErrorCode.NullOrWhiteSpaceInput, Resources.NullOrWhiteSpaceInput);
                 }
 
                 var data = JsonConvert.DeserializeObject<object>(json, new JsonSerializerSettings { ContractResolver = new DictionaryContractResolver() });

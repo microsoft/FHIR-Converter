@@ -33,7 +33,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Ccda
         public void GivenNullOrEmptyData_WhenParse_ExceptionShouldBeThrown(string input)
         {
             var exception = Assert.Throws<DataParseException>(() => CcdaDataParser.Parse(input));
-            Assert.Equal(FhirConverterErrorCode.NullOrEmptyInput, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.NullOrWhiteSpaceInput, exception.FhirConverterErrorCode);
         }
 
         [Theory]
