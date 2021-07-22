@@ -8,11 +8,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
-using Microsoft.Health.Fhir.Liquid.Converter.Json;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
+using Microsoft.Health.Fhir.Liquid.Converter.Processors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
@@ -107,7 +106,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
             var traceInfo = new Hl7v2TraceInfo();
-            var actualContent = hl7v2Processor.Convert(inputContent, rootTemplate, new Hl7v2TemplateProvider(templateDirectory), traceInfo);
+            var actualContent = hl7v2Processor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Hl7v2), traceInfo);
 
             JsonSerializer serializer = new JsonSerializer();
             var expectedObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(expectedContent)));
@@ -135,7 +134,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
-            var actualContent = ccdaProcessor.Convert(inputContent, rootTemplate, new CcdaTemplateProvider(templateDirectory));
+            var actualContent = ccdaProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Ccda));
 
             var expectedObject = JObject.Parse(expectedContent);
             var actualObject = JObject.Parse(actualContent);
@@ -156,7 +155,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
-            var actualContent = jsonProcessor.Convert(inputContent, rootTemplate, new JsonTemplateProvider(templateDirectory));
+            var actualContent = jsonProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Json));
 
             var expectedObject = JObject.Parse(expectedContent);
             var actualObject = JObject.Parse(actualContent);
@@ -176,7 +175,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 },
             };
 
-            var exception = Assert.Throws<RenderException>(() => hl7v2Processor.Convert(@"MSH|^~\&|", "template", new Hl7v2TemplateProvider(templateCollection)));
+            var exception = Assert.Throws<RenderException>(() => hl7v2Processor.Convert(@"MSH|^~\&|", "template", new TemplateProvider(templateCollection)));
             Assert.True(exception.InnerException is DotLiquid.Exceptions.StackLevelException);
         }
     }

@@ -7,13 +7,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
+using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 {
     public class SectionFiltersTests
     {
+        private static readonly Dictionary<string, object> TestData = LoadTestData();
+
         [Fact]
         public void GetFirstCcdaSectionsTests()
         {
@@ -23,8 +25,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             Assert.Empty(Filters.GetFirstCcdaSections(new Hash(), sectionNameContent));
 
             // Empty section name content
-            var data = LoadTestData() as Dictionary<string, object>;
-            var msg = data?.GetValueOrDefault(Constants.CcdaDataKey) as IDictionary<string, object>;
+            var msg = TestData?.GetValueOrDefault(Constants.CcdaDataKey) as IDictionary<string, object>;
             Assert.Empty(Filters.GetFirstCcdaSections(Hash.FromDictionary(msg), string.Empty));
 
             // Valid data and section name content
@@ -46,8 +47,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             Assert.Empty(Filters.GetCcdaSectionLists(new Hash(), sectionNameContent));
 
             // Empty section name content
-            var data = LoadTestData() as Dictionary<string, object>;
-            var msg = data?.GetValueOrDefault(Constants.CcdaDataKey) as IDictionary<string, object>;
+            var msg = TestData?.GetValueOrDefault(Constants.CcdaDataKey) as IDictionary<string, object>;
             Assert.Empty(Filters.GetCcdaSectionLists(Hash.FromDictionary(msg), string.Empty));
 
             // Valid data and section name content
@@ -72,8 +72,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             Assert.Empty(Filters.GetFirstCcdaSectionsByTemplateId(new Hash(), templateIdContent));
 
             // Empty template id content
-            var data = LoadTestData() as Dictionary<string, object>;
-            var msg = data?.GetValueOrDefault(Constants.CcdaDataKey) as IDictionary<string, object>;
+            var msg = TestData?.GetValueOrDefault(Constants.CcdaDataKey) as IDictionary<string, object>;
             Assert.Empty(Filters.GetFirstCcdaSectionsByTemplateId(Hash.FromDictionary(msg), string.Empty));
 
             // Valid data and template id content
@@ -86,10 +85,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             Assert.Throws<NullReferenceException>(() => Filters.GetFirstCcdaSectionsByTemplateId(new Hash(), null));
         }
 
-        private static IDictionary<string, object> LoadTestData()
+        private static Dictionary<string, object> LoadTestData()
         {
             var dataContent = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Ccda", "170.314B2_Amb_CCD.ccda"));
-            return CcdaDataParser.Parse(dataContent);
+            var parser = new CcdaDataParser();
+            return parser.Parse(dataContent) as Dictionary<string, object>;
         }
     }
 }

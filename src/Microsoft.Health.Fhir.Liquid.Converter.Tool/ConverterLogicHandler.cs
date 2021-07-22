@@ -7,11 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
-using Microsoft.Health.Fhir.Liquid.Converter.Json;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
+using Microsoft.Health.Fhir.Liquid.Converter.Processors;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool.Models;
 using Newtonsoft.Json;
 
@@ -109,9 +107,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
         {
             return dataType switch
             {
-                DataType.Hl7v2 => new Hl7v2TemplateProvider(templateDirectory),
-                DataType.Ccda => new CcdaTemplateProvider(templateDirectory),
-                DataType.Json => new JsonTemplateProvider(templateDirectory),
+                DataType.Hl7v2 => new TemplateProvider(templateDirectory, DataType.Hl7v2),
+                DataType.Ccda => new TemplateProvider(templateDirectory, DataType.Ccda),
+                DataType.Json => new TemplateProvider(templateDirectory, DataType.Json),
                 _ => throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported")
             };
         }

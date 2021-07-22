@@ -3,7 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests

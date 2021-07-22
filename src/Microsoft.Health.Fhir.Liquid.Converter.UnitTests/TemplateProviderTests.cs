@@ -6,10 +6,8 @@
 using System.Collections.Generic;
 using System.IO;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
-using Microsoft.Health.Fhir.Liquid.Converter.Json;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
@@ -26,9 +24,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
                 },
             };
 
-            yield return new object[] { new Hl7v2TemplateProvider(TestConstants.Hl7v2TemplateDirectory), new Hl7v2TemplateProvider(collection), "ADT_A01" };
-            yield return new object[] { new CcdaTemplateProvider(TestConstants.CcdaTemplateDirectory), new CcdaTemplateProvider(collection), "CCD" };
-            yield return new object[] { new JsonTemplateProvider(TestConstants.JsonTemplateDirectory), new JsonTemplateProvider(collection), "ExamplePatient" };
+            yield return new object[] { new TemplateProvider(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2), new TemplateProvider(collection), "ADT_A01" };
+            yield return new object[] { new TemplateProvider(TestConstants.CcdaTemplateDirectory, DataType.Ccda), new TemplateProvider(collection), "CCD" };
+            yield return new object[] { new TemplateProvider(TestConstants.JsonTemplateDirectory, DataType.Json), new TemplateProvider(collection), "ExamplePatient" };
         }
 
         public static IEnumerable<object[]> GetInvalidTemplateDirectory()
@@ -49,9 +47,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
         [MemberData(nameof(GetInvalidTemplateDirectory))]
         public void GivenInvalidTemplateDirectory_WhenCreateTemplateProvider_ExceptionShouldBeReturned(string templateDirectory)
         {
-            Assert.Throws<TemplateLoadException>(() => new Hl7v2TemplateProvider(templateDirectory));
-            Assert.Throws<TemplateLoadException>(() => new CcdaTemplateProvider(templateDirectory));
-            Assert.Throws<TemplateLoadException>(() => new JsonTemplateProvider(templateDirectory));
+            Assert.Throws<TemplateLoadException>(() => new TemplateProvider(templateDirectory, DataType.Hl7v2));
+            Assert.Throws<TemplateLoadException>(() => new TemplateProvider(templateDirectory, DataType.Ccda));
+            Assert.Throws<TemplateLoadException>(() => new TemplateProvider(templateDirectory, DataType.Json));
         }
     }
 }

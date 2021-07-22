@@ -12,7 +12,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.InputProcessor;
+using Microsoft.Health.Fhir.Liquid.Converter.InputProcessors;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
