@@ -16,17 +16,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
     {
         public static IEnumerable<object[]> GetValidTemplateProvider()
         {
-            var collection = new List<Dictionary<string, Template>>
-            {
-                new Dictionary<string, Template>
-                {
-                    { "foo", Template.Parse("bar") },
-                },
-            };
-
-            yield return new object[] { new TemplateProvider(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2), new TemplateProvider(collection), "ADT_A01" };
-            yield return new object[] { new TemplateProvider(TestConstants.CcdaTemplateDirectory, DataType.Ccda), new TemplateProvider(collection), "CCD" };
-            yield return new object[] { new TemplateProvider(TestConstants.JsonTemplateDirectory, DataType.Json), new TemplateProvider(collection), "ExamplePatient" };
+            yield return new object[] { new TemplateProvider(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2), "ADT_A01" };
+            yield return new object[] { new TemplateProvider(TestConstants.CcdaTemplateDirectory, DataType.Ccda),  "CCD" };
+            yield return new object[] { new TemplateProvider(TestConstants.JsonTemplateDirectory, DataType.Json), "ExamplePatient" };
         }
 
         public static IEnumerable<object[]> GetInvalidTemplateDirectory()
@@ -37,9 +29,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
 
         [Theory]
         [MemberData(nameof(GetValidTemplateProvider))]
-        public void GivenAValidTemplateProvider_WhenGetTemplate_CorrectResultsShouldBeReturned(ITemplateProvider directoryTemplateProvider, ITemplateProvider collectionTemplateProvider, string rootTemplate)
+        public void GivenAValidTemplateProviderFromLocalFileSystem_WhenGetTemplate_CorrectResultsShouldBeReturned(ITemplateProvider directoryTemplateProvider, string rootTemplate)
         {
             Assert.NotNull(directoryTemplateProvider.GetTemplate(rootTemplate));
+        }
+
+        [Fact]
+        public void GivenAValidTemplateProviderFromMemoryFileSystem_WhenGetTemplate_CorrectResultsShouldBeReturned()
+        {
+            var collection = new List<Dictionary<string, Template>>
+            {
+                new Dictionary<string, Template>
+                {
+                    { "foo", Template.Parse("bar") },
+                },
+            };
+
+            var collectionTemplateProvider = new TemplateProvider(collection);
             Assert.NotNull(collectionTemplateProvider.GetTemplate("foo"));
         }
 

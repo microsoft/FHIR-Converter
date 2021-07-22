@@ -28,8 +28,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         private static readonly string _ccdaTemplateFolder = Path.Combine(Constants.TemplateDirectory, "Ccda");
         private static readonly string _ccdaDataFolder = Path.Combine(Constants.SampleDataDirectory, "Ccda");
 
-        private static readonly TemplateProvider _hl7TemplateProvider = new TemplateProvider(_hl7TemplateFolder, DataType.Hl7v2);
-        private static readonly TemplateProvider _ccdaTemplateProvider = new TemplateProvider(_ccdaTemplateFolder, DataType.Ccda);
+        private static readonly ITemplateProvider _hl7TemplateProvider = new TemplateProvider(_hl7TemplateFolder, DataType.Hl7v2);
+        private static readonly ITemplateProvider _ccdaTemplateProvider = new TemplateProvider(_ccdaTemplateFolder, DataType.Ccda);
 
         private static readonly FhirJsonParser _fhirParser = new FhirJsonParser();
 
