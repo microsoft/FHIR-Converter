@@ -25,8 +25,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
     {
         private static readonly string _hl7TemplateFolder = Path.Combine(Constants.TemplateDirectory, "Hl7v2");
         private static readonly string _hl7DataFolder = Path.Combine(Constants.SampleDataDirectory, "Hl7v2");
+        private static readonly string _ccdaTemplateFolder = Path.Combine(Constants.TemplateDirectory, "Ccda");
+        private static readonly string _ccdaDataFolder = Path.Combine(Constants.SampleDataDirectory, "Ccda");
 
         private static readonly TemplateProvider _hl7TemplateProvider = new TemplateProvider(_hl7TemplateFolder, DataType.Hl7v2);
+        private static readonly TemplateProvider _ccdaTemplateProvider = new TemplateProvider(_ccdaTemplateFolder, DataType.Ccda);
+
         private static readonly FhirJsonParser _fhirParser = new FhirJsonParser();
 
         private static readonly int _maxRevealDepth = 1 << 7;
@@ -57,30 +61,104 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             {
                 Convert.ToString(item[0]),
                 Path.Combine(_hl7DataFolder, Convert.ToString(item[1])),
+                DataType.Hl7v2,
             });
         }
 
         public static IEnumerable<object[]> GetCcdaCases()
         {
-            return new List<object[]>();
+            var cases = new List<object[]>
+            {
+                new object[] { "CCD", "170.314B2_Amb_CCD.ccda" },
+                new object[] { "CCD", "Care_Plan.ccda" },
+                new object[] { "CCD", "CCD.ccda" },
+                new object[] { "CCD", "C-CDA_R2-1_CCD.xml.ccda" },
+                new object[] { "CCD", "CCD-Parent-Document-Replace-C-CDAR2.1.ccda" },
+                new object[] { "CCD", "CDA_with_Embedded_PDF.ccda" },
+                new object[] { "CCD", "Consultation_Note.ccda" },
+                new object[] { "CCD", "Consult-Document-Closing-Referral-C-CDAR2.1.ccda" },
+                new object[] { "CCD", "Diagnostic_Imaging_Report.ccda" },
+                new object[] { "CCD", "Discharge_Summary.ccda" },
+                new object[] { "CCD", "History_and_Physical.ccda" },
+                new object[] { "CCD", "Operative_Note.ccda" },
+                new object[] { "CCD", "Patient-1.ccda" },
+                new object[] { "CCD", "Patient-and-Provider-Organization-Direct-Address-C-CDAR2.1.ccda" },
+                new object[] { "CCD", "PROBLEMS_in_Empty_C-CDA_2.1-C-CDAR2.1.ccda" },
+                new object[] { "CCD", "Procedure_Note.ccda" },
+                new object[] { "CCD", "Progress_Note.ccda" },
+                new object[] { "CCD", "Referral_Note.ccda" },
+                new object[] { "CCD", "sample.ccda" },
+                new object[] { "CCD", "Transfer_Summary.ccda" },
+                new object[] { "CCD", "Unstructured_Document_embed.ccda" },
+                new object[] { "CCD", "Unstructured_Document_reference.ccda" },
+                new object[] { @"ConsultationNote", @"Care_Plan.ccda" },
+                new object[] { @"ConsultationNote", @"CDA_with_Embedded_PDF.ccda" },
+                new object[] { @"ConsultationNote", @"Consultation_Note.ccda" },
+                new object[] { @"ConsultationNote", @"Unstructured_Document_embed.ccda" },
+                new object[] { @"DischargeSummary", @"Discharge_Summary.ccda" },
+                new object[] { @"DischargeSummary", @"Consult-Document-Closing-Referral-C-CDAR2.1.ccda" },
+                new object[] { @"HistoryandPhysical", @"History_and_Physical.ccda" },
+                new object[] { @"HistoryandPhysical", @"Diagnostic_Imaging_Report.ccda" },
+                new object[] { @"OperativeNote", @"Operative_Note.ccda" },
+                new object[] { @"OperativeNote", @"Patient-1.ccda" },
+                new object[] { @"ProcedureNote", @"Procedure_Note.ccda" },
+                new object[] { @"ProcedureNote", @"Patient-and-Provider-Organization-Direct-Address-C-CDAR2.1.ccda" },
+                new object[] { @"ProgressNote", @"Progress_Note.ccda" },
+                new object[] { @"ProgressNote", @"PROBLEMS_in_Empty_C-CDA_2.1-C-CDAR2.1.ccda" },
+                new object[] { @"ReferralNote", @"Referral_Note.ccda" },
+                new object[] { @"ReferralNote", @"sample.ccda" },
+                new object[] { @"TransferSummary", @"Transfer_Summary.ccda" },
+                new object[] { @"TransferSummary", @"Unstructured_Document_reference.ccda" },
+            };
+            return cases.Select(item => new object[]
+            {
+                Convert.ToString(item[0]),
+                Path.Combine(_ccdaDataFolder, Convert.ToString(item[1])),
+                DataType.Ccda,
+            });
         }
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
         [MemberData(nameof(GetCcdaCases))]
-        public async Task CheckOnePatient(string templateName, string samplePath)
+        public async Task CheckOnePatient(string templateName, string samplePath, DataType dataType)
         {
-            var result = await ConvertData(templateName, samplePath);
+            var result = await ConvertData(templateName, samplePath, dataType);
             var patients = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Patient')].resource.id");
             Assert.Equal(1, patients?.Count());
         }
 
         [Theory]
+        [MemberData(nameof(GetCcdaCases))]
+        public async Task CheckReferenceResourceId(string templateName, string samplePath, DataType dataType)
+        {
+            HashSet<string> referenceResources = new HashSet<string>();
+            var result = await ConvertData(templateName, samplePath, dataType);
+            var resources = result.SelectTokens("$.entry..resource");
+
+            // Check resource id uniqueness
+            foreach (var resource in resources)
+            {
+                var resourceId = resource.SelectTokens("$.id").First().ToString();
+                var resouceType = resource.SelectTokens("$.resourceType").First().ToString();
+                var referenceStr = $"{resouceType}/{resourceId}";
+                Assert.DoesNotContain(referenceStr, referenceResources);
+                referenceResources.Add(referenceStr);
+            }
+
+            // check reference resouce id exists
+            foreach (var resource in resources)
+            {
+                RevealReferences(resource, 0, referenceResources);
+            }
+        }
+
+        [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
         [MemberData(nameof(GetCcdaCases))]
-        public async Task CheckNonemptyResource(string templateName, string samplePath)
+        public async Task CheckNonemptyResource(string templateName, string samplePath, DataType dataType)
         {
-            var result = await ConvertData(templateName, samplePath);
+            var result = await ConvertData(templateName, samplePath, dataType);
             var resources = result.SelectTokens("$.entry..resource");
             foreach (var resource in resources)
             {
@@ -93,9 +171,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
         [MemberData(nameof(GetCcdaCases))]
-        public async Task CheckNonidenticalResources(string templateName, string samplePath)
+        public async Task CheckNonidenticalResources(string templateName, string samplePath, DataType dataType)
         {
-            var result = await ConvertData(templateName, samplePath);
+            var result = await ConvertData(templateName, samplePath, dataType);
             var resourceIds = result.SelectTokens("$.entry..resource.id");
             var uniqueResourceIds = resourceIds.Select(Convert.ToString).Distinct();
             Assert.Equal(uniqueResourceIds.Count(), resourceIds.Count());
@@ -103,23 +181,24 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCcdaCases))]
-        public async Task CheckValuesRevealInOrigin(string templateName, string samplePath)
+        public async Task CheckValuesRevealInOrigin(string templateName, string samplePath, DataType dataType)
         {
             var sampleContent = await File.ReadAllTextAsync(samplePath, Encoding.UTF8);
-            var result = await ConvertData(templateName, samplePath);
+            var result = await ConvertData(templateName, samplePath, dataType);
             RevealObjectValues(sampleContent, result, 0);
         }
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCcdaCases))]
-        public async Task CheckPassOfficialValidator(string templateName, string samplePath)
+
+        // comment out the fhir validator for ccda since it takes too much time
+        // [MemberData(nameof(GetCcdaCases))]
+        public async Task CheckPassOfficialValidator(string templateName, string samplePath, DataType dataType)
         {
             (bool javaStatus, string javaMessage) = await ExecuteCommand("-version");
             Assert.True(javaStatus, javaMessage);
 
-            var result = await ConvertData(templateName, samplePath);
+            var result = await ConvertData(templateName, samplePath, dataType);
             var resultFolder = Path.GetFullPath(Path.Combine(@"AppData", "Temp"));
             var resultPath = Path.Combine(resultFolder, $"{Guid.NewGuid().ToString("N")}.json");
             if (!Directory.Exists(resultFolder))
@@ -133,10 +212,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             var specPath = Path.GetFullPath(Path.Combine(@"ValidatorLib", "hl7.fhir.r4.core-4.0.1.tgz"));
             var command = $"-jar {validatorPath} {resultPath} -version 4.0.1 -ig {specPath} -tx n/a";
             (bool status, string message) = await ExecuteCommand(command);
-            Assert.False(status, "Currently the templates are still under development. By default we turn off this validator.");
             if (!status)
             {
+                Assert.False(status, "Currently the templates are still under development. By default we turn off this validator.");
                 _output.WriteLine(message);
+            }
+            else
+            {
+                Assert.True(status);
             }
 
             Directory.Delete(resultFolder, true);
@@ -171,9 +254,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
         [MemberData(nameof(GetCcdaCases))]
-        public async Task CheckPassFhirParser(string templateName, string samplePath)
+        public async Task CheckPassFhirParser(string templateName, string samplePath, DataType dataType)
         {
-            var result = await ConvertData(templateName, samplePath);
+            var result = await ConvertData(templateName, samplePath, dataType);
             var jsonResult = JsonConvert.SerializeObject(result, Formatting.Indented);
             try
             {
@@ -186,9 +269,52 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             }
         }
 
-        private async Task<JObject> ConvertData(string templateName, string samplePath)
-            => JObject.Parse(new Hl7v2Processor()
+        private void RevealReferences(JToken resource, int level, HashSet<string> referenceResources)
+        {
+            Assert.True(level < _maxRevealDepth, "Reveal depth shouldn't exceed limit.");
+            switch (resource)
+            {
+                case JArray array:
+                    array.ToList().ForEach(sub => RevealReferences(sub, level + 1, referenceResources));
+                    break;
+                case JObject container:
+                    var properties = container.Properties();
+                    foreach (var property in properties)
+                    {
+                        if (property.Value.Children().Count() > 0)
+                        {
+                            RevealReferences(property.Value, level + 1, referenceResources);
+                        }
+                        else if (property.Name == "reference")
+                        {
+                            var s = property.Value.ToString();
+                            Assert.Contains(s, referenceResources);
+                        }
+                    }
+
+                    break;
+                case JValue value:
+                    break;
+                default:
+                    Assert.True(false, $"Unexpected token {resource}, type {resource.Type}");
+                    break;
+            }
+        }
+
+        private async Task<JObject> ConvertData(string templateName, string samplePath, DataType dataType)
+        {
+            switch (dataType)
+            {
+                case DataType.Hl7v2:
+                    return JObject.Parse(new Hl7v2Processor()
                 .Convert(await File.ReadAllTextAsync(samplePath, Encoding.UTF8), templateName, _hl7TemplateProvider));
+                case DataType.Ccda:
+                    return JObject.Parse(new CcdaProcessor()
+                .Convert(await File.ReadAllTextAsync(samplePath, Encoding.UTF8), templateName, _ccdaTemplateProvider));
+                default:
+                    return null;
+            }
+        }
 
         private void RevealObjectValues(string origin, JToken resource, int level)
         {
