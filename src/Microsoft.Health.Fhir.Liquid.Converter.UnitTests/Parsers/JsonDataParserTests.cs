@@ -57,8 +57,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Parsers
         {
             yield return new object[] { "{}" };
             yield return new object[] { "[]" };
-            yield return new object[] { @"{""a"":""b""}" };
+
+            // Trailing commas are OK
+            yield return new object[] { @"{""a"":""b"",}" };
             yield return new object[] { @"[""a"",]" };
+
             yield return new object[] { @"{""a"":[""b"",""c""] }" };
             yield return new object[] { @"[{""a"":""b""}, {""c"":""d""}]" };
         }

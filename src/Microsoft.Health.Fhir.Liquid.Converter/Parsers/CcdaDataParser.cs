@@ -43,7 +43,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
 
                 // Convert to json dictionary
                 var jsonString = JsonConvert.SerializeXNode(xDocument);
-                var dataDictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonString, new XmlDictionaryJsonConverter()) ??
+                var dataDictionary = JsonConvert.DeserializeObject<IDictionary<string, object>>(jsonString, new DictionaryJsonConverter()) ??
                                      new Dictionary<string, object>();
 
                 // Remove line breaks in original data

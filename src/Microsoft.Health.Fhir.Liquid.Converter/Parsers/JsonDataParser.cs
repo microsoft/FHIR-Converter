@@ -6,8 +6,9 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
+using Microsoft.Health.Fhir.Liquid.Converter.Extensions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
 {
@@ -22,7 +23,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
 
             try
             {
-                var data = JsonConvert.DeserializeObject<object>(json, new JsonSerializerSettings { ContractResolver = new DictionaryContractResolver() });
+                var data = JToken.Parse(json).ToObject();
 
                 return new Dictionary<string, object>
                 {

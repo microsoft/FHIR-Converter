@@ -5,12 +5,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
 {
     /// <summary>
-    /// One-way JsonConverter to deserialize JSON string to IDictionary
+    /// One-way JsonConverter to deserialize XML-converted JSON string to IDictionary
     /// </summary>
     public class DictionaryJsonConverter : JsonConverter
     {
@@ -24,7 +25,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return ReadValue(reader);
         }
 
-        protected virtual object ReadValue(JsonReader reader)
+        private object ReadValue(JsonReader reader)
         {
             while (reader.TokenType == JsonToken.Comment)
             {
@@ -40,9 +41,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                     return ReadObject(reader);
                 case JsonToken.StartArray:
                     return ReadArray(reader);
+                case JsonToken.String:
+                    // Remove line breaks to avoid invalid line breaks in json value
+                    // A line break is a normal character in XML but invalid in JSON
+                    return Regex.Replace(reader.Value.ToString(), @"\r\n?|\n", string.Empty);
                 case JsonToken.Integer:
                 case JsonToken.Float:
-                case JsonToken.String:
                 case JsonToken.Boolean:
                 case JsonToken.Undefined:
                 case JsonToken.Null:
@@ -54,7 +58,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
         }
 
-        protected object ReadArray(JsonReader reader)
+        private object ReadArray(JsonReader reader)
         {
             IList<object> list = new List<object>();
 
@@ -76,9 +80,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             throw new JsonSerializationException(Resources.UnexpectedJsonConvertEnd);
         }
 
-        protected virtual object ReadObject(JsonReader reader)
+        private object ReadObject(JsonReader reader)
         {
-            IDictionary<string, object> obj = new Dictionary<string, object>();
+            var obj = new Dictionary<string, object>();
 
             while (reader.Read())
             {
@@ -92,7 +96,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                             throw new JsonSerializationException(Resources.UnexpectedJsonConvertEnd);
                         }
 
-                        obj[propertyName] = ReadValue(reader);
+                        // Remove "@" if it is attribute
+                        if (propertyName.StartsWith("@"))
+                        {
+                            propertyName = propertyName[1..];
+                        }
+
+                        var v = ReadValue(reader);
+                        obj[propertyName] = v;
                         break;
                     case JsonToken.Comment:
                         break;
