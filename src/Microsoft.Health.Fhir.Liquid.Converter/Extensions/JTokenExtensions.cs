@@ -34,7 +34,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Extensions
             return propertyValuePairs;
         }
 
-        public static object[] ToArray(this JArray array)
+        private static object[] ToArray(this JArray array)
         {
             return array.ToObject<object[]>().Select(ProcessEntry).ToArray();
         }
