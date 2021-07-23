@@ -1,0 +1,54 @@
+{
+    "resourceType": "Patient",
+    "id": "{{ msg.PatientId | to_json_string | generate_uuid }}",
+    "identifier": [
+        {
+            "use": "usual",
+            "type": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                        "code": "MR"
+                    }
+                ]
+            },
+            "system": "urn:oid:2.16.840.1.113883.19.5",
+            "value": "{{ msg.MRN }}"
+        }
+    ],
+    "active": true,
+    "name": [
+        {
+            "family": "{{ msg.LastName }}",
+            "given": [
+                "{{ msg.FirstName }}"
+            ]
+        }
+    ],
+    "telecom": [
+        {% comment -%} use "[]" to access value if the key contains spaces or other special characters {% endcomment -%}
+        {% for p in msg["Phone Number"] -%}
+        {
+            "system": "phone",
+            "value": "{{ p }}",
+            },
+        {% endfor -%}
+    ],
+    "gender":   
+        {% if msg.Gender == 'M' -%}
+	        "male",
+        {% elsif msg.Gender == 'F' -%}
+	        "female",
+        {% elsif msg.Gender == 'U' -%}
+	        "unknown",
+        {% elsif code -%}
+	        "other",
+        {% else %}
+            "",
+        {% endif -%}
+    "birthDate": "{{ msg.DOB | add_hyphens_date }}",
+    "managingOrganization": {
+        "reference": "Organization/2.16.840.1.113883.19.5",
+        "display": "Good Health Clinic"
+    }
+}

@@ -156,11 +156,11 @@
   <data name="MissingHl7v2Separators" xml:space="preserve">
     <value>MSH segment misses separators.</value>
   </data>
-  <data name="NullOrEmptyInput" xml:space="preserve">
-    <value>The input data should not be null or empty.</value>
-  </data>
   <data name="NullOrEmptyRootTemplate" xml:space="preserve">
     <value>Root template should not be null or empty.</value>
+  </data>
+  <data name="NullOrWhiteSpaceInput" xml:space="preserve">
+    <value>The input data should not be null, empty or consists only of white-space characters.</value>
   </data>
   <data name="NullTemplateProvider" xml:space="preserve">
     <value>TemplateProvider should not be null.</value>
