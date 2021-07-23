@@ -3,16 +3,16 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-const constants = require('./lib/constants/constants');
+const constants = require('../dist/lib/constants/constants');
 const supertest = require('supertest');
 const express = require('express');
 const fse = require('fs-extra');
 const path = require('path');
-var app = require("./routes")(express());
+var app = require("../dist/routes")(express());
 const fs = require('fs');
 var assert = require('assert');
-var HandlebarsConverter = require('./lib/handlebars-converter/handlebars-converter');
-var dataHandlerFactory = require('./lib/dataHandler/dataHandlerFactory');
+var HandlebarsConverter = require('../dist/lib/handlebars-converter/handlebars-converter');
+var dataHandlerFactory = require('../dist/lib/dataHandler/dataHandlerFactory');
 
 const apiKeys = ['123', '456'];
 const API_KEY_HEADER = "X-MS-CONVERSION-API-KEY";
@@ -40,7 +40,7 @@ describe("GET /api-docs.json", function () {
             .expect(200)
             .end(function (err) {
                 if (err) done(err);
-                done();
+                else done();
             });
     });
 });

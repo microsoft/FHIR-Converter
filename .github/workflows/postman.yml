@@ -1,0 +1,13 @@
+name: Run Postman Tests
+
+on: 
+  [release, workflow_dispatch]
+ 
+jobs:
+  newman:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: matt-ball/newman-action@master
+        with:
+          collection: https://www.getpostman.com/collections/f5a58cf2d476785aed5f

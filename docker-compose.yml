@@ -1,14 +1,15 @@
 version: "3.9"
 services:
   fhir-converter:
-    container_name: fhir-converter
+    container_name: built-fhir-converter
+    hostname: fhir-converter
     restart: unless-stopped
     build: ./
     ports:
       - "2019:2019"
     volumes:
       - ./config.json:/app/config.json
-      # tty: true
+    # tty: true
     # stdin_open: true
     # entrypoint: bash
     

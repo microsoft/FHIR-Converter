@@ -18,15 +18,130 @@
   },
   "mediatorConfig": {
     "urn": "urn:mediator:hl7v2tofhir_translator",
-    "version": "2.3.1",
+    "version": "2.3.3",
     "name": "HL7v2 to FHIR Translator",
     "description": "HL7v2 to FHIR Translator",
+    "defaultChannelConfig": [
+      {
+        "methods": [
+          "GET",
+          "POST",
+          "PUT",
+          "PATCH"
+        ],
+        "type": "http",
+        "whitelist": [],
+        "authType": "private",
+        "matchContentTypes": [],
+        "properties": [],
+        "txViewAcl": [],
+        "txViewFullAcl": [],
+        "txRerunAcl": [],
+        "status": "enabled",
+        "rewriteUrls": false,
+        "addAutoRewriteRules": true,
+        "autoRetryEnabled": false,
+        "autoRetryPeriodMinutes": 60,
+        "requestBody": true,
+        "responseBody": true,
+        "name": "HL7v2 Translator API Passthrough",
+        "description": "HL7v2 Translator API Passthrough",
+        "urlPattern": "^/72f/.*$",
+        "routes": [
+          {
+            "type": "http",
+            "status": "enabled",
+            "forwardAuthHeader": false,
+            "name": "Send to Translator ",
+            "secured": true,
+            "host": "hl72fhir.moh.org.bw",
+            "port": 443,
+            "path": "",
+            "pathTransform": "s/72f/api/g",
+            "primary": true,
+            "username": "",
+            "password": ""
+          }
+        ],
+        "alerts": [],
+        "rewriteUrlsConfig": [],
+        "updatedBy": {
+          "id": "5f84d542efaf3c001240dd95",
+          "name": "Super User"
+        },
+        "matchContentJson": null,
+        "matchContentRegex": null,
+        "matchContentValue": null,
+        "matchContentXpath": null,
+        "pollingSchedule": null,
+        "tcpHost": null,
+        "tcpPort": null,
+        "priority": 4
+      },
+      {
+        "methods": [
+          "POST"
+        ],
+        "type": "http",
+        "whitelist": [],
+        "authType": "private",
+        "matchContentTypes": [],
+        "properties": [],
+        "txViewAcl": [],
+        "txViewFullAcl": [],
+        "txRerunAcl": [],
+        "status": "enabled",
+        "rewriteUrls": false,
+        "addAutoRewriteRules": true,
+        "autoRetryEnabled": false,
+        "autoRetryPeriodMinutes": 60,
+        "requestBody": true,
+        "responseBody": true,
+        "name": "FHIR --> HL7v2 API",
+        "description": "FHIR to HL7v2 Translation",
+        "urlPattern": "^/f27/.*$",
+        "routes": [
+          {
+            "type": "http",
+            "status": "enabled",
+            "forwardAuthHeader": false,
+            "name": "Send to Translator ",
+            "secured": true,
+            "host": "hl72fhir.moh.org.bw",
+            "port": 443,
+            "path": "",
+            "pathTransform": "s/f27/api\/convert\/fhir/g",
+            "primary": true,
+            "username": "",
+            "password": ""
+          }
+        ],
+        "alerts": [],
+        "rewriteUrlsConfig": [],
+        "updatedBy": {
+          "id": "5f84d542efaf3c001240dd95",
+          "name": "Super User"
+        },
+        "matchContentJson": null,
+        "matchContentRegex": null,
+        "matchContentValue": null,
+        "matchContentXpath": null,
+        "pollingSchedule": null,
+        "tcpHost": null,
+        "tcpPort": null,
+        "priority": 5
+      }
+    ],
     "endpoints": [
       {
         "name": "HL7v2 to FHIR Translator",
-        "host": "localhost",
-        "port": "2019",
-        "type": "http"
+        "host": "hl72fhir.moh.org.bw",
+        "port": "443",
+        "type": "http",
+        "primary": true,
+        "forwardAuthHeader": false,
+        "status": "enabled",
+        "path": "api"
       }
     ]
   }

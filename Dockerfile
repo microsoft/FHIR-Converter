@@ -4,10 +4,13 @@
 FROM node:14 AS build
 COPY ./src /app/src
 COPY ./package.json /app 
+COPY ./.eslintrc.js /app
+COPY ./tsconfig.json /app
 
 WORKDIR /app
 
-RUN npm install  --only=production --no-fund --no-optional --no-audit
+RUN npm install --no-fund --no-optional --no-audit
+RUN npm run-script build
 
 #########################################
 ### Prod Image                         ##
@@ -20,4 +23,4 @@ COPY ./deploy /app/deploy
 WORKDIR /app
 RUN ["chmod", "+x", "/app/deploy/webapp.sh"]
 EXPOSE 2019
-ENTRYPOINT [ "npm", "start" ]
+ENTRYPOINT [ "./deploy/webapp.sh" ]

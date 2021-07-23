@@ -55,6 +55,7 @@ git clone https://github.com/microsoft/FHIR-Converter/
 cd FHIR-Converter
 git checkout handlebars
 npm install
+npx tsc
 npm start
 ```
 

@@ -7,12 +7,14 @@
     "node": ">=14.0 <15.0"
   },
   "scripts": {
-    "test": "nyc node --experimental-worker node_modules/mocha/bin/_mocha --reporter-options configFile=mocha.config.json --exit",
-    "build": "npm install",
-    "pretest": "node --experimental-worker src/init-service.js",
+    "clean": "rimraf dist/",
+    "test": "DEBUG=true nyc node --experimental-worker node_modules/mocha/bin/_mocha --reporter-options configFile=mocha.config.json --exit --inspect=0.0.0.0:9229 --timeout 12000",
+    "build": "npm run-script clean && npx tsc && npm install && npm run-script copy-files",
+    "copy-files": "copyfiles -u 2 ./src/templates/**/** ./dist/templates && copyfiles -u 2 ./src/sample-data/**/** ./dist/sample-data",
+    "pretest": "node --experimental-worker dist/init-service.js",
     "posttest": "eslint {src,test}/**/*.js",
-    "prestart": "node --experimental-worker src/init-service.js",
-    "start": "node --experimental-worker src/index.js",
+    "prestart": "node --experimental-worker dist/init-service.js",
+    "start": "node --experimental-worker dist/index.js",
     "eslint": "eslint {src,test}/**/*.js"
   },
   "eslintConfig": {
@@ -82,13 +84,22 @@
     }
   },
   "devDependencies": {
+    "@ahryman40k/ts-fhir-types": "^4.0.36",
+    "@types/express": "^4.16.1",
+    "@typescript-eslint/eslint-plugin": "^4.28.4",
+    "@typescript-eslint/parser": "^4.28.4",
     "assert": "^2.0.0",
-    "eslint": "^6.1.0",
+    "copyfiles": "^2.4.1",
+    "eslint": "^6.8.0",
+    "eslint-plugin-jsdoc": "^35.5.1",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
     "mocha": "^9.0.2",
     "mocha-junit-reporter": "^1.23.0",
     "mocha-multi-reporters": "^1.1.7",
     "nyc": "^14.1.1",
+    "rimraf": "^3.0.2",
     "supertest": "^4.0.2",
+    "typescript": "^4.3.5",
     "validator": "^11.1.0"
   },
   "dependencies": {
@@ -100,8 +111,11 @@
     "deepmerge": "^4.2.2",
     "express": "^4.16.4",
     "fhir": "^4.9.0",
+    "fhirclient": "^2.4.0",
+    "fp-ts": "^2.10.5",
     "fs-extra": "^8.1.0",
     "handlebars": "^4.7.7",
+    "hl7v2": "^0.9.0",
     "lodash": "^4.17.21",
     "memory-cache": "^0.2.0",
     "nconf": "^0.11.3",
@@ -116,6 +130,7 @@
     "swagger-ui-express": "^4.0.2",
     "underscore": "^1.13.1",
     "uuid": "^3.3.2",
+    "worker-threads": "^1.0.0",
     "xml2js": "^0.4.23"
   },
   "license": "MIT"

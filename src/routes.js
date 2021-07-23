@@ -20,6 +20,7 @@ var WorkerPool = require('./lib/workers/workerPool');
 var fileSystemCache = require('./lib/fsCache/cache');
 var handlebarsHelpers = require('./lib/handlebars-converter/handlebars-helpers').external;
 var ncp = require('ncp').ncp;
+const { parseHL7Message, translateLabOrderBundle } = require('./fhir');
 
 module.exports = function (app) {
     const workerPool = new WorkerPool('./src/lib/workers/worker.js', require('os').cpus().length);
@@ -728,6 +729,22 @@ module.exports = function (app) {
     *         description: Unauthorized
     */
     app.post('/api/convert/:srcDataType', function (req, res) {
+        if(req.params.srcDataType == "raw-hl7v2") {
+            const msg = parseHL7Message(req.body.toString());
+            console.log(msg);
+            res.status(201);
+            res.json(msg);
+            return;
+        }
+
+        if(req.params.srcDataType == "fhir") {  
+            res.set('content-type', 'text/plain');
+            const msg = translateLabOrderBundle(req.body);
+            console.log(msg);
+            res.status(201);
+            res.send(msg);
+        }
+        
         const retUnusedSegments = req.query.unusedSegments == 'true';
         const retInvalidAcces = req.query.invalidAccess == 'true';
         workerPool.exec({
@@ -832,5 +849,7 @@ module.exports = function (app) {
             return;
         });
     });
+
     return app;
 };
+
