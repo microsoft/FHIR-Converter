@@ -180,7 +180,6 @@ public class PostProcessor
 
 - [Filters summary](docs/FiltersSummary.md)
 - [Snippet concept](docs/SnippetConcept.md)
-- [Partial template concept](docs/partial-template-concept.md)
 
 ## External resources
 
