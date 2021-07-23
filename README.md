@@ -1,5 +1,5 @@
-# FHIR® Converter 
-## Handlebars Engine & OpenHIM Mediator
+# OpenHIM Mediator - FHIR® Converter 
+## Handlebars Engine & OpenHIM Integration
 [![Create and publish a Docker image](https://github.com/B-TECHBW/FHIR-Converter/actions/workflows/publish.yml/badge.svg)](https://github.com/B-TECHBW/FHIR-Converter/actions/workflows/publish.yml)
 
 [![Node.js CI](https://github.com/B-TECHBW/FHIR-Converter/actions/workflows/nodejs.yml/badge.svg)](https://github.com/B-TECHBW/FHIR-Converter/actions/workflows/nodejs.yml)
