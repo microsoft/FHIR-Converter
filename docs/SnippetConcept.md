@@ -93,6 +93,30 @@ Below is an example using this code system mapping.
 "gender":"{{ PID.8.Value | get_property: 'CodeSystem/Gender', 'code' }}",
 ```
 
+## HL7 v2 Specific Partial Template
+
+The **Code Systems** partial template is unique to HL7 v2.
+
+### Code System
+
+Code system templates define mappings of common codes from HL7 v2 to FHIR bundles. An example of this is mapping “F” in HL7 v2 to “female” in a FHIR resource for gender. The FHIR Converter contains a set of starting code systems that have been defined for the released templates. You can also create your own code system templates. These templates will typically use if/else statements to map values from HL7 v2 to values in FHIR. You can see examples of this in the *Code Systems* folder of the released templates.
+
+## C-CDA Specific Partial Templates
+
+The **Sections**, **Utils** and **Value Set** partial templates are unique to C-CDA.
+
+### Sections
+
+Section templates are used in the C-CDA to FHIR Converter. A CDA document is comprised of sections, each of which contain narrative text and some of which contain structured data elements. Examples of these sections include *Encounters*, *Immunization*, *Procedures* and *Vital Signs*. The section templates map these sections to FHIR resources. Each CDA document template is comprised of section partial templates.
+
+### Value Set
+
+Value Set partial templates are used in the C-CDA to FHIR Converter. These templates map the C-CDA value sets to FHIR value sets and code systems. These are implemented based on the C-CDA and FHIR specifications. We have released a selection of Value Set partial templates, but not the full list of required value sets for C-CDA.  
+
+### Utils
+
+Utils partial templates are used in the implementation of C-CDA to FHIR we have released. These templates provide utility functions for our implementation. For example, Utils/ResourceTypeFromSection.hbs maps a CDA section to a FHIR resource type based on CDA ID values.
+
 ## Summary
 
 Outside of the four types of snippets outlined above, you are welcome to create your own types of snippets.
