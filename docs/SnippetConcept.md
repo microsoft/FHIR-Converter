@@ -71,8 +71,11 @@ Below is the example in the ADT_A01 template, where a reference template is incl
 ```
 {% include 'Reference/Encounter/Diagnosis_Condition' with ID: pv1Id, REF: fullDg1Id -%}
 ```
+## HL7 v2 Specific Partial Template
 
-## Code System
+The **Code Systems** partial template is unique to HL7 v2.
+
+### Code System
 
 Code system templates define mappings of common codes from HL7 v2 to FHIR bundles.
 An example of this is mapping "F" in HL7 v2 to "female" in a FHIR resource for gender.
@@ -92,14 +95,6 @@ Below is an example using this code system mapping.
 ```
 "gender":"{{ PID.8.Value | get_property: 'CodeSystem/Gender', 'code' }}",
 ```
-
-## HL7 v2 Specific Partial Template
-
-The **Code Systems** partial template is unique to HL7 v2.
-
-### Code System
-
-Code system templates define mappings of common codes from HL7 v2 to FHIR bundles. An example of this is mapping “F” in HL7 v2 to “female” in a FHIR resource for gender. The FHIR Converter contains a set of starting code systems that have been defined for the released templates. You can also create your own code system templates. These templates will typically use if/else statements to map values from HL7 v2 to values in FHIR. You can see examples of this in the *Code Systems* folder of the released templates.
 
 ## C-CDA Specific Partial Templates
 
