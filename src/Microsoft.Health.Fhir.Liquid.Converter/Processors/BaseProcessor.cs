@@ -24,6 +24,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             _settings = processorSettings;
         }
 
+        protected virtual string DataKey { get; set; } = "msg";
+
         public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, CancellationToken cancellationToken, TraceInfo traceInfo = null)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -51,11 +53,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             return context;
         }
 
-        protected virtual void CreateTraceInfo(IDictionary<string, object> data, TraceInfo traceInfo)
+        protected virtual void CreateTraceInfo(object data, TraceInfo traceInfo)
         {
         }
 
-        protected string Convert(IDictionary<string, object> data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        protected string Convert(object data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             if (string.IsNullOrEmpty(rootTemplate))
             {
@@ -73,7 +75,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
             }
 
-            var context = CreateContext(templateProvider, data);
+            var dictionary = new Dictionary<string, object> { { DataKey, data } };
+            var context = CreateContext(templateProvider, dictionary);
             var rawResult = RenderTemplates(template, context);
             var result = PostProcessor.Process(rawResult);
             CreateTraceInfo(data, traceInfo);

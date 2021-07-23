@@ -21,6 +21,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
         }
 
+        protected override string DataKey { get; set; } = "hl7v2Data";
+
         public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             var hl7v2Data = _parser.Parse(data);
@@ -40,11 +42,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             return context;
         }
 
-        protected override void CreateTraceInfo(IDictionary<string, object> data, TraceInfo traceInfo)
+        protected override void CreateTraceInfo(object data, TraceInfo traceInfo)
         {
             if (traceInfo is Hl7v2TraceInfo hl7v2TraceInfo)
             {
-                hl7v2TraceInfo.UnusedSegments = Hl7v2TraceInfo.CreateTraceInfo(data[Constants.Hl7v2DataKey] as Hl7v2Data).UnusedSegments;
+                hl7v2TraceInfo.UnusedSegments = Hl7v2TraceInfo.CreateTraceInfo(data as Hl7v2Data).UnusedSegments;
             }
         }
     }

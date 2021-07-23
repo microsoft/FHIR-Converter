@@ -53,17 +53,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Parsers
             var document = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Ccda", "CCD.ccda"));
             var data = _parser.Parse(document);
             Assert.NotNull(data);
-            Assert.NotNull(((Dictionary<string, object>)data).GetValueOrDefault(Constants.CcdaDataKey));
 
             // Document that contains redundant namespaces "xmlns:cda"
             // It is removed in the parsed data
             document = "<ClinicalDocument xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns = \"urn:hl7-org:v3\" xmlns:cda = \"urn:hl7-org:v3\" xmlns:sdtc = \"urn:hl7-org:sdtc\">" +
                        "</ClinicalDocument>";
             data = _parser.Parse(document);
-            var contents =
-                ((data as Dictionary<string, object>)
-                ?.GetValueOrDefault(Constants.CcdaDataKey) as Dictionary<string, object>)
-                ?.GetValueOrDefault("ClinicalDocument") as Dictionary<string, object>;
+            var contents = (data as Dictionary<string, object>)?.GetValueOrDefault("ClinicalDocument") as Dictionary<string, object>;
             Assert.Equal(3, contents?.Count);
             Assert.Equal("http://www.w3.org/2001/XMLSchema-instance", contents?["xmlns:xsi"]);
             Assert.Equal("urn:hl7-org:v3", contents?["xmlns"]);
@@ -75,10 +71,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Parsers
                        "<sdtc:raceCode code=\"2076-8\" displayName=\"Hawaiian or Other Pacific Islander\" codeSystem=\"2.16.840.1.113883.6.238\" codeSystemName=\"Race &amp; Ethnicity - CDC\"/>" +
                        "</ClinicalDocument>";
             data = _parser.Parse(document);
-            contents =
-                ((data as Dictionary<string, object>)
-                    ?.GetValueOrDefault(Constants.CcdaDataKey) as Dictionary<string, object>)
-                ?.GetValueOrDefault("ClinicalDocument") as Dictionary<string, object>;
+            contents = (data as Dictionary<string, object>)?.GetValueOrDefault("ClinicalDocument") as Dictionary<string, object>;
             Assert.NotNull(contents?["sdtc_raceCode"]);
         }
     }

@@ -25,11 +25,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             Assert.Empty(Filters.GetFirstCcdaSections(new Hash(), sectionNameContent));
 
             // Empty section name content
-            var msg = TestData?.GetValueOrDefault(Constants.CcdaDataKey) as IDictionary<string, object>;
-            Assert.Empty(Filters.GetFirstCcdaSections(Hash.FromDictionary(msg), string.Empty));
+            Assert.Empty(Filters.GetFirstCcdaSections(Hash.FromDictionary(TestData), string.Empty));
 
             // Valid data and section name content
-            var sections = Filters.GetFirstCcdaSections(Hash.FromDictionary(msg), sectionNameContent);
+            var sections = Filters.GetFirstCcdaSections(Hash.FromDictionary(TestData), sectionNameContent);
             Assert.Equal(2, sections.Count);
             Assert.Equal(5, ((Dictionary<string, object>)sections["Problems"]).Count);
 
@@ -47,11 +46,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             Assert.Empty(Filters.GetCcdaSectionLists(new Hash(), sectionNameContent));
 
             // Empty section name content
-            var msg = TestData?.GetValueOrDefault(Constants.CcdaDataKey) as IDictionary<string, object>;
-            Assert.Empty(Filters.GetCcdaSectionLists(Hash.FromDictionary(msg), string.Empty));
+            Assert.Empty(Filters.GetCcdaSectionLists(Hash.FromDictionary(TestData), string.Empty));
 
             // Valid data and section name content
-            var sectionLists = Filters.GetCcdaSectionLists(Hash.FromDictionary(msg), sectionNameContent);
+            var sectionLists = Filters.GetCcdaSectionLists(Hash.FromDictionary(TestData), sectionNameContent);
             Assert.Equal(2, sectionLists.Count);
 
             var sections = (List<object>)sectionLists["Problems"];
@@ -72,11 +70,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             Assert.Empty(Filters.GetFirstCcdaSectionsByTemplateId(new Hash(), templateIdContent));
 
             // Empty template id content
-            var msg = TestData?.GetValueOrDefault(Constants.CcdaDataKey) as IDictionary<string, object>;
-            Assert.Empty(Filters.GetFirstCcdaSectionsByTemplateId(Hash.FromDictionary(msg), string.Empty));
+            Assert.Empty(Filters.GetFirstCcdaSectionsByTemplateId(Hash.FromDictionary(TestData), string.Empty));
 
             // Valid data and template id content
-            var sections = Filters.GetFirstCcdaSectionsByTemplateId(Hash.FromDictionary(msg), templateIdContent);
+            var sections = Filters.GetFirstCcdaSectionsByTemplateId(Hash.FromDictionary(TestData), templateIdContent);
             Assert.Single(sections);
             Assert.Equal(5, ((Dictionary<string, object>)sections["2_16_840_1_113883_10_20_22_2_6_1"]).Count);
 

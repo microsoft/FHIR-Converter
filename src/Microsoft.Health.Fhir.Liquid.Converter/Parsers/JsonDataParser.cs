@@ -14,7 +14,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
 {
     public class JsonDataParser : IDataParser
     {
-        public IDictionary<string, object> Parse(string json)
+        public object Parse(string json)
         {
             if (string.IsNullOrWhiteSpace(json))
             {
@@ -23,12 +23,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
 
             try
             {
-                var data = JToken.Parse(json).ToObject();
-
-                return new Dictionary<string, object>
-                {
-                    { Constants.JsonDataKey, data },
-                };
+                return JToken.Parse(json).ToObject();
             }
             catch (Exception ex)
             {

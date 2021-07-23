@@ -9,6 +9,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
 {
     public interface IDataParser
     {
-        public IDictionary<string, object> Parse(string data);
+        public object Parse(string data);
     }
 }

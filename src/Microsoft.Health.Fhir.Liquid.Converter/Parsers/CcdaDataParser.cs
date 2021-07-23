@@ -16,7 +16,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
 {
     public class CcdaDataParser : IDataParser
     {
-        public IDictionary<string, object> Parse(string document)
+        public object Parse(string document)
         {
             if (string.IsNullOrWhiteSpace(document))
             {
@@ -49,10 +49,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
                 // Remove line breaks in original data
                 dataDictionary["_originalData"] = Regex.Replace(document, @"\r\n?|\n", string.Empty);
 
-                return new Dictionary<string, object>
-                {
-                    { Constants.CcdaDataKey, dataDictionary },
-                };
+                return dataDictionary;
             }
             catch (Exception ex)
             {
