@@ -10,7 +10,7 @@
     "clean": "rimraf dist/",
     "test": "DEBUG=true nyc node --experimental-worker node_modules/mocha/bin/_mocha --reporter-options configFile=mocha.config.json --exit --inspect=0.0.0.0:9229 --timeout 12000",
     "build": "npm run-script clean && npx tsc && npm install && npm run-script copy-files",
-    "copy-files": "copyfiles -u 2 ./src/templates/**/** ./dist/templates && copyfiles -u 2 ./src/sample-data/**/** ./dist/sample-data && copyfiles -u ./src/static/**/** ./dist/static",
+    "copy-files": "copyfiles -u 2 ./src/templates/**/** ./dist/templates && copyfiles -u 2 ./src/sample-data/**/** ./dist/sample-data && copyfiles -u 2 ./src/static/** ./dist/static",
     "pretest": "node --experimental-worker dist/init-service.js",
     "posttest": "eslint {src,test}/**/*.js",
     "prestart": "node --experimental-worker dist/init-service.js",
