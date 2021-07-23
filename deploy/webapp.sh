@@ -2,6 +2,6 @@
 
 # symlink for web app persistence
 mkdir -p /home/fhirconvertertemplates
-ln -snf /home/fhirconvertertemplates /usr/src/app/src/service-templates
+ln -snf /home/fhirconvertertemplates /usr/dist/app/src/service-templates
 
 npm start
