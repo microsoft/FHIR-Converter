@@ -62,6 +62,8 @@ The command line tool is another way of converting data, as well as managing tem
 
 ### Command line example
 
+Build your `Microsoft.Health.Fhir.Liquid.Converter.Tool.exe` file using Visual Studio.
+
 For converting HL7v2 messages to FHIR resources in a folder:
 ```
 >.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r ADT_A01 -i myInputDataFolder -o myOutputDataFolder
@@ -70,6 +72,10 @@ For converting C-CDA messages to FHIR resources in a folder:
 ```
 >.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r CCD -i myInputDataFolder -o myOutputDataFolder
 ```
+
+After running the command line, there will be a series of "Processing..." lines being written in the terminal window. When the conversion is complete, you will see "Conversion completed!" message.
+
+![Conversion running on the terminal (screenshot)](docs/conversion-terminal-screenshot.png)
 
 ## Using Templates
 
