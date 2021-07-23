@@ -4,10 +4,10 @@
 
 Snippets are a helpful tool when creating templates in the FHIR Converter.
 Leveraging snippets allows you to reference them in multiple templates in the future, preventing you from having to rewrite the same code over again.
-Within the FHIR converter release, there are four types of snippets: **Resource**, **Reference**, **Data Type** and **Code System**.
+Within the FHIR converter release, there are seven types of partial templates: **Resources**, **References**, **Data Type**, **Code Systems**, **Sections**, **Utils** and **Value Set**. 
 The following sections will describe the purpose of each category of released snippets and give you things to consider when you are creating your own snippets.
 
-## Data Type
+### Data Type
 
 Data type templates are building blocks used to define the contents of a data field.
 In most cases, the data types in HL7 v2 map to FHIR attributes as part of the FHIR resource.
