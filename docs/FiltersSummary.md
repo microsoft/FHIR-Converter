@@ -19,9 +19,9 @@ If these filters do not meet your needs, you can also write your own filters.
 ### C-CDA specific filters
 | Filter | Description | Syntax |
 |-|-|-|
-| get_first_cda_sections | Returns first instance (non-alphanumeric chars replace by '_' in name) of the sections | `{% assign firstSections = msg \| get_first_cda_sections: 'Problems' -%}` |
-| get_cda_section_lists | Returns instance list (non-alphanumeric chars replace by '_' in name) for the given sections | `{% assign sections = msg \| get_cda_section_lists: 'Problems' -%}` |
-| get_first_cda_sections_by_template_id | Returns first instance (non-alphanumeric chars replace by '_' in name) of the sections by template id | `{% assign firstSections = msg \| get_first_cda_sections_by_template_id: '2.16.840.1.113883.10.20.22.2.5.1' -%}` |
+| get_first_ccda_sections | Returns first instance (non-alphanumeric chars replace by '_' in name) of the sections | `{% assign firstSections = msg \| get_first_cda_sections: 'Problems' -%}` |
+| get_ccda_section_lists | Returns instance list (non-alphanumeric chars replace by '_' in name) for the given sections | `{% assign sections = msg \| get_cda_section_lists: 'Problems' -%}` |
+| get_first_ccda_sections_by_template_id | Returns first instance (non-alphanumeric chars replace by '_' in name) of the sections by template id | `{% assign firstSections = msg \| get_first_cda_sections_by_template_id: '2.16.840.1.113883.10.20.22.2.5.1' -%}` |
 
 ### String Filters
 | Filter | Description | Syntax |
@@ -36,7 +36,7 @@ If these filters do not meet your needs, you can also write your own filters.
 | base64_decode | Returns base64 decoded string | `{{ encodedData \| base64_decode }}` |
 | sha1_hash | Returns SHA1 hash (in hex) of given string | `{{ inputData \| sha1_hash }}` |
 | gzip | Returns compressed string | `{{ uncompressedData \| gzip }}` |
-| gunzip | Returns decompressed string | `{{ compressedData \| gunzip }}` |
+| gunzip_base64_string | Returns decompressed string | `{{ compressedData \| gunzip }}` |
 
 ### Math filters
 | Filter | Description | Syntax |
@@ -53,8 +53,8 @@ If these filters do not meet your needs, you can also write your own filters.
 | Filter | Description | Syntax |
 |-|-|-|
 | add_hyphens_date | Adds hyphens to a date without hyphens | `{{ PID.7.Value \| add_hyphens_date }}` |
-| format_as_date_time | Convert an YYYYMMDDHHmmssSSS string, e.g. 20040629175400000 to dateTime format, e.g. 2004-06-29T17:54:00.000z | `{{ PID.29.Value \| format_as_date_time }}` |
-| now | Provides current UTC time in "yyyy-MM-ddTHH:mm:ss.FFFZ" format | `{{ "" \| now }}` |
+| format_as_date_time | Convert an YYYYMMDDHHmmssSSS string, e.g. 20040629175400000 to dateTime format, e.g. 2004-06-29T17:54:00.000z. A parameter could be set to handle time zone with "preserve", "utc" or "local". The default method is "local" | {{ PID.29.Value \| format_as_date_time: 'utc' }} |
+| now | Provides current time in a specific format. The default format is "yyyy-MM-ddTHH:mm:ss.FFFZ" | {{ '' \| now: 'dddd, dd MMMM yyyy HH:mm:ss' }} |
 
 #### Collection filters
 | Filter | Description | Syntax |
