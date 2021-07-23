@@ -9,6 +9,7 @@ services:
       - "2019:2019"
     volumes:
       - ./config.json:/app/config.json
+      - /app/src/service-templates
     # tty: true
     # stdin_open: true
     # entrypoint: bash

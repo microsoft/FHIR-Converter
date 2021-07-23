@@ -20,6 +20,9 @@ RUN  apt-get update && apt install libcurl3 libcurl4-gnutls-dev -y && apt autore
 
 COPY --from=build /app /app
 COPY ./deploy /app/deploy
+COPY ./data /app/data
+COPY ./static /app/static
+
 WORKDIR /app
 RUN ["chmod", "+x", "/app/deploy/webapp.sh"]
 EXPOSE 2019

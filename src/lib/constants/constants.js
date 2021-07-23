@@ -5,13 +5,13 @@
 
 var path = require('path');
 
-let serviceTemplateFolder = '../../service-templates';
-let sampleDataFolder = '../../sample-data';
+let serviceTemplateFolder = '../../../data/service-templates';
+let sampleDataFolder = '../../../data/sample-data';
 
-module.exports.BASE_TEMPLATE_FILES_LOCATION = path.join(__dirname, '../../templates');
+module.exports.BASE_TEMPLATE_FILES_LOCATION = path.join(__dirname, '../../../data/templates');
 module.exports.TEMPLATE_FILES_LOCATION = path.join(__dirname, serviceTemplateFolder);
 module.exports.SAMPLE_DATA_LOCATION =  path.join(__dirname, sampleDataFolder);
-module.exports.STATIC_LOCATION = path.join(__dirname, '../../static');
+module.exports.STATIC_LOCATION = path.join(__dirname, '../../../static');
 module.exports.CODE_MIRROR_LOCATION = path.join(__dirname, '../../../node_modules/codemirror/');
 module.exports.MOVE_TO_GLOBAL_KEY_NAME = "_moveResourceToGlobalScope";
 module.exports.HL7V2_TEMPLATE_LOCATION = path.join(__dirname, serviceTemplateFolder, 'hl7v2');
