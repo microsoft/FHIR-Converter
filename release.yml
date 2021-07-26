@@ -23,7 +23,7 @@ variables:
 
 stages:
 - stage: Build
-  pool: MacHosted
+  pool: CompassMacHosted
   jobs:
   - job: Build
     steps:
