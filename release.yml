@@ -23,8 +23,7 @@ variables:
 
 stages:
 - stage: Build
-  pool:
-      vmImage: 'windows-latest'
+  pool: MacHosted
   jobs:
   - job: Build
     steps:
