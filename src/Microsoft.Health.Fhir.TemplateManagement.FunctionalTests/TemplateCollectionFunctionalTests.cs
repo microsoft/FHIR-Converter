@@ -14,9 +14,10 @@ using System.Threading.Tasks;
 using DotLiquid;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
-using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
+using Microsoft.Health.Fhir.Liquid.Converter;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Processors;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Newtonsoft.Json.Linq;
@@ -317,11 +318,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [MemberData(nameof(GetHl7v2DataAndTemplateSources))]
         public async Task GivenHl7v2SameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
         {
-            var folderTemplateProvider = new Hl7v2TemplateProvider(defaultTemplateDirectory);
+            var folderTemplateProvider = new TemplateProvider(defaultTemplateDirectory, DataType.Hl7v2);
 
             var templateProviderFactory = new TemplateCollectionProviderFactory(new MemoryCache(new MemoryCacheOptions()), Options.Create(new TemplateCollectionConfiguration()));
             var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultHl7v2TemplateImageReference, string.Empty);
-            var imageTemplateProvider = new Hl7v2TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
+            var imageTemplateProvider = new TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
             var hl7v2Processor = new Hl7v2Processor();
             var inputContent = File.ReadAllText(inputFile);
@@ -340,11 +341,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [MemberData(nameof(GetCcdaDataAndTemplateSources))]
         public async Task GivenCcdaSameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
         {
-            var folderTemplateProvider = new CcdaTemplateProvider(defaultTemplateDirectory);
+            var folderTemplateProvider = new TemplateProvider(defaultTemplateDirectory, DataType.Ccda);
 
             var templateProviderFactory = new TemplateCollectionProviderFactory(new MemoryCache(new MemoryCacheOptions()), Options.Create(new TemplateCollectionConfiguration()));
             var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultCcdaTemplateImageReference, string.Empty);
-            var imageTemplateProvider = new CcdaTemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
+            var imageTemplateProvider = new TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
             var ccdaProcessor = new CcdaProcessor();
             var inputContent = File.ReadAllText(inputFile);
@@ -366,7 +367,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         {
             var hl7v2Processor = new Hl7v2Processor();
             var inputContent = File.ReadAllText(inputFile);
-            var actualContent = hl7v2Processor.Convert(inputContent, entryTemplate, new Hl7v2TemplateProvider(templateProvider));
+            var actualContent = hl7v2Processor.Convert(inputContent, entryTemplate, new TemplateProvider(templateProvider));
 
             Assert.True(actualContent.Length != 0);
         }
