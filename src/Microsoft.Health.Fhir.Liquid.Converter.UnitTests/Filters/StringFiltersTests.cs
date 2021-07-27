@@ -78,7 +78,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         public void GunzipBase64StringTest()
         {
             Assert.Equal("uncompressed", Filters.GunzipBase64String("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA="));
-            // Assert.Equal("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA=", Filters.Gzip(Filters.GunzipBase64String("H4sIAAAAAAAAeyvNS87PLShKLS5OTQEA3a5CsQwAAAA=")));
+            Assert.Equal("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA=", Filters.Gzip(Filters.GunzipBase64String("H4sIAAAAAAAAEyvNS87PLShKLS5OTQEA3a5CsQwAAAA=")));
             Assert.Equal(string.Empty, Filters.GunzipBase64String(string.Empty));
 
             Assert.Throws<ArgumentNullException>(() => Filters.GunzipBase64String(null));
