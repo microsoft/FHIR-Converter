@@ -84,14 +84,6 @@ stages:
         publishWebProjects: false
         zipAfterPublish: false
 
-    - task: PowerShell@2
-      displayName: 'inject template version'
-      inputs:
-        targetType: 'inline'
-        script: |
-          $targetPath = '$(Build.SourcesDirectory)/data/Templates/Hl7v2/Resource/_Provenance.liquid'
-          (Get-Content $targetPath).replace('TEMPLATE_VERSION_PLACEHOLDER', '$(major).$(minor)') | Set-Content $targetPath
-
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2'
