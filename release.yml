@@ -80,7 +80,7 @@ stages:
       inputs:
         command: 'publish'
         projects: '$(publishProject)'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin/osx_x64 --runtime osx_x64'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin/osx_x64 --runtime osx.10.12-x64'
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: true
