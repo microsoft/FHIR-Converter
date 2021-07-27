@@ -84,7 +84,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
         {
             foreach (var element in expected)
             {
-                Assert.Equal(result[element.Key], element.Value);
+                if (element.Value == null && result[element.Key] == null)
+                {
+                    Assert.True(true);
+                }
+                else
+                {
+                    Assert.Equal(Encoding.UTF8.GetString(result[element.Key]).Replace("\r", string.Empty).Replace("\n", string.Empty), Encoding.UTF8.GetString(element.Value).Replace("\r", string.Empty).Replace("\n", string.Empty));
+                }
             }
         }
 
