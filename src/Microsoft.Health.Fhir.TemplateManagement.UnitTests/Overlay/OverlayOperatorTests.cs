@@ -135,7 +135,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             var overlayFs = new OverlayFileSystem("TestData/UserFolder");
             var fileLayer = overlayFs.ReadMergedOCIFileLayer();
             var diffLayers = _overlayOperator.GenerateDiffLayer(fileLayer, null);
-            Assert.Equal(6, diffLayers.FileContent.Count());
+            Assert.Equal(5, diffLayers.FileContent.Count());
             Assert.Equal(1, diffLayers.SequenceNumber);
         }
 
