@@ -213,17 +213,17 @@ stages:
         tar -zxf oras_0.8.1_*.tar.gz -C oras-install/
         mv oras-install/oras /usr/local/bin/
         rm -rf oras_0.8.1_*.tar.gz oras-install/
-        docker run --rm -d -p 5000:5000 --name registry registry:2
-      displayName: start registry
+        docker run --rm -d -p 5000:5000 --name registryOSX registry:2
+      displayName: start registryOSX
     - script: |
         dotnet test **/*FunctionalTests.dll
       displayName: Functional Tests
     - task: Docker@2
-      displayName: stop registry
+      displayName: stop registryOSX
       condition: succeededOrFailed()
       inputs:
         command: stop
-        container: registry
+        container: registryOSX
 - stage: Release
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
   jobs:
