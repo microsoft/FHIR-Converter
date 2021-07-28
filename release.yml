@@ -117,26 +117,7 @@ stages:
         publishWebProjects: false
         zipAfterPublish: false
 
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2'
-        includeRootFolder: false
-        archiveType: 'tar'
-        tarCompression: 'gz'
-        archiveFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2DefaultTemplates.tar.gz'
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Ccda'
-        includeRootFolder: false
-        archiveType: 'tar'
-        tarCompression: 'gz'
-        archiveFile: '$(Build.SourcesDirectory)/data/Templates/CcdaDefaultTemplates.tar.gz'
-    - task: CopyFiles@2
-      displayName: 'copy DefaultTemplates to artifacts'
-      inputs:
-        sourceFolder: '$(Build.SourcesDirectory)/data'
-        targetFolder: '$(Build.ArtifactStagingDirectory)/data'
-
+    
     - task: DotNetCoreCLI@2
       displayName: 'dotnet pack nugets'
       inputs:
@@ -216,7 +197,8 @@ stages:
         downloadPath: $(System.DefaultWorkingDirectory)
         
     - script: |
-        chmod +x **/oras
+        pwd
+        chmod +x $(System.DefaultWorkingDirectory)/**/oras
         docker run --rm -d -p 5000:5000 --name registryOSX registry:2
       displayName: start registryOSX
     - script: |
