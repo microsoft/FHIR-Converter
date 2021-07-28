@@ -197,8 +197,10 @@ stages:
         downloadPath: $(System.DefaultWorkingDirectory)
         
     - script: |
-        pwd
-        chmod +x $(System.DefaultWorkingDirectory)/**/oras
+        cd $(Agent.OS)-FhirConverterBuild/functionalTests/Microsoft.Health.Fhir.TemplateManagement.FunctionalTests/
+        ls
+        chmod +x oras
+        cd ../../../
         docker run --rm -d -p 5000:5000 --name registryOSX registry:2
       displayName: start registryOSX
     - script: |
