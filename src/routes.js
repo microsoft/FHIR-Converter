@@ -671,7 +671,7 @@ module.exports = function (app) {
     *     produces:
     *       - application/json
     *     consumes:
-    *       - text/plain
+    *       - application/json
     *     parameters:
     *       - name: srcDataType
     *         description: Data type of the source (e.g. 'hl7v2', 'cda')
