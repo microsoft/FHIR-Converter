@@ -5,9 +5,9 @@ trigger:
 - master
 - dotliquid
 - refs/heads/dotliquid
-pr: ['dotliquid']
-
-
+pr:
+- dotliquid
+- main
 
 variables:
   solution: '**/*.sln'
