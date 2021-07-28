@@ -29,9 +29,6 @@ stages:
   - job: Build
     strategy:
       matrix:
-        win:
-          poolName: Azure Pipelines
-          vmImage: windows-latest
         mac:
           poolName: CompassMacHosted
           vmImage:
