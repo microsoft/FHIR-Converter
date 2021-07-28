@@ -217,12 +217,8 @@ stages:
       inputs:
         artifactName: '$(Agent.OS)-FhirConverterBuild'
         downloadPath: $(System.DefaultWorkingDirectory)
+        
     - script: |
-        curl -LO https://github.com/oras-project/oras/releases/download/v0.8.1/oras_0.8.1_darwin_amd64.tar.gz
-        mkdir -p oras-install/
-        tar -zxf oras_0.8.1_*.tar.gz -C oras-install/
-        mv oras-install/oras /usr/local/bin/
-        rm -rf oras_0.8.1_*.tar.gz oras-install/
         docker run --rm -d -p 5000:5000 --name registryOSX registry:2
       displayName: start registryOSX
     - script: |
