@@ -25,19 +25,12 @@ variables:
 
 stages:
 - stage: Build
+  pool:
+      vmImage: 'windows-latest'
   jobs:
   - job: Build
-    strategy:
-      matrix:
-        mac:
-          poolName: CompassMacHosted
-          vmImage:
-    pool:
-      name: $(poolName)
-      vmImage: $(vmImage)
-
     steps:
-    - script: echo $(version) $(Agent.OS)
+    - script: echo $(version)
 
     - task: DotNetCoreCLI@2
       displayName: 'dotnet restore'
@@ -62,6 +55,7 @@ stages:
         projects: '$(unitTestProjects)'
         arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
         nobuild: true     
+        
 
     - task: DotNetCoreCLI@2
       displayName: 'publish win_x64 bin'
@@ -72,40 +66,16 @@ stages:
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: false
-      condition: eq(variables['Agent.OS'],'Windows_NT')
-    
-    - task: DotNetCoreCLI@2
-      displayName: 'publish osx_x64 bin'
-      inputs:
-        command: 'publish'
-        projects: '$(publishProject)'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/win_x64 --runtime osx.10.12-x64'
-        nobuild: true
-        publishWebProjects: false
-        zipAfterPublish: false
-      condition: eq(variables['Agent.OS'],'Darwin')
 
     - task: DotNetCoreCLI@2
-      displayName: 'publish github release win_x64 bin'
+      displayName: 'publish github release bin'
       inputs:
         command: 'publish'
         projects: '$(publishProject)'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin/ --runtime win-x64'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin'
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: true
-      condition: eq(variables['Agent.OS'],'Windows_NT')
-    
-    - task: DotNetCoreCLI@2
-      displayName: 'publish github release osx_x64 bin'
-      inputs:
-        command: 'publish'
-        projects: '$(publishProject)'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin/ --runtime osx.10.12-x64'
-        nobuild: true
-        publishWebProjects: false
-        zipAfterPublish: true
-      condition: eq(variables['Agent.OS'],'Darwin')
 
     - task: DotNetCoreCLI@2
       displayName: 'publish functional tests'
@@ -117,7 +87,35 @@ stages:
         publishWebProjects: false
         zipAfterPublish: false
 
-    
+    - task: PowerShell@2
+      displayName: 'inject template version'
+      inputs:
+        targetType: 'inline'
+        script: |
+          $targetPath = '$(Build.SourcesDirectory)/data/Templates/Hl7v2/Resource/_Provenance.liquid'
+          (Get-Content $targetPath).replace('TEMPLATE_VERSION_PLACEHOLDER', '$(major).$(minor)') | Set-Content $targetPath
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2'
+        includeRootFolder: false
+        archiveType: 'tar'
+        tarCompression: 'gz'
+        archiveFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2DefaultTemplates.tar.gz'
+
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Ccda'
+        includeRootFolder: false
+        archiveType: 'tar'
+        tarCompression: 'gz'
+        archiveFile: '$(Build.SourcesDirectory)/data/Templates/CcdaDefaultTemplates.tar.gz'
+
+    - task: CopyFiles@2
+      displayName: 'copy DefaultTemplates to artifacts'
+      inputs:
+        sourceFolder: '$(Build.SourcesDirectory)/data'
+        targetFolder: '$(Build.ArtifactStagingDirectory)/data'
+
     - task: DotNetCoreCLI@2
       displayName: 'dotnet pack nugets'
       inputs:
@@ -133,19 +131,15 @@ stages:
       displayName: 'publish nuget artifacts'
       inputs:
         pathToPublish: '$(Build.BinariesDirectory)/nupkgs'
-        artifactName: '$(Agent.OS)-nuget'
+        artifactName: 'nuget'
         publishLocation: 'container'     
     
     - task: PublishBuildArtifacts@1
       displayName: 'publish artifacts'
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)' 
-        artifactName: '$(Agent.OS)-FhirConverterBuild'
-    
-    - script: |
-        rm -r $(Build.ArtifactStagingDirectory)
-        rm -r $(Build.SourcesDirectory)
-        rm -r $(Build.BinariesDirectory)
+        artifactName: 'FhirConverterBuild'
+
 
 - stage: FunctionalTests
   jobs:
@@ -159,7 +153,7 @@ stages:
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Artifacts'
       inputs:
-        artifactName: '$(Agent.OS)-FhirConverterBuild'
+        artifactName: 'FhirConverterBuild'
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
         git clone -q https://github.com/sowu880/dockerfiles-windows.git
@@ -193,14 +187,15 @@ stages:
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Artifacts'
       inputs:
-        artifactName: '$(Agent.OS)-FhirConverterBuild'
+        artifactName: 'FhirConverterBuild'
         downloadPath: $(System.DefaultWorkingDirectory)
         
     - script: |
-        cd $(Agent.OS)-FhirConverterBuild/functionalTests/Microsoft.Health.Fhir.TemplateManagement.FunctionalTests/
-        ls
-        chmod +x oras
-        cd ../../../
+        curl -LO https://github.com/oras-project/oras/releases/download/v0.8.1/oras_0.8.1_darwin_amd64.tar.gz
+        mkdir -p oras-install/
+        tar -zxf oras_0.8.1_*.tar.gz -C oras-install/
+        mv oras-install/oras /usr/local/bin/
+        rm -rf oras_0.8.1_*.tar.gz oras-install/
         docker run --rm -d -p 5000:5000 --name registryOSX registry:2
       displayName: start registryOSX
     - script: |
@@ -213,7 +208,9 @@ stages:
         command: stop
         container: registryOSX
     
-    - script: echo  $(Build.SourcesDirectory)  $(Agent.BuildDirectory) 
+    - task: DeleteFiles@1
+      inputs:
+        Contents: '**/*' 
 
 
 - stage: Release
