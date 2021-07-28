@@ -86,7 +86,7 @@ stages:
       inputs:
         command: 'publish'
         projects: '$(publishProject)'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/osx_x64 --runtime osx.10.12-x64'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/win_x64 --runtime osx.10.12-x64'
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: false
@@ -160,7 +160,7 @@ stages:
       displayName: 'publish nuget artifacts'
       inputs:
         pathToPublish: '$(Build.BinariesDirectory)/nupkgs'
-        artifactName: 'nuget/$(Agent.OS)'
+        artifactName: '$(Agent.OS)-nuget'
         publishLocation: 'container'     
     
     - task: PublishBuildArtifacts@1
@@ -173,8 +173,8 @@ stages:
     - task: PublishBuildArtifacts@1
       displayName: 'publish artifacts'
       inputs:
-        pathToPublish: '$(Build.ArtifactStagingDirectory)/bin' 
-        artifactName: 'FhirConverterBuild/bin'
+        pathToPublish: '$(Build.SourcesDirectory)/bin/win_x64' 
+        artifactName: $'Agent.OS'-nuckgs
       condition: eq(variables['Agent.OS'],'Darwin')
 
 - stage: FunctionalTests
