@@ -168,8 +168,11 @@ stages:
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)' 
         artifactName: 'FhirConverterBuild- $(Agent.OS)'
-      condition: eq(variables['Agent.OS'],'Windows_NT')
     
+    - script: |
+        rm -r $(Build.ArtifactStagingDirectory)
+        rm -r $(Build.SourcesDirectory)
+        rm -r $(Build.BinariesDirectory)
 
 - stage: FunctionalTests
   jobs:
