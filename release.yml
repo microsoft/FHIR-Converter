@@ -27,17 +27,14 @@ stages:
 - stage: Build
   jobs:
   - job: Build
-
     strategy:
       matrix:
         win:
           poolName: Azure Pipelines
           vmImage: windows-latest
-
         mac:
           poolName: CompassMacHosted
           vmImage:
-
     pool:
       name: $(poolName)
       vmImage: $(vmImage)
@@ -69,7 +66,6 @@ stages:
         arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
         nobuild: true     
 
-
     - task: DotNetCoreCLI@2
       displayName: 'publish win_x64 bin'
       inputs:
@@ -82,7 +78,7 @@ stages:
       condition: eq(variables['Agent.OS'],'Windows_NT')
     
     - task: DotNetCoreCLI@2
-      displayName: 'publish win_x64 bin'
+      displayName: 'publish osx_x64 bin'
       inputs:
         command: 'publish'
         projects: '$(publishProject)'
@@ -93,7 +89,7 @@ stages:
       condition: eq(variables['Agent.OS'],'Darwin')
 
     - task: DotNetCoreCLI@2
-      displayName: 'publish github release bin'
+      displayName: 'publish github release win_x64 bin'
       inputs:
         command: 'publish'
         projects: '$(publishProject)'
@@ -104,7 +100,7 @@ stages:
       condition: eq(variables['Agent.OS'],'Windows_NT')
     
     - task: DotNetCoreCLI@2
-      displayName: 'publish github release bin'
+      displayName: 'publish github release osx_x64 bin'
       inputs:
         command: 'publish'
         projects: '$(publishProject)'
@@ -123,7 +119,6 @@ stages:
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: false
-      condition: eq(variables['Agent.OS'],'Windows_NT')
 
     - task: ArchiveFiles@2
       inputs:
@@ -167,7 +162,7 @@ stages:
       displayName: 'publish artifacts'
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)' 
-        artifactName: 'FhirConverterBuild- $(Agent.OS)'
+        artifactName: '$(Agent.OS)-FhirConverterBuild'
     
     - script: |
         rm -r $(Build.ArtifactStagingDirectory)
@@ -186,7 +181,7 @@ stages:
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Artifacts'
       inputs:
-        artifactName: 'FhirConverterBuild- $(Agent.OS)'
+        artifactName: '$(Agent.OS)-FhirConverterBuild'
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
         git clone -q https://github.com/sowu880/dockerfiles-windows.git
@@ -220,7 +215,7 @@ stages:
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Artifacts'
       inputs:
-        artifactName: 'FhirConverterBuild- $(Agent.OS)'
+        artifactName: '$(Agent.OS)-FhirConverterBuild'
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
         curl -LO https://github.com/oras-project/oras/releases/download/v0.8.1/oras_0.8.1_darwin_amd64.tar.gz
@@ -239,6 +234,9 @@ stages:
       inputs:
         command: stop
         container: registryOSX
+    
+    - script: echo  $(Build.SourcesDirectory)  $(Agent.BuildDirectory) 
+
 
 - stage: Release
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
