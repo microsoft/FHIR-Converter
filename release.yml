@@ -90,7 +90,7 @@ stages:
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: false
-      condition: eq(variables['Agent.OS'],'macOS')
+      condition: eq(variables['Agent.OS'],'Darwin')
 
     - task: DotNetCoreCLI@2
       displayName: 'publish github release bin'
@@ -112,7 +112,7 @@ stages:
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: true
-      condition: eq(variables['Agent.OS'],'macOS')
+      condition: eq(variables['Agent.OS'],'Darwin')
 
     - task: DotNetCoreCLI@2
       displayName: 'publish functional tests'
@@ -152,14 +152,14 @@ stages:
         custom: pack
         arguments: >
           --configuration $(buildConfiguration)
-          --output $(Build.BinariesDirectory)/$(Agent.OS)/nupkgs
+          --output $(Build.BinariesDirectory)/$(Agent.OS)-nupkgs
           --no-build
           -p:NuspecProperties="version=$(version)"
     
     - task: PublishBuildArtifacts@1
       displayName: 'publish nuget artifacts'
       inputs:
-        pathToPublish: '$(Build.BinariesDirectory)/$(Agent.OS)/nupkgs'
+        pathToPublish: '$(Build.BinariesDirectory)/$(Agent.OS)-nupkgs'
         artifactName: 'nuget'
         publishLocation: 'container'     
     
