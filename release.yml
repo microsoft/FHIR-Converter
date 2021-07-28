@@ -216,6 +216,7 @@ stages:
         downloadPath: $(System.DefaultWorkingDirectory)
         
     - script: |
+        chmod +x **/oras
         docker run --rm -d -p 5000:5000 --name registryOSX registry:2
       displayName: start registryOSX
     - script: |
