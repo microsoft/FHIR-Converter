@@ -243,9 +243,20 @@ stages:
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Artifacts'
       inputs:
-        artifactName: FhirConverterBuild
+        artifactName: '$(Agent.OS)-FhirConverterBuild'
         downloadPath: $(System.DefaultWorkingDirectory)
-
+    - task: GithubRelease@0 
+      displayName: 'Create GitHub Release'      
+      inputs:
+        gitHubConnection: githubpipeline
+        repositoryName: microsoft/FHIR-Converter
+        isDraft: true
+        tagSource: manual
+        tag: v$(major).$(minor).$(bulidnum)      
+        assets: |
+          $(System.DefaultWorkingDirectory)/$(Agent.OS)-FhirConverterBuild/bin/**
+          $(System.DefaultWorkingDirectory)/$(Agent.OS)-FhirConverterBuild/data/Templates/Hl7v2DefaultTemplates.tar.gz
+          $(System.DefaultWorkingDirectory)/$(Agent.OS)-FhirConverterBuild/data/Templates/CcdaDefaultTemplates.tar.gz
 
 
 
