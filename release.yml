@@ -152,15 +152,15 @@ stages:
         custom: pack
         arguments: >
           --configuration $(buildConfiguration)
-          --output $(Build.BinariesDirectory)/$(Agent.OS)-nupkgs
+          --output $(Build.BinariesDirectory)/nupkgs
           --no-build
           -p:NuspecProperties="version=$(version)"
     
     - task: PublishBuildArtifacts@1
       displayName: 'publish nuget artifacts'
       inputs:
-        pathToPublish: '$(Build.BinariesDirectory)/$(Agent.OS)-nupkgs'
-        artifactName: 'nuget'
+        pathToPublish: '$(Build.BinariesDirectory)/nupkgs'
+        artifactName: 'nuget/$(Agent.OS)'
         publishLocation: 'container'     
     
     - task: PublishBuildArtifacts@1
@@ -169,6 +169,13 @@ stages:
         pathToPublish: '$(Build.ArtifactStagingDirectory)' 
         artifactName: 'FhirConverterBuild'
       condition: eq(variables['Agent.OS'],'Windows_NT')
+    
+    - task: PublishBuildArtifacts@1
+      displayName: 'publish artifacts'
+      inputs:
+        pathToPublish: '$(Build.ArtifactStagingDirectory)/bin' 
+        artifactName: 'FhirConverterBuild/bin'
+      condition: eq(variables['Agent.OS'],'Darwin')
 
 - stage: FunctionalTests
   jobs:
