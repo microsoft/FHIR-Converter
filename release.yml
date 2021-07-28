@@ -21,14 +21,29 @@ variables:
   revision: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
   version: $(major).$(minor).$(bulidnum).$(revision)
 
+
+
 stages:
 - stage: Build
   jobs:
   - job: Build
-    pool: 
-      vmImage: 'windows-latest'
+
+    strategy:
+      matrix:
+        win:
+          poolName: Azure Pipelines
+          vmImage: windows-latest
+
+        mac:
+          poolName: CompassMacHosted
+          vmImage:
+
+    pool:
+      name: $(poolName)
+      vmImage: $(vmImage)
+
     steps:
-    - script: echo $(version)
+    - script: echo $(version) $(Agent.OS)
 
     - task: DotNetCoreCLI@2
       displayName: 'dotnet restore'
@@ -64,6 +79,18 @@ stages:
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: false
+      condition: eq(variables['Agent.OS'],'Windows_NT')
+    
+    - task: DotNetCoreCLI@2
+      displayName: 'publish win_x64 bin'
+      inputs:
+        command: 'publish'
+        projects: '$(publishProject)'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/osx_x64 --runtime osx.10.12-x64'
+        nobuild: true
+        publishWebProjects: false
+        zipAfterPublish: false
+      condition: eq(variables['Agent.OS'],'macOS')
 
     - task: DotNetCoreCLI@2
       displayName: 'publish github release bin'
@@ -74,6 +101,7 @@ stages:
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: true
+      condition: eq(variables['Agent.OS'],'Windows_NT')
     
     - task: DotNetCoreCLI@2
       displayName: 'publish github release bin'
@@ -84,6 +112,7 @@ stages:
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: true
+      condition: eq(variables['Agent.OS'],'macOS')
 
     - task: DotNetCoreCLI@2
       displayName: 'publish functional tests'
@@ -94,6 +123,7 @@ stages:
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: false
+      condition: eq(variables['Agent.OS'],'Windows_NT')
 
     - task: ArchiveFiles@2
       inputs:
@@ -102,7 +132,6 @@ stages:
         archiveType: 'tar'
         tarCompression: 'gz'
         archiveFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2DefaultTemplates.tar.gz'
-
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Ccda'
@@ -110,7 +139,6 @@ stages:
         archiveType: 'tar'
         tarCompression: 'gz'
         archiveFile: '$(Build.SourcesDirectory)/data/Templates/CcdaDefaultTemplates.tar.gz'
-
     - task: CopyFiles@2
       displayName: 'copy DefaultTemplates to artifacts'
       inputs:
@@ -124,14 +152,14 @@ stages:
         custom: pack
         arguments: >
           --configuration $(buildConfiguration)
-          --output $(Build.BinariesDirectory)/nupkgs
+          --output $(Build.BinariesDirectory)/$(Agent.OS)/nupkgs
           --no-build
           -p:NuspecProperties="version=$(version)"
     
     - task: PublishBuildArtifacts@1
       displayName: 'publish nuget artifacts'
       inputs:
-        pathToPublish: '$(Build.BinariesDirectory)/nupkgs'
+        pathToPublish: '$(Build.BinariesDirectory)/$(Agent.OS)/nupkgs'
         artifactName: 'nuget'
         publishLocation: 'container'     
     
@@ -140,6 +168,7 @@ stages:
       inputs:
         pathToPublish: '$(Build.ArtifactStagingDirectory)' 
         artifactName: 'FhirConverterBuild'
+      condition: eq(variables['Agent.OS'],'Windows_NT')
 
 - stage: FunctionalTests
   jobs:
@@ -168,35 +197,6 @@ stages:
     #     docker push localhost:5000/windows
     #   displayName: test push
 
-    - script: |
-        dotnet test **/*FunctionalTests.dll
-      displayName: Functional Tests
-    - task: Docker@2
-      displayName: stop registry
-      condition: succeededOrFailed()
-      inputs:
-        command: stop
-        container: registry
-
-  - job: Linux_Functional_Test
-    pool:
-      vmImage: 'ubuntu-latest'
-    continueOnError: true
-    steps:
-    - checkout: none #skip checking out the default repository resource
-    - task: DownloadBuildArtifacts@0
-      displayName: 'Download Artifacts'
-      inputs:
-        artifactName: FhirConverterBuild
-        downloadPath: $(System.DefaultWorkingDirectory)
-    - script: |
-        curl -LO https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_linux_amd64.tar.gz
-        mkdir -p oras-install/
-        tar -zxf oras_0.8.1_*.tar.gz -C oras-install/
-        mv oras-install/oras /usr/local/bin/
-        rm -rf oras_0.8.1_*.tar.gz oras-install/
-        docker run --rm -d -p 5000:5000 --name registry registry:2
-      displayName: start registry
     - script: |
         dotnet test **/*FunctionalTests.dll
       displayName: Functional Tests
@@ -235,6 +235,7 @@ stages:
       inputs:
         command: stop
         container: registryOSX
+
 - stage: Release
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
   jobs:
