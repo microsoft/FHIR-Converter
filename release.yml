@@ -192,7 +192,7 @@ stages:
         rm -rf oras_0.8.1_*.tar.gz oras-install/
         docker run --rm -d -p 5000:5000 --name registryOSX registry:2
       displayName: start registryOSX
-    - script: |
+    - script:
         dotnet test **/*FunctionalTests.dll
       displayName: Functional Tests
     - task: Docker@2
