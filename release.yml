@@ -68,6 +68,7 @@ stages:
   - job: Publish
     pool:
       vmImage: 'windows-latest'
+    steps:
     - task: DotNetCoreCLI@2
       displayName: 'publish win_x64 bin'
       inputs:
