@@ -22,22 +22,11 @@ variables:
 
 
 stages:
-- stage: BuildAndPublish
+- stage: Build
+  pool:
+      vmImage: 'windows-latest'
   jobs:
   - job: Build
-    strategy:
-      matrix:
-        win:
-          poolName: Azure Pipelines
-          vmImage: windows-latest
-
-        mac:
-          poolName: CompassMacHosted
-          vmImage:
-
-    pool:
-      name: $(poolName)
-      vmImage: $(vmImage)
     steps:
     - script: echo $(version)
 
@@ -64,18 +53,14 @@ stages:
         projects: '$(unitTestProjects)'
         arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
         nobuild: true
-
-  - job: Publish
-    pool:
-      vmImage: 'windows-latest'
-    steps:
+        
     - task: DotNetCoreCLI@2
       displayName: 'publish win_x64 bin'
       inputs:
         command: 'publish'
         projects: '$(publishProject)'
         arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/win_x64 --runtime win-x64'
-        nobuild: false
+        nobuild: true
         publishWebProjects: false
         zipAfterPublish: false
 
