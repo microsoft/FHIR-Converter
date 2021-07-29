@@ -19,8 +19,6 @@ variables:
   revision: $[counter(format('{0:yyyyMMdd}', pipeline.startTime), 1)]
   version: $(major).$(minor).$(bulidnum).$(revision)
 
-
-
 stages:
 - stage: Build
   pool:
@@ -53,7 +51,7 @@ stages:
         projects: '$(unitTestProjects)'
         arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
         nobuild: true
-        
+ 
     - task: DotNetCoreCLI@2
       displayName: 'publish win_x64 bin'
       inputs:
@@ -91,7 +89,7 @@ stages:
         script: |
           $targetPath = '$(Build.SourcesDirectory)/data/Templates/Hl7v2/Resource/_Provenance.liquid'
           (Get-Content $targetPath).replace('TEMPLATE_VERSION_PLACEHOLDER', '$(major).$(minor)') | Set-Content $targetPath
-    
+
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2'
@@ -178,7 +176,7 @@ stages:
     pool: CompassMacHosted
     continueOnError: true
     steps:
-    - checkout: none #skip checking out the default repository resource   
+    - checkout: none #skip checking out the default repository resource
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Artifacts'
       inputs:
