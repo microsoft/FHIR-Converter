@@ -165,7 +165,7 @@ stages:
     #   displayName: test push
 
     - script: |
-        dotnet test **/*FunctionalTests.dll
+        dotnet test FhirConverterBuild/**/*FunctionalTests.dll
       displayName: Functional Tests
     - task: Docker@2
       displayName: stop registry
@@ -192,8 +192,8 @@ stages:
         rm -rf oras_0.8.1_*.tar.gz oras-install/
         docker run --rm -d -p 5000:5000 --name registryOSX registry:2
       displayName: start registryOSX
-    - script: |
-        dotnet test **/*FunctionalTests.dll
+    - script:
+        dotnet test FhirConverterBuild/**/*FunctionalTests.dll
       displayName: Functional Tests
     - task: Docker@2
       displayName: stop registryOSX
