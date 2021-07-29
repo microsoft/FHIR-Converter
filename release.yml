@@ -22,11 +22,22 @@ variables:
 
 
 stages:
-- stage: Build
-  pool:
-      vmImage: 'windows-latest'
+- stage: BuildAndPublish
   jobs:
   - job: Build
+    strategy:
+      matrix:
+        win:
+          poolName: Azure Pipelines
+          vmImage: windows-latest
+
+        mac:
+          poolName: CompassMacHosted
+          vmImage:
+
+    pool:
+      name: $(poolName)
+      vmImage: $(vmImage)
     steps:
     - script: echo $(version)
 
@@ -52,16 +63,18 @@ stages:
         command: test
         projects: '$(unitTestProjects)'
         arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-        nobuild: true     
-        
+        nobuild: true
 
+  - job: Publish
+    pool:
+      vmImage: 'windows-latest'
     - task: DotNetCoreCLI@2
       displayName: 'publish win_x64 bin'
       inputs:
         command: 'publish'
         projects: '$(publishProject)'
         arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/win_x64 --runtime win-x64'
-        nobuild: true
+        nobuild: false
         publishWebProjects: false
         zipAfterPublish: false
 
@@ -176,8 +189,7 @@ stages:
         container: registry
   
   - job: OSX_Functional_Test
-    pool:
-        vmImage: 'macos-latest'
+    pool: CompassMacHosted
     continueOnError: true
     steps:
     - checkout: none #skip checking out the default repository resource   
@@ -186,13 +198,6 @@ stages:
       inputs:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
-
-    - task: DockerInstaller@0
-      displayName: Docker Installer
-      inputs:
-        dockerVersion: 17.09.0-ce
-        releaseType: stable
-
     - script: |
         curl -LO https://github.com/oras-project/oras/releases/download/v0.8.1/oras_0.8.1_darwin_amd64.tar.gz
         mkdir -p oras-install/
