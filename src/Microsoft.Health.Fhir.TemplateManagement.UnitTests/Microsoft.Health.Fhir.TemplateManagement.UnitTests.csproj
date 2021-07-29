@@ -7,12 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="..\..\data\Templates\Hl7v2\metadata.json" Link="TestData\UserFolder\metadata.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="..\..\data\Templates\Hl7v2\ADT_A01.liquid" Link="TestData\UserFolder\ADT_A01.liquid">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
