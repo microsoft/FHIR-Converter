@@ -7,8 +7,6 @@ trigger:
 - refs/heads/dotliquid
 pr: ['dotliquid']
 
-
-
 variables:
   solution: '**/*.sln'
   unitTestProjects: "**/*UnitTests/*.csproj"
@@ -94,6 +92,7 @@ stages:
         script: |
           $targetPath = '$(Build.SourcesDirectory)/data/Templates/Hl7v2/Resource/_Provenance.liquid'
           (Get-Content $targetPath).replace('TEMPLATE_VERSION_PLACEHOLDER', '$(major).$(minor)') | Set-Content $targetPath
+    
     - task: ArchiveFiles@2
       inputs:
         rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2'
@@ -140,7 +139,6 @@ stages:
         pathToPublish: '$(Build.ArtifactStagingDirectory)' 
         artifactName: 'FhirConverterBuild'
 
-
 - stage: FunctionalTests
   jobs:
   - job: Windows_Functional_Test
@@ -149,11 +147,10 @@ stages:
     continueOnError: true
     steps:
     - checkout: none #skip checking out the default repository resource
-
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Artifacts'
       inputs:
-        artifactName: 'FhirConverterBuild'
+        artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
         git clone -q https://github.com/sowu880/dockerfiles-windows.git
@@ -179,15 +176,15 @@ stages:
         container: registry
   
   - job: OSX_Functional_Test
-    pool: CompassMacHosted
+    pool:
+        vmImage: 'macos-latest'
     continueOnError: true
     steps:
-    - checkout: none #skip checking out the default repository resource
-    
+    - checkout: none #skip checking out the default repository resource   
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Artifacts'
       inputs:
-        artifactName: 'FhirConverterBuild'
+        artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
         
     - script: |
@@ -208,6 +205,7 @@ stages:
         command: stop
         container: registryOSX
     
+    #need delete files for self-hosted agent
     - task: DeleteFiles@1
       inputs:
         Contents: '**/*' 
@@ -224,8 +222,9 @@ stages:
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Artifacts'
       inputs:
-        artifactName: '$(Agent.OS)-FhirConverterBuild'
+        artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
+        
     - task: GithubRelease@0 
       displayName: 'Create GitHub Release'      
       inputs:
@@ -235,9 +234,9 @@ stages:
         tagSource: manual
         tag: v$(major).$(minor).$(bulidnum)      
         assets: |
-          $(System.DefaultWorkingDirectory)/$(Agent.OS)-FhirConverterBuild/bin/**
-          $(System.DefaultWorkingDirectory)/$(Agent.OS)-FhirConverterBuild/data/Templates/Hl7v2DefaultTemplates.tar.gz
-          $(System.DefaultWorkingDirectory)/$(Agent.OS)-FhirConverterBuild/data/Templates/CcdaDefaultTemplates.tar.gz
+          $(System.DefaultWorkingDirectory)/FhirConverterBuild/bin/**
+          $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/Hl7v2DefaultTemplates.tar.gz
+          $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/CcdaDefaultTemplates.tar.gz
 
 
 

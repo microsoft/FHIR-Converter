@@ -5,26 +5,7 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <IsPackable>true</IsPackable>
         <NuspecFile>Microsoft.Health.Fhir.Liquid.Converter.nuspec</NuspecFile>
-        <OrasVersion>0.8.1</OrasVersion>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
-        <OsEnv>windows</OsEnv>
-        <OrasUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_windows_amd64.tar.gz</OrasUrl>
-        <OrasExecutable>oras.exe</OrasExecutable>
-        <CopyExecutable>copy</CopyExecutable>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'">
-        <OsEnv>linux</OsEnv>
-        <OrasUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_linux_amd64.tar.gz</OrasUrl>
-        <OrasExecutable>oras</OrasExecutable>
-        <CopyExecutable>cp</CopyExecutable>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::OSX)))'">
-        <OsEnv>darwin</OsEnv>
-        <OrasUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_darwin_amd64.tar.gz</OrasUrl>
-        <OrasExecutable>oras</OrasExecutable>
-        <CopyExecutable>cp</CopyExecutable>
+        <OrasWinUrl>https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_windows_amd64.tar.gz</OrasWinUrl>
     </PropertyGroup>
 
     <ItemGroup>
@@ -34,6 +15,7 @@
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.9" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="RestSharp" Version="106.11.5" />
         <PackageReference Include="SharpCompress" Version="0.26.0" />
         <PackageReference Include="SharpZipLib" Version="1.3.0" />
         <PackageReference Include="System.Runtime" Version="4.3.1" />
@@ -57,9 +39,6 @@
         <None Update="oras.exe">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
-        <None Update="oras">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
     </ItemGroup>
 
     <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
@@ -68,10 +47,9 @@
     </Target>
 
     <Target Name="DownloadOrasFile" BeforeTargets="Build">
-        <DownloadFile SourceUrl="$(OrasUrl)" DestinationFolder="../../bin">
+        <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="../../bin">
             <Output TaskParameter="DownloadedFile" ItemName="Content" />
         </DownloadFile>
-        <Exec Command="tar -xvf ..\..\bin\oras_$(OrasVersion)_$(OsEnv)_amd64.tar.gz -C ..\..\bin &amp; $(CopyExecutable) ..\..\bin\$(OrasExecutable) ." Condition=" '$(OsEnv)' == 'windows' " />
-        <Exec Command="tar -xvf ../../bin/oras_$(OrasVersion)_$(OsEnv)_amd64.tar.gz -C ../../bin &amp;&amp; $(CopyExecutable) ../../bin/$(OrasExecutable) ." Condition=" '$(OsEnv)' != 'windows' " />
+        <Exec Command="tar -xvf ..\..\bin\oras_0.8.1_windows_amd64.tar.gz -C ..\..\bin &amp; copy ..\..\bin\oras.exe ." />
     </Target>
 </Project>
