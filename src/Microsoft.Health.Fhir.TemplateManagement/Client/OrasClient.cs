@@ -69,7 +69,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
             {
                 orasFileName = Constants.OrasFileForOSX;
-                AddOrasFileExecutionPermission();
             }
             else
             {
@@ -113,25 +112,5 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
         }
 
-        public static void AddOrasFileExecutionPermission()
-        {
-            var command = $"chmod +x {Constants.OrasFileForOSX}";
-
-            using var process = new Process
-            {
-                StartInfo = new ProcessStartInfo
-                {
-                    RedirectStandardOutput = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden,
-                    FileName = "/bin/bash",
-                    Arguments = $"-c \"{command}\"",
-                },
-            };
-
-            process.Start();
-            process.WaitForExit();
-        }
     }
 }
