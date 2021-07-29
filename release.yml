@@ -186,12 +186,12 @@ stages:
       inputs:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
-        
+
     - task: DockerInstaller@0
       displayName: Docker Installer
       inputs:
-      dockerVersion: 17.09.0-ce
-      releaseType: stable
+        dockerVersion: 17.09.0-ce
+        releaseType: stable
 
     - script: |
         curl -LO https://github.com/oras-project/oras/releases/download/v0.8.1/oras_0.8.1_darwin_amd64.tar.gz
