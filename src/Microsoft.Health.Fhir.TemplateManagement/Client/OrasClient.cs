@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
@@ -60,9 +61,24 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
         {
             TaskCompletionSource<bool> eventHandled = new TaskCompletionSource<bool>();
 
+            string orasFileName;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                orasFileName = Constants.OrasFileForWindows;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                orasFileName = Constants.OrasFileForOSX;
+                AddOrasFileExecutionPermission();
+            }
+            else
+            {
+                throw new TemplateManagementException("Operation system is not supported");
+            }
+
             Process process = new Process
             {
-                StartInfo = new ProcessStartInfo(Constants.OrasFile),
+                StartInfo = new ProcessStartInfo(orasFileName),
             };
 
             process.StartInfo.Arguments = command;
@@ -95,6 +111,27 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             {
                 throw new OrasException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
             }
+        }
+
+        public static void AddOrasFileExecutionPermission()
+        {
+            var command = $"chmod +x {Constants.OrasFileForOSX}";
+
+            using var process = new Process
+            {
+                StartInfo = new ProcessStartInfo
+                {
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden,
+                    FileName = "/bin/bash",
+                    Arguments = $"-c \"{command}\"",
+                },
+            };
+
+            process.Start();
+            process.WaitForExit();
         }
     }
 }

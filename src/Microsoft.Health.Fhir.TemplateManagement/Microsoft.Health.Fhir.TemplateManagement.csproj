@@ -5,9 +5,22 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>true</IsPackable>
     <NuspecFile>Microsoft.Health.Fhir.Liquid.Converter.nuspec</NuspecFile>
-    <OrasWinUrl>https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_windows_amd64.tar.gz</OrasWinUrl>
+    <OrasVersion>0.8.1</OrasVersion>
+    <OrasWinUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_windows_amd64.tar.gz</OrasWinUrl>
+    <OrasOSXUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_darwin_amd64.tar.gz</OrasOSXUrl>
   </PropertyGroup>
   
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <folder>\</folder>
+    <CopyExecutable>copy</CopyExecutable>
+  </PropertyGroup>
+
+    <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+        <folder>/</folder>
+        <CopyExecutable>cp</CopyExecutable>
+    </PropertyGroup>
+  
+    
   <ItemGroup>
     <PackageReference Include="Ensure.That" Version="9.2.0" />
     <PackageReference Include="Microsoft.Azure.ContainerRegistry" Version="1.0.0-preview.1" />
@@ -40,16 +53,29 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+    
+  <ItemGroup>
+    <None Update="oras-OSX">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="mkdir ..\..\bin &amp; tar -zcvf ../../bin/Hl7v2DefaultTemplates.tar.gz -C ../../data/Templates/Hl7v2 ." />
     <Exec Command="tar -zcvf ../../bin/CcdaDefaultTemplates.tar.gz -C ../../data/Templates/Ccda ." />
   </Target>
   
-  <Target Name="DownloadOrasFile" BeforeTargets="Build">
+  <Target Name="DownloadWinOrasFile" BeforeTargets="Build">
     <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="../../bin">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
     <Exec Command="tar -xvf ..\..\bin\oras_0.8.1_windows_amd64.tar.gz -C ..\..\bin &amp; copy ..\..\bin\oras.exe ." />
+  </Target>
+    
+   <Target Name="DownloadOSXOrasFile" BeforeTargets="Build">
+    <DownloadFile SourceUrl="$(OrasOSXUrl)" DestinationFolder="../../bin">
+      <Output TaskParameter="DownloadedFile" ItemName="Content" />
+    </DownloadFile>
+    <Exec Command="tar -xvf ../../bin/oras_$(OrasVersion)_darwin_amd64.tar.gz -C ../../bin &amp;&amp; copy ..\..\bin\oras .\oras-osx" />
   </Target>
 </Project>
