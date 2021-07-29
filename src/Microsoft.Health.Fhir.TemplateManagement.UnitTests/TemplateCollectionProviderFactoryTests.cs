@@ -39,7 +39,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         public static IEnumerable<object[]> GetDefaultTemplateTarGzFile()
         {
-            yield return new object[] { "NewDefaultTemplates.tar.gz", _defaultTemplateImageReference, Path.Join( "..", "..", "..", "..", "..", "data", "Templates", "Hl7v2") };
+            yield return new object[] { "NewDefaultTemplates.tar.gz", _defaultTemplateImageReference, Path.Join("..", "..", "..", "..", "..", "data", "Templates", "Hl7v2") };
             yield return new object[] { "Hl7v2NewDefaultTemplates.tar.gz", _defaultHl7v2TemplateImageReference, Path.Join("..", "..", "..", "..", "..", "data", "Templates", "Hl7v2") };
             yield return new object[] { "CcdaNewDefaultTemplates.tar.gz", _defaultCcdaTemplateImageReference, Path.Join("..", "..", "..", "..", "..", "data", "Templates", "Ccda") };
         }

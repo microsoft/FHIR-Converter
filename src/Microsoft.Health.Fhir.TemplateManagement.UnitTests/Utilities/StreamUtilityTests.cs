@@ -76,7 +76,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
         [MemberData(nameof(GetFilePathWithDigest))]
         public void GiveAFile_WhenCalculateDigest_ACorrectDigestShouldBeReturned(string filePath, string expectedDigest)
         {
-            var digest = StreamUtility.CalculateDigestFromSha256(Encoding.UTF8.GetBytes(File.ReadAllText(filePath).Replace("\r", string.Empty).Replace("\n",string.Empty)));
+            var digest = StreamUtility.CalculateDigestFromSha256(Encoding.UTF8.GetBytes(File.ReadAllText(filePath).Replace("\r", string.Empty).Replace("\n", string.Empty)));
             Assert.Equal(expectedDigest, digest);
         }
 
