@@ -16,11 +16,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 {
     public class OCIArtifactFunctionalTests : IAsyncLifetime
     {
+        private static readonly string _testTarGzPath = Path.Join("TestData", "TarGzFiles");
         private readonly string _containerRegistryServer;
-        private readonly string _baseLayerTemplatePath = Path.Join("TestData", "TarGzFiles", "layer1.tar.gz");
-        private readonly string _userLayerTemplatePath = Path.Join("TestData", "TarGzFiles", "layer2.tar.gz");
-        private readonly string _emptySequenceNumberLayerPath = Path.Join("TestData", "TarGzFiles", "userV1.tar.gz");
-        private readonly string _invalidCompressedImageLayerPath = Path.Join("TestData", "TarGzFiles", "invalid1.tar.gz");
+        private readonly string _baseLayerTemplatePath = Path.Join(_testTarGzPath, "layer1.tar.gz");
+        private readonly string _userLayerTemplatePath = Path.Join(_testTarGzPath, "layer2.tar.gz");
+        private readonly string _emptySequenceNumberLayerPath = Path.Join(_testTarGzPath, "userV1.tar.gz");
+        private readonly string _invalidCompressedImageLayerPath = Path.Join(_testTarGzPath, "invalid1.tar.gz");
         private readonly string _testOneLayerWithValidSequenceNumberImageReference;
         private readonly string _testOneLayerWithoutSequenceNumberImageReference;
         private readonly string _testOneLayerWithInValidSequenceNumberImageReference;

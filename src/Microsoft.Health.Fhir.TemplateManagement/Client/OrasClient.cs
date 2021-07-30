@@ -111,6 +111,5 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 throw new OrasException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
             }
         }
-
     }
 }
