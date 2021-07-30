@@ -43,8 +43,6 @@ stages:
         command: build
         projects: '$(solution)'
         arguments: '--configuration $(buildConfiguration) -p:Version=$(version)'    
-    
-    - script: chmod +x **/oras*
 
     - task: DotNetCoreCLI@2
       displayName: 'dotnet test'
@@ -188,6 +186,7 @@ stages:
         docker run --rm -d -p 5000:5000 --name registryOSX registry:2
       displayName: start registryOSX
     - script:
+        chmod +x FhirConverterBuild/**/**/oras*
         dotnet test FhirConverterBuild/**/*FunctionalTests.dll
       displayName: Functional Tests
     - task: Docker@2
