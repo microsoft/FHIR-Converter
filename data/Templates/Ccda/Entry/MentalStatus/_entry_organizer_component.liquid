@@ -1,0 +1,9 @@
+{% assign observationId = entry.observation | to_json_string | generate_uuid -%}
+{% include 'Resource/Observation' observationEntry: entry.observation, ID: observationId -%}
+{% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
+{% if entry.observation.author.assignedAuthor -%}
+    {% evaluate practitionerId using 'Utils/GenerateId' obj: entry.observation.author.assignedAuthor -%}
+    {% include 'Resource/Practitioner' practitioner: entry.observation.author.assignedAuthor, ID: practitionerId -%}
+    {% assign fullPractitionerId = practitionerId | prepend: 'Practitioner/' -%}
+    {% include 'Reference/Observation/Performer' ID: observationId, REF: fullPractitionerId -%}
+{% endif -%}

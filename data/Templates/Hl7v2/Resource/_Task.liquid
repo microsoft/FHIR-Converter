@@ -1,0 +1,79 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+Practitioner_ID_ORC_12: A resource Id, used to fill "requester.reference" property. The resource is of "Practitioner" type and generated based on "ORC.12" HL7 V2 identifier.
+Task_Focus_ID: A resource Id, used to fill "focus.reference" property.
+Task_For_ID: A resource Id, used to fill "for.reference" property.
+Task_Encounter_ID: A resource Id, used to fill "encounter.reference" property.
+Task_Owner_ID: A resource Id, used to fill "owner.reference" property.
+Task_Location_ID: A resource Id, used to fill "location.reference" property.
+Task_ReasonReference_ID: A resource Id, used to fill "reasonReference.reference" property.
+{% endcomment -%}
+
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Task",
+        "id":"{{ ID }}",
+        {% if ORC.1 -%}
+            "status":"requested",
+        {% endif -%}
+        {% if ORC.1 -%}
+            "status":"cancelled",
+        {% endif -%}
+        {% if ORC.1 -%}
+            "intent":"order",
+        {% endif -%}
+        "code":
+        {
+            "coding":
+            [
+                {
+                    {% if ORC.1 -%}
+                        "code":"fulfill",
+                    {% endif -%}
+                    {% if ORC.1 -%}
+                        "system":"http://hl7.org/fhir/CodeSystem/task-code",
+                    {% endif -%}
+                },
+            ],
+        },
+        {% include 'DataType/TQTask' TQ: ORC.7 -%}
+        "authoredOn":"{{ ORC.9.Value | format_as_date_time }}",
+        "lastModified":"{{ ORC.9.Value | format_as_date_time }}",
+        "requester":
+        {
+            {% if ORC.12 and Practitioner_ID_ORC_12 -%}
+                "reference":"Practitioner/{{ Practitioner_ID_ORC_12 }}",
+            {% endif -%}
+        },
+        "focus":
+        {
+            "reference":"{{ Task_Focus_ID }}",
+        },
+        "for":
+        {
+            "reference":"{{ Task_For_ID }}",
+        },
+        "encounter":
+        {
+            "reference":"{{ Task_Encounter_ID }}",
+        },
+        "owner":
+        {
+            "reference":"{{ Task_Owner_ID }}",
+        },
+        "location":
+        {
+            "reference":"{{ Task_Location_ID }}",
+        },
+        "reasonReference":
+        {
+            "reference":"{{ Task_ReasonReference_ID }}",
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Task/{{ ID }}",
+    },
+},

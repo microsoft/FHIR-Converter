@@ -1,0 +1,10 @@
+{% assign diagnosticId = entry.organizer | to_json_string | generate_uuid -%}
+{% include 'Resource/DiagnosticReport' diagnosticReport: entry.organizer, ID: diagnosticId -%}
+{% include 'Reference/DiagnosticReport/Subject' ID: diagnosticId, REF: fullPatientId -%}
+{% if entry.organizer.performer -%}
+    {% evaluate practitionerId using 'Utils/GenerateId' obj: entry.organizer.performer.assignedEntity -%}
+    {% include 'Resource/Practitioner' practitioner: entry.organizer.performer.assignedEntity, ID: practitionerId -%}
+    {% assign fullPractitionerId = practitionerId | prepend: 'Practitioner/' -%}
+    {% include 'Reference/DiagnosticReport/Performer' ID: diagnosticId, REF: fullPractitionerId -%}
+{% endif -%}
+{{ entry.organizer.component | to_array | batch_render: 'Entry/Result/entry_organizer_component', 'component' }}

@@ -1,0 +1,37 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = location.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "name":"{{ location.playingEntity.name._ }}",
+        "address":
+        {
+            {% include 'DataType/Address' Address: location.addr -%}
+        },
+        "telecom":
+        [
+            {% assign telecoms = location.telecom | to_array -%}
+            {% for telecom in telecoms -%}
+            { {% include 'DataType/ContactPoint' ContactPoint: telecom -%} },
+            {% endfor -%}
+        ],
+        "type":
+        [
+            {% assign codes = location.code | to_array -%}
+            {% for code in codes -%}
+            { {% include 'DataType/CodeableConcept' CodeableConcept: code -%} },
+            {% endfor -%}
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ ID }}",
+    },
+},

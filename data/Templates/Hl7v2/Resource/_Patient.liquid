@@ -1,0 +1,204 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+Organization_ID_PD1_3: A resource Id, used to fill "generalPractitioner.reference" property. The resource is of "Organization" type and generated based on "PD1.3" HL7 V2 identifier.
+PractitionerRole_ID_PD1_4: A resource Id, used to fill "generalPractitioner.reference" property. The resource is of "PractitionerRole" type and generated based on "PD1.4" HL7 V2 identifier.
+Organization_ID_NK1_13: A resource Id, used to fill "contact.organization.reference" property. The resource is of "Organization" type and generated based on "NK1.13" HL7 V2 identifier.
+Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganization.reference" property.
+{% endcomment -%}
+
+{% evaluate Organization_ID_NK1_13 using 'ID/Organization' XON: NK1.13 -%}
+
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Patient",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {
+                {% include 'DataType/CX' CX: PID.2 -%}
+            },
+            {% for p in PID.3.Repeats -%}
+                {
+                    {% include 'DataType/CX' CX: p -%}
+                },
+            {% endfor -%}
+            {
+                {% include 'DataType/CX' CX: PID.4 -%}
+            },
+            {
+                "value":"{{ PID.19.Value }}",
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            {% if PID.19 -%}
+                                "code":"SS",
+                            {% endif -%}
+                            {% if PID.19 -%}
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                            {% endif -%}
+                        },
+                    ],
+                },
+                {% if PID.19 -%}
+                    "system":"http://hl7.org/fhir/sid/us-ssn",
+                {% endif -%}
+            },
+            {
+                {% include 'DataType/DLN' DLN: PID.20 -%}
+            },
+        ],
+        "name":
+        [
+            {% for p in PID.5.Repeats -%}
+                {
+                    {% include 'DataType/XPN' XPN: p -%}
+                },
+            {% endfor -%}
+            {
+                {% include 'DataType/XPN' XPN: PID.9 -%}
+            },
+        ],
+        "birthDate":"{{ PID.7.Value | add_hyphens_date }}",
+        "gender":"{{ PID.8.Value | get_property: 'CodeSystem/Gender', 'code' }}",
+        "address":
+        [
+            {% for p in PID.11.Repeats -%}
+                {
+                    {% include 'DataType/XAD' XAD: p -%}
+                },
+            {% endfor -%}
+            {
+                "district":"{{ PID.12.Value }}",
+            },
+        ],
+        "telecom":
+        [
+            {% for p in PID.13.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: p -%}
+                    {% if PID.13 -%}
+                        "use":"home",
+                    {% endif -%}
+                },
+            {% endfor -%}
+            {% for p in PID.14.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: p -%}
+                    {% if PID.14 -%}
+                        "use":"work",
+                    {% endif -%}
+                },
+            {% endfor -%}
+            {% for p in PID.40.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: p -%}
+                },
+            {% endfor -%}
+        ],
+        "communication":
+        [
+            {
+                "language":
+                {
+                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Language', CWE: PID.15 -%}
+                },
+                {% if PID.15 -%}
+                    "preferred":true,
+                {% endif -%}
+            },
+        ],
+        "maritalStatus":
+        {
+            {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/MaritalStatus', CWE: PID.16 -%}
+        },
+        {% if PID.25 == null -%}
+            "multipleBirthBoolean":"{{ PID.24.Value | get_property: 'CodeSystem/Yes_No', 'code' }}",
+        {% endif -%}
+        "multipleBirthInteger":"{{ PID.25.Value }}",
+            "deceasedDateTime":"{{ PID.29.Value | format_as_date_time }}",
+        {% if PID.29 == null -%}
+        "deceasedBoolean":"{{ PID.30.Value | get_property: 'CodeSystem/Yes_No', 'code' }}",
+        {% endif -%}
+        "meta":
+        {
+            "lastUpdated":"{{ PID.33.Value | format_as_date_time }}",
+        },
+        "active":"{{ PD1.16.Value | get_property: 'CodeSystem/RegistryStatus', 'code' }}",
+        "generalPractitioner":
+        [
+            {
+                {% if PD1.3 and Organization_ID_PD1_3 -%}
+                    "reference":"Organization/{{ Organization_ID_PD1_3 }}",
+                {% endif -%}
+                {% if PD1.4 and PractitionerRole_ID_PD1_4 -%}
+                    "reference":"PractitionerRole/{{ PractitionerRole_ID_PD1_4 }}",
+                {% endif -%}
+                {% if ROL.4 and PractitionerRole_ID_ROL_4 -%}
+                    "reference":"PractitionerRole/{{ PractitionerRole_ID_ROL_4 }}",
+                {% endif -%}
+            },
+        ],
+        "contact":
+        [
+            {
+                "name":
+                {
+                    {% include 'DataType/XPN' XPN: NK1.2.Repeats[0] -%}
+                },
+                "address":
+                {
+                    {% include 'DataType/XAD' XAD: NK1.4.Repeats[0] -%}
+                },
+                "telecom":
+                [
+                    {% for n in NK1.5.Repeats -%}
+                        {
+                            {% include 'DataType/XTN' XTN: n -%}
+                        },
+                    {% endfor -%}
+                    {
+                        {% include 'DataType/XTN' XTN: NK1.6 -%}
+                    },
+                    {
+                        {% include 'DataType/XTN' XTN: NK1.40 -%}
+                    },
+                    {
+                        {% include 'DataType/XTN' XTN: NK1.41 -%}
+                    },
+                ],
+                "relationship":
+                [
+                    {
+                        {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/ContactRole', CWE: NK1.7 -%}
+                    },
+                ],
+                "period":
+                {
+                    "start":"{{ NK1.8.Value | format_as_date_time }}",
+                    "end":"{{ NK1.9.Value | format_as_date_time }}",
+                },
+                "gender":"{{ NK1.15.Value | get_property: 'CodeSystem/Gender', 'code' }}",
+                "organization":
+                [
+                    {
+                        {% if NK1.13 and Organization_ID_NK1_13 -%}
+                            "reference":"Organization/{{ Organization_ID_NK1_13 }}",
+                        {% endif -%}
+                    },
+                ],
+            },
+        ],
+        "managingOrganization":
+        {
+            "reference":"{{ Patient_ManagingOrganization_ID }}",
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Patient/{{ ID }}",
+    },
+},

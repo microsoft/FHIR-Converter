@@ -1,0 +1,33 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Organization",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = organization.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "name":"{{ organization.name._ }}",
+        "address":
+        [
+            {% assign addrs = organization.addr | to_array -%}
+            {% for addr in addrs -%}
+            { {% include 'DataType/Address' Address: addr -%} },
+            {% endfor -%}
+        ],
+        "telecom":
+        [
+            {% assign telecoms = organization.telecom | to_array -%}
+            {% for telecom in telecoms -%}
+            { {% include 'DataType/ContactPoint' ContactPoint: telecom -%} },
+            {% endfor -%}
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Organization/{{ ID }}",
+    },
+},

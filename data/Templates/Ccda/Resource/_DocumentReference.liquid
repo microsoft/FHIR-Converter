@@ -1,0 +1,29 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "DocumentReference",
+        "id":"{{ ID }}",
+        "type":
+        {
+            {% assign codes = documentReference.ClinicalDocument.code | to_array -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: codes.first -%}
+        },
+        "date":"{{ "" | now }}",
+        "status":"current",
+        "content":
+        [
+            {
+                "attachment":
+                {
+                    "contentType":"text/plain",
+                    "data":"{{ documentReference._originalData | gzip }}",
+                    "hash":"{{ documentReference._originalData | gzip | sha1_hash | base64_encode }}",
+                },
+            },
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"DocumentReference/{{ ID }}",
+    },
+},

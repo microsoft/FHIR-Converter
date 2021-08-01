@@ -1,0 +1,8 @@
+{% assign actId = entry.act | to_json_string | generate_uuid -%}
+{% include 'Resource/ServiceRequest' serviceEntry: entry.act, ID: actId -%}
+{% if entry.act.author.assignedAuthor -%}
+    {% evaluate practitionerId using 'Utils/GenerateId' obj: entry.act.author.assignedAuthor -%}
+    {% include 'Resource/Practitioner' practitioner: entry.act.author.assignedAuthor, ID: practitionerId -%}
+    {% assign fullPractitionerId = practitionerId | prepend: 'Practitioner/' -%}
+    {% include 'Reference/ServiceRequest/Requester' ID: actId, REF: fullPractitionerId -%}
+{% endif -%}

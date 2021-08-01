@@ -1,0 +1,6 @@
+{% if CWE -%}
+    "repeat":
+    {
+        "durationUnit":"{{ CWE.1.Value | get_property: 'CodeSystem/DurationUnit', 'code' }}",
+    },
+{% endif -%}

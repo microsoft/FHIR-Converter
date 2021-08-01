@@ -1,0 +1,25 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Device",
+        "id":"{{ID}}",
+        "identifier":
+  		[
+            {% assign ids = deviceEntry.id | to_array -%}
+            {% for i in ids -%}
+                { {% include 'DataType/Identifier' Identifier: i -%} },
+            {% endfor -%}
+        ],
+		"type":
+        {% if deviceEntry.code -%}
+            { {% include 'DataType/CodeableConcept' CodeableConcept: deviceEntry.code -%} },
+        {% else -%}
+            { {% include 'DataType/CodeableConcept' CodeableConcept: deviceEntry.participant.participantRole.playingDevice.code -%} },
+        {% endif -%}
+        "manufacturer":"{{deviceEntry.participant.participantRole.scopingEntity.desc._}}",
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Device/{{ID}}",
+    },
+},

@@ -1,0 +1,15 @@
+{
+    {% if inCode == 'H' -%}
+    "code" : "home",
+    "display" : "Home",
+    "system" : "",
+    {% elsif inCode == 'BI' -%}
+    "code" : "billing",
+    "display" : "Billing",
+    "system" : "",
+    {% else -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

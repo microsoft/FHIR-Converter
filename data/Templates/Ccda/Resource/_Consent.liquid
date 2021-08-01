@@ -1,0 +1,46 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Consent",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = consentEntry.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "status":"active",
+        "scope":
+        {
+            "coding":
+            [
+                {
+                    "system":"http://terminology.hl7.org/CodeSystem/consentscope",
+                    "code":"{{ consentScope }}",
+                },
+            ],
+        },
+        "category":
+        [
+            {% if consentEntry.code.translation -%}
+            { {% include 'DataType/CodeableConcept' CodeableConcept: consentEntry.code.translation -%} },
+            {% endif -%}
+            {% if consentEntry.code.translation == null -%}
+            { {% include 'DataType/CodeableConcept' CodeableConcept: consentEntry.code -%} },
+            {% endif -%}
+        ],
+        "dateTime":"{{ consentEntry.component.observation.effectiveTime.low.value | format_as_date_time }}",
+        "provision":
+        {
+            "code":
+            [
+                { {% include 'DataType/CodeableConcept' CodeableConcept: consentEntry.component.observation.value -%} },
+            ]
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Consent/{{ ID }}",
+    },
+},

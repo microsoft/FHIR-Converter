@@ -1,0 +1,11 @@
+"use": "{{ Address.use | get_property: 'ValueSet/AddressUse' }}",
+"line": [
+    {% assign lines = Address.streetAddressLine | to_array -%}
+    {% for l in lines -%}
+        "{{l._}}",
+    {% endfor -%}
+],
+"city": "{{Address.city._}}",
+"state": "{{Address.state._}}",
+"country": "{{Address.country._}}",
+"postalCode": "{{Address.postalCode._}}",

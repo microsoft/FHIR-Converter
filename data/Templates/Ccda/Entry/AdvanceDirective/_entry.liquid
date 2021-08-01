@@ -1,0 +1,19 @@
+{% if entry.organizer -%}
+    {% assign organizationId = entry.organizer | to_json_string | generate_uuid -%}
+    {% include 'Resource/Consent' consentScope: 'adr', consentEntry: entry.organizer, ID: organizationId -%}
+    {% include 'Reference/Consent/Patient' ID: organizationId, REF: fullPatientId -%}
+
+    {% if entry.organizer.component.observation.reference -%}
+        {% assign referenceId = entry.organizer.component.observation.reference | to_json_string | generate_uuid -%}
+        {% include 'Resource/DocumentReference2' docref: entry.organizer.component.observation.reference, ID: referenceId -%}
+        {% assign fullReferenceId = referenceId | prepend: 'DocumentReference/' -%}
+        {% include 'Reference/Consent/SourceReference' ID: organizationId, REF: fullReferenceId -%}
+    {% endif -%}
+    
+    {% if entry.organizer.component.observation.author.assignedAuthor -%}
+        {% evaluate practitionerId using 'Utils/GenerateId' obj: entry.organizer.component.observation.author.assignedAuthor -%}
+        {% include 'Resource/Practitioner' practitioner: entry.organizer.component.observation.author.assignedAuthor, ID: practitionerId -%}
+        {% assign fullPractitionerId = practitionerId | prepend: 'Practitioner/' -%}
+        {% include 'Reference/Consent/Performer' ID: organizationId, REF: fullPractitionerId -%}
+    {% endif -%}
+{% endif -%}

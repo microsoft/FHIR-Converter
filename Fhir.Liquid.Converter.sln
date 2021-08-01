@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30413.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Health.Fhir.Liquid.Converter.Tool", "src\Microsoft.Health.Fhir.Liquid.Converter.Tool\Microsoft.Health.Fhir.Liquid.Converter.Tool.csproj", "{A9FCA2DD-E891-407D-BC34-048459D9CF74}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Health.Fhir.Liquid.Converter.UnitTests", "src\Microsoft.Health.Fhir.Liquid.Converter.UnitTests\Microsoft.Health.Fhir.Liquid.Converter.UnitTests.csproj", "{F66C5404-1B1C-4CE2-BE7C-D50E61206350}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests", "src\Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests\Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests.csproj", "{F1614236-0FF4-4F4D-B275-93BFD26DE885}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Health.Fhir.Liquid.Converter", "src\Microsoft.Health.Fhir.Liquid.Converter\Microsoft.Health.Fhir.Liquid.Converter.csproj", "{6FCB4228-CFF3-4857-BA58-ACF487BC7243}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Health.Fhir.TemplateManagement", "src\Microsoft.Health.Fhir.TemplateManagement\Microsoft.Health.Fhir.TemplateManagement.csproj", "{738B67AD-BB94-41B0-88CC-65054891186F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Health.Fhir.TemplateManagement.FunctionalTests", "src\Microsoft.Health.Fhir.TemplateManagement.FunctionalTests\Microsoft.Health.Fhir.TemplateManagement.FunctionalTests.csproj", "{530D0D28-B6AC-4B2F-8B6A-DD77CAB537E6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FB441B10-F38D-40E7-B2B4-D8424DA1D595}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Health.Fhir.TemplateManagement.UnitTests", "src\Microsoft.Health.Fhir.TemplateManagement.UnitTests\Microsoft.Health.Fhir.TemplateManagement.UnitTests.csproj", "{C4049E7B-7977-4691-BE86-4BD7E3E8C401}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9FCA2DD-E891-407D-BC34-048459D9CF74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9FCA2DD-E891-407D-BC34-048459D9CF74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9FCA2DD-E891-407D-BC34-048459D9CF74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9FCA2DD-E891-407D-BC34-048459D9CF74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F66C5404-1B1C-4CE2-BE7C-D50E61206350}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F66C5404-1B1C-4CE2-BE7C-D50E61206350}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F66C5404-1B1C-4CE2-BE7C-D50E61206350}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F66C5404-1B1C-4CE2-BE7C-D50E61206350}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F1614236-0FF4-4F4D-B275-93BFD26DE885}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F1614236-0FF4-4F4D-B275-93BFD26DE885}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F1614236-0FF4-4F4D-B275-93BFD26DE885}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F1614236-0FF4-4F4D-B275-93BFD26DE885}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FCB4228-CFF3-4857-BA58-ACF487BC7243}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FCB4228-CFF3-4857-BA58-ACF487BC7243}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FCB4228-CFF3-4857-BA58-ACF487BC7243}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FCB4228-CFF3-4857-BA58-ACF487BC7243}.Release|Any CPU.Build.0 = Release|Any CPU
+		{738B67AD-BB94-41B0-88CC-65054891186F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{738B67AD-BB94-41B0-88CC-65054891186F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{738B67AD-BB94-41B0-88CC-65054891186F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{738B67AD-BB94-41B0-88CC-65054891186F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{530D0D28-B6AC-4B2F-8B6A-DD77CAB537E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{530D0D28-B6AC-4B2F-8B6A-DD77CAB537E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{530D0D28-B6AC-4B2F-8B6A-DD77CAB537E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{530D0D28-B6AC-4B2F-8B6A-DD77CAB537E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4049E7B-7977-4691-BE86-4BD7E3E8C401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4049E7B-7977-4691-BE86-4BD7E3E8C401}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4049E7B-7977-4691-BE86-4BD7E3E8C401}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4049E7B-7977-4691-BE86-4BD7E3E8C401}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DF59726B-5E9A-43A5-B927-F2ECF15508AC}
+	EndGlobalSection
+EndGlobal

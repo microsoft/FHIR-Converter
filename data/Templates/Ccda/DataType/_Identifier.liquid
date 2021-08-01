@@ -1,0 +1,13 @@
+{% if Identifier.nullFlavor == null -%}
+    {% if Identifier.extension -%}
+        "system":{% include 'ValueSet/SystemReference' code: Identifier.root -%},
+        "value":"{{Identifier.extension}}",
+        "assigner":
+        {
+            "display":"{{Identifier.assigningAuthorityName}}"
+        }
+    {% else -%}
+        "system":"urn:ietf:rfc:3986",
+        "value":"urn:uuid:{{Identifier.root}}",
+    {% endif -%}
+{% endif -%}

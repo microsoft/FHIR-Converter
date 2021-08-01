@@ -1,0 +1,497 @@
+{
+  "Mapping": {
+    "ValueSet/AddressUse": {
+      "HP": {
+        "code": "home"
+      },
+      "H": {
+        "code": "home"
+      },
+      "WP": {
+        "code": "work"
+      },
+      "TMP": {
+        "code": "temp"
+      },
+      "BAD": {
+        "code": "old"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/AllergyCategory": {
+      "416098002": {
+        "code": "medication"
+      },
+      "59037007": {
+        "code": "medication"
+      },
+      "419511003": {
+        "code": "medication"
+      },
+      "414285001": {
+        "code": "food"
+      },
+      "232347008": {
+        "code": "environment"
+      },
+      "420134006": {
+        "code": "other"
+      },
+      "418038007": {
+        "code": "other"
+      },
+      "419199007": {
+        "code": "other"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/AllergySeverity": {
+      "fatal": {
+        "code": "severe"
+      },
+      "moderate to severe": {
+        "code": "severe"
+      },
+      "mild to moderate": {
+        "code": "moderate"
+      },
+      "mild": {
+        "code": "mild"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/AllergyStatus": {
+      "active": {
+        "code": "active"
+      },
+      "aborted": {
+        "code": "resolved"
+      },
+      "completed": {
+        "code": "resolved"
+      },
+      "suspended": {
+        "code": "inactive"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/CompositionStatus": {
+      "draft": {
+        "code": "preliminary"
+      },
+      "preliminary": {
+        "code": "preliminary"
+      },
+      "final": {
+        "code": "final"
+      },
+      "completed": {
+        "code": "final"
+      },
+      "amended": {
+        "code": "amended"
+      },
+      "replaced": {
+        "code": "amended"
+      },
+      "entered-in-error": {
+        "code": "entered-in-error"
+      },
+      "error": {
+        "code": "entered-in-error"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/DiagnosticReportStatus": {
+      "completed": {
+        "code": "final"
+      },
+      "cancelled": {
+        "code": "cancelled"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/EncounterStatus": {
+      "planned": {
+        "code": "planned"
+      },
+      "arrived": {
+        "code": "arrived"
+      },
+      "triaged": {
+        "code": "triaged"
+      },
+      "accepted": {
+        "code": "triaged"
+      },
+      "active": {
+        "code": "in-progress"
+      },
+      "onleave": {
+        "code": "onleave"
+      },
+      "suspended": {
+        "code": "onleave"
+      },
+      "normal": {
+        "code": "finished"
+      },
+      "complete": {
+        "code": "finished"
+      },
+      "finished": {
+        "code": "finished"
+      },
+      "cancelled": {
+        "code": "cancelled"
+      },
+      "abandoned": {
+        "code": "cancelled"
+      },
+      "entered-in-error": {
+        "code": "entered-in-error"
+      },
+      "error": {
+        "code": "entered-in-error"
+      },
+      "unknown": {
+        "code": "unknown"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/EventStatus": {
+      "preparation": {
+        "code": "preparation"
+      },
+      "planned": {
+        "code": "preparation"
+      },
+      "active": {
+        "code": "in-progress"
+      },
+      "in-progress": {
+        "code": "in-progress"
+      },
+      "abandoned": {
+        "code": "not-done"
+      },
+      "not-done": {
+        "code": "not-done"
+      },
+      "suspended": {
+        "code": "on-hold"
+      },
+      "on-hold": {
+        "code": "on-hold"
+      },
+      "failed": {
+        "code": "stopped"
+      },
+      "stopped": {
+        "code": "stopped"
+      },
+      "completed": {
+        "code": "completed"
+      },
+      "complete": {
+        "code": "completed"
+      },
+      "entered-in-error": {
+        "code": "entered-in-error"
+      },
+      "error": {
+        "code": "entered-in-error"
+      },
+      "unknown": {
+        "code": "unknown"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/FMStatus": {
+      "active": {
+        "code": "active"
+      },
+      "cancelled": {
+        "code": "cancelled"
+      },
+      "abandonded": {
+        "code": "cancelled"
+      },
+      "entered-in-error": {
+        "code": "entered-in-error"
+      },
+      "error": {
+        "code": "entered-in-error"
+      },
+      "draft": {
+        "code": "draft"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/Gender": {
+      "F": {
+        "code": "female"
+      },
+      "M": {
+        "code": "male"
+      },
+      "UN": {
+        "code": "unknown"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/ImmunizationStatus": {
+      "cancelled": {
+        "code": "not-done"
+      },
+      "completed": {
+        "code": "completed"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/Language": {
+      "en": {
+        "code": "en",
+        "display": "English"
+      },
+      "eng": {
+        "code": "en",
+        "display": "English"
+      },
+      "en-au": {
+        "code": "en-au",
+        "display": "English (Australia)"
+      },
+      "en-ca": {
+        "code": "en-ca",
+        "display": "English (Canada)"
+      },
+      "en-in": {
+        "code": "en-in",
+        "display": "English (India)"
+      },
+      "en-gb": {
+        "code": "en-gb",
+        "display": "English (Great Britain)"
+      },
+      "en-nz": {
+        "code": "en-nz",
+        "display": "English (New Zeland)"
+      },
+      "en-sg": {
+        "code": "en-sg",
+        "display": "English (Singapore)"
+      },
+      "en-us": {
+        "code": "en-us",
+        "display": "English (United States)"
+      },
+      "es": {
+        "code": "es",
+        "display": "Spanish"
+      },
+      "de": {
+        "code": "de",
+        "display": "German"
+      },
+      "da": {
+        "code": "da",
+        "display": "Danish"
+      },
+      "fr": {
+        "code": "fr",
+        "display": "French"
+      },
+      "it": {
+        "code": "it",
+        "display": "Italian"
+      },
+      "ita": {
+        "code": "it",
+        "display": "Italian"
+      },
+      "spa": {
+        "code": "es",
+        "display": "Spanish"
+      },
+      "__default__": {
+        "code": "",
+        "display": ""
+      }
+    },
+    "ValueSet/MedicationAdministrationStatus": {
+      "aborted": {
+        "code": "stopped"
+      },
+      "active": {
+        "code": "in-progress"
+      },
+      "completed": {
+        "code": "completed"
+      },
+      "suspended": {
+        "code": "on-hold"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/MedicationStatementStatus": {
+      "aborted": {
+        "code": "stopped"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/NameUse": {
+      "C": {
+        "code": "usual"
+      },
+      "L": {
+        "code": "usual"
+      },
+      "P": {
+        "code": "nickname"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/ObservationStatus": {
+      "registered": {
+        "code": "registered"
+      },
+      "received": {
+        "code": "registered"
+      },
+      "preliminary": {
+        "code": "preliminary"
+      },
+      "final": {
+        "code": "final"
+      },
+      "completed": {
+        "code": "final"
+      },
+      "amended": {
+        "code": "amended"
+      },
+      "corrected": {
+        "code": "corrected"
+      },
+      "cancelled": {
+        "code": "cancelled"
+      },
+      "abandoned": {
+        "code": "cancelled"
+      },
+      "entered-in-error": {
+        "code": "entered-in-error"
+      },
+      "error": {
+        "code": "entered-in-error"
+      },
+      "unknown": {
+        "code": "unknown"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/RequestStatus": {
+      "draft": {
+        "code": "draft"
+      },
+      "active": {
+        "code": "active"
+      },
+      "suspended": {
+        "code": "on-hold"
+      },
+      "on-hold": {
+        "code": "on-hold"
+      },
+      "failed": {
+        "code": "revoked"
+      },
+      "revoked": {
+        "code": "revoked"
+      },
+      "completed": {
+        "code": "completed"
+      },
+      "entered-in-error": {
+        "code": "entered-in-error"
+      },
+      "error": {
+        "code": "entered-in-error"
+      },
+      "unknown": {
+        "code": "unknown"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/ServiceRequestPriority": {
+      "A": {
+        "code": "asap"
+      },
+      "EM": {
+        "code": "stat"
+      },
+      "R": {
+        "code": "routine"
+      },
+      "__default__": {
+        "code": ""
+      }
+    },
+    "ValueSet/TelecomUse": {
+      "HP": {
+        "code": "home"
+      },
+      "H": {
+        "code": "home"
+      },
+      "WP": {
+        "code": "work"
+      },
+      "TMP": {
+        "code": "temp"
+      },
+      "BAD": {
+        "code": "old"
+      },
+      "MC": {
+        "code": "mobile"
+      },
+      "__default__": {
+        "code": ""
+      }
+    }
+  }
+}

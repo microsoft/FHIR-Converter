@@ -1,0 +1,16 @@
+{% case code -%}
+    {% when "active" -%}
+        "active",
+    {% when "cancelled" -%}
+        "cancelled",
+    {% when "abandonded" -%}
+        "cancelled",
+    {% when "entered-in-error" -%}
+        "entered-in-error",
+    {% when "error" -%}
+        "entered-in-error",
+    {% when "draft" -%}
+        "draft",
+    {% else -%}
+        "",
+{% endcase -%}

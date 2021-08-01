@@ -1,0 +1,10 @@
+{% case code -%}
+    {% when "F" -%}
+        "female",
+    {% when "M" -%}
+        "male",
+    {% when "UN" -%}
+        "unknown",
+    {% else -%}
+        "",
+{% endcase -%}

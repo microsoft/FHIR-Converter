@@ -1,0 +1,18 @@
+{% assign procedureId = entry.procedure | to_json_string | generate_uuid -%}
+{% if entry.procedure -%}
+    {% include 'Resource/Procedure' procedureEntry: entry.procedure, ID: procedureId -%}
+    {% include 'Reference/Procedure/Subject' ID: procedureId, REF: fullPatientId -%}
+{% endif -%}
+
+{% if entry.procedure.performer.assignedEntity.representedOrganization.name._ -%}
+    {% assign organizationId = entry.procedure.performer.assignedEntity.representedOrganization | to_json_string | generate_uuid -%}
+    {% include 'Resource/Organization' organization: entry.procedure.performer.assignedEntity.representedOrganization, ID: organizationId -%}
+    {% assign fullOrganizationId = organizationId | prepend: 'Organization/' -%}
+    {% include 'Reference/Procedure/Performer_Actor' ID: procedureId, REF: fullOrganizationId -%}
+{% endif -%}
+
+{% if entry.observation -%}
+    {% assign observationId = entry.observation | to_json_string | generate_uuid -%}
+    {% include 'Resource/Observation' observationCategory: "procedure", observationEntry: entry.observation, ID: observationId -%}
+    {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
+{% endif -%}

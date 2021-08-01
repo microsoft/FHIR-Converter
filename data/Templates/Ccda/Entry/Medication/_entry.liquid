@@ -1,0 +1,18 @@
+{% if entry.substanceAdministration -%}
+    {% assign medicationStatementId = entry.substanceAdministration | to_json_string | generate_uuid -%}
+    {% include 'Resource/MedicationStatement' medicationStatement: entry.substanceAdministration, ID: medicationStatementId -%}
+    {% include 'Reference/MedicationStatement/Subject' ID: medicationStatementId, REF: fullPatientId -%}
+{% endif -%}
+
+{% if entry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial -%}
+    {% assign medicationId = entry.substanceAdministration.consumable | to_json_string | generate_uuid -%}
+    {% include 'Resource/Medication' medication: entry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial, ID: medicationId -%}
+    {% assign fullMedicationId = medicationId | prepend: 'Medication/' -%}
+    {% include 'Reference/MedicationStatement/MedicationReference' ID: medicationStatementId, REF: fullMedicationId -%}
+    {{ entry.substanceAdministration.entryRelationship | to_array | batch_render: 'Entry/Medication/entry_substanceAdministration_entryRelationship', 'relationship' }}
+{% endif -%}
+
+{% if entry.substanceAdministration.informant.assignedEntity.representedOrganization.name._ -%}
+    {% assign organizationId = entry.substanceAdministration.informant.assignedEntity.representedOrganization | to_json_string | generate_uuid -%}
+    {% include 'Resource/Organization' organization: entry.substanceAdministration.informant.assignedEntity.representedOrganization ID: organizationId -%}
+{% endif -%}

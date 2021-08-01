@@ -1,0 +1,26 @@
+{% if TQ -%}
+    "quantityQuantity":
+    {
+        "value":"{{ TQ.1.1 }}",
+    },
+    "occurrenceTiming":
+    {
+        {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+        "code":
+        {
+        },
+        "repeat":
+        {
+            "timeOfDay":
+            [
+                "{{ TQ.2.2 }}",
+            ],
+            "boundsPeriod":
+            {
+                "start":"{{ TQ.4.Value | format_as_date_time }}",
+                "end":"{{ TQ.5.Value | format_as_date_time }}",
+            },
+            "count":"{{ TQ.12.Value }}",
+        },
+    },
+{% endif -%}

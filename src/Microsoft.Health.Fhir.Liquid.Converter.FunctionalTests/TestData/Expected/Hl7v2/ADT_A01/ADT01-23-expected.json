@@ -1,0 +1,472 @@
+{
+  "resourceType": "Bundle",
+  "type": "batch",
+  "timestamp": "2005-01-10T04:55:04",
+  "identifier": {
+    "value": "599102"
+  },
+  "entry": [
+    {
+      "fullUrl": "urn:uuid:d3171c25-5db7-e705-140c-19d0972f1ba2",
+      "resource": {
+        "resourceType": "MessageHeader",
+        "id": "d3171c25-5db7-e705-140c-19d0972f1ba2",
+        "source": {
+          "name": "AccMgr"
+        },
+        "meta": {
+          "tag": [
+            {
+              "code": "P",
+              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
+            }
+          ]
+        },
+        "eventCoding": {
+          "code": "A01",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "MessageHeader/d3171c25-5db7-e705-140c-19d0972f1ba2"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:bab5ca58-f272-4c06-4b3f-f9661e45a22b",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "bab5ca58-f272-4c06-4b3f-f9661e45a22b",
+        "identifier": [
+          {
+            "value": "10006579",
+            "type": {
+              "coding": [
+                {
+                  "code": "MR",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            }
+          },
+          {
+            "value": "123121234",
+            "type": {
+              "coding": [
+                {
+                  "code": "SS",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            },
+            "system": "http://hl7.org/fhir/sid/us-ssn"
+          }
+        ],
+        "name": [
+          {
+            "family": "DUCK",
+            "given": [
+              "DONALD",
+              "D"
+            ]
+          }
+        ],
+        "birthDate": "1924-10-10",
+        "gender": "male",
+        "address": [
+          {
+            "line": [
+              "111 DUCK ST"
+            ],
+            "city": "FOWL",
+            "state": "CA",
+            "postalCode": "999990000",
+            "type": "postal"
+          },
+          {
+            "district": "1"
+          }
+        ],
+        "telecom": [
+          {
+            "value": "8885551212",
+            "use": "home"
+          },
+          {
+            "value": "8885551212",
+            "use": "work"
+          }
+        ],
+        "communication": [
+          {
+            "language": {
+              "coding": [
+                {
+                  "code": "1",
+                  "display": "1"
+                }
+              ]
+            },
+            "preferred": true
+          }
+        ],
+        "maritalStatus": {
+          "coding": [
+            {
+              "code": "2",
+              "display": "2"
+            }
+          ]
+        },
+        "deceasedBoolean": "false",
+        "contact": [
+          {
+            "name": {
+              "family": "DUCK",
+              "given": [
+                "HUEY"
+              ]
+            },
+            "address": {
+              "line": [
+                "3583 DUCK RD"
+              ],
+              "city": "FOWL",
+              "state": "CA",
+              "postalCode": "999990000"
+            },
+            "telecom": [
+              {
+                "value": "8885552222"
+              }
+            ],
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "code": "Y",
+                    "display": "Y"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b065b233-8738-f1ec-1314-d61e4aac2c9e",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "b065b233-8738-f1ec-1314-d61e4aac2c9e"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/b065b233-8738-f1ec-1314-d61e4aac2c9e"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:f70a39cb-cf13-6f75-885d-cf691752c711",
+      "resource": {
+        "resourceType": "Account",
+        "id": "f70a39cb-cf13-6f75-885d-cf691752c711",
+        "identifier": [
+          {
+            "value": "40007716",
+            "type": {
+              "coding": [
+                {
+                  "code": "VN",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ]
+            }
+          }
+        ],
+        "subject": [
+          {
+            "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Account/f70a39cb-cf13-6f75-885d-cf691752c711"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:9b2956e2-230b-9dd5-ad8d-0e697a8664c1",
+      "resource": {
+        "resourceType": "Location",
+        "id": "9b2956e2-230b-9dd5-ad8d-0e697a8664c1",
+        "mode": "instance",
+        "physicalType": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/location-physical-type"
+            }
+          ]
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/9b2956e2-230b-9dd5-ad8d-0e697a8664c1"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b5aae309-4caf-c2cd-b087-0fd6db6dd058",
+      "resource": {
+        "resourceType": "Provenance",
+        "id": "b5aae309-4caf-c2cd-b087-0fd6db6dd058",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on GENERATED_INSTANT_PLACEHOLDER using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: TEMPLATE_URL_PLACEHOLDER.</span><span>Root template: ADT_A01.</span></p></div>"
+        },
+        "agent": [
+          {
+            "type": {
+              "coding": [
+                {
+                  "code": "author",
+                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
+                }
+              ]
+            }
+          }
+        ],
+        "recorded": "2005-01-10T04:55:04"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Provenance/b5aae309-4caf-c2cd-b087-0fd6db6dd058"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:984ec8bc-49c4-56fe-100c-942e6c5a6e3c",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "984ec8bc-49c4-56fe-100c-942e6c5a6e3c",
+        "class": {
+          "code": "IMP",
+          "display": "inpatient encounter",
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+        },
+        "status": "unknown",
+        "location": [
+          {
+            "status": "active",
+            "location": {
+              "reference": "Location/9b2956e2-230b-9dd5-ad8d-0e697a8664c1"
+            }
+          }
+        ],
+        "type": [
+          {
+            "coding": [
+              {
+                "code": "3",
+                "display": "3"
+              }
+            ]
+          }
+        ],
+        "hospitalization": {
+          "admitSource": {
+            "coding": [
+              {
+                "code": "1"
+              }
+            ]
+          }
+        },
+        "participant": [
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ATND",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                    "display": "attender"
+                  }
+                ]
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/b065b233-8738-f1ec-1314-d61e4aac2c9e"
+            }
+          },
+          {
+            "type": [
+              {
+                "coding": [
+                  {
+                    "code": "ADM",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+                  }
+                ],
+                "text": "admitter"
+              }
+            ],
+            "individual": {
+              "reference": "Practitioner/b065b233-8738-f1ec-1314-d61e4aac2c9e"
+            }
+          }
+        ],
+        "serviceType": {
+          "coding": [
+            {
+              "code": "01"
+            }
+          ]
+        },
+        "identifier": [
+          {
+            "value": "40007716",
+            "type": {
+              "coding": [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                }
+              ],
+              "text": "visit number"
+            }
+          },
+          {
+            "value": " "
+          }
+        ],
+        "period": {
+          "start": "2005-01-10T04:52:53"
+        },
+        "subject": {
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
+        },
+        "diagnosis": [
+          {
+            "condition": {
+              "reference": "Condition/fd373c0d-5aa8-e1f7-177c-77127280b897"
+            }
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/984ec8bc-49c4-56fe-100c-942e6c5a6e3c"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:b8e7e176-84c6-7e2d-d422-a69df56229d8",
+      "resource": {
+        "resourceType": "RelatedPerson",
+        "id": "b8e7e176-84c6-7e2d-d422-a69df56229d8",
+        "relationship": [
+          {
+            "coding": [
+              {
+                "code": "SO",
+                "display": "SO"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "Y",
+                "display": "Y"
+              }
+            ]
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "3583 DUCK RD"
+            ],
+            "city": "FOWL",
+            "state": "CA",
+            "postalCode": "999990000"
+          }
+        ],
+        "telecom": [
+          {
+            "value": "8885552222"
+          }
+        ],
+        "name": [
+          {
+            "family": "DUCK",
+            "given": [
+              "HUEY"
+            ]
+          }
+        ],
+        "patient": {
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "RelatedPerson/b8e7e176-84c6-7e2d-d422-a69df56229d8"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:fd373c0d-5aa8-e1f7-177c-77127280b897",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "fd373c0d-5aa8-e1f7-177c-77127280b897",
+        "code": {
+          "coding": [
+            {
+              "code": "71596",
+              "display": "OSTEOARTHROS NOS-L/LEG ",
+              "system": "I9"
+            }
+          ],
+          "text": "OSTEOARTHROS NOS-L/LEG "
+        },
+        "subject": {
+          "reference": "Patient/bab5ca58-f272-4c06-4b3f-f9661e45a22b"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Condition/fd373c0d-5aa8-e1f7-177c-77127280b897"
+      }
+    }
+  ]
+}

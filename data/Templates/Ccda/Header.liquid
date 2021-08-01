@@ -1,0 +1,65 @@
+{% evaluate practitionerId using 'Utils/GenerateId' obj: msg.ClinicalDocument.legalAuthenticator.assignedEntity -%}
+{% assign compositionId = msg.ClinicalDocument | to_json_string | generate_uuid -%}
+{% include 'Resource/Composition' composition: msg.ClinicalDocument, practitionerId: practitionerId, ID: compositionId -%}
+{% include 'Reference/Composition/Subject' ID: compositionId, REF: fullPatientId -%}
+
+{% if msg.ClinicalDocument.legalAuthenticator -%}
+    {% include 'Resource/Practitioner' practitioner: msg.ClinicalDocument.legalAuthenticator.assignedEntity ID: practitionerId -%}
+{% endif -%}
+
+{% if msg.ClinicalDocument.componentOf.encompassingEncounter -%}
+    {% assign encounterId = msg.ClinicalDocument.componentOf.encompassingEncounter | to_json_string | generate_uuid -%}
+    {% include 'Resource/Encounter' encounter: msg.ClinicalDocument.componentOf.encompassingEncounter ID: encounterId -%}
+    {% assign fullEncounterId = encounterId | prepend: 'Encounter/' -%}
+    {% include 'Reference/Composition/Encounter' ID: compositionId, REF: fullEncounterId -%}
+    {% if msg.ClinicalDocument.componentOf.encompassingEncounter.location -%}
+        {% assign locationId = msg.ClinicalDocument.componentOf.encompassingEncounter.location | to_json_string | generate_uuid -%}
+        {% include 'Resource/Location' location: msg.ClinicalDocument.componentOf.encompassingEncounter.location ID: locationId -%}
+        {% assign fullLocationId = locationId | prepend: 'Location/' -%}
+        {% include 'Reference/Encounter/Location_Location' ID: encounterId, REF: fullLocationId -%}
+    {% endif -%}
+{% endif -%}
+
+{% if msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization.name._ -%}
+    {% assign organizationId = msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization | to_json_string | generate_uuid -%}
+    {% include 'Resource/Organization' organization: msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization ID: organizationId -%}
+    {% assign fullOrganizationId = organizationId | prepend: 'Organization/' -%}
+    {% include 'Reference/Composition/Custodian' ID: compositionId, REF: fullOrganizationId -%}
+{% endif -%}
+
+{% assign authors = msg.ClinicalDocument.author | to_array -%}
+{% for author in authors -%}
+    {% if author.assignedAuthor.assignedAuthoringDevice -%}
+        {% assign deviceId = author | to_json_string | generate_uuid -%}
+        {% include 'Resource/Device' author: author.assignedAuthor ID: deviceId -%}
+        {% assign fullDeviceId = deviceId | prepend: 'Device/' -%}
+        {% include 'Reference/Composition/Author' ID: compositionId, REF: fullDeviceId -%}
+    {% endif -%}
+
+    {% if author.assignedAuthor.representedOrganization -%}
+        {% assign organizationId = author.assignedAuthor.representedOrganization | to_json_string | generate_uuid -%}
+        {% include 'Resource/Organization' organization: author.assignedAuthor.representedOrganization ID: organizationId -%}
+        {% assign fullOrganizationId = organizationId | prepend: 'Organization/' -%}
+        {% if deviceId -%}
+            {% include 'Reference/Device/Owner' ID: deviceId, REF: fullOrganizationId -%}
+        {% endif -%}
+    {% endif -%}
+
+    {% if author.assignedAuthor.assignedPerson -%}
+        {% evaluate practitionerId using 'Utils/GenerateId' obj: author.assignedAuthor -%}
+        {% include 'Resource/Practitioner' practitioner: author.assignedAuthor ID: practitionerId -%}
+        {% assign fullPractitionerId = practitionerId | prepend: 'Practitioner/' -%}
+        {% include 'Reference/Composition/Author' ID: compositionId, REF: fullPractitionerId -%}
+    {% endif -%}
+{% endfor -%}
+
+{% if msg.ClinicalDocument.recordTarget.patientRole -%}
+    {% include 'Resource/Patient' patientRole: msg.ClinicalDocument.recordTarget.patientRole ID: patientId -%}
+{% endif -%}
+
+{% if msg.ClinicalDocument.recordTarget.patientRole.patient.guardian -%}
+    {% assign relatedPersonId = msg.ClinicalDocument.recordTarget.patientRole.patient.guardian | to_json_string | generate_uuid -%}
+    {% include 'Resource/RelatedPerson' relatedPerson: msg.ClinicalDocument.recordTarget.patientRole.patient.guardian ID: relatedPersonId -%}
+    {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
+    {% include 'Reference/RelatedPerson/Patient' ID: relatedPersonId, REF: fullPatientId -%}
+{% endif -%}

@@ -1,0 +1,5 @@
+{% assign observationId = entry.observation | to_json_string | generate_uuid -%}
+{% include 'Resource/Observation' observationEntry: entry.observation, ID: observationId -%}
+{% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
+
+{{ entry.observation.entryRelationship | to_array | batch_render: 'Entry/Nutrition/entry_observation_entryRelationship', 'entry' }}

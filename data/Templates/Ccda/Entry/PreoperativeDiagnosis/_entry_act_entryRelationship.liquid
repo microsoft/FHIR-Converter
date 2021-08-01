@@ -1,0 +1,5 @@
+{% if condEntry.observation -%}
+    {% assign observationId = condEntry.observation | to_json_string | generate_uuid -%}
+    {% include 'Resource/Condition' conditionEntry: condEntry.observation, ID: observationId -%}
+    {% include 'Reference/Condition/Subject' ID: observationId, REF: fullPatientId -%}
+{% endif -%}

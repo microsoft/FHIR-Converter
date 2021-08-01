@@ -1,0 +1,7 @@
+{% if entryRelationship.observation -%}
+    {% assign observationId = entryRelationship.observation | to_json_string | generate_uuid -%}
+    {% include 'Resource/Condition' conditionEntry: entryRelationship.observation, ID: observationId -%}
+    {% include 'Reference/Condition/Subject' ID: observationId, REF: fullPatientId -%}
+    {% assign fullObservationId = observationId | prepend: 'Condition/' -%}
+    {% include 'Reference/Encounter/Diagnosis_Condition' ID: encounterId, -%}
+{% endif -%}

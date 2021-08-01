@@ -1,0 +1,49 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Encounter",
+        "id":"{{ ID }}",
+        {% if encounter.statusCode.code -%}
+        "status":"{{ encounter.statusCode.code | get_property: 'ValueSet/EncounterStatus' }}",
+        {% endif -%}
+        {% if encounter.statusCode.code == null -%}
+        "status":"unknown",
+        {% endif -%}
+        "class":
+        {
+            {% assign translations = encounter.code.translation | to_array -%}
+            {% if translations.first -%}
+            {% include 'DataType/Coding' Coding: translations.first -%}
+            {% endif -%}
+            {% if translations.first == null -%}
+            {% include 'DataType/Coding' Coding: encounter.code -%}
+            {% endif -%}
+        },
+        "identifier":
+        [
+            {% assign ids = encounter.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "period":
+        {
+            {% include 'DataType/Period' Period: encounter.effectiveTime -%}
+        },
+        "priority":
+        {
+            {% include 'DataType/CodeableConcept' CodeableConcept: encounter.priorityCode -%}
+        },
+        "hospitalization":
+        {
+            "dischargeDisposition":
+            {
+                {% include 'DataType/CodeableConcept' CodeableConcept: encounter.dischargeDispositionCode -%}
+            },
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Encounter/{{ ID }}",
+    },
+},
