@@ -1,3 +1,0 @@
-    {% assign actId = entry.act | to_json_string | generate_uuid -%}
-    {% include 'Resource/Communication' communicationEntry: entry.act, ID: actId -%}
-    {$ include 'Reference/Communication/Subject' ID: actId, REF: fullPatientId -$}

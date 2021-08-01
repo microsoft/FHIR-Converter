@@ -1,3 +1,0 @@
-{% assign organizationId = entry.organizer | to_json_string | generate_uuid -%}
-{% include 'Resource/FamilyMemberHistory' familyEntry: entry.organizer ID: organizationId -%}
-{% include 'Reference/FamilyMemberHistory/Patient' ID: organizationId, REF:fullPatientId -%}

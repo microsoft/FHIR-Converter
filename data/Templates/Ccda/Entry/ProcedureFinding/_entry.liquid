@@ -1,3 +1,0 @@
-{% assign observationId = entry.observation | to_json_string | generate_uuid -%}
-{% include 'Resource/Condition' conditionEntry: entry.observation, ID: observationId -%}
-{% include 'Reference/Condition/Subject' ID: observationId, REF: fullPatientId -%}
