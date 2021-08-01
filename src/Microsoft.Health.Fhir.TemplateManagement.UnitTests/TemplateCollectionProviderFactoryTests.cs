@@ -18,7 +18,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 {
     public class TemplateCollectionProviderFactoryTests
     {
-        private static readonly string _testTemplatesPath = Path.Join("..", "..", "..", "..", "..", "data", "Templates");
         private readonly TemplateCollectionConfiguration _config = new TemplateCollectionConfiguration();
         private readonly string _token = "Basic FakeToken";
         private readonly IMemoryCache _cache = new MemoryCache(new MemoryCacheOptions() { SizeLimit = 100000000 });
@@ -40,9 +39,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         public static IEnumerable<object[]> GetDefaultTemplateTarGzFile()
         {
-            yield return new object[] { "NewDefaultTemplates.tar.gz", _defaultTemplateImageReference, Path.Join(_testTemplatesPath, "Hl7v2") };
-            yield return new object[] { "Hl7v2NewDefaultTemplates.tar.gz", _defaultHl7v2TemplateImageReference, Path.Join(_testTemplatesPath, "Hl7v2") };
-            yield return new object[] { "CcdaNewDefaultTemplates.tar.gz", _defaultCcdaTemplateImageReference, Path.Join(_testTemplatesPath, "Ccda") };
+            yield return new object[] { "NewDefaultTemplates.tar.gz", _defaultTemplateImageReference, Path.Join("..", "..", "..", "..", "..", "data", "Templates", "Hl7v2") };
+            yield return new object[] { "Hl7v2NewDefaultTemplates.tar.gz", _defaultHl7v2TemplateImageReference, Path.Join("..", "..", "..", "..", "..", "data", "Templates", "Hl7v2") };
+            yield return new object[] { "CcdaNewDefaultTemplates.tar.gz", _defaultCcdaTemplateImageReference, Path.Join("..", "..", "..", "..", "..", "data", "Templates", "Ccda") };
         }
 
         public static IEnumerable<object[]> GetDefaultImageReference()
