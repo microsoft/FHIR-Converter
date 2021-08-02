@@ -195,7 +195,7 @@ stages:
     - script: |
         docker run --rm -d -p 5000:5000 --name registryOSX registry:2
       displayName: start registryOSX
-    - script:
+    - script: |
         chmod +x FhirConverterBuild/**/**/oras*
         dotnet test FhirConverterBuild/**/*Tests.dll
       displayName: Unit Tests And Functional Tests
