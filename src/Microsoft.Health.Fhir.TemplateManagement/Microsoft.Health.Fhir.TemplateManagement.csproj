@@ -11,16 +11,17 @@
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
-    <folder>\</folder>
+    <BinFolder>..\..\bin</BinFolder>
+    <BinFolderPath>..\..\bin\</BinFolderPath>
     <CopyExecutable>copy</CopyExecutable>
   </PropertyGroup>
 
-    <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
-        <folder>/</folder>
-        <CopyExecutable>cp</CopyExecutable>
-    </PropertyGroup>
-  
-    
+  <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+    <BinFolder>../../bin</BinFolder>
+    <BinFolderPath>../../bin/</BinFolderPath>
+    <CopyExecutable>cp</CopyExecutable>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Ensure.That" Version="9.2.0" />
     <PackageReference Include="Microsoft.Azure.ContainerRegistry" Version="1.0.0-preview.1" />
@@ -69,13 +70,13 @@
     <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="../../bin">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
-    <Exec Command="tar -xvf ..\..\bin\oras_0.8.1_windows_amd64.tar.gz -C ..\..\bin &amp; $(CopyExecutable) ..\..\bin\oras.exe ." />
+    <Exec Command="tar -xvf $(BinFolderPath)oras_0.8.1_windows_amd64.tar.gz -C $(BinFolder) &amp; $(CopyExecutable) $(BinFolderPath)oras.exe ." />
   </Target>
     
    <Target Name="DownloadOSXOrasFile" BeforeTargets="Build">
     <DownloadFile SourceUrl="$(OrasOSXUrl)" DestinationFolder="../../bin">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
-    <Exec Command="tar -xvf ../../bin/oras_$(OrasVersion)_darwin_amd64.tar.gz -C ../../bin &amp;&amp; $(CopyExecutable) ..\..\bin\oras .\oras-osx" />
+    <Exec Command="tar -xvf $(BinFolderPath)oras_$(OrasVersion)_darwin_amd64.tar.gz -C $(BinFolder) &amp;&amp; $(CopyExecutable) $(BinFolderPath)oras oras-osx" />
   </Target>
 </Project>
