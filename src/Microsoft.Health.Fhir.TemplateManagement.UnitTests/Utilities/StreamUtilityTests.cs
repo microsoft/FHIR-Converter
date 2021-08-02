@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using ICSharpCode.SharpZipLib.GZip;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Xunit;
@@ -74,7 +73,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
 
         [Theory]
         [MemberData(nameof(GetFilePathWithDigest))]
-        public void GiveAFile_WhenCalculateDigest_ACorrectDigestShouldBeReturned(string filePath, string expectedDigest)
+        public void GiveFileContent_WhenCalculateDigest_ACorrectDigestShouldBeReturned(string filePath, string expectedDigest)
         {
             var digest = StreamUtility.CalculateDigestFromSha256(Encoding.UTF8.GetBytes(File.ReadAllText(filePath).Replace("\r", string.Empty).Replace("\n", string.Empty)));
             Assert.Equal(expectedDigest, digest);

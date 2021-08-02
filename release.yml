@@ -53,11 +53,11 @@ stages:
         nobuild: true
  
     - task: DotNetCoreCLI@2
-      displayName: 'publish win_x64 bin'
+      displayName: 'publish bin'
       inputs:
         command: 'publish'
         projects: '$(publishProject)'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/win_x64 --runtime win-x64'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/publish'
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: false
@@ -78,16 +78,6 @@ stages:
         command: 'publish'
         projects: '$(functionalTests)'
         arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/functionalTests'
-        nobuild: true
-        publishWebProjects: false
-        zipAfterPublish: false
-
-    - task: DotNetCoreCLI@2
-      displayName: 'publish unit tests'
-      inputs:
-        command: 'publish'
-        projects: '$(unitTestProjects)'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/unitTests'
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: false
@@ -148,7 +138,7 @@ stages:
 
 - stage: FunctionalTests
   jobs:
-  - job: Windows_Test
+  - job: Windows_Functional_Test
     pool:
         vmImage: 'windows-latest'
     continueOnError: true
@@ -173,8 +163,8 @@ stages:
     #   displayName: test push
 
     - script: |
-        dotnet test FhirConverterBuild/**/*Tests.dll
-      displayName: Unit Tests And Functional Tests
+        dotnet test FhirConverterBuild/**/*FunctionalTests.dll
+      displayName: Functional Tests
     - task: Docker@2
       displayName: stop registry
       condition: succeededOrFailed()
@@ -182,7 +172,7 @@ stages:
         command: stop
         container: registry
   
-  - job: OSX_Test
+  - job: OSX_Functional_Test
     pool: CompassMacHosted
     continueOnError: true
     steps:
@@ -197,8 +187,8 @@ stages:
       displayName: start registryOSX
     - script: |
         chmod +x FhirConverterBuild/**/**/oras*
-        dotnet test FhirConverterBuild/**/*Tests.dll
-      displayName: Unit Tests And Functional Tests
+        dotnet test FhirConverterBuild/**/*FunctionalTests.dll
+      displayName: Functional Tests
     - task: Docker@2
       displayName: stop registryOSX
       condition: succeededOrFailed()
