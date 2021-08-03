@@ -67,7 +67,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         [Fact]
         public void GzipTest()
         {
-            // Operation system related function.
+            // Gzip function is operation system related.
             Assert.True(string.Equals("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA=", Filters.Gzip("uncompressed"))
                 || string.Equals("H4sIAAAAAAAAEyvNS87PLShKLS5OTQEA3a5CsQwAAAA=", Filters.Gzip("uncompressed")));
             Assert.Equal("uncompressed", Filters.GunzipBase64String(Filters.Gzip("uncompressed")));
@@ -79,6 +79,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         [Fact]
         public void GunzipBase64StringTest()
         {
+            // Different base64string will be decompressed to the same result.
             Assert.Equal("uncompressed", Filters.GunzipBase64String("H4sIAAAAAAAAEyvNS87PLShKLS5OTQEA3a5CsQwAAAA="));
             Assert.Equal("uncompressed", Filters.GunzipBase64String("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA="));
             Assert.Equal(string.Empty, Filters.GunzipBase64String(string.Empty));

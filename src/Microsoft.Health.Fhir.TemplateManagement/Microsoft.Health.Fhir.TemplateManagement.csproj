@@ -11,16 +11,16 @@
   </PropertyGroup>
   
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
-      <SolutionFolder>..\..\</SolutionFolder>
-      <DataFolder>$(SolutionFolder)data\</DataFolder>
-      <BinFolder>$(SolutionFolder)bin\</BinFolder>
+    <SolutionFolder>..\..\</SolutionFolder>
+    <DataFolder>$(SolutionFolder)data\</DataFolder>
+    <BinFolder>$(SolutionFolder)bin\</BinFolder>
     <CopyExecutable>copy</CopyExecutable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
-      <SolutionFolder>../../</SolutionFolder>
-      <DataFolder>$(SolutionFolder)data/</DataFolder>
-      <BinFolder>$(SolutionFolder)bin/</BinFolder>
+    <SolutionFolder>../../</SolutionFolder>
+    <DataFolder>$(SolutionFolder)data/</DataFolder>
+    <BinFolder>$(SolutionFolder)bin/</BinFolder>
     <CopyExecutable>cp</CopyExecutable>
   </PropertyGroup>
 
@@ -38,9 +38,9 @@
     <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
   </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\Microsoft.Health.Fhir.Liquid.Converter\Microsoft.Health.Fhir.Liquid.Converter.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Health.Fhir.Liquid.Converter\Microsoft.Health.Fhir.Liquid.Converter.csproj" />
+  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="$(BinFolder)Hl7v2DefaultTemplates.tar.gz">
@@ -72,10 +72,10 @@
     <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="$(BinFolder)">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
-    <Exec Command="tar -xvf $(BinFolder)oras_0.8.1_windows_amd64.tar.gz -C $(BinFolder) &amp; $(CopyExecutable) $(BinFolder)oras.exe ." />
+    <Exec Command="tar -xvf $(BinFolder)oras_$(OrasVersion)_windows_amd64.tar.gz -C $(BinFolder) &amp; $(CopyExecutable) $(BinFolder)oras.exe ." />
   </Target>
     
-   <Target Name="DownloadOSXOrasFile" BeforeTargets="Build">
+  <Target Name="DownloadOSXOrasFile" BeforeTargets="Build">
     <DownloadFile SourceUrl="$(OrasOSXUrl)" DestinationFolder="$(BinFolder)">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
