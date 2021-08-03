@@ -132,7 +132,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         [Fact]
         public void GivenAOCIFileLayer_WhenGenerateDiffOCIFileLayer_IfBaseLayerFolderIsEmptyOrNull_ABaseOCIFileLayerShouldBeReturned()
         {
-            var overlayFs = new OverlayFileSystem("TestData/MockUserFolder");
+            var overlayFs = new OverlayFileSystem("TestData/UserFolder");
             var fileLayer = overlayFs.ReadMergedOCIFileLayer();
             var diffLayers = _overlayOperator.GenerateDiffLayer(fileLayer, null);
             Assert.Equal(6, diffLayers.FileContent.Count());
@@ -142,15 +142,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         [Fact]
         public void GivenAOCIFileLayer_WhenGenerateDiffOCIFileLayerWithSnapshot_ADiffOCIFileLayerShouldBeReturned()
         {
-            var overlayFs = new OverlayFileSystem("TestData/MockUserFolder");
+            var overlayFs = new OverlayFileSystem("TestData/UserFolder");
             overlayFs.ClearImageLayerFolder();
-            Directory.CreateDirectory("TestData/MockUserFolder/.image/base");
-            File.Copy("TestData/Snapshot/baselayer.tar.gz", "TestData/MockUserFolder/.image/base/layer1.tar.gz", true);
+            Directory.CreateDirectory("TestData/UserFolder/.image/base");
+            File.Copy("TestData/Snapshot/baselayer.tar.gz", "TestData/UserFolder/.image/base/layer1.tar.gz", true);
             var fileLayer = overlayFs.ReadMergedOCIFileLayer();
             var baseFileLayer = GenerateBaseFileLayer(overlayFs);
             var diffLayers = _overlayOperator.GenerateDiffLayer(fileLayer, baseFileLayer);
 
-            File.Delete("TestData/MockUserFolder/.image/base/defaultlayer.tar.gz");
+            File.Delete("TestData/UserFolder/.image/base/defaultlayer.tar.gz");
             Assert.Equal(819, diffLayers.FileContent.Count());
             Assert.Equal(2, diffLayers.SequenceNumber);
         }
