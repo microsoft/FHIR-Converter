@@ -214,7 +214,7 @@ stages:
       inputs:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
-        
+
     - task: GithubRelease@0 
       displayName: 'Create GitHub Release'      
       inputs:
