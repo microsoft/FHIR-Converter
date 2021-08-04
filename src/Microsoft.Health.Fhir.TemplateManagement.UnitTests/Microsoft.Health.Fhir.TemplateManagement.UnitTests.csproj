@@ -40,10 +40,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Health.Fhir.TemplateManagement\Microsoft.Health.Fhir.TemplateManagement.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="TestData\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -51,6 +47,10 @@
 
   <ItemGroup>
     <Folder Include="TestData\UserFolder\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Health.Fhir.TemplateManagement\Microsoft.Health.Fhir.TemplateManagement.csproj" />
   </ItemGroup>
 
 </Project>

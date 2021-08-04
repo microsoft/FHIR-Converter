@@ -1,0 +1,3 @@
+{% assign conditionId = relationship.observation | to_json_string | generate_uuid -%}
+{% include 'Resource/Condition' conditionEntry: relationship.observation, ID: conditionId -%}
+{% include 'Reference/Condition/Subject' ID: conditionId, REF: fullPatientId -%}

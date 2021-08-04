@@ -1,0 +1,40 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Procedure",
+        "id":"{{ ID }}",
+        "meta":
+        {
+            "profile":
+            [
+                "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure",
+            ],
+        },
+        "identifier":
+        [
+            { {% include 'DataType/Identifier' Identifier: procedureEntry.id -%} },
+        ],
+        "status":"{{ procedureEntry.statusCode.code }}",
+        "code":
+        {
+            {% include 'DataType/CodeableConcept' CodeableConcept: procedureEntry.code -%}
+        },
+        {% if procedureEntry.effectiveTime.value -%}
+            "performedDateTime":"{{ procedureEntry.effectiveTime.value | format_as_date_time }}",
+        {% else -%}
+            "performedPeriod": 
+            {
+                "start":"{{ procedureEntry.effectiveTime.low.value | format_as_date_time }}",
+                "end":"{{ procedureEntry.effectiveTime.high.value | format_as_date_time }}",
+            },
+        {% endif -%}
+        "bodySite":
+        [
+            { {% include 'DataType/CodeableConcept' CodeableConcept: procedureEntry.targetSiteCode -%} },
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Procedure/{{ ID }}",
+    },
+},

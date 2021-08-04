@@ -1,8 +1,21 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+AllergyIntolerance_Patient_ID: A resource Id, used to fill "patient.reference" property.
+AllergyIntolerance_Encounter_ID: A resource Id, used to fill "encounter.reference" property.
+AllergyIntolerance_Recorder_ID: A resource Id, used to fill "recorder.reference" property.
+AllergyIntolerance_Asserter_ID: A resource Id, used to fill "asserter.reference" property.
+{% endcomment -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
         "resourceType": "AllergyIntolerance",
         "id":"{{ ID }}",
+        {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+        "category":
+        [
+        ],
         "type":"{{ AL1.2.Value | get_property: 'CodeSystem/AllergyType', 'code' }}",
         "code":
         {
@@ -11,6 +24,9 @@
         "reaction":
         [
             {
+                {% if AL1.4.1.Value != "U" -%}
+                    "severity":"{{ AL1.4.1.Value | get_property: 'CodeSystem/AllergyIntoleranceSeverity', 'code' }}",
+                {% endif -%}
                 "manifestation":
                 [
                     {
@@ -19,7 +35,24 @@
                 ],
             },
         ],
+        "criticality":"{{ AL1.4.1.Value | get_property: 'CodeSystem/AllergyIntoleranceCriticality', 'code' }}",
         "onsetDateTime":"{{ AL1.6.Value | format_as_date_time }}",
+        "patient":
+        {
+            "reference":"{{ AllergyIntolerance_Patient_ID }}",
+        },
+        "encounter":
+        {
+            "reference":"{{ AllergyIntolerance_Encounter_ID }}",
+        },
+        "recorder":
+        {
+            "reference":"{{ AllergyIntolerance_Recorder_ID }}",
+        },
+        "asserter":
+        {
+            "reference":"{{ AllergyIntolerance_Asserter_ID }}",
+        },
     },
     "request":{
         "method":"PUT",

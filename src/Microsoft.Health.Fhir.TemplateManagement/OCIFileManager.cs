@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
@@ -21,6 +22,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         {
             ImageInfo.ValidateImageReference(imageReference);
             _orasClient = new OrasClient(imageReference);
+            InitOrasEnvironment();
             _overlayFS = new OverlayFileSystem(workingFolder);
             _overlayOperator = new OverlayOperator();
         }
@@ -63,6 +65,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         public async Task<OCIOperationResult> PushOCIImageAsync()
         {
             return await _orasClient.PushImageAsync(_overlayFS.WorkingImageLayerFolder);
+        }
+
+        private void InitOrasEnvironment()
+        {
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName)))
+            {
+                Environment.SetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName, Constants.DefaultOrasCacheEnvironmentVariable);
+            }
         }
     }
 }

@@ -24,10 +24,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             EnsureArg.IsNotNull(imageReference, nameof(imageReference));
 
             _imageReference = imageReference;
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName)))
-            {
-                Environment.SetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName, Constants.DefaultOrasCacheEnvironmentVariable);
-            }
         }
 
         public async Task<OCIOperationResult> PullImageAsync(string outputFolder)

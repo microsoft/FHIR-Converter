@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
 {

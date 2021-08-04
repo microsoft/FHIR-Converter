@@ -1,0 +1,11 @@
+{% if ContactPoint.value -%}
+	{% if ContactPoint.value contains 'tel:' -%}
+		"system":"phone",
+		"value": "{{ContactPoint.value | replace: 'tel:\s*', ''}}",
+		"use": "{{ ContactPoint.use | get_property: 'ValueSet/TelecomUse' }}",
+	{% elsif ContactPoint.value contains 'mailto:' -%}
+		"system":"email",
+		"value": "{{ContactPoint.value | replace: 'mailto:\s*', ''}}",
+		"use": "{{ ContactPoint.use | get_property: 'ValueSet/TelecomUse' }}",
+	{% endif -%}
+{% endif -%}

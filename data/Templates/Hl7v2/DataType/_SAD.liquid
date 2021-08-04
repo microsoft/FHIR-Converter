@@ -1,6 +1,8 @@
-"line":
-[
-    "{{ SAD.1.Value }}",
-    "{{ SAD.2.Value }}",
-    "{{ SAD.3.Value }}",
-],
+{% if SAD -%}
+    "line":
+    [
+        "{{ SAD.1.Value }}",
+        "{{ SAD.2.Value }}",
+        "{{ SAD.3.Value }}",
+    ],
+{% endif -%}

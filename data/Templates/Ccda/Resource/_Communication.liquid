@@ -1,0 +1,16 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Communication",
+        "id":"{{ ID }}",
+        "status":"{{ communicationEntry.statusCode.code }}",
+        "category":
+        [
+            { {% include 'DataType/CodeableConcept' CodeableConcept: communicationEntry.code -%} },
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Communication/{{ ID }}",
+    },
+},

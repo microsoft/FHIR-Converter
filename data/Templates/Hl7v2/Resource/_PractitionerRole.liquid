@@ -1,3 +1,16 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+Location_ID_ROL_13: A resource Id, used to fill "location.reference" property. The resource is of "Location" type and generated based on "ROL.13" HL7 V2 identifier.
+Practitioner_ID_OBX_16: A resource Id, used to fill "practitioner.reference" property. The resource is of "Practitioner" type and generated based on "OBX.16" HL7 V2 identifier.
+Organization_ID_OBX_23: A resource Id, used to fill "organization.reference" property. The resource is of "Organization" type and generated based on "OBX.23" HL7 V2 identifier.
+Organization_ID_PRT_8: A resource Id, used to fill "organization.reference" property. The resource is of "Organization" type and generated based on "PRT.8" HL7 V2 identifier.
+Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" property. The resource is of "Organization" type and generated based on "ORC.21" HL7 V2 identifier.
+{% endcomment -%}
+
+{% evaluate Practitioner_ID_OBX_16 using 'ID/Practitioner' XCN: OBX.16 -%}
+{% evaluate Organization_ID_OBX_23 using 'ID/Organization' XON: OBX.23 -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
@@ -6,16 +19,24 @@
         {% include 'DataType/XCNPractitionerRole' XCN: PD1.4 -%}
         "identifier":
         [
-            { {% include 'DataType/EIIdentifier' EI: ROL.1 -%} },
+            {
+                {% include 'DataType/EIIdentifier' EI: ROL.1 -%}
+            },
             {
                 {% include 'DataType/PLN' PLN: PRT.24 -%}
             },
         ],
         "code":
         [
-            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Role', CWE: ROL.3 -%} },
-            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: ROL.4 -%} },
-            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: PRT.4 -%} },
+            {
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Role', CWE: ROL.3 -%}
+            },
+            {
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: ROL.4 -%}
+            },
+            {
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: PRT.4 -%}
+            },
         ],
         {% include 'DataType/XCNPractitionerRole' XCN: ROL.4 -%}
         "period":
@@ -27,39 +48,48 @@
         },
         "telecom":
         [
-            { {% include 'DataType/XTN' XTN: ROL.12 -%} },
-            { {% include 'DataType/XTN' XTN: PRT.15.Repeats[0] -%} },
+            {
+                {% include 'DataType/XTN' XTN: ROL.12 -%}
+            },
+            {
+                {% include 'DataType/XTN' XTN: PRT.15.Repeats[0] -%}
+            },
         ],
         "location":
         [
             {
-                {% if Location_ID_ROL_13 -%}
-                "reference":"Location/{{ Location_ID_ROL_13 }}",
+                {% if ROL.13 and Location_ID_ROL_13 -%}
+                    "reference":"Location/{{ Location_ID_ROL_13 }}",
                 {% endif -%}
             },
         ],
         {% include 'DataType/XCNPractitionerRole' XCN: ROL.4 -%}
         {% include 'DataType/XCNPractitionerRole' XCN: OBX.25 -%}
+        "practitioner":
+        {
+            {% if OBX.16 and Practitioner_ID_OBX_16 -%}
+                "reference":"Practitioner/{{ Practitioner_ID_OBX_16 }}",
+            {% endif -%}
+        },
+        "organization":
+        {
+            {% if OBX.23 and Organization_ID_OBX_23 -%}
+                "reference":"Organization/{{ Organization_ID_OBX_23 }}",
+            {% endif -%}
+            {% if PRT.8 and Organization_ID_PRT_8 -%}
+                "reference":"Organization/{{ Organization_ID_PRT_8 }}",
+            {% endif -%}
+            {% if ORC.21 and Organization_ID_ORC_21 -%}
+                "reference":"Organization/{{ Organization_ID_ORC_21 }}",
+            {% endif -%}
+        },
         {% include 'DataType/XCNPractitionerRole' XCN: PRT.5.Repeats[0] -%}
         "specialty":
         [
-            { {% include 'DataType/CWECodeableConcept' CWE: PRT.6 -%} },
+            {
+                {% include 'DataType/CWECodeableConcept' CWE: PRT.6 -%}
+            },
         ],
-        "organization":
-        {
-            {% if PRT.7 and Organization_type_ID_PRT_7 -%}
-            "reference":"{{ "Organization.type/{{ Organization_type_ID_PRT_7 }}" | get_property: 'CodeSystem/OrganizationUnitType', 'code' }}",
-            {% endif -%}
-            {% if PRT.8 and Organization_ID_PRT_8 -%}
-            "reference":"Organization/{{ Organization_ID_PRT_8 }}",
-            {% endif -%}
-        },
-        "practitioner":
-        {
-            {% if PRT.14 and Practitioner_address_ID_PRT_14 -%}
-            "reference":"Practitioner.address/{{ Practitioner_address_ID_PRT_14 }}",
-            {% endif -%}
-        },
         {% include 'DataType/XCNPractitionerRole' XCN: ORC.12.Repeats[0] -%}
         {% include 'DataType/NDLPractitionerRole' NDL: OBR.32 -%}
         {% include 'DataType/NDLPractitionerRole' NDL: OBR.34 -%}

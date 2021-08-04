@@ -16,8 +16,8 @@
     "display" : "Entered in Error",
     "system" : "http://hl7.org/fhir/specimen-status",
     {% else -%}
-    "code" : "",
-    "display" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
     "system" : "",
     {% endif -%}
 }

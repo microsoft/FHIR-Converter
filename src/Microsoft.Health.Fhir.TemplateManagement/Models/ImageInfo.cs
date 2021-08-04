@@ -11,7 +11,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
     public class ImageInfo
     {
-        public const string DefaultTemplateImageReference = "microsofthealth/fhirconverter:default";
         private const char ImageDigestDelimiter = '@';
         private const char ImageTagDelimiter = ':';
         private const char ImageRegistryDelimiter = '/';
@@ -50,12 +49,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public bool IsDefaultTemplate()
         {
-            return string.Equals(ImageReference, DefaultTemplateImageReference, StringComparison.InvariantCultureIgnoreCase);
+            return IsDefaultTemplateImageReference(ImageReference);
         }
 
         public static bool IsDefaultTemplateImageReference(string imageReference)
         {
-            return string.Equals(imageReference, DefaultTemplateImageReference, StringComparison.InvariantCultureIgnoreCase);
+            return DefaultTemplateInfo.DefaultTemplateMap.ContainsKey(imageReference);
         }
 
         public static bool IsValidImageReference(string imageReference)
@@ -73,80 +72,64 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public static void ValidateImageReference(string imageReference)
         {
-            var registryDelimiterPosition = imageReference.IndexOf(ImageRegistryDelimiter, StringComparison.InvariantCultureIgnoreCase);
-            if (registryDelimiterPosition <= 0 || registryDelimiterPosition == imageReference.Length - 1)
+            if (IsDefaultTemplateImageReference(imageReference))
             {
-                throw new ImageReferenceException(TemplateManagementErrorCode.InvalidReference, "Template reference format is invalid: registry server is missing.");
+                return;
             }
-            else
-            {
-                imageReference = imageReference.Substring(registryDelimiterPosition + 1);
-                string imageName = imageReference;
-                if (imageReference.Contains(ImageDigestDelimiter, StringComparison.OrdinalIgnoreCase))
-                {
-                    var digestDelimiterPosition = imageReference.IndexOf(ImageDigestDelimiter, StringComparison.InvariantCultureIgnoreCase);
-                    if (digestDelimiterPosition <= 0 || digestDelimiterPosition == imageReference.Length - 1)
-                    {
-                        throw new ImageReferenceException(TemplateManagementErrorCode.InvalidReference, "Template reference format is invalid: digest is missing.");
-                    }
-                    else
-                    {
-                        imageName = imageReference.Substring(0, digestDelimiterPosition);
-                    }
-                }
-                else if (imageReference.Contains(ImageTagDelimiter, StringComparison.OrdinalIgnoreCase))
-                {
-                    var tagDelimiterPosition = imageReference.IndexOf(ImageTagDelimiter, StringComparison.InvariantCultureIgnoreCase);
-                    if (tagDelimiterPosition <= 0 || tagDelimiterPosition == imageReference.Length - 1)
-                    {
-                        throw new ImageReferenceException(TemplateManagementErrorCode.InvalidReference, "Template reference format is invalid: tag is missing.");
-                    }
-                    else
-                    {
-                        imageName = imageReference.Substring(0, tagDelimiterPosition);
-                    }
-                }
 
-                ValidateImageName(imageName);
-            }
-        }
-
-        public static ImageInfo CreateFromImageReference(string imageReference)
-        {
             var registryDelimiterPosition = imageReference.IndexOf(ImageRegistryDelimiter, StringComparison.InvariantCultureIgnoreCase);
             if (registryDelimiterPosition <= 0 || registryDelimiterPosition == imageReference.Length - 1)
             {
                 throw new ImageReferenceException(TemplateManagementErrorCode.InvalidReference, "Template reference format is invalid: registry server is missing.");
             }
 
-            var registryServer = imageReference.Substring(0, registryDelimiterPosition);
             imageReference = imageReference.Substring(registryDelimiterPosition + 1);
-
+            string imageName = imageReference;
             if (imageReference.Contains(ImageDigestDelimiter, StringComparison.OrdinalIgnoreCase))
             {
                 Tuple<string, string> imageMeta = ParseImageMeta(imageReference, ImageDigestDelimiter);
                 if (string.IsNullOrEmpty(imageMeta.Item1) || string.IsNullOrEmpty(imageMeta.Item2))
                 {
-                    throw new ImageReferenceException(TemplateManagementErrorCode.InvalidReference, "Template reference format is invalid.");
+                    throw new ImageReferenceException(TemplateManagementErrorCode.InvalidReference, "Template reference format is invalid: digest is missing.");
                 }
 
-                ValidateImageName(imageMeta.Item1);
-                return new ImageInfo(registryServer, imageMeta.Item1, tag: null, digest: imageMeta.Item2);
+                imageName = imageMeta.Item1;
             }
             else if (imageReference.Contains(ImageTagDelimiter, StringComparison.OrdinalIgnoreCase))
             {
                 Tuple<string, string> imageMeta = ParseImageMeta(imageReference, ImageTagDelimiter);
                 if (string.IsNullOrEmpty(imageMeta.Item1) || string.IsNullOrEmpty(imageMeta.Item2))
                 {
-                    throw new ImageReferenceException(TemplateManagementErrorCode.InvalidReference, "Template reference format is invalid.");
+                    throw new ImageReferenceException(TemplateManagementErrorCode.InvalidReference, "Template reference format is invalid: tag is missing.");
                 }
 
-                ValidateImageName(imageMeta.Item1);
+                imageName = imageMeta.Item1;
+            }
+
+            ValidateImageName(imageName);
+        }
+
+        public static ImageInfo CreateFromImageReference(string imageReference)
+        {
+            ValidateImageReference(imageReference);
+
+            var registryDelimiterPosition = imageReference.IndexOf(ImageRegistryDelimiter, StringComparison.InvariantCultureIgnoreCase);
+            var registryServer = imageReference.Substring(0, registryDelimiterPosition);
+            string imageMetaStr = imageReference.Substring(registryDelimiterPosition + 1);
+
+            if (imageMetaStr.Contains(ImageDigestDelimiter, StringComparison.OrdinalIgnoreCase))
+            {
+                Tuple<string, string> imageMeta = ParseImageMeta(imageMetaStr, ImageDigestDelimiter);
+                return new ImageInfo(registryServer, imageMeta.Item1, tag: null, digest: imageMeta.Item2);
+            }
+
+            if (imageMetaStr.Contains(ImageTagDelimiter, StringComparison.OrdinalIgnoreCase))
+            {
+                Tuple<string, string> imageMeta = ParseImageMeta(imageMetaStr, ImageTagDelimiter);
                 return new ImageInfo(registryServer, imageMeta.Item1, tag: imageMeta.Item2);
             }
 
-            ValidateImageName(imageReference);
-            return new ImageInfo(registryServer, imageReference);
+            return new ImageInfo(registryServer, imageMetaStr);
         }
 
         private static Tuple<string, string> ParseImageMeta(string input, char delimiter)

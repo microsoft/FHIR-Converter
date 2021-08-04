@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using DotLiquid;
 using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
@@ -29,8 +28,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         public TemplateCollectionProviderTests()
         {
-            TemplateLayer defaultTempalteLayer = TemplateLayer.ReadFromEmbeddedResource();
-            _cache.Set(ImageInfo.DefaultTemplateImageReference, defaultTempalteLayer, new MemoryCacheEntryOptions() { AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration, Size = 0 });
+            MemoryCacheEntryOptions memoryOption = new MemoryCacheEntryOptions()
+                {
+                    AbsoluteExpiration = System.Runtime.Caching.ObjectCache.InfiniteAbsoluteExpiration,
+                    Size = 0,
+                };
+
+            TemplateLayer hl7V2DefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource("Hl7v2DefaultTemplates.tar.gz");
+            _cache.Set("microsofthealth/fhirconverter:default", hl7V2DefaultTemplateLayer, memoryOption);
+            _cache.Set("microsofthealth/hl7v2templates:default", hl7V2DefaultTemplateLayer, memoryOption);
+            TemplateLayer ccdaDefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource("CcdaDefaultTemplates.tar.gz");
+            _cache.Set("microsofthealth/ccdatemplates:default", ccdaDefaultTemplateLayer, memoryOption);
 
             PushLargeSizeManifest();
         }
@@ -71,6 +79,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             yield return new object[] { "mockregistry/testimagename:v1", new List<int> { 813, 817 } };
             yield return new object[] { "mockregistry/testimagename:v2", new List<int> { 767, 817 } };
             yield return new object[] { "mockregistry/testimagename:default", new List<int> { 817 } };
+        }
+
+        public static IEnumerable<object[]> GetDefaultTemplatesInfo()
+        {
+            yield return new object[] { "microsofthealth/fhirconverter:default", 808 };
+            yield return new object[] { "microsofthealth/hl7v2templates:default", 808 };
+            yield return new object[] { "microsofthealth/ccdatemplates:default", 839 };
         }
 
         [Theory]
@@ -183,20 +198,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             Assert.Equal(0, smallCache.Count);
         }
 
-        [Fact]
-        public async Task GivenDefaultTemplateReference_WhenGetTemplateCollectionFromTemplateProvider_DefaultTemplateCollectionWillBeReturned()
+        [Theory]
+        [MemberData(nameof(GetDefaultTemplatesInfo))]
+        public async Task GivenDefaultTemplateReference_WhenGetTemplateCollectionFromTemplateProvider_DefaultTemplateCollectionWillBeReturned(string imageReference, int expectedTemplatesCounts)
         {
-            string imageReference = ImageInfo.DefaultTemplateImageReference;
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var newTemplateCollectionProvider = new TemplateCollectionProvider(imageInfo, _emptyClient, _cache, _defaultConfig);
             var templateCollection = await newTemplateCollectionProvider.GetTemplateCollectionAsync();
-            Assert.Equal(838, templateCollection.First().Count());
+            Assert.Equal(expectedTemplatesCounts, templateCollection.First().Count());
         }
 
         [Fact]
         public async Task GivenDefaultTemplateReference_WhenGetTemplateCollectionFromTemplateProvider_IfNotInitialized_ExceptionWillBeThrown()
         {
-            string imageReference = ImageInfo.DefaultTemplateImageReference;
+            string imageReference = "microsofthealth/fhirconverter:default";
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var emptyCache = new MemoryCache(new MemoryCacheOptions());
             var newTemplateCollectionProvider = new TemplateCollectionProvider(imageInfo, _emptyClient, emptyCache, _defaultConfig);

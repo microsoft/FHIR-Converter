@@ -1,6 +1,10 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
+  "timestamp": "2016-03-09T07:04:05+08:00",
+  "identifier": {
+    "value": "TC09SAPartAIG030101AA"
+  },
   "entry": [
     {
       "fullUrl": "urn:uuid:6eda7d2f-32f8-a6c7-5125-d59f65a25c97",
@@ -22,6 +26,10 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "O21",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -59,7 +67,8 @@
             "city": "Oldtown",
             "state": "MI",
             "postalCode": "48917",
-            "country": "USA"
+            "country": "USA",
+            "use": "home"
           }
         ],
         "telecom": [
@@ -70,7 +79,38 @@
             "use": "work"
           }
         ],
-        "deceasedBoolean": "false"
+        "deceasedBoolean": "false",
+        "contact": [
+          {
+            "name": {
+              "family": "Shine",
+              "given": [
+                "Sarah"
+              ]
+            },
+            "address": {
+              "line": [
+                "123 Main Street",
+                "Apartment 3-C"
+              ],
+              "city": "Oldtown",
+              "state": "MI",
+              "postalCode": "48917",
+              "country": "USA"
+            },
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "code": "E",
+                    "display": "Employer",
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       "request": {
         "method": "PUT",
@@ -78,10 +118,34 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:7bed24f6-d6fa-1218-ced1-b5d66ac0f024",
       "resource": {
         "resourceType": "Provenance",
         "id": "7bed24f6-d6fa-1218-ced1-b5d66ac0f024",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on GENERATED_INSTANT_PLACEHOLDER using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: TEMPLATE_URL_PLACEHOLDER.</span><span>Root template: OML_O21.</span></p></div>"
+        },
         "recorded": "2016-03-09T07:04:05+08:00"
       },
       "request": {
@@ -93,11 +157,40 @@
       "fullUrl": "urn:uuid:d26a5004-0934-26f5-0201-4e302d6163c4",
       "resource": {
         "resourceType": "Account",
-        "id": "d26a5004-0934-26f5-0201-4e302d6163c4"
+        "id": "d26a5004-0934-26f5-0201-4e302d6163c4",
+        "subject": [
+          {
+            "reference": "Patient/97997f4d-5259-b974-5a44-1b7450c2f4ab"
+          }
+        ]
       },
       "request": {
         "method": "PUT",
         "url": "Account/d26a5004-0934-26f5-0201-4e302d6163c4"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Encounter",
+        "status": "unknown",
+        "subject": {
+          "reference": "Patient/97997f4d-5259-b974-5a44-1b7450c2f4ab"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
       }
     },
     {

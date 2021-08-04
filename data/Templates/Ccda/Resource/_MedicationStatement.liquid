@@ -1,0 +1,41 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "MedicationStatement",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = medicationStatement.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "status":"{{ medicationStatement.statusCode.code | downcase | get_property: 'ValueSet/MedicationStatementStatus' }}",
+        "effectivePeriod":
+        {
+            "start":"{{ medicationStatement.effectiveTime.low.value | format_as_date_time }}",
+            "end":"{{ medicationStatement.effectiveTime.high.value | format_as_date_time }}",
+        },
+        "dosage":
+        [
+            {
+                "doseAndRate":
+                [
+                    {
+                        {% if medicationStatement.doseQuantity.value -%}
+                            "doseQuantity":
+                            {
+                                "value":{{ medicationStatement.doseQuantity.value }},
+                                "unit":"{{ medicationStatement.doseQuantity.unit }}",
+                            },
+                        {% endif -%}
+                    },
+                ],
+            },
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"MedicationStatement/{{ ID }}",
+    },
+},

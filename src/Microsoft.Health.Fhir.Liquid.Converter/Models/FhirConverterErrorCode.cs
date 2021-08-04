@@ -12,15 +12,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
     /// </summary>
     public enum FhirConverterErrorCode
     {
-        // InitializeException
+        // TemplateLoadException
         TemplateFolderNotFound = 1101,
         TemplateLoadingError = 1102,
-        InvalidCodeSystemMapping = 1103,
+        InvalidCodeMapping = 1103,
         TemplateSyntaxError = 1104,
 
         // DataParseException
         InputParsingError = 1201,
-        NullOrEmptyInput = 1202,
+        NullOrWhiteSpaceInput = 1202,
         InvalidHl7v2Message = 1203,
         MissingHl7v2Separators = 1204,
         DuplicateHl7v2Separators = 1205,
@@ -38,6 +38,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
         TimeoutError = 1306,
         InvalidDateTimeFormat = 1307,
         InvalidIdGenerationInput = 1308,
+        InvalidTimeZoneHandling = 1309,
 
         // PostprocessException
         JsonParsingError = 1401,

@@ -1,0 +1,39 @@
+{% if code -%}
+	{% assign s = code | match: "[0123456789.]+" | size -%}
+    {% case code -%}
+        {% when "2.16.840.1.113883.6.1" -%}
+            "http://loinc.org"
+        {% when "2.16.840.1.113883.6.96" -%}
+            "http://snomed.info/sct"
+        {% when "2.16.840.1.113883.6.88" -%}
+            "http://www.nlm.nih.gov/research/umls/rxnorm"
+        {% when "2.16.840.1.113883.3.88.12.3221.8.9" -%}
+            "http://snomed.info/sct"
+        {% when "2.16.840.1.113883.5.83" -%}
+            "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+        {% when "2.16.840.1.113883.4.1" -%}
+            "http://hl7.org/fhir/sid/us-ssn"
+        {% when "2.16.840.1.113883.4.6" -%}
+            "http://hl7.org/fhir/sid/us-npi"
+        {% when "2.16.840.1.113883.4.572" -%}
+            "http://hl7.org/fhir/sid/us-medicare"  
+        {% when "2.16.840.1.113883.4.927" -%}
+            "http://hl7.org/fhir/sid/us-mbi"  
+        {% when "2.16.840.1.113883.6.59" -%}
+            "http://hl7.org/fhir/sid/cvx"
+        {% when "2.16.840.1.113883.6.101" -%}
+            "http://nucc.org/provider-taxonomy"
+        {% when "2.16.840.1.113883.6.238" -%}
+            "" 
+        {% when "2.16.840.1.113883.6.12" -%}
+            "http://www.ama-assn.org/go/cpt"
+        {% else -%}
+            {% if s == 1%}
+                "urn:oid:{{ code }}"
+            {% else -%}
+                "http://terminology.hl7.org/CodeSystem/{{ code | replace: " ", "" }}"
+            {% endif -%}
+    {% endcase -%}
+{% else -%}
+    ""
+{% endif -%}

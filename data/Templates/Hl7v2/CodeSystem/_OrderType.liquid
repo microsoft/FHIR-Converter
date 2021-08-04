@@ -8,8 +8,8 @@
     "display" : "Outpatient facility",
     "system" : "http://terminology.hl7.org/CodeSystem/v3-RoleCode",
     {% else -%}
-    "code" : "",
-    "display" : "",
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
     "system" : "",
     {% endif -%}
 }

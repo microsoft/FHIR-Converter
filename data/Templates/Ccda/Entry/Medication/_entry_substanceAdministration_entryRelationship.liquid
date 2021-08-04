@@ -1,0 +1,13 @@
+{% if relationship.supply -%}
+    {% assign medicationRequestId = relationship.supply | to_json_string | generate_uuid -%}
+    {% include 'Resource/MedicationRequest' medicationRequest: relationship.supply, ID: medicationRequestId -%}
+    {% include 'Reference/MedicationRequest/Subject' ID: medicationRequestId, REF: fullPatientId -%}
+    {% include 'Reference/MedicationRequest/MedicationReference' ID: medicationRequestId, REF: fullMedicationId -%}
+{% endif -%}
+
+{% if relationship.supply.author.assignedAuthor -%}
+    {% evaluate practitionerId using 'Utils/GenerateId' obj: relationship.supply.author.assignedAuthor -%}
+    {% include 'Resource/Practitioner' practitioner: relationship.supply.author.assignedAuthor, ID: practitionerId -%}
+    {% assign fullPractitionerId = practitionerId | prepend: 'Practitioner/' -%}
+    {% include 'Reference/MedicationRequest/Requester' ID: medicationRequestId, REF: fullPractitionerId -%}
+{% endif -%}

@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
@@ -30,13 +30,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             var context = new Context(CultureInfo.InvariantCulture);
             Assert.Null(Filters.GetProperty(context, null, null, null));
 
-            // context with null CodeSystemMapping
+            // context with null CodeMapping
             context = new Context(new List<Hash>(), new Hash(), new Hash(), ErrorsOutputMode.Rethrow, 0, 0, CultureInfo.InvariantCulture);
-            context["CodeSystemMapping"] = null;
-            Assert.Null(Filters.GetProperty(context, "M", "Gender", "code"));
+            context["CodeMapping"] = null;
+            Assert.Equal("M", Filters.GetProperty(context, "M", "Gender", "code"));
 
-            // context with valid CodeSystemMapping
-            context["CodeSystemMapping"] = new CodeSystemMapping(new Dictionary<string, Dictionary<string, Dictionary<string, string>>>
+            // context with valid CodeMapping
+            context["CodeMapping"] = new CodeMapping(new Dictionary<string, Dictionary<string, Dictionary<string, string>>>
             {
                 {
                     "CodeSystem/Gender", new Dictionary<string, Dictionary<string, string>>

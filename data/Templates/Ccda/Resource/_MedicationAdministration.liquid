@@ -1,0 +1,46 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "MedicationAdministration",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = medicationAdministration.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "status":"{{ medicationAdministration.statusCode.code | get_property: 'ValueSet/MedicationAdministrationStatus' }}",
+        "effectivePeriod":
+        {
+            {% assign effectiveTimes = medicationAdministration.effectiveTime | to_array -%}
+            "start":"{{ effectiveTimes.first.low.value | format_as_date_time }}",
+            "end":"{{ effectiveTimes.first.high.value | format_as_date_time }}",
+        },
+        "dosage":
+        {
+            "route":
+            {
+                {% include 'DataType/CodeableConcept' CodeableConcept: medicationAdministration.routeCode -%}
+            },
+            {% if medicationAdministration.doseQuantity.value -%}
+                "dose":
+                {
+                    "value":{{ medicationAdministration.doseQuantity.value }},
+                    "unit":"{{ medicationAdministration.doseQuantity.unit }}",
+                },
+            {% endif -%}
+            {% if medicationAdministration.rateQuantity.value -%}
+                "rateQuantity":
+                {
+                    "value":{{ medicationAdministration.rateQuantity.value }},
+                    "unit":"{{ medicationAdministration.rateQuantity.unit }}",
+                },
+            {% endif -%}
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"MedicationAdministration/{{ ID }}",
+    },
+},

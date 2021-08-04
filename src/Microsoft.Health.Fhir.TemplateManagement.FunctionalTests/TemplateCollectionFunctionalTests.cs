@@ -8,15 +8,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using DotLiquid;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
+using Microsoft.Health.Fhir.Liquid.Converter;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Processors;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
@@ -30,6 +34,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string userLayerTemplatePath = "TestData/TarGzFiles/userV2.tar.gz";
         private readonly string invalidTarGzPath = "TestData/TarGzFiles/invalid1.tar.gz";
         private readonly string invalidTemplatePath = "TestData/TarGzFiles/invalidTemplates.tar.gz";
+        private readonly string _defaultHl7v2TemplateImageReference = "microsofthealth/hl7v2templates:default";
+        private readonly string _defaultCcdaTemplateImageReference = "microsofthealth/ccdatemplates:default";
         private readonly string testOneLayerImageReference;
         private readonly string testMultiLayerImageReference;
         private readonly string testInvalidImageReference;
@@ -111,6 +117,23 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             });
         }
 
+        public static IEnumerable<object[]> GetCcdaDataAndTemplateSources()
+        {
+            var data = new List<object[]>
+            {
+                new object[] { @"170.314B2_Amb_CCD.ccda", @"CCD" },
+                new object[] { @"C-CDA_R2-1_CCD.xml.ccda", @"CCD" },
+                new object[] { @"CCD.ccda", @"CCD" },
+                new object[] { @"CCD-Parent-Document-Replace-C-CDAR2.1.ccda", @"CCD" },
+            };
+            return data.Select(item => new object[]
+            {
+                Path.Join(_sampleDataDirectory, "Ccda", Convert.ToString(item[0])),
+                Path.Join(_templateDirectory, "Ccda"),
+                Convert.ToString(item[1]),
+            });
+        }
+
         public static IEnumerable<object[]> GetNotExistImageInfo()
         {
             yield return new object[] { "templatetest", "notexist" };
@@ -126,6 +149,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             yield return new object[] { "testacr.azurecr.io/" };
             yield return new object[] { "testacr.azurecr.io/name:" };
             yield return new object[] { "testacr.azurecr.io/name@" };
+        }
+
+        public static IEnumerable<object[]> GetDefaultTemplatesInfo()
+        {
+            yield return new object[] { "microsofthealth/fhirconverter:default", 839 };
+            yield return new object[] { "microsofthealth/hl7v2templates:default", 839 };
+            yield return new object[] { "microsofthealth/ccdatemplates:default", 757 };
         }
 
         [Fact]
@@ -267,47 +297,77 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             await Assert.ThrowsAsync<RenderException>(async () => TestByTemplate(hl7v2Data, entryTemplate, await templateCollectionProvider.GetTemplateCollectionAsync()));
         }
 
-        [Fact]
-        public async Task GiveDefaultImageReference_WhenGetTemplateCollectionWithEmptyToken_DefaultTemplatesWillBeReturnedAsync()
+        [Theory]
+        [MemberData(nameof(GetDefaultTemplatesInfo))]
+        public async Task GiveDefaultImageReference_WhenGetTemplateCollectionWithEmptyToken_DefaultTemplatesWillBeReturnedAsync(string imageReference, int expectedTemplatesCounts)
         {
             if (_containerRegistryInfo == null)
             {
                 return;
             }
 
-            int defaultTemplatesCounts = 838;
-            string imageReference = ImageInfo.DefaultTemplateImageReference;
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
             var templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, string.Empty);
             var templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
             Assert.Single(templateCollection);
-            Assert.Equal(defaultTemplatesCounts, templateCollection.First().Count());
+            Assert.Equal(expectedTemplatesCounts, templateCollection.First().Count());
         }
 
         // Conversion results of DefaultTemplates.tar.gz and default template folder should be the same.
         [Theory]
         [MemberData(nameof(GetHl7v2DataAndTemplateSources))]
-        public async Task GivenSameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
+        public async Task GivenHl7v2SameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
         {
-            var folderTemplateProvider = new Hl7v2TemplateProvider(defaultTemplateDirectory);
+            var folderTemplateProvider = new TemplateProvider(defaultTemplateDirectory, DataType.Hl7v2);
 
             var templateProviderFactory = new TemplateCollectionProviderFactory(new MemoryCache(new MemoryCacheOptions()), Options.Create(new TemplateCollectionConfiguration()));
-            var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(ImageInfo.DefaultTemplateImageReference, string.Empty);
-            var imageTemplateProvider = new Hl7v2TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
+            var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultHl7v2TemplateImageReference, string.Empty);
+            var imageTemplateProvider = new TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
             var hl7v2Processor = new Hl7v2Processor();
             var inputContent = File.ReadAllText(inputFile);
 
             var imageResult = hl7v2Processor.Convert(inputContent, rootTemplate, imageTemplateProvider);
             var folderResult = hl7v2Processor.Convert(inputContent, rootTemplate, folderTemplateProvider);
+
+            var regex = new Regex(@"<div .*>.*</div>");
+            imageResult = regex.Replace(imageResult, string.Empty);
+            folderResult = regex.Replace(folderResult, string.Empty);
+
             Assert.Equal(imageResult, folderResult);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetCcdaDataAndTemplateSources))]
+        public async Task GivenCcdaSameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
+        {
+            var folderTemplateProvider = new TemplateProvider(defaultTemplateDirectory, DataType.Ccda);
+
+            var templateProviderFactory = new TemplateCollectionProviderFactory(new MemoryCache(new MemoryCacheOptions()), Options.Create(new TemplateCollectionConfiguration()));
+            var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultCcdaTemplateImageReference, string.Empty);
+            var imageTemplateProvider = new TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
+
+            var ccdaProcessor = new CcdaProcessor();
+            var inputContent = File.ReadAllText(inputFile);
+
+            var imageResult = ccdaProcessor.Convert(inputContent, rootTemplate, imageTemplateProvider);
+            var folderResult = ccdaProcessor.Convert(inputContent, rootTemplate, folderTemplateProvider);
+
+            var imageResultObject = JObject.Parse(imageResult);
+            var folderResultObject = JObject.Parse(folderResult);
+
+            // Remove DocumentReference, where date is different every time conversion is run and gzip result is OS dependent
+            imageResultObject["entry"]?.Last()?.Remove();
+            folderResultObject["entry"]?.Last()?.Remove();
+
+            Assert.True(JToken.DeepEquals(imageResultObject, folderResultObject));
         }
 
         private void TestByTemplate(string inputFile, string entryTemplate, List<Dictionary<string, Template>> templateProvider)
         {
             var hl7v2Processor = new Hl7v2Processor();
             var inputContent = File.ReadAllText(inputFile);
-            var actualContent = hl7v2Processor.Convert(inputContent, entryTemplate, new Hl7v2TemplateProvider(templateProvider));
+            var actualContent = hl7v2Processor.Convert(inputContent, entryTemplate, new TemplateProvider(templateProvider));
 
             Assert.True(actualContent.Length != 0);
         }

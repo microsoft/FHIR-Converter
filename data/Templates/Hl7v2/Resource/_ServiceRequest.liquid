@@ -1,22 +1,37 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+PractitionerRole_ID_ORC_12: A resource Id, used to fill "requester.reference" property. The resource is of "PractitionerRole" type and generated based on "ORC.12" HL7 V2 identifier.
+Organization_ID_ORC_21: A resource Id, used to fill "requester.reference" property. The resource is of "Organization" type and generated based on "ORC.21" HL7 V2 identifier.
+Practitioner_ID_OBR_10: A resource Id, used to fill "specimen.reference" property. The resource is of "Practitioner" type and generated based on "OBR.10" HL7 V2 identifier.
+Specimen_ID_OBR_15: A resource Id, used to fill "specimen.reference" property. The resource is of "Practitioner" type and generated based on "OBR.15" HL7 V2 identifier.
+ServiceRequest_Subject_ID: A resource Id, used to fill "subject.reference" property.
+ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" property.
+{% endcomment -%}
+
+{% evaluate Organization_ID_ORC_21 using 'ID/Organization' CWE: ORC.21 -%}
+{% evaluate Practitioner_ID_OBR_10 using 'ID/Practitioner' XCN: OBR.10 -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
         "resourceType": "ServiceRequest",
         "id":"{{ ID }}",
+        "status":"{{ ORC.5.Value | get_property: 'CodeSystem/OrderStatus', 'code' }}",
         {% if ORC.1 -%}
-        "intent":"order",
+            "intent":"order",
         {% endif -%}
         {% if OBR.11.Value == "G" -%}
-        "intent":"reflex-order",
+            "intent":"reflex-order",
         {% endif -%}
         {% if OBR.11.Value != "G" -%}
-        "intent":"order",
+            "intent":"order",
         {% endif -%}
         "identifier":
         [
             {
                 {% if OBR.2 == null -%}
-                {% include 'DataType/EIIdentifier' EI: ORC.2 -%}
+                    {% include 'DataType/EIIdentifier' EI: ORC.2 -%}
                 {% endif -%}
                 "type":
                 {
@@ -24,28 +39,28 @@
                     [
                         {
                             {% if OBR.2 == null -%}
-                            "code":"PLAC",
+                                "code":"PLAC",
                             {% endif -%}
                             {% if OBR.2 -%}
-                            "code":"PLAC",
+                                "code":"PLAC",
                             {% endif -%}
                             {% if OBR.3 -%}
-                            "code":"FILL",
+                                "code":"FILL",
                             {% endif -%}
                             {% if OBR.53 -%}
-                            "code":"PLAC",
+                                "code":"PLAC",
                             {% endif -%}
                             {% if OBR.2 == null -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
                             {% endif -%}
                             {% if OBR.2 -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
                             {% endif -%}
                             {% if OBR.3 -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
                             {% endif -%}
                             {% if OBR.53 -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
                             {% endif -%}
                         },
                     ],
@@ -59,10 +74,10 @@
                     [
                         {
                             {% if ORC.3 -%}
-                            "code":"FILL",
+                                "code":"FILL",
                             {% endif -%}
                             {% if ORC.3 -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
                             {% endif -%}
                         },
                     ],
@@ -76,41 +91,45 @@
                     [
                         {
                             {% if ORC.4 -%}
-                            "code":"PGN",
+                                "code":"PGN",
                             {% endif -%}
                             {% if ORC.4 -%}
-                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
                             {% endif -%}
                         },
                     ],
                 },
             },
             {% if OBR.2 -%}
-            { {% include 'DataType/EIIdentifier' EI: OBR.2 -%} },
+            {
+                {% include 'DataType/EIIdentifier' EI: OBR.2 -%}
+            },
             {% endif -%}
-            { {% include 'DataType/EIIdentifier' EI: OBR.3 -%} },
-            { {% include 'DataType/EIIdentifier' EI: OBR.53 -%} },
+            {
+                {% include 'DataType/EIIdentifier' EI: OBR.3 -%}
+            },
+            {
+                {% include 'DataType/EIIdentifier' EI: OBR.53 -%}
+            },
         ],
-        "status":"{{ ORC.5.Value | get_property: 'CodeSystem/OrderStatus', 'code' }}",
         {% if ORC.1.Value -%}
-        "authoredOn":"{{ ORC.9.Value | format_as_date_time }}",
+            "authoredOn":"{{ ORC.9.Value | format_as_date_time }}",
         {% endif -%}
         "occurrenceDateTime":"{{ ORC.15.Value | format_as_date_time }}",
         "occurrenceDateTime":"{{ OBR.6.Value | format_as_date_time }}",
         "locationCode":
         [
-            { {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/OrderType', CWE: ORC.29 -%} },
+            {
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/OrderType', CWE: ORC.29 -%}
+            },
         ],
         "requester":
         {
             {% if ORC.12 and PractitionerRole_ID_ORC_12 -%}
-            "reference":"PractitionerRole/{{ PractitionerRole_ID_ORC_12 }}",
+                "reference":"PractitionerRole/{{ PractitionerRole_ID_ORC_12 }}",
             {% endif -%}
-            {% if ORC.22 and Organization_address_ID_ORC_22 -%}
-            "reference":"Organization.address/{{ Organization_address_ID_ORC_22 }}",
-            {% endif -%}
-            {% if ORC.23 and Organization_telecom_ID_ORC_23 -%}
-            "reference":"Organization.telecom/{{ Organization_telecom_ID_ORC_23 }}",
+            {% if ORC.21 and Organization_ID_ORC_21 -%}
+                "reference":"Organization/{{ Organization_ID_ORC_21 }}",
             {% endif -%}
         },
         "quantityQuantity":
@@ -142,16 +161,29 @@
         },
         "reasonCode":
         [
-            { {% include 'DataType/CWECodeableConcept' CWE: OBR.31 -%} },
+            {
+                {% include 'DataType/CWECodeableConcept' CWE: OBR.31 -%}
+            },
         ],
         "specimen":
         [
             {
-                {% if OBR.14 and Specimen_receivedTime_ID_OBR_14 -%}
-                "reference":"Specimen.receivedTime/{{ Specimen_receivedTime_ID_OBR_14 }}",
+                {% if OBR.10 and Practitioner_ID_OBR_10 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_OBR_10 }}",
+                {% endif -%}
+                {% if OBR.15 and Specimen_ID_OBR_15 -%}
+                    "reference":"Specimen/{{ Specimen_ID_OBR_15 }}",
                 {% endif -%}
             },
         ],
+        "subject":
+        {
+            "reference":"{{ ServiceRequest_Subject_ID }}",
+        },
+        "encounter":
+        {
+            "reference":"{{ ServiceRequest_Encounter_ID }}",
+        },
     },
     "request":{
         "method":"PUT",

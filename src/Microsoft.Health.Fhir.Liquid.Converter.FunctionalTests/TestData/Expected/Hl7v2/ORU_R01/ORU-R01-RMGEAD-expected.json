@@ -1,6 +1,10 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
+  "timestamp": "2002-02-15T09:30:00",
+  "identifier": {
+    "value": "CNTRL-3456"
+  },
   "entry": [
     {
       "fullUrl": "urn:uuid:59137ac2-b595-49c0-863e-df25b62bf2cd",
@@ -22,6 +26,10 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "R01",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -92,10 +100,34 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:66170fe1-2ab4-a3a0-672a-dd146b9bee1b",
       "resource": {
         "resourceType": "Provenance",
         "id": "66170fe1-2ab4-a3a0-672a-dd146b9bee1b",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on GENERATED_INSTANT_PLACEHOLDER using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: TEMPLATE_URL_PLACEHOLDER.</span><span>Root template: ORU_R01.</span></p></div>"
+        },
         "agent": [
           {
             "type": {
@@ -108,7 +140,7 @@
             }
           }
         ],
-        "recorded": "2002-02-15T09:30:00Z"
+        "recorded": "2002-02-15T09:30:00"
       },
       "request": {
         "method": "PUT",
@@ -124,11 +156,30 @@
           {
             "value": "AC555444444"
           }
+        ],
+        "subject": [
+          {
+            "reference": "Patient/92bee074-a5c5-3c79-1905-2ed380528150"
+          }
         ]
       },
       "request": {
         "method": "PUT",
         "url": "Account/4af7a7fb-e594-e5b3-43b9-969188e0c692"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Encounter",
+        "status": "unknown",
+        "subject": {
+          "reference": "Patient/92bee074-a5c5-3c79-1905-2ed380528150"
+        }
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Encounter/"
       }
     },
     {
@@ -154,7 +205,7 @@
             "value": "1045813"
           }
         ],
-        "effectiveDateTime": "2002-02-15T07:30:00Z",
+        "effectiveDateTime": "2002-02-15T07:30:00",
         "code": {
           "coding": [
             {
@@ -190,8 +241,9 @@
           ]
         },
         "valueQuantity": {
-          "code": "mg/dl"
+          "unit": "mg/dl"
         },
+        "valueString": "  ",
         "interpretation": [
           {
             "coding": [
@@ -216,8 +268,9 @@
               ]
             },
             "valueQuantity": {
-              "code": "mg/dl"
+              "unit": "mg/dl"
             },
+            "valueString": "  ",
             "referenceRange": [
               {
                 "text": "70_105"

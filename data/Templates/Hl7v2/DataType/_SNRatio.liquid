@@ -1,8 +1,10 @@
-"numerator":
-{
-    "value":"{{ SN.2.Value }}",
-},
-"denominator":
-{
-    "value":"{{ SN.4.Value }}",
-},
+{% if SN -%}
+    "numerator":
+    {
+        "value":"{{ SN.2.Value }}",
+    },
+    "denominator":
+    {
+        "value":"{{ SN.4.Value }}",
+    },
+{% endif -%}

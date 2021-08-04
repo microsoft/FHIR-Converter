@@ -88,11 +88,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The code system mapping file is invalid..
+        ///   Looks up a localized string similar to The code mapping file is invalid..
         /// </summary>
-        internal static string InvalidCodeSystemMapping {
+        internal static string InvalidCodeMapping {
             get {
-                return ResourceManager.GetString("InvalidCodeSystemMapping", resourceCulture);
+                return ResourceManager.GetString("InvalidCodeMapping", resourceCulture);
             }
         }
         
@@ -142,6 +142,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TimeZoneHandling only supports &apos;local&apos;, &apos;utc&apos; and &apos;preserve&apos;..
+        /// </summary>
+        internal static string InvalidTimeZoneHandling {
+            get {
+                return ResourceManager.GetString("InvalidTimeZoneHandling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error happened when merging JSON: {0}.
         /// </summary>
         internal static string JsonMergingError {
@@ -169,20 +178,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The input data should not be null or empty..
-        /// </summary>
-        internal static string NullOrEmptyInput {
-            get {
-                return ResourceManager.GetString("NullOrEmptyInput", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Root template should not be null or empty..
         /// </summary>
         internal static string NullOrEmptyRootTemplate {
             get {
                 return ResourceManager.GetString("NullOrEmptyRootTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The input data should not be null, empty or consists only of white-space characters..
+        /// </summary>
+        internal static string NullOrWhiteSpaceInput {
+            get {
+                return ResourceManager.GetString("NullOrWhiteSpaceInput", resourceCulture);
             }
         }
         
@@ -273,6 +282,24 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         internal static string TraceInfoError {
             get {
                 return ResourceManager.GetString("TraceInfoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected end when reading IDictionary&lt;string, object&gt;..
+        /// </summary>
+        internal static string UnexpectedJsonConvertEnd {
+            get {
+                return ResourceManager.GetString("UnexpectedJsonConvertEnd", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unexpected token when converting IDictionary&lt;string, object&gt;..
+        /// </summary>
+        internal static string UnexpectedJsonConvertToken {
+            get {
+                return ResourceManager.GetString("UnexpectedJsonConvertToken", resourceCulture);
             }
         }
     }

@@ -1,0 +1,31 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+ImmunizationEvaluation_Patient_ID: A resource Id, used to fill "patient.reference" property.
+ImmunizationEvaluation_Authority_ID: A resource Id, used to fill "authority.reference" property.
+ImmunizationEvaluation_ImmunizationEvent_ID: A resource Id, used to fill "reference.reference" property.
+{% endcomment -%}
+
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "ImmunizationEvaluation",
+        "id":"{{ ID }}",
+        "patient":
+        {
+            "reference":"{{ ImmunizationEvaluation_Patient_ID }}",
+        },
+        "authority":
+        {
+            "reference":"{{ ImmunizationEvaluation_Authority_ID }}",
+        },
+        "immunizationEvent":
+        {
+            "reference":"{{ ImmunizationEvaluation_ImmunizationEvent_ID }}",
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"ImmunizationEvaluation/{{ ID }}",
+    },
+},

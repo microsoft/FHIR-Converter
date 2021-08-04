@@ -1,6 +1,10 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
+  "timestamp": "2019-05-03T03:16:59.069+08:00",
+  "identifier": {
+    "value": "401"
+  },
   "entry": [
     {
       "fullUrl": "urn:uuid:55e2d2b6-8c08-6f34-9f2c-ccf2ba785dba",
@@ -14,6 +18,10 @@
               "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
             }
           ]
+        },
+        "eventCoding": {
+          "code": "A04",
+          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
         }
       },
       "request": {
@@ -66,6 +74,16 @@
               {
                 "value": "(330) 274-8214"
               }
+            ],
+            "relationship": [
+              {
+                "coding": [
+                  {
+                    "code": "EMERGENCY",
+                    "display": "EMERGENCY"
+                  }
+                ]
+              }
             ]
           }
         ]
@@ -76,10 +94,66 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Practitioner"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:10ffd4e9-25bf-8239-3d9b-64bef81e192a",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "10ffd4e9-25bf-8239-3d9b-64bef81e192a"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Practitioner/10ffd4e9-25bf-8239-3d9b-64bef81e192a"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:1791139d-4b3d-30a1-a790-ecff6e63a1fd",
+      "resource": {
+        "resourceType": "Account",
+        "id": "1791139d-4b3d-30a1-a790-ecff6e63a1fd",
+        "identifier": [
+          {
+            "value": "123456789"
+          }
+        ],
+        "subject": [
+          {
+            "reference": "Patient/106decd4-a7b0-34eb-afe9-94e54bdff26f"
+          }
+        ]
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Account/1791139d-4b3d-30a1-a790-ecff6e63a1fd"
+      }
+    },
+    {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Location"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Location/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:269e4fbc-35ab-2c46-9c28-f4ab11c3b1f3",
       "resource": {
         "resourceType": "Provenance",
         "id": "269e4fbc-35ab-2c46-9c28-f4ab11c3b1f3",
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on GENERATED_INSTANT_PLACEHOLDER using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: TEMPLATE_URL_PLACEHOLDER.</span><span>Root template: ADT_A01.</span></p></div>"
+        },
         "agent": [
           {
             "type": {
@@ -97,22 +171,6 @@
       "request": {
         "method": "PUT",
         "url": "Provenance/269e4fbc-35ab-2c46-9c28-f4ab11c3b1f3"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:1791139d-4b3d-30a1-a790-ecff6e63a1fd",
-      "resource": {
-        "resourceType": "Account",
-        "id": "1791139d-4b3d-30a1-a790-ecff6e63a1fd",
-        "identifier": [
-          {
-            "value": "123456789"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Account/1791139d-4b3d-30a1-a790-ecff6e63a1fd"
       }
     },
     {
@@ -138,11 +196,14 @@
                   }
                 ]
               }
-            ]
+            ],
+            "individual": {
+              "reference": "Practitioner/10ffd4e9-25bf-8239-3d9b-64bef81e192a"
+            }
           }
         ],
         "period": {
-          "start": "2019-05-02T07:00:00Z"
+          "start": "2019-05-02T07:00:00"
         },
         "subject": {
           "reference": "Patient/106decd4-a7b0-34eb-afe9-94e54bdff26f"
@@ -154,10 +215,38 @@
       }
     },
     {
+      "fullUrl": "urn:uuid:",
+      "resource": {
+        "resourceType": "Organization"
+      },
+      "request": {
+        "method": "PUT",
+        "url": "Organization/"
+      }
+    },
+    {
       "fullUrl": "urn:uuid:4e852062-3313-586b-4979-1f4c539eb4d5",
       "resource": {
         "resourceType": "RelatedPerson",
         "id": "4e852062-3313-586b-4979-1f4c539eb4d5",
+        "relationship": [
+          {
+            "coding": [
+              {
+                "code": "SPOUS",
+                "display": "SPOUS"
+              }
+            ]
+          },
+          {
+            "coding": [
+              {
+                "code": "EMERGENCY",
+                "display": "EMERGENCY"
+              }
+            ]
+          }
+        ],
         "telecom": [
           {
             "value": "(130) 724-0433",

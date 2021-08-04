@@ -18,7 +18,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [Fact]
         public void GivenAValidTemplateDirectory_WhenGetTemplate_CorrectResultsShouldBeReturned()
         {
-            var templateLocalFileSystem = new TemplateLocalFileSystem(Constants.Hl7v2TemplateDirectory, DataType.Hl7v2);
+            var templateLocalFileSystem = new TemplateLocalFileSystem(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2);
             var context = new Context(CultureInfo.InvariantCulture);
 
             // Template exists
@@ -31,7 +31,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [Fact]
         public void GivenAValidTemplateDirectory_WhenGetTemplateWithContext_CorrectResultsShouldBeReturned()
         {
-            var templateLocalFileSystem = new TemplateLocalFileSystem(Constants.Hl7v2TemplateDirectory, DataType.Hl7v2);
+            var templateLocalFileSystem = new TemplateLocalFileSystem(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2);
             var context = new Context(CultureInfo.InvariantCulture);
 
             // Template exists
@@ -47,7 +47,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [Fact]
         public void GivenAValidTemplateDirectory_WhenReadTemplateWithContext_ExceptionShouldBeThrown()
         {
-            var templateLocalFileSystem = new TemplateLocalFileSystem(Constants.Hl7v2TemplateDirectory, DataType.Hl7v2);
+            var templateLocalFileSystem = new TemplateLocalFileSystem(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2);
             var context = new Context(CultureInfo.InvariantCulture);
             context["ADT_A01"] = "ADT_A01";
             Assert.Throws<NotImplementedException>(() => templateLocalFileSystem.ReadTemplateFile(context, "hello"));

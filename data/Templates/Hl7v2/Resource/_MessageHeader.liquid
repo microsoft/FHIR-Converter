@@ -1,3 +1,15 @@
+{% comment -%}
+The following reference IDs are accepted by this template.
+
+Organization_ID_MSH_6: A resource Id, used to fill "destination.receiver.reference" property. The resource is of "Organization" type and generated based on "MSH.6" HL7 V2 identifier.
+Organization_ID_MSH_23: A resource Id, used to fill "destination.receiver.reference" property. The resource is of "Organization" type and generated based on "MSH.23" HL7 V2 identifier.
+Organization_ID_MSH_4: A resource Id, used to fill "sender.reference" property. The resource is of "Organization" type and generated based on "MSH.4" HL7 V2 identifier.
+Organization_ID_MSH_22: A resource Id, used to fill "responsible.reference" property. The resource is of "Organization" type and generated based on "MSH.22" HL7 V2 identifier.
+MessageHeader_Enterer_ID: A resource Id, used to fill "enterer.reference" property.
+MessageHeader_Author_ID: A resource Id, used to fill "author.reference" property.
+MessageHeader_Response_Details_ID: A resource Id, used to fill "response.details.reference" property.
+{% endcomment -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
@@ -5,7 +17,7 @@
         "id":"{{ ID }}",
         "source":
         {
-            {% include 'DataType/HDMSH_3' HD: MSH.3 -%}
+            "name":"{{ MSH.3.1.Value }}",
             "endpoint":"{{ MSH.24.Value }}",
             "version":"{{ SFT.2.Value }}",
             "software":"{{ SFT.3.Value }}",
@@ -14,16 +26,21 @@
         [
             {
                 {% include 'DataType/HDMSH_5' HD: MSH.5 -%}
+                "endpoint":"{{ MSH.25.Value }}",
                 "receiver":
                 {
                     {% if MSH.6 and Organization_ID_MSH_6 -%}
-                    "reference":"Organization/{{ Organization_ID_MSH_6 }}",
+                        "reference":"Organization/{{ Organization_ID_MSH_6 }}",
+                    {% endif -%}
+                    {% if MSH.23 and Organization_ID_MSH_23 -%}
+                        "reference":"Organization/{{ Organization_ID_MSH_23 }}",
                     {% endif -%}
                 },
             },
         ],
         "meta":
         {
+            {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
             "security":
             [
             ],
@@ -32,15 +49,37 @@
                 {% include 'DataType/PT' PT: MSH.11 -%},
             ],
         },
+        "eventCoding":
+        {
+            {% include 'DataType/MSG' MSG: MSH.9 -%}
+        },
         "language":"{{ MSH.19.Value | get_property: 'CodeSystem/Language', 'code' }}",
         "sender":
         {
             {% if MSH.4 and Organization_ID_MSH_4 -%}
-            "reference":"Organization/{{ Organization_ID_MSH_4 }}",
+                "reference":"Organization/{{ Organization_ID_MSH_4 }}",
             {% endif -%}
-            {% if MSH.17 and Organization_address_country_ID_MSH_17 -%}
-            "reference":"{{ "Organization.address.country/{{ Organization_address_country_ID_MSH_17 }}" | get_property: 'CodeSystem/Countries', 'code' }}",
+        },
+        "responsible":
+        {
+            {% if MSH.22 and Organization_ID_MSH_22 -%}
+                "reference":"Organization/{{ Organization_ID_MSH_22 }}",
             {% endif -%}
+        },
+        "enterer":
+        {
+            "reference":"{{ MessageHeader_Enterer_ID }}",
+        },
+        "author":
+        {
+            "reference":"{{ MessageHeader_Author_ID }}",
+        },
+        "response":
+        {
+            "details":
+            {
+                "reference":"{{ MessageHeader_Response_Details_ID }}",
+            },
         },
     },
     "request":{

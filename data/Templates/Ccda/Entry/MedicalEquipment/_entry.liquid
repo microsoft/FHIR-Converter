@@ -1,0 +1,22 @@
+{% if entry.organizer -%}
+    {% assign organizationId = entry.organizer | to_json_string | generate_uuid -%}
+    {% include 'Resource/Device2' deviceEntry: entry.organizer, ID: organizationId -%}
+    {{ entry.organizer.component | to_array | batch_render: 'Entry/MedicalEquipment/entry_organizer_component', 'entry' }}
+{% endif -%}
+
+{% if entry.supply -%}
+    {% assign supplyId = entry.supply | to_json_string | generate_uuid -%}
+    {% include 'Resource/Device2' deviceEntry: entry.supply, ID: supplyId -%}
+{% endif -%}
+
+{% if entry.procedure -%}
+    {% assign procedureId = entry.procedure | to_json_string | generate_uuid -%}
+    {% include 'Resource/Procedure' procedureEntry: entry.procedure, ID: procedureId -%}
+    {% include 'Reference/Procedure/Subject' ID: procedureId, REF: fullPatientId -%}
+    {% if entry.procedure.performer.assignedEntity.representedOrganization.name._ -%}
+        {% assign organizationId = entry.procedure.performer.assignedEntity.representedOrganization | to_json_string | generate_uuid -%}
+        {% include 'Resource/Organization' organization: entry.procedure.performer.assignedEntity.representedOrganization, ID: organizationId -%}
+        {% assign fullOrganizationId = organizationId | prepend: 'Organization/' -%}
+        {% include 'Reference/Procedure/Performer_Actor' ID: procedureId, REF: fullOrganizationId -%}
+    {% endif -%}
+{% endif -%}

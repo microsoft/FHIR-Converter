@@ -1,0 +1,104 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Observation",
+        "id":"{{ ID }}",
+        "meta":
+        {
+            "profile":
+            [
+                "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults",
+            ],
+        },
+        "identifier":
+        [
+            {% assign ids = observationEntry.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "category":
+        [
+            {
+                "coding":
+                [
+                    {
+                        {% if observationCategory -%}
+                        "system":"http://terminology.hl7.org/CodeSystem/observation-category",
+                        {% endif -%}
+                        {% if observationCategory -%}
+                        "code":"{{ observationCategory }}",
+                        {% endif -%}
+                    },
+                ],
+            },
+        ],
+        "status":"{{ observationEntry.statusCode.code | get_property: 'ValueSet/ObservationStatus' }}",
+        "code":
+        {
+            {% if observationEntry.code.translation.code -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.code.translation -%}
+            {% endif -%}
+            {% if observationEntry.code.translation.code == null -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.code -%}
+            {% endif -%}
+        },
+        "effectivePeriod":
+        {
+            {% if observationEntry.effectiveTime.low.value -%}
+            "start":"{{ observationEntry.effectiveTime.low.value | format_as_date_time }}",
+            {% endif -%}
+            {% if observationEntry.effectiveTime.low.value -%}
+            "end":"{{ observationEntry.effectiveTime.high.value | format_as_date_time }}",
+            {% endif -%}
+        },
+        {% if observationEntry.effectiveTime.low.value == null -%}
+        "effectiveDateTime":"{{ observationEntry.effectiveTime.value | format_as_date_time }}",
+        {% endif -%}
+        "bodySite":
+        {
+            {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.targetSiteCode -%}
+        },
+        {% if observationEntry.value.code -%}
+            "valueCodeableConcept":
+            {
+                {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.value -%}
+            },
+        {% elsif observationEntry.value.value -%}
+            "valueQuantity":
+            {
+                "value":{{ observationEntry.value.value }},
+                "unit":"{{ observationEntry.value.unit }}",
+            },
+        {% else -%}
+            "valueString":"{{ observationEntry.value._ }}",
+        {% endif -%}
+        "referenceRange":
+        [
+            {
+                {% if observationEntry.referenceRange.observationRange.value.low.value -%}
+                    "low":
+                    {
+                        "value":{{ observationEntry.referenceRange.observationRange.value.low.value }},
+                        "unit":"{{ observationEntry.referenceRange.observationRange.value.low.unit }}",
+                    },
+                {% endif -%}
+                {% if observationEntry.referenceRange.observationRange.value.high.value -%}
+                    "high":
+                    {
+                        "value":{{ observationEntry.referenceRange.observationRange.value.high.value }},
+                        "unit":"{{ observationEntry.referenceRange.observationRange.value.high.unit }}",
+                    },
+                {% endif -%}
+            },
+        ],
+        "interpretation":
+        [
+            { {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.interpretationCode -%} },
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Observation/{{ ID }}",
+    },
+},
