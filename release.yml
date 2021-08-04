@@ -7,8 +7,6 @@ trigger:
 - refs/heads/dotliquid
 pr: ['dotliquid']
 
-
-
 variables:
   solution: '**/*.sln'
   unitTestProjects: "**/*UnitTests/*.csproj"
@@ -45,22 +43,21 @@ stages:
         command: build
         projects: '$(solution)'
         arguments: '--configuration $(buildConfiguration) -p:Version=$(version)'
-            
+
     - task: DotNetCoreCLI@2
       displayName: 'dotnet test'
       inputs:
         command: test
         projects: '$(unitTestProjects)'
         arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-        nobuild: true     
-        
-
+        nobuild: true
+ 
     - task: DotNetCoreCLI@2
-      displayName: 'publish win_x64 bin'
+      displayName: 'publish bin'
       inputs:
         command: 'publish'
         projects: '$(publishProject)'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/win_x64 --runtime win-x64'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/publish'
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: false
@@ -166,7 +163,7 @@ stages:
     #   displayName: test push
 
     - script: |
-        dotnet test **/*FunctionalTests.dll
+        dotnet test FhirConverterBuild/**/*FunctionalTests.dll
       displayName: Functional Tests
     - task: Docker@2
       displayName: stop registry
@@ -174,10 +171,9 @@ stages:
       inputs:
         command: stop
         container: registry
-
-  - job: Linux_Functional_Test
-    pool:
-      vmImage: 'ubuntu-latest'
+  
+  - job: OSX_Functional_Test
+    pool: CompassMacHosted
     continueOnError: true
     steps:
     - checkout: none #skip checking out the default repository resource
@@ -187,23 +183,24 @@ stages:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
-        curl -LO https://github.com/deislabs/oras/releases/download/v0.8.1/oras_0.8.1_linux_amd64.tar.gz
-        mkdir -p oras-install/
-        tar -zxf oras_0.8.1_*.tar.gz -C oras-install/
-        mv oras-install/oras /usr/local/bin/
-        rm -rf oras_0.8.1_*.tar.gz oras-install/
-        docker run --rm -d -p 5000:5000 --name registry registry:2
-      displayName: start registry
+        docker run --rm -d -p 5000:5000 --name registryOSX registry:2
+      displayName: start registryOSX
     - script: |
-        dotnet test **/*FunctionalTests.dll
+        chmod +x FhirConverterBuild/**/**/oras*
+        dotnet test FhirConverterBuild/**/*FunctionalTests.dll
       displayName: Functional Tests
     - task: Docker@2
-      displayName: stop registry
+      displayName: stop registryOSX
       condition: succeededOrFailed()
       inputs:
         command: stop
-        container: registry
-  
+        container: registryOSX
+    
+    #need delete files for self-hosted agent
+    - task: DeleteFiles@1
+      inputs:
+        Contents: '**/*' 
+
 - stage: Release
   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
   jobs:
@@ -230,7 +227,3 @@ stages:
           $(System.DefaultWorkingDirectory)/FhirConverterBuild/bin/**
           $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/Hl7v2DefaultTemplates.tar.gz
           $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/CcdaDefaultTemplates.tar.gz
-
-
-
-

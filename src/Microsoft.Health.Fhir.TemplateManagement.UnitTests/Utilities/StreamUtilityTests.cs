@@ -6,7 +6,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ICSharpCode.SharpZipLib.GZip;
+using System.Text;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Xunit;
@@ -20,9 +20,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
 
         public static IEnumerable<object[]> GetFilePathWithDigest()
         {
-            yield return new object[] { "TestData/DecompressedFiles/ADT_A01.liquid", "sha256:74a970505314dee5b9827af6c12145a4992573f490b9d2ee3a3126f0b352425f" };
-            yield return new object[] { "TestData/DecompressedFiles/ORU_R01.liquid", "sha256:4100086beb8df1e414a301c33066c1689e4156a2d9b718e3bc8146096d197032" };
-            yield return new object[] { "TestData/DecompressedFiles/.wh.VXU_V04.liquid", "sha256:837ccb607e312b170fac7383d7ccfd61fa5072793f19a25e75fbacb56539b86b" };
+            yield return new object[] { "TestData/DecompressedFiles/ADT_A01.liquid", "sha256:d377125165eb6d770f344429a7a55379d4028774aebe267fe620cd1fcd2daab7" };
+            yield return new object[] { "TestData/DecompressedFiles/ORU_R01.liquid", "sha256:be0183c10057fc0a2a2f3bb28f65d281042dd4fa9b9bc4ff9c7df9db0cf2f08d" };
+            yield return new object[] { "TestData/DecompressedFiles/.wh.VXU_V04.liquid", "sha256:9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08" };
         }
 
         public static IEnumerable<object[]> GetTarGzFilePathWithCountsOfFiles()
@@ -73,9 +73,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
 
         [Theory]
         [MemberData(nameof(GetFilePathWithDigest))]
-        public void GiveAFile_WhenCalculateDigest_ACorrectDigestShouldBeReturned(string filePath, string expectedDigest)
+        public void GiveFileContent_WhenCalculateDigest_ACorrectDigestShouldBeReturned(string filePath, string expectedDigest)
         {
-            var digest = StreamUtility.CalculateDigestFromSha256(File.ReadAllBytes(filePath));
+            var digest = StreamUtility.CalculateDigestFromSha256(Encoding.UTF8.GetBytes(File.ReadAllText(filePath).Replace("\r", string.Empty).Replace("\n", string.Empty)));
             Assert.Equal(expectedDigest, digest);
         }
 
@@ -83,7 +83,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
         {
             foreach (var element in expected)
             {
-                Assert.Equal(result[element.Key], element.Value);
+                if (element.Value == null && result[element.Key] == null)
+                {
+                    Assert.True(true);
+                }
+                else
+                {
+                    Assert.Equal(
+                        Encoding.UTF8.GetString(result[element.Key]).Replace("\r", string.Empty).Replace("\n", string.Empty),
+                        Encoding.UTF8.GetString(element.Value).Replace("\r", string.Empty).Replace("\n", string.Empty));
+                }
             }
         }
 

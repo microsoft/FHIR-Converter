@@ -67,7 +67,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         [Fact]
         public void GzipTest()
         {
-            Assert.Equal("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA=", Filters.Gzip("uncompressed"));
+            // Gzip function is operation system related.
+            Assert.True(string.Equals("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA=", Filters.Gzip("uncompressed"))
+                || string.Equals("H4sIAAAAAAAAEyvNS87PLShKLS5OTQEA3a5CsQwAAAA=", Filters.Gzip("uncompressed")));
             Assert.Equal("uncompressed", Filters.GunzipBase64String(Filters.Gzip("uncompressed")));
             Assert.Equal(string.Empty, Filters.Gzip(string.Empty));
 
@@ -77,8 +79,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         [Fact]
         public void GunzipBase64StringTest()
         {
+            // Different base64string will be decompressed to the same result.
+            Assert.Equal("uncompressed", Filters.GunzipBase64String("H4sIAAAAAAAAEyvNS87PLShKLS5OTQEA3a5CsQwAAAA="));
             Assert.Equal("uncompressed", Filters.GunzipBase64String("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA="));
-            Assert.Equal("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA=", Filters.Gzip(Filters.GunzipBase64String("H4sIAAAAAAAACivNS87PLShKLS5OTQEA3a5CsQwAAAA=")));
             Assert.Equal(string.Empty, Filters.GunzipBase64String(string.Empty));
 
             Assert.Throws<ArgumentNullException>(() => Filters.GunzipBase64String(null));
