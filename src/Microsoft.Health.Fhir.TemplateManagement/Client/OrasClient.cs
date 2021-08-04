@@ -6,6 +6,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using EnsureThat;
@@ -79,9 +80,23 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
         {
             TaskCompletionSource<bool> eventHandled = new TaskCompletionSource<bool>();
 
+            string orasFileName;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                orasFileName = Constants.OrasFileForWindows;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                orasFileName = Constants.OrasFileForOSX;
+            }
+            else
+            {
+                throw new TemplateManagementException("Operation system is not supported");
+            }
+
             Process process = new Process
             {
-                StartInfo = new ProcessStartInfo(Constants.OrasFile),
+                StartInfo = new ProcessStartInfo(orasFileName),
             };
 
             process.StartInfo.Arguments = command;
