@@ -59,6 +59,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         [Fact]
         public void GivenInputImageFolder_WhenReadImageFolder_IfManifestExist_AllOCIArtifactLayersWillBeReadInOrder()
         {
+            // the correct order is layer1, layer2, layer3.
             string layer1 = "TestData/TarGzFiles/layer1.tar.gz";
             string layer2 = "TestData/TarGzFiles/layer2.tar.gz";
             string layer3 = "TestData/TarGzFiles/userV1.tar.gz";
@@ -66,12 +67,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             string workingFolder = "TestData/testReadImageLayerManifest";
             ClearFolder(workingFolder);
             Directory.CreateDirectory(Path.Combine(workingFolder, ".image/layers"));
-            File.Copy(layer1, Path.Combine(workingFolder, ".image/layers/layer1.tar.gz"));
-            File.Copy(layer2, Path.Combine(workingFolder, ".image/layers/layer2.tar.gz"));
-            File.Copy(layer3, Path.Combine(workingFolder, ".image/layers/layer3.tar.gz"));
+
+            // Rename files to rearrange the sequence.
+            File.Copy(layer1, Path.Combine(workingFolder, ".image/layers/3.tar.gz"));
+            File.Copy(layer2, Path.Combine(workingFolder, ".image/layers/2.tar.gz"));
+            File.Copy(layer3, Path.Combine(workingFolder, ".image/layers/1.tar.gz"));
             File.Copy(manifest, Path.Combine(workingFolder, ".image/layers/manifest"));
             var overlayFs = new OverlayFileSystem(workingFolder);
-            Assert.Equal(3, overlayFs.ReadImageLayers().Count());
+            var layers = overlayFs.ReadImageLayers();
+            Assert.Equal("3.tar.gz", layers[0].FileName);
+            Assert.Equal("2.tar.gz", layers[1].FileName);
+            Assert.Equal("1.tar.gz", layers[2].FileName);
             ClearFolder(workingFolder);
         }
 

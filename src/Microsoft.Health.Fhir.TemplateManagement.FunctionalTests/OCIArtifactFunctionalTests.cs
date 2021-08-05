@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 {
     public class OCIArtifactFunctionalTests : IAsyncLifetime
     {
+        private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
         private static readonly string _testTarGzPath = Path.Join("TestData", "TarGzFiles");
         private readonly string _containerRegistryServer;
         private readonly string _baseLayerTemplatePath = Path.Join(_testTarGzPath, "layer1.tar.gz");
@@ -54,6 +56,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public Task DisposeAsync()
         {
+            ClearFolder(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName));
             return Task.CompletedTask;
         }
 
