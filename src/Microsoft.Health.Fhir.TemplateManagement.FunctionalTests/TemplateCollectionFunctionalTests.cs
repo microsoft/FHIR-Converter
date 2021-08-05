@@ -36,6 +36,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string invalidTemplatePath = "TestData/TarGzFiles/invalidTemplates.tar.gz";
         private readonly string _defaultHl7v2TemplateImageReference = "microsofthealth/hl7v2templates:default";
         private readonly string _defaultCcdaTemplateImageReference = "microsofthealth/ccdatemplates:default";
+        private readonly string _defaultJsonTemplateImageReference = "microsofthealth/jsontemplates:default";
         private readonly string testOneLayerImageReference;
         private readonly string testMultiLayerImageReference;
         private readonly string testInvalidImageReference;
@@ -134,6 +135,21 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             });
         }
 
+        public static IEnumerable<object[]> GetJsonDataAndTemplateSources()
+        {
+            var data = new List<object[]>
+            {
+                new object[] { @"ExamplePatient.json", @"ExamplePatient" },
+                new object[] { @"Stu3ChargeItem.json", @"Stu3ChargeItem" },
+            };
+            return data.Select(item => new object[]
+            {
+                Path.Join(_sampleDataDirectory, "Json", Convert.ToString(item[0])),
+                Path.Join(_templateDirectory, "Json"),
+                Convert.ToString(item[1]),
+            });
+        }
+
         public static IEnumerable<object[]> GetNotExistImageInfo()
         {
             yield return new object[] { "templatetest", "notexist" };
@@ -156,6 +172,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             yield return new object[] { "microsofthealth/fhirconverter:default", 839 };
             yield return new object[] { "microsofthealth/hl7v2templates:default", 839 };
             yield return new object[] { "microsofthealth/ccdatemplates:default", 757 };
+            yield return new object[] { "microsofthealth/jsontemplates:default", 2 };
         }
 
         [Fact]
@@ -359,6 +376,28 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             // Remove DocumentReference, where date is different every time conversion is run and gzip result is OS dependent
             imageResultObject["entry"]?.Last()?.Remove();
             folderResultObject["entry"]?.Last()?.Remove();
+
+            Assert.True(JToken.DeepEquals(imageResultObject, folderResultObject));
+        }
+
+        [Theory]
+        [MemberData(nameof(GetJsonDataAndTemplateSources))]
+        public async Task GivenJsonSameInputData_WithDifferentTemplateSource_WhenConvert_ResultShouldBeIdentical(string inputFile, string defaultTemplateDirectory, string rootTemplate)
+        {
+            var folderTemplateProvider = new TemplateProvider(defaultTemplateDirectory, DataType.Json);
+
+            var templateProviderFactory = new TemplateCollectionProviderFactory(new MemoryCache(new MemoryCacheOptions()), Options.Create(new TemplateCollectionConfiguration()));
+            var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultJsonTemplateImageReference, string.Empty);
+            var imageTemplateProvider = new TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
+
+            var jsonProcessor = new JsonProcessor();
+            var inputContent = File.ReadAllText(inputFile);
+
+            var imageResult = jsonProcessor.Convert(inputContent, rootTemplate, imageTemplateProvider);
+            var folderResult = jsonProcessor.Convert(inputContent, rootTemplate, folderTemplateProvider);
+
+            var imageResultObject = JObject.Parse(imageResult);
+            var folderResultObject = JObject.Parse(folderResult);
 
             Assert.True(JToken.DeepEquals(imageResultObject, folderResultObject));
         }
