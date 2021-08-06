@@ -149,7 +149,7 @@ stages:
   - job: Windows_Functional_Test
     pool:
         vmImage: 'windows-latest'
-    continueOnError: true
+    continueOnError: false
     steps:
     - checkout: none #skip checking out the default repository resource
     - task: DownloadBuildArtifacts@0

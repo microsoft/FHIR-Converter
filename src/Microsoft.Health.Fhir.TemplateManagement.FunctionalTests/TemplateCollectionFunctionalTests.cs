@@ -222,6 +222,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         [MemberData(nameof(GetInvalidImageReference))]
         public void GiveInvalidImageReference_WhenGetTemplateCollection_ExceptionWillBeThrownAsync(string imageReference)
         {
+            if (_containerRegistryInfo == null)
+            {
+                return;
+            }
+
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
             Assert.Throws<ImageReferenceException>(() => factory.CreateTemplateCollectionProvider(imageReference, token));
         }
