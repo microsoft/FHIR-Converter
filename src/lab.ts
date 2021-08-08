@@ -10,7 +10,6 @@ import { now } from "fp-ts/lib/Date";
 const { HL7Message } = require("hl7v2");
 
 export function parseHL7Message(message: string):JSON {
-    console.log(`Here I AM!\n${message}`)
     return HL7Message.parse(message.toString());
 }
 
@@ -28,8 +27,8 @@ export function translateLabOrderBundle(json: R4.IBundle): string {
     let patientLastName: string = patient.name![0].family!
     let patientDoB: string =  patient.birthDate!.split('-').join('');
     let sex: string = patient.gender!;
-    let labOrderId: string = serviceRequest.identifier![0].value!;
-    let labOrderDatetime: string = serviceRequest.authoredOn!.split('-').join('');
+    let labOrderId: string = serviceRequest.identifier ? serviceRequest.identifier![0].value! : "";
+    let labOrderDatetime: string = serviceRequest.authoredOn ? serviceRequest.authoredOn!.split('-').join('') : "";
     let labOrderType: string = serviceRequest.code!.coding![0].code!;
 
     let template = `MSH|^~\&|PIMS||IPMS||${new Date().toISOString().slice(0,10).split('-').join('')}||ORM^O01|${ Math.random() * 10000}|D|2.4|||AL|NE\nPID|1||${patientId}||${patientLastName}^${patientFirstName}^^^^^L||${patientDoB}|${sex == "female" ? "F" : "M"}|||||||||||${patientOmang}\nORC|NW|${labOrderId}^LAB|||||^^^^^R||${labOrderDatetime}|||\nOBR|1| ${labOrderId}^LAB||${labOrderType}|R||${labOrderDatetime}|||||||||||`;

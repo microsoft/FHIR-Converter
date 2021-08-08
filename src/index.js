@@ -11,7 +11,7 @@ var openhim = require('./openhim');
 var logger = require('./logger')
 
 var express = require('express');
-var app = require('./routes')(express());
+var app = require('./routes/main')(express());
 
 var port = process.env.PORT || 2019;
 

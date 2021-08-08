@@ -3,24 +3,24 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-var authApiKey = require('./lib/auth-api-key/auth-api-key');
-var constants = require('./lib/constants/constants');
+var authApiKey = require('../lib/auth-api-key/auth-api-key');
+var constants = require('../lib/constants/constants');
 var express = require('express');
 var cookieParser = require('cookie-parser');
-var errorCodes = require('./lib/error/error').errorCodes;
-var errorMessage = require('./lib/error/error').errorMessage;
+var errorCodes = require('../lib/error/error').errorCodes;
+var errorMessage = require('../lib/error/error').errorMessage;
 var fs = require('fs');
 var fse = require('fs-extra');
-var gfs = require('./lib/git-filesystem/git-filesystem')(constants.TEMPLATE_FILES_LOCATION);
+var gfs = require('../lib/git-filesystem/git-filesystem')(constants.TEMPLATE_FILES_LOCATION);
 var path = require('path');
 var bodyParser = require('body-parser');
 var swaggerUi = require('swagger-ui-express');
 var swaggerJSDoc = require('swagger-jsdoc');
-var WorkerPool = require('./lib/workers/workerPool');
-var fileSystemCache = require('./lib/fsCache/cache');
-var handlebarsHelpers = require('./lib/handlebars-converter/handlebars-helpers').external;
+var WorkerPool = require('../lib/workers/workerPool');
+var fileSystemCache = require('../lib/fsCache/cache');
+var handlebarsHelpers = require('../lib/handlebars-converter/handlebars-helpers').external;
 var ncp = require('ncp').ncp;
-const { parseHL7Message, translateLabOrderBundle } = require('./fhir');
+const { parseHL7Message, translateLabOrderBundle } = require('../lab');
 
 module.exports = function (app) {
     const workerPool = new WorkerPool('./src/lib/workers/worker.js', require('os').cpus().length);

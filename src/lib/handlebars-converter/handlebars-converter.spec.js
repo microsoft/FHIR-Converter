@@ -19,9 +19,9 @@ describe('HandlebarsConverter', function () {
 
     it('should compile the ADT_A01.hbs template, which includes nested partials (using handlebar new insatnce)', function (done) {
         session.run(() => {
-            var handlebarInstance = HandlebarsConverter.instance(true, hl7v2Handler, path.join(__dirname, '../../templates/hl7v2'));
+            var handlebarInstance = HandlebarsConverter.instance(true, hl7v2Handler, path.join(__dirname, '../../../data/templates/hl7v2'));
             session.set(constants.CLS_KEY_HANDLEBAR_INSTANCE, handlebarInstance);
-            session.set(constants.CLS_KEY_TEMPLATE_LOCATION, path.join(__dirname, '../../templates/hl7v2'));
+            session.set(constants.CLS_KEY_TEMPLATE_LOCATION, path.join(__dirname, '../../../data/templates/hl7v2'));
 
             fs.readFile(path.join(constants.HL7V2_TEMPLATE_LOCATION, 'ADT_A01.hbs'), function (tErr, templateContent) {
                 if (tErr) done(tErr);
@@ -51,9 +51,9 @@ describe('HandlebarsConverter', function () {
     it('should compile the ADT_A01.hbs template, which includes nested partials (using handlebar existing instance)', function (done) {
         session.run(() => {
 
-            var handlebarExistingInstance = HandlebarsConverter.instance(false, hl7v2Handler, path.join(__dirname, '../../templates/hl7v2'));
+            var handlebarExistingInstance = HandlebarsConverter.instance(false, hl7v2Handler, path.join(__dirname, '../../../data/templates/hl7v2'));
             session.set(constants.CLS_KEY_HANDLEBAR_INSTANCE, handlebarExistingInstance);
-            session.set(constants.CLS_KEY_TEMPLATE_LOCATION, path.join(__dirname, '../../templates/hl7v2'));
+            session.set(constants.CLS_KEY_TEMPLATE_LOCATION, path.join(__dirname, '../../../data/templates/hl7v2'));
 
             fs.readFile(path.join(constants.HL7V2_TEMPLATE_LOCATION, 'ADT_A01.hbs'), function (tErr, templateContent) {
                 if (tErr) done(tErr);
@@ -79,9 +79,9 @@ describe('HandlebarsConverter', function () {
             var templatesMap = {};
             templatesMap['Resources/Patient.hbs'] = '{"key1":"value1"}';
             templatesMap['Resources/Encounter.hbs'] = '{"key2":"value2"}';
-            var handlebarInstanceWithTemplatesMap = HandlebarsConverter.instance(true, hl7v2Handler, path.join(__dirname, '../../templates/hl7v2'), templatesMap);
+            var handlebarInstanceWithTemplatesMap = HandlebarsConverter.instance(true, hl7v2Handler, path.join(__dirname, '../../../data/templates/hl7v2'), templatesMap);
             session.set(constants.CLS_KEY_HANDLEBAR_INSTANCE, handlebarInstanceWithTemplatesMap);
-            session.set(constants.CLS_KEY_TEMPLATE_LOCATION, path.join(__dirname, '../../templates/hl7v2'));
+            session.set(constants.CLS_KEY_TEMPLATE_LOCATION, path.join(__dirname, '../../../data/templates/hl7v2'));
 
             fs.readFile(path.join(constants.HL7V2_TEMPLATE_LOCATION, 'ADT_A01.hbs'), function (tErr, templateContent) {
                 if (tErr) done(tErr);
@@ -106,7 +106,7 @@ describe('HandlebarsConverter', function () {
 
     it('should throw error when referencing partial that is not cached or found on disk', function () {
         var context = { msg: hl7.parseHL7v2('MSH|^~\\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3|||\nEVN|A01|20050110045502|||||') };
-        var handlerbarInstance = HandlebarsConverter.instance(true, hl7v2Handler, path.join(__dirname, '../../templates/hl7v2'));
+        var handlerbarInstance = HandlebarsConverter.instance(true, hl7v2Handler, path.join(__dirname, '../../../data/templates/hl7v2'));
         var template = handlerbarInstance.compile('{{>nonExistingTemplate.hbs}}');
         assert.throws(() => { JSON.parse(template(context)); }, Error, 'Referenced partial template not found on disk');
     });

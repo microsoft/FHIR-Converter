@@ -56,9 +56,9 @@ Make sure that you have Node.js >=14.0 < 15.0 installed
 git clone https://github.com/microsoft/FHIR-Converter/
 cd FHIR-Converter
 git checkout handlebars
-npm install
-npx tsc
-npm start
+yarn
+yarn tsc
+yarn start
 ```
 
 Once this completes, you can access the UI and the service at http://localhost:2019/

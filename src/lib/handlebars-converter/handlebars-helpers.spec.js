@@ -247,7 +247,7 @@ describe('Handlebars helpers', function () {
         var result = getHelper('gzip').func("abc", "utf8", "hex");
         // note : gzip output is dependent on OS : https://stackoverflow.com/questions/26516369/zlib-gzip-produces-different-results-for-same-input-on-different-oses
         // So comparing against windows and linux output
-        assert.ok(result === "1f8b080000000000000a4b4c4a0600c241243503000000" || result === "1f8b08000000000000034b4c4a0600c241243503000000");
+        assert.ok(result === "1f8b080000000000000a4b4c4a0600c241243503000000" || result === "1f8b08000000000000034b4c4a0600c241243503000000" || result === "1f8b08000000000000134b4c4a0600c241243503000000");
     });
 
     it('Random returns a value', function() {

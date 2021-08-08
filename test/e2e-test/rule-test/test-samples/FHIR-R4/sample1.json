@@ -3169,8 +3169,8 @@
           }
         ],
         "status": "active",
-        "beneficiary":"beneficiary",
-        "payor":["payor"]
+        "beneficiary":{ "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779" },
+        "payor":[{ "reference": "Patient/2745d583-e3d1-3f88-8b21-7b59adb60779" }]
       },
       "request": {
         "method": "PUT",

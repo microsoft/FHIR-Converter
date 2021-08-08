@@ -5,5 +5,8 @@
     },
     "mochaJunitReporterReporterOptions": {
         "mochaFile": ".test_output/junit-custom.xml"
-    }
+    },
+    "require": "ts-node/register",
+    "loader": "ts-node/esm",
+    "extensions": ["ts", "tsx"]
 }

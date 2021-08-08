@@ -10,7 +10,7 @@ var path  = require('path');
 var constants = require('../../../dist/lib/constants/constants');
 const API_KEY_HEADER = "X-MS-CONVERSION-API-KEY";
 const apiKeys = ['123', '456'];
-var app = require("../../../dist/routes")(express());
+var app = require("../../../dist/routes/main")(express());
 
 // load testcases
 var cdaTestcases = require('./config/testcases-cda')();
