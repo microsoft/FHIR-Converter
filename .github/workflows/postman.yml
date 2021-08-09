@@ -1,7 +1,7 @@
 name: Run Postman Tests
 
 on: 
-  [release, workflow_dispatch]
+  workflow_dispatch:
  
 jobs:
   newman:
