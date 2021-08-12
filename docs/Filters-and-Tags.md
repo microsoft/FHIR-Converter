@@ -20,9 +20,9 @@ If these filters do not meet your needs, you can also write your own filters.
 ### C-CDA specific filters
 | Filter | Description | Syntax |
 |-|-|-|
-| get_first_ccda_sections | Returns first instance (non-alphanumeric chars replace by '_' in name) of the sections | `{% assign firstSections = msg \| get_first_cda_sections: 'Problems' -%}` |
-| get_ccda_section_lists | Returns instance list (non-alphanumeric chars replace by '_' in name) for the given sections | `{% assign sections = msg \| get_cda_section_lists: 'Problems' -%}` |
-| get_first_ccda_sections_by_template_id | Returns first instance (non-alphanumeric chars replace by '_' in name) of the sections by template id | `{% assign firstSections = msg \| get_first_cda_sections_by_template_id: '2.16.840.1.113883.10.20.22.2.5.1' -%}` |
+| get_first_ccda_sections | Returns first instance (non-alphanumeric chars replace by '_' in name) of the sections | `{% assign firstSections = msg \| get_first_ccda_sections: 'Problems' -%}` |
+| get_ccda_section_lists | Returns instance list (non-alphanumeric chars replace by '_' in name) for the given sections | `{% assign sections = msg \| get_ccda_section_lists: 'Problems' -%}` |
+| get_first_ccda_sections_by_template_id | Returns first instance (non-alphanumeric chars replace by '_' in name) of the sections by template id | `{% assign firstSections = msg \| get_first_ccda_sections_by_template_id: '2.16.840.1.113883.10.20.22.2.5.1' -%}` |
 
 ### String Filters
 | Filter | Description | Syntax |
