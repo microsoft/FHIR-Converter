@@ -76,4 +76,5 @@ If these filters do not meet your needs, you can also write your own filters.
 By default, Liquid provides a set of standard [tags](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers#tags) to assist template creation. Besides these tags, FHIR Converter also provides some other tags that are useful in conversion, which are listed below. If these tags do not meet your needs, you can also write your own tags.
 
 | Tag | Description | Syntax |
-| evaluate | Evaluates an ID with an ID generation template and input data | `{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}` |
+|-|-|-|
+| evaluate | Evaluates an ID with an ID generation template and input data | `{% evaluate patientId using 'Utils/GenerateId' obj:msg.ClinicalDocument.recordTarget.patientRole -%}` |
