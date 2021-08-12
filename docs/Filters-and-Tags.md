@@ -1,7 +1,8 @@
-# Filters
-
+# Filters and Tags
 
 ⚠ **This document applies to the Liquid engine. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/handlebars) link for the documentation of Handlebars engine.**
+
+## Filters
 
 By default, Liquid provides a set of [standard filters](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers#standard-filters) to assist template creation.
 Besides these filters, FHIR Converter also provides some other filters that are useful in conversion, which are listed below.
@@ -56,7 +57,7 @@ If these filters do not meet your needs, you can also write your own filters.
 | format_as_date_time | Convert an YYYYMMDDHHmmssSSS string, e.g. 20040629175400000 to dateTime format, e.g. 2004-06-29T17:54:00.000z. A parameter could be set to handle time zone with "preserve", "utc" or "local". The default method is "local" | {{ PID.29.Value \| format_as_date_time: 'utc' }} |
 | now | Provides current time in a specific format. The default format is "yyyy-MM-ddTHH:mm:ss.FFFZ" | {{ '' \| now: 'dddd, dd MMMM yyyy HH:mm:ss' }} |
 
-#### Collection filters
+### Collection filters
 | Filter | Description | Syntax |
 |-|-|-|
 | to_array | Returns an array created (if needed) from given object | `{% assign authors = msg.ClinicalDocument.author \| to_array -%}` |
@@ -68,3 +69,11 @@ If these filters do not meet your needs, you can also write your own filters.
 |-|-|-|
 | get_property | Returns a specific property of a coding with mapping file [CodeSystem.json](../data/Templates/Hl7v2/CodeSystem/CodeSystem.json) | `{{ PID.8.Value \| get_property: 'CodeSystem/Gender', 'code' }}` |
 | generate_uuid | Generates an ID based on an input string | `{% assign patientId = firstSegments.PID.3.1.Value \| generate_uuid -%}` |
+| generate_id_input | Generates an input string for generate_uuid with 1) the resource type, 2) whether a base ID is required, 3) the base ID (optional) | `{{ identifiers \| generate_id_input: 'Observation', false, baseId \| generate_uuid }}` |
+
+## Tags
+
+By default, Liquid provides a set of standard [tags](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers#tags) to assist template creation. Besides these tags, FHIR Converter also provides some other tags that are useful in conversion, which are listed below. If these tags do not meet your needs, you can also write your own tags.
+
+| Tag | Description | Syntax |
+| evaluate | Evaluates an ID with an ID generation template and input data | `{% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}` |
