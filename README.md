@@ -13,28 +13,19 @@ The following table shows the differences between two converter engines:
 | **Template language** | [Handlebars](https://handlebarsjs.com/) | [Liquid](https://shopify.github.io/liquid/) |
 | **Template authoring tool** | Self-hosted web-app | [VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-health-fhir-converter)|
 | **Supported conversions** | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR|
-| **Available as** | 1. Self-deployed web service <br> (on-prem or on Azure)| 1. Command line tool <br> 2. $convert-data operation in  FHIR Server for Azure <br> 3. $convert-data operation in Azure API for FHIR.|
+| **Available as** | 1. Self-deployed web service <br> (on-prem or on Azure)| 1. Command line tool <br> 2. $convert-data operation in  [FHIR Server for Azure](https://github.com/microsoft/fhir-server/blob/main/docs/ConvertDataOperation.md) <br> 3. $convert-data operation in [Azure API for FHIR](https://docs.microsoft.com/en-us/azure/healthcare-apis/fhir/convert-data).|
 
 ⚠ Rest of this document is about the Liquid converter. For the Handlebars converter, please refer to the [Handlebars branch](https://github.com/microsoft/FHIR-Converter/tree/handlebars).
 
-Currently, FHIR Converter supports two types of conversions, **HL7v2 to FHIR** and **C-CDA to FHIR**. The converter uses templates that define mappings between these different data formats. The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/FiltersSummary.md), which make it easy with work with HL7v2 and C-CDA messages.
+Currently, FHIR Converter supports two types of conversions, **HL7v2 to FHIR** and **C-CDA to FHIR**. The converter uses templates that define mappings between these different data formats. The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/FiltersSummary.md), which make it easy with work with HL7v2 messages and C-CDA documents.
 
 The converter comes with a few ready-to-use templates. If needed, you can create a new template, or modify existing templates to meet your specific conversion requirements.
 
 FHIR Converter with DotLiquid engine transforms the input data into FHIR bundles that are persisted to a FHIR server. The converter is integrated into both [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/) and [FHIR Server](https://github.com/microsoft/fhir-server) as a [$convert-data](https://docs.microsoft.com/en-us/azure/healthcare-apis/convert-data) operation. It is also available as a command line tool.
 
-## Using $convert-data
+## Using $convert-data in FHIR server
 
-The `$convert-data` operation is integrated into both Azure API for FHIR and FHIR server to run as part of the service. After enabling `$convert-data` in your server, you can make API calls in the form of ```<<your FHIR server URL>>/$convert-data``` to the server to convert your data into FHIR.
-
-In the API call request body, you would include the following parameters:
-
-| Parameter Name      | Description | Accepted values |
-| ----------- | ----------- | ----------- |
-| inputData      | Data to be converted. | A valid JSON String|
-| inputDataType   | Data type of input. | ```HL7v2```, ``Ccda`` |
-| templateCollectionReference | Reference to an [OCI image ](https://github.com/opencontainers/image-spec) template collection on [Azure Container Registry (ACR)](https://azure.microsoft.com/en-us/services/container-registry/). It is the image containing Liquid templates to use for conversion. | For HL7v2 default templates: <br>```microsofthealth/fhirconverter:default``` <br>``microsofthealth/hl7v2templates:default``<br>For C-CDA default templates: ``microsofthealth/ccdatemplates:default`` <br>\<RegistryServer\>/\<imageName\>@\<imageDigest\>, \<RegistryServer\>/\<imageName\>:\<imageTag\> |
-| rootTemplate | The root template to use while transforming the data. | For HL7v2:<br>```ADT_A01```, ```OML_O21```, ```ORU_R01```, ```VXU_V04```<br> For C-CDA:<br>```CCD```, `ConsultationNote`, `DischargeSummary`, `HistoryandPhysical`, `OperativeNote`, `ProcedureNote`, `ProgressNote`, `ReferralNote`, `TransferSummary` |
+The `$convert-data` operation is integrated into both Azure API for FHIR and FHIR server to run as part of the service. After enabling `$convert-data` in your server, you can make API calls in the form of ```<<your FHIR server URL>>/$convert-data``` to the server to convert your data into FHIR. In the API call request body, you would include parameters such as `inputData`, `inputDataType`, `templateCollectionReference`, and `rootTemplate`, to specify the message and the type of message you are converting. 
 
 For more information on configuring and using `$convert-data` operation on your server, please refer to these documentation:
 
@@ -45,7 +36,7 @@ For more information on configuring and using `$convert-data` operation on your 
 
 ### Supported parameters
 
-The command line tool is another way of converting data, as well as managing templates. The tool converts a folder containing HL7v2 messages or C-CDA messages into FHIR resources. It accepts the following parameters in the command line:
+The command line tool is another way of converting data, as well as managing templates. The tool converts a folder containing HL7v2 messages or C-CDA documents into FHIR resources. It accepts the following parameters in the command line:
 
 | Option | Name | Optionality | Default | Description |
 | ----- | ----- | ----- |----- |----- |
@@ -62,15 +53,15 @@ The command line tool is another way of converting data, as well as managing tem
 
 ### Command line example
 
-Build your `Microsoft.Health.Fhir.Liquid.Converter.Tool.exe` file using Visual Studio.
+Build your executable file, `Microsoft.Health.Fhir.Liquid.Converter.Tool.exe`.
 
 For converting HL7v2 messages to FHIR resources in a folder:
 ```
->.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r ADT_A01 -i myInputDataFolder -o myOutputDataFolder
+>.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r myRootTemplate -i myInputDataFolder -o myOutputDataFolder
 ```
-For converting C-CDA messages to FHIR resources in a folder:
+For converting C-CDA documents to FHIR resources in a folder:
 ```
->.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r CCD -i myInputDataFolder -o myOutputDataFolder
+>.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r myRootTemplate -i myInputDataFolder -o myOutputDataFolder
 ```
 
 After running the command line, there will be a series of "Processing..." lines being written in the terminal window. When the conversion is complete, you will see "Conversion completed!" message.
