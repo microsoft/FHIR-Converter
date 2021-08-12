@@ -17,7 +17,7 @@ The following table shows the differences between two converter engines:
 
 ⚠ Rest of this document is about the Liquid converter. For the Handlebars converter, please refer to the [Handlebars branch](https://github.com/microsoft/FHIR-Converter/tree/handlebars).
 
-Currently, FHIR Converter supports two types of conversions, **HL7v2 to FHIR** and **C-CDA to FHIR**. The converter uses templates that define mappings between these different data formats. The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/FiltersSummary.md), which make it easy with work with HL7v2 messages and C-CDA documents.
+Currently, FHIR Converter supports two types of conversions, **HL7v2 to FHIR** and **C-CDA to FHIR**. The converter uses templates that define mappings between these different data formats. The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/Filters-and-Tags.md), which make it easy with work with HL7v2 messages and C-CDA documents.
 
 The converter comes with a few ready-to-use templates. If needed, you can create a new template, or modify existing templates to meet your specific conversion requirements.
 
@@ -175,7 +175,7 @@ public class PostProcessor
 
 ## Reference documentation
 
-- [Filters summary](docs/FiltersSummary.md)
+- [Filters summary](docs/Filters-and-Tags.md)
 - [Snippet concept](docs/SnippetConcept.md)
 
 ## External resources
