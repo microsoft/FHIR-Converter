@@ -8,11 +8,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.InputProcessor;
+using Microsoft.Health.Fhir.Liquid.Converter.InputProcessors;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
@@ -98,16 +97,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             var bytes = Convert.FromBase64String(data);
             return Encoding.UTF8.GetString(bytes);
-        }
-
-        public static string ToHtmlEscapedString(string input)
-        {
-            if (string.IsNullOrWhiteSpace(input))
-            {
-                return null;
-            }
-
-            return WebUtility.HtmlEncode(input);
         }
     }
 }
