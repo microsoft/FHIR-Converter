@@ -37,7 +37,7 @@ If these filters do not meet your needs, you can also write your own filters.
 | base64_decode | Returns base64 decoded string | `{{ encodedData \| base64_decode }}` |
 | sha1_hash | Returns SHA1 hash (in hex) of given string | `{{ inputData \| sha1_hash }}` |
 | gzip | Returns compressed string | `{{ uncompressedData \| gzip }}` |
-| gunzip_base64_string | Returns decompressed string | `{{ compressedData \| gunzip }}` |
+| gunzip_base64_string | Returns decompressed string | `{{ compressedData \| gunzip_base64_string }}` |
 
 ### Math filters
 | Filter | Description | Syntax |
