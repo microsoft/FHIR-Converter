@@ -21,8 +21,7 @@ variables:
 
 stages:
 - stage: Build
-  pool:
-      vmImage: 'windows-latest'
+  pool: CompassMacHosted
   jobs:
   - job: Build
     steps:
@@ -81,14 +80,6 @@ stages:
         nobuild: true
         publishWebProjects: false
         zipAfterPublish: false
-
-    - task: PowerShell@2
-      displayName: 'inject template version'
-      inputs:
-        targetType: 'inline'
-        script: |
-          $targetPath = '$(Build.SourcesDirectory)/data/Templates/Hl7v2/Resource/_Provenance.liquid'
-          (Get-Content $targetPath).replace('TEMPLATE_VERSION_PLACEHOLDER', '$(major).$(minor).$(patch)') | Set-Content $targetPath
 
     - task: ArchiveFiles@2
       inputs:
