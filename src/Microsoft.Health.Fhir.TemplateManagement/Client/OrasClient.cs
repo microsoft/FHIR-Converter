@@ -145,7 +145,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 string error = errStreamReader.ReadToEnd();
                 if (!string.IsNullOrEmpty(error) || process.ExitCode != 0)
                 {
-                    throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, error);
+                    throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Oras process failed." + error);
                 }
 
                 return outputStreamReader.ReadToEnd();
