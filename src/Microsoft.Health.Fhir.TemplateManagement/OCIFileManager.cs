@@ -27,12 +27,22 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             _overlayOperator = new OverlayOperator();
         }
 
+        /// <summary>
+        /// Pull image layers into working folder.
+        /// Layers and the manifest will be written into hidden image folder.
+        /// </summary>
+        /// <returns>Manifest of the image.</returns>
         public async Task<ManifestWrapper> PullOCIImageAsync()
         {
             _overlayFS.ClearImageLayerFolder();
             return await _client.PullImageAsync(_overlayFS.WorkingImageLayerFolder);
         }
 
+        /// <summary>
+        /// Extract OCI files from image and merge files from layers in order.
+        /// The order of layers is given in manifest.
+        /// </summary>
+        /// <param name="manifest">Manifest of the image.</param>
         public void UnpackOCIImage(ManifestWrapper manifest)
         {
             var rawLayers = _overlayFS.ReadImageLayers(manifest);
@@ -52,6 +62,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             _overlayFS.WriteOCIFileLayer(content);
         }
 
+        /// <summary>
+        /// Generate and archive the diff layer into tar.gz file.
+        /// </summary>
+        /// <param name="ignoreBaseLayers">Whether ignore base layer when generating diff layer.</param>
         public void PackOCIImage(bool ignoreBaseLayers = false)
         {
             var ociFileLayer = _overlayFS.ReadOCIFileLayer();
@@ -71,6 +85,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             _overlayFS.WriteImageLayers(new List<OCIArtifactLayer> { baseArtifactLayer, diffArtifactLayer });
         }
 
+        /// <summary>
+        /// Push image layers from working folder in order.
+        /// </summary>
         public async Task PushOCIImageAsync()
         {
             await _client.PushImageAsync(_overlayFS.WorkingImageLayerFolder);
