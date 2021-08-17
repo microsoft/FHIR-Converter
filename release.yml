@@ -69,13 +69,6 @@ stages:
         artifactName: 'NOTICE.txt'
         downloadPath: '$(Build.SourcesDirectory)/bin/notice'
 
-    - task: CopyFiles@2
-      displayName: 'copy NOTICE file'
-      inputs:
-        sourceFolder: '$(Build.SourcesDirectory)/bin/notice/OSPO'
-        targetFolder: '$(Build.SourcesDirectory)'
-        overwrite: true
-        
     - task: DotNetCoreCLI@2
       displayName: 'publish bin'
       inputs:
