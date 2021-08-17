@@ -15,7 +15,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         void WriteOCIFileLayer(OCIFileLayer oneLayer);
 
-        List<OCIArtifactLayer> ReadImageLayers();
+        List<OCIArtifactLayer> ReadImageLayers(ManifestWrapper manifest);
 
         void WriteImageLayers(List<OCIArtifactLayer> imageLayers);
 

@@ -3,10 +3,17 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-namespace Microsoft.Health.Fhir.TemplateManagement.Models
+using System.Threading.Tasks;
+using Microsoft.Azure.ContainerRegistry.Models;
+
+namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
-    public class OCIOperationResult
+    public interface IOCIClient
     {
-        public string ClientResponse { get; set; }
+        Task<ManifestWrapper> PullImageAsync(string outputFolder);
+
+        Task PushImageAsync(string inputFolder);
+
+        void InitClientEnvironment();
     }
 }

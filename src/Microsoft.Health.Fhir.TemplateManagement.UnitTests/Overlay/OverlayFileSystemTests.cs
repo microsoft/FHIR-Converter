@@ -6,10 +6,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Overlay;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
@@ -72,25 +74,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             File.Copy(layer1, Path.Combine(workingFolder, ".image/layers/3.tar.gz"));
             File.Copy(layer2, Path.Combine(workingFolder, ".image/layers/2.tar.gz"));
             File.Copy(layer3, Path.Combine(workingFolder, ".image/layers/1.tar.gz"));
-            File.Copy(manifest, Path.Combine(workingFolder, ".image/layers/manifest"));
             var overlayFs = new OverlayFileSystem(workingFolder);
-            var layers = overlayFs.ReadImageLayers();
+            var layers = overlayFs.ReadImageLayers(JsonConvert.DeserializeObject<ManifestWrapper>(File.ReadAllText(manifest)));
             Assert.Equal("3.tar.gz", layers[0].FileName);
             Assert.Equal("2.tar.gz", layers[1].FileName);
             Assert.Equal("1.tar.gz", layers[2].FileName);
-            ClearFolder(workingFolder);
-        }
-
-        [Fact]
-        public void GivenInputImageFolder_WhenReadImageFolder_IfManifestNotExist_ExceptionWillBeThrown()
-        {
-            string layerPath = "TestData/TarGzFiles/userV1.tar.gz";
-            string workingFolder = "TestData/testReadImageLayerWithoutManifest";
-            ClearFolder(workingFolder);
-            Directory.CreateDirectory(Path.Combine(workingFolder, ".image/layers"));
-            File.Copy(layerPath, Path.Combine(workingFolder, ".image/layers/layer1.tar.gz"));
-            var overlayFs = new OverlayFileSystem(workingFolder);
-            Assert.Throws<OverlayException>(() => overlayFs.ReadImageLayers());
             ClearFolder(workingFolder);
         }
 

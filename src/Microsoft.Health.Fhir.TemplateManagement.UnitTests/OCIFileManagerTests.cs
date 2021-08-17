@@ -101,7 +101,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
             string imageReference = _testOneLayerImageReference;
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            await Assert.ThrowsAsync<OrasException>(async () => await testManager.PullOCIImageAsync());
+            await Assert.ThrowsAsync<OCIClientException>(async () => await testManager.PullOCIImageAsync());
         }
 
         [Theory]
@@ -115,8 +115,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
             string imageReference = _testOneLayerImageReference;
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
+            var manifest = await testManager.PullOCIImageAsync();
+            testManager.UnpackOCIImage(manifest);
             Assert.Equal(843, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             ClearFolder(outputFolder);
         }
@@ -132,8 +132,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string imageReference = _testMultiLayersImageReference;
             string outputFolder = "TestData/testMultiLayers";
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
+            var manifest = await testManager.PullOCIImageAsync();
+            testManager.UnpackOCIImage(manifest);
             Assert.Equal(10, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             ClearFolder(outputFolder);
         }

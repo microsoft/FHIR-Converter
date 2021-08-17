@@ -74,7 +74,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
             string imageReference = _testOneLayerImageReference;
             OrasClient orasClient = new OrasClient(imageReference);
-            await Assert.ThrowsAsync<OrasException>(async () => await orasClient.PullImageAsync(outputFolder));
+            await Assert.ThrowsAsync<OCIClientException>(async () => await orasClient.PullImageAsync(outputFolder));
         }
 
         [Theory]
@@ -109,8 +109,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             File.Copy(_userLayerTemplatePath, "TestData/PushTest/userLayer.tar.gz", true);
             string imageReference = _containerRegistryServer + reference;
             OrasClient orasClient = new OrasClient(imageReference);
-            await Assert.ThrowsAsync<OrasException>(() => orasClient.PushImageAsync("TestData/PushTest"));
-            await Assert.ThrowsAsync<OrasException>(() => orasClient.PullImageAsync("TestData/PushTest"));
+            await Assert.ThrowsAsync<OCIClientException>(() => orasClient.PushImageAsync("TestData/PushTest"));
+            await Assert.ThrowsAsync<OCIClientException>(() => orasClient.PullImageAsync("TestData/PushTest"));
             ClearFolder("TestData/PushTest");
         }
 

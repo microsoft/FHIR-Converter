@@ -3,7 +3,6 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -12,7 +11,6 @@ using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
-using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
@@ -62,24 +60,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
         }
 
-        public List<OCIArtifactLayer> ReadImageLayers()
+        public List<OCIArtifactLayer> ReadImageLayers(ManifestWrapper manifest)
         {
-            var manifest = ReadManifest();
+            EnsureArg.IsNotNull(manifest, nameof(manifest));
+
             var imageLayers = ReadOCIArtifactLayers(WorkingImageLayerFolder);
-            var sortedLayers = new List<OCIArtifactLayer>();
-            ValidationUtility.ValidateManifest(manifest);
-            foreach (var layerInfo in manifest.Layers)
-            {
-                var currentLayers = imageLayers.Where(layer => layer.Digest == layerInfo.Digest).ToList();
-                if (!currentLayers.Any())
-                {
-                    throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, $"Layer {layerInfo.Digest} not found.");
-                }
-
-                sortedLayers.Add(currentLayers[0]);
-            }
-
-            return sortedLayers;
+            return SortLayers(imageLayers, manifest);
         }
 
         public void WriteImageLayers(List<OCIArtifactLayer> imageLayers)
@@ -120,19 +106,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
             ClearFolder(WorkingBaseLayerFolder);
             baseLayer.WriteToFile(Path.Combine(WorkingBaseLayerFolder, "layer1.tar.gz"));
-        }
-
-        private ManifestWrapper ReadManifest()
-        {
-            try
-            {
-                var manifestContent = File.ReadAllText(Path.Combine(WorkingImageLayerFolder, Constants.ManifestFileName));
-                return JsonConvert.DeserializeObject<ManifestWrapper>(manifestContent);
-            }
-            catch (Exception ex)
-            {
-                throw new OverlayException(TemplateManagementErrorCode.OrasCacheFailed, $"Read manifest failed.", ex);
-            }
         }
 
         public void ClearImageLayerFolder()
@@ -192,6 +165,24 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             {
                 return GetTopDirectoryPath(Path.GetDirectoryName(path));
             }
+        }
+
+        private List<OCIArtifactLayer> SortLayers(List<OCIArtifactLayer> imageLayers, ManifestWrapper manifest)
+        {
+            var sortedLayers = new List<OCIArtifactLayer>();
+            ValidationUtility.ValidateManifest(manifest);
+            foreach (var layerInfo in manifest.Layers)
+            {
+                var currentLayers = imageLayers.Where(layer => layer.Digest == layerInfo.Digest).ToList();
+                if (!currentLayers.Any())
+                {
+                    throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, $"Layer {layerInfo.Digest} not found.");
+                }
+
+                sortedLayers.Add(currentLayers[0]);
+            }
+
+            return sortedLayers;
         }
     }
 }

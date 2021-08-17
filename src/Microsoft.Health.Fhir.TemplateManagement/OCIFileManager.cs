@@ -3,9 +3,9 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Overlay;
@@ -14,35 +14,40 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 {
     public class OCIFileManager
     {
-        private readonly OrasClient _orasClient;
+        private readonly IOCIClient _client;
         private readonly OverlayFileSystem _overlayFS;
         private readonly OverlayOperator _overlayOperator;
 
         public OCIFileManager(string imageReference, string workingFolder)
         {
             ImageInfo.ValidateImageReference(imageReference);
-            _orasClient = new OrasClient(imageReference);
-            InitOrasEnvironment();
+            _client = new OrasClient(imageReference);
+            _client.InitClientEnvironment();
             _overlayFS = new OverlayFileSystem(workingFolder);
             _overlayOperator = new OverlayOperator();
         }
 
-        public async Task<OCIOperationResult> PullOCIImageAsync()
+        public async Task<ManifestWrapper> PullOCIImageAsync()
         {
             _overlayFS.ClearImageLayerFolder();
-            return await _orasClient.PullImageAsync(_overlayFS.WorkingImageLayerFolder);
+            return await _client.PullImageAsync(_overlayFS.WorkingImageLayerFolder);
         }
 
-        public void UnpackOCIImage()
+        public void UnpackOCIImage(ManifestWrapper manifest)
         {
-            var rawLayers = _overlayFS.ReadImageLayers();
+            var rawLayers = _overlayFS.ReadImageLayers(manifest);
             if (rawLayers.Count == 0)
             {
                 return;
             }
 
+            // First layer is the base layer.
             _overlayFS.WriteBaseLayer(rawLayers[0]);
+
+            // Decompress rawlayers to OCI files.
             var ociFileLayers = _overlayOperator.Extract(rawLayers);
+
+            // Merge OCI files.
             var content = _overlayOperator.Merge(ociFileLayers);
             _overlayFS.WriteOCIFileLayer(content);
         }
@@ -57,22 +62,18 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             }
 
             var extractedBaseLayer = _overlayOperator.Extract(baseArtifactLayer);
+
+            // Generate diff layer by comparing files' digests.
             var diffLayer = _overlayOperator.GenerateDiffLayer(ociFileLayer, extractedBaseLayer);
+
+            // Archive the diff layer.
             var diffArtifactLayer = _overlayOperator.Archive(diffLayer);
             _overlayFS.WriteImageLayers(new List<OCIArtifactLayer> { baseArtifactLayer, diffArtifactLayer });
         }
 
-        public async Task<OCIOperationResult> PushOCIImageAsync()
+        public async Task PushOCIImageAsync()
         {
-            return await _orasClient.PushImageAsync(_overlayFS.WorkingImageLayerFolder);
-        }
-
-        private void InitOrasEnvironment()
-        {
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName)))
-            {
-                Environment.SetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName, Constants.DefaultOrasCacheEnvironmentVariable);
-            }
+            await _client.PushImageAsync(_overlayFS.WorkingImageLayerFolder);
         }
     }
 }

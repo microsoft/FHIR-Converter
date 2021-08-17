@@ -22,6 +22,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         internal const string HiddenBaseLayerFolder = ".image/base";
 
+        internal const string ManifestFileName = "manifest";
+
         internal const string OverlayMetaJsonFile = ".image/meta.info";
 
         internal const int TimeOutMilliseconds = 30000;
@@ -29,8 +31,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         internal const string OrasCacheEnvironmentVariableName = "ORAS_CACHE";
 
         internal const string DefaultOrasCacheEnvironmentVariable = ".oras/cache";
-
-        internal const string ManifestFileName = "manifest";
 
         internal const string OrasFileForWindows = "oras.exe";
 

@@ -98,6 +98,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         public OCIFileLayer GenerateDiffLayer(OCIFileLayer fileLayer, OCIFileLayer baseLayer = null)
         {
             EnsureArg.IsNotNull(fileLayer, nameof(fileLayer));
+            EnsureArg.IsNotNull(fileLayer.FileContent, nameof(fileLayer.FileContent));
 
             int sequenceNumber = 1;
             var baseContents = new Dictionary<string, byte[]> { };
@@ -108,10 +109,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
 
             var diffLayer = new OCIFileLayer() { SequenceNumber = sequenceNumber, FileName = $"layer{sequenceNumber}.tar.gz" };
-            if (fileLayer.FileContent == null)
-            {
-                return diffLayer;
-            }
 
             var diffLayerFileDigest = new Dictionary<string, string> { };
             foreach (var oneFile in fileLayer.FileContent)
