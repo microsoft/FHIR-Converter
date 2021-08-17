@@ -39,7 +39,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         }
 
         /// <summary>
-        /// Extract OCI files from image and merge files from layers in order.
+        /// Extract layers and merge files from layers in order.
         /// The order of layers is given in manifest.
         /// </summary>
         /// <param name="manifest">Manifest of the image.</param>
