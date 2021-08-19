@@ -34,7 +34,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
         public async Task<ImageInfo> PullImageAsync(string imageReference)
         {
-            if (Directory.Exists(_workingFolder) && Directory.GetFileSystemEntries(_workingFolder).Length != 0)
+            if (Directory.Exists(_workingFolder) && Directory.EnumerateFileSystemEntries(_workingFolder).Any())
             {
                 throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "The output folder is not empty.");
             }
