@@ -24,8 +24,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             }
 
             OCIFileManager fileManager = new OCIFileManager(options.ImageReference, options.OutputTemplateFolder);
-            var manifest = await fileManager.PullOCIImageAsync();
-            fileManager.UnpackOCIImage(manifest);
+            var imageInfo = await fileManager.PullOCIImageAsync();
+            fileManager.UnpackOCIImage(imageInfo.Manifest);
             Console.WriteLine($"Successfully pulled artifacts to {options.OutputTemplateFolder} folder");
         }
 

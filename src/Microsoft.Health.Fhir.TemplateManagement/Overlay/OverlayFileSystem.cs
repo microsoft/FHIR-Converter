@@ -89,6 +89,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
         }
 
+        public void WriteManifest(string manifest)
+        {
+            EnsureArg.IsNotNull(manifest, nameof(manifest));
+
+            File.WriteAllText(Path.Combine(WorkingFolder, Constants.HiddenImageFolder, Constants.ManifestFileName), manifest);
+        }
+
         public OCIArtifactLayer ReadBaseLayer()
         {
             var layers = ReadOCIArtifactLayers(WorkingBaseLayerFolder);

@@ -4,16 +4,14 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Threading.Tasks;
-using Microsoft.Azure.ContainerRegistry.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Models;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
     public interface IOCIClient
     {
-        Task<ManifestWrapper> PullImageAsync(string outputFolder);
+        Task<ImageInfo> PullImageAsync(string imageReference);
 
-        Task PushImageAsync(string inputFolder);
-
-        void InitClientEnvironment();
+        Task<ImageInfo> PushImageAsync(string imageReference);
     }
 }

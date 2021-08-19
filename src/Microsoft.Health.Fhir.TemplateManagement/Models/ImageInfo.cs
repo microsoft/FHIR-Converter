@@ -5,6 +5,7 @@
 
 using System;
 using System.Text.RegularExpressions;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
@@ -46,6 +47,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         }
 
         public string ImageReference { get; set; }
+
+        public ManifestWrapper Manifest { get; set; }
 
         public bool IsDefaultTemplate()
         {

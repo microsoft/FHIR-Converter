@@ -9,6 +9,7 @@ using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Overlay;
+using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement
 {
@@ -17,13 +18,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         private readonly IOCIClient _client;
         private readonly OverlayFileSystem _overlayFS;
         private readonly OverlayOperator _overlayOperator;
+        private readonly string _imageReference;
 
         public OCIFileManager(string imageReference, string workingFolder)
         {
             ImageInfo.ValidateImageReference(imageReference);
-            _client = new OrasClient(imageReference);
-            _client.InitClientEnvironment();
+            _imageReference = imageReference;
+
             _overlayFS = new OverlayFileSystem(workingFolder);
+            _client = new OrasClient(_overlayFS.WorkingImageLayerFolder);
             _overlayOperator = new OverlayOperator();
         }
 
@@ -32,10 +35,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         /// Layers and the manifest will be written into hidden image folder.
         /// </summary>
         /// <returns>Manifest of the image.</returns>
-        public async Task<ManifestWrapper> PullOCIImageAsync()
+        public async Task<ImageInfo> PullOCIImageAsync()
         {
             _overlayFS.ClearImageLayerFolder();
-            return await _client.PullImageAsync(_overlayFS.WorkingImageLayerFolder);
+            var imageInfo = await _client.PullImageAsync(_imageReference);
+            _overlayFS.WriteManifest(JsonConvert.SerializeObject(imageInfo.Manifest));
+            return imageInfo;
         }
 
         /// <summary>
@@ -90,7 +95,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         /// </summary>
         public async Task PushOCIImageAsync()
         {
-            await _client.PushImageAsync(_overlayFS.WorkingImageLayerFolder);
+            await _client.PushImageAsync(_imageReference);
         }
     }
 }

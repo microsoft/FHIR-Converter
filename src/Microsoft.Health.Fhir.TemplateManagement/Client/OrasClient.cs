@@ -6,6 +6,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -20,25 +21,26 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
     public class OrasClient : IOCIClient
     {
-        private readonly string _imageReference;
+        private readonly string _workingFolder;
         private readonly Regex _digestRegex = new Regex("(?<algorithm>[A-Za-z][A-Za-z0-9]*([+.-_][A-Za-z][A-Za-z0-9]*)*):(?<hex>[0-9a-fA-F]{32,})");
 
-        public OrasClient(string imageReference)
+        public OrasClient(string workingFolder)
         {
-            EnsureArg.IsNotNull(imageReference, nameof(imageReference));
+            EnsureArg.IsNotNull(workingFolder, nameof(workingFolder));
 
-            _imageReference = imageReference;
+            InitClientEnvironment();
+            _workingFolder = workingFolder;
         }
 
-        public async Task<ManifestWrapper> PullImageAsync(string outputFolder)
+        public async Task<ImageInfo> PullImageAsync(string imageReference)
         {
-            if (Directory.Exists(outputFolder) && Directory.GetFileSystemEntries(outputFolder).Length != 0)
+            if (Directory.Exists(_workingFolder) && Directory.GetFileSystemEntries(_workingFolder).Length != 0)
             {
                 throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "The output folder is not empty.");
             }
 
-            string command = $"pull  \"{_imageReference}\" -o \"{outputFolder}\"";
-            string output = await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+            string command = $"pull  \"{imageReference}\" -o \"{_workingFolder}\"";
+            string output = await OrasExecutionAsync(command, null);
             string digest;
             try
             {
@@ -51,7 +53,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             // Oras will create output folder if not existed.
             // Therefore, the output folder should exist if pull succeed.
-            if (!Directory.Exists(outputFolder))
+            if (!Directory.Exists(_workingFolder))
             {
                 throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Pull image failed or image is empty.");
             }
@@ -59,9 +61,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             try
             {
                 string manifestContent = LoadManifestContentFromCache(digest);
-                var manifest = JsonConvert.DeserializeObject<ManifestWrapper>(manifestContent);
-                File.WriteAllText(Path.Combine(outputFolder, Constants.ManifestFileName), LoadManifestContentFromCache(digest));
-                return manifest;
+                var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+                imageInfo.Manifest = JsonConvert.DeserializeObject<ManifestWrapper>(manifestContent);
+                imageInfo.Digest = digest;
+                return imageInfo;
             }
             catch (Exception ex)
             {
@@ -69,33 +72,42 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
         }
 
-        public async Task PushImageAsync(string inputFolder)
+        public async Task<ImageInfo> PushImageAsync(string imageReference)
         {
-            if (!Directory.Exists(inputFolder))
+            if (!Directory.Exists(_workingFolder))
             {
                 throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "Image folder not found.");
             }
 
-            string argument = string.Empty;
-            string command = $"push \"{_imageReference}\"";
-            var filePathesToPush = Directory.EnumerateFiles(inputFolder, "*.tar.gz", SearchOption.AllDirectories);
+            string command = $"push \"{imageReference}\"";
+            var filePathesToPush = Directory.EnumerateFiles(_workingFolder, "*.tar.gz", SearchOption.AllDirectories);
 
             // In order to remove image's directory prefix. (e.g. "layers/layer1" --> "layer1"
             // Change oras working folder to inputFolder
-            foreach (var filePath in filePathesToPush)
-            {
-                argument += $" \"{Path.GetRelativePath(inputFolder, filePath)}\"";
-            }
+            string argument = string.Join(string.Empty, filePathesToPush.Select(x => $" \"{Path.GetRelativePath(_workingFolder, x)}\""));
 
             if (string.IsNullOrEmpty(argument))
             {
                 throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file to push.");
             }
 
-            await OrasExecutionAsync(string.Concat(command, argument), inputFolder);
+            var output = await OrasExecutionAsync(string.Concat(command, argument), _workingFolder);
+            string digest;
+            try
+            {
+                digest = _digestRegex.Matches(output)[0].Groups["hex"].ToString();
+            }
+            catch (Exception ex)
+            {
+                throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Return image digest failed.", ex);
+            }
+
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            imageInfo.Digest = digest;
+            return imageInfo;
         }
 
-        public static async Task<string> OrasExecutionAsync(string command, string orasWorkingDirectory)
+        public static async Task<string> OrasExecutionAsync(string command, string orasWorkingDirectory = null)
         {
             TaskCompletionSource<bool> eventHandled = new TaskCompletionSource<bool>();
 
@@ -123,7 +135,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             process.StartInfo.Arguments = command;
             process.StartInfo.RedirectStandardError = true;
             process.StartInfo.RedirectStandardOutput = true;
-            process.StartInfo.WorkingDirectory = orasWorkingDirectory;
+            if (orasWorkingDirectory != null)
+            {
+                process.StartInfo.WorkingDirectory = orasWorkingDirectory;
+            }
+
             process.EnableRaisingEvents = true;
 
             // Add event to make it async.
@@ -165,7 +181,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
         }
 
-        public void InitClientEnvironment()
+        private void InitClientEnvironment()
         {
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName)))
             {
