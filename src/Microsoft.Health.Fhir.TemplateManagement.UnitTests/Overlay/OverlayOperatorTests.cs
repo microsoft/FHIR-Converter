@@ -78,7 +78,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             Assert.Equal(inputLayers.Count(), result.Count());
         }
 
-
         [Fact]
         public void GivenAListOfOCIArtifactLayers_WhenSortLayers_ASortedOCIArtifactLayersShouldBeReturned()
         {

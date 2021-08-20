@@ -32,7 +32,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
             }
         }
 
-        public static TemplateLayer ReadFromFile(string filePath)
+        public static new TemplateLayer ReadFromFile(string filePath)
         {
             try
             {

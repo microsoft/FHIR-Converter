@@ -14,11 +14,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
     public class OverlayFileSystem : IOverlayFileSystem
     {
-
         private readonly string _workingFolder;
-
         private readonly string _workingImageLayerFolder;
-
         private readonly string _workingBaseLayerFolder;
 
         public OverlayFileSystem(string workingFolder)
@@ -169,7 +166,5 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 return GetTopDirectoryPath(Path.GetDirectoryName(path));
             }
         }
-
-        
     }
 }
