@@ -53,16 +53,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         {
             var rawLayers = _overlayFS.ReadImageLayers();
             var sortedLayers = _overlayOperator.Sort(rawLayers, manifest);
-            if (rawLayers.Count == 0)
+            if (sortedLayers.Count == 0)
             {
                 return;
             }
 
             // First layer is the base layer.
-            _overlayFS.WriteBaseLayer(rawLayers[0]);
+            _overlayFS.WriteBaseLayer(sortedLayers[0]);
 
             // Decompress rawlayers to OCI files.
-            var ociFileLayers = _overlayOperator.Extract(rawLayers);
+            var ociFileLayers = _overlayOperator.Extract(sortedLayers);
 
             // Merge OCI files.
             var content = _overlayOperator.Merge(ociFileLayers);

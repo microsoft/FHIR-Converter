@@ -66,8 +66,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="oras_$(OrasVersion)_darwin_amd64.tar.gz">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="$(BinFolder)oras_$(OrasVersion)_darwin_amd64.tar.gz">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </None>
   </ItemGroup>
     
