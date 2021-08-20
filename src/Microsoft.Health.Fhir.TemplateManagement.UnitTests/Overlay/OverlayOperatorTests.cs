@@ -6,9 +6,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Overlay;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
@@ -74,6 +76,32 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
 
             var result = _overlayOperator.Extract(inputLayers);
             Assert.Equal(inputLayers.Count(), result.Count());
+        }
+
+
+        [Fact]
+        public void GivenAListOfOCIArtifactLayers_WhenSortLayers_ASortedOCIArtifactLayersShouldBeReturned()
+        {
+            string layer1 = "TestData/TarGzFiles/layer1.tar.gz";
+            string layer2 = "TestData/TarGzFiles/layer2.tar.gz";
+            string layer3 = "TestData/TarGzFiles/userV1.tar.gz";
+            string manifest = "TestData/ExpectedManifest/testOrderManifest";
+            string workingFolder = "TestData/testSortLayers";
+            ClearFolder(workingFolder);
+            Directory.CreateDirectory(Path.Combine(workingFolder, ".image/layers"));
+
+            // Rename files to rearrange the sequence.
+            File.Copy(layer1, Path.Combine(workingFolder, ".image/layers/3.tar.gz"));
+            File.Copy(layer2, Path.Combine(workingFolder, ".image/layers/2.tar.gz"));
+            File.Copy(layer3, Path.Combine(workingFolder, ".image/layers/1.tar.gz"));
+            var overlayFs = new OverlayFileSystem(workingFolder);
+            var layers = overlayFs.ReadImageLayers();
+
+            var sortedLayers = _overlayOperator.Sort(layers, JsonConvert.DeserializeObject<ManifestWrapper>(File.ReadAllText(manifest)));
+            Assert.Equal("3.tar.gz", sortedLayers[0].FileName);
+            Assert.Equal("2.tar.gz", sortedLayers[1].FileName);
+            Assert.Equal("1.tar.gz", sortedLayers[2].FileName);
+            ClearFolder(workingFolder);
         }
 
         [Fact]
@@ -154,6 +182,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
 
             var packedLayers = _overlayOperator.Archive(diffLayers);
             Assert.Equal(inputLayers.Count, packedLayers.Count);
+        }
+
+        private void ClearFolder(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                return;
+            }
+
+            DirectoryInfo folder = new DirectoryInfo(path);
+            folder.Delete(true);
         }
     }
 }

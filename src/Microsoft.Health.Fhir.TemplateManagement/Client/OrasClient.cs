@@ -41,15 +41,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             string command = $"pull  \"{imageReference}\" -o \"{_workingFolder}\"";
             string output = await OrasExecutionAsync(command, null);
-            string digest;
-            try
-            {
-                digest = _digestRegex.Matches(output)[0].Groups["hex"].ToString();
-            }
-            catch (Exception ex)
-            {
-                throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Return image digest failed.", ex);
-            }
+            string digest = GetImageDigest(output);
 
             // Oras will create output folder if not existed.
             // Therefore, the output folder should exist if pull succeed.
@@ -92,18 +84,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
 
             var output = await OrasExecutionAsync(string.Concat(command, argument), _workingFolder);
-            string digest;
-            try
-            {
-                digest = _digestRegex.Matches(output)[0].Groups["hex"].ToString();
-            }
-            catch (Exception ex)
-            {
-                throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Return image digest failed.", ex);
-            }
-
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
-            imageInfo.Digest = digest;
+            imageInfo.Digest = GetImageDigest(output);
             return imageInfo;
         }
 
@@ -166,19 +148,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
                 return outputStreamReader.ReadToEnd();
             }
-            else
-            {
-                try
-                {
-                    process.Kill();
-                }
-                catch (Exception ex)
-                {
-                    throw new OCIClientException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout. Fail to kill oras process.", ex);
-                }
 
-                throw new OCIClientException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
+            try
+            {
+                process.Kill();
             }
+            catch (Exception ex)
+            {
+                throw new OCIClientException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout. Fail to kill oras process.", ex);
+            }
+
+            throw new OCIClientException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
         }
 
         private void InitClientEnvironment()
@@ -193,6 +173,18 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
         {
             var cachePath = Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName);
             return File.ReadAllText(Path.Combine(cachePath, "blobs", "sha256", digest));
+        }
+
+        private string GetImageDigest(string input)
+        {
+            try
+            {
+                return _digestRegex.Matches(input)[0].Groups["hex"].ToString();
+            }
+            catch (Exception ex)
+            {
+                throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Return image digest failed.", ex);
+            }
         }
     }
 }

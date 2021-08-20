@@ -7,39 +7,38 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using EnsureThat;
-using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
-using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
     public class OverlayFileSystem : IOverlayFileSystem
     {
+
+        private readonly string _workingFolder;
+
+        private readonly string _workingImageLayerFolder;
+
+        private readonly string _workingBaseLayerFolder;
+
         public OverlayFileSystem(string workingFolder)
         {
             EnsureArg.IsNotNullOrEmpty(workingFolder, nameof(workingFolder));
 
-            WorkingFolder = workingFolder;
-            WorkingImageLayerFolder = Path.Combine(workingFolder, Constants.HiddenLayersFolder);
-            WorkingBaseLayerFolder = Path.Combine(workingFolder, Constants.HiddenBaseLayerFolder);
+            _workingFolder = workingFolder;
+            _workingImageLayerFolder = Path.Combine(workingFolder, Constants.HiddenLayersFolder);
+            _workingBaseLayerFolder = Path.Combine(workingFolder, Constants.HiddenBaseLayerFolder);
         }
-
-        public string WorkingFolder { get; set; }
-
-        public string WorkingImageLayerFolder { get; set; }
-
-        public string WorkingBaseLayerFolder { get; set; }
 
         public OCIFileLayer ReadOCIFileLayer()
         {
-            var filePaths = Directory.EnumerateFiles(WorkingFolder, "*.*", SearchOption.AllDirectories)
-                .Where(f => !string.Equals(GetTopDirectoryPath(Path.GetRelativePath(WorkingFolder, f)), Constants.HiddenImageFolder));
+            var filePaths = Directory.EnumerateFiles(_workingFolder, "*.*", SearchOption.AllDirectories)
+                .Where(f => !string.Equals(GetTopDirectoryPath(Path.GetRelativePath(_workingFolder, f)), Constants.HiddenImageFolder));
 
             Dictionary<string, byte[]> fileContent = new Dictionary<string, byte[]>() { };
             foreach (var oneFile in filePaths)
             {
-                fileContent.Add(Path.GetRelativePath(WorkingFolder, oneFile), File.ReadAllBytes(oneFile));
+                fileContent.Add(Path.GetRelativePath(_workingFolder, oneFile), File.ReadAllBytes(oneFile));
             }
 
             OCIFileLayer fileLayer = new OCIFileLayer() { FileContent = fileContent };
@@ -50,29 +49,26 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         {
             EnsureArg.IsNotNull(oneLayer, nameof(oneLayer));
 
-            Directory.CreateDirectory(WorkingFolder);
+            Directory.CreateDirectory(_workingFolder);
             foreach (var oneFile in oneLayer.FileContent)
             {
-                var filePath = Path.Combine(WorkingFolder, oneFile.Key);
+                var filePath = Path.Combine(_workingFolder, oneFile.Key);
                 var directory = Path.GetDirectoryName(filePath);
                 Directory.CreateDirectory(directory);
-                File.WriteAllBytes(Path.Combine(WorkingFolder, oneFile.Key), oneFile.Value);
+                File.WriteAllBytes(Path.Combine(_workingFolder, oneFile.Key), oneFile.Value);
             }
         }
 
-        public List<OCIArtifactLayer> ReadImageLayers(ManifestWrapper manifest)
+        public List<OCIArtifactLayer> ReadImageLayers()
         {
-            EnsureArg.IsNotNull(manifest, nameof(manifest));
-
-            var imageLayers = ReadOCIArtifactLayers(WorkingImageLayerFolder);
-            return SortLayers(imageLayers, manifest);
+            return ReadOCIArtifactLayers(_workingImageLayerFolder);
         }
 
         public void WriteImageLayers(List<OCIArtifactLayer> imageLayers)
         {
             EnsureArg.IsNotNull(imageLayers, nameof(imageLayers));
 
-            ClearFolder(WorkingImageLayerFolder);
+            ClearFolder(_workingImageLayerFolder);
 
             // Used to label layers sequence. In this version, only two layers will be generated.
             // Should not exceed 9 in the future.
@@ -84,7 +80,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                     continue;
                 }
 
-                layer.WriteToFile(Path.Combine(WorkingImageLayerFolder, string.Format("layer{0}.tar.gz", layerNumber)));
+                layer.WriteToFile(Path.Combine(_workingImageLayerFolder, string.Format("layer{0}.tar.gz", layerNumber)));
                 layerNumber += 1;
             }
         }
@@ -93,12 +89,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         {
             EnsureArg.IsNotNull(manifest, nameof(manifest));
 
-            File.WriteAllText(Path.Combine(WorkingFolder, Constants.HiddenImageFolder, Constants.ManifestFileName), manifest);
+            File.WriteAllText(Path.Combine(_workingFolder, Constants.HiddenImageFolder, Constants.ManifestFileName), manifest);
         }
 
         public OCIArtifactLayer ReadBaseLayer()
         {
-            var layers = ReadOCIArtifactLayers(WorkingBaseLayerFolder);
+            var layers = ReadOCIArtifactLayers(_workingBaseLayerFolder);
             if (layers.Count() > 1)
             {
                 throw new OverlayException(TemplateManagementErrorCode.BaseLayerLoadFailed, $"Base layer load failed. More than one layer in the base layer folder.");
@@ -111,18 +107,18 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         {
             EnsureArg.IsNotNull(baseLayer, nameof(baseLayer));
 
-            ClearFolder(WorkingBaseLayerFolder);
-            baseLayer.WriteToFile(Path.Combine(WorkingBaseLayerFolder, "layer1.tar.gz"));
+            ClearFolder(_workingBaseLayerFolder);
+            baseLayer.WriteToFile(Path.Combine(_workingBaseLayerFolder, "layer1.tar.gz"));
         }
 
         public void ClearImageLayerFolder()
         {
-            ClearFolder(WorkingImageLayerFolder);
+            ClearFolder(_workingImageLayerFolder);
         }
 
         public void ClearBaseLayerFolder()
         {
-            ClearFolder(WorkingBaseLayerFolder);
+            ClearFolder(_workingBaseLayerFolder);
         }
 
         private void ClearFolder(string directory)
@@ -174,22 +170,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
         }
 
-        private List<OCIArtifactLayer> SortLayers(List<OCIArtifactLayer> imageLayers, ManifestWrapper manifest)
-        {
-            var sortedLayers = new List<OCIArtifactLayer>();
-            ValidationUtility.ValidateManifest(manifest);
-            foreach (var layerInfo in manifest.Layers)
-            {
-                var currentLayers = imageLayers.Where(layer => layer.Digest == layerInfo.Digest).ToList();
-                if (!currentLayers.Any())
-                {
-                    throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, $"Layer {layerInfo.Digest} not found.");
-                }
-
-                sortedLayers.Add(currentLayers[0]);
-            }
-
-            return sortedLayers;
-        }
+        
     }
 }

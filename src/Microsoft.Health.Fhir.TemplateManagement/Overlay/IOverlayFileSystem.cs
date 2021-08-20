@@ -4,7 +4,6 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
@@ -15,7 +14,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         void WriteOCIFileLayer(OCIFileLayer oneLayer);
 
-        List<OCIArtifactLayer> ReadImageLayers(ManifestWrapper manifest);
+        List<OCIArtifactLayer> ReadImageLayers();
 
         void WriteImageLayers(List<OCIArtifactLayer> imageLayers);
 

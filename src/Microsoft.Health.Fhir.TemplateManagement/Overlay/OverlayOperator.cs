@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using EnsureThat;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
@@ -61,6 +62,24 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             EnsureArg.IsNotNull(artifactLayers, nameof(artifactLayers));
 
             return artifactLayers.Select(Extract).ToList();
+        }
+
+        public List<OCIArtifactLayer> Sort(List<OCIArtifactLayer> imageLayers, ManifestWrapper manifest)
+        {
+            var sortedLayers = new List<OCIArtifactLayer>();
+            ValidationUtility.ValidateManifest(manifest);
+            foreach (var layerInfo in manifest.Layers)
+            {
+                var currentLayers = imageLayers.Where(layer => layer.Digest == layerInfo.Digest).ToList();
+                if (!currentLayers.Any())
+                {
+                    throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, $"Layer {layerInfo.Digest} not found.");
+                }
+
+                sortedLayers.Add(currentLayers[0]);
+            }
+
+            return sortedLayers;
         }
 
         public OCIFileLayer Merge(List<OCIFileLayer> sortedLayers)

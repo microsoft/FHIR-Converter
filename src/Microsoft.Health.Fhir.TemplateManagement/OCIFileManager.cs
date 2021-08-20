@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
@@ -26,15 +27,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             _imageReference = imageReference;
 
             _overlayFS = new OverlayFileSystem(workingFolder);
-            _client = new OrasClient(_overlayFS.WorkingImageLayerFolder);
+            _client = new OrasClient(Path.Combine(workingFolder, Constants.HiddenLayersFolder));
             _overlayOperator = new OverlayOperator();
         }
 
         /// <summary>
         /// Pull image layers into working folder.
-        /// Layers and the manifest will be written into hidden image folder.
+        /// Layers will be written into hidden image folder.
         /// </summary>
-        /// <returns>Manifest of the image.</returns>
+        /// <returns>Image information.</returns>
         public async Task<ImageInfo> PullOCIImageAsync()
         {
             _overlayFS.ClearImageLayerFolder();
@@ -50,7 +51,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         /// <param name="manifest">Manifest of the image.</param>
         public void UnpackOCIImage(ManifestWrapper manifest)
         {
-            var rawLayers = _overlayFS.ReadImageLayers(manifest);
+            var rawLayers = _overlayFS.ReadImageLayers();
+            var sortedLayers = _overlayOperator.Sort(rawLayers, manifest);
             if (rawLayers.Count == 0)
             {
                 return;

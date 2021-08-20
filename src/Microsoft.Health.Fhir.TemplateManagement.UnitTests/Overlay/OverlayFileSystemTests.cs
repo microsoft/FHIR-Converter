@@ -6,12 +6,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Overlay;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
@@ -59,26 +57,21 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         }
 
         [Fact]
-        public void GivenInputImageFolder_WhenReadImageFolder_IfManifestExist_AllOCIArtifactLayersWillBeReadInOrder()
+        public void GivenInputImageFolder_WhenReadImageFolder_AllOCIArtifactLayersWillBeReturned()
         {
-            // the correct order is layer1, layer2, layer3.
             string layer1 = "TestData/TarGzFiles/layer1.tar.gz";
             string layer2 = "TestData/TarGzFiles/layer2.tar.gz";
             string layer3 = "TestData/TarGzFiles/userV1.tar.gz";
-            string manifest = "TestData/ExpectedManifest/testOrderManifest";
-            string workingFolder = "TestData/testReadImageLayerManifest";
+            string workingFolder = "TestData/testReadImageLayer";
             ClearFolder(workingFolder);
             Directory.CreateDirectory(Path.Combine(workingFolder, ".image/layers"));
 
-            // Rename files to rearrange the sequence.
             File.Copy(layer1, Path.Combine(workingFolder, ".image/layers/3.tar.gz"));
             File.Copy(layer2, Path.Combine(workingFolder, ".image/layers/2.tar.gz"));
             File.Copy(layer3, Path.Combine(workingFolder, ".image/layers/1.tar.gz"));
             var overlayFs = new OverlayFileSystem(workingFolder);
-            var layers = overlayFs.ReadImageLayers(JsonConvert.DeserializeObject<ManifestWrapper>(File.ReadAllText(manifest)));
-            Assert.Equal("3.tar.gz", layers[0].FileName);
-            Assert.Equal("2.tar.gz", layers[1].FileName);
-            Assert.Equal("1.tar.gz", layers[2].FileName);
+            var layers = overlayFs.ReadImageLayers();
+            Assert.Equal(3, layers.Count);
             ClearFolder(workingFolder);
         }
 
