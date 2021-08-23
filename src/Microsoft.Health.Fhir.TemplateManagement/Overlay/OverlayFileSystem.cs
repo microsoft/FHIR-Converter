@@ -7,8 +7,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using EnsureThat;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
@@ -82,11 +84,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
         }
 
-        public void WriteManifest(string manifest)
+        public void WriteManifest(ManifestWrapper manifest)
         {
             EnsureArg.IsNotNull(manifest, nameof(manifest));
 
-            File.WriteAllText(Path.Combine(_workingFolder, Constants.HiddenImageFolder, Constants.ManifestFileName), manifest);
+            File.WriteAllText(Path.Combine(_workingFolder, Constants.HiddenImageFolder, Constants.ManifestFileName), JsonConvert.SerializeObject(manifest));
         }
 
         public OCIArtifactLayer ReadBaseLayer()
@@ -106,6 +108,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
             ClearFolder(_workingBaseLayerFolder);
             baseLayer.WriteToFile(Path.Combine(_workingBaseLayerFolder, "layer1.tar.gz"));
+        }
+
+        public bool IsCleanWorkingFolder()
+        {
+            return !(Directory.Exists(_workingFolder) && Directory.EnumerateFileSystemEntries(_workingFolder).Any());
+        }
+
+        public void ClearWorkingFolder()
+        {
+            ClearFolder(_workingFolder);
         }
 
         public void ClearImageLayerFolder()

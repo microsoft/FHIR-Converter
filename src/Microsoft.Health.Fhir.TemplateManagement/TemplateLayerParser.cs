@@ -48,10 +48,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         private static string GetContentWithoutBOM(byte[] content)
         {
-            using (var streamReader = new StreamReader(new MemoryStream(content), Encoding.UTF8, true))
-            {
-                return streamReader.ReadToEnd();
-            }
+            using var streamReader = new StreamReader(new MemoryStream(content), Encoding.UTF8, true);
+            return streamReader.ReadToEnd();
         }
     }
 }

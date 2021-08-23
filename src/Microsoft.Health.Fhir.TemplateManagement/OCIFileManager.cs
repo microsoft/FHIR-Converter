@@ -8,9 +8,9 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
+using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Overlay;
-using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement
 {
@@ -36,12 +36,33 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         /// Layers will be written into hidden image folder.
         /// </summary>
         /// <returns>Image information.</returns>
-        public async Task<ImageInfo> PullOCIImageAsync()
+        /// <param name="forceOverride">Whether to override if folder is not empty.</param>
+        public async Task<ImageInfo> PullOCIImageAsync(bool forceOverride = false)
         {
-            _overlayFS.ClearImageLayerFolder();
+            if (!_overlayFS.IsCleanWorkingFolder())
+            {
+                if (!forceOverride)
+                {
+                    throw new TemplateManagementException($"The folder is not empty. If force to override, please add -f in parameters");
+                }
+
+                _overlayFS.ClearWorkingFolder();
+            }
+
             var imageInfo = await _client.PullImageAsync(_imageReference);
-            _overlayFS.WriteManifest(JsonConvert.SerializeObject(imageInfo.Manifest));
+            _overlayFS.WriteManifest(imageInfo.Manifest);
+            UnpackOCIImage(imageInfo.Manifest);
             return imageInfo;
+        }
+
+        /// <summary>
+        /// Push image layers from working folder in order.
+        /// </summary>
+        /// <param name="ignoreBaseLayers">Whether ignore base layer when generating new layers.</param>
+        public async Task<ImageInfo> PushOCIImageAsync(bool ignoreBaseLayers = false)
+        {
+            PackOCIImage(ignoreBaseLayers);
+            return await _client.PushImageAsync(_imageReference);
         }
 
         /// <summary>
@@ -49,7 +70,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         /// The order of layers is given in manifest.
         /// </summary>
         /// <param name="manifest">Manifest of the image.</param>
-        public void UnpackOCIImage(ManifestWrapper manifest)
+        private void UnpackOCIImage(ManifestWrapper manifest)
         {
             var rawLayers = _overlayFS.ReadImageLayers();
             var sortedLayers = _overlayOperator.Sort(rawLayers, manifest);
@@ -73,7 +94,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         /// Generate and archive the diff layer into tar.gz file.
         /// </summary>
         /// <param name="ignoreBaseLayers">Whether ignore base layer when generating diff layer.</param>
-        public void PackOCIImage(bool ignoreBaseLayers = false)
+        private void PackOCIImage(bool ignoreBaseLayers)
         {
             var ociFileLayer = _overlayFS.ReadOCIFileLayer();
             OCIArtifactLayer baseArtifactLayer = new OCIFileLayer();
@@ -90,14 +111,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             // Archive the diff layer.
             var diffArtifactLayer = _overlayOperator.Archive(diffLayer);
             _overlayFS.WriteImageLayers(new List<OCIArtifactLayer> { baseArtifactLayer, diffArtifactLayer });
-        }
-
-        /// <summary>
-        /// Push image layers from working folder in order.
-        /// </summary>
-        public async Task PushOCIImageAsync()
-        {
-            await _client.PushImageAsync(_imageReference);
         }
     }
 }

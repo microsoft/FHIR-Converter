@@ -101,7 +101,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
             string imageReference = _testOneLayerImageReference;
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            await Assert.ThrowsAsync<OCIClientException>(async () => await testManager.PullOCIImageAsync());
+            await Assert.ThrowsAsync<OCIClientException>(async () => await testManager.PullOCIImageAsync(true));
         }
 
         [Theory]
@@ -115,8 +115,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
             string imageReference = _testOneLayerImageReference;
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            var imageInfo = await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage(imageInfo.Manifest);
+            await testManager.PullOCIImageAsync(true);
             Assert.Equal(843, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             ClearFolder(outputFolder);
         }
@@ -132,8 +131,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string imageReference = _testMultiLayersImageReference;
             string outputFolder = "TestData/testMultiLayers";
             var testManager = new OCIFileManager(imageReference, outputFolder);
-            var imageInfo = await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage(imageInfo.Manifest);
+            await testManager.PullOCIImageAsync(true);
             Assert.Equal(10, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             ClearFolder(outputFolder);
         }
@@ -149,8 +147,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string imageReference = _containerRegistryServer + "/templatetest:test";
             string inputFolder = "TestData/UserFolder";
             var testManager = new OCIFileManager(imageReference, inputFolder);
-            testManager.PackOCIImage(true);
-            var ex = await Record.ExceptionAsync(async () => await testManager.PushOCIImageAsync());
+            var ex = await Record.ExceptionAsync(async () => await testManager.PushOCIImageAsync(true));
             Assert.Null(ex);
         }
 

@@ -44,23 +44,31 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             string digest = GetImageDigest(output);
 
             // Oras will create output folder if not existed.
-            // Therefore, the output folder should exist if pull succeed.
             if (!Directory.Exists(_workingFolder))
             {
-                throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Pull image failed or image is empty.");
+                throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Image not found, pull image failed or image is empty.");
             }
 
+            string manifestContent;
             try
             {
-                string manifestContent = LoadManifestContentFromCache(digest);
-                var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+                manifestContent = LoadManifestContentFromCache(digest);
+            }
+            catch (Exception ex)
+            {
+                throw new OCIClientException(TemplateManagementErrorCode.CacheManifestFailed, "Read manifest from oras cache failed.", ex);
+            }
+
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            try
+            {
                 imageInfo.Manifest = JsonConvert.DeserializeObject<ManifestWrapper>(manifestContent);
                 imageInfo.Digest = digest;
                 return imageInfo;
             }
             catch (Exception ex)
             {
-                throw new OCIClientException(TemplateManagementErrorCode.OrasCacheFailed, "Read manifest from oras cache failed.", ex);
+                throw new OCIClientException(TemplateManagementErrorCode.CacheManifestFailed, "Deserialize manifest failed.", ex);
             }
         }
 
