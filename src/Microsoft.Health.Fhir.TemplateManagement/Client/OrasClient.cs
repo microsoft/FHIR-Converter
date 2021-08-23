@@ -22,6 +22,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
     public class OrasClient : IOCIClient
     {
         private readonly string _workingFolder;
+
+        // Format of digest is: <algorithm>:<hex>
+        // e.g. sha256:d377125165eb6d770f344429a7a55379d4028774aebe267fe620cd1fcd2daab7
         private readonly Regex _digestRegex = new Regex("(?<algorithm>[A-Za-z][A-Za-z0-9]*([+.-_][A-Za-z][A-Za-z0-9]*)*):(?<hex>[0-9a-fA-F]{32,})");
 
         public OrasClient(string workingFolder)
