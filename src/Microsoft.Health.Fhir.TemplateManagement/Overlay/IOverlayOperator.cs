@@ -16,14 +16,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// </summary>
         /// <param name="artifactLayer">One OCIArtifactLayer</param>
         /// <returns>One OCIFileLayer</returns>
-        OCIFileLayer Extract(OCIArtifactLayer artifactLayer);
+        OCIFileLayer Extract(ArtifactBlob artifactLayer);
 
         /// <summary>
         /// Extract List of OCIArtifactLayers to a list of OCIFileLayers
         /// </summary>
         /// <param name="artifactLayers">List of OCIArtifactLayers</param>
         /// <returns>List of OCIFileLayers</returns>
-        List<OCIFileLayer> Extract(List<OCIArtifactLayer> artifactLayers);
+        List<OCIFileLayer> Extract(List<ArtifactBlob> artifactLayers);
 
         /// <summary>
         /// Sort OCIArtifactLayers according to manifest.
@@ -31,7 +31,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// <param name="imageLayers"> List of OCIArtifactLayers.</param>
         /// <param name="manifest">Manifest of the image.</param>
         /// <returns>Sorted list of OCIArtifactLayers.</returns>
-        List<OCIArtifactLayer> Sort(List<OCIArtifactLayer> imageLayers, ManifestWrapper manifest);
+        List<ArtifactBlob> Sort(List<ArtifactBlob> imageLayers, ManifestWrapper manifest);
 
         /// <summary>
         /// Merge sorted OCIFileLayers.
@@ -55,13 +55,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// </summary>
         /// <param name="fileLayer">One OCIFileLayer</param>
         /// <returns>One OCIArtifactLayer</returns>
-        OCIArtifactLayer Archive(OCIFileLayer fileLayer);
+        ArtifactBlob Archive(OCIFileLayer fileLayer);
 
         /// <summary>
         /// Archive List of OCIFileLayers to OCIArtifactLayers.
         /// </summary>
         /// <param name="fileLayers">List of OCIFileLayer</param>
         /// <returns>List of OCIArtifactLayer</returns>
-        List<OCIArtifactLayer> Archive(List<OCIFileLayer> fileLayers);
+        List<ArtifactBlob> Archive(List<OCIFileLayer> fileLayers);
     }
 }

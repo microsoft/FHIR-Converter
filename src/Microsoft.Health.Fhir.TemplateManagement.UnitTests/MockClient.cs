@@ -18,7 +18,7 @@ using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 {
-    public class MockClient : IOCIArtifactClient
+    public class MockClient : IOCIClient
     {
         private readonly Dictionary<string, List<byte[]>> _mockImages = new Dictionary<string, List<byte[]>>();
         private readonly Dictionary<string, ManifestWrapper> _mockManifests = new Dictionary<string, ManifestWrapper> { };
@@ -79,7 +79,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             }
         }
 
-        public Task<ManifestWrapper> PullManifestAcync(string imageName, string label, CancellationToken cancellationToken = default)
+        public Task<ManifestWrapper> GetManifestAsync(string imageName, string label, CancellationToken cancellationToken = default)
         {
             if (!string.Equals(_currentToken, _realToken))
             {
@@ -115,7 +115,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             }
         }
 
-        public Task<byte[]> PullBlobAsBytesAcync(string imageName, string digest, CancellationToken cancellationToken = default)
+        public Task<ArtifactBlob> GetBlobAsync(string imageName, string digest, CancellationToken cancellationToken = default)
         {
             if (!string.Equals(_currentToken, _realToken))
             {
@@ -125,7 +125,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             var key = imageName + ":" + digest;
             if (_mockBlobs.ContainsKey(key))
             {
-                return Task.FromResult(_mockBlobs[key]);
+                return Task.FromResult(new ArtifactBlob() { Content = _mockBlobs[key] });
             }
             else
             {
@@ -158,6 +158,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             string[] hashedStrings = hashData.Select(x => string.Format("{0,2:x2}", x)).ToArray();
             hashedValue += string.Join(string.Empty, hashedStrings);
             return hashedValue;
+        }
+
+        public Task<ArtifactImage> PullImageAsync(string imageName, string reference, CancellationToken cancellationToken = default)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<ArtifactImage> PushImageAsync(string imageName, string reference, ArtifactImage image, CancellationToken cancellationToken = default)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -56,7 +56,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public Task DisposeAsync()
         {
-            ClearFolder(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName));
+            IoUtility.ClearFolder(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName));
             return Task.CompletedTask;
         }
 
@@ -107,7 +107,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
                 _isOrasValid = false;
             }
         }
-
+        /*
         // Pull one layer image with valid sequence number, successfully pulled with base layer copied.
         [Fact]
         public async Task GivenOneLayerImage_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
@@ -330,5 +330,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             DirectoryInfo folder = new DirectoryInfo(directory);
             folder.Delete(true);
         }
+        */
     }
 }

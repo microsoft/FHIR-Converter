@@ -18,7 +18,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 {
     public static class TemplateLayerParser
     {
-        public static TemplateLayer ParseArtifactsLayerToTemplateLayer(OCIArtifactLayer artifactsLayer)
+        public static TemplateLayer ParseArtifactsLayerToTemplateLayer(ArtifactBlob artifactsLayer)
         {
             TemplateLayer oneTemplateLayer = new TemplateLayer();
             var artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(artifactsLayer.Content));

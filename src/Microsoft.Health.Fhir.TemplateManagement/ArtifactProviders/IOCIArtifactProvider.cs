@@ -18,7 +18,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
         /// </summary>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>List of artifact layers.</returns>
-        Task<List<OCIArtifactLayer>> GetOCIArtifactAsync(CancellationToken cancellationToken = default);
+        Task<List<ArtifactBlob>> GetOCIArtifactAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Get manifest of OCI image.
@@ -33,6 +33,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
         /// <param name="digest">Layer digest</param>
         /// <param name="cancellationToken">Cancellation token</param>
         /// <returns>One layer of artifact.</returns>
-        Task<OCIArtifactLayer> GetLayerAsync(string digest, CancellationToken cancellationToken = default);
+        Task<ArtifactBlob> GetLayerAsync(string digest, CancellationToken cancellationToken = default);
     }
 }

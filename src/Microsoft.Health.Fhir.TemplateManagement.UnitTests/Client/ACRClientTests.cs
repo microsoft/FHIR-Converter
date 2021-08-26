@@ -28,7 +28,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         [Fact]
         public void GivenARegistryAndToken_WhenCreateACRClient_ACorrectACRClientWillBeConstructed()
         {
-            var acrClient = new ACRClient(_registry, _token);
+            var acrClient = new AcrClient(_registry, _token);
             Assert.NotNull(acrClient);
         }
 
@@ -37,8 +37,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             var acrClientMock = new Mock<IAzureContainerRegistryClient>();
             acrClientMock.Setup(p => p.Blob).Throws(new CloudException() { Response = new HttpResponseMessageWrapper(new HttpResponseMessage() { StatusCode = HttpStatusCode.Unauthorized }, "test") });
-            var client = new ACRClient(acrClientMock.Object);
-            Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(() => client.PullBlobAsBytesAcync(_imageName, _digest));
+            var client = new AcrClient(acrClientMock.Object);
+            Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(() => client.GetBlobAsync(_imageName, _digest));
             Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(() => client.PullBlobAsStreamAcync(_imageName, _digest));
         }
 
@@ -47,8 +47,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             var acrClientMock = new Mock<IAzureContainerRegistryClient>();
             acrClientMock.Setup(p => p.Blob).Throws(new CloudException() { Response = new HttpResponseMessageWrapper(new HttpResponseMessage() { StatusCode = HttpStatusCode.Forbidden }, "test") });
-            var client = new ACRClient(acrClientMock.Object);
-            Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(() => client.PullBlobAsBytesAcync(_imageName, _digest));
+            var client = new AcrClient(acrClientMock.Object);
+            Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(() => client.GetBlobAsync(_imageName, _digest));
             Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(() => client.PullBlobAsStreamAcync(_imageName, _digest));
         }
 
@@ -57,8 +57,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             var acrClientMock = new Mock<IAzureContainerRegistryClient>();
             acrClientMock.Setup(p => p.Blob).Throws(new CloudException() { Response = new HttpResponseMessageWrapper(new HttpResponseMessage() { StatusCode = HttpStatusCode.NotFound }, "test") });
-            var client = new ACRClient(acrClientMock.Object);
-            Assert.ThrowsAsync<ImageNotFoundException>(() => client.PullBlobAsBytesAcync(_imageName, _digest));
+            var client = new AcrClient(acrClientMock.Object);
+            Assert.ThrowsAsync<ImageNotFoundException>(() => client.GetBlobAsync(_imageName, _digest));
             Assert.ThrowsAsync<ImageNotFoundException>(() => client.PullBlobAsStreamAcync(_imageName, _digest));
         }
 
@@ -67,12 +67,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             var acrClientMock = new Mock<IAzureContainerRegistryClient>();
             acrClientMock.Setup(p => p.Blob).Throws(new CloudException() { Response = new HttpResponseMessageWrapper(new HttpResponseMessage() { StatusCode = HttpStatusCode.BadRequest }, "test") });
-            var client = new ACRClient(acrClientMock.Object);
-            Assert.ThrowsAsync<ImageFetchException>(() => client.PullBlobAsBytesAcync(_imageName, _digest));
+            var client = new AcrClient(acrClientMock.Object);
+            Assert.ThrowsAsync<ImageFetchException>(() => client.GetBlobAsync(_imageName, _digest));
             Assert.ThrowsAsync<ImageFetchException>(() => client.PullBlobAsStreamAcync(_imageName, _digest));
 
             acrClientMock.Setup(p => p.Blob).Throws(new Exception("test"));
-            Assert.ThrowsAsync<ImageFetchException>(() => client.PullBlobAsBytesAcync(_imageName, _digest));
+            Assert.ThrowsAsync<ImageFetchException>(() => client.GetBlobAsync(_imageName, _digest));
             Assert.ThrowsAsync<ImageFetchException>(() => client.PullBlobAsStreamAcync(_imageName, _digest));
         }
 
@@ -81,8 +81,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             var acrClientMock = new Mock<IAzureContainerRegistryClient>();
             acrClientMock.Setup(p => p.Blob).Throws(new AcrErrorsException() { Response = new HttpResponseMessageWrapper(new HttpResponseMessage() { StatusCode = HttpStatusCode.Unauthorized }, "test") });
-            var client = new ACRClient(acrClientMock.Object);
-            Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(() => client.PullManifestAcync(_imageName, _label));
+            var client = new AcrClient(acrClientMock.Object);
+            Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(() => client.GetManifestAsync(_imageName, _label));
         }
 
         [Fact]
@@ -90,8 +90,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             var acrClientMock = new Mock<IAzureContainerRegistryClient>();
             acrClientMock.Setup(p => p.Blob).Throws(new AcrErrorsException() { Response = new HttpResponseMessageWrapper(new HttpResponseMessage() { StatusCode = HttpStatusCode.Forbidden }, "test") });
-            var client = new ACRClient(acrClientMock.Object);
-            Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(() => client.PullManifestAcync(_imageName, _label));
+            var client = new AcrClient(acrClientMock.Object);
+            Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(() => client.GetManifestAsync(_imageName, _label));
         }
 
         [Fact]
@@ -99,8 +99,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             var acrClientMock = new Mock<IAzureContainerRegistryClient>();
             acrClientMock.Setup(p => p.Blob).Throws(new AcrErrorsException() { Response = new HttpResponseMessageWrapper(new HttpResponseMessage() { StatusCode = HttpStatusCode.NotFound }, "test") });
-            var client = new ACRClient(acrClientMock.Object);
-            Assert.ThrowsAsync<ImageNotFoundException>(() => client.PullManifestAcync(_imageName, _label));
+            var client = new AcrClient(acrClientMock.Object);
+            Assert.ThrowsAsync<ImageNotFoundException>(() => client.GetManifestAsync(_imageName, _label));
         }
 
         [Fact]
@@ -108,10 +108,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             var acrClientMock = new Mock<IAzureContainerRegistryClient>();
             acrClientMock.Setup(p => p.Blob).Throws(new AcrErrorsException() { Response = new HttpResponseMessageWrapper(new HttpResponseMessage() { StatusCode = HttpStatusCode.BadRequest }, "test") });
-            var client = new ACRClient(acrClientMock.Object);
-            Assert.ThrowsAsync<ImageFetchException>(() => client.PullManifestAcync(_imageName, _label));
+            var client = new AcrClient(acrClientMock.Object);
+            Assert.ThrowsAsync<ImageFetchException>(() => client.GetManifestAsync(_imageName, _label));
             acrClientMock.Setup(p => p.Blob).Throws(new Exception("test"));
-            Assert.ThrowsAsync<ImageFetchException>(() => client.PullManifestAcync(_imageName, _label));
+            Assert.ThrowsAsync<ImageFetchException>(() => client.GetManifestAsync(_imageName, _label));
         }
     }
 }

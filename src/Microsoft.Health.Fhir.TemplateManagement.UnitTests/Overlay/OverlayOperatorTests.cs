@@ -26,14 +26,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
 
         public static IEnumerable<object[]> GetValidOCIArtifact()
         {
-            yield return new object[] { new OCIArtifactLayer() { FileName = "testdecompress.tar.gz", Content = File.ReadAllBytes("TestData/TarGzFiles/testdecompress.tar.gz"), Size = 100, Digest = "test1" }, 3, -1 };
-            yield return new object[] { new OCIArtifactLayer() { FileName = "layer1.tar.gz", Content = File.ReadAllBytes("TestData/TarGzFiles/layer1.tar.gz"), Size = 100, Digest = "test2" }, 840, 1 };
-            yield return new object[] { new OCIArtifactLayer() { FileName = "layer2.tar.gz", Content = File.ReadAllBytes("TestData/TarGzFiles/layer2.tar.gz"), Size = 100, Digest = "test3" }, 835, 2 };
+            yield return new object[] { new ArtifactBlob() { FileName = "testdecompress.tar.gz", Content = File.ReadAllBytes("TestData/TarGzFiles/testdecompress.tar.gz"), Size = 100, Digest = "test1" }, 3, -1 };
+            yield return new object[] { new ArtifactBlob() { FileName = "layer1.tar.gz", Content = File.ReadAllBytes("TestData/TarGzFiles/layer1.tar.gz"), Size = 100, Digest = "test2" }, 840, 1 };
+            yield return new object[] { new ArtifactBlob() { FileName = "layer2.tar.gz", Content = File.ReadAllBytes("TestData/TarGzFiles/layer2.tar.gz"), Size = 100, Digest = "test3" }, 835, 2 };
         }
 
         [Theory]
         [MemberData(nameof(GetValidOCIArtifact))]
-        public void GivenAnOCIArtifactLayer_WhenExtractLayers_CorrectOCIFileLayerShouldBeReturned(OCIArtifactLayer inputLayer, int fileCounts, int sequenceNumber)
+        public void GivenAnOCIArtifactLayer_WhenExtractLayers_CorrectOCIFileLayerShouldBeReturned(ArtifactBlob inputLayer, int fileCounts, int sequenceNumber)
         {
             var result = _overlayOperator.Extract(inputLayer);
             Assert.Equal(fileCounts, result.FileContent.Count);
@@ -48,7 +48,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         public void GivenInvalidContentOCIArtifactLayer_WhenExtractLayers_ExceptionWillBeThrown()
         {
             string filePath = "TestData/TarGzFiles/invalid1.tar.gz";
-            var oneLayer = new OCIArtifactLayer() { Content = File.ReadAllBytes(filePath) };
+            var oneLayer = new ArtifactBlob() { Content = File.ReadAllBytes(filePath) };
 
             Assert.Throws<ArtifactDecompressException>(() => _overlayOperator.Extract(oneLayer));
         }
@@ -57,7 +57,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         public void GivenOCIArtifactLayer_IfSequenceNumberNotFound_WhenExtractLayers_OCIFileLayerWithDefaultSequenceWillBeReturn()
         {
             string filePath = "TestData/TarGzFiles/testdecompress.tar.gz";
-            var oneLayer = new OCIArtifactLayer() { Content = File.ReadAllBytes(filePath) };
+            var oneLayer = new ArtifactBlob() { Content = File.ReadAllBytes(filePath) };
 
             var result = _overlayOperator.Extract(oneLayer);
             Assert.Equal(-1, result.SequenceNumber);
@@ -67,10 +67,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         public void GivenAListOfOCIArtifactLayers_WhenExtractLayers_ListOfOCIFileLayersShouldBeReturned()
         {
             List<string> artifactFilePath = new List<string>() { "TestData/TarGzFiles/baseLayer.tar.gz", "TestData/TarGzFiles/userV1.tar.gz" };
-            List<OCIArtifactLayer> inputLayers = new List<OCIArtifactLayer>();
+            List<ArtifactBlob> inputLayers = new List<ArtifactBlob>();
             foreach (var oneFile in artifactFilePath)
             {
-                var oneLayer = new OCIArtifactLayer() { Content = File.ReadAllBytes(oneFile) };
+                var oneLayer = new ArtifactBlob() { Content = File.ReadAllBytes(oneFile) };
                 inputLayers.Add(oneLayer);
             }
 
@@ -108,10 +108,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         {
             // Generate List of OCIFileLayers
             List<string> artifactFilePath = new List<string>() { "TestData/TarGzFiles/layer1.tar.gz", "TestData/TarGzFiles/layer2.tar.gz" };
-            List<OCIArtifactLayer> inputLayers = new List<OCIArtifactLayer>();
+            List<ArtifactBlob> inputLayers = new List<ArtifactBlob>();
             foreach (var oneFile in artifactFilePath)
             {
-                var oneLayer = new OCIArtifactLayer() { Content = File.ReadAllBytes(oneFile) };
+                var oneLayer = new ArtifactBlob() { Content = File.ReadAllBytes(oneFile) };
                 inputLayers.Add(oneLayer);
             }
 
@@ -153,7 +153,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         public void GivenAOCIFileLayer_WhenPackLayer_AnOCIArtifactLayerShouldBeReturned()
         {
             string artifactPath = "TestData/TarGzFiles/layer1.tar.gz";
-            OCIArtifactLayer inputLayer = new OCIArtifactLayer() { Content = File.ReadAllBytes(artifactPath) };
+            ArtifactBlob inputLayer = new ArtifactBlob() { Content = File.ReadAllBytes(artifactPath) };
             var overlayOperator = new OverlayOperator();
             var fileLayer = overlayOperator.Extract(inputLayer);
             var diffLayers = _overlayOperator.GenerateDiffLayer(fileLayer, null);
@@ -165,10 +165,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         public void GivenOCIFileLayers_WhenPackLayers_OCIArtifactLayersShouldBeReturned()
         {
             List<string> artifactPaths = new List<string> { "TestData/TarGzFiles/baseLayer.tar.gz" };
-            var inputLayers = new List<OCIArtifactLayer>();
+            var inputLayers = new List<ArtifactBlob>();
             foreach (var path in artifactPaths)
             {
-                inputLayers.Add(new OCIArtifactLayer() { Content = File.ReadAllBytes(path) });
+                inputLayers.Add(new ArtifactBlob() { Content = File.ReadAllBytes(path) });
             }
 
             var overlayOperator = new OverlayOperator();

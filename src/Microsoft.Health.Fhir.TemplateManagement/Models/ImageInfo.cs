@@ -48,8 +48,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public string ImageReference { get; set; }
 
-        public ManifestWrapper Manifest { get; set; }
-
         public bool IsDefaultTemplate()
         {
             return IsDefaultTemplateImageReference(ImageReference);

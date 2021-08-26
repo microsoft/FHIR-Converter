@@ -4,9 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
@@ -19,15 +17,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         private readonly IOCIClient _client;
         private readonly OverlayFileSystem _overlayFS;
         private readonly OverlayOperator _overlayOperator;
-        private readonly string _imageReference;
 
-        public OCIFileManager(string imageReference, string workingFolder)
+        public OCIFileManager(string url, string workingFolder)
         {
-            ImageInfo.ValidateImageReference(imageReference);
-            _imageReference = imageReference;
-
             _overlayFS = new OverlayFileSystem(workingFolder);
-            _client = new OrasClient(Path.Combine(workingFolder, Constants.HiddenLayersFolder));
+            _client = new OrasClient(url);
             _overlayOperator = new OverlayOperator();
         }
 
@@ -37,7 +31,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         /// </summary>
         /// <returns>Image information.</returns>
         /// <param name="forceOverride">Whether to override if folder is not empty.</param>
-        public async Task<ImageInfo> PullOCIImageAsync(bool forceOverride = false)
+        public async Task<ArtifactImage> PullOCIImageAsync(string imageName, string reference, bool forceOverride = false)
         {
             if (!_overlayFS.IsCleanWorkingFolder())
             {
@@ -46,23 +40,27 @@ namespace Microsoft.Health.Fhir.TemplateManagement
                     throw new TemplateManagementException($"The folder is not empty. If force to override, please add -f in parameters");
                 }
 
-                _overlayFS.ClearWorkingFolder();
+                _overlayFS.ClearImageLayerFolder();
             }
 
-            var imageInfo = await _client.PullImageAsync(_imageReference);
-            _overlayFS.WriteManifest(imageInfo.Manifest);
-            UnpackOCIImage(imageInfo.Manifest);
-            return imageInfo;
+            var artifactImage = await _client.PullImageAsync(imageName, reference);
+            _overlayFS.WriteManifest(artifactImage.Manifest);
+            _overlayFS.WriteImageLayers(artifactImage.Blobs);
+            var fileLayer = UnpackOCIImage(artifactImage);
+            _overlayFS.WriteOCIFileLayer(fileLayer);
+            return artifactImage;
         }
 
         /// <summary>
         /// Push image layers from working folder in order.
         /// </summary>
         /// <param name="ignoreBaseLayers">Whether ignore base layer when generating new layers.</param>
-        public async Task<ImageInfo> PushOCIImageAsync(bool ignoreBaseLayers = false)
+        public async Task<ArtifactImage> PushOCIImageAsync(string imageName, string reference, bool ignoreBaseLayers = false)
         {
-            PackOCIImage(ignoreBaseLayers);
-            return await _client.PushImageAsync(_imageReference);
+            var fileLayer = _overlayFS.ReadOCIFileLayer();
+            var artifactImage = PackOCIImage(fileLayer, ignoreBaseLayers);
+            _overlayFS.WriteImageLayers(artifactImage.Blobs);
+            return await _client.PushImageAsync(imageName, reference, artifactImage);
         }
 
         /// <summary>
@@ -70,13 +68,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         /// The order of layers is given in manifest.
         /// </summary>
         /// <param name="manifest">Manifest of the image.</param>
-        private void UnpackOCIImage(ManifestWrapper manifest)
+        private OCIFileLayer UnpackOCIImage(ArtifactImage image)
         {
-            var rawLayers = _overlayFS.ReadImageLayers();
-            var sortedLayers = _overlayOperator.Sort(rawLayers, manifest);
+            var sortedLayers = _overlayOperator.Sort(image.Blobs, image.Manifest);
             if (sortedLayers.Count == 0)
             {
-                return;
+                return new OCIFileLayer();
             }
 
             // First layer is the base layer.
@@ -86,18 +83,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             var ociFileLayers = _overlayOperator.Extract(sortedLayers);
 
             // Merge OCI files.
-            var content = _overlayOperator.Merge(ociFileLayers);
-            _overlayFS.WriteOCIFileLayer(content);
+            var unpackedLayer = _overlayOperator.Merge(ociFileLayers);
+            return unpackedLayer;
         }
 
         /// <summary>
         /// Generate and archive the diff layer into tar.gz file.
         /// </summary>
         /// <param name="ignoreBaseLayers">Whether ignore base layer when generating diff layer.</param>
-        private void PackOCIImage(bool ignoreBaseLayers)
+        private ArtifactImage PackOCIImage(OCIFileLayer ociFileLayer, bool ignoreBaseLayers)
         {
-            var ociFileLayer = _overlayFS.ReadOCIFileLayer();
-            OCIArtifactLayer baseArtifactLayer = new OCIFileLayer();
+            Models.ArtifactBlob baseArtifactLayer = new OCIFileLayer();
             if (!ignoreBaseLayers)
             {
                 baseArtifactLayer = _overlayFS.ReadBaseLayer();
@@ -110,7 +106,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
             // Archive the diff layer.
             var diffArtifactLayer = _overlayOperator.Archive(diffLayer);
-            _overlayFS.WriteImageLayers(new List<OCIArtifactLayer> { baseArtifactLayer, diffArtifactLayer });
+            return new ArtifactImage() { Blobs = new List<Models.ArtifactBlob> { baseArtifactLayer, diffArtifactLayer } };
         }
     }
 }

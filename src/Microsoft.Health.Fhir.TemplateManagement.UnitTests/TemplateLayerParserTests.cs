@@ -41,7 +41,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         public void GivenArtifactLayer_WhenParseArtifactLayerToTemplateLayer_ACorrectTemplateLayerShouldBeReturned(string filePath, int expectedTemplatesCounts)
         {
             var content = File.ReadAllBytes(filePath);
-            var testArtifactLayer = new OCIArtifactLayer() { Content = content, Digest = StreamUtility.CalculateDigestFromSha256(File.ReadAllBytes(filePath)) };
+            var testArtifactLayer = new ArtifactBlob() { Content = content, Digest = StreamUtility.CalculateDigestFromSha256(File.ReadAllBytes(filePath)) };
             var templateLayer = TemplateLayerParser.ParseArtifactsLayerToTemplateLayer(testArtifactLayer);
             Assert.Equal(expectedTemplatesCounts, templateLayer.TemplateContent.Count());
             Assert.Equal(testArtifactLayer.Digest, templateLayer.Digest);

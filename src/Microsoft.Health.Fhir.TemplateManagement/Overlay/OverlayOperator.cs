@@ -22,7 +22,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
     public class OverlayOperator : IOverlayOperator
     {
-        public OCIFileLayer Extract(OCIArtifactLayer artifactLayer)
+        public OCIFileLayer Extract(ArtifactBlob artifactLayer)
         {
             EnsureArg.IsNotNull(artifactLayer, nameof(artifactLayer));
 
@@ -57,16 +57,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             };
         }
 
-        public List<OCIFileLayer> Extract(List<OCIArtifactLayer> artifactLayers)
+        public List<OCIFileLayer> Extract(List<ArtifactBlob> artifactLayers)
         {
             EnsureArg.IsNotNull(artifactLayers, nameof(artifactLayers));
 
             return artifactLayers.Select(Extract).ToList();
         }
 
-        public List<OCIArtifactLayer> Sort(List<OCIArtifactLayer> imageLayers, ManifestWrapper manifest)
+        public List<ArtifactBlob> Sort(List<ArtifactBlob> imageLayers, ManifestWrapper manifest)
         {
-            var sortedLayers = new List<OCIArtifactLayer>();
+            var sortedLayers = new List<ArtifactBlob>();
             ValidationUtility.ValidateManifest(manifest);
             foreach (var layerInfo in manifest.Layers)
             {
@@ -177,7 +177,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return diffLayer;
         }
 
-        public OCIArtifactLayer Archive(OCIFileLayer fileLayer)
+        public ArtifactBlob Archive(OCIFileLayer fileLayer)
         {
             EnsureArg.IsNotNull(fileLayer, nameof(fileLayer));
 
@@ -201,7 +201,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return fileLayer;
         }
 
-        public List<OCIArtifactLayer> Archive(List<OCIFileLayer> fileLayers)
+        public List<ArtifactBlob> Archive(List<OCIFileLayer> fileLayers)
         {
             EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
 

@@ -61,7 +61,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             yield return new object[] { @"*:" };
             yield return new object[] { @" " };
         }
-
+        /*
         [Theory]
         [MemberData(nameof(GetInValidFolder))]
         public async Task GivenInValidOutputFolder_WhenPullUseOras_ExceptionWillBeThrownAsync(string outputFolder)
@@ -179,18 +179,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             Assert.Null(ex);
             ClearFolder("TestData/PullTest");
         }
-
-        private void ClearFolder(string directory)
-        {
-            if (!Directory.Exists(directory))
-            {
-                return;
-            }
-
-            DirectoryInfo folder = new DirectoryInfo(directory);
-            folder.Delete(true);
-        }
-
+        */
         private async Task PushOneLayerImageAsync()
         {
             string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath}";

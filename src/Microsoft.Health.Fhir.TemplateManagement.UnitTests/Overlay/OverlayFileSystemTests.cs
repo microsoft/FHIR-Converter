@@ -45,12 +45,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         public void GivenOCIArtifactLayers_WhenWriteImageFolder_AllOCIArtifactLayersWillBeWrittenToFolder()
         {
             string layerPath = "TestData/TarGzFiles/userV1.tar.gz";
-            var layer1 = new OCIArtifactLayer() { SequenceNumber = 1, Content = File.ReadAllBytes(layerPath), FileName = "userV1.tar.gz" };
-            var layer2 = new OCIArtifactLayer() { SequenceNumber = 2, Content = File.ReadAllBytes(layerPath), FileName = "userV2.tar.gz" };
+            var layer1 = new ArtifactBlob() { SequenceNumber = 1, Content = File.ReadAllBytes(layerPath), FileName = "userV1.tar.gz" };
+            var layer2 = new ArtifactBlob() { SequenceNumber = 2, Content = File.ReadAllBytes(layerPath), FileName = "userV2.tar.gz" };
             string workingFolder = "TestData/testImageLayer";
             ClearFolder(workingFolder);
             var overlayFs = new OverlayFileSystem(workingFolder);
-            overlayFs.WriteImageLayers(new List<OCIArtifactLayer>() { layer1, layer2 });
+            overlayFs.WriteImageLayers(new List<ArtifactBlob>() { layer1, layer2 });
             var filePaths = Directory.EnumerateFiles(Path.Combine(workingFolder, ".image/layers"), "*.*", SearchOption.AllDirectories);
             Assert.Equal(2, filePaths.Count());
             ClearFolder(workingFolder);
@@ -121,7 +121,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             string workingFolder = "TestData/testWriteBaseLayer";
             Directory.CreateDirectory(Path.Combine(workingFolder));
             var overlayFs = new OverlayFileSystem(workingFolder);
-            overlayFs.WriteBaseLayer(new OCIArtifactLayer() { Content = File.ReadAllBytes(layerPath) });
+            overlayFs.WriteBaseLayer(new ArtifactBlob() { Content = File.ReadAllBytes(layerPath) });
             Assert.Single(Directory.EnumerateFiles(workingFolder + "/.image/base", "*.*", SearchOption.AllDirectories));
             ClearFolder(workingFolder);
         }

@@ -28,13 +28,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// Read layers (only .tar.gz files) from working image forder.
         /// </summary>
         /// <returns>One OCIArtifact layer.</returns>
-        List<OCIArtifactLayer> ReadImageLayers();
+        List<ArtifactBlob> ReadImageLayers();
 
         /// <summary>
         /// Write compressed artifacts into tar.gz files to working image folder.
         /// </summary>
         /// <param name="imageLayers">A list of OCIArtifactLayer.</param>
-        void WriteImageLayers(List<OCIArtifactLayer> imageLayers);
+        void WriteImageLayers(List<ArtifactBlob> imageLayers);
 
         /// <summary>
         /// Write manifest into working image folder.
@@ -46,13 +46,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// Read base OCIArtifactLayer from base layer folder.
         /// </summary>
         /// <returns>One base OCIArtifactLayer.</returns>
-        OCIArtifactLayer ReadBaseLayer();
+        ArtifactBlob ReadBaseLayer();
 
         /// <summary>
         /// Write base OCIArtifactLayer to base layer folser.
         /// </summary>
         /// <param name="baseLayer">One base OCIArtifactLayer.</param>
-        void WriteBaseLayer(OCIArtifactLayer baseLayer);
+        void WriteBaseLayer(ArtifactBlob baseLayer);
 
         /// <summary>
         /// Clear working folder.

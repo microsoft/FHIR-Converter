@@ -19,11 +19,11 @@ using Microsoft.Rest.Azure;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
-    public class ACRClient : IOCIArtifactClient
+    public class AcrClient : IOCIClient
     {
         private readonly IAzureContainerRegistryClient _client;
 
-        public ACRClient(string registry, string token)
+        public AcrClient(string registry, string token)
         {
             EnsureArg.IsNotNull(registry, nameof(registry));
             EnsureArg.IsNotNull(token, nameof(token));
@@ -31,7 +31,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             _client = new AzureContainerRegistryClient(registry, new ACRClientCredentials(token));
         }
 
-        public ACRClient(IAzureContainerRegistryClient client)
+        public AcrClient(IAzureContainerRegistryClient client)
         {
             EnsureArg.IsNotNull(client, nameof(client));
             _client = client;
@@ -61,22 +61,22 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
         }
 
-        public async Task<byte[]> PullBlobAsBytesAcync(string imageName, string digest, CancellationToken cancellationToken = default)
+        public async Task<ArtifactBlob> GetBlobAsync(string imageName, string reference, CancellationToken cancellationToken = default)
         {
-            Stream rawStream = await PullBlobAsStreamAcync(imageName, digest, cancellationToken);
+            Stream rawStream = await PullBlobAsStreamAcync(imageName, reference, cancellationToken);
             using var streamReader = new MemoryStream();
             rawStream.CopyTo(streamReader);
             var content = streamReader.ToArray();
-            ValidationUtility.ValidateOneBlob(content, digest);
-            return content;
+            ValidationUtility.ValidateOneBlob(content, reference);
+            return new Models.ArtifactBlob() { Digest = reference, Content = content };
         }
 
-        public async Task<ManifestWrapper> PullManifestAcync(string imageName, string label, CancellationToken cancellationToken = default)
+        public async Task<ManifestWrapper> GetManifestAsync(string imageName, string reference, CancellationToken cancellationToken = default)
         {
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                var manifestInfo = await _client.Manifests.GetAsync(imageName, label, Constants.MediatypeV2Manifest, cancellationToken);
+                var manifestInfo = await _client.Manifests.GetAsync(imageName, reference, Constants.MediatypeV2Manifest, cancellationToken);
                 return manifestInfo;
             }
             catch (TemplateManagementException)
@@ -112,6 +112,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             {
                 throw new ImageFetchException(TemplateManagementErrorCode.FetchLayerFailed, $"Pull Image Failed.{ex}", ex);
             }
+        }
+
+        public Task<ArtifactImage> PullImageAsync(string imageName, string reference, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ArtifactImage> PushImageAsync(string imageName, string reference, ArtifactImage image, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
         }
     }
 }

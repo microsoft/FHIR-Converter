@@ -10,6 +10,7 @@ using EnsureThat;
 using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
@@ -17,6 +18,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
     public class OverlayFileSystem : IOverlayFileSystem
     {
         private readonly string _workingFolder;
+        private readonly string _workingImageFolder;
         private readonly string _workingImageLayerFolder;
         private readonly string _workingBaseLayerFolder;
 
@@ -25,6 +27,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             EnsureArg.IsNotNullOrEmpty(workingFolder, nameof(workingFolder));
 
             _workingFolder = workingFolder;
+            _workingImageFolder = Path.Combine(workingFolder, Constants.HiddenImageFolder);
             _workingImageLayerFolder = Path.Combine(workingFolder, Constants.HiddenLayersFolder);
             _workingBaseLayerFolder = Path.Combine(workingFolder, Constants.HiddenBaseLayerFolder);
         }
@@ -58,16 +61,18 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
         }
 
-        public List<OCIArtifactLayer> ReadImageLayers()
+        public List<ArtifactBlob> ReadImageLayers()
         {
             return ReadOCIArtifactLayers(_workingImageLayerFolder);
         }
 
-        public void WriteImageLayers(List<OCIArtifactLayer> imageLayers)
+        public void WriteImageLayers(List<ArtifactBlob> imageLayers)
         {
             EnsureArg.IsNotNull(imageLayers, nameof(imageLayers));
 
-            ClearFolder(_workingImageLayerFolder);
+            // Clear image layer folder before writing.
+            ClearImageLayerFolder();
+            Directory.CreateDirectory(_workingImageLayerFolder);
 
             // Used to label layers sequence. In this version, only two layers will be generated.
             // Should not exceed 9 in the future.
@@ -88,10 +93,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         {
             EnsureArg.IsNotNull(manifest, nameof(manifest));
 
-            File.WriteAllText(Path.Combine(_workingFolder, Constants.HiddenImageFolder, Constants.ManifestFileName), JsonConvert.SerializeObject(manifest));
+            Directory.CreateDirectory(_workingImageFolder);
+            File.WriteAllText(Path.Combine(_workingImageFolder, Constants.ManifestFileName), JsonConvert.SerializeObject(manifest));
         }
 
-        public OCIArtifactLayer ReadBaseLayer()
+        public ArtifactBlob ReadBaseLayer()
         {
             var layers = ReadOCIArtifactLayers(_workingBaseLayerFolder);
             if (layers.Count() > 1)
@@ -102,11 +108,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return layers.Count == 0 ? new OCIFileLayer() : layers[0];
         }
 
-        public void WriteBaseLayer(OCIArtifactLayer baseLayer)
+        public void WriteBaseLayer(ArtifactBlob baseLayer)
         {
             EnsureArg.IsNotNull(baseLayer, nameof(baseLayer));
 
-            ClearFolder(_workingBaseLayerFolder);
+            // Clear base layer folder before writing.
+            ClearBaseLayerFolder();
+            Directory.CreateDirectory(_workingBaseLayerFolder);
             baseLayer.WriteToFile(Path.Combine(_workingBaseLayerFolder, "layer1.tar.gz"));
         }
 
@@ -117,46 +125,42 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
         public void ClearWorkingFolder()
         {
-            ClearFolder(_workingFolder);
+            IoUtility.ClearFolder(_workingFolder);
+            Directory.CreateDirectory(_workingFolder);
+        }
+
+        public void ClearImageFolder()
+        {
+            IoUtility.ClearFolder(_workingImageFolder);
+            Directory.CreateDirectory(_workingFolder);
         }
 
         public void ClearImageLayerFolder()
         {
-            ClearFolder(_workingImageLayerFolder);
+            IoUtility.ClearFolder(_workingImageLayerFolder);
+            Directory.CreateDirectory(_workingImageLayerFolder);
         }
 
         public void ClearBaseLayerFolder()
         {
-            ClearFolder(_workingBaseLayerFolder);
+            IoUtility.ClearFolder(_workingBaseLayerFolder);
+            Directory.CreateDirectory(_workingBaseLayerFolder);
         }
 
-        private void ClearFolder(string directory)
-        {
-            EnsureArg.IsNotNullOrEmpty(directory, nameof(directory));
-
-            if (!Directory.Exists(directory))
-            {
-                return;
-            }
-
-            DirectoryInfo folder = new DirectoryInfo(directory);
-            folder.Delete(true);
-        }
-
-        private List<OCIArtifactLayer> ReadOCIArtifactLayers(string folder)
+        private List<ArtifactBlob> ReadOCIArtifactLayers(string folder)
         {
             EnsureArg.IsNotNullOrEmpty(folder, nameof(folder));
 
             if (!Directory.Exists(folder))
             {
-                return new List<OCIArtifactLayer>();
+                return new List<ArtifactBlob>();
             }
 
-            var result = new List<OCIArtifactLayer>();
+            var result = new List<ArtifactBlob>();
             var layersPath = Directory.EnumerateFiles(folder, "*.tar.gz", SearchOption.AllDirectories);
             foreach (var tarGzFile in layersPath)
             {
-                var artifactLayer = new OCIArtifactLayer();
+                var artifactLayer = new ArtifactBlob();
                 artifactLayer.ReadFromFile(tarGzFile);
                 if (artifactLayer.Content != null)
                 {

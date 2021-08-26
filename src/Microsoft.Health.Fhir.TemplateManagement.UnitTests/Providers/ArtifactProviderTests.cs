@@ -116,7 +116,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
         {
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             _artifactProvider = new OCIArtifactProvider(imageInfo, MockClient);
-            OCIArtifactLayer artifactLayer = await _artifactProvider.GetLayerAsync(layerDigest);
+            ArtifactBlob artifactLayer = await _artifactProvider.GetLayerAsync(layerDigest);
             var ex = Record.Exception(() => ValidationUtility.ValidateOneBlob((byte[])artifactLayer.Content, layerDigest));
             Assert.Null(ex);
         }

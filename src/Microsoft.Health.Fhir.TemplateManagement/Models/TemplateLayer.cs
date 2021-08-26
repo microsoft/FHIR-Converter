@@ -14,7 +14,7 @@ using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
-    public class TemplateLayer : OCIArtifactLayer
+    public class TemplateLayer : ArtifactBlob
     {
         public Dictionary<string, Template> TemplateContent { get; set; }
 

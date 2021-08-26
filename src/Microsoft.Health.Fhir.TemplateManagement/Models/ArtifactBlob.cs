@@ -9,7 +9,7 @@ using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
-    public class OCIArtifactLayer
+    public class ArtifactBlob
     {
         public string FileName { get; set; }
 
@@ -22,7 +22,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         // Sequence number of the layer.
         public int SequenceNumber { get; set; } = -1;
 
-        // Content of the layer.
+        // Content of the layer (tar.gz).
         public virtual byte[] Content { get; set; }
 
         public void WriteToFile(string path)

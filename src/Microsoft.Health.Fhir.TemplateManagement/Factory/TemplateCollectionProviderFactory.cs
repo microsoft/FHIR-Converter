@@ -52,7 +52,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             }
 
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
-            var client = new ACRClient(imageInfo.Registry, token);
+            var client = new AcrClient(imageInfo.Registry, token);
             return new TemplateCollectionProvider(imageInfo, client, _templateCache, _configuration);
         }
 

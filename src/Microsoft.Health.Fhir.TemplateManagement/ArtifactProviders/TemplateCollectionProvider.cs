@@ -22,7 +22,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
         private readonly IMemoryCache _templateCache;
         private readonly TemplateCollectionConfiguration _configuration;
 
-        public TemplateCollectionProvider(ImageInfo imageInfo, IOCIArtifactClient client, IMemoryCache templateCache, TemplateCollectionConfiguration configuration)
+        public TemplateCollectionProvider(ImageInfo imageInfo, IOCIClient client, IMemoryCache templateCache, TemplateCollectionConfiguration configuration)
             : base(imageInfo, client)
         {
             EnsureArg.IsNotNull(imageInfo, nameof(imageInfo));
@@ -90,7 +90,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             return manifestInfo;
         }
 
-        public override async Task<OCIArtifactLayer> GetLayerAsync(string layerDigest, CancellationToken cancellationToken = default)
+        public override async Task<Models.ArtifactBlob> GetLayerAsync(string layerDigest, CancellationToken cancellationToken = default)
         {
             EnsureArg.IsNotNull(layerDigest, nameof(layerDigest));
 
@@ -98,7 +98,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             if (oneTemplateLayer == null)
             {
                 var artifactsLayer = await base.GetLayerAsync(layerDigest, cancellationToken);
-                oneTemplateLayer = TemplateLayerParser.ParseArtifactsLayerToTemplateLayer(artifactsLayer as OCIArtifactLayer);
+                oneTemplateLayer = TemplateLayerParser.ParseArtifactsLayerToTemplateLayer(artifactsLayer as Models.ArtifactBlob);
             }
 
             return oneTemplateLayer;

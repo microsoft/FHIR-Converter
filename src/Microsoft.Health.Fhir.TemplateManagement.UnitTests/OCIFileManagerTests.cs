@@ -76,7 +76,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "testacr.azurecr.io/invalid._set" };
             yield return new object[] { "testacr.azurecr.io/_invalid" };
         }
-
+        /*
         [Theory]
         [MemberData(nameof(GetInValidImageReferenceInfo))]
         public void GivenInValidImageReference_WhenPullOCIFiles_ExceptionWillBeThrownAsync(string imageReference)
@@ -150,7 +150,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             var ex = await Record.ExceptionAsync(async () => await testManager.PushOCIImageAsync(true));
             Assert.Null(ex);
         }
-
+        */
         private void ClearFolder(string directory)
         {
             if (!Directory.Exists(directory))

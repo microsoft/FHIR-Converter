@@ -4,11 +4,17 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using Microsoft.Azure.ContainerRegistry.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Models;
 
-namespace Microsoft.Health.Fhir.TemplateManagement.Models
+namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
-    public class OCIFileLayer : ArtifactBlob
+    public class ArtifactImage
     {
-        public Dictionary<string, byte[]> FileContent { get; set; } = new Dictionary<string, byte[]> { };
+        public ImageInfo Info { get; set; }
+
+        public ManifestWrapper Manifest { get; set; }
+
+        public List<ArtifactBlob> Blobs { get; set; } = new List<Models.ArtifactBlob>();
     }
 }
