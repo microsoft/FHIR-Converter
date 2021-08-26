@@ -1,87 +1,95 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <IsPackable>true</IsPackable>
-    <NuspecFile>Microsoft.Health.Fhir.Liquid.Converter.nuspec</NuspecFile>
-    <OrasVersion>0.8.1</OrasVersion>
-    <OrasWinUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_windows_amd64.tar.gz</OrasWinUrl>
-    <OrasOSXUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_darwin_amd64.tar.gz</OrasOSXUrl>
-  </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
-    <SolutionFolder>..\..\</SolutionFolder>
-    <DataFolder>$(SolutionFolder)data\</DataFolder>
-    <BinFolder>$(SolutionFolder)bin\</BinFolder>
-    <CopyExecutable>copy</CopyExecutable>
-  </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <IsPackable>true</IsPackable>
+        <NuspecFile>Microsoft.Health.Fhir.Liquid.Converter.nuspec</NuspecFile>
+        <OrasVersion>0.8.1</OrasVersion>
+        <OrasWinTarGzFile>oras_win_amd64.tar.gz</OrasWinTarGzFile>
+        <OrasOSXTarGzFile>oras_osx_amd64.tar.gz</OrasOSXTarGzFile>
+        <OrasWinUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_windows_amd64.tar.gz</OrasWinUrl>
+        <OrasOSXUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_darwin_amd64.tar.gz</OrasOSXUrl>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
-    <SolutionFolder>../../</SolutionFolder>
-    <DataFolder>$(SolutionFolder)data/</DataFolder>
-    <BinFolder>$(SolutionFolder)bin/</BinFolder>
-    <CopyExecutable>cp</CopyExecutable>
-  </PropertyGroup>
+    <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+        <SolutionFolder>..\..\</SolutionFolder>
+        <DataFolder>$(SolutionFolder)data\</DataFolder>
+        <BinFolder>$(SolutionFolder)bin\</BinFolder>
+        <CopyExecutable>copy</CopyExecutable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Ensure.That" Version="9.2.0" />
-    <PackageReference Include="Microsoft.Azure.ContainerRegistry" Version="1.0.0-preview.1" />
-    <PackageReference Include="Microsoft.Build" Version="16.7.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.9" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="SharpCompress" Version="0.26.0" />
-    <PackageReference Include="SharpZipLib" Version="1.3.0" />
-    <PackageReference Include="System.Runtime" Version="4.3.1" />
-    <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
-  </ItemGroup>
+    <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+        <SolutionFolder>../../</SolutionFolder>
+        <DataFolder>$(SolutionFolder)data/</DataFolder>
+        <BinFolder>$(SolutionFolder)bin/</BinFolder>
+        <CopyExecutable>cp</CopyExecutable>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Microsoft.Health.Fhir.Liquid.Converter\Microsoft.Health.Fhir.Liquid.Converter.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Ensure.That" Version="9.2.0" />
+        <PackageReference Include="Microsoft.Azure.ContainerRegistry" Version="1.0.0-preview.1" />
+        <PackageReference Include="Microsoft.Build" Version="16.7.0" />
+        <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="3.1.9" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+        <PackageReference Include="SharpCompress" Version="0.26.0" />
+        <PackageReference Include="SharpZipLib" Version="1.3.0" />
+        <PackageReference Include="System.Runtime" Version="4.3.1" />
+        <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
+    </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="$(BinFolder)Hl7v2DefaultTemplates.tar.gz">
-      <Link>Hl7v2DefaultTemplates.tar.gz</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(BinFolder)CcdaDefaultTemplates.tar.gz">
-      <Link>CcdaDefaultTemplates.tar.gz</Link>
-    </EmbeddedResource>
-    <EmbeddedResource Include="$(BinFolder)JsonDefaultTemplates.tar.gz">
-      <Link>JsonDefaultTemplates.tar.gz</Link>
-    </EmbeddedResource>
-  </ItemGroup>
-	
-  <ItemGroup>
-    <None Update="oras.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-    
-  <ItemGroup>
-    <None Update="oras-OSX">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="mkdir $(BinFolder) &amp; tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
-    <Exec Command="tar -zcvf $(BinFolder)CcdaDefaultTemplates.tar.gz -C $(DataFolder)Templates/Ccda ." />
-    <Exec Command="tar -zcvf $(BinFolder)JsonDefaultTemplates.tar.gz -C $(DataFolder)Templates/Json ." />
-  </Target>
-  
-  <Target Name="DownloadWinOrasFile" BeforeTargets="Build">
-    <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="$(BinFolder)">
-      <Output TaskParameter="DownloadedFile" ItemName="Content" />
-    </DownloadFile>
-    <Exec Command="tar -xvf $(BinFolder)oras_$(OrasVersion)_windows_amd64.tar.gz -C $(BinFolder) &amp; $(CopyExecutable) $(BinFolder)oras.exe ." />
-  </Target>
-    
-  <Target Name="DownloadOSXOrasFile" BeforeTargets="Build">
-    <DownloadFile SourceUrl="$(OrasOSXUrl)" DestinationFolder="$(BinFolder)">
-      <Output TaskParameter="DownloadedFile" ItemName="Content" />
-    </DownloadFile>
-    <Exec Command="tar -xvf $(BinFolder)oras_$(OrasVersion)_darwin_amd64.tar.gz -C $(BinFolder) &amp;&amp; $(CopyExecutable) $(BinFolder)oras oras-osx" />
-  </Target>
+    <ItemGroup>
+        <ProjectReference Include="..\Microsoft.Health.Fhir.Liquid.Converter\Microsoft.Health.Fhir.Liquid.Converter.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="$(BinFolder)Hl7v2DefaultTemplates.tar.gz">
+            <Link>Hl7v2DefaultTemplates.tar.gz</Link>
+        </EmbeddedResource>
+        <EmbeddedResource Include="$(BinFolder)CcdaDefaultTemplates.tar.gz">
+            <Link>CcdaDefaultTemplates.tar.gz</Link>
+        </EmbeddedResource>
+        <EmbeddedResource Include="$(BinFolder)JsonDefaultTemplates.tar.gz">
+            <Link>JsonDefaultTemplates.tar.gz</Link>
+        </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="oras.exe">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="oras-OSX">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="$(BinFolder)$(OrasOSXTarGzFile)">
+            <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        </None>
+    </ItemGroup>
+
+    <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+        <Exec Command="mkdir $(BinFolder) &amp; tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
+        <Exec Command="tar -zcvf $(BinFolder)CcdaDefaultTemplates.tar.gz -C $(DataFolder)Templates/Ccda ." />
+        <Exec Command="tar -zcvf $(BinFolder)JsonDefaultTemplates.tar.gz -C $(DataFolder)Templates/Json ." />
+    </Target>
+
+    <Target Name="DownloadWinOrasFile" BeforeTargets="Build">
+        <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="$(BinFolder)" DestinationFileName="$(OrasWinTarGzFile)">
+            <Output TaskParameter="DownloadedFile" ItemName="Content" />
+        </DownloadFile>
+        <Exec Command="tar -xvf $(BinFolder)$(OrasWinTarGzFile) -C $(BinFolder) &amp; $(CopyExecutable) $(BinFolder)oras.exe ." />
+    </Target>
+
+    <Target Name="DownloadOSXOrasFile" BeforeTargets="Build">
+        <DownloadFile SourceUrl="$(OrasOSXUrl)" DestinationFolder="$(BinFolder)" DestinationFileName="$(OrasOSXTarGzFile)">
+            <Output TaskParameter="DownloadedFile" ItemName="Content" />
+        </DownloadFile>
+        <Exec Command="tar -xvf $(BinFolder)$(OrasOSXTarGzFile) -C $(BinFolder) &amp;&amp; $(CopyExecutable) $(BinFolder)oras oras-osx" />
+    </Target>
 </Project>

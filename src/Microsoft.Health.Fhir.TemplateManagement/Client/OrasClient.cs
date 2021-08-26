@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using EnsureThat;
@@ -75,9 +76,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 throw new TemplateManagementException("Operation system is not supported");
             }
 
+            // oras file is in the same directory with our tool.
+            var orasFilePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), orasFileName);
+
             Process process = new Process
             {
-                StartInfo = new ProcessStartInfo(orasFileName),
+                StartInfo = new ProcessStartInfo(orasFilePath),
             };
 
             process.StartInfo.Arguments = command;
@@ -101,9 +105,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             if (process.HasExited)
             {
                 string error = errStreamReader.ReadToEnd();
-                if (!string.IsNullOrEmpty(error))
+                if (!string.IsNullOrEmpty(error) || process.ExitCode != 0)
                 {
-                    throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, error);
+                    throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, "Oras process failed" + error);
                 }
             }
             else
