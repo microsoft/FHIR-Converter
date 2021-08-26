@@ -77,9 +77,7 @@ The **Code Systems** snippet is unique to HL7 v2.
 ### Code System
 
 Code system snippets define mappings of common codes from HL7 v2 to FHIR bundles.
-An example of this is mapping "F" in HL7 v2 to "female" in a FHIR resource for gender.
-The FHIR Converter contains a set of starting code systems that have been defined for the released templates.
-You can also create your own code system snippets.
+An example of this is mapping "F" in HL7 v2 to "female" in a FHIR resource for gender. You can also create your own code system snippets.
 These snippets will typically use if/else statements to map values from HL7 v2 to values in FHIR.
 You can see examples of this in the *CodeSystem* folder of the released templates.
 
@@ -106,6 +104,8 @@ Section snippets are used in the C-CDA to FHIR Converter. A C-CDA document is co
 ### Value Set
 
 Value Set snippets are used in the C-CDA to FHIR Converter. These snippets map the C-CDA value sets to FHIR value sets and code systems. These are implemented based on the C-CDA and FHIR specifications. We have released a selection of Value Set snippets, but not the full list of required value sets for C-CDA.  
+
+The same as *CodeSystem* of HL7 v2, the Converter also provides a JSON file named *ValueSet.json* in *ValueSet* folder, which stores all mappings in it. You can use this more **recommended** way with *get_property* filter as well.
 
 ### Utils
 
