@@ -18,10 +18,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         private readonly OverlayFileSystem _overlayFS;
         private readonly OverlayOperator _overlayOperator;
 
-        public OCIFileManager(string url, string workingFolder)
+        public OCIFileManager(string registry, string workingFolder)
         {
             _overlayFS = new OverlayFileSystem(workingFolder);
-            _client = new OrasClient(url);
+            _client = new OrasClient(registry);
             _overlayOperator = new OverlayOperator();
         }
 
@@ -44,8 +44,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             }
 
             var artifactImage = await _client.PullImageAsync(imageName, reference);
+
+            // Optional to write in user's folder.
             _overlayFS.WriteManifest(artifactImage.Manifest);
             _overlayFS.WriteImageLayers(artifactImage.Blobs);
+
             var fileLayer = UnpackOCIImage(artifactImage);
             _overlayFS.WriteOCIFileLayer(fileLayer);
             return artifactImage;
@@ -59,7 +62,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         {
             var fileLayer = _overlayFS.ReadOCIFileLayer();
             var artifactImage = PackOCIImage(fileLayer, ignoreBaseLayers);
+
+            // Optional to write in user's folder.
             _overlayFS.WriteImageLayers(artifactImage.Blobs);
+
             return await _client.PushImageAsync(imageName, reference, artifactImage);
         }
 
@@ -93,7 +99,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         /// <param name="ignoreBaseLayers">Whether ignore base layer when generating diff layer.</param>
         private ArtifactImage PackOCIImage(OCIFileLayer ociFileLayer, bool ignoreBaseLayers)
         {
-            Models.ArtifactBlob baseArtifactLayer = new OCIFileLayer();
+            ArtifactBlob baseArtifactLayer = new OCIFileLayer();
             if (!ignoreBaseLayers)
             {
                 baseArtifactLayer = _overlayFS.ReadBaseLayer();
@@ -106,7 +112,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
             // Archive the diff layer.
             var diffArtifactLayer = _overlayOperator.Archive(diffLayer);
-            return new ArtifactImage() { Blobs = new List<Models.ArtifactBlob> { baseArtifactLayer, diffArtifactLayer } };
+            return new ArtifactImage() { Blobs = new List<ArtifactBlob> { baseArtifactLayer, diffArtifactLayer } };
         }
     }
 }

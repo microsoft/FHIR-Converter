@@ -47,5 +47,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         OrasTimeOut = 3201,
         OrasProcessFailed = 3202,
         CacheManifestFailed = 3203,
+        CacheBlobFailed = 3204,
     }
 }

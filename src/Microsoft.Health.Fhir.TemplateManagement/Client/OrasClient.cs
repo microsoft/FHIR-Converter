@@ -10,42 +10,34 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
-using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
-    public class OrasClient : IOCIClient
+    public class OrasClient : OrasCacheClient, IOCIClient
     {
         private readonly string _workingFolder = ".orasWorkingFolder";
-        private readonly string _url;
+        private readonly string _registry;
 
-        // Format of digest is: <algorithm>:<hex>
-        // e.g. sha256:d377125165eb6d770f344429a7a55379d4028774aebe267fe620cd1fcd2daab7
-        private readonly Regex _digestRegex = new Regex("(?<algorithm>[A-Za-z][A-Za-z0-9]*([+.-_][A-Za-z][A-Za-z0-9]*)*):(?<hex>[0-9a-fA-F]{32,})");
-
-        public OrasClient(string url)
+        public OrasClient(string registry)
         {
-            InitClientEnvironment();
-            _url = url;
+            _registry = registry;
         }
 
-        public async Task<ArtifactImage> PullImageAsync(string imageName, string reference, CancellationToken cancellationToken = default)
+        public async Task<ArtifactImage> PullImageAsync(string name, string reference, CancellationToken cancellationToken = default)
         {
             ClearClientWorkingFolder();
             try
             {
-                string imageReference = string.Format("{0}/{1}:{2}", _url, imageName, reference);
+                string imageReference = string.Format("{0}/{1}:{2}", _registry, name, reference);
                 string command = $"pull  \"{imageReference}\" -o \"{_workingFolder}\"";
 
                 string output = await OrasExecutionAsync(command, null);
-                string digest = GetImageDigest(output);
+                Tuple<string, string> digest = GetImageDigest(output);
 
                 // Oras will create output folder if not existed.
                 if (!Directory.Exists(_workingFolder) || !Directory.EnumerateFileSystemEntries(_workingFolder).Any())
@@ -53,44 +45,21 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                     throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Image not found, pull image failed or image is empty.");
                 }
 
-                string manifestContent;
-                try
+                var artifactImage = new ArtifactImage
                 {
-                    manifestContent = LoadManifestContentFromCache(digest);
-                }
-                catch (Exception ex)
+                    Info = ImageInfo.CreateFromImageReference(imageReference),
+                };
+                artifactImage.Info.Digest = string.Concat(digest.Item1, ":", digest.Item2);
+                artifactImage.Manifest = await GetManifestAsync(name, digest.Item2, cancellationToken);
+
+                ValidationUtility.ValidateManifest(artifactImage.Manifest);
+
+                foreach (var layerInfo in artifactImage.Manifest.Layers)
                 {
-                    ClearClientWorkingFolder();
-                    throw new OCIClientException(TemplateManagementErrorCode.CacheManifestFailed, "Read manifest from oras cache failed.", ex);
+                    artifactImage.Blobs.Add(await GetBlobAsync(name, layerInfo.Digest, cancellationToken));
                 }
 
-                var result = new ArtifactImage();
-                var layersPath = Directory.EnumerateFiles(_workingFolder, "*.tar.gz", SearchOption.AllDirectories);
-
-                foreach (var tarGzFile in layersPath)
-                {
-                    var artifactLayer = new Models.ArtifactBlob();
-                    artifactLayer.ReadFromFile(tarGzFile);
-                    if (artifactLayer.Content != null)
-                    {
-                        result.Blobs.Add(artifactLayer);
-                    }
-                }
-
-                var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
-                imageInfo.Digest = digest;
-                result.Info = imageInfo;
-
-                try
-                {
-                    result.Manifest = JsonConvert.DeserializeObject<ManifestWrapper>(manifestContent);
-                    ClearClientWorkingFolder();
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    throw new OCIClientException(TemplateManagementErrorCode.CacheManifestFailed, "Deserialize manifest failed.", ex);
-                }
+                return artifactImage;
             }
             catch
             {
@@ -99,12 +68,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
         }
 
-        public async Task<ArtifactImage> PushImageAsync(string imageName, string reference, ArtifactImage artifactImage, CancellationToken cancellationToken = default)
+        public async Task<ArtifactImage> PushImageAsync(string name, string reference, ArtifactImage artifactImage, CancellationToken cancellationToken = default)
         {
             ClearClientWorkingFolder();
             try
             {
-                string imageReference = string.Format("{0}/{1}:{2}", _url, imageName, reference);
+                string imageReference = string.Format("{0}/{1}:{2}", _registry, name, reference);
                 List<string> fileNameList = new List<string>();
                 string command = $"push \"{imageReference}\"";
 
@@ -127,8 +96,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 // In order to remove image's directory prefix. (e.g. "layers/layer1" --> "layer1")
                 // Change oras working folder to inputFolder
                 var output = await OrasExecutionAsync(string.Concat(command, argument), _workingFolder);
+                Tuple<string, string> digest = GetImageDigest(output);
+
                 var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
-                imageInfo.Digest = GetImageDigest(output);
+                imageInfo.Digest = string.Concat(digest.Item1, ":", digest.Item2);
                 artifactImage.Info = imageInfo;
 
                 return artifactImage;
@@ -217,40 +188,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             IoUtility.ClearFolder(_workingFolder);
         }
 
-        private void InitClientEnvironment()
-        {
-            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName)))
-            {
-                Environment.SetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName, Constants.DefaultOrasCacheEnvironmentVariable);
-            }
-        }
+        
 
-        private string LoadManifestContentFromCache(string digest)
-        {
-            var cachePath = Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName);
-            return File.ReadAllText(Path.Combine(cachePath, "blobs", "sha256", digest));
-        }
-
-        private string GetImageDigest(string input)
-        {
-            try
-            {
-                return _digestRegex.Matches(input)[0].Groups["hex"].ToString();
-            }
-            catch (Exception ex)
-            {
-                throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Return image digest failed.", ex);
-            }
-        }
-
-        public Task<ManifestWrapper> GetManifestAsync(string imageName, string reference, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ArtifactBlob> GetBlobAsync(string imageName, string reference, CancellationToken cancellationToken = default)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

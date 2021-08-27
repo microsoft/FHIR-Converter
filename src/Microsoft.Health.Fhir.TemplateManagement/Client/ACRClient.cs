@@ -37,13 +37,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             _client = client;
         }
 
-        public async Task<Stream> PullBlobAsStreamAcync(string imageName, string digest, CancellationToken cancellationToken = default)
+        public async Task<Stream> PullBlobAsStreamAcync(string name, string digest, CancellationToken cancellationToken = default)
         {
             Stream rawStream;
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                rawStream = await _client.Blob.GetAsync(imageName, digest, cancellationToken);
+                rawStream = await _client.Blob.GetAsync(name, digest, cancellationToken);
                 return rawStream;
             }
             catch (TemplateManagementException)
@@ -61,9 +61,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
         }
 
-        public async Task<ArtifactBlob> GetBlobAsync(string imageName, string reference, CancellationToken cancellationToken = default)
+        public async Task<ArtifactBlob> GetBlobAsync(string name, string reference, CancellationToken cancellationToken = default)
         {
-            Stream rawStream = await PullBlobAsStreamAcync(imageName, reference, cancellationToken);
+            Stream rawStream = await PullBlobAsStreamAcync(name, reference, cancellationToken);
             using var streamReader = new MemoryStream();
             rawStream.CopyTo(streamReader);
             var content = streamReader.ToArray();
@@ -114,12 +114,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
         }
 
-        public Task<ArtifactImage> PullImageAsync(string imageName, string reference, CancellationToken cancellationToken = default)
+        public Task<ArtifactImage> PullImageAsync(string name, string reference, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ArtifactImage> PushImageAsync(string imageName, string reference, ArtifactImage image, CancellationToken cancellationToken = default)
+        public Task<ArtifactImage> PushImageAsync(string name, string reference, ArtifactImage image, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
