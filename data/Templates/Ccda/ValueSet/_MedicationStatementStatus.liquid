@@ -1,7 +1,0 @@
-{% assign downcaseCode = code | downcase -%}
-{% case downcaseCode -%}
-    {% when "aborted" -%}
-        "stopped",
-    {% else -%}
-        "",
-{% endcase -%}
