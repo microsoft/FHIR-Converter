@@ -165,7 +165,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             throw new System.NotImplementedException();
         }
 
-        public Task<ArtifactImage> PushImageAsync(string imageName, string reference, ArtifactImage image, CancellationToken cancellationToken = default)
+        public Task<string> PushImageAsync(string imageName, string reference, ArtifactImage image, CancellationToken cancellationToken = default)
         {
             throw new System.NotImplementedException();
         }

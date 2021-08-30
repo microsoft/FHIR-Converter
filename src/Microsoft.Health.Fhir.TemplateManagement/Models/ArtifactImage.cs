@@ -11,10 +11,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
     public class ArtifactImage
     {
-        public ImageInfo Info { get; set; }
+        public string ImageDigest { get; set; }
 
         public ManifestWrapper Manifest { get; set; }
 
-        public List<ArtifactBlob> Blobs { get; set; } = new List<Models.ArtifactBlob>();
+        public List<ArtifactBlob> Blobs { get; set; } = new List<ArtifactBlob>();
     }
 }

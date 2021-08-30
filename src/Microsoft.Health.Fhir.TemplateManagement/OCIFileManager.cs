@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
@@ -21,7 +22,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         public OCIFileManager(string registry, string workingFolder)
         {
             _overlayFS = new OverlayFileSystem(workingFolder);
-            _client = new OrasClient(registry);
+            _client = new OrasClient(registry, Path.Combine(workingFolder, Constants.HiddenLayersFolder));
             _overlayOperator = new OverlayOperator();
         }
 
@@ -29,9 +30,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         /// Pull image layers into working folder.
         /// Layers will be written into hidden image folder.
         /// </summary>
-        /// <returns>Image information.</returns>
-        /// <param name="forceOverride">Whether to override if folder is not empty.</param>
-        public async Task<ArtifactImage> PullOCIImageAsync(string imageName, string reference, bool forceOverride = false)
+        public async Task<ArtifactImage> PullOCIImageAsync(string name, string reference, bool forceOverride = false)
         {
             if (!_overlayFS.IsCleanWorkingFolder())
             {
@@ -43,38 +42,32 @@ namespace Microsoft.Health.Fhir.TemplateManagement
                 _overlayFS.ClearImageLayerFolder();
             }
 
-            var artifactImage = await _client.PullImageAsync(imageName, reference);
+            var artifactImage = await _client.PullImageAsync(name, reference);
 
             // Optional to write in user's folder.
-            _overlayFS.WriteManifest(artifactImage.Manifest);
-            _overlayFS.WriteImageLayers(artifactImage.Blobs);
+            await _overlayFS.WriteManifestAsync(artifactImage.Manifest);
 
-            var fileLayer = UnpackOCIImage(artifactImage);
-            _overlayFS.WriteOCIFileLayer(fileLayer);
+            var fileLayer = await UnpackOCIImageAsync (artifactImage);
+            await _overlayFS.WriteOCIFileLayerAsync(fileLayer);
             return artifactImage;
         }
 
         /// <summary>
         /// Push image layers from working folder in order.
         /// </summary>
-        /// <param name="ignoreBaseLayers">Whether ignore base layer when generating new layers.</param>
-        public async Task<ArtifactImage> PushOCIImageAsync(string imageName, string reference, bool ignoreBaseLayers = false)
+        public async Task<string> PushOCIImageAsync(string name, string tag, bool ignoreBaseLayers = false)
         {
-            var fileLayer = _overlayFS.ReadOCIFileLayer();
-            var artifactImage = PackOCIImage(fileLayer, ignoreBaseLayers);
+            var fileLayer = await _overlayFS.ReadOCIFileLayerAsync();
+            var artifactImage = await PackOCIImageAsync(fileLayer, ignoreBaseLayers);
 
-            // Optional to write in user's folder.
-            _overlayFS.WriteImageLayers(artifactImage.Blobs);
-
-            return await _client.PushImageAsync(imageName, reference, artifactImage);
+            return await _client.PushImageAsync(name, tag, artifactImage);
         }
 
         /// <summary>
         /// Extract layers and merge files from layers in order.
         /// The order of layers is given in manifest.
         /// </summary>
-        /// <param name="manifest">Manifest of the image.</param>
-        private OCIFileLayer UnpackOCIImage(ArtifactImage image)
+        private async Task<OCIFileLayer> UnpackOCIImageAsync(ArtifactImage image)
         {
             var sortedLayers = _overlayOperator.Sort(image.Blobs, image.Manifest);
             if (sortedLayers.Count == 0)
@@ -83,7 +76,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             }
 
             // First layer is the base layer.
-            _overlayFS.WriteBaseLayer(sortedLayers[0]);
+            await _overlayFS.WriteBaseLayerAsync(sortedLayers[0]);
 
             // Decompress rawlayers to OCI files.
             var ociFileLayers = _overlayOperator.Extract(sortedLayers);
@@ -96,13 +89,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         /// <summary>
         /// Generate and archive the diff layer into tar.gz file.
         /// </summary>
-        /// <param name="ignoreBaseLayers">Whether ignore base layer when generating diff layer.</param>
-        private ArtifactImage PackOCIImage(OCIFileLayer ociFileLayer, bool ignoreBaseLayers)
+        private async Task<ArtifactImage> PackOCIImageAsync(OCIFileLayer ociFileLayer, bool ignoreBaseLayers)
         {
             ArtifactBlob baseArtifactLayer = new OCIFileLayer();
             if (!ignoreBaseLayers)
             {
-                baseArtifactLayer = _overlayFS.ReadBaseLayer();
+                baseArtifactLayer = await _overlayFS.ReadBaseLayerAsync();
             }
 
             var extractedBaseLayer = _overlayOperator.Extract(baseArtifactLayer);

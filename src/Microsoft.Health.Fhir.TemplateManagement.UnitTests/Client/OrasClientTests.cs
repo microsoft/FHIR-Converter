@@ -9,6 +9,8 @@ using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
+using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
@@ -42,9 +44,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
         public static IEnumerable<object[]> GetInvalidReference()
         {
-            yield return new object[] { $"/testImage:v1" };
-            yield return new object[] { $"/testImage:" };
-            yield return new object[] { $"/testImage@" };
+            yield return new object[] { "testImage", "v1" };
+            yield return new object[] { "testImage", string.Empty };
+            yield return new object[] { "testImage",":@" };
         }
 
         public static IEnumerable<object[]> GetValidFolder()
@@ -57,11 +59,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
         public static IEnumerable<object[]> GetInValidFolder()
         {
-            yield return new object[] { @"\" };
+            yield return new object[] { @"\\\" };
             yield return new object[] { @"*:" };
             yield return new object[] { @" " };
         }
-        /*
+
         [Theory]
         [MemberData(nameof(GetInValidFolder))]
         public async Task GivenInValidOutputFolder_WhenPullUseOras_ExceptionWillBeThrownAsync(string outputFolder)
@@ -72,8 +74,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             }
 
             string imageReference = _testOneLayerImageReference;
-            OrasClient orasClient = new OrasClient(outputFolder);
-            await Assert.ThrowsAsync<OCIClientException>(async () => await orasClient.PullImageAsync(imageReference));
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            OrasClient orasClient = new OrasClient(_containerRegistryServer, outputFolder);
+            await Assert.ThrowsAsync<OCIClientException>(async () => await orasClient.PullImageAsync(imageInfo.ImageName, imageInfo.Tag));
         }
 
         [Theory]
@@ -86,31 +89,41 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             }
 
             outputFolder = "testpull" + outputFolder;
+
+            IoUtility.ClearFolder(outputFolder);
+
             string imageReference = _testOneLayerImageReference;
-            OrasClient orasClient = new OrasClient(outputFolder);
-            var ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(imageReference));
+            OrasClient orasClient = new OrasClient(_containerRegistryServer, outputFolder);
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            var ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(imageInfo.ImageName, imageInfo.Tag));
             Assert.Null(ex);
             Assert.Single(Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories));
-            ClearFolder(outputFolder);
+
+            IoUtility.ClearFolder(outputFolder);
         }
 
         [Theory]
         [MemberData(nameof(GetInvalidReference))]
-        public async Task GivenAnInValidImageReference_WhenPullAndPushImageUseOras_ExceptionWillBeThrown(string reference)
+        public async Task GivenAnInValidImageReference_WhenPullAndPushImageUseOras_ExceptionWillBeThrown(string imageName, string tag)
         {
             if (!_isOrasValid)
             {
                 return;
             }
 
+            IoUtility.ClearFolder("TestData/PushTest");
+
             Directory.CreateDirectory("TestData/PushTest");
-            File.Copy(_baseLayerTemplatePath, "TestData/PushTest/baseLayer.tar.gz", true);
-            File.Copy(_userLayerTemplatePath, "TestData/PushTest/userLayer.tar.gz", true);
-            string imageReference = _containerRegistryServer + reference;
-            OrasClient orasClient = new OrasClient("TestData/PushTest");
-            await Assert.ThrowsAsync<OCIClientException>(() => orasClient.PushImageAsync(imageReference));
-            await Assert.ThrowsAsync<OCIClientException>(() => orasClient.PullImageAsync(imageReference));
-            ClearFolder("TestData/PushTest");
+            string imageReference = _containerRegistryServer + "/" + imageName + ":" + tag;
+            OrasClient orasClient = new OrasClient(_containerRegistryServer, "TestData/PushTest");
+
+            var blob = new ArtifactBlob();
+            await blob.ReadFromFileAsync(_baseLayerTemplatePath);
+            var image = new ArtifactImage() { Blobs = new List<ArtifactBlob>() { blob } };
+            await Assert.ThrowsAsync<OCIClientException>(() => orasClient.PushImageAsync(imageName, tag, image));
+            await Assert.ThrowsAsync<OCIClientException>(() => orasClient.PullImageAsync(imageName, tag));
+
+            IoUtility.ClearFolder("TestData/PushTest");
         }
 
         [Theory]
@@ -123,14 +136,19 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             }
 
             outputFolder = "testpush" + outputFolder;
+
+            IoUtility.ClearFolder(outputFolder);
+
             string imageReference = _testOneLayerImageReference;
-            OrasClient orasClient = new OrasClient(outputFolder);
-            await orasClient.PullImageAsync(imageReference);
+            OrasClient orasClient = new OrasClient(_containerRegistryServer, outputFolder);
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            var image = await orasClient.PullImageAsync(imageInfo.ImageName, imageInfo.Tag);
 
             string testImageReference = _containerRegistryServer + "/test:test";
-            var ex = await Record.ExceptionAsync(async () => await orasClient.PushImageAsync(testImageReference));
+            imageInfo = ImageInfo.CreateFromImageReference(testImageReference);
+            var ex = await Record.ExceptionAsync(async () => await orasClient.PushImageAsync(imageInfo.ImageName, imageInfo.Tag, image));
             Assert.Null(ex);
-            ClearFolder(outputFolder);
+            IoUtility.ClearFolder(outputFolder);
         }
 
         [Fact]
@@ -141,28 +159,37 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
                 return;
             }
 
+            IoUtility.ClearFolder("TestData/PushTest");
+
             Directory.CreateDirectory("TestData/PushTest");
-            File.Copy(_baseLayerTemplatePath, "TestData/PushTest/baseLayer.tar.gz", true);
-            File.Copy(_userLayerTemplatePath, "TestData/PushTest/userLayer.tar.gz", true);
             string imageReference = _containerRegistryServer + "/testimage:test";
-            OrasClient orasClient = new OrasClient("TestData/PushTest");
-            var ex = await Record.ExceptionAsync(() => orasClient.PushImageAsync(imageReference));
+            OrasClient orasClient = new OrasClient(_containerRegistryServer, "TestData/PushTest");
+            var blob = new ArtifactBlob();
+            await blob.ReadFromFileAsync(_baseLayerTemplatePath);
+            var image = new ArtifactImage() { Blobs = new List<ArtifactBlob>() { blob } };
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            var ex = await Record.ExceptionAsync(() => orasClient.PushImageAsync(imageInfo.ImageName, imageInfo.Tag, image));
             Assert.Null(ex);
-            ClearFolder("TestData/PushTest");
+            IoUtility.ClearFolder("TestData/PushTest");
         }
 
         [Fact]
-        public async Task GivenAValidImageReference_WhenPushEmptyFolderUseOras_ImageWillNotBePushedAsync()
+        public async Task GivenAValidImageReference_WhenPushEmptyImageUseOras_ImageWillNotBePushedAsync()
         {
             if (!_isOrasValid)
             {
                 return;
             }
 
+            IoUtility.ClearFolder("TestData/Empty");
+
             Directory.CreateDirectory("TestData/Empty");
             string imageReference = _containerRegistryServer + "/testimage:test";
-            OrasClient orasClient = new OrasClient("TestData/Empty");
-            await Assert.ThrowsAsync<OverlayException>(async () => await orasClient.PushImageAsync(imageReference));
+            OrasClient orasClient = new OrasClient(_containerRegistryServer, "TestData/Empty");
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            await Assert.ThrowsAsync<OverlayException>(async () => await orasClient.PushImageAsync(imageInfo.ImageName, imageInfo.Tag, new ArtifactImage()));
+
+            IoUtility.ClearFolder("TestData/Empty");
         }
 
         [Fact]
@@ -173,13 +200,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
                 return;
             }
 
+            IoUtility.ClearFolder("TestData/PullTest");
+
             string imageReference = _testOneLayerImageReference;
-            OrasClient orasClient = new OrasClient("TestData/PullTest");
-            var ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(imageReference));
+            OrasClient orasClient = new OrasClient(_containerRegistryServer, "TestData/PullTest");
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            var ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(imageInfo.ImageName, imageInfo.Tag));
             Assert.Null(ex);
-            ClearFolder("TestData/PullTest");
+
+            IoUtility.ClearFolder("TestData/PullTest");
         }
-        */
+
         private async Task PushOneLayerImageAsync()
         {
             string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath}";

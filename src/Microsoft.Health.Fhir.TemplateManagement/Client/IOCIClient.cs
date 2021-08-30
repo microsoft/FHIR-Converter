@@ -14,10 +14,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
     {
         Task<ArtifactImage> PullImageAsync(string name, string reference, CancellationToken cancellationToken = default);
 
-        Task<ArtifactImage> PushImageAsync(string name, string reference, ArtifactImage image, CancellationToken cancellationToken = default);
+        Task<string> PushImageAsync(string name, string tag, ArtifactImage image, CancellationToken cancellationToken = default);
 
-        Task<ManifestWrapper> GetManifestAsync(string name, string reference, CancellationToken cancellationToken = default);
+        Task<ManifestWrapper> GetManifestAsync(string name, string digest, CancellationToken cancellationToken = default);
 
-        Task<ArtifactBlob> GetBlobAsync(string name, string reference, CancellationToken cancellationToken = default);
+        Task<ArtifactBlob> GetBlobAsync(string name, string digest, CancellationToken cancellationToken = default);
     }
 }

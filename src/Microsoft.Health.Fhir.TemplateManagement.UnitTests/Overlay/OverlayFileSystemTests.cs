@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Overlay;
@@ -17,32 +18,32 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
     public class OverlayFileSystemTests
     {
         [Fact]
-        public void GivenAWorkingFolder_WhenReadOCIFiles_AnOCIFileLayerWillBeReturned()
+        public async Task GivenAWorkingFolder_WhenReadOCIFiles_AnOCIFileLayerWillBeReturnedAsync()
         {
             string workingFolder = "TestData/DecompressedFiles";
             var overlayFs = new OverlayFileSystem(workingFolder);
-            var oneLayer = overlayFs.ReadOCIFileLayer();
+            var oneLayer = await overlayFs.ReadOCIFileLayerAsync();
             Assert.Equal(3, oneLayer.FileContent.Count());
         }
 
         [Fact]
-        public void GivenAnOCIFileLayerAndAWorkingFolder_WhenWriteOCIFiles_OCIFilesWillBeWrittenToFolder()
+        public async Task GivenAnOCIFileLayerAndAWorkingFolder_WhenWriteOCIFiles_OCIFilesWillBeWrittenToFolderAsync()
         {
             string fileFolder = "TestData/DecompressedFiles";
             var testlayFs = new OverlayFileSystem(fileFolder);
-            var testLayer = testlayFs.ReadOCIFileLayer();
+            var testLayer = await testlayFs.ReadOCIFileLayerAsync();
 
             string workingFolder = "TestData/workingFolder";
             Directory.CreateDirectory(workingFolder);
             ClearFolder(workingFolder);
             var overlayFs = new OverlayFileSystem(workingFolder);
-            overlayFs.WriteOCIFileLayer(testLayer);
+            await overlayFs.WriteOCIFileLayerAsync(testLayer);
             var filePaths = Directory.EnumerateFiles(workingFolder, "*.*", SearchOption.AllDirectories);
             Assert.Equal(3, filePaths.Count());
         }
 
         [Fact]
-        public void GivenOCIArtifactLayers_WhenWriteImageFolder_AllOCIArtifactLayersWillBeWrittenToFolder()
+        public async Task GivenOCIArtifactLayers_WhenWriteImageFolder_AllOCIArtifactLayersWillBeWrittenToFolderAsync()
         {
             string layerPath = "TestData/TarGzFiles/userV1.tar.gz";
             var layer1 = new ArtifactBlob() { SequenceNumber = 1, Content = File.ReadAllBytes(layerPath), FileName = "userV1.tar.gz" };
@@ -50,14 +51,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             string workingFolder = "TestData/testImageLayer";
             ClearFolder(workingFolder);
             var overlayFs = new OverlayFileSystem(workingFolder);
-            overlayFs.WriteImageLayers(new List<ArtifactBlob>() { layer1, layer2 });
+            await overlayFs.WriteImageLayersAsync(new List<ArtifactBlob>() { layer1, layer2 });
             var filePaths = Directory.EnumerateFiles(Path.Combine(workingFolder, ".image/layers"), "*.*", SearchOption.AllDirectories);
             Assert.Equal(2, filePaths.Count());
             ClearFolder(workingFolder);
         }
 
         [Fact]
-        public void GivenInputImageFolder_WhenReadImageFolder_AllOCIArtifactLayersWillBeReturned()
+        public async Task GivenInputImageFolder_WhenReadImageFolder_AllOCIArtifactLayersWillBeReturnedAsync()
         {
             string layer1 = "TestData/TarGzFiles/layer1.tar.gz";
             string layer2 = "TestData/TarGzFiles/layer2.tar.gz";
@@ -70,7 +71,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             File.Copy(layer2, Path.Combine(workingFolder, ".image/layers/2.tar.gz"));
             File.Copy(layer3, Path.Combine(workingFolder, ".image/layers/1.tar.gz"));
             var overlayFs = new OverlayFileSystem(workingFolder);
-            var layers = overlayFs.ReadImageLayers();
+            var layers = await overlayFs.ReadImageLayersAsync();
             Assert.Equal(3, layers.Count);
             ClearFolder(workingFolder);
         }
@@ -84,12 +85,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             Directory.CreateDirectory(Path.Combine(workingFolder, ".image/base"));
             File.Copy(layerPath, Path.Combine(workingFolder, ".image/base/layer1.tar.gz"));
             var overlayFs = new OverlayFileSystem(workingFolder);
-            Assert.Equal(StreamUtility.CalculateDigestFromSha256(File.OpenRead(layerPath)), overlayFs.ReadBaseLayer().Digest);
+            Assert.Equal(StreamUtility.CalculateDigestFromSha256(File.OpenRead(layerPath)), overlayFs.ReadBaseLayerAsync().Result.Digest);
             ClearFolder(workingFolder);
         }
 
         [Fact]
-        public void GivenInputWorkingFolder_WhenReadBaseLayer_IfTwoFilesExist_ExceptionWillBeThrown()
+        public async Task GivenInputWorkingFolder_WhenReadBaseLayer_IfTwoFilesExist_ExceptionWillBeThrown()
         {
             string layerPath = "TestData/TarGzFiles/userV1.tar.gz";
             string workingFolder = "TestData/testInValidBaseLayer";
@@ -98,7 +99,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             File.Copy(layerPath, Path.Combine(workingFolder, ".image/base/layer1.tar.gz"));
             File.Copy(layerPath, Path.Combine(workingFolder, ".image/base/layer2.tar.gz"));
             var overlayFs = new OverlayFileSystem(workingFolder);
-            Assert.Throws<OverlayException>(() => overlayFs.ReadBaseLayer());
+            await Assert.ThrowsAsync<OverlayException>(() => overlayFs.ReadBaseLayerAsync());
             ClearFolder(workingFolder);
         }
 
@@ -108,20 +109,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             string workingFolder = "TestData/testEmptyBaseLayer";
             Directory.CreateDirectory(Path.Combine(workingFolder));
             var overlayFs = new OverlayFileSystem(workingFolder);
-            Assert.Null(overlayFs.ReadBaseLayer().Digest);
+            Assert.Null(overlayFs.ReadBaseLayerAsync().Result.Digest);
             Directory.CreateDirectory(Path.Combine(workingFolder, ".image/base"));
-            Assert.Null(overlayFs.ReadBaseLayer().Digest);
+            Assert.Null(overlayFs.ReadBaseLayerAsync().Result.Digest);
             ClearFolder(workingFolder);
         }
 
         [Fact]
-        public void GivenInputWorkingFolder_WhenWriteBaseLayer_OneBaseLayerWillBeWritten()
+        public async Task GivenInputWorkingFolder_WhenWriteBaseLayer_OneBaseLayerWillBeWrittenAsync()
         {
             string layerPath = "TestData/TarGzFiles/userV1.tar.gz";
             string workingFolder = "TestData/testWriteBaseLayer";
             Directory.CreateDirectory(Path.Combine(workingFolder));
             var overlayFs = new OverlayFileSystem(workingFolder);
-            overlayFs.WriteBaseLayer(new ArtifactBlob() { Content = File.ReadAllBytes(layerPath) });
+            await overlayFs.WriteBaseLayerAsync(new ArtifactBlob() { Content = File.ReadAllBytes(layerPath) });
             Assert.Single(Directory.EnumerateFiles(workingFolder + "/.image/base", "*.*", SearchOption.AllDirectories));
             ClearFolder(workingFolder);
         }

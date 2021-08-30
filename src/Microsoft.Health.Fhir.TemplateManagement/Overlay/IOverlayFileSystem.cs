@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
@@ -16,43 +17,43 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// Ignore files in hidden image folder
         /// </summary>
         /// <returns> One layer of OCI files.</returns>
-        OCIFileLayer ReadOCIFileLayer();
+        Task<OCIFileLayer> ReadOCIFileLayerAsync();
 
         /// <summary>
         /// Write all files of the OCIfilelayer to the working folder.
         /// </summary>
         /// <param name="oneLayer">One layer of OCI files.</param>
-        void WriteOCIFileLayer(OCIFileLayer oneLayer);
+        Task WriteOCIFileLayerAsync(OCIFileLayer oneLayer);
 
         /// <summary>
         /// Read layers (only .tar.gz files) from working image forder.
         /// </summary>
         /// <returns>One OCIArtifact layer.</returns>
-        List<ArtifactBlob> ReadImageLayers();
+        Task<List<ArtifactBlob>> ReadImageLayersAsync();
 
         /// <summary>
         /// Write compressed artifacts into tar.gz files to working image folder.
         /// </summary>
         /// <param name="imageLayers">A list of OCIArtifactLayer.</param>
-        void WriteImageLayers(List<ArtifactBlob> imageLayers);
+        Task WriteImageLayersAsync(List<ArtifactBlob> imageLayers);
 
         /// <summary>
         /// Write manifest into working image folder.
         /// </summary>
         /// <param name="manifest">Manifest of the image.</param>
-        public void WriteManifest(ManifestWrapper manifest);
+        Task WriteManifestAsync(ManifestWrapper manifest);
 
         /// <summary>
         /// Read base OCIArtifactLayer from base layer folder.
         /// </summary>
         /// <returns>One base OCIArtifactLayer.</returns>
-        ArtifactBlob ReadBaseLayer();
+        Task<ArtifactBlob> ReadBaseLayerAsync();
 
         /// <summary>
         /// Write base OCIArtifactLayer to base layer folser.
         /// </summary>
         /// <param name="baseLayer">One base OCIArtifactLayer.</param>
-        void WriteBaseLayer(ArtifactBlob baseLayer);
+        Task WriteBaseLayerAsync(ArtifactBlob baseLayer);
 
         /// <summary>
         /// Clear working folder.

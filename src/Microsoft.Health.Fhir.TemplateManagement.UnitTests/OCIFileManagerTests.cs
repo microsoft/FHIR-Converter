@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
+using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
@@ -76,19 +77,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "testacr.azurecr.io/invalid._set" };
             yield return new object[] { "testacr.azurecr.io/_invalid" };
         }
-        /*
-        [Theory]
-        [MemberData(nameof(GetInValidImageReferenceInfo))]
-        public void GivenInValidImageReference_WhenPullOCIFiles_ExceptionWillBeThrownAsync(string imageReference)
-        {
-            if (!_isOrasValid)
-            {
-                return;
-            }
-
-            string outputFolder = "test";
-            Assert.Throws<ImageReferenceException>(() => new OCIFileManager(imageReference, outputFolder));
-        }
 
         [Theory]
         [MemberData(nameof(GetInValidOutputFolder))]
@@ -100,8 +88,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             }
 
             string imageReference = _testOneLayerImageReference;
-            var testManager = new OCIFileManager(imageReference, outputFolder);
-            await Assert.ThrowsAsync<OCIClientException>(async () => await testManager.PullOCIImageAsync(true));
+            var testManager = new OCIFileManager(_containerRegistryServer, outputFolder);
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            await Assert.ThrowsAsync<OCIClientException>(async () => await testManager.PullOCIImageAsync(imageInfo.ImageName, imageInfo.Tag, true));
         }
 
         [Theory]
@@ -114,8 +103,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             }
 
             string imageReference = _testOneLayerImageReference;
-            var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync(true);
+            var testManager = new OCIFileManager(_containerRegistryServer, outputFolder);
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            await testManager.PullOCIImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
             Assert.Equal(843, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             ClearFolder(outputFolder);
         }
@@ -130,8 +120,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
             string imageReference = _testMultiLayersImageReference;
             string outputFolder = "TestData/testMultiLayers";
-            var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync(true);
+            var testManager = new OCIFileManager(_containerRegistryServer, outputFolder);
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            await testManager.PullOCIImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
             Assert.Equal(10, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             ClearFolder(outputFolder);
         }
@@ -146,11 +137,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
             string imageReference = _containerRegistryServer + "/templatetest:test";
             string inputFolder = "TestData/UserFolder";
-            var testManager = new OCIFileManager(imageReference, inputFolder);
-            var ex = await Record.ExceptionAsync(async () => await testManager.PushOCIImageAsync(true));
+            var testManager = new OCIFileManager(_containerRegistryServer, inputFolder);
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            var ex = await Record.ExceptionAsync(async () => await testManager.PushOCIImageAsync(imageInfo.ImageName, imageInfo.Tag, true));
             Assert.Null(ex);
         }
-        */
+
         private void ClearFolder(string directory)
         {
             if (!Directory.Exists(directory))

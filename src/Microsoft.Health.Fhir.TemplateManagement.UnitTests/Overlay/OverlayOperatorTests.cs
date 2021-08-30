@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
@@ -79,7 +80,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         }
 
         [Fact]
-        public void GivenAListOfOCIArtifactLayers_WhenSortLayers_ASortedOCIArtifactLayersShouldBeReturned()
+        public async Task GivenAListOfOCIArtifactLayers_WhenSortLayers_ASortedOCIArtifactLayersShouldBeReturnedAsync()
         {
             string layer1 = "TestData/TarGzFiles/layer1.tar.gz";
             string layer2 = "TestData/TarGzFiles/layer2.tar.gz";
@@ -94,7 +95,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             File.Copy(layer2, Path.Combine(workingFolder, ".image/layers/2.tar.gz"));
             File.Copy(layer3, Path.Combine(workingFolder, ".image/layers/1.tar.gz"));
             var overlayFs = new OverlayFileSystem(workingFolder);
-            var layers = overlayFs.ReadImageLayers();
+            var layers = await overlayFs.ReadImageLayersAsync();
 
             var sortedLayers = _overlayOperator.Sort(layers, JsonConvert.DeserializeObject<ManifestWrapper>(File.ReadAllText(manifest)));
             Assert.Equal("3.tar.gz", sortedLayers[0].FileName);
@@ -123,24 +124,24 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         }
 
         [Fact]
-        public void GivenAOCIFileLayer_WhenGenerateDiffOCIFileLayer_IfBaseLayerFolderIsEmptyOrNull_ABaseOCIFileLayerShouldBeReturned()
+        public async Task GivenAOCIFileLayer_WhenGenerateDiffOCIFileLayer_IfBaseLayerFolderIsEmptyOrNull_ABaseOCIFileLayerShouldBeReturnedAsync()
         {
             var overlayFs = new OverlayFileSystem("TestData/UserFolder");
-            var fileLayer = overlayFs.ReadOCIFileLayer();
+            var fileLayer = await overlayFs.ReadOCIFileLayerAsync();
             var diffLayers = _overlayOperator.GenerateDiffLayer(fileLayer, null);
             Assert.Equal(6, diffLayers.FileContent.Count());
             Assert.Equal(1, diffLayers.SequenceNumber);
         }
 
         [Fact]
-        public void GivenAOCIFileLayer_WhenGenerateDiffOCIFileLayerWithSnapshot_ADiffOCIFileLayerShouldBeReturned()
+        public async Task GivenAOCIFileLayer_WhenGenerateDiffOCIFileLayerWithSnapshot_ADiffOCIFileLayerShouldBeReturnedAsync()
         {
             var overlayFs = new OverlayFileSystem("TestData/UserFolder");
             overlayFs.ClearBaseLayerFolder();
             Directory.CreateDirectory("TestData/UserFolder/.image/base");
             File.Copy("TestData/TarGzFiles/layer1.tar.gz", "TestData/UserFolder/.image/base/layer1.tar.gz", true);
-            var fileLayer = overlayFs.ReadOCIFileLayer();
-            var baseLayers = overlayFs.ReadBaseLayer();
+            var fileLayer = await overlayFs .ReadOCIFileLayerAsync();
+            var baseLayers = await overlayFs.ReadBaseLayerAsync();
             var baseOCIfileLayer = _overlayOperator.Extract(baseLayers);
             var diffLayers = _overlayOperator.GenerateDiffLayer(fileLayer, baseOCIfileLayer);
 

@@ -119,7 +119,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             throw new NotImplementedException();
         }
 
-        public Task<ArtifactImage> PushImageAsync(string name, string reference, ArtifactImage image, CancellationToken cancellationToken = default)
+        public Task<string> PushImageAsync(string name, string reference, ArtifactImage image, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }

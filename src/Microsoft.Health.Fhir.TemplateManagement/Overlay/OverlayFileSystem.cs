@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using EnsureThat;
 using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
@@ -32,7 +33,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             _workingBaseLayerFolder = Path.Combine(workingFolder, Constants.HiddenBaseLayerFolder);
         }
 
-        public OCIFileLayer ReadOCIFileLayer()
+        public async Task<OCIFileLayer> ReadOCIFileLayerAsync()
         {
             var filePaths = Directory.EnumerateFiles(_workingFolder, "*.*", SearchOption.AllDirectories)
                 .Where(f => !string.Equals(GetTopDirectoryPath(Path.GetRelativePath(_workingFolder, f)), Constants.HiddenImageFolder));
@@ -40,14 +41,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             Dictionary<string, byte[]> fileContent = new Dictionary<string, byte[]>() { };
             foreach (var oneFile in filePaths)
             {
-                fileContent.Add(Path.GetRelativePath(_workingFolder, oneFile), File.ReadAllBytes(oneFile));
+                fileContent.Add(Path.GetRelativePath(_workingFolder, oneFile), await File.ReadAllBytesAsync(oneFile));
             }
 
             OCIFileLayer fileLayer = new OCIFileLayer() { FileContent = fileContent };
             return fileLayer;
         }
 
-        public void WriteOCIFileLayer(OCIFileLayer oneLayer)
+        public async Task WriteOCIFileLayerAsync(OCIFileLayer oneLayer)
         {
             EnsureArg.IsNotNull(oneLayer, nameof(oneLayer));
 
@@ -57,16 +58,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 var filePath = Path.Combine(_workingFolder, oneFile.Key);
                 var directory = Path.GetDirectoryName(filePath);
                 Directory.CreateDirectory(directory);
-                File.WriteAllBytes(Path.Combine(_workingFolder, oneFile.Key), oneFile.Value);
+                await File.WriteAllBytesAsync(Path.Combine(_workingFolder, oneFile.Key), oneFile.Value);
             }
         }
 
-        public List<ArtifactBlob> ReadImageLayers()
+        public async Task<List<ArtifactBlob>> ReadImageLayersAsync()
         {
-            return ReadOCIArtifactLayers(_workingImageLayerFolder);
+            return await ReadOCIArtifactLayersAsync(_workingImageLayerFolder);
         }
 
-        public void WriteImageLayers(List<ArtifactBlob> imageLayers)
+        public async Task WriteImageLayersAsync(List<ArtifactBlob> imageLayers)
         {
             EnsureArg.IsNotNull(imageLayers, nameof(imageLayers));
 
@@ -84,22 +85,22 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                     continue;
                 }
 
-                layer.WriteToFile(Path.Combine(_workingImageLayerFolder, string.Format("layer{0}.tar.gz", layerNumber)));
+                await layer.WriteToFileAsync(Path.Combine(_workingImageLayerFolder, string.Format("layer{0}.tar.gz", layerNumber)));
                 layerNumber += 1;
             }
         }
 
-        public void WriteManifest(ManifestWrapper manifest)
+        public async Task WriteManifestAsync(ManifestWrapper manifest)
         {
             EnsureArg.IsNotNull(manifest, nameof(manifest));
 
             Directory.CreateDirectory(_workingImageFolder);
-            File.WriteAllText(Path.Combine(_workingImageFolder, Constants.ManifestFileName), JsonConvert.SerializeObject(manifest));
+            await File.WriteAllTextAsync(Path.Combine(_workingImageFolder, Constants.ManifestFileName), JsonConvert.SerializeObject(manifest));
         }
 
-        public ArtifactBlob ReadBaseLayer()
+        public async Task<ArtifactBlob> ReadBaseLayerAsync()
         {
-            var layers = ReadOCIArtifactLayers(_workingBaseLayerFolder);
+            var layers = await ReadOCIArtifactLayersAsync(_workingBaseLayerFolder);
             if (layers.Count() > 1)
             {
                 throw new OverlayException(TemplateManagementErrorCode.BaseLayerLoadFailed, $"Base layer load failed. More than one layer in the base layer folder.");
@@ -108,14 +109,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return layers.Count == 0 ? new OCIFileLayer() : layers[0];
         }
 
-        public void WriteBaseLayer(ArtifactBlob baseLayer)
+        public async Task WriteBaseLayerAsync(ArtifactBlob baseLayer)
         {
             EnsureArg.IsNotNull(baseLayer, nameof(baseLayer));
 
             // Clear base layer folder before writing.
             ClearBaseLayerFolder();
             Directory.CreateDirectory(_workingBaseLayerFolder);
-            baseLayer.WriteToFile(Path.Combine(_workingBaseLayerFolder, "layer1.tar.gz"));
+            await baseLayer.WriteToFileAsync(Path.Combine(_workingBaseLayerFolder, "layer1.tar.gz"));
         }
 
         public bool IsCleanWorkingFolder()
@@ -147,7 +148,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             Directory.CreateDirectory(_workingBaseLayerFolder);
         }
 
-        private List<ArtifactBlob> ReadOCIArtifactLayers(string folder)
+        private async Task<List<ArtifactBlob>> ReadOCIArtifactLayersAsync(string folder)
         {
             EnsureArg.IsNotNullOrEmpty(folder, nameof(folder));
 
@@ -161,7 +162,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             foreach (var tarGzFile in layersPath)
             {
                 var artifactLayer = new ArtifactBlob();
-                artifactLayer.ReadFromFile(tarGzFile);
+                await artifactLayer.ReadFromFileAsync(tarGzFile);
                 if (artifactLayer.Content != null)
                 {
                     result.Add(artifactLayer);
