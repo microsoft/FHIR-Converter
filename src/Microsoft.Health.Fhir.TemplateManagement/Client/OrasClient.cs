@@ -105,9 +105,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             if (process.HasExited)
             {
                 string error = errStreamReader.ReadToEnd();
-                if (!string.IsNullOrEmpty(error) || process.ExitCode != 0)
+                if (process.ExitCode != 0)
                 {
-                    throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, "Oras process failed" + error);
+                    throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, $"Oras process failed. {errStreamReader.ReadToEnd()}");
                 }
             }
             else
