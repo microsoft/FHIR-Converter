@@ -104,7 +104,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             await Task.WhenAny(eventHandled.Task, Task.Delay(Constants.TimeOutMilliseconds));
             if (process.HasExited)
             {
-                string error = errStreamReader.ReadToEnd();
                 if (process.ExitCode != 0)
                 {
                     throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, $"Oras process failed. {errStreamReader.ReadToEnd()}");
