@@ -1,0 +1,19 @@
+{{#with msg.ClinicalDocument}}
+    {{>Resources/Composition.hbs composition=this ID=(generateUUID (toJsonString this))}},
+        {{#if this.custodian.assignedCustodian.representedCustodianOrganization.name._}}
+            {{>Resources/Organization.hbs org=this.custodian.assignedCustodian.representedCustodianOrganization ID=(generateUUID (toJsonString this.custodian.assignedCustodian.representedCustodianOrganization))}},
+        {{/if}}
+        
+{{/with}}
+    	
+{{#if msg.ClinicalDocument.author.assignedAuthor.assignedAuthoringDevice}}
+    {{#if msg.ClinicalDocument.author.assignedAuthor.representedOrganization}}
+        {{>Resources/Organization.hbs org=msg.ClinicalDocument.author.assignedAuthor.representedOrganization ID=(generateUUID (toJsonString msg.ClinicalDocument.author.assignedAuthor.representedOrganization))}},
+    {{/if}}
+{{/if}}
+    
+{{#with msg.ClinicalDocument.recordTarget.patientRole}}
+    {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=this) as |patientId|}}
+        {{>Resources/Patient.hbs patientRole=.. ID=patientId.Id}},
+    {{/with}}
+{{/with}}     
