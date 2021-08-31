@@ -1,0 +1,11 @@
+{
+    "resourceType": "Bundle",
+    "type": "batch",
+    "entry": [
+        {{! Based on the ccda.hbs templated}}
+        {{! Stripped down version for Kaiku}}
+    	{{>Header_kaiku.hbs}}
+        
+        {{>Resources/DocumentReference.hbs docref=msg ID=(generateUUID (toJsonString msg))}},
+      ]
+}
