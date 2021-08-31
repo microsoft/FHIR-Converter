@@ -20,7 +20,7 @@ using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
-    public class OrasClient : IOCIClient
+    public class OrasClient : IOciClient
     {
         private readonly string _imageFolder;
         private readonly string _registry;
@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             EnsureArg.IsNotNull(name, nameof(name));
             EnsureArg.IsNotNull(reference, nameof(reference));
 
-            IoUtility.ClearFolder(_imageFolder);
+            DirectoryHelper.ClearFolder(_imageFolder);
 
             string imageReference = string.Format("{0}/{1}:{2}", _registry, name, reference);
             string command = $"pull  \"{imageReference}\" -o \"{_imageFolder}\"";
@@ -49,7 +49,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             // Oras will create output folder if not existed.
             if (!Directory.Exists(_imageFolder) || !Directory.EnumerateFileSystemEntries(_imageFolder).Any())
             {
-                throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Image not found, pull image failed or image is empty.");
+                throw new OciClientException(TemplateManagementErrorCode.OrasProcessFailed, "Image not found, pull image failed or image is empty.");
             }
 
             var artifactImage = new ArtifactImage
@@ -62,7 +62,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
             catch (Exception ex)
             {
-                throw new OCIClientException(TemplateManagementErrorCode.CacheManifestFailed, "Get manifest from oras cache failed.", ex);
+                throw new OciClientException(TemplateManagementErrorCode.CacheManifestFailed, "Get manifest from oras cache failed.", ex);
             }
 
             try
@@ -74,7 +74,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
             catch (Exception ex)
             {
-                throw new OCIClientException(TemplateManagementErrorCode.CacheBlobFailed, "Get blobs from oras cache failed.", ex);
+                throw new OciClientException(TemplateManagementErrorCode.CacheBlobFailed, "Get blobs from oras cache failed.", ex);
             }
 
             return artifactImage;
@@ -85,7 +85,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             EnsureArg.IsNotNull(name, nameof(name));
             EnsureArg.IsNotNull(tag, nameof(tag));
 
-            IoUtility.ClearFolder(_imageFolder);
+            DirectoryHelper.ClearFolder(_imageFolder);
 
             string imageReference = string.Format("{0}/{1}:{2}", _registry, name, tag);
             List<string> fileNameList = new List<string>();
@@ -157,7 +157,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
             catch (Exception ex)
             {
-                throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Oras process failed", ex);
+                throw new OciClientException(TemplateManagementErrorCode.OrasProcessFailed, "Oras process failed", ex);
             }
 
             StreamReader errStreamReader = process.StandardError;
@@ -165,10 +165,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             await Task.WhenAny(eventHandled.Task, Task.Delay(Constants.TimeOutMilliseconds));
             if (process.HasExited)
             {
-                string error = errStreamReader.ReadToEnd();
-                if (!string.IsNullOrEmpty(error) || process.ExitCode != 0)
+                if (process.ExitCode != 0)
                 {
-                    throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Oras process failed." + error);
+                    throw new OciClientException(TemplateManagementErrorCode.OrasProcessFailed, $"Oras process failed. {errStreamReader.ReadToEnd()}");
                 }
 
                 return outputStreamReader.ReadToEnd();
@@ -180,10 +179,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
             catch (Exception ex)
             {
-                throw new OCIClientException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout. Fail to kill oras process.", ex);
+                throw new OciClientException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout. Fail to kill oras process.", ex);
             }
 
-            throw new OCIClientException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
+            throw new OciClientException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
         }
 
         private Digest GetImageDigest(string input)
@@ -191,7 +190,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             var digests = Digest.GetDigest(input);
             if (digests.Count == 0)
             {
-                throw new OCIClientException(TemplateManagementErrorCode.OrasProcessFailed, "Failed to parse image digest.");
+                throw new OciClientException(TemplateManagementErrorCode.OrasProcessFailed, "Failed to parse image digest.");
             }
 
             return digests[0];

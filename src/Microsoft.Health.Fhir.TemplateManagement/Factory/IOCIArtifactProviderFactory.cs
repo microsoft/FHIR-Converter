@@ -7,14 +7,14 @@ using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
 
 namespace Microsoft.Health.Fhir.TemplateManagement
 {
-    public interface IOCIArtifactProviderFactory
+    public interface IOciArtifactProviderFactory
     {
         /// <summary>
         /// Get template container from a image ID
         /// </summary>
-        /// <param name="token"></param>
+        /// <param name="token">Token for authentication.</param>
         /// <param name="imageReference"></param>
         /// <returns>Interface of OCIArtifactProvider</returns>
-        IOCIArtifactProvider CreateProvider(string imageReference, string token);
+        IOciArtifactProvider CreateProvider(string imageReference, string token);
     }
 }

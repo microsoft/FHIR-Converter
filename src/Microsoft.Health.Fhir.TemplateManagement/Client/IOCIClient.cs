@@ -10,7 +10,7 @@ using Microsoft.Health.Fhir.TemplateManagement.Models;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
-    public interface IOCIClient
+    public interface IOciClient
     {
         Task<ArtifactImage> PullImageAsync(string name, string reference, CancellationToken cancellationToken = default);
 

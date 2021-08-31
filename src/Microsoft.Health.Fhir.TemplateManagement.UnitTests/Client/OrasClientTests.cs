@@ -76,7 +76,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             string imageReference = _testOneLayerImageReference;
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             OrasClient orasClient = new OrasClient(_containerRegistryServer, outputFolder);
-            await Assert.ThrowsAsync<OCIClientException>(async () => await orasClient.PullImageAsync(imageInfo.ImageName, imageInfo.Tag));
+            await Assert.ThrowsAsync<OciClientException>(async () => await orasClient.PullImageAsync(imageInfo.ImageName, imageInfo.Tag));
         }
 
         [Theory]
@@ -90,7 +90,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
             outputFolder = "testpull" + outputFolder;
 
-            IoUtility.ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
 
             string imageReference = _testOneLayerImageReference;
             OrasClient orasClient = new OrasClient(_containerRegistryServer, outputFolder);
@@ -99,7 +99,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             Assert.Null(ex);
             Assert.Single(Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories));
 
-            IoUtility.ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
         [Theory]
@@ -111,7 +111,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
                 return;
             }
 
-            IoUtility.ClearFolder("TestData/PushTest");
+            DirectoryHelper.ClearFolder("TestData/PushTest");
 
             Directory.CreateDirectory("TestData/PushTest");
             string imageReference = _containerRegistryServer + "/" + imageName + ":" + tag;
@@ -120,10 +120,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             var blob = new ArtifactBlob();
             await blob.ReadFromFileAsync(_baseLayerTemplatePath);
             var image = new ArtifactImage() { Blobs = new List<ArtifactBlob>() { blob } };
-            await Assert.ThrowsAsync<OCIClientException>(() => orasClient.PushImageAsync(imageName, tag, image));
-            await Assert.ThrowsAsync<OCIClientException>(() => orasClient.PullImageAsync(imageName, tag));
+            await Assert.ThrowsAsync<OciClientException>(() => orasClient.PushImageAsync(imageName, tag, image));
+            await Assert.ThrowsAsync<OciClientException>(() => orasClient.PullImageAsync(imageName, tag));
 
-            IoUtility.ClearFolder("TestData/PushTest");
+            DirectoryHelper.ClearFolder("TestData/PushTest");
         }
 
         [Theory]
@@ -137,7 +137,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
             outputFolder = "testpush" + outputFolder;
 
-            IoUtility.ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
 
             string imageReference = _testOneLayerImageReference;
             OrasClient orasClient = new OrasClient(_containerRegistryServer, outputFolder);
@@ -148,7 +148,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             imageInfo = ImageInfo.CreateFromImageReference(testImageReference);
             var ex = await Record.ExceptionAsync(async () => await orasClient.PushImageAsync(imageInfo.ImageName, imageInfo.Tag, image));
             Assert.Null(ex);
-            IoUtility.ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
         [Fact]
@@ -159,7 +159,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
                 return;
             }
 
-            IoUtility.ClearFolder("TestData/PushTest");
+            DirectoryHelper.ClearFolder("TestData/PushTest");
 
             Directory.CreateDirectory("TestData/PushTest");
             string imageReference = _containerRegistryServer + "/testimage:test";
@@ -170,7 +170,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var ex = await Record.ExceptionAsync(() => orasClient.PushImageAsync(imageInfo.ImageName, imageInfo.Tag, image));
             Assert.Null(ex);
-            IoUtility.ClearFolder("TestData/PushTest");
+            DirectoryHelper.ClearFolder("TestData/PushTest");
         }
 
         [Fact]
@@ -181,7 +181,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
                 return;
             }
 
-            IoUtility.ClearFolder("TestData/Empty");
+            DirectoryHelper.ClearFolder("TestData/Empty");
 
             Directory.CreateDirectory("TestData/Empty");
             string imageReference = _containerRegistryServer + "/testimage:test";
@@ -189,7 +189,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             await Assert.ThrowsAsync<OverlayException>(async () => await orasClient.PushImageAsync(imageInfo.ImageName, imageInfo.Tag, new ArtifactImage()));
 
-            IoUtility.ClearFolder("TestData/Empty");
+            DirectoryHelper.ClearFolder("TestData/Empty");
         }
 
         [Fact]
@@ -200,7 +200,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
                 return;
             }
 
-            IoUtility.ClearFolder("TestData/PullTest");
+            DirectoryHelper.ClearFolder("TestData/PullTest");
 
             string imageReference = _testOneLayerImageReference;
             OrasClient orasClient = new OrasClient(_containerRegistryServer, "TestData/PullTest");
@@ -208,7 +208,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
             var ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(imageInfo.ImageName, imageInfo.Tag));
             Assert.Null(ex);
 
-            IoUtility.ClearFolder("TestData/PullTest");
+            DirectoryHelper.ClearFolder("TestData/PullTest");
         }
 
         private async Task PushOneLayerImageAsync()

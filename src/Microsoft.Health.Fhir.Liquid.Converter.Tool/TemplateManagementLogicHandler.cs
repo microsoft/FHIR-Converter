@@ -17,8 +17,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
         internal static async Task PullAsync(PullTemplateOptions options)
         {
             var imageInfo = ImageInfo.CreateFromImageReference(options.ImageReference);
-            OCIFileManager fileManager = new OCIFileManager(imageInfo.Registry, options.OutputTemplateFolder);
-            var artifactImage = await fileManager.PullOCIImageAsync(imageInfo.ImageName, imageInfo.Label, options.ForceOverride);
+            OciFileManager fileManager = new OciFileManager(imageInfo.Registry, options.OutputTemplateFolder);
+            var artifactImage = await fileManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Label, options.ForceOverride);
             Console.WriteLine($"Digest: {artifactImage.ImageDigest}");
             Console.WriteLine($"Successfully pulled artifacts to {options.OutputTemplateFolder} folder");
         }
@@ -36,8 +36,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             }
 
             var imageInfo = ImageInfo.CreateFromImageReference(options.ImageReference);
-            OCIFileManager fileManager = new OCIFileManager(imageInfo.Registry, options.InputTemplateFolder);
-            var digest = await fileManager.PushOCIImageAsync(imageInfo.ImageName, imageInfo.Tag, options.BuildNewBaseLayer);
+            OciFileManager fileManager = new OciFileManager(imageInfo.Registry, options.InputTemplateFolder);
+            var digest = await fileManager.PushOciImageAsync(imageInfo.ImageName, imageInfo.Tag, options.BuildNewBaseLayer);
             Console.WriteLine($"Digest: {digest}");
             Console.WriteLine($"Successfully pushed artifacts to {options.ImageReference}");
         }

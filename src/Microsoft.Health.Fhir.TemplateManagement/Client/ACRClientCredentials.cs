@@ -14,11 +14,11 @@ using Microsoft.Rest;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
-    public class ACRClientCredentials : ServiceClientCredentials
+    public class AcrClientCredentials : ServiceClientCredentials
     {
         private readonly string _token;
 
-        public ACRClientCredentials(string token)
+        public AcrClientCredentials(string token)
         {
             EnsureArg.IsNotNull(token, nameof(token));
 

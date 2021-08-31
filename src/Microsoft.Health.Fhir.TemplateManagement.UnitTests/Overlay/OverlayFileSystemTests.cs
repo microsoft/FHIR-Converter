@@ -18,32 +18,32 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
     public class OverlayFileSystemTests
     {
         [Fact]
-        public async Task GivenAWorkingFolder_WhenReadOCIFiles_AnOCIFileLayerWillBeReturnedAsync()
+        public async Task GivenAWorkingFolder_WhenReadOciFiles_AnOciFileLayerWillBeReturnedAsync()
         {
             string workingFolder = "TestData/DecompressedFiles";
             var overlayFs = new OverlayFileSystem(workingFolder);
-            var oneLayer = await overlayFs.ReadOCIFileLayerAsync();
+            var oneLayer = await overlayFs.ReadOciFileLayerAsync();
             Assert.Equal(3, oneLayer.FileContent.Count());
         }
 
         [Fact]
-        public async Task GivenAnOCIFileLayerAndAWorkingFolder_WhenWriteOCIFiles_OCIFilesWillBeWrittenToFolderAsync()
+        public async Task GivenAnOciFileLayerAndAWorkingFolder_WhenWriteOciFiles_OciFilesWillBeWrittenToFolderAsync()
         {
             string fileFolder = "TestData/DecompressedFiles";
             var testlayFs = new OverlayFileSystem(fileFolder);
-            var testLayer = await testlayFs.ReadOCIFileLayerAsync();
+            var testLayer = await testlayFs.ReadOciFileLayerAsync();
 
             string workingFolder = "TestData/workingFolder";
             Directory.CreateDirectory(workingFolder);
             ClearFolder(workingFolder);
             var overlayFs = new OverlayFileSystem(workingFolder);
-            await overlayFs.WriteOCIFileLayerAsync(testLayer);
+            await overlayFs.WriteOciFileLayerAsync(testLayer);
             var filePaths = Directory.EnumerateFiles(workingFolder, "*.*", SearchOption.AllDirectories);
             Assert.Equal(3, filePaths.Count());
         }
 
         [Fact]
-        public async Task GivenOCIArtifactLayers_WhenWriteImageFolder_AllOCIArtifactLayersWillBeWrittenToFolderAsync()
+        public async Task GivenOciArtifactLayers_WhenWriteImageFolder_AllOciArtifactLayersWillBeWrittenToFolderAsync()
         {
             string layerPath = "TestData/TarGzFiles/userV1.tar.gz";
             var layer1 = new ArtifactBlob() { SequenceNumber = 1, Content = File.ReadAllBytes(layerPath), FileName = "userV1.tar.gz" };
@@ -58,7 +58,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         }
 
         [Fact]
-        public async Task GivenInputImageFolder_WhenReadImageFolder_AllOCIArtifactLayersWillBeReturnedAsync()
+        public async Task GivenInputImageFolder_WhenReadImageFolder_AllOciArtifactLayersWillBeReturnedAsync()
         {
             string layer1 = "TestData/TarGzFiles/layer1.tar.gz";
             string layer2 = "TestData/TarGzFiles/layer2.tar.gz";

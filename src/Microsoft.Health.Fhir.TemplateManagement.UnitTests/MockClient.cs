@@ -18,7 +18,7 @@ using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 {
-    public class MockClient : IOCIClient
+    public class MockClient : IOciClient
     {
         private readonly Dictionary<string, List<byte[]>> _mockImages = new Dictionary<string, List<byte[]>>();
         private readonly Dictionary<string, ManifestWrapper> _mockManifests = new Dictionary<string, ManifestWrapper> { };

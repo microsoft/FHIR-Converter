@@ -3,7 +3,6 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EnsureThat;
@@ -14,11 +13,11 @@ using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 {
-    public class OCIArtifactProvider : IOCIArtifactProvider
+    public class OciArtifactProvider : IOciArtifactProvider
     {
-        private readonly IOCIClient _client;
+        private readonly IOciClient _client;
 
-        public OCIArtifactProvider(ImageInfo imageInfo, IOCIClient client)
+        public OciArtifactProvider(ImageInfo imageInfo, IOciClient client)
         {
             EnsureArg.IsNotNull(imageInfo, nameof(imageInfo));
             EnsureArg.IsNotNull(client, nameof(client));
@@ -29,17 +28,19 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
         protected ImageInfo ImageInfo { get; }
 
-        public virtual async Task<List<ArtifactBlob>> GetOCIArtifactAsync(CancellationToken cancellationToken = default)
+        public virtual async Task<ArtifactImage> GetOciArtifactAsync(CancellationToken cancellationToken = default)
         {
-            var artifactsResult = new List<ArtifactBlob>();
+            var artifactsResult = new ArtifactImage();
             cancellationToken.ThrowIfCancellationRequested();
             var manifest = await GetManifestAsync(cancellationToken);
             var layersInfo = manifest.Layers;
+            artifactsResult.Manifest = manifest;
+
             foreach (var layer in layersInfo)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var artifactLayer = await GetLayerAsync(layer.Digest, cancellationToken);
-                artifactsResult.Add(artifactLayer);
+                artifactsResult.Blobs.Add(artifactLayer);
             }
 
             return artifactsResult;

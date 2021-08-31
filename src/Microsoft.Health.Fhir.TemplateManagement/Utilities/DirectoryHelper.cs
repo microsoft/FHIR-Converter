@@ -3,12 +3,12 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using EnsureThat;
 using System.IO;
+using EnsureThat;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
 {
-    public class IoUtility
+    public static class DirectoryHelper
     {
         public static void ClearFolder(string directory)
         {

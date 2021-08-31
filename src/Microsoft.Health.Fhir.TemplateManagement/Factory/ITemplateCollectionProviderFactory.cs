@@ -7,7 +7,7 @@ using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
 
 namespace Microsoft.Health.Fhir.TemplateManagement
 {
-    public interface ITemplateCollectionProviderFactory : IOCIArtifactProviderFactory
+    public interface ITemplateCollectionProviderFactory : IOciArtifactProviderFactory
     {
         /// <summary>
         /// Get template container from a image ID

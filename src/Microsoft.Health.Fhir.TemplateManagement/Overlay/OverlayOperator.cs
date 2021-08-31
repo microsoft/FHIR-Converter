@@ -22,13 +22,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
     public class OverlayOperator : IOverlayOperator
     {
-        public OCIFileLayer Extract(ArtifactBlob artifactLayer)
+        public OciFileLayer Extract(ArtifactBlob artifactLayer)
         {
             EnsureArg.IsNotNull(artifactLayer, nameof(artifactLayer));
 
             if (artifactLayer.Content == null)
             {
-                return new OCIFileLayer();
+                return new OciFileLayer();
             }
 
             var artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(artifactLayer.Content));
@@ -46,7 +46,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 }
             }
 
-            return new OCIFileLayer()
+            return new OciFileLayer()
             {
                 Content = artifactLayer.Content,
                 FileContent = artifacts,
@@ -57,7 +57,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             };
         }
 
-        public List<OCIFileLayer> Extract(List<ArtifactBlob> artifactLayers)
+        public List<OciFileLayer> Extract(List<ArtifactBlob> artifactLayers)
         {
             EnsureArg.IsNotNull(artifactLayers, nameof(artifactLayers));
 
@@ -82,7 +82,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return sortedLayers;
         }
 
-        public OCIFileLayer Merge(List<OCIFileLayer> sortedLayers)
+        public OciFileLayer Merge(List<OciFileLayer> sortedLayers)
         {
             EnsureArg.IsNotNull(sortedLayers, nameof(sortedLayers));
 
@@ -111,10 +111,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 }
             }
 
-            return new OCIFileLayer() { FileContent = mergedFiles, FileName = "mergedLayer", SequenceNumber = sortedLayers.Count() };
+            return new OciFileLayer() { FileContent = mergedFiles, FileName = "mergedLayer", SequenceNumber = sortedLayers.Count() };
         }
 
-        public OCIFileLayer GenerateDiffLayer(OCIFileLayer fileLayer, OCIFileLayer baseLayer = null)
+        public OciFileLayer GenerateDiffLayer(OciFileLayer fileLayer, OciFileLayer baseLayer = null)
         {
             EnsureArg.IsNotNull(fileLayer, nameof(fileLayer));
             EnsureArg.IsNotNull(fileLayer.FileContent, nameof(fileLayer.FileContent));
@@ -127,7 +127,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 sequenceNumber = baseLayer.SequenceNumber + 1;
             }
 
-            var diffLayer = new OCIFileLayer() { SequenceNumber = sequenceNumber, FileName = $"layer{sequenceNumber}.tar.gz" };
+            var diffLayer = new OciFileLayer() { SequenceNumber = sequenceNumber, FileName = $"layer{sequenceNumber}.tar.gz" };
 
             var diffLayerFileDigest = new Dictionary<string, string> { };
             foreach (var oneFile in fileLayer.FileContent)
@@ -177,7 +177,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return diffLayer;
         }
 
-        public ArtifactBlob Archive(OCIFileLayer fileLayer)
+        public ArtifactBlob Archive(OciFileLayer fileLayer)
         {
             EnsureArg.IsNotNull(fileLayer, nameof(fileLayer));
 
@@ -201,7 +201,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return fileLayer;
         }
 
-        public List<ArtifactBlob> Archive(List<OCIFileLayer> fileLayers)
+        public List<ArtifactBlob> Archive(List<OciFileLayer> fileLayers)
         {
             EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
 

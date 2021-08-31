@@ -17,13 +17,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// Ignore files in hidden image folder
         /// </summary>
         /// <returns> One layer of OCI files.</returns>
-        Task<OCIFileLayer> ReadOCIFileLayerAsync();
+        Task<OciFileLayer> ReadOciFileLayerAsync();
 
         /// <summary>
         /// Write all files of the OCIfilelayer to the working folder.
         /// </summary>
         /// <param name="oneLayer">One layer of OCI files.</param>
-        Task WriteOCIFileLayerAsync(OCIFileLayer oneLayer);
+        Task WriteOciFileLayerAsync(OciFileLayer oneLayer);
 
         /// <summary>
         /// Read layers (only .tar.gz files) from working image forder.

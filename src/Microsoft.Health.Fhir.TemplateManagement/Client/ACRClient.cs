@@ -19,7 +19,7 @@ using Microsoft.Rest.Azure;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
-    public class AcrClient : IOCIClient
+    public class AcrClient : IOciClient
     {
         private readonly IAzureContainerRegistryClient _client;
 
@@ -28,7 +28,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             EnsureArg.IsNotNull(registry, nameof(registry));
             EnsureArg.IsNotNull(token, nameof(token));
 
-            _client = new AzureContainerRegistryClient(registry, new ACRClientCredentials(token));
+            _client = new AzureContainerRegistryClient(registry, new AcrClientCredentials(token));
         }
 
         public AcrClient(IAzureContainerRegistryClient client)

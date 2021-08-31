@@ -16,14 +16,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 {
     public class TemplateLayerParserTests
     {
-        public static IEnumerable<object[]> GetFilePathForOCIArifactWithFileCounts()
+        public static IEnumerable<object[]> GetFilePathForOciArifactWithFileCounts()
         {
             yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 813 };
             yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 767 };
             yield return new object[] { "TestData/TarGzFiles/baseLayer.tar.gz", 818 };
         }
 
-        public static IEnumerable<object[]> GetFilePathForOCIArifactWithTemplateCounts()
+        public static IEnumerable<object[]> GetFilePathForOciArifactWithTemplateCounts()
         {
             yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 813 };
             yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 767 };
@@ -37,7 +37,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(GetFilePathForOCIArifactWithTemplateCounts))]
+        [MemberData(nameof(GetFilePathForOciArifactWithTemplateCounts))]
         public void GivenArtifactLayer_WhenParseArtifactLayerToTemplateLayer_ACorrectTemplateLayerShouldBeReturned(string filePath, int expectedTemplatesCounts)
         {
             var content = File.ReadAllBytes(filePath);
@@ -48,7 +48,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         }
 
         [Theory]
-        [MemberData(nameof(GetFilePathForOCIArifactWithFileCounts))]
+        [MemberData(nameof(GetFilePathForOciArifactWithFileCounts))]
         public void GivenRawBytes_WhenDecompressRawBytesToStringContent_CorrectArtifactsShouldBeReturned(string filePath, int expectedArtifactCounts)
         {
             var content = File.ReadAllBytes(filePath);

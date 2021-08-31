@@ -16,14 +16,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// </summary>
         /// <param name="artifactLayer">One OCIArtifactLayer</param>
         /// <returns>One OCIFileLayer</returns>
-        OCIFileLayer Extract(ArtifactBlob artifactLayer);
+        OciFileLayer Extract(ArtifactBlob artifactLayer);
 
         /// <summary>
         /// Extract List of OCIArtifactLayers to a list of OCIFileLayers
         /// </summary>
         /// <param name="artifactLayers">List of OCIArtifactLayers</param>
         /// <returns>List of OCIFileLayers</returns>
-        List<OCIFileLayer> Extract(List<ArtifactBlob> artifactLayers);
+        List<OciFileLayer> Extract(List<ArtifactBlob> artifactLayers);
 
         /// <summary>
         /// Sort OCIArtifactLayers according to manifest.
@@ -40,7 +40,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// </summary>
         /// <param name="sortedLayers">List of sorted OCIFileLayers</param>
         /// <returns>One Merged OCIFileLayer.</returns>
-        OCIFileLayer Merge(List<OCIFileLayer> sortedLayers);
+        OciFileLayer Merge(List<OciFileLayer> sortedLayers);
 
         /// <summary>
         /// Generate diff OCIFileLayer by comparing two OCIArtifactLayers.
@@ -48,20 +48,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// <param name="fileLayer">source OCIFileLayer</param>
         /// <param name="snapshotLayer">target OCIFileLayer</param>
         /// <returns>The diff layer.</returns>
-        OCIFileLayer GenerateDiffLayer(OCIFileLayer fileLayer, OCIFileLayer snapshotLayer);
+        OciFileLayer GenerateDiffLayer(OciFileLayer fileLayer, OciFileLayer snapshotLayer);
 
         /// <summary>
         /// Archive OCIFileLayer to OCIArtifactLayer by compress file content by gzip mode.
         /// </summary>
         /// <param name="fileLayer">One OCIFileLayer</param>
         /// <returns>One OCIArtifactLayer</returns>
-        ArtifactBlob Archive(OCIFileLayer fileLayer);
+        ArtifactBlob Archive(OciFileLayer fileLayer);
 
         /// <summary>
         /// Archive List of OCIFileLayers to OCIArtifactLayers.
         /// </summary>
         /// <param name="fileLayers">List of OCIFileLayer</param>
         /// <returns>List of OCIArtifactLayer</returns>
-        List<ArtifactBlob> Archive(List<OCIFileLayer> fileLayers);
+        List<ArtifactBlob> Archive(List<OciFileLayer> fileLayers);
     }
 }

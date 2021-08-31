@@ -15,7 +15,7 @@ using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 {
-    public class OCIFileManagerTests : IAsyncLifetime
+    public class OciFileManagerTests : IAsyncLifetime
     {
         private readonly string _containerRegistryServer;
         private readonly string _baseLayerTemplatePath = "TestData/TarGzFiles/layer1.tar.gz";
@@ -24,7 +24,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         private readonly string _testMultiLayersImageReference;
         private bool _isOrasValid = true;
 
-        public OCIFileManagerTests()
+        public OciFileManagerTests()
         {
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:user1";
@@ -80,7 +80,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         [Theory]
         [MemberData(nameof(GetInValidOutputFolder))]
-        public async Task GivenInValidOutputFolder_WhenPullOCIFiles_ExceptionWillBeThrownAsync(string outputFolder)
+        public async Task GivenInValidOutputFolder_WhenPullOciFiles_ExceptionWillBeThrownAsync(string outputFolder)
         {
             if (!_isOrasValid)
             {
@@ -88,14 +88,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             }
 
             string imageReference = _testOneLayerImageReference;
-            var testManager = new OCIFileManager(_containerRegistryServer, outputFolder);
+            var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
-            await Assert.ThrowsAsync<OCIClientException>(async () => await testManager.PullOCIImageAsync(imageInfo.ImageName, imageInfo.Tag, true));
+            await Assert.ThrowsAsync<OciClientException>(async () => await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true));
         }
 
         [Theory]
         [MemberData(nameof(GetValidOutputFolder))]
-        public async Task GivenValidOutputFolder_WhenPullOCIFiles_CorrectFilesWillBePulledAsync(string outputFolder)
+        public async Task GivenValidOutputFolder_WhenPullOciFiles_CorrectFilesWillBePulledAsync(string outputFolder)
         {
             if (!_isOrasValid)
             {
@@ -103,15 +103,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             }
 
             string imageReference = _testOneLayerImageReference;
-            var testManager = new OCIFileManager(_containerRegistryServer, outputFolder);
+            var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
-            await testManager.PullOCIImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
+            await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
             Assert.Equal(843, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             ClearFolder(outputFolder);
         }
 
         [Fact]
-        public async Task GivenAnImageReferenceAndOutputFolder_WhenPullOCIFiles_CorrectFilesWillBeWrittenToFolderAsync()
+        public async Task GivenAnImageReferenceAndOutputFolder_WhenPullOciFiles_CorrectFilesWillBeWrittenToFolderAsync()
         {
             if (!_isOrasValid)
             {
@@ -120,15 +120,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
             string imageReference = _testMultiLayersImageReference;
             string outputFolder = "TestData/testMultiLayers";
-            var testManager = new OCIFileManager(_containerRegistryServer, outputFolder);
+            var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
-            await testManager.PullOCIImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
+            await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
             Assert.Equal(10, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             ClearFolder(outputFolder);
         }
 
         [Fact]
-        public async Task GivenAnImageReferenceAndInputFolder_WhenPushOCIFiles_CorrectImageWillBePushedAsync()
+        public async Task GivenAnImageReferenceAndInputFolder_WhenPushOciFiles_CorrectImageWillBePushedAsync()
         {
             if (!_isOrasValid)
             {
@@ -137,9 +137,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
             string imageReference = _containerRegistryServer + "/templatetest:test";
             string inputFolder = "TestData/UserFolder";
-            var testManager = new OCIFileManager(_containerRegistryServer, inputFolder);
+            var testManager = new OciFileManager(_containerRegistryServer, inputFolder);
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
-            var ex = await Record.ExceptionAsync(async () => await testManager.PushOCIImageAsync(imageInfo.ImageName, imageInfo.Tag, true));
+            var ex = await Record.ExceptionAsync(async () => await testManager.PushOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true));
             Assert.Null(ex);
         }
 

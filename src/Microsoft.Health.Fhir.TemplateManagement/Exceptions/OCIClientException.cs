@@ -8,19 +8,19 @@ using Microsoft.Health.Fhir.TemplateManagement.Models;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Exceptions
 {
-    public class OCIClientException : TemplateManagementException
+    public class OciClientException : TemplateManagementException
     {
-        public OCIClientException(string message)
+        public OciClientException(string message)
             : base(message)
         {
         }
 
-        public OCIClientException(TemplateManagementErrorCode templateManagementErrorCode, string message)
+        public OciClientException(TemplateManagementErrorCode templateManagementErrorCode, string message)
             : base(templateManagementErrorCode, message)
         {
         }
 
-        public OCIClientException(TemplateManagementErrorCode templateManagementErrorCode, string message, Exception innerException)
+        public OciClientException(TemplateManagementErrorCode templateManagementErrorCode, string message, Exception innerException)
             : base(templateManagementErrorCode, message, innerException)
         {
         }
