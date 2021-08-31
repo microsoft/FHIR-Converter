@@ -5,7 +5,7 @@ The Template Management CLI tool is mean to pull, push, and manage the templates
 Template OCI image is a layer based structure similar to docker image and uses [overlayfs](https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html?highlight=overlayfs) concept to organize templates. For custom templates, we use two layers image structure to organize template collection: base layer and user layer (The user layer could be extended to multi-layers in the future if necessary). Base layer packs Microsoft published templates and user layer packs all modified templates from users. Each layer will be compressed into "*.tar.gz" file before pushing to ACR.
 # Using Template Management CLI
 
-The command-line tool can be used to pull and push a template collection from/to Azure Container Registry. For now we support Windows and macOS.
+The command-line tool can be used to pull and push a template collection from/to Azure Container Registry. Currently, we support Windows and MacOS for the CLI tool.
 
 ## Prerequisites
 * Azure container registry - Create a container registry in your Azure subscription if you do not have one. This is the registry where you want to keep your Liquid templates. You can use the [Azure portal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) or the [Azure CLI](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-azure-cli).
