@@ -1,15 +1,17 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
+    
   <PropertyGroup>
     <OutputType>Library</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <IsPackable>true</IsPackable>
     <NuspecFile>Microsoft.Health.Fhir.Liquid.Converter.nuspec</NuspecFile>
     <OrasVersion>0.8.1</OrasVersion>
+    <OrasWinTarGzFile>oras_win_amd64.tar.gz</OrasWinTarGzFile>
+    <OrasOSXTarGzFile>oras_osx_amd64.tar.gz</OrasOSXTarGzFile>
     <OrasWinUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_windows_amd64.tar.gz</OrasWinUrl>
     <OrasOSXUrl>https://github.com/deislabs/oras/releases/download/v$(OrasVersion)/oras_$(OrasVersion)_darwin_amd64.tar.gz</OrasOSXUrl>
   </PropertyGroup>
-  
+
   <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
     <SolutionFolder>..\..\</SolutionFolder>
     <DataFolder>$(SolutionFolder)data\</DataFolder>
@@ -52,36 +54,42 @@
       <Link>JsonDefaultTemplates.tar.gz</Link>
     </EmbeddedResource>
   </ItemGroup>
-	
+
   <ItemGroup>
     <None Update="oras.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-    
+
   <ItemGroup>
     <None Update="oras-OSX">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  
+
+  <ItemGroup>
+    <None Include="$(BinFolder)$(OrasOSXTarGzFile)">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
     <Exec Command="mkdir $(BinFolder) &amp; tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
     <Exec Command="tar -zcvf $(BinFolder)CcdaDefaultTemplates.tar.gz -C $(DataFolder)Templates/Ccda ." />
     <Exec Command="tar -zcvf $(BinFolder)JsonDefaultTemplates.tar.gz -C $(DataFolder)Templates/Json ." />
   </Target>
-  
+
   <Target Name="DownloadWinOrasFile" BeforeTargets="Build">
-    <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="$(BinFolder)">
+    <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="$(BinFolder)" DestinationFileName="$(OrasWinTarGzFile)">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
-    <Exec Command="tar -xvf $(BinFolder)oras_$(OrasVersion)_windows_amd64.tar.gz -C $(BinFolder) &amp; $(CopyExecutable) $(BinFolder)oras.exe ." />
+    <Exec Command="tar -xvf $(BinFolder)$(OrasWinTarGzFile) -C $(BinFolder) &amp; $(CopyExecutable) $(BinFolder)oras.exe ." />
   </Target>
-    
+
   <Target Name="DownloadOSXOrasFile" BeforeTargets="Build">
-    <DownloadFile SourceUrl="$(OrasOSXUrl)" DestinationFolder="$(BinFolder)">
+    <DownloadFile SourceUrl="$(OrasOSXUrl)" DestinationFolder="$(BinFolder)" DestinationFileName="$(OrasOSXTarGzFile)">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
-    <Exec Command="tar -xvf $(BinFolder)oras_$(OrasVersion)_darwin_amd64.tar.gz -C $(BinFolder) &amp;&amp; $(CopyExecutable) $(BinFolder)oras oras-osx" />
+    <Exec Command="tar -xvf $(BinFolder)$(OrasOSXTarGzFile) -C $(BinFolder) &amp;&amp; $(CopyExecutable) $(BinFolder)oras oras-osx" />
   </Target>
 </Project>
