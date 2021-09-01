@@ -5,9 +5,8 @@
 
 using System.Collections.Generic;
 using Microsoft.Azure.ContainerRegistry.Models;
-using Microsoft.Health.Fhir.TemplateManagement.Models;
 
-namespace Microsoft.Health.Fhir.TemplateManagement.Client
+namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
     public class ArtifactImage
     {

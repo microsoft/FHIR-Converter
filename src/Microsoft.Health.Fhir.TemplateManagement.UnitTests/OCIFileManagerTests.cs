@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
@@ -107,7 +108,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
             Assert.Equal(843, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
         [Fact]
@@ -124,7 +125,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
             Assert.Equal(10, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
         [Fact]
@@ -141,17 +142,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var ex = await Record.ExceptionAsync(async () => await testManager.PushOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true));
             Assert.Null(ex);
-        }
-
-        private void ClearFolder(string directory)
-        {
-            if (!Directory.Exists(directory))
-            {
-                return;
-            }
-
-            DirectoryInfo folder = new DirectoryInfo(directory);
-            folder.Delete(true);
         }
 
         private async Task PushOneLayerImageAsync()

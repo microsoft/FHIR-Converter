@@ -11,6 +11,7 @@ using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Overlay;
+using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -87,7 +88,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             string layer3 = "TestData/TarGzFiles/userV1.tar.gz";
             string manifest = "TestData/ExpectedManifest/testOrderManifest";
             string workingFolder = "TestData/testSortLayers";
-            ClearFolder(workingFolder);
+            DirectoryHelper.ClearFolder(workingFolder);
             Directory.CreateDirectory(Path.Combine(workingFolder, ".image/layers"));
 
             // Rename files to rearrange the sequence.
@@ -101,7 +102,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             Assert.Equal("3.tar.gz", sortedLayers[0].FileName);
             Assert.Equal("2.tar.gz", sortedLayers[1].FileName);
             Assert.Equal("1.tar.gz", sortedLayers[2].FileName);
-            ClearFolder(workingFolder);
+            DirectoryHelper.ClearFolder(workingFolder);
         }
 
         [Fact]
@@ -140,7 +141,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             overlayFs.ClearBaseLayerFolder();
             Directory.CreateDirectory("TestData/UserFolder/.image/base");
             File.Copy("TestData/TarGzFiles/layer1.tar.gz", "TestData/UserFolder/.image/base/layer1.tar.gz", true);
-            var fileLayer = await overlayFs .ReadOciFileLayerAsync();
+            var fileLayer = await overlayFs.ReadOciFileLayerAsync();
             var baseLayers = await overlayFs.ReadBaseLayerAsync();
             var baseOcifileLayer = _overlayOperator.Extract(baseLayers);
             var diffLayers = _overlayOperator.GenerateDiffLayer(fileLayer, baseOcifileLayer);
@@ -182,17 +183,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
 
             var packedLayers = _overlayOperator.Archive(diffLayers);
             Assert.Equal(inputLayers.Count, packedLayers.Count);
-        }
-
-        private void ClearFolder(string path)
-        {
-            if (!Directory.Exists(path))
-            {
-                return;
-            }
-
-            DirectoryInfo folder = new DirectoryInfo(path);
-            folder.Delete(true);
         }
     }
 }

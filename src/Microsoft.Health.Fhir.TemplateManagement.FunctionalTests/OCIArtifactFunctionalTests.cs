@@ -121,7 +121,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
             Assert.Equal(843, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
         // Pull one layer image without sequence number, successfully pulled with base layer copied.
@@ -136,7 +136,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
             Assert.Equal(4, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
         // Pull one layer image with invalid sequence number, successfully pulled with base layer copied.
@@ -151,7 +151,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
             Assert.Equal(4, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
         // Pull multi-layers with valid sequence numbers, successfully pulled with base layer copied.
@@ -166,7 +166,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
             Assert.Equal(10, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
         // Pull multi-layers with invalid sequence numbers, successfully pulled with base layer copied.
@@ -181,7 +181,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
             Assert.Equal(32, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
         // Pull invalid image, exception will be thrown.
@@ -194,7 +194,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
             await Assert.ThrowsAsync<ArtifactDecompressException>(() => testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true));
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
         // Push artifacts which unpacked from base layer. If user modify artifacts, successfully pushed multi-layers image.
@@ -226,8 +226,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Equal(2, Directory.EnumerateFiles("checkMultiLayersFolder", "*.tar.gz", SearchOption.AllDirectories).Count());
             Assert.Equal(4, StreamUtility.DecompressTarGzStream(File.OpenRead(Path.Combine("checkMultiLayersFolder", "layer2.tar.gz"))).Count());
-            ClearFolder(initInputFolder);
-            ClearFolder("checkMultiLayersFolder");
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkMultiLayersFolder");
         }
 
         // Push artifacts and ignore base layer, successfully pushed one-layer image.
@@ -259,8 +259,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Single(Directory.EnumerateFiles("checkNewBaseLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
             Assert.Equal(840, StreamUtility.DecompressTarGzStream(File.OpenRead(Path.Combine("checkNewBaseLayerFolder", "layer1.tar.gz"))).Count());
-            ClearFolder(initInputFolder);
-            ClearFolder("checkNewBaseLayerFolder");
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkNewBaseLayerFolder");
         }
 
         // Push artifacts which unpacked from base layer. If user don't modify artifacts, successfully pushed one-layer image.
@@ -286,8 +286,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string command = $"pull {testPushBaseLayerImageReference} -o checkBaseLayerFolder";
             await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Single(Directory.EnumerateFiles("checkBaseLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
-            ClearFolder(initInputFolder);
-            ClearFolder("checkBaseLayerFolder");
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkBaseLayerFolder");
         }
 
         // Push artifacts without base layer, successfully pushed one-layer image.
@@ -312,8 +312,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string command = $"pull {testPushNewBaseLayerImageReference} -o checkLayerFolder";
             await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Single(Directory.EnumerateFiles("checkLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
-            ClearFolder(initInputFolder);
-            ClearFolder("checkLayerFolder");
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkLayerFolder");
         }
 
         // Push empty artifact folder, exception will be thrown.
@@ -330,20 +330,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var imageInfo = ImageInfo.CreateFromImageReference(testPushNewBaseLayerImageReference);
             await Assert.ThrowsAsync<OverlayException>(() => pushManager.PushOciImageAsync(imageInfo.ImageName, imageInfo.Tag));
 
-            ClearFolder(emptyFolder);
-        }
-
-        private void ClearFolder(string directory)
-        {
-            EnsureArg.IsNotNullOrEmpty(directory, nameof(directory));
-
-            if (!Directory.Exists(directory))
-            {
-                return;
-            }
-
-            DirectoryInfo folder = new DirectoryInfo(directory);
-            folder.Delete(true);
+            DirectoryHelper.ClearFolder(emptyFolder);
         }
     }
 }

@@ -20,7 +20,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
             }
 
             DirectoryInfo folder = new DirectoryInfo(directory);
-            folder.Delete(true);
+            foreach (FileInfo file in folder.GetFiles())
+            {
+                file.Delete();
+            }
+
+            foreach (DirectoryInfo dir in folder.GetDirectories())
+            {
+                dir.Delete(true);
+            }
         }
     }
 }

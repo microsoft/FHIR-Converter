@@ -20,17 +20,16 @@ using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
-    public class OrasClient : IOciClient
+    public partial class OrasClient : IOciClient
     {
         private readonly string _imageFolder;
         private readonly string _registry;
-        private readonly OrasCacheClient _cacheClient;
 
         public OrasClient(string registry, string imageFolder)
         {
             _imageFolder = imageFolder;
             _registry = registry;
-            _cacheClient = new OrasCacheClient();
+            InitCacheEnviroment();
         }
 
         public async Task<ArtifactImage> PullImageAsync(string name, string reference, CancellationToken cancellationToken = default)
@@ -58,23 +57,23 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             };
             try
             {
-                artifactImage.Manifest = await _cacheClient.GetManifestAsync(digest.Value, cancellationToken);
+                artifactImage.Manifest = await GetManifestFromCacheAsync(digest.Value, cancellationToken);
             }
             catch (Exception ex)
             {
-                throw new OciClientException(TemplateManagementErrorCode.CacheManifestFailed, "Get manifest from oras cache failed.", ex);
+                throw new OciClientException(TemplateManagementErrorCode.OrasCacheManifestFailed, "Get manifest from oras cache failed.", ex);
             }
 
             try
             {
                 foreach (var layerInfo in artifactImage.Manifest.Layers)
                 {
-                    artifactImage.Blobs.Add(await _cacheClient.GetBlobAsync(layerInfo.Digest, cancellationToken));
+                    artifactImage.Blobs.Add(await GetBlobFromCacheAsync(layerInfo.Digest, cancellationToken));
                 }
             }
             catch (Exception ex)
             {
-                throw new OciClientException(TemplateManagementErrorCode.CacheBlobFailed, "Get blobs from oras cache failed.", ex);
+                throw new OciClientException(TemplateManagementErrorCode.OrasCacheBlobFailed, "Get blobs from oras cache failed.", ex);
             }
 
             return artifactImage;

@@ -35,7 +35,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
 
             string workingFolder = "TestData/workingFolder";
             Directory.CreateDirectory(workingFolder);
-            ClearFolder(workingFolder);
+            DirectoryHelper.ClearFolder(workingFolder);
             var overlayFs = new OverlayFileSystem(workingFolder);
             await overlayFs.WriteOciFileLayerAsync(testLayer);
             var filePaths = Directory.EnumerateFiles(workingFolder, "*.*", SearchOption.AllDirectories);
@@ -49,12 +49,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             var layer1 = new ArtifactBlob() { SequenceNumber = 1, Content = File.ReadAllBytes(layerPath), FileName = "userV1.tar.gz" };
             var layer2 = new ArtifactBlob() { SequenceNumber = 2, Content = File.ReadAllBytes(layerPath), FileName = "userV2.tar.gz" };
             string workingFolder = "TestData/testImageLayer";
-            ClearFolder(workingFolder);
+            DirectoryHelper.ClearFolder(workingFolder);
             var overlayFs = new OverlayFileSystem(workingFolder);
             await overlayFs.WriteImageLayersAsync(new List<ArtifactBlob>() { layer1, layer2 });
             var filePaths = Directory.EnumerateFiles(Path.Combine(workingFolder, ".image/layers"), "*.*", SearchOption.AllDirectories);
             Assert.Equal(2, filePaths.Count());
-            ClearFolder(workingFolder);
+            DirectoryHelper.ClearFolder(workingFolder);
         }
 
         [Fact]
@@ -64,7 +64,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             string layer2 = "TestData/TarGzFiles/layer2.tar.gz";
             string layer3 = "TestData/TarGzFiles/userV1.tar.gz";
             string workingFolder = "TestData/testReadImageLayer";
-            ClearFolder(workingFolder);
+            DirectoryHelper.ClearFolder(workingFolder);
             Directory.CreateDirectory(Path.Combine(workingFolder, ".image/layers"));
 
             File.Copy(layer1, Path.Combine(workingFolder, ".image/layers/3.tar.gz"));
@@ -73,7 +73,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             var overlayFs = new OverlayFileSystem(workingFolder);
             var layers = await overlayFs.ReadImageLayersAsync();
             Assert.Equal(3, layers.Count);
-            ClearFolder(workingFolder);
+            DirectoryHelper.ClearFolder(workingFolder);
         }
 
         [Fact]
@@ -81,12 +81,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         {
             string layerPath = "TestData/TarGzFiles/userV1.tar.gz";
             string workingFolder = "TestData/testValidBaseLayer";
-            ClearFolder(workingFolder);
+            DirectoryHelper.ClearFolder(workingFolder);
             Directory.CreateDirectory(Path.Combine(workingFolder, ".image/base"));
             File.Copy(layerPath, Path.Combine(workingFolder, ".image/base/layer1.tar.gz"));
             var overlayFs = new OverlayFileSystem(workingFolder);
             Assert.Equal(StreamUtility.CalculateDigestFromSha256(File.OpenRead(layerPath)), overlayFs.ReadBaseLayerAsync().Result.Digest);
-            ClearFolder(workingFolder);
+            DirectoryHelper.ClearFolder(workingFolder);
         }
 
         [Fact]
@@ -94,13 +94,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         {
             string layerPath = "TestData/TarGzFiles/userV1.tar.gz";
             string workingFolder = "TestData/testInValidBaseLayer";
-            ClearFolder(workingFolder);
+            DirectoryHelper.ClearFolder(workingFolder);
             Directory.CreateDirectory(Path.Combine(workingFolder, ".image/base"));
             File.Copy(layerPath, Path.Combine(workingFolder, ".image/base/layer1.tar.gz"));
             File.Copy(layerPath, Path.Combine(workingFolder, ".image/base/layer2.tar.gz"));
             var overlayFs = new OverlayFileSystem(workingFolder);
             await Assert.ThrowsAsync<OverlayException>(() => overlayFs.ReadBaseLayerAsync());
-            ClearFolder(workingFolder);
+            DirectoryHelper.ClearFolder(workingFolder);
         }
 
         [Fact]
@@ -112,7 +112,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             Assert.Null(overlayFs.ReadBaseLayerAsync().Result.Digest);
             Directory.CreateDirectory(Path.Combine(workingFolder, ".image/base"));
             Assert.Null(overlayFs.ReadBaseLayerAsync().Result.Digest);
-            ClearFolder(workingFolder);
+            DirectoryHelper.ClearFolder(workingFolder);
         }
 
         [Fact]
@@ -124,18 +124,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             var overlayFs = new OverlayFileSystem(workingFolder);
             await overlayFs.WriteBaseLayerAsync(new ArtifactBlob() { Content = File.ReadAllBytes(layerPath) });
             Assert.Single(Directory.EnumerateFiles(workingFolder + "/.image/base", "*.*", SearchOption.AllDirectories));
-            ClearFolder(workingFolder);
-        }
-
-        private void ClearFolder(string path)
-        {
-            if (!Directory.Exists(path))
-            {
-                return;
-            }
-
-            DirectoryInfo folder = new DirectoryInfo(path);
-            folder.Delete(true);
+            DirectoryHelper.ClearFolder(workingFolder);
         }
     }
 }

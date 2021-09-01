@@ -13,11 +13,27 @@ using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
-    public class OrasCacheClient
+    /// <summary>
+    /// Get manifest and blob from ORAS cache.
+    /// </summary>
+    public partial class OrasClient : IOciClient
     {
-        private readonly string _blobCacheFolder;
+        private string _blobCacheFolder;
 
-        public OrasCacheClient()
+        private async Task<ManifestWrapper> GetManifestFromCacheAsync(string digest, CancellationToken cancellationToken = default)
+        {
+            var manifest = await File.ReadAllTextAsync(Path.Combine(_blobCacheFolder, Digest.GetDigest(digest)[0].Hex), cancellationToken);
+            return JsonConvert.DeserializeObject<ManifestWrapper>(manifest);
+        }
+
+        private async Task<ArtifactBlob> GetBlobFromCacheAsync(string digest, CancellationToken cancellationToken = default)
+        {
+            var blob = new ArtifactBlob();
+            await blob.ReadFromFileAsync(Path.Combine(_blobCacheFolder, Digest.GetDigest(digest)[0].Hex));
+            return blob;
+        }
+
+        private void InitCacheEnviroment()
         {
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName)))
             {
@@ -25,19 +41,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
 
             _blobCacheFolder = Path.Combine(Environment.GetEnvironmentVariable(Constants.OrasCacheEnvironmentVariableName), "blobs", "sha256");
-        }
-
-        public async Task<ManifestWrapper> GetManifestAsync(string digest, CancellationToken cancellationToken = default)
-        {
-            var manifest = await File.ReadAllTextAsync(Path.Combine(_blobCacheFolder, Digest.GetDigest(digest)[0].Hex), cancellationToken);
-            return JsonConvert.DeserializeObject<ManifestWrapper>(manifest);
-        }
-
-        public async Task<ArtifactBlob> GetBlobAsync(string digest, CancellationToken cancellationToken = default)
-        {
-            var blob = new ArtifactBlob();
-            await blob.ReadFromFileAsync(Path.Combine(_blobCacheFolder, Digest.GetDigest(digest)[0].Hex));
-            return blob;
         }
     }
 }
