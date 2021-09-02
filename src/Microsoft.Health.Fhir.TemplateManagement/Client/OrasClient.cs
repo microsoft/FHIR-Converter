@@ -133,6 +133,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             // oras file is in the same directory with our tool.
             var orasFilePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), orasFileName);
+
             Process process = new Process
             {
                 StartInfo = new ProcessStartInfo(orasFilePath),
