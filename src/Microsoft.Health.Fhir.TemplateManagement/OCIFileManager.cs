@@ -79,6 +79,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             }
 
             // First layer is the base layer.
+            // Clear base layer folder before writing.
+            _overlayFS.ClearBaseLayerFolder();
             await _overlayFS.WriteBaseLayerAsync(sortedLayers[0]);
 
             // Decompress rawlayers to OCI files.

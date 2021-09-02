@@ -71,8 +71,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         {
             EnsureArg.IsNotNull(imageLayers, nameof(imageLayers));
 
-            // Clear image layer folder before writing.
-            ClearImageLayerFolder();
             Directory.CreateDirectory(_workingImageLayerFolder);
 
             // Used to label layers sequence. In this version, only two layers will be generated.
@@ -113,8 +111,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         {
             EnsureArg.IsNotNull(baseLayer, nameof(baseLayer));
 
-            // Clear base layer folder before writing.
-            ClearBaseLayerFolder();
             Directory.CreateDirectory(_workingBaseLayerFolder);
             await baseLayer.WriteToFileAsync(Path.Combine(_workingBaseLayerFolder, "layer1.tar.gz"));
         }
@@ -127,25 +123,21 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         public void ClearWorkingFolder()
         {
             DirectoryHelper.ClearFolder(_workingFolder);
-            Directory.CreateDirectory(_workingFolder);
         }
 
         public void ClearImageFolder()
         {
             DirectoryHelper.ClearFolder(_workingImageFolder);
-            Directory.CreateDirectory(_workingFolder);
         }
 
         public void ClearImageLayerFolder()
         {
             DirectoryHelper.ClearFolder(_workingImageLayerFolder);
-            Directory.CreateDirectory(_workingImageLayerFolder);
         }
 
         public void ClearBaseLayerFolder()
         {
             DirectoryHelper.ClearFolder(_workingBaseLayerFolder);
-            Directory.CreateDirectory(_workingBaseLayerFolder);
         }
 
         private async Task<List<ArtifactBlob>> ReadOciArtifactLayersAsync(string folder)

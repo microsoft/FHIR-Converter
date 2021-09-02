@@ -95,7 +95,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                 if (layer.Content != null)
                 {
                     await layer.WriteToFileAsync(Path.Combine(_imageFolder, layer.FileName));
-                    fileNameList.Add(layer.FileName);
+                    fileNameList.Add($"\"{layer.FileName}\"");
                 }
             }
 
@@ -108,7 +108,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             // In order to remove image's directory prefix. (e.g. "layers/layer1" --> "layer1")
             // Change oras working folder to inputFolder
-            var output = await OrasExecutionAsync(string.Concat(command, argument), _imageFolder);
+            var output = await OrasExecutionAsync(string.Concat(command, " ", argument), _imageFolder);
             var digest = GetImageDigest(output);
             return digest.Value;
         }
