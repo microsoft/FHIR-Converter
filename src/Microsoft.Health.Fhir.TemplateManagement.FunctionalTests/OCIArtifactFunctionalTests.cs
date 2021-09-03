@@ -116,6 +116,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             Assert.True(_isOrasValid, _orasErrorMessage);
             var imageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithValidSequenceNumber";
+            DirectoryHelper.ClearFolder(outputFolder);
+
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
@@ -131,6 +133,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testOneLayerWithoutSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithoutSequenceNumber";
+            DirectoryHelper.ClearFolder(outputFolder);
+
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
@@ -146,6 +150,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testOneLayerWithInValidSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithInValidSequenceNumber";
+            DirectoryHelper.ClearFolder(outputFolder);
+
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
@@ -161,6 +167,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testMultiLayersWithValidSequenceNumberImageReference;
             string outputFolder = "TestData/testMultiLayersWithValidSequenceNumber";
+            DirectoryHelper.ClearFolder(outputFolder);
+
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
@@ -176,6 +184,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testMultiLayersWithInValidSequenceNumberImageReference;
             string outputFolder = "TestData/testMultiLayersWithInValidSequenceNumber";
+            DirectoryHelper.ClearFolder(outputFolder);
+
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
@@ -191,6 +201,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testInvalidCompressedImageReference;
             string outputFolder = "TestData/testInvalidCompressedImage";
+            DirectoryHelper.ClearFolder(outputFolder);
+
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
             await Assert.ThrowsAsync<ArtifactDecompressException>(() => testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true));
@@ -206,6 +218,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             // Pull an image
             string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder1";
+
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkMultiLayersFolder");
+
             var imageInfo = ImageInfo.CreateFromImageReference(initImageReference);
             var testManager = new OciFileManager(_containerRegistryServer, initInputFolder);
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
@@ -239,6 +255,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             // Pull an image
             string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder2";
+
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkNewBaseLayerFolder");
+
             var testManager = new OciFileManager(_containerRegistryServer, initInputFolder);
             var imageInfo = ImageInfo.CreateFromImageReference(initImageReference);
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
@@ -272,6 +292,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             // Pull an image
             string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder3";
+
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkBaseLayerFolder");
+
             var testManager = new OciFileManager(_containerRegistryServer, initInputFolder);
             var imageInfo = ImageInfo.CreateFromImageReference(initImageReference);
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
@@ -298,6 +322,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             string initInputFolder = "TestData/UserFolder4";
             Directory.CreateDirectory(initInputFolder);
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkLayerFolder");
 
             // Modified by user
             File.WriteAllText(Path.Combine(initInputFolder, "add"), "add");
@@ -322,7 +348,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
             string emptyFolder = "emptyFoler";
+
             Directory.CreateDirectory(emptyFolder);
+            DirectoryHelper.ClearFolder(emptyFolder);
 
             // Push image.
             string testPushNewBaseLayerImageReference = _containerRegistryServer + "/templatetest:empty";
