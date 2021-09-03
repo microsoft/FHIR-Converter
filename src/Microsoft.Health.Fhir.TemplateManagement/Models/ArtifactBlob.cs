@@ -20,9 +20,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         // Sha256 digest of the layer.
         public string Digest { get; set; }
 
-        // Sequence number of the layer.
-        public int SequenceNumber { get; set; } = -1;
-
         // Content of the layer (tar.gz).
         public virtual byte[] Content { get; set; }
 

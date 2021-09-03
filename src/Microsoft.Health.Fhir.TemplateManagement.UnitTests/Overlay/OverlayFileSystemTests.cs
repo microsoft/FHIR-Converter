@@ -46,8 +46,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
         public async Task GivenOciArtifactLayers_WhenWriteImageFolder_AllOciArtifactLayersWillBeWrittenToFolderAsync()
         {
             string layerPath = "TestData/TarGzFiles/userV1.tar.gz";
-            var layer1 = new ArtifactBlob() { SequenceNumber = 1, Content = File.ReadAllBytes(layerPath), FileName = "userV1.tar.gz" };
-            var layer2 = new ArtifactBlob() { SequenceNumber = 2, Content = File.ReadAllBytes(layerPath), FileName = "userV2.tar.gz" };
+            var layer1 = new ArtifactBlob() { Content = File.ReadAllBytes(layerPath), FileName = "userV1.tar.gz" };
+            var layer2 = new ArtifactBlob() { Content = File.ReadAllBytes(layerPath), FileName = "userV2.tar.gz" };
             string workingFolder = "TestData/testImageLayer";
             DirectoryHelper.ClearFolder(workingFolder);
             var overlayFs = new OverlayFileSystem(workingFolder);
