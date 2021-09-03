@@ -69,13 +69,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             ValidationUtility.ValidateManifest(manifest);
             foreach (var layerInfo in manifest.Layers)
             {
-                var currentLayers = imageLayers.Where(layer => layer.Digest == layerInfo.Digest).ToList();
-                if (!currentLayers.Any())
+                var currentLayer = imageLayers.Where(layer => layer.Digest == layerInfo.Digest).FirstOrDefault();
+                if (currentLayer == null)
                 {
                     throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, $"Layer {layerInfo.Digest} not found.");
                 }
 
-                sortedLayers.Add(currentLayers[0]);
+                sortedLayers.Add(currentLayer);
             }
 
             return sortedLayers;
@@ -119,13 +119,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             EnsureArg.IsNotNull(fileLayer.FileContent, nameof(fileLayer.FileContent));
 
             var baseContents = new Dictionary<string, byte[]> { };
-            var diffLayer = new OciFileLayer() { FileName = "layer1.tar.gz" };
+            var diffLayer = new OciFileLayer() { FileName = Constants.BaseLayerFileName };
 
             // Base layer is null or empty.
             if (baseLayer != null && baseLayer.Content != null)
             {
                 baseContents = baseLayer.FileContent ?? new Dictionary<string, byte[]> { };
-                diffLayer.FileName = "layer2.tar.gz";
+                diffLayer.FileName = Constants.UserLayerFileName;
             }
 
             var diffLayerFileDigest = new Dictionary<string, string> { };

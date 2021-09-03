@@ -22,6 +22,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         private readonly string _workingImageFolder;
         private readonly string _workingImageLayerFolder;
         private readonly string _workingBaseLayerFolder;
+        private const int _startLayerNumber = 1;
 
         public OverlayFileSystem(string workingFolder)
         {
@@ -75,7 +76,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
             // Used to label layers sequence. In this version, only two layers will be generated.
             // Should not exceed 9 in the future.
-            var layerNumber = 1;
+            var layerNumber = _startLayerNumber;
             foreach (var layer in imageLayers)
             {
                 if (layer.Content == null)
@@ -112,7 +113,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             EnsureArg.IsNotNull(baseLayer, nameof(baseLayer));
 
             Directory.CreateDirectory(_workingBaseLayerFolder);
-            await baseLayer.WriteToFileAsync(Path.Combine(_workingBaseLayerFolder, "layer1.tar.gz"));
+            await baseLayer.WriteToFileAsync(Path.Combine(_workingBaseLayerFolder, Constants.BaseLayerFileName));
         }
 
         public bool IsCleanWorkingFolder()

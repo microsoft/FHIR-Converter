@@ -56,12 +56,23 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         Task WriteBaseLayerAsync(ArtifactBlob baseLayer);
 
         /// <summary>
+        /// Whether the working folder is empty.
+        /// </summary>
+        /// <returns>true or false.</returns>
+        bool IsCleanWorkingFolder();
+
+        /// <summary>
         /// Clear working folder.
         /// </summary>
         void ClearWorkingFolder();
 
         /// <summary>
         /// Clear hidden image folder.
+        /// </summary>
+        void ClearImageFolder();
+
+        /// <summary>
+        /// Clear hidden image layer's folder.
         /// </summary>
         void ClearImageLayerFolder();
 

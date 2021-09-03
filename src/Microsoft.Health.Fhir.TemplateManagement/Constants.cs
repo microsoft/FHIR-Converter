@@ -24,6 +24,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         internal const string ManifestFileName = "manifest";
 
+        internal const string BaseLayerFileName = "layer1.tar.gz";
+
+        internal const string UserLayerFileName = "layer2.tar.gz";
+
         internal const string OverlayMetaJsonFile = ".image/meta.info";
 
         internal const int TimeOutMilliseconds = 30000;

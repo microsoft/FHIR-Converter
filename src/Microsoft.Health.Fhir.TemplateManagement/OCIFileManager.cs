@@ -16,8 +16,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement
     public class OciFileManager
     {
         private readonly IOciClient _client;
-        private readonly OverlayFileSystem _overlayFS;
-        private readonly OverlayOperator _overlayOperator;
+        private readonly IOverlayFileSystem _overlayFS;
+        private readonly IOverlayOperator _overlayOperator;
 
         public OciFileManager(string registry, string workingFolder)
         {
