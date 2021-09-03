@@ -12,8 +12,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         /// <summary>
         /// Get template container from a image ID
         /// </summary>
-        /// <param name="token"></param>
-        /// <param name="imageReference"></param>
+        /// <param name="imageReference">Image reference. registry/name:tag or registry/name@digest.</param>
+        /// <param name="token">Token for authentication.</param>
         /// <returns>TemplateCollectionProvider</returns>
         ITemplateCollectionProvider CreateTemplateCollectionProvider(string imageReference, string token);
     }

@@ -46,7 +46,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             // Optional to write in user's folder.
             await _overlayFS.WriteManifestAsync(artifactImage.Manifest);
 
-            var fileLayer = await UnpackOciImageAsync (artifactImage);
+            var fileLayer = await UnpackOciImageAsync(artifactImage);
             await _overlayFS.WriteOciFileLayerAsync(fileLayer);
             return artifactImage;
         }

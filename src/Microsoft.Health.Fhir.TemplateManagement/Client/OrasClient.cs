@@ -20,6 +20,9 @@ using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
+    /// <summary>
+    /// Partial class.
+    /// </summary>
     public partial class OrasClient : IOciClient
     {
         private readonly string _imageFolder;

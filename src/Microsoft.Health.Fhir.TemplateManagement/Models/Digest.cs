@@ -1,6 +1,9 @@
-﻿using System;
+﻿// -------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
+// -------------------------------------------------------------------------------------------------
+
 using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
@@ -15,7 +18,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public string Hex { get; set; }
 
-        public string Value { get { return string.Concat(Algorithm, ":", Hex); } }
+        public string Value
+        {
+            get { return string.Concat(Algorithm, ":", Hex); }
+        }
 
         public static List<Digest> GetDigest(string input)
         {

@@ -12,8 +12,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         /// <summary>
         /// Get template container from a image ID
         /// </summary>
+        /// <param name="imageReference">Image reference. registry/name:tag or registry/name@digest.</param>
         /// <param name="token">Token for authentication.</param>
-        /// <param name="imageReference"></param>
         /// <returns>Interface of OCIArtifactProvider</returns>
         IOciArtifactProvider CreateProvider(string imageReference, string token);
     }

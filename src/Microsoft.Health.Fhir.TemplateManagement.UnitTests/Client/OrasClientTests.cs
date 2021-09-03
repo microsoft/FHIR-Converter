@@ -46,7 +46,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         {
             yield return new object[] { "testImage", "v1" };
             yield return new object[] { "testImage", string.Empty };
-            yield return new object[] { "testImage",":@" };
+            yield return new object[] { "testImage", ":@" };
         }
 
         public static IEnumerable<object[]> GetValidFolder()
