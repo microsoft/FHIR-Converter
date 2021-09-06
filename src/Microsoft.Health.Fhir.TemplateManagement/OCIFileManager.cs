@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         {
             if (!_overlayFS.IsCleanWorkingFolder() && !forceOverride)
             {
-                throw new TemplateManagementException($"The folder is not empty. If force to override, please add -f in parameters");
+                throw new TemplateManagementException($"The folder is not empty. If force to override existed files, please add -f in parameters");
             }
 
             var artifactImage = await _client.PullImageAsync(name, reference);
