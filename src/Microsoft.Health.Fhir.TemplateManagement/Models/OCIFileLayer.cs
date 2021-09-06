@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
-    public class OCIFileLayer : OCIArtifactLayer
+    public class OciFileLayer : ArtifactBlob
     {
         public Dictionary<string, byte[]> FileContent { get; set; } = new Dictionary<string, byte[]> { };
     }

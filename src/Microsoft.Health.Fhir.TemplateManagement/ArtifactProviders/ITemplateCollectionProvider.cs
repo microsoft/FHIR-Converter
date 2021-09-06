@@ -10,7 +10,7 @@ using DotLiquid;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 {
-    public interface ITemplateCollectionProvider : IOCIArtifactProvider
+    public interface ITemplateCollectionProvider : IOciArtifactProvider
     {
         /// <summary>
         /// Get template collection from OCI artifact.

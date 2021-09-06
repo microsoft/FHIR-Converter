@@ -5,6 +5,7 @@
 
 using System;
 using System.Text.RegularExpressions;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
@@ -83,7 +84,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
                 throw new ImageReferenceException(TemplateManagementErrorCode.InvalidReference, "Template reference format is invalid: registry server is missing.");
             }
 
-            imageReference = imageReference.Substring(registryDelimiterPosition + 1);
+            imageReference = imageReference[(registryDelimiterPosition + 1) ..];
             string imageName = imageReference;
             if (imageReference.Contains(ImageDigestDelimiter, StringComparison.OrdinalIgnoreCase))
             {
@@ -115,7 +116,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
             var registryDelimiterPosition = imageReference.IndexOf(ImageRegistryDelimiter, StringComparison.InvariantCultureIgnoreCase);
             var registryServer = imageReference.Substring(0, registryDelimiterPosition);
-            string imageMetaStr = imageReference.Substring(registryDelimiterPosition + 1);
+            string imageMetaStr = imageReference[(registryDelimiterPosition + 1) ..];
 
             if (imageMetaStr.Contains(ImageDigestDelimiter, StringComparison.OrdinalIgnoreCase))
             {
@@ -135,7 +136,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         private static Tuple<string, string> ParseImageMeta(string input, char delimiter)
         {
             var index = input.IndexOf(delimiter, StringComparison.InvariantCultureIgnoreCase);
-            return new Tuple<string, string>(input.Substring(0, index), input.Substring(index + 1));
+            return new Tuple<string, string>(input.Substring(0, index), input[(index + 1) ..]);
         }
 
         private static void ValidateImageName(string imageName)

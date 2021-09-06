@@ -9,8 +9,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
     public class OverlayMetadata
     {
-        public int SequenceNumber { get; set; } = -1;
-
         public Dictionary<string, string> FileDigests { get; set; }
 
         public string Signature { get; set; }

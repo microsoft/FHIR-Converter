@@ -9,13 +9,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
-    public class TemplateLayer : OCIArtifactLayer
+    public class TemplateLayer : ArtifactBlob
     {
         public Dictionary<string, Template> TemplateContent { get; set; }
 

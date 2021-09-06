@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using EnsureThat;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
@@ -21,23 +22,23 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
     public class OverlayOperator : IOverlayOperator
     {
-        public OCIFileLayer ExtractOCIFileLayer(OCIArtifactLayer artifactLayer)
+        public OciFileLayer Extract(ArtifactBlob artifactLayer)
         {
             EnsureArg.IsNotNull(artifactLayer, nameof(artifactLayer));
 
             if (artifactLayer.Content == null)
             {
-                return new OCIFileLayer();
+                return new OciFileLayer();
             }
 
             var artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(artifactLayer.Content));
             var metaBytes = artifacts.GetValueOrDefault(Constants.OverlayMetaJsonFile);
-            OverlayMetadata metaJson = null;
+
             if (metaBytes != null)
             {
                 try
                 {
-                    metaJson = JsonConvert.DeserializeObject<OverlayMetadata>(Encoding.UTF8.GetString(metaBytes));
+                    var metaJson = JsonConvert.DeserializeObject<OverlayMetadata>(Encoding.UTF8.GetString(metaBytes));
                 }
                 catch (Exception ex)
                 {
@@ -45,36 +46,49 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 }
             }
 
-            return new OCIFileLayer()
+            return new OciFileLayer()
             {
                 Content = artifactLayer.Content,
                 FileContent = artifacts,
                 FileName = artifactLayer.FileName,
-                SequenceNumber = metaJson?.SequenceNumber ?? -1,
                 Digest = artifactLayer.Digest,
                 Size = artifactLayer.Size,
             };
         }
 
-        public List<OCIFileLayer> ExtractOCIFileLayers(List<OCIArtifactLayer> artifactLayers)
+        public List<OciFileLayer> Extract(List<ArtifactBlob> artifactLayers)
         {
             EnsureArg.IsNotNull(artifactLayers, nameof(artifactLayers));
 
-            return artifactLayers.Select(ExtractOCIFileLayer).ToList();
+            return artifactLayers.Select(Extract).ToList();
         }
 
-        public List<OCIFileLayer> SortOCIFileLayersBySequenceNumber(List<OCIFileLayer> fileLayers)
+        public List<ArtifactBlob> Sort(List<ArtifactBlob> imageLayers, ManifestWrapper manifest)
         {
-            EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
+            var sortedLayers = new List<ArtifactBlob>();
+            ValidationUtility.ValidateManifest(manifest);
+            foreach (var layerInfo in manifest.Layers)
+            {
+                var currentLayer = imageLayers.Where(layer => layer.Digest == layerInfo.Digest).FirstOrDefault();
+                if (currentLayer == null)
+                {
+                    throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, $"Layer {layerInfo.Digest} not found.");
+                }
 
-            var sortedLayers = fileLayers.OrderBy(layer => layer.SequenceNumber <= -1 ? int.MaxValue : layer.SequenceNumber).ToList();
-            ValidateSortedLayersBySequenceNumber(sortedLayers);
+                sortedLayers.Add(currentLayer);
+            }
+
             return sortedLayers;
         }
 
-        public OCIFileLayer MergeOCIFileLayers(List<OCIFileLayer> sortedLayers)
+        public OciFileLayer Merge(List<OciFileLayer> sortedLayers)
         {
             EnsureArg.IsNotNull(sortedLayers, nameof(sortedLayers));
+
+            if (!sortedLayers.Any())
+            {
+                return null;
+            }
 
             List<string> removedFiles = new List<string>();
             Dictionary<string, byte[]> mergedFiles = new Dictionary<string, byte[]> { };
@@ -96,25 +110,22 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 }
             }
 
-            return new OCIFileLayer() { FileContent = mergedFiles, FileName = "mergedLayer", SequenceNumber = sortedLayers.Count() };
+            return new OciFileLayer() { FileContent = mergedFiles, FileName = "mergedLayer" };
         }
 
-        public OCIFileLayer GenerateDiffLayer(OCIFileLayer fileLayer, OCIFileLayer baseLayer = null)
+        public OciFileLayer GenerateDiffLayer(OciFileLayer fileLayer, OciFileLayer baseLayer = null)
         {
             EnsureArg.IsNotNull(fileLayer, nameof(fileLayer));
+            EnsureArg.IsNotNull(fileLayer.FileContent, nameof(fileLayer.FileContent));
 
-            int sequenceNumber = 1;
             var baseContents = new Dictionary<string, byte[]> { };
-            if (baseLayer != null && baseLayer.FileContent != null)
-            {
-                baseContents = baseLayer.FileContent;
-                sequenceNumber = baseLayer.SequenceNumber + 1;
-            }
+            var diffLayer = new OciFileLayer() { FileName = Constants.BaseLayerFileName };
 
-            var diffLayer = new OCIFileLayer() { SequenceNumber = sequenceNumber, FileName = $"layer{sequenceNumber}.tar.gz" };
-            if (fileLayer.FileContent == null)
+            // Base layer is null or empty.
+            if (baseLayer != null && baseLayer.Content != null)
             {
-                return diffLayer;
+                baseContents = baseLayer.FileContent ?? new Dictionary<string, byte[]> { };
+                diffLayer.FileName = Constants.UserLayerFileName;
             }
 
             var diffLayerFileDigest = new Dictionary<string, string> { };
@@ -157,7 +168,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
             if (diffLayer.FileContent.Count != 0)
             {
-                var metaJson = new OverlayMetadata() { SequenceNumber = sequenceNumber, FileDigests = diffLayerFileDigest };
+                var metaJson = new OverlayMetadata() { FileDigests = diffLayerFileDigest };
                 var metaContent = JsonConvert.SerializeObject(metaJson);
                 diffLayer.FileContent.Add(Constants.OverlayMetaJsonFile, Encoding.UTF8.GetBytes(metaContent));
             }
@@ -165,13 +176,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             return diffLayer;
         }
 
-        public OCIArtifactLayer ArchiveOCIFileLayer(OCIFileLayer fileLayer)
+        public ArtifactBlob Archive(OciFileLayer fileLayer)
         {
             EnsureArg.IsNotNull(fileLayer, nameof(fileLayer));
 
             if (fileLayer.FileContent.Count == 0)
             {
-                return new OCIArtifactLayer();
+                return fileLayer;
             }
 
             var fileContents = fileLayer.FileContent;
@@ -185,31 +196,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 }
             }
 
-            var resultLayer = new OCIArtifactLayer() { SequenceNumber = fileLayer.SequenceNumber, Content = resultStream.ToArray(), FileName = fileLayer.FileName };
-            return resultLayer;
+            fileLayer.Content = resultStream.ToArray();
+            return fileLayer;
         }
 
-        public List<OCIArtifactLayer> ArchiveOCIFileLayers(List<OCIFileLayer> fileLayers)
+        public List<ArtifactBlob> Archive(List<OciFileLayer> fileLayers)
         {
             EnsureArg.IsNotNull(fileLayers, nameof(fileLayers));
 
-            return fileLayers.Select(ArchiveOCIFileLayer).ToList();
-        }
-
-        private void ValidateSortedLayersBySequenceNumber(List<OCIFileLayer> sortedLayers)
-        {
-            for (var index = 1; index <= sortedLayers.Count(); index++)
-            {
-                if (index == sortedLayers.Count() && sortedLayers[index - 1].SequenceNumber == -1)
-                {
-                    continue;
-                }
-
-                if (sortedLayers[index - 1].SequenceNumber != index)
-                {
-                    throw new OverlayException(TemplateManagementErrorCode.SortLayersFailed, "Some layer's sequence number are invalid. Layers could not be sorted and merged.");
-                }
-            }
+            return fileLayers.Select(Archive).ToList();
         }
     }
 }

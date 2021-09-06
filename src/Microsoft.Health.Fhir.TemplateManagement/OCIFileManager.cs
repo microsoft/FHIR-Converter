@@ -5,90 +5,111 @@
 
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
+using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Overlay;
 
 namespace Microsoft.Health.Fhir.TemplateManagement
 {
-    public class OCIFileManager
+    public class OciFileManager
     {
-        private readonly OrasClient _orasClient;
-        private readonly OverlayFileSystem _overlayFS;
-        private readonly OverlayOperator _overlayOperator;
+        private readonly IOciClient _client;
+        private readonly IOverlayFileSystem _overlayFS;
+        private readonly IOverlayOperator _overlayOperator;
 
-        public OCIFileManager(string imageReference, string workingFolder)
+        public OciFileManager(string registry, string workingFolder)
         {
-            ImageInfo.ValidateImageReference(imageReference);
-            _orasClient = new OrasClient(imageReference);
             _overlayFS = new OverlayFileSystem(workingFolder);
+            _client = new OrasClient(registry, Path.Combine(workingFolder, Constants.HiddenLayersFolder));
             _overlayOperator = new OverlayOperator();
         }
 
-        public async Task PullOCIImageAsync()
+        /// <summary>
+        /// Pull image layers into working folder.
+        /// Layers will be written into hidden image folder.
+        /// </summary>
+        /// <param name="name">Image name.</param>
+        /// <param name="reference">Image reference (digest or tag).</param>
+        /// <param name="forceOverride">Whether to override the existed files.</param>
+        /// <returns>OCI artifact image.</returns>
+        public async Task<ArtifactImage> PullOciImageAsync(string name, string reference, bool forceOverride = false)
         {
-            _overlayFS.ClearImageLayerFolder();
-            await _orasClient.PullImageAsync(_overlayFS.WorkingImageLayerFolder);
-        }
-
-        public void UnpackOCIImage()
-        {
-            var rawLayers = _overlayFS.ReadImageLayers();
-            if (rawLayers.Count == 0)
+            if (!_overlayFS.IsCleanWorkingFolder() && !forceOverride)
             {
-                return;
+                throw new TemplateManagementException($"The folder is not empty. If force to override existed files, please add -f in parameters");
             }
 
-            var fileLayers = _overlayOperator.ExtractOCIFileLayers(rawLayers);
-            var sortedLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
-            _overlayFS.WriteBaseLayers(sortedLayers.GetRange(0, 1).Cast<OCIArtifactLayer>().ToList());
-            var mergedFileLayer = _overlayOperator.MergeOCIFileLayers(sortedLayers);
-            _overlayFS.WriteMergedOCIFileLayer(mergedFileLayer);
+            var artifactImage = await _client.PullImageAsync(name, reference);
+
+            // Optional to write in user's folder.
+            await _overlayFS.WriteManifestAsync(artifactImage.Manifest);
+
+            var fileLayer = await UnpackOciImageAsync(artifactImage);
+            await _overlayFS.WriteOciFileLayerAsync(fileLayer);
+            return artifactImage;
         }
 
-        public void PackOCIImage(bool ignoreBaseLayers = false)
+        /// <summary>
+        /// Push image layers from working folder in order.
+        /// </summary>
+        /// <param name="name">Image name.</param>
+        /// <param name="tag">Image tag. </param>
+        /// <param name="ignoreBaseLayers">Whether to ignore base layer when packing.</param>
+        /// <returns>Image digest.</returns>
+        public async Task<string> PushOciImageAsync(string name, string tag, bool ignoreBaseLayers = false)
         {
-            var mergedLayer = _overlayFS.ReadMergedOCIFileLayer();
-            var baseArtifactLayers = new List<OCIArtifactLayer>();
+            var fileLayer = await _overlayFS.ReadOciFileLayerAsync();
+            var artifactImage = await PackOciImageAsync(fileLayer, ignoreBaseLayers);
+
+            return await _client.PushImageAsync(name, tag, artifactImage);
+        }
+
+        /// <summary>
+        /// Extract layers and merge files from layers in order.
+        /// The order of layers is given in manifest.
+        /// </summary>
+        private async Task<OciFileLayer> UnpackOciImageAsync(ArtifactImage image)
+        {
+            var sortedLayers = _overlayOperator.Sort(image.Blobs, image.Manifest);
+            if (sortedLayers.Count == 0)
+            {
+                return new OciFileLayer();
+            }
+
+            // First layer is the base layer.
+            // Clear base layer folder before writing.
+            _overlayFS.ClearBaseLayerFolder();
+            await _overlayFS.WriteBaseLayerAsync(sortedLayers[0]);
+
+            // Decompress rawlayers to OCI files.
+            var ociFileLayers = _overlayOperator.Extract(sortedLayers);
+
+            // Merge OCI files.
+            var unpackedLayer = _overlayOperator.Merge(ociFileLayers);
+            return unpackedLayer;
+        }
+
+        /// <summary>
+        /// Generate and archive the diff layer into tar.gz file.
+        /// </summary>
+        private async Task<ArtifactImage> PackOciImageAsync(OciFileLayer ociFileLayer, bool ignoreBaseLayers)
+        {
+            ArtifactBlob baseArtifactLayer = new OciFileLayer();
             if (!ignoreBaseLayers)
             {
-                baseArtifactLayers = _overlayFS.ReadBaseLayers();
+                baseArtifactLayer = await _overlayFS.ReadBaseLayerAsync();
             }
 
-            var snapshotLayer = GenerateBaseFileLayer(baseArtifactLayers);
-            var diffLayer = _overlayOperator.GenerateDiffLayer(mergedLayer, snapshotLayer);
-            var diffArtifactLayer = _overlayOperator.ArchiveOCIFileLayer(diffLayer);
-            if (baseArtifactLayers.Count == 0)
-            {
-                _overlayFS.WriteBaseLayers(new List<OCIArtifactLayer> { diffArtifactLayer });
-            }
+            var extractedBaseLayer = _overlayOperator.Extract(baseArtifactLayer);
 
-            baseArtifactLayers.Add(diffArtifactLayer);
-            _overlayFS.WriteImageLayers(baseArtifactLayers);
-        }
+            // Generate diff layer by comparing files' digests.
+            var diffLayer = _overlayOperator.GenerateDiffLayer(ociFileLayer, extractedBaseLayer);
 
-        public async Task PushOCIImageAsync()
-        {
-            var rawLayers = _overlayFS.ReadImageLayers();
-            var fileLayers = _overlayOperator.ExtractOCIFileLayers(rawLayers);
-            var sortedLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
-            await _orasClient.PushImageAsync(_overlayFS.WorkingImageLayerFolder, sortedLayers.Select(layer => layer.FileName).ToList());
-        }
-
-        private OCIFileLayer GenerateBaseFileLayer(List<OCIArtifactLayer> baseArtifactLayers)
-        {
-            if (baseArtifactLayers == null || baseArtifactLayers.Count == 0)
-            {
-                return null;
-            }
-
-            var fileLayers = _overlayOperator.ExtractOCIFileLayers(baseArtifactLayers);
-            var sortedFileLayers = _overlayOperator.SortOCIFileLayersBySequenceNumber(fileLayers);
-            var mergedFileLayer = _overlayOperator.MergeOCIFileLayers(sortedFileLayers);
-            return mergedFileLayer;
+            // Archive the diff layer.
+            var diffArtifactLayer = _overlayOperator.Archive(diffLayer);
+            return new ArtifactImage() { Blobs = new List<ArtifactBlob> { baseArtifactLayer, diffArtifactLayer } };
         }
     }
 }

@@ -41,12 +41,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         // OverlayException
         ImageLayersNotFound = 3101,
         OverlayMetaJsonInvalid = 3102,
-        SequenceNumberReadFailed = 3103,
-        SortLayersFailed = 3104,
-        BaseLayerNotFound = 3105,
+        BaseLayerLoadFailed = 3103,
 
         // OrasException
         OrasTimeOut = 3201,
         OrasProcessFailed = 3202,
+        OrasCacheManifestFailed = 3203,
+        OrasCacheBlobFailed = 3204,
     }
 }
