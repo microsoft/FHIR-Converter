@@ -4,14 +4,16 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Threading.Tasks;
+using Microsoft.Azure.ContainerRegistry.Models;
 
-namespace Microsoft.Health.Fhir.TemplateManagement.Client
+namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
-    public interface IOrasClient
+    public class ArtifactImage
     {
-        Task PullImageAsync(string outputFolder);
+        public string ImageDigest { get; set; }
 
-        Task PushImageAsync(string inputFolder, List<string> filePathList);
+        public ManifestWrapper Manifest { get; set; }
+
+        public List<ArtifactBlob> Blobs { get; set; } = new List<ArtifactBlob>();
     }
 }

@@ -32,7 +32,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             InitDefaultTemplates();
         }
 
-        public IOCIArtifactProvider CreateProvider(string imageReference, string token)
+        public IOciArtifactProvider CreateProvider(string imageReference, string token)
         {
             EnsureArg.IsNotNull(imageReference, nameof(imageReference));
             EnsureArg.IsNotNull(token, nameof(token));
@@ -52,7 +52,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement
             }
 
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
-            var client = new ACRClient(imageInfo.Registry, token);
+            var client = new AcrClient(imageInfo.Registry, token);
             return new TemplateCollectionProvider(imageInfo, client, _templateCache, _configuration);
         }
 

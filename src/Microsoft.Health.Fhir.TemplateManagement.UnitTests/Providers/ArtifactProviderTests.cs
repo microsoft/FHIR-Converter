@@ -19,7 +19,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 {
     public class ArtifactProviderTests
     {
-        private OCIArtifactProvider _artifactProvider;
+        private OciArtifactProvider _artifactProvider;
 
         public ArtifactProviderTests()
         {
@@ -112,42 +112,42 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         [Theory]
         [MemberData(nameof(GetValidLayerInfo))]
-        public async Task GivenValidLayerInfo_WhenGetLayerFromACR_ACorrectArtifactLayerShouldBeReturnedAsync(string imageReference, string layerDigest)
+        public async Task GivenValidLayerInfo_WhenGetLayerFromAcr_ACorrectArtifactLayerShouldBeReturnedAsync(string imageReference, string layerDigest)
         {
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
-            _artifactProvider = new OCIArtifactProvider(imageInfo, MockClient);
-            OCIArtifactLayer artifactLayer = await _artifactProvider.GetLayerAsync(layerDigest);
+            _artifactProvider = new OciArtifactProvider(imageInfo, MockClient);
+            ArtifactBlob artifactLayer = await _artifactProvider.GetLayerAsync(layerDigest);
             var ex = Record.Exception(() => ValidationUtility.ValidateOneBlob((byte[])artifactLayer.Content, layerDigest));
             Assert.Null(ex);
         }
 
         [Theory]
         [MemberData(nameof(GetManifestInfo))]
-        public async Task GivenManifestInfo_WhenGetManifestFromACR_ACorrectManifestShouldBeReturnedAsync(string imageReference, string expectedManifestPath)
+        public async Task GivenManifestInfo_WhenGetManifestFromAcr_ACorrectManifestShouldBeReturnedAsync(string imageReference, string expectedManifestPath)
         {
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
-            _artifactProvider = new OCIArtifactProvider(imageInfo, MockClient);
+            _artifactProvider = new OciArtifactProvider(imageInfo, MockClient);
             var manifest = await _artifactProvider.GetManifestAsync();
             Assert.Equal(File.ReadAllText(expectedManifestPath), JsonConvert.SerializeObject(manifest));
         }
 
         [Theory]
         [MemberData(nameof(GetImageInfoForArtifact))]
-        public async Task GivenImageInfo_WhenGetOCIArtifactFromACR_ACorrectOCIArtifactShouldBeReturnedAsync(string imageReference, int expectedLayerCounts)
+        public async Task GivenImageInfo_WhenGetOciArtifactFromAcr_ACorrectOciArtifactShouldBeReturnedAsync(string imageReference, int expectedLayerCounts)
         {
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
-            _artifactProvider = new OCIArtifactProvider(imageInfo, MockClient);
-            var artifact = await _artifactProvider.GetOCIArtifactAsync();
-            Assert.Equal(expectedLayerCounts, artifact.Count());
+            _artifactProvider = new OciArtifactProvider(imageInfo, MockClient);
+            var artifact = await _artifactProvider.GetOciArtifactAsync();
+            Assert.Equal(expectedLayerCounts, artifact.Blobs.Count());
         }
 
         [Theory]
         [MemberData(nameof(GetImageInfoForArtifact))]
-        public async Task GivenImageInfo_WhenGetOCIArtifactFromACR_IfTokenUnAuth_ExceptionWillBeThrownAsync(string imageReference, int expectedLayerCounts)
+        public async Task GivenImageInfo_WhenGetOciArtifactFromAcr_IfTokenUnAuth_ExceptionWillBeThrownAsync(string imageReference, int expectedLayerCounts)
         {
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
-            _artifactProvider = new OCIArtifactProvider(imageInfo, MockClientWithUnAuthToken);
-            await Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(async () => await _artifactProvider.GetOCIArtifactAsync());
+            _artifactProvider = new OciArtifactProvider(imageInfo, MockClientWithUnAuthToken);
+            await Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(async () => await _artifactProvider.GetOciArtifactAsync());
             Assert.IsType<int>(expectedLayerCounts);
         }
     }

@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
@@ -15,22 +16,22 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// </summary>
         /// <param name="artifactLayer">One OCIArtifactLayer</param>
         /// <returns>One OCIFileLayer</returns>
-        OCIFileLayer ExtractOCIFileLayer(OCIArtifactLayer artifactLayer);
+        OciFileLayer Extract(ArtifactBlob artifactLayer);
 
         /// <summary>
         /// Extract List of OCIArtifactLayers to a list of OCIFileLayers
         /// </summary>
         /// <param name="artifactLayers">List of OCIArtifactLayers</param>
         /// <returns>List of OCIFileLayers</returns>
-        List<OCIFileLayer> ExtractOCIFileLayers(List<OCIArtifactLayer> artifactLayers);
+        List<OciFileLayer> Extract(List<ArtifactBlob> artifactLayers);
 
         /// <summary>
-        /// Stably sort OCIFileLayers by sequence number.
-        /// If sequence number is -1 , the layer will be placed at the end of list.
+        /// Sort OCIArtifactLayers according to manifest.
         /// </summary>
-        /// <param name="fileLayers">List of OCIFileLayers</param>
-        /// <returns>The sorted list of OCIFileLayers</returns>
-        List<OCIFileLayer> SortOCIFileLayersBySequenceNumber(List<OCIFileLayer> fileLayers);
+        /// <param name="imageLayers"> List of OCIArtifactLayers.</param>
+        /// <param name="manifest">Manifest of the image.</param>
+        /// <returns>Sorted list of OCIArtifactLayers.</returns>
+        List<ArtifactBlob> Sort(List<ArtifactBlob> imageLayers, ManifestWrapper manifest);
 
         /// <summary>
         /// Merge sorted OCIFileLayers.
@@ -39,7 +40,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// </summary>
         /// <param name="sortedLayers">List of sorted OCIFileLayers</param>
         /// <returns>One Merged OCIFileLayer.</returns>
-        OCIFileLayer MergeOCIFileLayers(List<OCIFileLayer> sortedLayers);
+        OciFileLayer Merge(List<OciFileLayer> sortedLayers);
 
         /// <summary>
         /// Generate diff OCIFileLayer by comparing two OCIArtifactLayers.
@@ -47,20 +48,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
         /// <param name="fileLayer">source OCIFileLayer</param>
         /// <param name="snapshotLayer">target OCIFileLayer</param>
         /// <returns>The diff layer.</returns>
-        OCIFileLayer GenerateDiffLayer(OCIFileLayer fileLayer, OCIFileLayer snapshotLayer);
+        OciFileLayer GenerateDiffLayer(OciFileLayer fileLayer, OciFileLayer snapshotLayer);
 
         /// <summary>
         /// Archive OCIFileLayer to OCIArtifactLayer by compress file content by gzip mode.
         /// </summary>
         /// <param name="fileLayer">One OCIFileLayer</param>
         /// <returns>One OCIArtifactLayer</returns>
-        OCIArtifactLayer ArchiveOCIFileLayer(OCIFileLayer fileLayer);
+        ArtifactBlob Archive(OciFileLayer fileLayer);
 
         /// <summary>
         /// Archive List of OCIFileLayers to OCIArtifactLayers.
         /// </summary>
         /// <param name="fileLayers">List of OCIFileLayer</param>
         /// <returns>List of OCIArtifactLayer</returns>
-        List<OCIArtifactLayer> ArchiveOCIFileLayers(List<OCIFileLayer> fileLayers);
+        List<ArtifactBlob> Archive(List<OciFileLayer> fileLayers);
     }
 }

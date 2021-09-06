@@ -3,22 +3,25 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
+using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 {
-    public class OCIArtifactFunctionalTests : IAsyncLifetime
+    public class OciArtifactFunctionalTests : IAsyncLifetime
     {
+        private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
         private static readonly string _testTarGzPath = Path.Join("TestData", "TarGzFiles");
         private readonly string _containerRegistryServer;
-        private readonly string _baseLayerTemplatePath = Path.Join(_testTarGzPath, "layer1.tar.gz");
+        private readonly string _baseLayerTemplatePath = Path.Join(_testTarGzPath, "layerbase.tar.gz");
         private readonly string _userLayerTemplatePath = Path.Join(_testTarGzPath, "layer2.tar.gz");
         private readonly string _emptySequenceNumberLayerPath = Path.Join(_testTarGzPath, "userV1.tar.gz");
         private readonly string _invalidCompressedImageLayerPath = Path.Join(_testTarGzPath, "invalid1.tar.gz");
@@ -31,7 +34,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private bool _isOrasValid = true;
         private readonly string _orasErrorMessage = "Oras tool invalid.";
 
-        public OCIArtifactFunctionalTests()
+        public OciArtifactFunctionalTests()
         {
             _containerRegistryServer = "localhost:5000";
             _testOneLayerWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_valid_sequence";
@@ -54,6 +57,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public Task DisposeAsync()
         {
+            DirectoryHelper.ClearFolder(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName));
             return Task.CompletedTask;
         }
 
@@ -83,7 +87,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         private async Task PushMultiLayersWithInValidSequenceNumberAsync()
         {
-            string command = $"push {_testMultiLayersWithInValidSequenceNumberImageReference} {_emptySequenceNumberLayerPath} {_userLayerTemplatePath}";
+            string command = $"push {_testMultiLayersWithInValidSequenceNumberImageReference} {_baseLayerTemplatePath} {_emptySequenceNumberLayerPath}";
             await ExecuteOrasCommandAsync(command);
         }
 
@@ -107,45 +111,53 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         // Pull one layer image with valid sequence number, successfully pulled with base layer copied.
         [Fact]
-        public async Task GivenOneLayerImageWithValidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
+        public async Task GivenOneLayerImage_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
-            string imageReference = _testOneLayerWithValidSequenceNumberImageReference;
+            var imageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithValidSequenceNumber";
-            var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
-            Assert.Equal(842, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            DirectoryHelper.ClearFolder(outputFolder);
+
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
+            await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
+            Assert.Equal(843, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
-        // Pull one layer image without sequence number, successfully pulled without base layer copied.
+        // Pull one layer image without sequence number, successfully pulled with base layer copied.
         [Fact]
-        public async Task GivenOneLayerImageWithoutSequenceNumber_WhenPulled_ArtifactsWillBePulledWithoutBaseLayerCopiedAsync()
+        public async Task GivenOneLayerImageWithoutSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testOneLayerWithoutSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithoutSequenceNumber";
-            var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
-            Assert.Equal(2, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
-            Assert.False(Directory.Exists(Path.Combine(outputFolder, ".image", "base")));
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
+
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
+            await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
+            Assert.Equal(4, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
-        // Pull one layer image with invalid sequence number, exception will be thrown.
+        // Pull one layer image with invalid sequence number, successfully pulled with base layer copied.
         [Fact]
-        public async Task GivenOneLayerImageWithInvalidSequenceNumber_WhenPulled_ExceptionWillBeThrownAsync()
+        public async Task GivenOneLayerImageWithInvalidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testOneLayerWithInValidSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithInValidSequenceNumber";
-            var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            Assert.Throws<OverlayException>(() => testManager.UnpackOCIImage());
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
+
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
+            await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
+            Assert.Equal(4, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
         // Pull multi-layers with valid sequence numbers, successfully pulled with base layer copied.
@@ -155,25 +167,31 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testMultiLayersWithValidSequenceNumberImageReference;
             string outputFolder = "TestData/testMultiLayersWithValidSequenceNumber";
-            var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
-            Assert.Equal(9, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            DirectoryHelper.ClearFolder(outputFolder);
+
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
+            await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
+            Assert.Equal(10, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
-        // Pull multi-layers with invalid sequence numbers, exception will be thrown.
+        // Pull multi-layers with invalid sequence numbers, successfully pulled with base layer copied.
         [Fact]
-        public async Task GivenMultiLayersImageWithInvalidSequenceNumber_WhenPulled_ExceptionWillBeThrownAsync()
+        public async Task GivenMultiLayersImageWithInvalidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testMultiLayersWithInValidSequenceNumberImageReference;
             string outputFolder = "TestData/testMultiLayersWithInValidSequenceNumber";
-            var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            Assert.Throws<OverlayException>(() => testManager.UnpackOCIImage());
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
+
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
+            await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
+            Assert.Equal(32, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
         // Pull invalid image, exception will be thrown.
@@ -183,24 +201,30 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             Assert.True(_isOrasValid, _orasErrorMessage);
             string imageReference = _testInvalidCompressedImageReference;
             string outputFolder = "TestData/testInvalidCompressedImage";
-            var testManager = new OCIFileManager(imageReference, outputFolder);
-            await testManager.PullOCIImageAsync();
-            Assert.Throws<ArtifactArchiveException>(() => testManager.UnpackOCIImage());
-            ClearFolder(outputFolder);
+            DirectoryHelper.ClearFolder(outputFolder);
+
+            var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
+            await Assert.ThrowsAsync<ArtifactArchiveException>(() => testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true));
+            DirectoryHelper.ClearFolder(outputFolder);
         }
 
         // Push artifacts which unpacked from base layer. If user modify artifacts, successfully pushed multi-layers image.
         [Fact]
-        public async Task GivenAnInputFolderUnpackedFromBaseLayer_WhenPushOCIFiles_IfUserModify_TwoLayersWillBePushedAsync()
+        public async Task GivenAnInputFolderUnpackedFromBaseLayer_WhenPushOciFiles_IfUserModify_TwoLayersWillBePushedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
 
             // Pull an image
             string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder1";
-            var testManager = new OCIFileManager(initImageReference, initInputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
+
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkMultiLayersFolder");
+
+            var imageInfo = ImageInfo.CreateFromImageReference(initImageReference);
+            var testManager = new OciFileManager(_containerRegistryServer, initInputFolder);
+            await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
 
             // Modified by user
             File.WriteAllText(Path.Combine(initInputFolder, "add"), "add");
@@ -209,31 +233,35 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             // Push new image.
             string testPushMultiLayersImageReference = _containerRegistryServer + "/templatetest:push_multilayers";
-            var pushManager = new OCIFileManager(testPushMultiLayersImageReference, initInputFolder);
-            pushManager.PackOCIImage();
-            await pushManager.PushOCIImageAsync();
+            imageInfo = ImageInfo.CreateFromImageReference(testPushMultiLayersImageReference);
+            var pushManager = new OciFileManager(_containerRegistryServer, initInputFolder);
+            await pushManager.PushOciImageAsync(imageInfo.ImageName, imageInfo.Tag);
 
             // Check Image
             string command = $"pull {testPushMultiLayersImageReference} -o checkMultiLayersFolder";
             await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Equal(2, Directory.EnumerateFiles("checkMultiLayersFolder", "*.tar.gz", SearchOption.AllDirectories).Count());
             Assert.Equal(4, StreamUtility.DecompressFromTarGzStream(File.OpenRead(Path.Combine("checkMultiLayersFolder", "layer2.tar.gz"))).Count());
-            ClearFolder(initInputFolder);
-            ClearFolder("checkMultiLayersFolder");
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkMultiLayersFolder");
         }
 
         // Push artifacts and ignore base layer, successfully pushed one-layer image.
         [Fact]
-        public async Task GivenAnInputFolderUnpackedFromBaseLayer_WhenPushOCIFiles_IfIgnoreBaseLayer_NewBaseLayerWillBePushedAsync()
+        public async Task GivenAnInputFolderUnpackedFromBaseLayer_WhenPushOciFiles_IfIgnoreBaseLayer_NewBaseLayerWillBePushedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
 
             // Pull an image
             string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder2";
-            var testManager = new OCIFileManager(initImageReference, initInputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
+
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkNewBaseLayerFolder");
+
+            var testManager = new OciFileManager(_containerRegistryServer, initInputFolder);
+            var imageInfo = ImageInfo.CreateFromImageReference(initImageReference);
+            await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
 
             // Modified by user
             File.WriteAllText(Path.Combine(initInputFolder, "add"), "add");
@@ -242,104 +270,95 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             // Push new image ignore base layer.
             string testPushNewBaseLayerImageReference = _containerRegistryServer + "/templatetest:push_newbaselayer";
-            var pushManager = new OCIFileManager(testPushNewBaseLayerImageReference, initInputFolder);
-            pushManager.PackOCIImage(true);
-            await pushManager.PushOCIImageAsync();
+            var pushManager = new OciFileManager(_containerRegistryServer, initInputFolder);
+            imageInfo = ImageInfo.CreateFromImageReference(testPushNewBaseLayerImageReference);
+            await pushManager.PushOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
 
             // Check Image
             string command = $"pull {testPushNewBaseLayerImageReference} -o checkNewBaseLayerFolder";
             await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Single(Directory.EnumerateFiles("checkNewBaseLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
             Assert.Equal(840, StreamUtility.DecompressFromTarGzStream(File.OpenRead(Path.Combine("checkNewBaseLayerFolder", "layer1.tar.gz"))).Count());
-            ClearFolder(initInputFolder);
-            ClearFolder("checkNewBaseLayerFolder");
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkNewBaseLayerFolder");
         }
 
         // Push artifacts which unpacked from base layer. If user don't modify artifacts, successfully pushed one-layer image.
         [Fact]
-        public async Task GivenAnInputFolderUnpackedFromBaseLayer_WhenPushOCIFiles_IfUserDoNotModify_OnlyBaseLayerWillBePushedAsync()
+        public async Task GivenAnInputFolderUnpackedFromBaseLayer_WhenPushOciFiles_IfUserDoNotModify_OnlyBaseLayerWillBePushedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
 
             // Pull an image
             string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder3";
-            var testManager = new OCIFileManager(initImageReference, initInputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
+
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkBaseLayerFolder");
+
+            var testManager = new OciFileManager(_containerRegistryServer, initInputFolder);
+            var imageInfo = ImageInfo.CreateFromImageReference(initImageReference);
+            await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
 
             // Push image.
             string testPushBaseLayerImageReference = _containerRegistryServer + "/templatetest:push_baselayer";
-            var pushManager = new OCIFileManager(testPushBaseLayerImageReference, initInputFolder);
-            pushManager.PackOCIImage();
-            await pushManager.PushOCIImageAsync();
+            var pushManager = new OciFileManager(_containerRegistryServer, initInputFolder);
+            imageInfo = ImageInfo.CreateFromImageReference(testPushBaseLayerImageReference);
+            await pushManager.PushOciImageAsync(imageInfo.ImageName, imageInfo.Tag);
 
             // Check Image
             string command = $"pull {testPushBaseLayerImageReference} -o checkBaseLayerFolder";
             await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Single(Directory.EnumerateFiles("checkBaseLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
-            ClearFolder(initInputFolder);
-            ClearFolder("checkBaseLayerFolder");
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkBaseLayerFolder");
         }
 
         // Push artifacts without base layer, successfully pushed one-layer image.
         [Fact]
-        public async Task GivenAnInputFolderWithoutBaseLayer_WhenPushOCIFiles_IfUserModify_OneBaseLayerWillBePushedAsync()
+        public async Task GivenAnInputFolderWithoutBaseLayer_WhenPushOciFiles_IfUserModify_OneBaseLayerWillBePushedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
 
-            // Pull an image
-            string initImageReference = _testOneLayerWithoutSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder4";
-            var testManager = new OCIFileManager(initImageReference, initInputFolder);
-            await testManager.PullOCIImageAsync();
-            testManager.UnpackOCIImage();
+            Directory.CreateDirectory(initInputFolder);
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkLayerFolder");
 
             // Modified by user
             File.WriteAllText(Path.Combine(initInputFolder, "add"), "add");
 
             // Push image.
             string testPushNewBaseLayerImageReference = _containerRegistryServer + "/templatetest:pushwithoutbase_newbaselayer";
-            var pushManager = new OCIFileManager(testPushNewBaseLayerImageReference, initInputFolder);
-            pushManager.PackOCIImage();
-            await pushManager.PushOCIImageAsync();
+            var pushManager = new OciFileManager(_containerRegistryServer, initInputFolder);
+            var imageInfo = ImageInfo.CreateFromImageReference(testPushNewBaseLayerImageReference);
+            await pushManager.PushOciImageAsync(imageInfo.ImageName, imageInfo.Tag);
 
             // Check Image
             string command = $"pull {testPushNewBaseLayerImageReference} -o checkLayerFolder";
             await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Single(Directory.EnumerateFiles("checkLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
-            ClearFolder(initInputFolder);
-            ClearFolder("checkLayerFolder");
+            DirectoryHelper.ClearFolder(initInputFolder);
+            DirectoryHelper.ClearFolder("checkLayerFolder");
         }
 
         // Push empty artifact folder, exception will be thrown.
         [Fact]
-        public async Task GivenAnEmptyInputFolder_WhenPushOCIFiles_OneBaseLayerWillBePushedAsync()
+        public async Task GivenAnEmptyInputFolder_WhenPushOciFiles_OneBaseLayerWillBePushedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
             string emptyFolder = "emptyFoler";
+
             Directory.CreateDirectory(emptyFolder);
+            DirectoryHelper.ClearFolder(emptyFolder);
 
             // Push image.
             string testPushNewBaseLayerImageReference = _containerRegistryServer + "/templatetest:empty";
-            var pushManager = new OCIFileManager(testPushNewBaseLayerImageReference, emptyFolder);
-            pushManager.PackOCIImage();
-            await Assert.ThrowsAsync<OverlayException>(() => pushManager.PushOCIImageAsync());
+            var pushManager = new OciFileManager(_containerRegistryServer, emptyFolder);
+            var imageInfo = ImageInfo.CreateFromImageReference(testPushNewBaseLayerImageReference);
+            await Assert.ThrowsAsync<OverlayException>(() => pushManager.PushOciImageAsync(imageInfo.ImageName, imageInfo.Tag));
 
-            ClearFolder(emptyFolder);
-        }
-
-        private void ClearFolder(string directory)
-        {
-            EnsureArg.IsNotNullOrEmpty(directory, nameof(directory));
-
-            if (!Directory.Exists(directory))
-            {
-                return;
-            }
-
-            DirectoryInfo folder = new DirectoryInfo(directory);
-            folder.Delete(true);
+            DirectoryHelper.ClearFolder(emptyFolder);
         }
     }
 }

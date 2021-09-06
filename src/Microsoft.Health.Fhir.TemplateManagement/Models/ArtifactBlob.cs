@@ -4,12 +4,13 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.IO;
+using System.Threading.Tasks;
 using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
-    public class OCIArtifactLayer
+    public class ArtifactBlob
     {
         public string FileName { get; set; }
 
@@ -19,26 +20,23 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         // Sha256 digest of the layer.
         public string Digest { get; set; }
 
-        // Sequence number of the layer.
-        public int SequenceNumber { get; set; } = -1;
-
-        // Content of the layer.
+        // Content of the layer (tar.gz).
         public virtual byte[] Content { get; set; }
 
-        public void WriteToFolder(string directory)
+        public async Task WriteToFileAsync(string path)
         {
-            EnsureArg.IsNotNullOrEmpty(directory, nameof(directory));
+            EnsureArg.IsNotNullOrEmpty(path, nameof(path));
 
             if (Content == null)
             {
                 return;
             }
 
-            Directory.CreateDirectory(directory);
-            File.WriteAllBytes(Path.Combine(directory, Path.GetFileName(FileName)), Content);
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+            await File.WriteAllBytesAsync(path, Content);
         }
 
-        public void ReadFromFolder(string path)
+        public async Task ReadFromFileAsync(string path)
         {
             EnsureArg.IsNotNullOrEmpty(path, nameof(path));
 
@@ -47,7 +45,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
                 return;
             }
 
-            Content = File.ReadAllBytes(path);
+            Content = await File.ReadAllBytesAsync(path);
             Digest = StreamUtility.CalculateDigestFromSha256(Content);
             Size = Content.Length;
             FileName = Path.GetFileName(path);
