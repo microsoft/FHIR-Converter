@@ -42,7 +42,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
         {
             var rawBytes = File.ReadAllBytes(_tarGzFilePath);
             var compressedStream = new MemoryStream(rawBytes);
-            var artifacts = StreamUtility.DecompressTarGzStream(compressedStream);
+            var artifacts = StreamUtility.DecompressFromTarGzStream(compressedStream);
 
             Dictionary<string, byte[]> expectedFile = new Dictionary<string, byte[]> { };
             var expectedFiles = Directory.EnumerateFiles(_decompressedFileFolder, "*.*", SearchOption.AllDirectories);
@@ -61,13 +61,28 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
             CompareTwoDictionary(artifacts, expectedFile);
         }
 
+        [Fact]
+        public void GivenFileContent_WhenCompressWithFixedTimeStamp_CompressedFilesWithFixedDigestShouldBeReturned()
+        {
+            var artifacts = new Dictionary<string, byte[]>();
+            var files = Directory.EnumerateFiles(_decompressedFileFolder, "*.*", SearchOption.AllDirectories);
+            foreach (var file in files)
+            {
+                artifacts.Add(file, File.ReadAllBytes(file));
+            }
+
+            var result = StreamUtility.CompressToTarGzStream(artifacts, true);
+
+            Assert.Equal("sha256:ff7cf9df6478a0b2cef8936120e4a50db1aa9640c592ade0192aea453eedecab", StreamUtility.CalculateDigestFromSha256(result.ToArray()));
+        }
+
         [Theory]
         [MemberData(nameof(GetTarGzFilePathWithCountsOfFiles))]
         public void GivenACompressedTarGzFile_WhenDecompress_TheCorrectCountsOfFilesShouldBeReturned(string tarGzPath, int counts)
         {
             var rawBytes = File.ReadAllBytes(tarGzPath);
             var compressedStream = new MemoryStream(rawBytes);
-            var artifacts = StreamUtility.DecompressTarGzStream(compressedStream);
+            var artifacts = StreamUtility.DecompressFromTarGzStream(compressedStream);
             Assert.Equal(counts, artifacts.Count());
         }
 
@@ -101,7 +116,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
         public void GiveAnInvalidTarGzFilePath_WhenDecompressArtifactsLayer_ExceptionShouldBeThrown(string tarGzPath)
         {
             var artifactsLayer = File.ReadAllBytes(tarGzPath);
-            Assert.Throws<ArtifactDecompressException>(() => StreamUtility.DecompressTarGzStream(new MemoryStream(artifactsLayer)));
+            Assert.Throws<ArtifactArchiveException>(() => StreamUtility.DecompressFromTarGzStream(new MemoryStream(artifactsLayer)));
         }
     }
 }

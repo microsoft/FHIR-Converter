@@ -32,8 +32,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         // ImageTooLargeException
         ImageSizeTooLarge = 2701,
 
-        // ImageDecompressedException
-        DecompressImageFailed = 2801,
+        // ArtifactArchiveException
+        DecompressArtifactFailed = 2801,
+        CompressArtifactFailed = 2802,
 
         // TemplateParseException
         ParseTemplatesFailed = 2901,

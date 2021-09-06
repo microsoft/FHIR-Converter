@@ -13,9 +13,6 @@ using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Newtonsoft.Json;
-using SharpCompress.Common;
-using SharpCompress.Writers;
-using SharpCompress.Writers.Tar;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
@@ -30,7 +27,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 return new OCIFileLayer();
             }
 
-            var artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(artifactLayer.Content));
+            var artifacts = StreamUtility.DecompressFromTarGzStream(new MemoryStream(artifactLayer.Content));
             var metaBytes = artifacts.GetValueOrDefault(Constants.OverlayMetaJsonFile);
             OverlayMetadata metaJson = null;
             if (metaBytes != null)
@@ -175,17 +172,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
 
             var fileContents = fileLayer.FileContent;
-            var resultStream = new MemoryStream();
-            using (Stream stream = resultStream)
-            using (var tarWriter = new TarWriter(stream, new TarWriterOptions(CompressionType.GZip, true)))
-            {
-                foreach (var eachFile in fileContents)
-                {
-                    tarWriter.Write(eachFile.Key, new MemoryStream(eachFile.Value));
-                }
-            }
-
-            var resultLayer = new OCIArtifactLayer() { SequenceNumber = fileLayer.SequenceNumber, Content = resultStream.ToArray(), FileName = fileLayer.FileName };
+            var tarGzStream = StreamUtility.CompressToTarGzStream(fileContents, true);
+            var resultLayer = new OCIArtifactLayer() { SequenceNumber = fileLayer.SequenceNumber, Content = tarGzStream.ToArray(), FileName = fileLayer.FileName };
             return resultLayer;
         }
 

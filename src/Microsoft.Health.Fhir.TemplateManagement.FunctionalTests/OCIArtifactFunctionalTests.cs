@@ -185,7 +185,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string outputFolder = "TestData/testInvalidCompressedImage";
             var testManager = new OCIFileManager(imageReference, outputFolder);
             await testManager.PullOCIImageAsync();
-            Assert.Throws<ArtifactDecompressException>(() => testManager.UnpackOCIImage());
+            Assert.Throws<ArtifactArchiveException>(() => testManager.UnpackOCIImage());
             ClearFolder(outputFolder);
         }
 
@@ -217,7 +217,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string command = $"pull {testPushMultiLayersImageReference} -o checkMultiLayersFolder";
             await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Equal(2, Directory.EnumerateFiles("checkMultiLayersFolder", "*.tar.gz", SearchOption.AllDirectories).Count());
-            Assert.Equal(4, StreamUtility.DecompressTarGzStream(File.OpenRead(Path.Combine("checkMultiLayersFolder", "layer2.tar.gz"))).Count());
+            Assert.Equal(4, StreamUtility.DecompressFromTarGzStream(File.OpenRead(Path.Combine("checkMultiLayersFolder", "layer2.tar.gz"))).Count());
             ClearFolder(initInputFolder);
             ClearFolder("checkMultiLayersFolder");
         }
@@ -250,7 +250,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string command = $"pull {testPushNewBaseLayerImageReference} -o checkNewBaseLayerFolder";
             await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Single(Directory.EnumerateFiles("checkNewBaseLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
-            Assert.Equal(840, StreamUtility.DecompressTarGzStream(File.OpenRead(Path.Combine("checkNewBaseLayerFolder", "layer1.tar.gz"))).Count());
+            Assert.Equal(840, StreamUtility.DecompressFromTarGzStream(File.OpenRead(Path.Combine("checkNewBaseLayerFolder", "layer1.tar.gz"))).Count());
             ClearFolder(initInputFolder);
             ClearFolder("checkNewBaseLayerFolder");
         }

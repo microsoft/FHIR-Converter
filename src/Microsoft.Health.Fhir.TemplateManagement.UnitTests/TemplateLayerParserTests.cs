@@ -52,7 +52,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         public void GivenRawBytes_WhenDecompressRawBytesToStringContent_CorrectArtifactsShouldBeReturned(string filePath, int expectedArtifactCounts)
         {
             var content = File.ReadAllBytes(filePath);
-            var artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(content));
+            var artifacts = StreamUtility.DecompressFromTarGzStream(new MemoryStream(content));
             Assert.Equal(expectedArtifactCounts + 1, artifacts.Count());
         }
 
@@ -76,7 +76,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         public void GivenRawBytes_WhenParseRawBytesToTemplates_IfDecompressedFailed_ExceptionShouldBeThrown(string filePath)
         {
             var content = File.ReadAllBytes(filePath);
-            Assert.Throws<ArtifactDecompressException>(() => StreamUtility.DecompressTarGzStream(new MemoryStream(content)));
+            Assert.Throws<ArtifactArchiveException>(() => StreamUtility.DecompressFromTarGzStream(new MemoryStream(content)));
         }
 
         [Fact]

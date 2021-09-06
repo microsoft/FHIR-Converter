@@ -54,7 +54,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
                 stream.Position = 0;
 
                 TemplateLayer templateLayer = new TemplateLayer();
-                var artifacts = StreamUtility.DecompressTarGzStream(stream);
+                var artifacts = StreamUtility.DecompressFromTarGzStream(stream);
                 templateLayer.TemplateContent = TemplateLayerParser.ParseToTemplates(artifacts);
                 templateLayer.Digest = digest;
                 templateLayer.Size = artifacts.Sum(x => x.Value.Length);
