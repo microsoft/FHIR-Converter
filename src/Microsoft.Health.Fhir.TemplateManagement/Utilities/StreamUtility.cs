@@ -75,7 +75,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
 
                     if (fixedTimestamp)
                     {
-                        ChangeHeaderTimestamp(resultStream, GzipTimestamp);
+                        FixTimestampInGzHeader(resultStream);
                     }
                 }
 
@@ -107,9 +107,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
             return hashedValue;
         }
 
-        private static void ChangeHeaderTimestamp(MemoryStream inputStream, DateTime timestamp)
+        private static void FixTimestampInGzHeader(MemoryStream inputStream)
         {
-            int num = (int)((timestamp.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000);
+            int num = (int)((GzipTimestamp.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000);
             byte[] obj = new byte[4]
             {
                     0,

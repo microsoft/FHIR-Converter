@@ -11,7 +11,6 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
-using SharpCompress.Readers;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
