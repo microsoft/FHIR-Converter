@@ -2,10 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <SolutionFolder>..\..\</SolutionFolder>
+    <BinFolder>$(SolutionFolder)bin\</BinFolder>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+    <SolutionFolder>../../</SolutionFolder>
+    <BinFolder>$(SolutionFolder)bin/</BinFolder>
+  </PropertyGroup>
+    
   <ItemGroup>
     <PackageReference Include="Microsoft.IdentityModel.Protocols" Version="6.8.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
@@ -21,6 +30,18 @@
     <ProjectReference Include="..\Microsoft.Health.Fhir.TemplateManagement\Microsoft.Health.Fhir.TemplateManagement.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="$(BinFolder)Hl7v2DefaultTemplates.tar.gz">
+      <Link>Hl7v2DefaultTemplates.tar.gz</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(BinFolder)CcdaDefaultTemplates.tar.gz">
+      <Link>CcdaDefaultTemplates.tar.gz</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="$(BinFolder)JsonDefaultTemplates.tar.gz">
+      <Link>JsonDefaultTemplates.tar.gz</Link>
+    </EmbeddedResource>
+  </ItemGroup>
+    
   <ItemGroup>
     <None Update="TestData\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

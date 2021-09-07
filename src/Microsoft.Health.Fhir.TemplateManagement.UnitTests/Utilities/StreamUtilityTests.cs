@@ -62,7 +62,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
         }
 
         [Fact]
-        public void GivenFileContent_WhenCompressWithFixedTimeStamp_CompressedFilesWithFixedDigestShouldBeReturned()
+        public void GivenFileContent_WhenCompressWithFixedTimestamp_CompressedFilesWithFixedDigestShouldBeReturned()
         {
             var artifacts = new Dictionary<string, byte[]>();
             var files = Directory.EnumerateFiles(_decompressedFileFolder, "*.*", SearchOption.AllDirectories);

@@ -184,8 +184,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
             var fileContents = fileLayer.FileContent;
             var tarGzStream = StreamUtility.CompressToTarGzStream(fileContents, true);
-            var resultLayer = new ArtifactBlob() { Content = tarGzStream.ToArray(), FileName = fileLayer.FileName };
-            return resultLayer;
+            fileLayer.Content = tarGzStream.ToArray();
+            return fileLayer;
         }
 
         public List<ArtifactBlob> Archive(List<OciFileLayer> fileLayers)

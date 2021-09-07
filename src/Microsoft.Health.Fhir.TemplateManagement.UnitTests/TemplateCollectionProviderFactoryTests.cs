@@ -5,13 +5,13 @@
 
 using System.Collections.Generic;
 using System.IO;
-using ICSharpCode.SharpZipLib.GZip;
-using ICSharpCode.SharpZipLib.Tar;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Utilities;
+using SharpCompress.Readers;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
@@ -96,38 +96,24 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         public void GiveNewDefaultTemplateTarGzFile_WhenInitDefaultTemplate_DefaultTemplatesWillBeInit(string targzName, string imageReference, string templateFolder)
         {
-            CreateTarGz(targzName, templateFolder);
+            CompressTarGzFile(targzName, templateFolder);
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(_cache, Options.Create(_config));
             DefaultTemplateInfo templateInfo = new DefaultTemplateInfo(DataType.Hl7v2, imageReference, targzName);
             factory.InitDefaultTemplates(templateInfo);
             Assert.NotNull(factory.CreateProvider(imageReference, string.Empty));
         }
 
-        private void CreateTarGz(string outputTarFilename, string sourceDirectory)
+        private void CompressTarGzFile(string outputFile, string sourceFolder)
         {
-            using FileStream fs = new FileStream(outputTarFilename, FileMode.Create, FileAccess.Write, FileShare.None);
-            using Stream gzipStream = new GZipOutputStream(fs);
-            using TarArchive tarArchive = TarArchive.CreateOutputTarArchive(gzipStream);
-            AddDirectoryFilesToTar(tarArchive, sourceDirectory, true);
-        }
-
-        private void AddDirectoryFilesToTar(TarArchive tarArchive, string sourceDirectory, bool recurse)
-        {
-            if (recurse)
+            var artifacts = new Dictionary<string, byte[]>();
+            var files = Directory.EnumerateFiles(sourceFolder, "*.*", SearchOption.AllDirectories);
+            foreach (var file in files)
             {
-                string[] directories = Directory.GetDirectories(sourceDirectory);
-                foreach (string directory in directories)
-                {
-                    AddDirectoryFilesToTar(tarArchive, directory, recurse);
-                }
+                artifacts.Add(file, File.ReadAllBytes(file));
             }
 
-            string[] filenames = Directory.GetFiles(sourceDirectory);
-            foreach (string filename in filenames)
-            {
-                TarEntry tarEntry = TarEntry.CreateEntryFromFile(filename);
-                tarArchive.WriteEntry(tarEntry, true);
-            }
+            var result = StreamUtility.CompressToTarGzStream(artifacts, true);
+            File.WriteAllBytes(outputFile, result.ToArray());
         }
     }
 }

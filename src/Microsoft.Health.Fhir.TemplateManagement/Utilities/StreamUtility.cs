@@ -20,7 +20,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
 {
     public class StreamUtility
     {
-        private static DateTime GzipTimeStamp => new DateTime(2021, 1, 1);
+        private static DateTime GzipTimestamp => new DateTime(2021, 1, 1);
 
         public static Dictionary<string, byte[]> DecompressFromTarGzStream(Stream tarGzStream)
         {
@@ -56,7 +56,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
             }
         }
 
-        public static MemoryStream CompressToTarGzStream(Dictionary<string, byte[]> fileContents, bool fixedTimeStamp)
+        public static MemoryStream CompressToTarGzStream(Dictionary<string, byte[]> fileContents, bool fixedTimestamp)
         {
             EnsureArg.IsNotNull(fileContents, nameof(fileContents));
 
@@ -73,9 +73,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
                         }
                     }
 
-                    if (fixedTimeStamp)
+                    if (fixedTimestamp)
                     {
-                        ChangeHeaderTimeStamp(resultStream, GzipTimeStamp);
+                        ChangeHeaderTimestamp(resultStream, GzipTimestamp);
                     }
                 }
 
@@ -107,9 +107,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
             return hashedValue;
         }
 
-        private static void ChangeHeaderTimeStamp(MemoryStream inputStream, DateTime timeStamp)
+        private static void ChangeHeaderTimestamp(MemoryStream inputStream, DateTime timestamp)
         {
-            int num = (int)((timeStamp.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000);
+            int num = (int)((timestamp.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000);
             byte[] obj = new byte[4]
             {
                     0,
