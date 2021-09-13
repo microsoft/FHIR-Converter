@@ -42,7 +42,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
         {
             var rawBytes = File.ReadAllBytes(_tarGzFilePath);
             var compressedStream = new MemoryStream(rawBytes);
-            var artifacts = StreamUtility.DecompressFromTarGzStream(compressedStream);
+            var artifacts = StreamUtility.DecompressFromTarGz(compressedStream);
 
             Dictionary<string, byte[]> expectedFile = new Dictionary<string, byte[]> { };
             var expectedFiles = Directory.EnumerateFiles(_decompressedFileFolder, "*.*", SearchOption.AllDirectories);
@@ -71,9 +71,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
                 artifacts.Add(file, File.ReadAllBytes(file));
             }
 
-            var result = StreamUtility.CompressToTarGzStream(artifacts, true);
+            var result = StreamUtility.CompressToTarGz(artifacts, true);
 
-            Assert.Equal("sha256:ff7cf9df6478a0b2cef8936120e4a50db1aa9640c592ade0192aea453eedecab", StreamUtility.CalculateDigestFromSha256(result.ToArray()));
+            Assert.Equal("sha256:a795f0737dddd33784564fe1c190c33a947b6f3614ccb9a6ff31afb19e3f78b3", StreamUtility.CalculateDigestFromSha256(result.ToArray()));
         }
 
         [Theory]
@@ -82,7 +82,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
         {
             var rawBytes = File.ReadAllBytes(tarGzPath);
             var compressedStream = new MemoryStream(rawBytes);
-            var artifacts = StreamUtility.DecompressFromTarGzStream(compressedStream);
+            var artifacts = StreamUtility.DecompressFromTarGz(compressedStream);
             Assert.Equal(counts, artifacts.Count());
         }
 
@@ -116,7 +116,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
         public void GiveAnInvalidTarGzFilePath_WhenDecompressArtifactsLayer_ExceptionShouldBeThrown(string tarGzPath)
         {
             var artifactsLayer = File.ReadAllBytes(tarGzPath);
-            Assert.Throws<ArtifactArchiveException>(() => StreamUtility.DecompressFromTarGzStream(new MemoryStream(artifactsLayer)));
+            Assert.Throws<ArtifactArchiveException>(() => StreamUtility.DecompressFromTarGz(new MemoryStream(artifactsLayer)));
         }
     }
 }

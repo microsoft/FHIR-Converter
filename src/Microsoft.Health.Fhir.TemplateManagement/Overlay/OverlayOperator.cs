@@ -28,7 +28,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 return new OciFileLayer();
             }
 
-            var artifacts = StreamUtility.DecompressFromTarGzStream(new MemoryStream(artifactLayer.Content));
+            var artifacts = StreamUtility.DecompressFromTarGz(new MemoryStream(artifactLayer.Content));
             var metaBytes = artifacts.GetValueOrDefault(Constants.OverlayMetaJsonFile);
 
             if (metaBytes != null)
@@ -183,8 +183,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
 
             var fileContents = fileLayer.FileContent;
-            var tarGzStream = StreamUtility.CompressToTarGzStream(fileContents, true);
-            fileLayer.Content = tarGzStream.ToArray();
+            fileLayer.Content = StreamUtility.CompressToTarGz(fileContents, true);
             return fileLayer;
         }
 

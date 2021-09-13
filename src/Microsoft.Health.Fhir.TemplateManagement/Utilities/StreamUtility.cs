@@ -20,14 +20,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
 {
     public class StreamUtility
     {
-        private static DateTime GzipTimestamp => new DateTime(2021, 1, 1);
-
-        public static Dictionary<string, byte[]> DecompressFromTarGzStream(Stream tarGzStream)
+        public static Dictionary<string, byte[]> DecompressFromTarGz(Stream tarGzStream)
         {
             try
             {
                 Dictionary<string, byte[]> artifacts = new Dictionary<string, byte[]> { };
-                var reader = ReaderFactory.Open(tarGzStream);
+                using var reader = ReaderFactory.Open(tarGzStream);
                 while (reader.MoveToNextEntry())
                 {
                     if (!reader.Entry.IsDirectory)
@@ -56,7 +54,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
             }
         }
 
-        public static MemoryStream CompressToTarGzStream(Dictionary<string, byte[]> fileContents, bool fixedTimestamp)
+        public static byte[] CompressToTarGz(Dictionary<string, byte[]> fileContents, bool resetTimestamp)
         {
             EnsureArg.IsNotNull(fileContents, nameof(fileContents));
 
@@ -73,13 +71,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
                         }
                     }
 
-                    if (fixedTimestamp)
+                    if (resetTimestamp)
                     {
-                        FixTimestampInGzHeader(resultStream);
+                        ResetTimestampInGzHeader(resultStream);
                     }
                 }
 
-                return resultStream;
+                return resultStream.ToArray();
             }
             catch (Exception ex)
             {
@@ -107,23 +105,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
             return hashedValue;
         }
 
-        private static void FixTimestampInGzHeader(MemoryStream inputStream)
+        private static void ResetTimestampInGzHeader(MemoryStream inputStream)
         {
-            int num = (int)((GzipTimestamp.Ticks - new DateTime(1970, 1, 1).Ticks) / 10000000);
-            byte[] obj = new byte[4]
-            {
-                    0,
-                    0,
-                    0,
-                    0,
-            };
-            obj[0] = (byte)num;
-            obj[1] = (byte)(num >> 8);
-            obj[2] = (byte)(num >> 16);
-            obj[3] = (byte)(num >> 24);
-            byte[] array = obj;
+            byte[] array = { 0, 0, 0, 0 };
+            var position = inputStream.Position;
+
+            // Write header.
             inputStream.Seek(4, SeekOrigin.Begin);
             inputStream.Write(array, 0, array.Length);
+
+            // Restore stream position
+            inputStream.Seek(position, SeekOrigin.Begin);
         }
     }
 }

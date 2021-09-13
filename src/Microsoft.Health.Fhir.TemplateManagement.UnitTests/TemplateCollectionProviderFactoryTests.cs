@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -104,14 +105,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         private void CompressTarGzFile(string outputFile, string sourceFolder)
         {
-            var artifacts = new Dictionary<string, byte[]>();
             var files = Directory.EnumerateFiles(sourceFolder, "*.*", SearchOption.AllDirectories);
-            foreach (var file in files)
-            {
-                artifacts.Add(file, File.ReadAllBytes(file));
-            }
-
-            var result = StreamUtility.CompressToTarGzStream(artifacts, true);
+            var artifacts = files.ToDictionary(file => file, File.ReadAllBytes);
+            var result = StreamUtility.CompressToTarGz(artifacts, true);
             File.WriteAllBytes(outputFile, result.ToArray());
         }
     }

@@ -241,7 +241,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string command = $"pull {testPushMultiLayersImageReference} -o checkMultiLayersFolder";
             await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Equal(2, Directory.EnumerateFiles("checkMultiLayersFolder", "*.tar.gz", SearchOption.AllDirectories).Count());
-            Assert.Equal(4, StreamUtility.DecompressFromTarGzStream(new MemoryStream(File.ReadAllBytes(Path.Combine("checkMultiLayersFolder", "layer2.tar.gz")))).Count());
+            using FileStream fs = File.OpenRead(Path.Combine("checkMultiLayersFolder", "layer2.tar.gz"));
+            Assert.Equal(4, StreamUtility.DecompressFromTarGz(fs).Count());
             DirectoryHelper.ClearFolder(initInputFolder);
             DirectoryHelper.ClearFolder("checkMultiLayersFolder");
         }
@@ -278,7 +279,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string command = $"pull {testPushNewBaseLayerImageReference} -o checkNewBaseLayerFolder";
             await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
             Assert.Single(Directory.EnumerateFiles("checkNewBaseLayerFolder", "*.tar.gz", SearchOption.AllDirectories));
-            Assert.Equal(840, StreamUtility.DecompressFromTarGzStream(new MemoryStream(File.ReadAllBytes(Path.Combine("checkNewBaseLayerFolder", "layer1.tar.gz")))).Count());
+            using FileStream fs = File.OpenRead(Path.Combine("checkNewBaseLayerFolder", "layer1.tar.gz"));
+            Assert.Equal(840, StreamUtility.DecompressFromTarGz(fs).Count());
             DirectoryHelper.ClearFolder(initInputFolder);
             DirectoryHelper.ClearFolder("checkNewBaseLayerFolder");
         }
