@@ -8,61 +8,81 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using ICSharpCode.SharpZipLib.GZip;
-using ICSharpCode.SharpZipLib.Tar;
+using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using SharpCompress.Common;
+using SharpCompress.Readers;
+using SharpCompress.Writers;
+using SharpCompress.Writers.Tar;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
 {
     public class StreamUtility
     {
-        public static Dictionary<string, byte[]> DecompressTarGzStream(Stream sourceStream)
+        public static Dictionary<string, byte[]> DecompressFromTarGz(Stream tarGzStream)
         {
             try
             {
-                using var gzipStream = new GZipInputStream(sourceStream);
-                using var tarIn = new TarInputStream(gzipStream, Encoding.UTF8);
-                return ExtractContents(tarIn);
-            }
-            catch (Exception ex)
-            {
-                throw new ArtifactDecompressException(TemplateManagementErrorCode.DecompressImageFailed, "Decompress image failed.", ex);
-            }
-        }
-
-        private static Dictionary<string, byte[]> ExtractContents(TarInputStream tarIn)
-        {
-            Dictionary<string, byte[]> artifacts = new Dictionary<string, byte[]> { };
-            TarEntry entry = tarIn.GetNextEntry();
-            while (entry != null)
-            {
-                if (entry.TarHeader.TypeFlag != TarHeader.LF_LINK || entry.TarHeader.TypeFlag != TarHeader.LF_SYMLINK)
+                Dictionary<string, byte[]> artifacts = new Dictionary<string, byte[]> { };
+                using var reader = ReaderFactory.Open(tarGzStream);
+                while (reader.MoveToNextEntry())
                 {
-                    byte[] content = ExtractEntry(tarIn);
-                    if (entry.Name.Contains(Constants.WhiteoutsLabel))
+                    if (!reader.Entry.IsDirectory)
                     {
-                        artifacts.Add(Path.GetRelativePath("./", entry.Name).Replace("\\", "/").Replace(Constants.WhiteoutsLabel, string.Empty), null);
-                    }
-                    else
-                    {
-                        artifacts.Add(Path.GetRelativePath("./", entry.Name).Replace("\\", "/"), content);
+                        var stream = new MemoryStream();
+                        reader.WriteEntryTo(stream);
+
+                        var byteContent = stream.ToArray();
+                        var fileName = reader.Entry.Key;
+                        if (fileName.Contains(Constants.WhiteoutsLabel))
+                        {
+                            artifacts.Add(Path.GetRelativePath("./", fileName).Replace("\\", "/").Replace(Constants.WhiteoutsLabel, string.Empty), null);
+                        }
+                        else
+                        {
+                            artifacts.Add(Path.GetRelativePath("./", fileName).Replace("\\", "/"), byteContent);
+                        }
                     }
                 }
 
-                entry = tarIn.GetNextEntry();
+                return artifacts;
             }
-
-            return artifacts;
+            catch (Exception ex)
+            {
+                throw new ArtifactArchiveException(TemplateManagementErrorCode.DecompressArtifactFailed, "Decompress image failed.", ex);
+            }
         }
 
-        private static byte[] ExtractEntry(TarInputStream tarIn)
+        public static byte[] CompressToTarGz(Dictionary<string, byte[]> fileContents, bool resetTimestamp)
         {
-            using var outputStream = new MemoryStream();
-            tarIn.CopyEntryContents(outputStream);
-            outputStream.Position = 0;
-            return outputStream.ToArray();
+            EnsureArg.IsNotNull(fileContents, nameof(fileContents));
+
+            try
+            {
+                var resultStream = new MemoryStream();
+                using (Stream stream = resultStream)
+                {
+                    using (var tarWriter = new TarWriter(stream, new TarWriterOptions(CompressionType.GZip, true)))
+                    {
+                        foreach (var eachFile in fileContents)
+                        {
+                            tarWriter.Write(eachFile.Key, new MemoryStream(eachFile.Value));
+                        }
+                    }
+
+                    if (resetTimestamp)
+                    {
+                        ResetTimestampInGzHeader(resultStream);
+                    }
+                }
+
+                return resultStream.ToArray();
+            }
+            catch (Exception ex)
+            {
+                throw new ArtifactArchiveException(TemplateManagementErrorCode.CompressArtifactFailed, "Compress content failed.", ex);
+            }
         }
 
         public static string CalculateDigestFromSha256(byte[] content)
@@ -83,6 +103,19 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
             string[] hashedStrings = hashData.Select(x => string.Format("{0,2:x2}", x)).ToArray();
             hashedValue += string.Join(string.Empty, hashedStrings);
             return hashedValue;
+        }
+
+        private static void ResetTimestampInGzHeader(MemoryStream inputStream)
+        {
+            byte[] array = { 0, 0, 0, 0 };
+            var position = inputStream.Position;
+
+            // Write header.
+            inputStream.Seek(4, SeekOrigin.Begin);
+            inputStream.Write(array, 0, array.Length);
+
+            // Restore stream position
+            inputStream.Seek(position, SeekOrigin.Begin);
         }
     }
 }

@@ -14,9 +14,6 @@ using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Newtonsoft.Json;
-using SharpCompress.Common;
-using SharpCompress.Writers;
-using SharpCompress.Writers.Tar;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 {
@@ -31,7 +28,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
                 return new OciFileLayer();
             }
 
-            var artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(artifactLayer.Content));
+            var artifacts = StreamUtility.DecompressFromTarGz(new MemoryStream(artifactLayer.Content));
             var metaBytes = artifacts.GetValueOrDefault(Constants.OverlayMetaJsonFile);
 
             if (metaBytes != null)
@@ -186,17 +183,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
             }
 
             var fileContents = fileLayer.FileContent;
-            var resultStream = new MemoryStream();
-            using (Stream stream = resultStream)
-            using (var tarWriter = new TarWriter(stream, new TarWriterOptions(CompressionType.GZip, true)))
-            {
-                foreach (var eachFile in fileContents)
-                {
-                    tarWriter.Write(eachFile.Key, new MemoryStream(eachFile.Value));
-                }
-            }
-
-            fileLayer.Content = resultStream.ToArray();
+            fileLayer.Content = StreamUtility.CompressToTarGz(fileContents, true);
             return fileLayer;
         }
 

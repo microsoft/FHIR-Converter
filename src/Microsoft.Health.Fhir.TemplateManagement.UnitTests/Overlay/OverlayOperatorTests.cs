@@ -51,7 +51,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Overlay
             string filePath = "TestData/TarGzFiles/invalid1.tar.gz";
             var oneLayer = new ArtifactBlob() { Content = File.ReadAllBytes(filePath) };
 
-            Assert.Throws<ArtifactDecompressException>(() => _overlayOperator.Extract(oneLayer));
+            Assert.Throws<ArtifactArchiveException>(() => _overlayOperator.Extract(oneLayer));
         }
 
         [Fact]

@@ -8,14 +8,14 @@ using Microsoft.Health.Fhir.TemplateManagement.Models;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Exceptions
 {
-    public class ArtifactDecompressException : TemplateManagementException
+    public class ArtifactArchiveException : TemplateManagementException
     {
-        public ArtifactDecompressException(TemplateManagementErrorCode templateManagementErrorCode, string message)
+        public ArtifactArchiveException(TemplateManagementErrorCode templateManagementErrorCode, string message)
             : base(templateManagementErrorCode, message)
         {
         }
 
-        public ArtifactDecompressException(TemplateManagementErrorCode templateManagementErrorCode, string message, Exception innerException)
+        public ArtifactArchiveException(TemplateManagementErrorCode templateManagementErrorCode, string message, Exception innerException)
             : base(templateManagementErrorCode, message, innerException)
         {
         }

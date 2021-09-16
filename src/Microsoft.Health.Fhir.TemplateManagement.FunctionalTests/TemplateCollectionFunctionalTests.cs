@@ -215,7 +215,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             string imageReference = testInvalidImageReference;
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
             var templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, token);
-            await Assert.ThrowsAsync<ArtifactDecompressException>(async () => await templateCollectionProvider.GetTemplateCollectionAsync());
+            await Assert.ThrowsAsync<ArtifactArchiveException>(async () => await templateCollectionProvider.GetTemplateCollectionAsync());
         }
 
         [Theory]
