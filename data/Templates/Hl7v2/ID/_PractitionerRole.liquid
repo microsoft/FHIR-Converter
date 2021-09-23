@@ -5,6 +5,8 @@
         {{XCN.1.Value}},{{XCN.9.Value}}
     {% elsif XCN -%}
         {{XCN.Value}}
+    {% elsif CWE -%}
+        {{CWE.Value}}
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'PractitionerRole', false | generate_uuid }}

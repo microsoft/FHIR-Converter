@@ -1,0 +1,14 @@
+{% if NR -%}
+    {% if NR.1 %}
+        "low":
+        {
+            "value":{{ NR.1.Value }},
+        },
+    {% endif %}
+    {% if NR.2 %}    
+        "high":
+        {
+            "value":{{ NR.2.Value }},
+        },
+    {% endif %}
+{% endif -%}

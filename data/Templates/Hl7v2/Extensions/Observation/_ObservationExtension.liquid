@@ -1,0 +1,19 @@
+{
+    "resource":
+    {
+        "resourceType": "Observation",
+        "id":"{{ ID }}",
+                "extension":
+                [
+                    {%- comment -%}
+                        This extension is currently not being used in R4 and mapped to DiagnosticReport.presentedForm resource, might be needed in future as valueAttachment is there in R5
+                        {% if OBX.5 -%}
+                            {% include 'Extensions/ObservationValueAttachment' ED: OBX.5 -%},
+                        {% endif %} 
+                    {%- endcomment -%}
+                    {% if OBX.11 %}  
+                        {% include 'Extensions/ObservationStatus' ID: OBX.11 -%},
+                    {% endif %}  
+                ],
+    },
+},

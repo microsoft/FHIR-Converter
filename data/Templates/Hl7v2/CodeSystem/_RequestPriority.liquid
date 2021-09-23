@@ -1,0 +1,19 @@
+{
+    {% if inCode == 'A' -%}
+    "code" : "asap",
+    "display" : "ASAP",
+    "system" : "http://hl7.org/fhir/request-priority",
+    {% elsif inCode == 'R' -%}
+    "code" : "routine",
+    "display" : "Routine",
+    "system" : "http://hl7.org/fhir/request-priority",
+    {% elsif inCode == 'S' -%}
+    "code" : "stat",
+    "display" : "STAT",
+    "system" : "http://hl7.org/fhir/request-priority",
+    {% else -%}
+    "code" : "{{incode}}",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

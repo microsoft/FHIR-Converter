@@ -1,0 +1,33 @@
+{
+    {% if inCode == '01' -%}
+    "code": "PATRQT", 
+    "display": "patient requested", 
+    "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+    "version" : "",
+    {% elsif inCode == '02' -%}
+    "code": "TREAT", 
+    "display": "treatment", 
+    "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+    "version" : "",
+    {% elsif inCode == '03' -%}
+    "code": "HOPERAT", 
+    "display": "healthcare operations", 
+    "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+    "version" : "",
+    {% elsif inCode == 'O' -%}
+    "code": "O", 
+    "display": "Other", 
+    "system": "HL70062,
+    "version" : "",
+    {% elsif inCode == 'U' -%}
+    "code": "unknown", 
+    "display": "", 
+    "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+    "version" : "",
+    {% else -%}
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "",
+    "version" : "",
+    {% endif -%}
+}

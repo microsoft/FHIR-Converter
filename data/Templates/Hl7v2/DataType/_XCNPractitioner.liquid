@@ -1,14 +1,23 @@
+{% evaluate Organization_ID_XCN_9 using 'ID/Organization' HDORG: XCN.9 -%}
 {% if XCN -%}
     "identifier":
     [
         {
             "value":"{{ XCN.1.Value }}",
+            {% include 'DataType/HDUri' HD: XCN.9 -%}
+            {% if XCN.9.1 != "" and XCN.9.1 != null and XCN.9.2 != "" and XCN.9.2 != null and XCN.9.3 != "" and XCN.9.3 != null -%}
+            "assigner":{
+                "reference":"Organization/{{ Organization_ID_XCN_9 }}",
+            },
+            {% endif -%}
             "type":
             {
                 "coding":
                 [
                     {
                         "code":"{{ XCN.13.Value | get_property: 'CodeSystem/IDType', 'code' }}",
+                        "display":"{{ XCN.13.Value | get_property: 'CodeSystem/IDType', 'display' }}",
+                        "system":"{{ XCN.13.Value | get_property: 'CodeSystem/IDType', 'system' }}",
                     },
                 ],
             },
@@ -36,9 +45,12 @@
             "use":"{{ XCN.10.Value | get_property: 'CodeSystem/NameType', 'code' }}",
             "period":
             {
+                {% if XCN.19 == null and XCN.20 == null -%}
                 "start":"{{ XCN.17.1 | format_as_date_time }}",
-                "start":"{{ XCN.19.Value | format_as_date_time }}",
                 "end":"{{ XCN.17.2 | format_as_date_time }}",
+                {% endif -%}
+                
+                "start":"{{ XCN.19.Value | format_as_date_time }}",
                 "end":"{{ XCN.20.Value | format_as_date_time }}",
             },
         },

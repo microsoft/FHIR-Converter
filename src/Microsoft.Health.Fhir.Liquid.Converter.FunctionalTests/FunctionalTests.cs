@@ -8,10 +8,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DotLiquid;
+using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Models;
-using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
-using Microsoft.Health.Fhir.Liquid.Converter.Processors;
+using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
+using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
@@ -24,7 +24,48 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         {
             var data = new List<string[]>
             {
+                new[] { @"ADT_A01", @"ADT_A01.hl7", @"ADT-A01-expected.json" },
+                new[] { @"ADT_A01", @"ADT_A01-2.hl7", @"ADT-A01-expected-2.json" },
+                new[] { @"ADT_A02", @"ADT_A02.hl7", @"ADT-A02-expected.json" },
+                new[] { @"ADT_A02", @"ADT_A02-2.hl7", @"ADT-A02-expected-2.json" },
+                new[] { @"ADT_A03", @"ADT_A03.hl7", @"ADT-A03-expected.json" },
+                new[] { @"ADT_A03", @"ADT_A03-2.hl7", @"ADT-A03-expected-2.json" },
+                new[] { @"ADT_A04", @"ADT_A04.hl7", @"ADT-A04-expected.json" },
+                new[] { @"ADT_A04", @"ADT_A04-2.hl7", @"ADT-A04-expected-2.json" },
+                new[] { @"ADT_A05", @"ADT_A05.hl7", @"ADT-A05-expected.json" },
+                new[] { @"ADT_A05", @"ADT_A05-2.hl7", @"ADT-A05-expected-2.json" },
+                new[] { @"ADT_A08", @"ADT_A08.hl7", @"ADT-A08-expected.json" },
+                new[] { @"ADT_A08", @"ADT_A08-2.hl7", @"ADT-A08-expected-2.json" },
+                new[] { @"ADT_A11", @"ADT_A11.hl7", @"ADT-A11-expected.json" },
+                new[] { @"ADT_A11", @"ADT_A11-2.hl7", @"ADT-A11-expected-2.json" },
+                new[] { @"ADT_A13", @"ADT_A13.hl7", @"ADT-A13-expected.json" },
+                new[] { @"ADT_A13", @"ADT_A13-2.hl7", @"ADT-A13-expected-2.json" },
+                new[] { @"ADT_A14", @"ADT_A14.hl7", @"ADT-A14-expected.json" },
+                new[] { @"ADT_A14", @"ADT_A14-2.hl7", @"ADT-A14-expected-2.json" },
+                new[] { @"ADT_A15", @"ADT_A15.hl7", @"ADT-A15-expected.json" },
+                new[] { @"ADT_A15", @"ADT_A15-2.hl7", @"ADT-A15-expected-2.json" },
+                new[] { @"ADT_A16", @"ADT_A16.hl7", @"ADT-A16-expected.json" },
+                new[] { @"ADT_A16", @"ADT_A16-2.hl7", @"ADT-A16-expected-2.json" },
+                new[] { @"ADT_A25", @"ADT_A25.hl7", @"ADT-A25-expected.json" },
+                new[] { @"ADT_A25", @"ADT_A25-2.hl7", @"ADT-A25-expected-2.json" },
+                new[] { @"ADT_A26", @"ADT_A26.hl7", @"ADT-A26-expected.json" },
+                new[] { @"ADT_A26", @"ADT_A26-2.hl7", @"ADT-A26-expected-2.json" },
+                new[] { @"ADT_A27", @"ADT_A27.hl7", @"ADT-A27-expected.json" },
+                new[] { @"ADT_A27", @"ADT_A27-2.hl7", @"ADT-A27-expected-2.json" },
+                new[] { @"ADT_A28", @"ADT_A28.hl7", @"ADT-A28-expected.json" },
+                new[] { @"ADT_A28", @"ADT_A28-2.hl7", @"ADT-A28-expected-2.json" },
+                new[] { @"ADT_A29", @"ADT_A29.hl7", @"ADT-A29-expected.json" },
+                new[] { @"ADT_A29", @"ADT_A29-2.hl7", @"ADT-A29-expected-2.json" },
+                new[] { @"ADT_A31", @"ADT_A31.hl7", @"ADT-A31-expected.json" },
+                new[] { @"ADT_A31", @"ADT_A31-2.hl7", @"ADT-A31-expected-2.json" },
+                new[] { @"ADT_A45", @"ADT_A45.hl7", @"ADT-A45-expected.json" },
+                new[] { @"ADT_A45", @"ADT_A45-2.hl7", @"ADT-A45-expected-2.json" },
+                new[] { @"ADT_A47", @"ADT_A47.hl7", @"ADT-A47-expected.json" },
+                new[] { @"ADT_A47", @"ADT_A47-2.hl7", @"ADT-A47-expected-2.json" },
+                new[] { @"ADT_A60", @"ADT_A60.hl7", @"ADT-A60-expected.json" },
+
                 new[] { @"ADT_A01", @"ADT01-23.hl7", @"ADT01-23-expected.json" },
+                new[] { @"ADT_A02", @"ADT02-23.hl7", @"ADT01-23-expected.json" },
                 new[] { @"ADT_A01", @"ADT01-28.hl7", @"ADT01-28-expected.json" },
                 new[] { @"ADT_A01", @"ADT04-23.hl7", @"ADT04-23-expected.json" },
                 new[] { @"ADT_A01", @"ADT04-251.hl7", @"ADT04-251-expected.json" },
@@ -81,45 +122,30 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
-        public static IEnumerable<object[]> GetDataForJson()
-        {
-            var data = new List<string[]>
-            {
-                new[] { @"ExamplePatient", @"ExamplePatient.json", @"ExamplePatient-expected.json" },
-                new[] { @"Stu3ChargeItem", @"Stu3ChargeItem.json", @"Stu3ChargeItem-expected.json" },
-            };
-            return data.Select(item => new[]
-            {
-                item[0],
-                Path.Join(Constants.SampleDataDirectory, "Json", item[1]),
-                Path.Join(Constants.ExpectedDataFolder, "Json", item[0], item[2]),
-            });
-        }
-
         [Theory]
         [MemberData(nameof(GetDataForHl7v2))]
         public void GivenHl7v2Message_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
         {
             var hl7v2Processor = new Hl7v2Processor();
             var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Hl7v2");
-
+    
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
             var traceInfo = new Hl7v2TraceInfo();
-            var actualContent = hl7v2Processor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Hl7v2), traceInfo);
+            var actualContent = hl7v2Processor.Convert(inputContent, rootTemplate, new Hl7v2TemplateProvider(templateDirectory), traceInfo);
 
             JsonSerializer serializer = new JsonSerializer();
             var expectedObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(expectedContent)));
             var actualObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(actualContent)));
 
-            new List<string>
-            {
-                "$.entry[?(@.resource.resourceType=='Provenance')].resource.text.div",
-            }.ForEach(path =>
-            {
-                expectedObject.SelectToken(path).Parent.Remove();
-                actualObject.SelectToken(path).Parent.Remove();
-            });
+            // new List<string>
+            // {
+            //     "$.entry[?(@.resource.resourceType=='Provenance')].resource.text.div",
+            // }.ForEach(path =>
+            // {
+            //     expectedObject.SelectToken(path).Parent.Remove();
+            //     actualObject.SelectToken(path).Parent.Remove();
+            // });
 
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
             Assert.True(traceInfo.UnusedSegments.Count > 0);
@@ -134,7 +160,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
-            var actualContent = ccdaProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Ccda));
+            var actualContent = ccdaProcessor.Convert(inputContent, rootTemplate, new CcdaTemplateProvider(templateDirectory));
 
             var expectedObject = JObject.Parse(expectedContent);
             var actualObject = JObject.Parse(actualContent);
@@ -142,23 +168,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             // Remove DocumentReference, where date is different every time conversion is run and gzip result is OS dependent
             expectedObject["entry"]?.Last()?.Remove();
             actualObject["entry"]?.Last()?.Remove();
-
-            Assert.True(JToken.DeepEquals(expectedObject, actualObject));
-        }
-
-        [Theory]
-        [MemberData(nameof(GetDataForJson))]
-        public void GivenJsonData_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
-        {
-            var jsonProcessor = new JsonProcessor();
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Json");
-
-            var inputContent = File.ReadAllText(inputFile);
-            var expectedContent = File.ReadAllText(expectedFile);
-            var actualContent = jsonProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Json));
-
-            var expectedObject = JObject.Parse(expectedContent);
-            var actualObject = JObject.Parse(actualContent);
 
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
         }
@@ -175,7 +184,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 },
             };
 
-            var exception = Assert.Throws<RenderException>(() => hl7v2Processor.Convert(@"MSH|^~\&|", "template", new TemplateProvider(templateCollection)));
+            var exception = Assert.Throws<RenderException>(() => hl7v2Processor.Convert(@"MSH|^~\&|", "template", new Hl7v2TemplateProvider(templateCollection)));
             Assert.True(exception.InnerException is DotLiquid.Exceptions.StackLevelException);
         }
     }

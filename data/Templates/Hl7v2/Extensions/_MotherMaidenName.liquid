@@ -1,0 +1,7 @@
+{
+    "url" : "http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName",
+    {% capture textstring %}{{ PID.6.Value  | split: "^" | join: "--" }}{% endcapture -%}
+    {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+    {% capture valuestring %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+    "valueString" : "{{ valuestring }}" 
+}

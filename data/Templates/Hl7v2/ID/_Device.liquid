@@ -3,6 +3,12 @@
         {{HD.1.Value}},{{HD.2.Value}}
     {% elsif HD -%}
         {{HD.Value}}
+    {% elsif SFT.2 -%}
+        {{SFT.2.Value}}
+    {% elsif SFT.Value -%}
+        {{SFT.Value}}
+    {% elsif EI -%}
+        {{EI.Value}}
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'Device', false | generate_uuid }}

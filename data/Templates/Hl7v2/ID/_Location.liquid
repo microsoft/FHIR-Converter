@@ -13,6 +13,9 @@
         {{HD.1.Value}},{{HD.2.Value}}
     {% elsif HD -%}
         {{HD.Value}}
+    {% elsif DLD -%}
+        {{DLD.Value}}
     {% endif -%}
+
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'Location', false | generate_uuid }}

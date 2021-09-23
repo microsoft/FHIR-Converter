@@ -1,0 +1,119 @@
+{
+    {% if inCode == 'I9C' -%}
+    "system" : "http://hl7.org/fhir/sid/icd-9-cm",
+    {% elsif inCode == 'I10' -%}
+    "system" : "http://hl7.org/fhir/sid/icd-10",
+    {% elsif inCode == 'SNM' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/snm",
+    {% elsif inCode == 'LN' -%}
+    "system" : "http://loinc.org",
+    {% elsif inCode == 'ALPHAID2006' -%}
+    "system" : "urn:oid:1.2.276.0.76.5.309	",
+    {% elsif inCode == 'ALPHAID2007' -%}
+    "system" : "urn:oid:1.2.276.0.76.5.316	",
+    {% elsif inCode == 'ALPHAID2008' -%}
+    "system" : "urn:oid:1.2.276.0.76.5.329	",
+    {% elsif inCode == 'ALPHAID2009' -%}
+    "system" : "urn:oid:1.2.276.0.76.5.355	",
+    {% elsif inCode == 'ALPHAID20010' -%}
+    "system" : "urn:oid:1.2.276.0.76.5.383	",
+    {% elsif inCode == 'ALPHAID20011' -%}
+    "system" : "urn:oid:1.2.276.0.76.5.387	",
+    {% elsif inCode == 'C4' -%}
+    "system" : "http://www.ama-assn.org/go/cpt",
+    {% elsif inCode == 'CVX' -%}
+    "system" : "http://hl7.org/fhir/sid/cvx",
+    {% elsif inCode == 'DCM' -%}
+    "system" : "http://dicom.nema.org/resources/ontology/DCM",
+    {% elsif inCode == 'FDAUNII' -%}
+    "system" : "http://fdasis.nlm.nih.gov",
+    {% elsif inCode == 'HCPCS' -%}
+    "system" : "https://www.cms.gov/Medicare/Coding/HCPCSReleaseCodeSets",
+    {% elsif inCode == 'HCPT' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/hhcc",
+    {% elsif inCode == 'I10G2004' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/dmdICD10",
+    {% elsif inCode == 'I10G2005' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/dmdICD10",
+    {% elsif inCode == 'I10G2006' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/dmdICD10",
+    {% elsif inCode == 'I9' -%}
+    "system" : "http://hl7.org/fhir/sid/icd-9",
+    {% elsif inCode == 'I9CP' -%}
+    "system" : "http://www.cms.gov/Medicare/Coding/ICD9",
+    {% elsif inCode == 'ICD10CA' -%}
+    "system" : "http://hl7.org/fhir/sid/icd-10-ca",
+    {% elsif inCode == 'I10P' -%}
+    "system" : "http://www.cms.gov/Medicare/Coding/ICD10",
+    {% elsif inCode == 'ICD10GM2007' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/dmdICD10",
+    {% elsif inCode == 'ICD10GM2008' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/dmdICD10",
+    {% elsif inCode == 'ICD10GM2009' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/dmdICD10",
+    {% elsif inCode == 'ICD10GM2010' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/dmdICD10",
+    {% elsif inCode == 'ICD10GM2011' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/dmdICD10",
+    {% elsif inCode == 'ICDO' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/icd-o",
+    {% elsif inCode == 'ICDO3' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/icd-o-3",
+    {% elsif inCode == 'ICS' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/ics",
+    {% elsif inCode == 'ISO' -%}
+    "system" : "urn:ietf:rfc:3986",
+    {% elsif inCode == 'ISO3166_1' -%}
+    "system" : "urn:iso:std:iso:3166",
+    {% elsif inCode == 'ISO3166_2' -%}
+    "system" : "urn:iso:std:iso:3166:-2",
+    {% elsif inCode == 'ISO4217' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/iso4217",
+    {%- comment -%}
+    {% elsif inCode == 'ISO639' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/iso639-1",
+    {% elsif inCode == 'ISO639' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/iso639-3",
+    {%- endcomment -%}
+    {% elsif inCode == 'MDC' -%}
+    "system" : "urn:iso:std:iso:11073:10101",
+    {% elsif inCode == 'NAICS' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/naics",
+    {% elsif inCode == 'NDA' -%}
+    "system" : "http://hl7.org/fhir/sid/ndc",
+    {% elsif inCode == 'NDFRT' -%}
+    "system" : "http://hl7.org/fhir/ndfrt",
+    {% elsif inCode == 'NPI' -%}
+    "system" : "http://hl7.org/fhir/sid/us-npi",
+    {% elsif inCode == 'NUBC' -%}
+    "system" : "http://www.nubc.org/patient-discharge",
+    {% elsif inCode == 'NULLFL' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+    {% elsif inCode == 'RXNORM' -%}
+    "system" : "http://www.nlm.nih.gov/research/umls/rxnorm",
+    {% elsif inCode == 'SCT' -%}
+    "system" : "http://snomed.info/sct",
+    {% elsif inCode == 'SCT2' -%}
+    "system" : "http://snomed.info/sct",
+    {% elsif inCode == 'SDM' -%}
+    "system" : "http://terminology.hl7.org/NamingSystem/SDM",
+    {% elsif inCode == 'SNM3' -%}
+    "system" : "http://snomed.info/sct",
+    {% elsif inCode == 'SNT' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/SNT",
+    {% elsif inCode == 'UB04FL14' -%}
+    "system" : "https://www.nubc.org/CodeSystem/PriorityTypeOfAdmitOrVisit",
+    {% elsif inCode == 'UB04FL15' -%}
+    "system" : "https://www.nubc.org/CodeSystem/PointOfOrigin",
+    {% elsif inCode == 'UB04FL17' -%}
+    "system" : "https://www.nubc.org/CodeSystem/PatDischargeStatus",
+    {% elsif inCode == 'UCUM' -%}
+    "system" : "http://unitsofmeasure.org",
+    {% elsif inCode == 'UMD' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/UMD",
+    {% elsif inCode == 'UML' -%}
+    "system" : "http://terminology.hl7.org/CodeSystem/UML",
+    {% else -%}
+    "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/{{inCode}}",
+    {% endif -%}
+}

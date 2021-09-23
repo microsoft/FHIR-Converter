@@ -1,0 +1,38 @@
+{% if HD -%}
+    "identifier":
+    [
+        {   
+            "value":"{{ HD.1}}",
+            "type":{
+                "coding": [
+                    {
+                        {%if HD.3 %}
+                            {% comment -%} {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/UniversalIDType', CWE: HD.3 -%} {% endcomment -%}
+                            "code": "{{ HD.3 | get_property: 'CodeSystem/UniversalIDType', 'code' }}",
+                            "display": "{{ HD.3 | get_property: 'CodeSystem/UniversalIDType', 'display' }}",
+                            "system": "{{ HD.3 | get_property: 'CodeSystem/UniversalIDType', 'system' }}",
+                        {% endif -%}
+                    }
+                ]
+            },
+        },
+        {
+            {%if HD.2 %}
+                "value":"urn:ietf:rfc:3986",
+            {% endif -%}
+            {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+            "type":{
+                "coding": [
+                    {
+                        {%if HD.3 %}
+                            {% comment -%} {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/UniversalIDType', CWE: HD.3 -%} {% endcomment -%}
+                            "code": "{{ HD.3 | get_property: 'CodeSystem/UniversalIDType', 'code' }}",
+                            "display": "{{ HD.3 | get_property: 'CodeSystem/UniversalIDType', 'display' }}",
+                            "system": "{{ HD.3 | get_property: 'CodeSystem/UniversalIDType', 'system' }}",
+                        {% endif -%}
+                    }
+                ]
+            },
+        },
+    ],
+{% endif  -%}

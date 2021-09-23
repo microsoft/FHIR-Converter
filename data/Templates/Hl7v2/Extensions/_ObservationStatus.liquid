@@ -1,0 +1,13 @@
+{
+    "url": "http://example.com/v2-to-fhir-converter/Observation_Status",
+    "valueCodeableConcept": {
+    "coding":
+    [
+        {     
+            {% include 'DataType/IDCodeableConcept' mapping: 'CodeSystem/ObservationStatus-ext', ID: ID -%}     
+        },
+    ],
+    "text": "{{ ID.1.Value | get_property: 'CodeSystem/ObservationStatus-ext', 'display' }}",
+},
+  
+}

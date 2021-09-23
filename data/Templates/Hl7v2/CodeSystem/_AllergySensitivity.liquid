@@ -1,0 +1,27 @@
+{
+    {% if inCode == 'AD' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'AL' -%}
+    "code" : "allergy",
+    "display" : "Allergy",
+    "system" : "http://hl7.org/fhir/allergy-intolerance-type",
+    {% elsif inCode == 'CT' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'IN' -%}
+    "code" : "intolerance",
+    "display" : "Intolerance",
+    "system" : "http://hl7.org/fhir/allergy-intolerance-type",
+    {% elsif inCode == 'SE' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% else -%}
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "",
+    {% endif -%}
+}

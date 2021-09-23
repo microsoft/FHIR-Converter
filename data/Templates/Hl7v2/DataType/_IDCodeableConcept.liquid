@@ -1,0 +1,24 @@
+{% if ID -%}
+            {% if mapping -%}
+                "code":"{{ ID.1.Value | get_property: mapping, 'code' }}",
+                "display":"{{ ID.1.Value | get_property: mapping, 'display' }}",
+                "system":"{{ ID.1.Value | get_property: mapping, 'system' }}",
+                "version":"{{ ID.1.Value | get_property: mapping, 'version' }}",
+                "version":"{{ ID.7.Value }}",
+                {% else -%}
+                "code":"{{ ID.1.Value }}",
+                "display":"{{ ID.2.Value }}",
+               
+                {% if ID.3 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{ID.3.Value}}",
+                {% endif %}
+                {% capture SYSTEM_PROPERTY_VALUE %}{{ ID.3.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+                {% if SYSTEM_PROPERTY_VALUE -%}
+                    "system":"{{SYSTEM_PROPERTY_VALUE}}",              
+                {% endif %}
+                 {%- comment -%}
+                "system": "{{ ID.3.Value | get_property: 'CodeSystem/CodeSystemURL', 'system' }}",
+               {%- endcomment -%}
+                "version":"{{ ID.7.Value }}",
+            {% endif -%}
+{% endif -%}
