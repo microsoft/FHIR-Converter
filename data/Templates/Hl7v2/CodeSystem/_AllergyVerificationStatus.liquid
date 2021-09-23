@@ -1,0 +1,35 @@
+{
+    {% if inCode == 'C' -%}
+    "code" : "confirmed",
+    "display" : "Confirmed",
+    "system" : "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+    {% elsif inCode == 'D' -%}
+    "code" : "unconfirmed",
+    "display" : "Unconfirmed",
+    "system" : "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+    {% elsif inCode == 'E' -%}
+    "code" : "entered-in-error",
+    "display" : "Entered in Error",
+    "system" : "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+    {% elsif inCode == 'I' -%}
+    "code" : "confirmed",
+    "display" : "Confirmed",
+    "system" : "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+    {% elsif inCode == 'P' -%}
+    "code" : "unconfirmed",
+    "display" : "Unconfirmed",
+    "system" : "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+    {% elsif inCode == 'S' -%}
+    "code" : "unconfirmed",
+    "display" : "Unconfirmed",
+    "system" : "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+    {% elsif inCode == 'U' -%}
+    "code" : "unconfirmed",
+    "display" : "Unconfirmed",
+    "system" : "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification",
+    {% else -%}
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "",
+    {% endif -%}
+}

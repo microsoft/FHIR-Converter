@@ -1,0 +1,43 @@
+{
+    {% if inCode == 'E' -%}
+    "code" : "EMER",
+    "display" : "emergency",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+    {% elsif inCode == 'I' -%}
+    "code" : "IMP",
+    "display" : "inpatient encounter",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+    {% elsif inCode == 'O' -%}
+    "code" : "AMB",
+    "display" : "ambulatory",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+    {% elsif inCode == 'P' -%}
+    "code" : "PRENC",
+    "display" : "pre-admission",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+    {% elsif inCode == 'R' -%}
+    "code" : "REPAT",
+    "display" : "recurring patient",
+    "system" : "http://examplecodes.org/CodeSystem/additional-EncounterClassCodes",
+    {% elsif inCode == 'B' -%}
+    "code" : "OBS",
+    "display" : "obstetrics",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+    {% elsif inCode == 'C' -%}
+    "code" : "PBILLACCT",
+    "display" : "patient billing account",
+    "system" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+    {% elsif inCode == 'N' -%}
+    "code" : "NAP",
+    "display" : "not applicable",
+    "system" : "http://examplecodes.org/CodeSystem/additional-EncounterClassCodes",
+    {% elsif inCode == 'U' -%}
+    "code" : "UNK",
+    "display" : "unkown",
+    "system" : "http://examplecodes.org/CodeSystem/additional-EncounterClassCodes",
+    {% else -%}
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "",
+    {% endif -%}
+}
