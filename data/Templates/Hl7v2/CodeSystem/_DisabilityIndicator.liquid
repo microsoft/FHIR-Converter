@@ -1,0 +1,15 @@
+{
+    {% if inCode == 'Y' -%}
+    "code" : "true",
+    "display" : "",
+    "system" : "",
+    {% elsif inCode == 'N' -%}
+    "code" : "false",
+    "display" : "",
+    "system" : "",
+    {% else -%}
+    "code" : "{{inCode}}",
+    "display" : "",
+    "system" : "",
+    {% endif -%}
+}

@@ -1,0 +1,47 @@
+{
+    {% if inCode == 'PH' -%}
+    "code" : "phone",
+    "display" : "Phone",
+    "system" : "http://hl7.org/fhir/contact-point-system",
+    {% elsif inCode == 'FX' -%}
+    "code" : "fax",
+    "display" : "Fax",
+    "system" : "http://hl7.org/fhir/contact-point-system",
+    {% elsif inCode == 'MD' -%}
+    "code" : "other",
+    "display" : "Other",
+    "system" : "http://hl7.org/fhir/contact-point-system",
+    {% elsif inCode == 'CP' -%}
+    "code" : "phone",
+    "display" : "phone",
+    "system" : "http://hl7.org/fhir/contact-point-system",
+    {% elsif inCode == 'SAT' -%}
+    "code" : "other",
+    "display" : "Other",
+    "system" : "http://hl7.org/fhir/contact-point-system",
+    {% elsif inCode == 'BP' -%}
+    "code" : "pager",
+    "display" : "Pager",
+    "system" : "http://hl7.org/fhir/contact-point-system",
+    {% elsif inCode == 'Internet' -%}
+    "code" : "email",
+    "display" : "email",
+    "system" : "http://hl7.org/fhir/contact-point-system",
+    {% elsif inCode == 'X.400' -%}
+    "code" : "email",
+    "display" : "email",
+    "system" : "http://hl7.org/fhir/contact-point-system",
+    {% elsif inCode == 'TDD' -%}
+    "code" : "other",
+    "display" : "Other",
+    "system" : "http://hl7.org/fhir/contact-point-system",
+    {% elsif inCode == 'TTY' -%}
+    "code" : "other",
+    "display" : "Other",
+    "system" : "http://hl7.org/fhir/contact-point-system",
+    {% else -%}
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "",
+    {% endif -%}
+}

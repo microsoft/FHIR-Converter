@@ -1,0 +1,36 @@
+{
+    {% if inCode == 'A' -%}
+    "code" : "ammended"
+    {% elsif inCode == 'B' -%}
+    "code" : "unknown"
+    {% elsif inCode == 'C' -%}
+    "code" : "unknown"
+    {% elsif inCode == 'D' -%}
+    "code" : "entered-in-error"
+    {% elsif inCode == 'F' -%}
+    "code" : "final"
+    {% elsif inCode == 'I' -%}
+    "code" : "unknown"
+    {% elsif inCode == 'N' -%}
+    "code" : "unknown"
+    {% elsif inCode == 'O' -%}
+    "code" : "unknown"
+    {% elsif inCode == 'P' -%}
+    "code" : "preliminary"
+    {% elsif inCode == 'R' -%}
+    "code" : "unknown"
+    {% elsif inCode == 'S' -%}
+    "code" : "unknown"
+    {% elsif inCode == 'U' -%}
+    "code" : "unknown"
+    {% elsif inCode == 'V' -%}
+    "code" : "unknown"
+    {% elsif inCode == 'W' -%}
+    "code" : "entered-in-error"
+    {% elsif inCode == 'X' -%}
+    "code" : "cancelled"
+    {% else -%}
+    "code" : "{{ inCode }}"
+   
+    {% endif -%}
+}
