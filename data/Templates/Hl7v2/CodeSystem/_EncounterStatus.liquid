@@ -1,0 +1,43 @@
+{
+    {% if inCode == 'E' -%}
+    "code" : "in-progress",
+    "display": "In Progress", 
+    "system": "http://hl7.org/fhir/encounter-status",
+    {% elsif inCode == 'I' -%}
+    "code" : "in-progress",
+    "display": "in-progress", 
+    "system": "http://hl7.org/fhir/encounter-status",
+    {% elsif inCode == 'O' -%}
+    "code" : "in-progress",
+    "display": "In Progress", 
+    "system": "http://hl7.org/fhir/encounter-status",
+    {% elsif inCode == 'P' -%}
+    "code" : "planned",
+    "display": "Planned", 
+    "system": "http://hl7.org/fhir/encounter-status",
+    {% elsif inCode == 'R' -%}
+    "code" : "in-progress",
+    "display": "In Progress", 
+    "system": "http://hl7.org/fhir/encounter-status",
+    {% elsif inCode == 'B' -%}
+    "code" : "in-progress",
+    "display": "In Progress", 
+    "system": "http://hl7.org/fhir/encounter-status",
+    {% elsif inCode == 'C' -%}
+    "code" : "in-progress",
+    "display": "In Progress", 
+    "system": "http://hl7.org/fhir/encounter-status",
+    {% elsif inCode == 'N' -%}
+    "code" : "cancelled",
+    "display": "Cancelled", 
+    "system": "http://hl7.org/fhir/encounter-status",
+    {% elsif inCode == 'U' -%}
+    "code" : "unknown",
+    "display": "Unknown", 
+    "system": "http://hl7.org/fhir/encounter-status",
+    {% else -%}
+    "code" : "{{ inCode }}",
+    "display": "{{ inCode }}", 
+    "system": "",
+    {% endif -%}
+}

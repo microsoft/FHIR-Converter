@@ -1,0 +1,23 @@
+{
+    {% if inCode == 'SV' -%}
+    "code" : "severe",
+    "display" : "Severe",
+    "system" : "http://hl7.org/fhir/reaction-event-severity",
+    {% elsif inCode == 'MO' -%}
+    "code" : "moderate",
+    "display" : "Moderate",
+    "system" : "https://www.hl7.org/fhir/codesystem-reaction-event-severity.html",
+    {% elsif inCode == 'MI' -%}
+    "code" : "mild",
+    "display" : "Mild",
+    "system" : "https://www.hl7.org/fhir/codesystem-reaction-event-severity.html",
+    {% elsif inCode == 'U' -%}
+    "code" : "",
+    "display" : "",
+    "system" : "",
+    {% else -%}
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "",
+    {% endif -%}
+}
