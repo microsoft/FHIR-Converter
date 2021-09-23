@@ -1,0 +1,83 @@
+{
+    {% if inCode == '01' -%}
+    "code" : "self",
+    "display" : "Self",
+    "system" : "http://terminology.hl7.org/CodeSystem/subscriber-relationship",
+    {% elsif inCode == '02' -%}
+    "code" : "spouse",
+    "display" : "Spouse",
+    "system" : "http://terminology.hl7.org/CodeSystem/subscriber-relationship",
+    {% elsif inCode == '03' -%}
+    "code" : "child",
+    "display" : "Child",
+    "system" : "http://terminology.hl7.org/CodeSystem/subscriber-relationship",
+    {% elsif inCode == '04' -%}
+    "code" : "child",
+    "display" : "Child",
+    "system" : "http://terminology.hl7.org/CodeSystem/subscriber-relationship",
+    {% elsif inCode == '05' -%}
+    "code" : "05",
+    "display" : "Step child",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    {% elsif inCode == '06' -%}
+    "code" : "06",
+    "display" : "Foster child",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    {% elsif inCode == '07' -%}
+    "code" : "07",
+    "display" : "Ward of the court",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    {% elsif inCode == '08' -%}
+    "code" : "08",
+    "display" : "Employee",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    {% elsif inCode == '09' -%}
+    "code" : "09",
+    "display" : "Unknown",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    {% elsif inCode == '10' -%}
+    "code" : "10",
+    "display" : "Handicapped dependent",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    {% elsif inCode == '11' -%}
+    "code" : "11",
+    "display" : "Organ donor",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    {% elsif inCode == '12' -%}
+    "code" : "12",
+    "display" : "Cadaver donor",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    {% elsif inCode == '13' -%}
+    "code" : "13",
+    "display" : "Grandchild",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    {% elsif inCode == '14' -%}
+    "code" : "14",
+    "display" : "Niece/nephew",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    {% elsif inCode == '15' -%}
+    "code" : "injured",
+    "display" : "Injured Party",
+    "system" : "http://terminology.hl7.org/CodeSystem/subscriber-relationship",
+    {% elsif inCode == '16' -%}
+    "code" : "16",
+    "display" : "Sponsored dependent",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    {% elsif inCode == '17' -%}
+    "code" : "17",
+    "display" : "Minor dependent of a minor dependent",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    {% elsif inCode == '18' -%}
+    "code" : "parent",
+    "display" : "Parent",
+    "system" : "http://terminology.hl7.org/CodeSystem/subscriber-relationship",
+    {% elsif inCode == '19' -%}
+    "code" : "19",
+    "display" : "Grandparent",
+    "system" : "http://terminology.hl7.org/CodeSystem/v2-0344",
+    {% else -%}
+    "code" : "{{ inCode }}",
+    "display" : "{{ inCode }}",
+    "system" : "",
+    {% endif -%}
+}
