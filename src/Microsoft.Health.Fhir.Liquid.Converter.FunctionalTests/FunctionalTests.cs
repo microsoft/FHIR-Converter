@@ -8,10 +8,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
+using Microsoft.Health.Fhir.Liquid.Converter.Processors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
@@ -94,7 +94,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new[] { "OML_O21", "OML-O21-02.hl7",  @"OML-O21-02-expected.json"},
 
                 new[] { @"ADT_A01", @"ADT01-23.hl7", @"ADT01-23-expected.json" },
-                new[] { @"ADT_A02", @"ADT02-23.hl7", @"ADT01-23-expected.json" },
                 new[] { @"ADT_A01", @"ADT01-28.hl7", @"ADT01-28-expected.json" },
                 new[] { @"ADT_A04", @"ADT04-23.hl7", @"ADT04-23-expected.json" },
                 new[] { @"ADT_A04", @"ADT04-251.hl7", @"ADT04-251-expected.json" },
@@ -151,17 +150,32 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
+        public static IEnumerable<object[]> GetDataForJson()
+        {
+            var data = new List<string[]>
+            {
+                new[] { @"ExamplePatient", @"ExamplePatient.json", @"ExamplePatient-expected.json" },
+                new[] { @"Stu3ChargeItem", @"Stu3ChargeItem.json", @"Stu3ChargeItem-expected.json" },
+            };
+            return data.Select(item => new[]
+            {
+                item[0],
+                Path.Join(Constants.SampleDataDirectory, "Json", item[1]),
+                Path.Join(Constants.ExpectedDataFolder, "Json", item[0], item[2]),
+            });
+        }
+
         [Theory]
         [MemberData(nameof(GetDataForHl7v2))]
         public void GivenHl7v2Message_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
         {
             var hl7v2Processor = new Hl7v2Processor();
             var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Hl7v2");
-    
+
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
             var traceInfo = new Hl7v2TraceInfo();
-            var actualContent = hl7v2Processor.Convert(inputContent, rootTemplate, new Hl7v2TemplateProvider(templateDirectory), traceInfo);
+            var actualContent = hl7v2Processor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Hl7v2), traceInfo);
 
             JsonSerializer serializer = new JsonSerializer();
             var expectedObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(expectedContent)));
@@ -176,6 +190,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             //     actualObject.SelectToken(path).Parent.Remove();
             // });
 
+            new List<string>
+            {
+                "$.entry[?(@.resource.resourceType=='Provenance')].resource.text.div",
+            }.ForEach(path =>
+            {
+                JToken expectedObjectToken = expectedObject.SelectToken(path,false);
+                if(expectedObjectToken != null) 
+                {
+                    expectedObject.SelectToken(path,false).Parent.Remove();
+                }
+                JToken actualObjectToken = actualObject.SelectToken(path,false);
+                if(actualObjectToken != null)
+                {
+                    actualObject.SelectToken(path,false).Parent.Remove();
+                }
+            });
+
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
             Assert.True(traceInfo.UnusedSegments.Count > 0);
         }
@@ -189,7 +220,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
-            var actualContent = ccdaProcessor.Convert(inputContent, rootTemplate, new CcdaTemplateProvider(templateDirectory));
+            var actualContent = ccdaProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Ccda));
 
             var expectedObject = JObject.Parse(expectedContent);
             var actualObject = JObject.Parse(actualContent);
@@ -197,6 +228,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             // Remove DocumentReference, where date is different every time conversion is run and gzip result is OS dependent
             expectedObject["entry"]?.Last()?.Remove();
             actualObject["entry"]?.Last()?.Remove();
+
+            Assert.True(JToken.DeepEquals(expectedObject, actualObject));
+        }
+
+        [Theory]
+        [MemberData(nameof(GetDataForJson))]
+        public void GivenJsonData_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
+        {
+            var jsonProcessor = new JsonProcessor();
+            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Json");
+
+            var inputContent = File.ReadAllText(inputFile);
+            var expectedContent = File.ReadAllText(expectedFile);
+            var actualContent = jsonProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Json));
+
+            var expectedObject = JObject.Parse(expectedContent);
+            var actualObject = JObject.Parse(actualContent);
 
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
         }
@@ -213,7 +261,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 },
             };
 
-            var exception = Assert.Throws<RenderException>(() => hl7v2Processor.Convert(@"MSH|^~\&|", "template", new Hl7v2TemplateProvider(templateCollection)));
+            var exception = Assert.Throws<RenderException>(() => hl7v2Processor.Convert(@"MSH|^~\&|", "template", new TemplateProvider(templateCollection)));
             Assert.True(exception.InnerException is DotLiquid.Exceptions.StackLevelException);
         }
     }
