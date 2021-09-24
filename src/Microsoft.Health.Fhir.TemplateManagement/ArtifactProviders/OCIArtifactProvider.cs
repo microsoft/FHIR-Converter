@@ -3,7 +3,6 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EnsureThat;
@@ -14,11 +13,11 @@ using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 {
-    public class OCIArtifactProvider : IOCIArtifactProvider
+    public class OciArtifactProvider : IOciArtifactProvider
     {
-        private readonly IOCIArtifactClient _client;
+        private readonly IOciClient _client;
 
-        public OCIArtifactProvider(ImageInfo imageInfo, IOCIArtifactClient client)
+        public OciArtifactProvider(ImageInfo imageInfo, IOciClient client)
         {
             EnsureArg.IsNotNull(imageInfo, nameof(imageInfo));
             EnsureArg.IsNotNull(client, nameof(client));
@@ -29,17 +28,19 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
         protected ImageInfo ImageInfo { get; }
 
-        public virtual async Task<List<OCIArtifactLayer>> GetOCIArtifactAsync(CancellationToken cancellationToken = default)
+        public virtual async Task<ArtifactImage> GetOciArtifactAsync(CancellationToken cancellationToken = default)
         {
-            var artifactsResult = new List<OCIArtifactLayer>();
+            var artifactsResult = new ArtifactImage();
             cancellationToken.ThrowIfCancellationRequested();
             var manifest = await GetManifestAsync(cancellationToken);
             var layersInfo = manifest.Layers;
+            artifactsResult.Manifest = manifest;
+
             foreach (var layer in layersInfo)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var artifactLayer = await GetLayerAsync(layer.Digest, cancellationToken);
-                artifactsResult.Add(artifactLayer);
+                artifactsResult.Blobs.Add(artifactLayer);
             }
 
             return artifactsResult;
@@ -48,22 +49,22 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
         public virtual async Task<ManifestWrapper> GetManifestAsync(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ManifestWrapper manifestInfo = await _client.PullManifestAcync(ImageInfo.ImageName, ImageInfo.Label, cancellationToken);
+            ManifestWrapper manifestInfo = await _client.GetManifestAsync(ImageInfo.ImageName, ImageInfo.Label, cancellationToken);
             ValidationUtility.ValidateManifest(manifestInfo);
             return manifestInfo;
         }
 
-        public virtual async Task<OCIArtifactLayer> GetLayerAsync(string layerDigest, CancellationToken cancellationToken = default)
+        public virtual async Task<ArtifactBlob> GetLayerAsync(string layerDigest, CancellationToken cancellationToken = default)
         {
             EnsureArg.IsNotNull(layerDigest, nameof(layerDigest));
 
             cancellationToken.ThrowIfCancellationRequested();
-            var rawBytes = await _client.PullBlobAsBytesAcync(ImageInfo.ImageName, layerDigest, cancellationToken);
-            OCIArtifactLayer artifactsLayer = new OCIArtifactLayer()
+            var rawBytes = await _client.GetBlobAsync(ImageInfo.ImageName, layerDigest, cancellationToken);
+            ArtifactBlob artifactsLayer = new ArtifactBlob()
             {
-                Content = rawBytes,
+                Content = rawBytes.Content,
                 Digest = layerDigest,
-                Size = rawBytes.Length,
+                Size = rawBytes.Content.Length,
             };
             return artifactsLayer;
         }

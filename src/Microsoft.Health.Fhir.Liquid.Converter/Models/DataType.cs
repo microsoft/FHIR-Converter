@@ -5,9 +5,13 @@
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 {
+    /// <summary>
+    /// The input data types supported by FHIR Converter
+    /// </summary>
     public enum DataType
     {
         Hl7v2,
         Ccda,
+        Json,
     }
 }

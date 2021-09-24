@@ -7,67 +7,149 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading;
 using System.Threading.Tasks;
 using EnsureThat;
+using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
-    public class OrasClient : IOrasClient
+    /// <summary>
+    /// Partial class.
+    /// </summary>
+    public partial class OrasClient : IOciClient
     {
-        private readonly string _imageReference;
+        private readonly string _imageFolder;
+        private readonly string _registry;
 
-        public OrasClient(string imageReference)
+        public OrasClient(string registry, string imageFolder)
         {
-            EnsureArg.IsNotNull(imageReference, nameof(imageReference));
-
-            _imageReference = imageReference;
+            _imageFolder = imageFolder;
+            _registry = registry;
+            InitCacheEnviroment();
         }
 
-        public async Task PullImageAsync(string outputFolder)
+        public async Task<ArtifactImage> PullImageAsync(string name, string reference, CancellationToken cancellationToken = default)
         {
-            string command = $"pull  \"{_imageReference}\" -o \"{outputFolder}\"";
-            await OrasExecutionAsync(command, Directory.GetCurrentDirectory());
-        }
+            EnsureArg.IsNotNull(name, nameof(name));
+            EnsureArg.IsNotNull(reference, nameof(reference));
 
-        public async Task PushImageAsync(string inputFolder, List<string> filePathList)
-        {
-            string argument = string.Empty;
-            string command = $"push \"{_imageReference}\"";
+            DirectoryHelper.ClearFolder(_imageFolder);
 
-            // In order to remove image's directory prefix. (e.g. "layers/layer1.tar.gz" --> "layer1.tar.gz"
-            // Change oras working folder to inputFolder
-            foreach (var filePath in filePathList)
+            string imageReference = string.Format("{0}/{1}:{2}", _registry, name, reference);
+            string command = $"pull  \"{imageReference}\" -o \"{_imageFolder}\"";
+
+            string output = await OrasExecutionAsync(command, null);
+            var digest = GetImageDigest(output);
+
+            // Oras will create output folder if not existed.
+            if (!Directory.Exists(_imageFolder) || !Directory.EnumerateFileSystemEntries(_imageFolder).Any())
             {
-                if (!File.Exists(Path.Combine(inputFolder, filePath)))
+                throw new OciClientException(TemplateManagementErrorCode.OrasProcessFailed, "Image not found, pull image failed or image is empty.");
+            }
+
+            var artifactImage = new ArtifactImage
+            {
+                ImageDigest = digest.Value,
+            };
+            try
+            {
+                artifactImage.Manifest = await GetManifestFromCacheAsync(digest.Value, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new OciClientException(TemplateManagementErrorCode.OrasCacheManifestFailed, "Get manifest from oras cache failed.", ex);
+            }
+
+            try
+            {
+                foreach (var layerInfo in artifactImage.Manifest.Layers)
                 {
-                    throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "Image layer not found");
+                    artifactImage.Blobs.Add(await GetBlobFromCacheAsync(layerInfo.Digest, cancellationToken));
                 }
-
-                argument += $" \"{filePath}\"";
             }
-
-            if (string.IsNullOrEmpty(argument))
+            catch (Exception ex)
             {
-                throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file for push.");
+                throw new OciClientException(TemplateManagementErrorCode.OrasCacheBlobFailed, "Get blobs from oras cache failed.", ex);
             }
 
-            await OrasExecutionAsync(string.Concat(command, argument), inputFolder);
+            return artifactImage;
         }
 
-        public static async Task OrasExecutionAsync(string command, string orasWorkingDirectory)
+        public async Task<string> PushImageAsync(string name, string tag, ArtifactImage artifactImage, CancellationToken cancellationToken = default)
+        {
+            EnsureArg.IsNotNull(name, nameof(name));
+            EnsureArg.IsNotNull(tag, nameof(tag));
+
+            DirectoryHelper.ClearFolder(_imageFolder);
+
+            string imageReference = string.Format("{0}/{1}:{2}", _registry, name, tag);
+            List<string> fileNameList = new List<string>();
+            string command = $"push \"{imageReference}\"";
+
+            foreach (var layer in artifactImage.Blobs)
+            {
+                if (layer.Content != null)
+                {
+                    await layer.WriteToFileAsync(Path.Combine(_imageFolder, layer.FileName));
+                    fileNameList.Add($"\"{layer.FileName}\"");
+                }
+            }
+
+            if (fileNameList.Count == 0)
+            {
+                throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file to push.");
+            }
+
+            string argument = string.Join(" ", fileNameList);
+
+            // In order to remove image's directory prefix. (e.g. "layers/layer1" --> "layer1")
+            // Change oras working folder to inputFolder
+            var output = await OrasExecutionAsync(string.Concat(command, " ", argument), _imageFolder);
+            var digest = GetImageDigest(output);
+            return digest.Value;
+        }
+
+        public static async Task<string> OrasExecutionAsync(string command, string orasWorkingDirectory = null)
         {
             TaskCompletionSource<bool> eventHandled = new TaskCompletionSource<bool>();
 
+            string orasFileName;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                orasFileName = Constants.OrasFileForWindows;
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                orasFileName = Constants.OrasFileForOSX;
+            }
+            else
+            {
+                throw new TemplateManagementException("Operation system is not supported");
+            }
+
+            // oras file is in the same directory with our tool.
+            var orasFilePath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), orasFileName);
+
             Process process = new Process
             {
-                StartInfo = new ProcessStartInfo(Constants.OrasFile),
+                StartInfo = new ProcessStartInfo(orasFilePath),
             };
 
             process.StartInfo.Arguments = command;
             process.StartInfo.RedirectStandardError = true;
-            process.StartInfo.WorkingDirectory = orasWorkingDirectory;
+            process.StartInfo.RedirectStandardOutput = true;
+            if (orasWorkingDirectory != null)
+            {
+                process.StartInfo.WorkingDirectory = orasWorkingDirectory;
+            }
+
             process.EnableRaisingEvents = true;
 
             // Add event to make it async.
@@ -78,23 +160,53 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             }
             catch (Exception ex)
             {
-                throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, "Oras process failed", ex);
+                throw new OciClientException(TemplateManagementErrorCode.OrasProcessFailed, "Oras process failed", ex);
             }
 
             StreamReader errStreamReader = process.StandardError;
+            StreamReader outputStreamReader = process.StandardOutput;
             await Task.WhenAny(eventHandled.Task, Task.Delay(Constants.TimeOutMilliseconds));
             if (process.HasExited)
             {
-                string error = errStreamReader.ReadToEnd();
-                if (!string.IsNullOrEmpty(error))
+                if (process.ExitCode != 0)
                 {
-                    throw new OrasException(TemplateManagementErrorCode.OrasProcessFailed, error);
+                    throw new OciClientException(TemplateManagementErrorCode.OrasProcessFailed, $"Oras process failed. {errStreamReader.ReadToEnd()}");
                 }
+
+                return outputStreamReader.ReadToEnd();
             }
-            else
+
+            try
             {
-                throw new OrasException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
+                process.Kill();
             }
+            catch (Exception ex)
+            {
+                throw new OciClientException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout. Fail to kill oras process.", ex);
+            }
+
+            throw new OciClientException(TemplateManagementErrorCode.OrasTimeOut, "Oras request timeout");
+        }
+
+        private Digest GetImageDigest(string input)
+        {
+            var digests = Digest.GetDigest(input);
+            if (digests.Count == 0)
+            {
+                throw new OciClientException(TemplateManagementErrorCode.OrasProcessFailed, "Failed to parse image digest.");
+            }
+
+            return digests[0];
+        }
+
+        public Task<ManifestWrapper> GetManifestAsync(string name, string digest, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ArtifactBlob> GetBlobAsync(string name, string digest, CancellationToken cancellationToken = default)
+        {
+            throw new NotImplementedException();
         }
     }
 }

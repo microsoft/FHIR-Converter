@@ -5,7 +5,7 @@ The Template Management CLI tool is mean to pull, push, and manage the templates
 Template OCI image is a layer based structure similar to docker image and uses [overlayfs](https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html?highlight=overlayfs) concept to organize templates. For custom templates, we use two layers image structure to organize template collection: base layer and user layer (The user layer could be extended to multi-layers in the future if necessary). Base layer packs Microsoft published templates and user layer packs all modified templates from users. Each layer will be compressed into "*.tar.gz" file before pushing to ACR.
 # Using Template Management CLI
 
-The command-line tool can be used to pull and push a template collection from/to Azure Container Registry. For now we only support windows, and will support other OSs soon.
+The command-line tool can be used to pull and push a template collection from/to Azure Container Registry. Currently, we support Windows and MacOS for the CLI tool.
 
 ## Prerequisites
 * Azure container registry - Create a container registry in your Azure subscription if you do not have one. This is the registry where you want to keep your Liquid templates. You can use the [Azure portal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal) or the [Azure CLI](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-azure-cli).
@@ -36,15 +36,19 @@ To use docker login, you should install docker first.
 ```
 * Oras Login
 
-The [oras](https://github.com/deislabs/oras) tool oras.exe for windows is packed in our repo, users can directly use it for login as follows.
+The [Oras](https://github.com/deislabs/oras) executable tools (oras.exe for windows and oras-osx for mac) are packed in our repo, users can directly use it for login as follows.
 
 ```
->.\oras.exe login <acrName.azurecr.io> -u <username> -p <password>
+> <orasExeTool> login <acrName.azurecr.io> -u <username> -p <password>
 ```
+>Note: macOS users need to add execute permission for oras-osx file before using. 
+>```
+>chmod +x oras-osx
+>```
 
 If using service principal's identity for authentication, you need to create a [service principal](https://docs.microsoft.com/en-us/azure/container-registry/container-registry-auth-service-principal) to access your registry. Ensure that the service principal is assigned a role such as AcrPush so that it has permissions to push and pull artifacts.
 ## Push
-To push a template collection, the command is: 
+To push a template collection, the command is:
 
 ```
 push <ImageReference> InputTemplateFolder [ -n | --NewBaseLayer]

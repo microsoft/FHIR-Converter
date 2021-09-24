@@ -20,7 +20,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 
         // DataParseException
         InputParsingError = 1201,
-        NullOrEmptyInput = 1202,
+        NullOrWhiteSpaceInput = 1202,
         InvalidHl7v2Message = 1203,
         MissingHl7v2Separators = 1204,
         DuplicateHl7v2Separators = 1205,

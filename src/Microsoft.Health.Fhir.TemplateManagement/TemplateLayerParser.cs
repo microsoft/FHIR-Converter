@@ -18,10 +18,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 {
     public static class TemplateLayerParser
     {
-        public static TemplateLayer ParseArtifactsLayerToTemplateLayer(OCIArtifactLayer artifactsLayer)
+        public static TemplateLayer ParseArtifactsLayerToTemplateLayer(ArtifactBlob artifactsLayer)
         {
             TemplateLayer oneTemplateLayer = new TemplateLayer();
-            var artifacts = StreamUtility.DecompressTarGzStream(new MemoryStream(artifactsLayer.Content));
+            var artifacts = StreamUtility.DecompressFromTarGz(new MemoryStream(artifactsLayer.Content));
             var parsedTemplate = ParseToTemplates(artifacts);
 
             oneTemplateLayer.TemplateContent = parsedTemplate;
@@ -48,10 +48,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 
         private static string GetContentWithoutBOM(byte[] content)
         {
-            using (var streamReader = new StreamReader(new MemoryStream(content), Encoding.UTF8, true))
-            {
-                return streamReader.ReadToEnd();
-            }
+            using var streamReader = new StreamReader(new MemoryStream(content), Encoding.UTF8, true);
+            return streamReader.ReadToEnd();
         }
     }
 }

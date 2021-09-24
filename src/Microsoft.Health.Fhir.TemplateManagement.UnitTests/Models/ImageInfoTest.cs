@@ -83,6 +83,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "microsofthealth/fhirconverter:default" };
             yield return new object[] { "microsofthealth/hl7v2templates:default" };
             yield return new object[] { "microsofthealth/ccdatemplates:default" };
+            yield return new object[] { "microsofthealth/jsontemplates:default" };
         }
 
         public static IEnumerable<object[]> GetDefaultTemplateReferenceWithCaseInsensitive()
@@ -93,6 +94,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "MICROSOFTHEALTH/FHIRCONVERTER:DEFAULT" };
             yield return new object[] { "MicrosoftHealth/Hl7v2Templates:default" };
             yield return new object[] { "microsoftHealth/CcdaTemplates:default" };
+            yield return new object[] { "microsoftHealth/JSONTemplates:default" };
         }
 
         public static IEnumerable<object[]> GetInvalidDefaultTemplateReference()

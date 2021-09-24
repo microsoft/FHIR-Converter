@@ -6,7 +6,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Xunit;
@@ -43,7 +42,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
                 },
             };
 
-            var templateProvider = new CcdaTemplateProvider(templateCollection);
+            var templateProvider = new TemplateProvider(templateCollection);
             var context = new Context(
                 new List<Hash>(),
                 new Hash(),

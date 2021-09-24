@@ -9,13 +9,12 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Models
 {
-    public class TemplateLayer : OCIArtifactLayer
+    public class TemplateLayer : ArtifactBlob
     {
         public Dictionary<string, Template> TemplateContent { get; set; }
 
@@ -54,7 +53,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
                 stream.Position = 0;
 
                 TemplateLayer templateLayer = new TemplateLayer();
-                var artifacts = StreamUtility.DecompressTarGzStream(stream);
+                var artifacts = StreamUtility.DecompressFromTarGz(stream);
                 templateLayer.TemplateContent = TemplateLayerParser.ParseToTemplates(artifacts);
                 templateLayer.Digest = digest;
                 templateLayer.Size = artifacts.Sum(x => x.Value.Length);

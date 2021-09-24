@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -13,9 +12,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Hl7.Fhir.Serialization;
-using Microsoft.Health.Fhir.Liquid.Converter.Ccda;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Processors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
@@ -30,8 +28,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         private static readonly string _ccdaTemplateFolder = Path.Combine(Constants.TemplateDirectory, "Ccda");
         private static readonly string _ccdaDataFolder = Path.Combine(Constants.SampleDataDirectory, "Ccda");
 
-        private static readonly Hl7v2TemplateProvider _hl7TemplateProvider = new Hl7v2TemplateProvider(_hl7TemplateFolder);
-        private static readonly CcdaTemplateProvider _ccdaTemplateProvider = new CcdaTemplateProvider(_ccdaTemplateFolder);
+        private static readonly ITemplateProvider _hl7TemplateProvider = new TemplateProvider(_hl7TemplateFolder, DataType.Hl7v2);
+        private static readonly ITemplateProvider _ccdaTemplateProvider = new TemplateProvider(_ccdaTemplateFolder, DataType.Ccda);
 
         private static readonly FhirJsonParser _fhirParser = new FhirJsonParser();
 

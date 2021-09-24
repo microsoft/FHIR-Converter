@@ -10,13 +10,13 @@ using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 {
-    public class ACRClientCredentialTests
+    public class AcrClientCredentialTests
     {
         [Fact]
         public void GivenValidTokenAndRequest_WhenAddCredentialToHttpRequest_ProcessedRequestWillBeReturned()
         {
             string token = "Basic testtoken";
-            var credential = new ACRClientCredentials(token);
+            var credential = new AcrClientCredentials(token);
             Assert.NotNull(credential.ProcessHttpRequestAsync(new HttpRequestMessage()));
         }
 
@@ -24,7 +24,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         public async System.Threading.Tasks.Task GivenInValidTokenAndRequest_WhenAddCredentialToHttpRequest_ExceptionWillBeThrown()
         {
             string token = string.Empty;
-            var credential = new ACRClientCredentials(token);
+            var credential = new AcrClientCredentials(token);
             await Assert.ThrowsAsync<ContainerRegistryAuthenticationException>(async () => await credential.ProcessHttpRequestAsync(new HttpRequestMessage()));
         }
     }

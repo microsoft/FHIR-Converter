@@ -39,6 +39,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             _cache.Set("microsofthealth/hl7v2templates:default", hl7V2DefaultTemplateLayer, memoryOption);
             TemplateLayer ccdaDefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource("CcdaDefaultTemplates.tar.gz");
             _cache.Set("microsofthealth/ccdatemplates:default", ccdaDefaultTemplateLayer, memoryOption);
+            TemplateLayer jsonDefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource("JsonDefaultTemplates.tar.gz");
+            _cache.Set("microsofthealth/jsontemplates:default", jsonDefaultTemplateLayer, memoryOption);
 
             PushLargeSizeManifest();
         }
@@ -83,9 +85,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         public static IEnumerable<object[]> GetDefaultTemplatesInfo()
         {
-            yield return new object[] { "microsofthealth/fhirconverter:default", 808 };
-            yield return new object[] { "microsofthealth/hl7v2templates:default", 808 };
-            yield return new object[] { "microsofthealth/ccdatemplates:default", 839 };
+            yield return new object[] { "microsofthealth/fhirconverter:default", 759 };
+            yield return new object[] { "microsofthealth/hl7v2templates:default", 759 };
+            yield return new object[] { "microsofthealth/ccdatemplates:default", 821 };
+            yield return new object[] { "microsofthealth/jsontemplates:default", 2 };
         }
 
         [Theory]
@@ -132,7 +135,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         [Theory]
         [MemberData(nameof(GetValidLayerInfo))]
-        public async Task GivenValidLayerInfo_WhenGetLayerFromTemplateCollectionProvider_IfCached_ATemplateLayerShouldBeReturnedWithEmptyACRAsync(string imageReference, string layerDigest, int expectedCounts)
+        public async Task GivenValidLayerInfo_WhenGetLayerFromTemplateCollectionProvider_IfCached_ATemplateLayerShouldBeReturnedWithEmptyAcrAsync(string imageReference, string layerDigest, int expectedCounts)
         {
             await PullImageToCacheAsync(_defaultConfig);
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
@@ -143,7 +146,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         [Theory]
         [MemberData(nameof(GetManifestInfoWithTag))]
-        public async Task GivenManifestInfo_WhenGetManifestFromTemplateCollectionProvider_IfCached_AManifestShouldBeReturnedWithEmptyACRAsync(string imageReference, string expectedManifestPath)
+        public async Task GivenManifestInfo_WhenGetManifestFromTemplateCollectionProvider_IfCached_AManifestShouldBeReturnedWithEmptyAcrAsync(string imageReference, string expectedManifestPath)
         {
             await PullImageToCacheAsync(_defaultConfig);
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
@@ -154,7 +157,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         [Theory]
         [MemberData(nameof(GetImageInfoForArtifactWithTag))]
-        public async Task GivenImageInfo_WhenGetTemplateCollectionFromTemplateCollectionProvider_IfCached_ATemplateCollectionShouldBeReturnedWithEmptyACRAsync(string imageReference, List<int> expectedTemplatesCounts)
+        public async Task GivenImageInfo_WhenGetTemplateCollectionFromTemplateCollectionProvider_IfCached_ATemplateCollectionShouldBeReturnedWithEmptyAcrAsync(string imageReference, List<int> expectedTemplatesCounts)
         {
             await PullImageToCacheAsync(_defaultConfig);
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);

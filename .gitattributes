@@ -5,3 +5,6 @@
 *.ccda    text    eol=LF
 *.hl7     text    eol=LF
 *.md      text    eol=LF
+
+## Ensure eol not changed only for unit tests. 
+src/Microsoft.Health.Fhir.TemplateManagement.UnitTests/TestData/MockUserFolder/*.* binary

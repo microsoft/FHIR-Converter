@@ -11,7 +11,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
-using Microsoft.Health.Fhir.Liquid.Converter.Hl7v2.InputProcessor;
+using Microsoft.Health.Fhir.Liquid.Converter.InputProcessors;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
@@ -83,7 +83,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static string Sha1Hash(string data)
         {
-            using var sha1 = new SHA1Managed();
+#pragma warning disable CA5350
+            using var sha1 = new SHA1Managed(); // lgtm[cs/weak-crypto]
+#pragma warning restore CA5350
             var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(data));
             return string.Concat(hash.Select(b => b.ToString("x2")));
         }

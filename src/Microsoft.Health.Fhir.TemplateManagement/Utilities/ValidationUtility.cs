@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System.Linq;
 using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
@@ -27,7 +28,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
 
         public static void ValidateManifest(ManifestWrapper manifestInfo)
         {
-            if (manifestInfo == null)
+            if (manifestInfo?.Layers?.Any() != true)
             {
                 throw new ImageValidationException(TemplateManagementErrorCode.InvalidManifestInfo, $"Manifest is invalid");
             }

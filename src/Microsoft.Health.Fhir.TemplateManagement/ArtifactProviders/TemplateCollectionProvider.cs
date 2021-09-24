@@ -17,12 +17,12 @@ using Microsoft.Health.Fhir.TemplateManagement.Storage;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 {
-    public class TemplateCollectionProvider : OCIArtifactProvider, ITemplateCollectionProvider
+    public class TemplateCollectionProvider : OciArtifactProvider, ITemplateCollectionProvider
     {
         private readonly IMemoryCache _templateCache;
         private readonly TemplateCollectionConfiguration _configuration;
 
-        public TemplateCollectionProvider(ImageInfo imageInfo, IOCIArtifactClient client, IMemoryCache templateCache, TemplateCollectionConfiguration configuration)
+        public TemplateCollectionProvider(ImageInfo imageInfo, IOciClient client, IMemoryCache templateCache, TemplateCollectionConfiguration configuration)
             : base(imageInfo, client)
         {
             EnsureArg.IsNotNull(imageInfo, nameof(imageInfo));
@@ -42,7 +42,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             }
 
             List<Dictionary<string, Template>> result = new List<Dictionary<string, Template>>();
-            var templateLayers = await GetOCIArtifactAsync(cancellationToken);
+            var templateImage = await GetOciArtifactAsync(cancellationToken);
+            var templateLayers = templateImage.Blobs;
 
             for (var layerNumber = templateLayers.Count - 1; layerNumber >= 0; layerNumber--)
             {
@@ -90,7 +91,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             return manifestInfo;
         }
 
-        public override async Task<OCIArtifactLayer> GetLayerAsync(string layerDigest, CancellationToken cancellationToken = default)
+        public override async Task<ArtifactBlob> GetLayerAsync(string layerDigest, CancellationToken cancellationToken = default)
         {
             EnsureArg.IsNotNull(layerDigest, nameof(layerDigest));
 
@@ -98,7 +99,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             if (oneTemplateLayer == null)
             {
                 var artifactsLayer = await base.GetLayerAsync(layerDigest, cancellationToken);
-                oneTemplateLayer = TemplateLayerParser.ParseArtifactsLayerToTemplateLayer(artifactsLayer as OCIArtifactLayer);
+                oneTemplateLayer = TemplateLayerParser.ParseArtifactsLayerToTemplateLayer(artifactsLayer as ArtifactBlob);
             }
 
             return oneTemplateLayer;
