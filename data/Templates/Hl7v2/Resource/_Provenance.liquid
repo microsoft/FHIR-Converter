@@ -24,7 +24,7 @@ Device_ID_MSH_3: A resource Id, used to fill "entity.what.reference" property. T
     "resource":{
         "resourceType": "Provenance",
         "id":"{{ ID }}",
-        {%- comment -%}
+        
         {% if Root_Template -%}
         {% assign generationInstant = "{{ "" | now }}" -%}
         {% assign templateVersion = "TEMPLATE_VERSION_PLACEHOLDER" -%}
@@ -33,7 +33,6 @@ Device_ID_MSH_3: A resource Id, used to fill "entity.what.reference" property. T
             "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on {{ generationInstant }} using Microsoft FHIR Converter.</span><span>Template Version: {{ templateVersion }}.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/v{{ templateVersion }}/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: {{ Root_Template }}.</span></p></div>"
         },
         {% endif -%}
-{%- endcomment -%}
 
         {% if MSH %}
             "occurredDateTime" : "{{ MSH.7.Value | format_as_date_time }}",

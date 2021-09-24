@@ -299,7 +299,7 @@
 
         {% if firstSegments.EVN -%}
             {% evaluate provenanceId using 'ID/Provenance' EVN: firstSegments.EVN, baseId: patientId -%}
-            {% include 'Resource/Provenance' Root_Template: 'ADT_A13', EVN: firstSegments.EVN, EVNTEXT: firstSegments.MSH.9, REF_EVN: messageHeaderId,  ID: provenanceId -%}
+            {% include 'Resource/Provenance' EVN: firstSegments.EVN, EVNTEXT: firstSegments.MSH.9, REF_EVN: messageHeaderId,  ID: provenanceId -%}
             {% if firstSegments.EVN.5 -%}     
                 {% if firstSegments.EVN.5.9.1 != "" and firstSegments.EVN.5.9.1 != null and firstSegments.EVN.5.9.2 != "" and firstSegments.EVN.5.9.2 != null and firstSegments.EVN.5.9.3 != "" and firstSegments.EVN.5.9.3 != null -%}
                     {% evaluate Organization_ID_EVN_5_9 using 'ID/Organization' HDORG: firstSegments.EVN.5.9 -%}
