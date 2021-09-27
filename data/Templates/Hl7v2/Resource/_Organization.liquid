@@ -153,6 +153,14 @@
                 {% endif -%}
             },
             {
+                {% include 'DataType/XAD' XAD: OBX_ORU.24 -%}
+            },
+            {% if OBX_ORU.25 -%}
+                {
+                    {% include 'DataType/XAD' XAD: OBX_ORU.24 -%}
+                },
+            {% endif -%}
+            {
                     {% include 'DataType/XAD' XAD: ORC.22.Repeats[0] -%}
             },
             {% for gt1_5 in GT1.5.Repeats -%}

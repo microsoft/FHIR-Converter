@@ -187,19 +187,20 @@
         {% for obrSegment in obrSegmentLists.OBR -%}
             {% assign obxSegmentLists = hl7v2Data | get_related_segment_list: obrSegment, 'OBX' -%}
             {% assign spmSegmentLists = hl7v2Data | get_related_segment_list: obrSegment, 'SPM' -%}
-
+            
             {% evaluate practitionerId_OBR_10 using 'ID/Practitioner' XCN: obrSegment.10 -%}
             {% include 'Resource/Practitioner' OBR: obrSegment, ID: practitionerId_OBR_10 -%}
-
+           
+            
             {% evaluate diagnosticId using 'ID/DiagnosticReport' OBR: obrSegment, baseId: patientId -%}
-            {% include 'Resource/DiagnosticReport' OBR: obrSegment, DiagnosticReport_Encounter_ID: fullEncounterId, ID: diagnosticId -%}
-
+            {% include 'Resource/DiagnosticReport' OBR: obrSegment, DiagnosticReport_Encounter_ID: fullEncounterId, ID: diagnosticId -%}         
+            
             {% for obxSegment in obxSegmentLists.OBX -%}
+                {% comment -%}{% endcomment -%}
                 {% evaluate organizationId_OBX_23 using 'ID/Organization' XON: obxSegment.23 -%}
                 {% if obxSegment.24 or obxSegment.25 -%}
-                    {% include 'Resource/Organization' OBX: obxSegment, ID: organizationId_OBX_23 -%}
+                    {% include 'Resource/Organization' OBX_ORU: obxSegment, ID: organizationId_OBX_23 -%}
                 {% endif -%}
-
                 {% evaluate practitionerId_OBX_16 using 'ID/Practitioner' XCN: obxSegment.16 -%}
                 {% if obxSegment.16 -%}
                     {% include 'Resource/Practitioner' OBX: obxSegment, ID: practitionerId_OBX_16 -%}
