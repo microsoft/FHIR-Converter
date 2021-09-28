@@ -232,7 +232,7 @@ Device_ID_MSH_3: A resource Id, used to fill "entity.what.reference" property. T
                 ],
             {% endif %}
             {% if EVNTEXT -%}
-                "text": "event - :{{EVNTEXT.Value}}",
+                "text": "{{EVNTEXT.Value}}",
             {% endif -%}
         },
         {% if MSH %}
