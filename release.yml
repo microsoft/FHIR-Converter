@@ -56,14 +56,17 @@ stages:
         nobuild: true
 
     - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+      condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
       displayName: 'component detection'
       
     - task: notice@0
+      condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
       displayName: 'generate NOTICE file'
       inputs:
         outputformat: 'text'
 
     - task: DownloadBuildArtifacts@0
+      condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
       inputs:
         buildType: 'current'
         downloadType: 'single'
