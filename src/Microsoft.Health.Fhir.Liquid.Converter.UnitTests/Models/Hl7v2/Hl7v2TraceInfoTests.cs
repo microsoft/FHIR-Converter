@@ -62,7 +62,7 @@ PID|1||10006579^^^1^MR^1||DUCK^DONALD^D||19241010|M||1|111 DUCK ST^^FOWL^CA^9999
             var processor = new Hl7v2Processor();
             var templateProvider = new TemplateProvider(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2);
             _ = processor.Convert(content, "ADT_A01", templateProvider, traceInfo);
-           //Assert.Single(traceInfo.UnusedSegments);
+            Assert.Equal(2, traceInfo.UnusedSegments.Count);
 
             var unusedPid = traceInfo.UnusedSegments[1];
             Assert.Equal("PID", unusedPid.Type);
