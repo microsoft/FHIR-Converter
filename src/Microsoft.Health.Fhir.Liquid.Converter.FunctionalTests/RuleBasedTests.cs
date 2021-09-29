@@ -34,6 +34,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         private static readonly FhirJsonParser _fhirParser = new FhirJsonParser();
 
         private static readonly int _maxRevealDepth = 1 << 7;
+        private static readonly bool _skipValidator = true;
 
         private readonly ITestOutputHelper _output;
 
@@ -190,11 +191,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-
-        // comment out the fhir validator for ccda since it takes too much time
-        // [MemberData(nameof(GetCcdaCases))]
+        [MemberData(nameof(GetCcdaCases))]
         public async Task CheckPassOfficialValidator(string templateName, string samplePath, DataType dataType)
         {
+            if (_skipValidator)
+            {
+                return;
+            }
+
             (bool javaStatus, string javaMessage) = await ExecuteCommand("-version");
             Assert.True(javaStatus, javaMessage);
 
