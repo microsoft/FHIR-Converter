@@ -1,6 +1,7 @@
 {% comment -%}
 The following reference IDs are accepted by this template.
 
+Practitioner_ID_NTE_5: A resource Id, used to fill "note.reference" property. The resource is of "Practitioner" type and generated based on "NTE.5" HL7 V2 identifier.
 Practitioner_ID_OBX_16: A resource Id, used to fill "performer.reference" property. The resource is of "Practitioner" type and generated based on "OBX.16" HL7 V2 identifier.
 Organization_ID_OBX_23: A resource Id, used to fill "performer.reference" property. The resource is of "Organization" type and generated based on "OBX.23" HL7 V2 identifier.
 PractitionerRole_ID_OBX_25: A resource Id, used to fill "performer.reference" property. The resource is of "PractitionerRole" type and generated based on "OBX.25" HL7 V2 identifier.
@@ -9,98 +10,19 @@ Observation_Encounter_ID: A resource Id, used to fill "encounter.reference" prop
 Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" property.
 {% endcomment -%}
 
-{% evaluate Practitioner_ID_OBX_16 using 'ID/Practitioner' XCN: OBX.16 -%}
+{% evaluate Practitioner_ID_NTE_5 using 'ID/Practitioner' XCN: NTE.5 -%}
+{% evaluate Device_ID_OBX_18 using 'ID/Device' EI: OBX.18.Repeats[0] -%}
 {% evaluate Organization_ID_OBX_23 using 'ID/Organization' XON: OBX.23 -%}
 {% evaluate PractitionerRole_ID_OBX_25 using 'ID/PractitionerRole' XCN: OBX.25 -%}
+
+{% assign VALUE_STRING_SN = {{OBX.5.1.Value}} | append: " " | append: {{OBX.5.2.Value}} | append: " " | append: {{OBX.5.3.Value}} | append: " " | append: {{OBX.5.4.Value}} -%}
+{% assign VALUE_STRING_VR = {{OBX.5.1.Value}} | append: "-" | append: {{OBX.5.2.Value}} -%}
 
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
         "resourceType": "Observation",
         "id":"{{ ID }}",
-        "code":
-        {
-            {% include 'DataType/CWECodeableConcept' CWE: OBX.3 -%}
-        },
-        "valueQuantity":
-        {
-            {% if OBX.2.Value == "NM" -%}
-                "value":"{{ OBX.5.Value }}",
-            {% endif -%}
-            {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
-            {% if OBX.2.Value == "SN" -%}
-            {% endif -%}
-            {% if OBX.2.Value == "SN" -%}
-                {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
-            {% endif -%}
-            {% if OBX.2.Value == "NA" or OBX.2.Value == "NM" -%}
-                {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
-            {% endif -%}
-        },
-        {% if OBX.2.Value == "ST" or OBX.2.Value == "FT" or OBX.2.Value == "TX" -%}
-            "valueString":"{{ OBX.5.Value }}",
-        {% endif -%}
-        {% if OBX.2.Value == "VR" -%}
-            "valueString":"{{ OBX.5.1 }}-{{ OBX.5.2 }}",
-        {% endif -%}
-        {% if OBX.2.Value == "SN" -%}
-            "valueString":"{{ OBX.5.1 }} {{ OBX.5.2 }} {{ OBX.5.3 }}",
-        {% endif -%}
-        "valueCodeableConcept":
-        {
-            {% if OBX.2.Value == "CF" or OBX.2.Value == "CNE" or OBX.2.Value == "CWE" or OBX.2.Value == "CE" -%}
-                {% include 'DataType/CWECodeableConcept' CWE: OBX.5 -%}
-            {% endif -%}
-            {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
-            {% if OBX.2.Value == "IS" -%}
-            {% endif -%}
-        },
-        "valuePeriod":
-        {
-            {% if OBX.2.Value == "DR" -%}
-                {% include 'DataType/DR' DR: OBX.5 -%}
-            {% endif -%}
-        },
-        {% if OBX.2.Value == "DTM" or OBX.2.Value == "DT" -%}
-            "valueDateTime":"{{ OBX.5.Value | format_as_date_time }}",
-        {% endif -%}
-        {% if OBX.2.Value == "TM" -%}
-            "valueTime":"{{ OBX.5.Value }}",
-        {% endif -%}
-        "valueRatio":
-        {
-            {% if OBX.2.Value == "SN" -%}{% if OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
-                {% include 'DataType/SNRatio' SN: OBX.5 -%}
-            {% endif -%}{% endif -%}
-            "numerator":
-            {
-                {% if OBX.2.Value == "SN" -%}{% if OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
-                    {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
-                {% endif -%}{% endif -%}
-            },
-            "denominator":
-            {
-                {% if OBX.2.Value == "SN" -%}{% if OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
-                    {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
-                {% endif -%}{% endif -%}
-            },
-        },
-        "interpretation":
-        [
-            {
-                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/InterpretationCode', CWE: OBX.8 -%}
-            },
-        ],
-        "status":"{{ OBX.11.Value | get_property: 'CodeSystem/ObservationStatus', 'code' }}",
-        "effectiveDateTime":"{{ OBX.14.Value | format_as_date_time }}",
-        {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
-        "method":
-        {
-        },
-        "bodySite":
-        {
-            {% include 'DataType/CWECodeableConcept' CWE: OBX.20 -%}
-        },
         "identifier":
         [
             {
@@ -120,108 +42,333 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                 },
             },
         ],
-        "performer":
-        [
-            {
-                {% if OBX.16 and Practitioner_ID_OBX_16 -%}
-                    "reference":"Practitioner/{{ Practitioner_ID_OBX_16 }}",
-                {% endif -%}
+
+        "status": "{{ OBX.11.1.Value | get_property: 'CodeSystem/ObservationStatus', 'code' }}",
+        "code":
+        {
+            {% include 'DataType/CWECodeableConcept' CWE: OBX.3 -%}
+        },
+
+        {% if OBX.11.1.Value == 'X' or OBX.11.1.Value == 'N' %}
+            "dataAbsentReason" : { 
+                "coding" : [
+                {% if OBX.11.1.Value == 'X' %}
+                    { 
+                        "code" : "not-performed",
+                        "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+                    },
+                {% endif %}
+                {% if OBX.11.1.Value == 'N' %}
+                    { 
+                        "code" : "not-asked",
+                        "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+                    }
+                {% endif %}
+                ], 
             },
+        {% else -%}
+                
+            {% assign obx5_rep = OBX.5.Repeats | size %}
+            {% if obx5_rep == 1 %}
+            "valueQuantity":
             {
-                {% if OBX.23 and Organization_ID_OBX_23 -%}
-                    "reference":"Organization/{{ Organization_ID_OBX_23 }}",
-                {% endif -%}
-            },
-            {
-                {% if OBX.25 and PractitionerRole_ID_OBX_25 -%}
-                    "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_25 }}",
-                {% endif -%}
-            },
-        ],
-        "component":
-        [
-            {
-                "code":
-                {
-                    {% include 'DataType/CWECodeableConcept' CWE: OBX.3 -%}
-                },
-                "valueQuantity":
-                {
-                    {% if OBX.2.Value == "NM" -%}
-                        "value":"{{ OBX.5.Value }}",
-                    {% endif -%}
-                    {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
-                    {% if OBX.2.Value == "SN" -%}
-                    {% endif -%}
-                    {% if OBX.2.Value == "SN" -%}
-                        {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
-                    {% endif -%}
-                    {% if OBX.2.Value == "NA" or OBX.2.Value == "NM" -%}
-                        {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
-                    {% endif -%}
-                },
-                {% if OBX.2.Value == "ST" or OBX.2.Value == "FT" or OBX.2.Value == "TX" -%}
-                    "valueString":"{{ OBX.5.Value }}",
-                {% endif -%}
-                {% if OBX.2.Value == "VR" -%}
-                    "valueString":"{{ OBX.5.1 }}-{{ OBX.5.2}}",
+                {% if OBX.2.Value == "NM" -%}
+                    "value":{{ OBX.5.Value }},
                 {% endif -%}
                 {% if OBX.2.Value == "SN" -%}
-                    "valueString":"{{ OBX.5.1 }} {{ OBX.5.2 }} {{ OBX.5.3 }}",
+                    {% if OBX.5.3.Value != ':' and OBX.5.3.Value != '/' and  OBX.5.3.Value != '+' and  OBX.5.3.Value != '-' -%}
+                        {% include 'DataType/SNQuantity' SN: OBX.5 -%}
+                        {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                    {% endif -%} 
+                {% endif -%} 
+                {% if OBX.2.Value == "NA" or OBX.2.Value == "NM" -%}
+                    {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
                 {% endif -%}
-                "valueCodeableConcept":
-                {
-                    {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
-                    {% if OBX.2.Value == "CF" or OBX.2.Value == "CNE" or OBX.2.Value == "CWE" or OBX.2.Value == "CE" -%}
-                    {% endif -%}
-                    {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
-                    {% if OBX.2.Value == "IS" -%}
-                    {% endif -%}
-                },
-                "valuePeriod":
-                {
-                    {% if OBX.2.Value == "DR" -%}
-                        {% include 'DataType/DR' DR: OBX.5 -%}
-                    {% endif -%}
-                },
-                {% if OBX.2.Value == "DTM" or OBX.2.Value == "DT" -%}
-                    "valueDateTime":"{{ OBX.5.Value | format_as_date_time }}",
+            },
+            {% if OBX.2.Value == "ED" and OBX.5.2.Value == "text" and OBX.5.4.Value == "A" -%}
+                "valueString": "{{ OBX.5.1.Value}} {{ OBX.5.2.Value}} {{ OBX.5.3.Value}} {{ OBX.5.4.Value}}",
+            {% endif %}
+            {% if OBX.2.Value == "ST" or OBX.2.Value == "FT" or OBX.2.Value == "TX" -%}
+                "valueString":"{{ OBX.5.Value }}",
+            {% endif -%}
+            {% if OBX.2.Value == "VR" -%}
+                "valueString": "{{VALUE_STRING_VR}}",
+            {% endif -%}
+            {% if OBX.2.Value == "SN" and OBX.5.3.Value == "+" -%}
+                "valueString":"{{VALUE_STRING_SN}}",
+            {% endif -%}
+            "valueCodeableConcept":
+            {
+                {% if OBX.2.Value == "CWE" -%}
+                    {% include 'DataType/CWECodeableConcept' CWE: OBX.5 -%}
+                {% endif -%}  
+                {% if OBX.2.Value == "IS" -%}
+                    {% include 'DataType/ISCodeableConcept' IS: OBX.5 -%}
                 {% endif -%}
-                {% if OBX.2.Value == "TM" -%}
-                    "valueTime":"{{ OBX.5.Value }}",
+                {% if OBX.2.Value == "CE" -%}
+                    {% include 'DataType/CECodeableConcept' CE: OBX.5 -%}
                 {% endif -%}
-                "valueRatio":
-                {
-                    {% if OBX.2.Value == "SN" -%}{% if OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
-                        {% include 'DataType/SNRatio' SN: OBX.5 -%}
-                    {% endif -%}{% endif -%}
+                {% if OBX.2.Value == "CNE" -%}
+                    {% include 'DataType/CNECodeableConcept' CNE: OBX.5 -%}
+                {% endif -%}
+                {% if OBX.2.Value == "CF" -%}
+                    {% include 'DataType/CFCodeableConcept' CF: OBX.5 -%}
+                {% endif -%}
+                {% if PID.10 -%}
+                    {% include 'DataType/CWECodeableConcept' CWE: PID.10 -%}
+                {% endif -%}
+                {% if PID.22 -%}
+                    {% include 'DataType/CWECodeableConcept' CWE: PID.22 -%}
+                {% endif -%}
+            },
+            "valueRange":
+            {
+                {% if OBX.2.Value == "NR" -%}
+                    {% include 'DataType/NRRange' NR: OBX.5 -%}
+                {% endif -%}
+                {% if OBX.2.Value == "SN" and OBX.5.3.Value == "-" -%}
+                    "low":
+                    {
+                        {% if OBX.5.2 -%}      
+                            "value": {{ OBX.5.2.Value }},
+                        {% endif -%}
+                        {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}          
+                    },
+                    "high":
+                    {
+                        {% if OBX.5.4 -%}      
+                            "value": {{ OBX.5.4.Value }},
+                        {% endif -%}
+                        {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                    },
+                {% endif -%}
+            },
+            {% if OBX.2.Value == "DTM" or OBX.2.Value == "DT" -%}
+                "valueDateTime":"{{ OBX.5.Value | format_as_date_time }}",
+            {% endif -%}
+            {% if OBX.2.Value == "TM" -%}
+                "valueTime":"{{ OBX.5.Value }}",
+            {% endif -%}
+            "valuePeriod":
+            {
+                {% if OBX.2.Value == "DR" -%}
+                    {% include 'DataType/DRPeriod' DR: OBX.5 -%}
+                {% endif -%}
+            },
+            "valueRatio":
+            {
+                {% if OBX.2.Value == "SN" and OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
                     "numerator":
                     {
-                        {% if OBX.2.Value == "SN" -%}{% if OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
-                            {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
-                        {% endif -%}{% endif -%}
+                        {% if OBX.5.2 -%}      
+                            "value": {{ OBX.5.2.Value }},
+                        {% endif -%}
+                        {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
                     },
                     "denominator":
                     {
-                        {% if OBX.2.Value == "SN" -%}{% if OBX.5.3.Value == ":" or OBX.5.3.Value == "/" -%}
-                            {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
-                        {% endif -%}{% endif -%}
+                        {% if OBX.5.4 -%}      
+                            "value": {{  OBX.5.4.Value }},
+                        {% endif -%}
+                        {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
                     },
+                {% endif -%}
+            }, 
+            "referenceRange":
+            [
+                {
+                    "text":"{{ OBX.7.Value }}",
                 },
-                "referenceRange":
+            ],   
+    
+            {% elsif obx5_rep > 1 -%}    
+          
+                "component":
                 [
+                    {% for obx5Segment in OBX.5.Repeats -%}
                     {
-                        "text":"{{ OBX.7.Value }}",
+                        "code":
+                        {
+                            {% include 'DataType/CWECodeableConcept' CWE: OBX.3 -%}
+                        },
+                        "valueQuantity":
+                        {
+                            {% if OBX.2.Value == "NM" -%}
+                                "value": {{ obx5Segment.Value }},
+                            {% endif -%}
+                            {% if OBX.2.Value == "SN" -%}
+                                {% if obx5Segment.3.Value != ':' and obx5Segment.3.Value != '/' and  obx5Segment.3.Value != '+' and  obx5Segment.3.Value != '-' -%}
+                                    {% include 'DataType/SNQuantity' SN: obx5Segment -%}
+                                    {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                                {% endif -%} 
+                            {% endif -%} 
+                            {% if OBX.2.Value == "NA" or OBX.2.Value == "NM" -%}
+                                {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                            {% endif -%}
+                        },
+                        {% if OBX.2.Value == "ED" and obx5Segment.2.Value == "text" and obx5Segment.4.Value == "A" -%}
+                            "valueString": "{{obx5Segment.1.Value}} {{obx5Segment.2.Value}} {{obx5Segment.3.Value}} {{obx5Segment.4.Value}}",
+                        {% endif %}
+                        {% if OBX.2.Value == "ST" or OBX.2.Value == "FT" or OBX.2.Value == "TX" -%}
+                            "valueString":"{{obx5Segment.Value }}",
+                        {% endif -%}
+                        {% if OBX.2.Value == "VR" -%}
+                            "valueString": "{{obx5Segment.1.Value}}-{{obx5Segment.2.Value}}",
+                        {% endif -%}
+                        {% if OBX.2.Value == "SN" and obx5Segment.3.Value == "+" -%}
+                            "valueString": "{{obx5Segment.1.Value}} {{obx5Segment.2.Value}} {{obx5Segment.3.Value}} {{obx5Segment.4.Value}}",
+                        {% endif -%}
+                        "valueCodeableConcept":
+                        {
+                            {% if OBX.2.Value == "CWE" -%}
+                                {% include 'DataType/CWECodeableConcept' CWE: obx5Segment -%}
+                            {% endif -%}  
+                            {% if OBX.2.Value == "IS" -%}
+                                {% include 'DataType/ISCodeableConcept' IS: obx5Segment -%}
+                            {% endif -%}
+                            {% if OBX.2.Value == "CE" -%}
+                                {% include 'DataType/CECodeableConcept' CE: obx5Segment -%}
+                            {% endif -%}
+                            {% if OBX.2.Value == "CNE" -%}
+                                {% include 'DataType/CNECodeableConcept' CNE: obx5Segment -%}
+                            {% endif -%}
+                            {% if OBX.2.Value == "CF" -%}
+                                {% include 'DataType/CFCodeableConcept' CF: obx5Segment -%}
+                            {% endif -%}
+                            {% if PID.10 -%}
+                                {% include 'DataType/CWECodeableConcept' CWE: PID.10 -%}
+                            {% endif -%}
+                            {% if PID.22 -%}
+                                {% include 'DataType/CWECodeableConcept' CWE: PID.22 -%}
+                            {% endif -%}
+                        },
+                        "valueRange":
+                        {
+                            {% if OBX.2.Value == "NR" -%}
+                                {% include 'DataType/NRRange' NR: obx5Segment -%}
+                            {% endif -%}
+                            {% if OBX.2.Value == "SN" and obx5Segment.3.Value == "-" -%}
+                                "low":
+                                {
+                                    {% if obx5Segment.2 -%}      
+                                        "value": {{ obx5Segment.2.Value }},
+                                    {% endif -%}
+                                    {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                                },
+                                "high":
+                                {
+                                    {% if obx5Segment.4 -%}      
+                                        "value": {{ obx5Segment.4.Value }},
+                                    {% endif -%}
+                                    {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                                },
+                            {% endif -%}
+                        },
+                        {% if OBX.2.Value == "DTM" or OBX.2.Value == "DT" -%}
+                            "valueDateTime":"{{ obx5Segment.Value | format_as_date_time }}",
+                        {% endif -%}
+                        {% if OBX.2.Value == "TM" -%}
+                            "valueTime":"{{ obx5Segment.Value }}",
+                        {% endif -%}
+                        "valuePeriod":
+                        {
+                            {% if OBX.2.Value == "DR" -%}
+                                {% include 'DataType/DRPeriod' DR: obx5Segment -%}
+                            {% endif -%}
+                        },
+                        "valueRatio":
+                        {
+                            {% if OBX.2.Value == "NR" -%}
+                                {% include 'DataType/NRRange' NR: obx5Segment -%}
+                            {% endif -%}
+                            {% if OBX.2.Value == "SN" and obx5Segment.3.Value == ":" or obx5Segment.3.Value == "/" -%}
+                                "numerator":
+                                {
+                                    {% if obx5Segment.2 -%}      
+                                        "value": {{ obx5Segment.2.Value }},
+                                    {% endif -%}
+                                    {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                                },
+                                "denominator":
+                                {
+                                    {% if obx5Segment.4 -%}      
+                                        "value": {{ obx5Segment.4.Value }},
+                                    {% endif -%}
+                                    {% include 'DataType/CWEQuantity' CWE: OBX.6 -%}
+                                },
+                            {% endif -%}
+                        }, 
+                        "referenceRange":
+                        [
+                            {
+                                "text":"{{ OBX.7.Value }}",
+                            },
+                        ], 
                     },
-                ],
-                "interpretation":
-                [
-                    {
-                        {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/InterpretationCode', CWE: OBX.8 -%}
-                    },
-                ],
+                    {% endfor -%}  
+                ], 
+            {% endif %}
+        {% endif %}
+        
+        "effectiveDateTime":"{{ OBX.14.Value | format_as_date_time }}",
+         "method":
+        {
+            {% include 'DataType/CWECodeableConcept' CWE: OBX.17 -%}
+        },
+        "device":
+        {
+            {% if OBX.18 and Device_ID_OBX_18 -%}
+                "reference":"Device/{{ Device_ID_OBX_18 }}",
+            {% endif -%}
+        },
+        "note": [
+        {
+            "text": "{{NTE.3.Value}}",
+            "time": "{{ NTE.6.Value | format_as_date_time }}",
+            "authorReference":
+            {
+                {% if NTE.5 and Practitioner_ID_NTE_5 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_NTE_5 }}",
+                {% endif -%}
+            }
+        }
+    ],
+        "bodySite":
+        {
+            {% include 'DataType/CWECodeableConcept' CWE: OBX.20 -%}
+        },
+         
+        "performer":
+        [    
+        {% for obx_Segment_16 in OBX.16.Repeats %}
+            {  
+                {% evaluate PractitionerRole_ID_OBX_16 using 'ID/PractitionerRole' XCN: obx_Segment_16 -%}
+                {% if obx_Segment_16 and PractitionerRole_ID_OBX_16 -%}
+                    "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_16 }}",
+                {% endif -%}  
+            },
+        {% endfor %}
+            {
+                    {% if OBX.25 == null and OBX.23 and Organization_ID_OBX_23 -%}
+                        "reference":"Organization/{{ Organization_ID_OBX_23 }}",
+                    {% endif -%}
+                    {% if OBX.23 and OBX.25 and PractitionerRole_ID_OBX_25 -%}
+                        "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_25 }}",
+                    {% endif -%}           
             },
         ],
+        "interpretation":
+        [
+            {% for obx_8 in OBX.8.Repeats %}
+                {
+                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/InterpretationCode', CWE: obx_8 -%}
+                },
+            {% endfor %}
+        ],
+
+    
+        
+      {%- comment -%}  
         "subject":
         {
             "reference":"{{ Observation_Subject_ID }}",
@@ -229,11 +376,12 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
         "encounter":
         {
             "reference":"{{ Observation_Encounter_ID }}",
-        },
+        }, 
         "specimen":
         {
             "reference":"{{ Observation_Specimen_ID }}",
         },
+        {%- endcomment -%}
     },
     "request":{
         "method":"PUT",

@@ -10,23 +10,45 @@ MessageHeader_Author_ID: A resource Id, used to fill "author.reference" property
 MessageHeader_Response_Details_ID: A resource Id, used to fill "response.details.reference" property.
 {% endcomment -%}
 
+{% evaluate Organization_ID_MSH_4 using 'ID/Organization' HD: MSH.4 -%}
+{% evaluate Organization_ID_MSH_6 using 'ID/Organization' HD: MSH.6 -%}
+{% evaluate Organization_ID_MSH_22 using 'ID/Organization' XON: MSH.22 -%}
+{% evaluate Organization_ID_MSH_23 using 'ID/Organization' XON: MSH.23 -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
-    "resource":{
+    "resource": {
         "resourceType": "MessageHeader",
         "id":"{{ ID }}",
         "source":
         {
-            "name":"{{ MSH.3.1.Value }}",
-            "endpoint":"{{ MSH.24.Value }}",
+            {% unless MSH.24 -%}
+            {% if MSH.3 -%}
+                {% include 'DataType/HDMessageHeader_source' HD: MSH.3 -%}
+            {% endif -%}
+            {% endunless -%}
+            {% if MSH.24 -%} 
+                {% include 'DataType/HDMessageHeader_source' HD: MSH.24 -%}
+            {% endif -%}
             "version":"{{ SFT.2.Value }}",
             "software":"{{ SFT.3.Value }}",
         },
         "destination":
         [
-            {
-                {% include 'DataType/HDMSH_5' HD: MSH.5 -%}
-                "endpoint":"{{ MSH.25.Value }}",
+            {  
+                {% if MSH.25 -%}
+                    {% include 'DataType/HDMessageHeader_destination' HD: MSH.25 -%} 
+                {% endif -%}   
+                {% unless MSH.25 -%}
+                    {% if MSH.5 -%}
+                        {% include 'DataType/HDMessageHeader_destination' HD: MSH.5 -%}
+                    {% elsif MSH.6 %}
+                        "_endpoint":
+                        {
+                            {% include 'Extensions/DataAbsentReason' -%},
+                        }, 
+                    {% endif -%}   
+                {% endunless -%}                         
                 "receiver":
                 {
                     {% if MSH.6 and Organization_ID_MSH_6 -%}
@@ -34,26 +56,29 @@ MessageHeader_Response_Details_ID: A resource Id, used to fill "response.details
                     {% endif -%}
                     {% if MSH.23 and Organization_ID_MSH_23 -%}
                         "reference":"Organization/{{ Organization_ID_MSH_23 }}",
-                    {% endif -%}
+                    {% endif -%}    
                 },
-            },
+            }, 
         ],
         "meta":
         {
             {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
             "security":
             [
+                {% include 'DataType/STCoding' ST: MSH.8 -%},
             ],
             "tag":
             [
                 {% include 'DataType/PT' PT: MSH.11 -%},
-            ],
+            ], 
         },
         "eventCoding":
         {
             {% include 'DataType/MSG' MSG: MSH.9 -%}
         },
-        "language":"{{ MSH.19.Value | get_property: 'CodeSystem/Language', 'code' }}",
+        {% if MSH.19.Value -%}
+            "language": {% include 'DataType/CWECode' mapping: 'CodeSystem/Language', CWE: MSH.19 -%},
+        {% endif -%}
         "sender":
         {
             {% if MSH.4 and Organization_ID_MSH_4 -%}

@@ -1,0 +1,12 @@
+{
+    "resource":{
+        "resourceType": "RelatedPerson",
+        "id":"{{ ID }}",
+        "extension":
+        [
+            {% if NK1.35 -%}
+            {% include 'Extensions/Race' RACE: NK1.35 -%},
+            {% endif -%}
+        ],
+    },
+},

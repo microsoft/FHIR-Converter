@@ -8,15 +8,13 @@ Organization_ID_PRT_8: A resource Id, used to fill "organization.reference" prop
 Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" property. The resource is of "Organization" type and generated based on "ORC.21" HL7 V2 identifier.
 {% endcomment -%}
 
-{% evaluate Practitioner_ID_OBX_16 using 'ID/Practitioner' XCN: OBX.16 -%}
-{% evaluate Organization_ID_OBX_23 using 'ID/Organization' XON: OBX.23 -%}
-
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
         "resourceType": "PractitionerRole",
         "id":"{{ ID }}",
         {% include 'DataType/XCNPractitionerRole' XCN: PD1.4 -%}
+         
         "identifier":
         [
             {
@@ -26,18 +24,31 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
                 {% include 'DataType/PLN' PLN: PRT.24 -%}
             },
         ],
-        "code":
-        [
-            {
-                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Role', CWE: ROL.3 -%}
+        "code": [
+            {    
+                "coding" : [
+                {% if OBXXCN1 %}
+                    {  
+                        "code" : "ResponsibleObserver",
+                        "system" : "http://example.com/v2-to-fhir-converter/PractitionerRole",
+                    },
+                {% endif %}
+                {% if OBXXCN2 %}
+                    {
+                    "code" : "LabMedicalDirector",
+                    "system" : "http://example.com/v2-to-fhir-converter/PractitionerRole",
+                    }
+                {% endif %}
+                ],
             },
-            {
-                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: ROL.4 -%}
-            },
-            {
-                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: PRT.4 -%}
-            },
+            
+                {
+                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Role', CWE: ROL.3 -%}
+                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: ROL.4 -%}
+                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: PRT.4 -%}
+                }
         ],
+        
         {% include 'DataType/XCNPractitionerRole' XCN: ROL.4 -%}
         "period":
         {
@@ -64,18 +75,9 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
             },
         ],
         {% include 'DataType/XCNPractitionerRole' XCN: ROL.4 -%}
-        {% include 'DataType/XCNPractitionerRole' XCN: OBX.25 -%}
-        "practitioner":
-        {
-            {% if OBX.16 and Practitioner_ID_OBX_16 -%}
-                "reference":"Practitioner/{{ Practitioner_ID_OBX_16 }}",
-            {% endif -%}
-        },
+        
         "organization":
-        {
-            {% if OBX.23 and Organization_ID_OBX_23 -%}
-                "reference":"Organization/{{ Organization_ID_OBX_23 }}",
-            {% endif -%}
+        { 
             {% if PRT.8 and Organization_ID_PRT_8 -%}
                 "reference":"Organization/{{ Organization_ID_PRT_8 }}",
             {% endif -%}

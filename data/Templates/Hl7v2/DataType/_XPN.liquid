@@ -1,9 +1,13 @@
 {% if XPN -%}
+    {% assign use = XPN.7.Value | get_property: 'CodeSystem/NameType', 'code' -%}
     "family":"{{ XPN.1.1 }}",
     "given":
     [
         "{{ XPN.2.Value }}",
         "{{ XPN.3.Value }}",
+        {% if use == 'usual'-%}
+        "{{ XPN.15.Value }}",
+        {% endif -%}
     ],
     "suffix":
     [

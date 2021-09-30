@@ -1,2691 +1,1787 @@
 {
   "resourceType": "Bundle",
   "type": "batch",
-  "timestamp": "2011-06-01T03:05:51+08:00",
+  "timestamp": "2011-06-01T00:35:51+05:30",
   "identifier": {
-    "value": "NIST-LRI-NG-002.00"
+      "value": "NIST-LRI-NG-002.00"
   },
   "entry": [
-    {
-      "fullUrl": "urn:uuid:15cde54f-eadb-4bee-fe4c-0e8dbe4f4959",
-      "resource": {
-        "resourceType": "MessageHeader",
-        "id": "15cde54f-eadb-4bee-fe4c-0e8dbe4f4959",
-        "source": {
-          "name": "NIST Test Lab APP"
-        },
-        "meta": {
-          "tag": [
-            {
-              "code": "T",
-              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-            }
-          ]
-        },
-        "eventCoding": {
-          "code": "R01",
-          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
-        }
+      {
+          "fullUrl": "urn:uuid:15cde54f-eadb-4bee-fe4c-0e8dbe4f4959",
+          "resource": {
+              "resourceType": "MessageHeader",
+              "id": "15cde54f-eadb-4bee-fe4c-0e8dbe4f4959",
+              "source": {
+                  "name": "NIST Test Lab APP",
+                  "_endpoint": {
+                      "extension": [
+                          {
+                              "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                              "valueCode": "unknown"
+                          }
+                      ]
+                  }
+              },
+              "destination": [
+                  {
+                      "_endpoint": {
+                          "extension": [
+                              {
+                                  "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                                  "valueCode": "unknown"
+                              }
+                          ]
+                      },
+                      "receiver": {
+                          "reference": "Organization/c828b9d8-dc07-4b58-af67-705a38d1fa4d"
+                      }
+                  }
+              ],
+              "meta": {
+                  "tag": [
+                      {
+                          "code": "T",
+                          "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
+                      }
+                  ]
+              },
+              "eventCoding": {
+                  "code": "R01",
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0003",
+                  "display": "ORU^R01^ORU_R01"
+              },
+              "sender": {
+                  "reference": "Organization/aa0cf9ae-78b3-73ec-0ef7-234369f8a10c"
+              }
+          },
+          "request": {
+              "method": "PUT",
+              "url": "MessageHeader/15cde54f-eadb-4bee-fe4c-0e8dbe4f4959"
+          }
       },
-      "request": {
-        "method": "PUT",
-        "url": "MessageHeader/15cde54f-eadb-4bee-fe4c-0e8dbe4f4959"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:397de93b-65e0-b3b6-7a79-d7869d57a8aa",
-      "resource": {
-        "resourceType": "Patient",
-        "id": "397de93b-65e0-b3b6-7a79-d7869d57a8aa",
-        "identifier": [
-          {
-            "value": "PATID1234",
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
+      {
+          "fullUrl": "urn:uuid:397de93b-65e0-b3b6-7a79-d7869d57a8aa",
+          "resource": {
+              "resourceType": "Patient",
+              "id": "397de93b-65e0-b3b6-7a79-d7869d57a8aa",
+              "identifier": [
+                  {
+                      "value": "PATID1234",
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "MR",
+                                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                                  "display": "Medical record number"
+                              }
+                          ]
+                      },
+                      "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST-MPI"
+                  }
+              ],
+              "name": [
+                  {
+                      "family": "Jones",
+                      "given": [
+                          "William",
+                          "A"
+                      ]
+                  }
+              ],
+              "birthDate": "1961-06-15",
+              "gender": "male",
+              "extension": [
+                  {
+                      "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+                      "extension": [
+                          {
+                              "url": "ombCategory",
+                              "valueCoding": {
+                                  "code": "2106-3",
+                                  "display": "White",
+                                  "system": "urn:oid:2.16.840.1.113883.6.238"
+                              }
+                          },
+                          {
+                              "url": "text",
+                              "valueString": "White"
+                          }
+                      ]
+                  }
               ]
-            }
+          },
+          "request": {
+              "method": "PUT",
+              "url": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
           }
-        ],
-        "name": [
-          {
-            "family": "Jones",
-            "given": [
-              "William",
-              "A"
-            ]
+      },
+      {
+          "fullUrl": "urn:uuid:",
+          "resource": {
+              "resourceType": "Practitioner"
+          },
+          "request": {
+              "method": "PUT",
+              "url": "Practitioner/"
           }
-        ],
-        "birthDate": "1961-06-15",
-        "gender": "male"
       },
-      "request": {
-        "method": "PUT",
-        "url": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Practitioner"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Practitioner/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Location"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Location/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:2cae9944-334d-aa12-db0e-b76bf6379ba9",
-      "resource": {
-        "resourceType": "Provenance",
-        "id": "2cae9944-334d-aa12-db0e-b76bf6379ba9",
-        "text": {
-          "status": "generated",
-          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on GENERATED_INSTANT_PLACEHOLDER using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: TEMPLATE_URL_PLACEHOLDER.</span><span>Root template: ORU_R01.</span></p></div>"
-        },
-        "recorded": "2011-06-01T03:05:51+08:00"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Provenance/2cae9944-334d-aa12-db0e-b76bf6379ba9"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:d89caeaa-3e83-1bc6-de48-869aade1d077",
-      "resource": {
-        "resourceType": "Account",
-        "id": "d89caeaa-3e83-1bc6-de48-869aade1d077",
-        "subject": [
-          {
-            "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
+      {
+          "fullUrl": "urn:uuid:",
+          "resource": {
+              "resourceType": "Location"
+          },
+          "request": {
+              "method": "PUT",
+              "url": "Location/"
           }
-        ]
       },
-      "request": {
-        "method": "PUT",
-        "url": "Account/d89caeaa-3e83-1bc6-de48-869aade1d077"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Encounter",
-        "status": "unknown",
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Encounter/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:e5528a59-da05-4148-e016-5b99bdb33924",
-      "resource": {
-        "resourceType": "DiagnosticReport",
-        "id": "e5528a59-da05-4148-e016-5b99bdb33924",
-        "identifier": [
-          {
-            "type": {
-              "coding": [
-                {
-                  "code": "FILL",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
+      {
+          "fullUrl": "urn:uuid:1f2725f5-0c29-68dd-b124-7e4f4eba2a32",
+          "resource": {
+              "resourceType": "Provenance",
+              "id": "1f2725f5-0c29-68dd-b124-7e4f4eba2a32",
+              "text": {
+                  "status": "generated",
+                  "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-09-27T08:42:21.793Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ORU_R01.</span></p></div>"
+              },
+              "occurredDateTime": "2011-06-01T00:35:51+05:30",
+              "recorded": "2011-06-01T00:35:51+05:30",
+              "agent": [
+                  {
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "author",
+                                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
+                              }
+                          ]
+                      },
+                      "who": {
+                          "reference": "Organization/aa0cf9ae-78b3-73ec-0ef7-234369f8a10c"
+                      }
+                  }
+              ],
+              "activity": {
+                  "coding": [
+                      {
+                          "display": "ORU^R01^ORU_R01"
+                      }
+                  ]
+              },
+              "target": [
+                  {
+                      "reference": "MessageHeader/"
+                  }
               ]
-            }
           },
-          {
-            "value": "ORD666555"
-          },
-          {
-            "value": "R-991133"
+          "request": {
+              "method": "PUT",
+              "url": "Provenance/1f2725f5-0c29-68dd-b124-7e4f4eba2a32"
           }
-        ],
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "code": {
-          "coding": [
-            {
-              "code": "57021-8",
-              "display": "CBC W Auto Differential panel in Blood",
-              "system": "LN"
-            },
-            {
-              "code": "4456544",
-              "display": "CBC",
-              "system": "99USI"
-            }
-          ],
-          "text": "CBC W Auto Differential panel in Blood"
-        },
-        "issued": "2011-01-05T09:00:28+08:00",
-        "status": "final",
-        "result": [
-          {
-            "reference": "Observation/b9018883-1320-3dfb-e157-cb46bb7a6679"
-          },
-          {
-            "reference": "Observation/becb609f-f513-876c-973a-98f4a3e25295"
-          },
-          {
-            "reference": "Observation/418e1d5b-7cf8-4f97-2f20-064f064073bf"
-          },
-          {
-            "reference": "Observation/63ebf56e-13b3-032c-04f0-0b0ae2596154"
-          },
-          {
-            "reference": "Observation/2fecfbb4-8bfc-33df-cc06-46079a214417"
-          },
-          {
-            "reference": "Observation/d88298c6-5018-0e69-8bff-bb2e57479ede"
-          },
-          {
-            "reference": "Observation/4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e"
-          },
-          {
-            "reference": "Observation/b1082ae5-5936-88dc-f6ab-906231b9c7f1"
-          },
-          {
-            "reference": "Observation/61c65289-d3f6-bd40-9fa1-33856ad2288f"
-          },
-          {
-            "reference": "Observation/69a93e5e-128e-1cd9-b510-a781f1af141a"
-          },
-          {
-            "reference": "Observation/95277a83-6195-ad8c-9492-f3489b45732b"
-          },
-          {
-            "reference": "Observation/4cd993fb-7522-ee9f-69de-3d12d06960a7"
-          },
-          {
-            "reference": "Observation/15122490-e5b2-954f-3960-d7c8f3f62632"
-          },
-          {
-            "reference": "Observation/612d5b88-0687-46f9-3ada-0fc9ba9b5fe0"
-          },
-          {
-            "reference": "Observation/0f40b9a3-8c63-ca5d-cc60-859cfa8a6660"
-          },
-          {
-            "reference": "Observation/d9a5816e-5c0e-15fe-cd9d-417f8abd7abb"
-          },
-          {
-            "reference": "Observation/db00b811-6280-5dad-bf61-07314b205438"
-          },
-          {
-            "reference": "Observation/0b77694d-87ce-5da4-90c4-4d451437d2d9"
-          },
-          {
-            "reference": "Observation/4c96bb15-0280-fea1-1715-e3f424cf55cc"
-          },
-          {
-            "reference": "Observation/19124803-ebc8-8a88-2acc-f5b890f8c5c5"
-          },
-          {
-            "reference": "Observation/6074e0a6-0ba6-b905-c957-13b2899a4dbe"
-          },
-          {
-            "reference": "Observation/700cce12-7f39-bbb0-94f3-689107732835"
-          },
-          {
-            "reference": "Observation/d198666f-2eae-1c28-ee17-d525a7a3ec85"
-          },
-          {
-            "reference": "Observation/db250a50-54ff-eacd-ef4f-8f05b79aecad"
-          },
-          {
-            "reference": "Observation/90c2203d-56d6-be20-2be4-9b879d3647a5"
-          },
-          {
-            "reference": "Observation/3260b2c2-a8f9-1a32-d09f-556192b37dcd"
-          },
-          {
-            "reference": "Observation/ff76c538-2861-d8cf-7fc6-418d7f0688ef"
-          },
-          {
-            "reference": "Observation/7cb9f3da-bf77-1317-12a2-d70c8577ca71"
-          }
-        ],
-        "specimen": [
-          {
-            "reference": "Specimen/a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963"
-          }
-        ]
       },
-      "request": {
-        "method": "PUT",
-        "url": "DiagnosticReport/e5528a59-da05-4148-e016-5b99bdb33924"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:c8cd57a5-13a6-54d1-7dcd-d0a6b637c660",
-      "resource": {
-        "resourceType": "Organization",
-        "id": "c8cd57a5-13a6-54d1-7dcd-d0a6b637c660",
-        "address": [
-          {
-            "line": [
-              "2070 Test Park"
-            ],
-            "city": "Los Angeles",
-            "state": "CA",
-            "postalCode": "90067"
-          },
-          {
-            "line": [
-              "2070 Test Park"
-            ],
-            "city": "Los Angeles",
-            "state": "CA",
-            "postalCode": "90067"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8",
-      "resource": {
-        "resourceType": "PractitionerRole",
-        "id": "fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8",
-        "organization": {
-          "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:b9018883-1320-3dfb-e157-cb46bb7a6679",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "b9018883-1320-3dfb-e157-cb46bb7a6679",
-        "code": {
-          "coding": [
-            {
-              "code": "26453-1",
-              "display": "Erythrocytes [#/volume] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Erythrocytes [#/volume] in Blood"
-        },
-        "valueQuantity": {
-          "value": "4.41",
-          "code": "10*6/uL",
-          "unit": "million per microliter",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
-          },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
-          }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "26453-1",
-                  "display": "Erythrocytes [#/volume] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Erythrocytes [#/volume] in Blood"
-            },
-            "valueQuantity": {
-              "value": "4.41",
-              "code": "10*6/uL",
-              "unit": "million per microliter",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "4.3 to 6.2"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
+      {
+          "fullUrl": "urn:uuid:d89caeaa-3e83-1bc6-de48-869aade1d077",
+          "resource": {
+              "resourceType": "Account",
+              "id": "d89caeaa-3e83-1bc6-de48-869aade1d077",
+              "status": "active",
+              "subject": [
                   {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                      "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
                   }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/b9018883-1320-3dfb-e157-cb46bb7a6679"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:becb609f-f513-876c-973a-98f4a3e25295",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "becb609f-f513-876c-973a-98f4a3e25295",
-        "code": {
-          "coding": [
-            {
-              "code": "718-7",
-              "display": "Hemoglobin [Mass/volume] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Hemoglobin [Mass/volume] in Blood"
-        },
-        "valueQuantity": {
-          "value": "12.5",
-          "code": "g/mL",
-          "unit": "grams per milliliter",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "L",
-                "display": "Low",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Account/d89caeaa-3e83-1bc6-de48-869aade1d077"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "718-7",
-                  "display": "Hemoglobin [Mass/volume] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Hemoglobin [Mass/volume] in Blood"
-            },
-            "valueQuantity": {
-              "value": "12.5",
-              "code": "g/mL",
-              "unit": "grams per milliliter",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "13 to 18"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "L",
-                    "display": "Low",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/becb609f-f513-876c-973a-98f4a3e25295"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:418e1d5b-7cf8-4f97-2f20-064f064073bf",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "418e1d5b-7cf8-4f97-2f20-064f064073bf",
-        "code": {
-          "coding": [
-            {
-              "code": "20570-8",
-              "display": "Hematocrit [Volume Fraction] of Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Hematocrit [Volume Fraction] of Blood"
-        },
-        "valueQuantity": {
-          "value": "41",
-          "code": "%",
-          "unit": "percent",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+      {
+          "fullUrl": "urn:uuid:",
+          "resource": {
+              "resourceType": "Encounter",
+              "text": {
+                  "status": "generated",
+                  "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Visit Description: </span></p></div>"
+              },
+              "subject": {
+                  "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
               }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Encounter/"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "20570-8",
-                  "display": "Hematocrit [Volume Fraction] of Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Hematocrit [Volume Fraction] of Blood"
-            },
-            "valueQuantity": {
-              "value": "41",
-              "code": "%",
-              "unit": "percent",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "40 to 52"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/418e1d5b-7cf8-4f97-2f20-064f064073bf"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:63ebf56e-13b3-032c-04f0-0b0ae2596154",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "63ebf56e-13b3-032c-04f0-0b0ae2596154",
-        "code": {
-          "coding": [
-            {
-              "code": "26464-8",
-              "display": "Leukocytes [#/volume] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Leukocytes [#/volume] in Blood"
-        },
-        "valueQuantity": {
-          "value": "105600",
-          "code": "{cells}/uL",
-          "unit": "cells per microliter",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "HH",
-                "display": "Critical high",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:e5528a59-da05-4148-e016-5b99bdb33924",
+          "resource": {
+              "resourceType": "DiagnosticReport",
+              "id": "e5528a59-da05-4148-e016-5b99bdb33924",
+              "identifier": [
+                  {
+                      "type": {
+                          "coding": [
+                              {
+                                  "code": "FILL",
+                                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                              }
+                          ]
+                      }
+                  },
+                  {
+                      "value": "ORD666555",
+                      "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST EHR"
+                  },
+                  {
+                      "value": "R-991133",
+                      "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST Lab Filler"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "57021-8",
+                          "display": "CBC W Auto Differential panel in Blood",
+                          "system": "http://loinc.org"
+                      },
+                      {
+                          "code": "4456544",
+                          "display": "CBC",
+                          "system": "http://example.com/v2-to-fhir-converter/CodeSystem/99USI"
+                      }
+                  ],
+                  "text": "CBC W Auto Differential panel in Blood"
+              },
+              "issued": "2011-01-05T06:30:28+05:30",
+              "status": "final",
+              "result": [
+                  {
+                      "reference": "Observation/b9018883-1320-3dfb-e157-cb46bb7a6679"
+                  },
+                  {
+                      "reference": "Observation/becb609f-f513-876c-973a-98f4a3e25295"
+                  },
+                  {
+                      "reference": "Observation/418e1d5b-7cf8-4f97-2f20-064f064073bf"
+                  },
+                  {
+                      "reference": "Observation/63ebf56e-13b3-032c-04f0-0b0ae2596154"
+                  },
+                  {
+                      "reference": "Observation/2fecfbb4-8bfc-33df-cc06-46079a214417"
+                  },
+                  {
+                      "reference": "Observation/d88298c6-5018-0e69-8bff-bb2e57479ede"
+                  },
+                  {
+                      "reference": "Observation/4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e"
+                  },
+                  {
+                      "reference": "Observation/b1082ae5-5936-88dc-f6ab-906231b9c7f1"
+                  },
+                  {
+                      "reference": "Observation/61c65289-d3f6-bd40-9fa1-33856ad2288f"
+                  },
+                  {
+                      "reference": "Observation/69a93e5e-128e-1cd9-b510-a781f1af141a"
+                  },
+                  {
+                      "reference": "Observation/95277a83-6195-ad8c-9492-f3489b45732b"
+                  },
+                  {
+                      "reference": "Observation/4cd993fb-7522-ee9f-69de-3d12d06960a7"
+                  },
+                  {
+                      "reference": "Observation/15122490-e5b2-954f-3960-d7c8f3f62632"
+                  },
+                  {
+                      "reference": "Observation/612d5b88-0687-46f9-3ada-0fc9ba9b5fe0"
+                  },
+                  {
+                      "reference": "Observation/0f40b9a3-8c63-ca5d-cc60-859cfa8a6660"
+                  },
+                  {
+                      "reference": "Observation/d9a5816e-5c0e-15fe-cd9d-417f8abd7abb"
+                  },
+                  {
+                      "reference": "Observation/db00b811-6280-5dad-bf61-07314b205438"
+                  },
+                  {
+                      "reference": "Observation/0b77694d-87ce-5da4-90c4-4d451437d2d9"
+                  },
+                  {
+                      "reference": "Observation/4c96bb15-0280-fea1-1715-e3f424cf55cc"
+                  },
+                  {
+                      "reference": "Observation/19124803-ebc8-8a88-2acc-f5b890f8c5c5"
+                  },
+                  {
+                      "reference": "Observation/6074e0a6-0ba6-b905-c957-13b2899a4dbe"
+                  },
+                  {
+                      "reference": "Observation/700cce12-7f39-bbb0-94f3-689107732835"
+                  },
+                  {
+                      "reference": "Observation/d198666f-2eae-1c28-ee17-d525a7a3ec85"
+                  },
+                  {
+                      "reference": "Observation/db250a50-54ff-eacd-ef4f-8f05b79aecad"
+                  },
+                  {
+                      "reference": "Observation/90c2203d-56d6-be20-2be4-9b879d3647a5"
+                  },
+                  {
+                      "reference": "Observation/3260b2c2-a8f9-1a32-d09f-556192b37dcd"
+                  },
+                  {
+                      "reference": "Observation/ff76c538-2861-d8cf-7fc6-418d7f0688ef"
+                  },
+                  {
+                      "reference": "Observation/7cb9f3da-bf77-1317-12a2-d70c8577ca71"
+                  }
+              ],
+              "specimen": [
+                  {
+                      "reference": "Specimen/a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963"
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "DiagnosticReport/e5528a59-da05-4148-e016-5b99bdb33924"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "26464-8",
-                  "display": "Leukocytes [#/volume] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Leukocytes [#/volume] in Blood"
-            },
-            "valueQuantity": {
-              "value": "105600",
-              "code": "{cells}/uL",
-              "unit": "cells per microliter",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "4300 to 10800"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "HH",
-                    "display": "Critical high",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/63ebf56e-13b3-032c-04f0-0b0ae2596154"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:2fecfbb4-8bfc-33df-cc06-46079a214417",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "2fecfbb4-8bfc-33df-cc06-46079a214417",
-        "code": {
-          "coding": [
-            {
-              "code": "26515-7",
-              "display": "Platelets [#/volume] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Platelets [#/volume] in Blood"
-        },
-        "valueQuantity": {
-          "value": "210000",
-          "code": "{cells}/uL",
-          "unit": "cells per microliter",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:c8cd57a5-13a6-54d1-7dcd-d0a6b637c660",
+          "resource": {
+              "resourceType": "Organization",
+              "id": "c8cd57a5-13a6-54d1-7dcd-d0a6b637c660",
+              "address": [
+                  {
+                      "line": [
+                          "2070 Test Park"
+                      ],
+                      "city": "Los Angeles",
+                      "state": "CA",
+                      "postalCode": "90067",
+                      "use": "work"
+                  },
+                  {
+                      "line": [
+                          "2070 Test Park"
+                      ],
+                      "city": "Los Angeles",
+                      "state": "CA",
+                      "postalCode": "90067",
+                      "use": "work"
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "26515-7",
-                  "display": "Platelets [#/volume] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Platelets [#/volume] in Blood"
-            },
-            "valueQuantity": {
-              "value": "210000",
-              "code": "{cells}/uL",
-              "unit": "cells per microliter",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "150000 to 350000"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/2fecfbb4-8bfc-33df-cc06-46079a214417"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:d88298c6-5018-0e69-8bff-bb2e57479ede",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "d88298c6-5018-0e69-8bff-bb2e57479ede",
-        "code": {
-          "coding": [
-            {
-              "code": "30428-7",
-              "display": "Erythrocyte mean corpuscular volume [Entitic volume]",
-              "system": "LN"
-            }
-          ],
-          "text": "Erythrocyte mean corpuscular volume [Entitic volume]"
-        },
-        "valueQuantity": {
-          "value": "91",
-          "code": "fL",
-          "unit": "femtoliter",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8",
+          "resource": {
+              "resourceType": "PractitionerRole",
+              "id": "fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "30428-7",
-                  "display": "Erythrocyte mean corpuscular volume [Entitic volume]",
-                  "system": "LN"
-                }
-              ],
-              "text": "Erythrocyte mean corpuscular volume [Entitic volume]"
-            },
-            "valueQuantity": {
-              "value": "91",
-              "code": "fL",
-              "unit": "femtoliter",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "80 to 95"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/d88298c6-5018-0e69-8bff-bb2e57479ede"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e",
-        "code": {
-          "coding": [
-            {
-              "code": "28539-5",
-              "display": "Erythrocyte mean corpuscular hemoglobin [Entitic mass]",
-              "system": "LN"
-            }
-          ],
-          "text": "Erythrocyte mean corpuscular hemoglobin [Entitic mass]"
-        },
-        "valueQuantity": {
-          "value": "29",
-          "code": "pg/{cell}",
-          "unit": "picograms per cell",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:b9018883-1320-3dfb-e157-cb46bb7a6679",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "b9018883-1320-3dfb-e157-cb46bb7a6679",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "26453-1",
+                          "display": "Erythrocytes [#/volume] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Erythrocytes [#/volume] in Blood"
+              },
+              "valueQuantity": {
+                  "value": 4.41,
+                  "code": "10*6/uL",
+                  "unit": "million per microliter",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "4.3 to 6.2"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/b9018883-1320-3dfb-e157-cb46bb7a6679"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "28539-5",
-                  "display": "Erythrocyte mean corpuscular hemoglobin [Entitic mass]",
-                  "system": "LN"
-                }
-              ],
-              "text": "Erythrocyte mean corpuscular hemoglobin [Entitic mass]"
-            },
-            "valueQuantity": {
-              "value": "29",
-              "code": "pg/{cell}",
-              "unit": "picograms per cell",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "27 to 31"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:b1082ae5-5936-88dc-f6ab-906231b9c7f1",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "b1082ae5-5936-88dc-f6ab-906231b9c7f1",
-        "code": {
-          "coding": [
-            {
-              "code": "28540-3",
-              "display": "Erythrocyte mean corpuscular hemoglobin concentration [Mass/volume]",
-              "system": "LN"
-            }
-          ],
-          "text": "Erythrocyte mean corpuscular hemoglobin concentration [Mass/volume]"
-        },
-        "valueQuantity": {
-          "value": "32.4",
-          "code": "g/dL",
-          "unit": "grams per deciliter",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:becb609f-f513-876c-973a-98f4a3e25295",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "becb609f-f513-876c-973a-98f4a3e25295",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "718-7",
+                          "display": "Hemoglobin [Mass/volume] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Hemoglobin [Mass/volume] in Blood"
+              },
+              "valueQuantity": {
+                  "value": 12.5,
+                  "code": "g/mL",
+                  "unit": "grams per milliliter",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "13 to 18"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "L",
+                              "display": "Low",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/becb609f-f513-876c-973a-98f4a3e25295"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "28540-3",
-                  "display": "Erythrocyte mean corpuscular hemoglobin concentration [Mass/volume]",
-                  "system": "LN"
-                }
-              ],
-              "text": "Erythrocyte mean corpuscular hemoglobin concentration [Mass/volume]"
-            },
-            "valueQuantity": {
-              "value": "32.4",
-              "code": "g/dL",
-              "unit": "grams per deciliter",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "32 to 36"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/b1082ae5-5936-88dc-f6ab-906231b9c7f1"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:61c65289-d3f6-bd40-9fa1-33856ad2288f",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "61c65289-d3f6-bd40-9fa1-33856ad2288f",
-        "code": {
-          "coding": [
-            {
-              "code": "30385-9",
-              "display": "Erythrocyte distribution width [Ratio]",
-              "system": "LN"
-            }
-          ],
-          "text": "Erythrocyte distribution width [Ratio]"
-        },
-        "valueQuantity": {
-          "value": "10.5",
-          "code": "%",
-          "unit": "percent",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:418e1d5b-7cf8-4f97-2f20-064f064073bf",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "418e1d5b-7cf8-4f97-2f20-064f064073bf",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "20570-8",
+                          "display": "Hematocrit [Volume Fraction] of Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Hematocrit [Volume Fraction] of Blood"
+              },
+              "valueQuantity": {
+                  "value": 41,
+                  "code": "%",
+                  "unit": "percent",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "40 to 52"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/418e1d5b-7cf8-4f97-2f20-064f064073bf"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "30385-9",
-                  "display": "Erythrocyte distribution width [Ratio]",
-                  "system": "LN"
-                }
-              ],
-              "text": "Erythrocyte distribution width [Ratio]"
-            },
-            "valueQuantity": {
-              "value": "10.5",
-              "code": "%",
-              "unit": "percent",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "10.2 to 14.5"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/61c65289-d3f6-bd40-9fa1-33856ad2288f"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:69a93e5e-128e-1cd9-b510-a781f1af141a",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "69a93e5e-128e-1cd9-b510-a781f1af141a",
-        "code": {
-          "coding": [
-            {
-              "code": "26444-0",
-              "display": "Basophils [#/volume] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Basophils [#/volume] in Blood"
-        },
-        "valueQuantity": {
-          "value": "0.1",
-          "code": "10*3/uL",
-          "unit": "thousand per microliter",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:63ebf56e-13b3-032c-04f0-0b0ae2596154",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "63ebf56e-13b3-032c-04f0-0b0ae2596154",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "26464-8",
+                          "display": "Leukocytes [#/volume] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Leukocytes [#/volume] in Blood"
+              },
+              "valueQuantity": {
+                  "value": 105600,
+                  "code": "{cells}/uL",
+                  "unit": "cells per microliter",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "4300 to 10800"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "HH",
+                              "display": "Critical high",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/63ebf56e-13b3-032c-04f0-0b0ae2596154"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "26444-0",
-                  "display": "Basophils [#/volume] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Basophils [#/volume] in Blood"
-            },
-            "valueQuantity": {
-              "value": "0.1",
-              "code": "10*3/uL",
-              "unit": "thousand per microliter",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "0 to 0.3"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/69a93e5e-128e-1cd9-b510-a781f1af141a"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:95277a83-6195-ad8c-9492-f3489b45732b",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "95277a83-6195-ad8c-9492-f3489b45732b",
-        "code": {
-          "coding": [
-            {
-              "code": "30180-4",
-              "display": "Basophils/100 leukocytes in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Basophils/100 leukocytes in Blood"
-        },
-        "valueQuantity": {
-          "value": "0.1",
-          "code": "%",
-          "unit": "percent",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:2fecfbb4-8bfc-33df-cc06-46079a214417",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "2fecfbb4-8bfc-33df-cc06-46079a214417",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "26515-7",
+                          "display": "Platelets [#/volume] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Platelets [#/volume] in Blood"
+              },
+              "valueQuantity": {
+                  "value": 210000,
+                  "code": "{cells}/uL",
+                  "unit": "cells per microliter",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "150000 to 350000"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/2fecfbb4-8bfc-33df-cc06-46079a214417"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "30180-4",
-                  "display": "Basophils/100 leukocytes in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Basophils/100 leukocytes in Blood"
-            },
-            "valueQuantity": {
-              "value": "0.1",
-              "code": "%",
-              "unit": "percent",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "0 to 2"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/95277a83-6195-ad8c-9492-f3489b45732b"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:4cd993fb-7522-ee9f-69de-3d12d06960a7",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "4cd993fb-7522-ee9f-69de-3d12d06960a7",
-        "code": {
-          "coding": [
-            {
-              "code": "26484-6",
-              "display": "Monocytes [#/volume] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Monocytes [#/volume] in Blood"
-        },
-        "valueQuantity": {
-          "value": "3",
-          "code": "10*3/uL",
-          "unit": "thousand per microliter",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:d88298c6-5018-0e69-8bff-bb2e57479ede",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "d88298c6-5018-0e69-8bff-bb2e57479ede",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "30428-7",
+                          "display": "Erythrocyte mean corpuscular volume [Entitic volume]",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Erythrocyte mean corpuscular volume [Entitic volume]"
+              },
+              "valueQuantity": {
+                  "value": 91,
+                  "code": "fL",
+                  "unit": "femtoliter",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "80 to 95"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/d88298c6-5018-0e69-8bff-bb2e57479ede"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "26484-6",
-                  "display": "Monocytes [#/volume] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Monocytes [#/volume] in Blood"
-            },
-            "valueQuantity": {
-              "value": "3",
-              "code": "10*3/uL",
-              "unit": "thousand per microliter",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "0.0 to 13.0"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/4cd993fb-7522-ee9f-69de-3d12d06960a7"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:15122490-e5b2-954f-3960-d7c8f3f62632",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "15122490-e5b2-954f-3960-d7c8f3f62632",
-        "code": {
-          "coding": [
-            {
-              "code": "26485-3",
-              "display": "Monocytes/100 leukocytes in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Monocytes/100 leukocytes in Blood"
-        },
-        "valueQuantity": {
-          "value": "3",
-          "code": "%",
-          "unit": "percent",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "28539-5",
+                          "display": "Erythrocyte mean corpuscular hemoglobin [Entitic mass]",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Erythrocyte mean corpuscular hemoglobin [Entitic mass]"
+              },
+              "valueQuantity": {
+                  "value": 29,
+                  "code": "pg/{cell}",
+                  "unit": "picograms per cell",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "27 to 31"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/4f08fab4-ea01-aeb4-20a3-50d7c4df2d1e"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "26485-3",
-                  "display": "Monocytes/100 leukocytes in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Monocytes/100 leukocytes in Blood"
-            },
-            "valueQuantity": {
-              "value": "3",
-              "code": "%",
-              "unit": "percent",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "0 to 10"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/15122490-e5b2-954f-3960-d7c8f3f62632"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:612d5b88-0687-46f9-3ada-0fc9ba9b5fe0",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "612d5b88-0687-46f9-3ada-0fc9ba9b5fe0",
-        "code": {
-          "coding": [
-            {
-              "code": "26449-9",
-              "display": "Eosinophils [#/volume] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Eosinophils [#/volume] in Blood"
-        },
-        "valueQuantity": {
-          "value": "2.1",
-          "code": "10*3/uL",
-          "unit": "thousand per microliter",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "HH",
-                "display": "Critical high",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:b1082ae5-5936-88dc-f6ab-906231b9c7f1",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "b1082ae5-5936-88dc-f6ab-906231b9c7f1",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "28540-3",
+                          "display": "Erythrocyte mean corpuscular hemoglobin concentration [Mass/volume]",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Erythrocyte mean corpuscular hemoglobin concentration [Mass/volume]"
+              },
+              "valueQuantity": {
+                  "value": 32.4,
+                  "code": "g/dL",
+                  "unit": "grams per deciliter",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "32 to 36"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/b1082ae5-5936-88dc-f6ab-906231b9c7f1"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "26449-9",
-                  "display": "Eosinophils [#/volume] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Eosinophils [#/volume] in Blood"
-            },
-            "valueQuantity": {
-              "value": "2.1",
-              "code": "10*3/uL",
-              "unit": "thousand per microliter",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "0.0 to 0.45"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "HH",
-                    "display": "Critical high",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/612d5b88-0687-46f9-3ada-0fc9ba9b5fe0"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:0f40b9a3-8c63-ca5d-cc60-859cfa8a6660",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "0f40b9a3-8c63-ca5d-cc60-859cfa8a6660",
-        "code": {
-          "coding": [
-            {
-              "code": "26450-7",
-              "display": "Eosinophils/100 leukocytes in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Eosinophils/100 leukocytes in Blood"
-        },
-        "valueQuantity": {
-          "value": "2",
-          "code": "%",
-          "unit": "percent",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:61c65289-d3f6-bd40-9fa1-33856ad2288f",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "61c65289-d3f6-bd40-9fa1-33856ad2288f",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "30385-9",
+                          "display": "Erythrocyte distribution width [Ratio]",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Erythrocyte distribution width [Ratio]"
+              },
+              "valueQuantity": {
+                  "value": 10.5,
+                  "code": "%",
+                  "unit": "percent",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "10.2 to 14.5"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/61c65289-d3f6-bd40-9fa1-33856ad2288f"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "26450-7",
-                  "display": "Eosinophils/100 leukocytes in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Eosinophils/100 leukocytes in Blood"
-            },
-            "valueQuantity": {
-              "value": "2",
-              "code": "%",
-              "unit": "percent",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "0 to 6"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/0f40b9a3-8c63-ca5d-cc60-859cfa8a6660"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:d9a5816e-5c0e-15fe-cd9d-417f8abd7abb",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "d9a5816e-5c0e-15fe-cd9d-417f8abd7abb",
-        "code": {
-          "coding": [
-            {
-              "code": "26474-7",
-              "display": "Lymphocytes [#/volume] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Lymphocytes [#/volume] in Blood"
-        },
-        "valueQuantity": {
-          "value": "41.2",
-          "code": "10*3/uL",
-          "unit": "thousand per microliter",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "HH",
-                "display": "Critical high",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:69a93e5e-128e-1cd9-b510-a781f1af141a",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "69a93e5e-128e-1cd9-b510-a781f1af141a",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "26444-0",
+                          "display": "Basophils [#/volume] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Basophils [#/volume] in Blood"
+              },
+              "valueQuantity": {
+                  "value": 0.1,
+                  "code": "10*3/uL",
+                  "unit": "thousand per microliter",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "0 to 0.3"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/69a93e5e-128e-1cd9-b510-a781f1af141a"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "26474-7",
-                  "display": "Lymphocytes [#/volume] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Lymphocytes [#/volume] in Blood"
-            },
-            "valueQuantity": {
-              "value": "41.2",
-              "code": "10*3/uL",
-              "unit": "thousand per microliter",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "1.0 to 4.8"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "HH",
-                    "display": "Critical high",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/d9a5816e-5c0e-15fe-cd9d-417f8abd7abb"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:db00b811-6280-5dad-bf61-07314b205438",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "db00b811-6280-5dad-bf61-07314b205438",
-        "code": {
-          "coding": [
-            {
-              "code": "26478-8",
-              "display": "Lymphocytes/100 leukocytes in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Lymphocytes/100 leukocytes in Blood"
-        },
-        "valueQuantity": {
-          "value": "39",
-          "code": "%",
-          "unit": "percent",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:95277a83-6195-ad8c-9492-f3489b45732b",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "95277a83-6195-ad8c-9492-f3489b45732b",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "30180-4",
+                          "display": "Basophils/100 leukocytes in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Basophils/100 leukocytes in Blood"
+              },
+              "valueQuantity": {
+                  "value": 0.1,
+                  "code": "%",
+                  "unit": "percent",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "0 to 2"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/95277a83-6195-ad8c-9492-f3489b45732b"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "26478-8",
-                  "display": "Lymphocytes/100 leukocytes in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Lymphocytes/100 leukocytes in Blood"
-            },
-            "valueQuantity": {
-              "value": "39",
-              "code": "%",
-              "unit": "percent",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "15.0 to 45.0"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/db00b811-6280-5dad-bf61-07314b205438"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:0b77694d-87ce-5da4-90c4-4d451437d2d9",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "0b77694d-87ce-5da4-90c4-4d451437d2d9",
-        "code": {
-          "coding": [
-            {
-              "code": "26499-4",
-              "display": "Neutrophils [#/volume] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Neutrophils [#/volume] in Blood"
-        },
-        "valueQuantity": {
-          "value": "58",
-          "code": "10*3/uL",
-          "unit": "thousand per microliter",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "HH",
-                "display": "Critical high",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:4cd993fb-7522-ee9f-69de-3d12d06960a7",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "4cd993fb-7522-ee9f-69de-3d12d06960a7",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "26484-6",
+                          "display": "Monocytes [#/volume] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Monocytes [#/volume] in Blood"
+              },
+              "valueQuantity": {
+                  "value": 3,
+                  "code": "10*3/uL",
+                  "unit": "thousand per microliter",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "0.0 to 13.0"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/4cd993fb-7522-ee9f-69de-3d12d06960a7"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "26499-4",
-                  "display": "Neutrophils [#/volume] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Neutrophils [#/volume] in Blood"
-            },
-            "valueQuantity": {
-              "value": "58",
-              "code": "10*3/uL",
-              "unit": "thousand per microliter",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "1.5 to 7.0"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "HH",
-                    "display": "Critical high",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/0b77694d-87ce-5da4-90c4-4d451437d2d9"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:4c96bb15-0280-fea1-1715-e3f424cf55cc",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "4c96bb15-0280-fea1-1715-e3f424cf55cc",
-        "code": {
-          "coding": [
-            {
-              "code": "26511-6",
-              "display": "Neutrophils/100 leukocytes in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Neutrophils/100 leukocytes in Blood"
-        },
-        "valueQuantity": {
-          "value": "55",
-          "code": "%",
-          "unit": "percent",
-          "system": "UCUM"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:15122490-e5b2-954f-3960-d7c8f3f62632",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "15122490-e5b2-954f-3960-d7c8f3f62632",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "26485-3",
+                          "display": "Monocytes/100 leukocytes in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Monocytes/100 leukocytes in Blood"
+              },
+              "valueQuantity": {
+                  "value": 3,
+                  "code": "%",
+                  "unit": "percent",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "0 to 10"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/15122490-e5b2-954f-3960-d7c8f3f62632"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "26511-6",
-                  "display": "Neutrophils/100 leukocytes in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Neutrophils/100 leukocytes in Blood"
-            },
-            "valueQuantity": {
-              "value": "55",
-              "code": "%",
-              "unit": "percent",
-              "system": "UCUM"
-            },
-            "referenceRange": [
-              {
-                "text": "50 to 73"
-              }
-            ],
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/4c96bb15-0280-fea1-1715-e3f424cf55cc"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:19124803-ebc8-8a88-2acc-f5b890f8c5c5",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "19124803-ebc8-8a88-2acc-f5b890f8c5c5",
-        "code": {
-          "coding": [
-            {
-              "code": "38892-6",
-              "display": "Anisocytosis [Presence] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Anisocytosis [Presence] in Blood"
-        },
-        "valueCodeableConcept": {
-          "coding": [
-            {
-              "code": "260348001",
-              "display": "Present ++ out of ++++",
-              "system": "SCT"
-            }
-          ],
-          "text": "Moderate Anisocytosis"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "A",
-                "display": "Abnormal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:612d5b88-0687-46f9-3ada-0fc9ba9b5fe0",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "612d5b88-0687-46f9-3ada-0fc9ba9b5fe0",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "26449-9",
+                          "display": "Eosinophils [#/volume] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Eosinophils [#/volume] in Blood"
+              },
+              "valueQuantity": {
+                  "value": 2.1,
+                  "code": "10*3/uL",
+                  "unit": "thousand per microliter",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "0.0 to 0.45"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "HH",
+                              "display": "Critical high",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/612d5b88-0687-46f9-3ada-0fc9ba9b5fe0"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "38892-6",
-                  "display": "Anisocytosis [Presence] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Anisocytosis [Presence] in Blood"
-            },
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "A",
-                    "display": "Abnormal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/19124803-ebc8-8a88-2acc-f5b890f8c5c5"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:6074e0a6-0ba6-b905-c957-13b2899a4dbe",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "6074e0a6-0ba6-b905-c957-13b2899a4dbe",
-        "code": {
-          "coding": [
-            {
-              "code": "30400-6",
-              "display": "Hypochromia [Presence] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Hypochromia [Presence] in Blood"
-        },
-        "valueCodeableConcept": {
-          "coding": [
-            {
-              "code": "260415000",
-              "display": "not detected",
-              "system": "SCT"
-            }
-          ],
-          "text": "None seen"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:0f40b9a3-8c63-ca5d-cc60-859cfa8a6660",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "0f40b9a3-8c63-ca5d-cc60-859cfa8a6660",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "26450-7",
+                          "display": "Eosinophils/100 leukocytes in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Eosinophils/100 leukocytes in Blood"
+              },
+              "valueQuantity": {
+                  "value": 2,
+                  "code": "%",
+                  "unit": "percent",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "0 to 6"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/0f40b9a3-8c63-ca5d-cc60-859cfa8a6660"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "30400-6",
-                  "display": "Hypochromia [Presence] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Hypochromia [Presence] in Blood"
-            },
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/6074e0a6-0ba6-b905-c957-13b2899a4dbe"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:700cce12-7f39-bbb0-94f3-689107732835",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "700cce12-7f39-bbb0-94f3-689107732835",
-        "code": {
-          "coding": [
-            {
-              "code": "30424-6",
-              "display": "Macrocytes [Presence] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Macrocytes [Presence] in Blood"
-        },
-        "valueCodeableConcept": {
-          "coding": [
-            {
-              "code": "260415000",
-              "display": "not detected",
-              "system": "SCT"
-            }
-          ],
-          "text": "None seen"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:d9a5816e-5c0e-15fe-cd9d-417f8abd7abb",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "d9a5816e-5c0e-15fe-cd9d-417f8abd7abb",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "26474-7",
+                          "display": "Lymphocytes [#/volume] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Lymphocytes [#/volume] in Blood"
+              },
+              "valueQuantity": {
+                  "value": 41.2,
+                  "code": "10*3/uL",
+                  "unit": "thousand per microliter",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "1.0 to 4.8"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "HH",
+                              "display": "Critical high",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/d9a5816e-5c0e-15fe-cd9d-417f8abd7abb"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "30424-6",
-                  "display": "Macrocytes [Presence] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Macrocytes [Presence] in Blood"
-            },
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/700cce12-7f39-bbb0-94f3-689107732835"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:d198666f-2eae-1c28-ee17-d525a7a3ec85",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "d198666f-2eae-1c28-ee17-d525a7a3ec85",
-        "code": {
-          "coding": [
-            {
-              "code": "30434-5",
-              "display": "Microcytes [Presence] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Microcytes [Presence] in Blood"
-        },
-        "valueCodeableConcept": {
-          "coding": [
-            {
-              "code": "260415000",
-              "display": "not detected",
-              "system": "SCT"
-            }
-          ],
-          "text": "None seen"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:db00b811-6280-5dad-bf61-07314b205438",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "db00b811-6280-5dad-bf61-07314b205438",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "26478-8",
+                          "display": "Lymphocytes/100 leukocytes in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Lymphocytes/100 leukocytes in Blood"
+              },
+              "valueQuantity": {
+                  "value": 39,
+                  "code": "%",
+                  "unit": "percent",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "15.0 to 45.0"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/db00b811-6280-5dad-bf61-07314b205438"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "30434-5",
-                  "display": "Microcytes [Presence] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Microcytes [Presence] in Blood"
-            },
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/d198666f-2eae-1c28-ee17-d525a7a3ec85"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:db250a50-54ff-eacd-ef4f-8f05b79aecad",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "db250a50-54ff-eacd-ef4f-8f05b79aecad",
-        "code": {
-          "coding": [
-            {
-              "code": "779-9",
-              "display": "Poikilocytosis [Presence] in Blood by Light microscopy",
-              "system": "LN"
-            }
-          ],
-          "text": "Poikilocytosis [Presence] in Blood by Light microscopy"
-        },
-        "valueCodeableConcept": {
-          "coding": [
-            {
-              "code": "260415000",
-              "display": "not detected",
-              "system": "SCT"
-            }
-          ],
-          "text": "None seen"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:0b77694d-87ce-5da4-90c4-4d451437d2d9",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "0b77694d-87ce-5da4-90c4-4d451437d2d9",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "26499-4",
+                          "display": "Neutrophils [#/volume] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Neutrophils [#/volume] in Blood"
+              },
+              "valueQuantity": {
+                  "value": 58,
+                  "code": "10*3/uL",
+                  "unit": "thousand per microliter",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "1.5 to 7.0"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "HH",
+                              "display": "Critical high",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/0b77694d-87ce-5da4-90c4-4d451437d2d9"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "779-9",
-                  "display": "Poikilocytosis [Presence] in Blood by Light microscopy",
-                  "system": "LN"
-                }
-              ],
-              "text": "Poikilocytosis [Presence] in Blood by Light microscopy"
-            },
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/db250a50-54ff-eacd-ef4f-8f05b79aecad"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:90c2203d-56d6-be20-2be4-9b879d3647a5",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "90c2203d-56d6-be20-2be4-9b879d3647a5",
-        "code": {
-          "coding": [
-            {
-              "code": "10378-8",
-              "display": "Polychromasia [Presence] in Blood by Light microscopy",
-              "system": "LN"
-            }
-          ],
-          "text": "Polychromasia [Presence] in Blood by Light microscopy"
-        },
-        "valueCodeableConcept": {
-          "coding": [
-            {
-              "code": "260415000",
-              "display": "not detected",
-              "system": "SCT"
-            }
-          ],
-          "text": "None seen"
-        },
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "N",
-                "display": "Normal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:4c96bb15-0280-fea1-1715-e3f424cf55cc",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "4c96bb15-0280-fea1-1715-e3f424cf55cc",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "26511-6",
+                          "display": "Neutrophils/100 leukocytes in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Neutrophils/100 leukocytes in Blood"
+              },
+              "valueQuantity": {
+                  "value": 55,
+                  "code": "%",
+                  "unit": "percent",
+                  "system": "http://unitsofmeasure.org"
+              },
+              "referenceRange": [
+                  {
+                      "text": "50 to 73"
+                  }
+              ],
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/4c96bb15-0280-fea1-1715-e3f424cf55cc"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "10378-8",
-                  "display": "Polychromasia [Presence] in Blood by Light microscopy",
-                  "system": "LN"
-                }
-              ],
-              "text": "Polychromasia [Presence] in Blood by Light microscopy"
-            },
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "N",
-                    "display": "Normal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/90c2203d-56d6-be20-2be4-9b879d3647a5"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:3260b2c2-a8f9-1a32-d09f-556192b37dcd",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "3260b2c2-a8f9-1a32-d09f-556192b37dcd",
-        "code": {
-          "coding": [
-            {
-              "code": "6742-1",
-              "display": "Erythrocyte morphology finding [Identifier] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Erythrocyte morphology finding [Identifier] in Blood"
-        },
-        "valueString": "Many spherocytes present.",
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "A",
-                "display": "Abnormal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:19124803-ebc8-8a88-2acc-f5b890f8c5c5",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "19124803-ebc8-8a88-2acc-f5b890f8c5c5",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "38892-6",
+                          "display": "Anisocytosis [Presence] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Anisocytosis [Presence] in Blood"
+              },
+              "valueCodeableConcept": {
+                  "coding": [
+                      {
+                          "code": "260348001",
+                          "display": "Present ++ out of ++++",
+                          "system": "http://snomed.info/sct"
+                      }
+                  ],
+                  "text": "Moderate Anisocytosis"
+              },
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "A",
+                              "display": "Abnormal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/19124803-ebc8-8a88-2acc-f5b890f8c5c5"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "6742-1",
-                  "display": "Erythrocyte morphology finding [Identifier] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Erythrocyte morphology finding [Identifier] in Blood"
-            },
-            "valueString": "Many spherocytes present.",
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "A",
-                    "display": "Abnormal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/3260b2c2-a8f9-1a32-d09f-556192b37dcd"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:ff76c538-2861-d8cf-7fc6-418d7f0688ef",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "ff76c538-2861-d8cf-7fc6-418d7f0688ef",
-        "code": {
-          "coding": [
-            {
-              "code": "11156-7",
-              "display": "Leukocyte morphology finding [Identifier] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Leukocyte morphology finding [Identifier] in Blood"
-        },
-        "valueString": "Reactive morphology in lymphoid cells.",
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "A",
-                "display": "Abnormal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:6074e0a6-0ba6-b905-c957-13b2899a4dbe",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "6074e0a6-0ba6-b905-c957-13b2899a4dbe",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "30400-6",
+                          "display": "Hypochromia [Presence] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Hypochromia [Presence] in Blood"
+              },
+              "valueCodeableConcept": {
+                  "coding": [
+                      {
+                          "code": "260415000",
+                          "display": "not detected",
+                          "system": "http://snomed.info/sct"
+                      }
+                  ],
+                  "text": "None seen"
+              },
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/6074e0a6-0ba6-b905-c957-13b2899a4dbe"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "11156-7",
-                  "display": "Leukocyte morphology finding [Identifier] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Leukocyte morphology finding [Identifier] in Blood"
-            },
-            "valueString": "Reactive morphology in lymphoid cells.",
-            "interpretation": [
-              {
-                "coding": [
-                  {
-                    "code": "A",
-                    "display": "Abnormal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/ff76c538-2861-d8cf-7fc6-418d7f0688ef"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:7cb9f3da-bf77-1317-12a2-d70c8577ca71",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "7cb9f3da-bf77-1317-12a2-d70c8577ca71",
-        "code": {
-          "coding": [
-            {
-              "code": "11125-2",
-              "display": "Platelet morphology finding [Identifier] in Blood",
-              "system": "LN"
-            }
-          ],
-          "text": "Platelet morphology finding [Identifier] in Blood"
-        },
-        "valueString": "Platelets show defective granulation.",
-        "interpretation": [
-          {
-            "coding": [
-              {
-                "code": "A",
-                "display": "Abnormal",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
-              }
-            ]
-          }
-        ],
-        "status": "final",
-        "effectiveDateTime": "2011-01-04T06:34:28+08:00",
-        "performer": [
-          {
-            "reference": "Organization/c8cd57a5-13a6-54d1-7dcd-d0a6b637c660"
+      {
+          "fullUrl": "urn:uuid:700cce12-7f39-bbb0-94f3-689107732835",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "700cce12-7f39-bbb0-94f3-689107732835",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "30424-6",
+                          "display": "Macrocytes [Presence] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Macrocytes [Presence] in Blood"
+              },
+              "valueCodeableConcept": {
+                  "coding": [
+                      {
+                          "code": "260415000",
+                          "display": "not detected",
+                          "system": "http://snomed.info/sct"
+                      }
+                  ],
+                  "text": "None seen"
+              },
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
           },
-          {
-            "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+          "request": {
+              "method": "PUT",
+              "url": "Observation/700cce12-7f39-bbb0-94f3-689107732835"
           }
-        ],
-        "component": [
-          {
-            "code": {
-              "coding": [
-                {
-                  "code": "11125-2",
-                  "display": "Platelet morphology finding [Identifier] in Blood",
-                  "system": "LN"
-                }
-              ],
-              "text": "Platelet morphology finding [Identifier] in Blood"
-            },
-            "valueString": "Platelets show defective granulation.",
-            "interpretation": [
-              {
-                "coding": [
+      },
+      {
+          "fullUrl": "urn:uuid:d198666f-2eae-1c28-ee17-d525a7a3ec85",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "d198666f-2eae-1c28-ee17-d525a7a3ec85",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "30434-5",
+                          "display": "Microcytes [Presence] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Microcytes [Presence] in Blood"
+              },
+              "valueCodeableConcept": {
+                  "coding": [
+                      {
+                          "code": "260415000",
+                          "display": "not detected",
+                          "system": "http://snomed.info/sct"
+                      }
+                  ],
+                  "text": "None seen"
+              },
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
                   {
-                    "code": "A",
-                    "display": "Abnormal",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
                   }
-                ]
-              }
-            ]
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
+          },
+          "request": {
+              "method": "PUT",
+              "url": "Observation/d198666f-2eae-1c28-ee17-d525a7a3ec85"
           }
-        ],
-        "subject": {
-          "reference": "Patient/397de93b-65e0-b3b6-7a79-d7869d57a8aa"
-        }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Observation/7cb9f3da-bf77-1317-12a2-d70c8577ca71"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963",
-      "resource": {
-        "resourceType": "Specimen",
-        "id": "a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963",
-        "collection": {
-          "collectedDateTime": "2011-01-04T06:34:28+08:00"
-        },
-        "type": {
-          "coding": [
-            {
-              "code": "119297000",
-              "display": "BLD",
-              "system": "SCT"
-            }
-          ],
-          "text": "Blood"
-        }
+      {
+          "fullUrl": "urn:uuid:db250a50-54ff-eacd-ef4f-8f05b79aecad",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "db250a50-54ff-eacd-ef4f-8f05b79aecad",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "779-9",
+                          "display": "Poikilocytosis [Presence] in Blood by Light microscopy",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Poikilocytosis [Presence] in Blood by Light microscopy"
+              },
+              "valueCodeableConcept": {
+                  "coding": [
+                      {
+                          "code": "260415000",
+                          "display": "not detected",
+                          "system": "http://snomed.info/sct"
+                      }
+                  ],
+                  "text": "None seen"
+              },
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
+          },
+          "request": {
+              "method": "PUT",
+              "url": "Observation/db250a50-54ff-eacd-ef4f-8f05b79aecad"
+          }
       },
-      "request": {
-        "method": "PUT",
-        "url": "Specimen/a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963"
+      {
+          "fullUrl": "urn:uuid:90c2203d-56d6-be20-2be4-9b879d3647a5",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "90c2203d-56d6-be20-2be4-9b879d3647a5",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "10378-8",
+                          "display": "Polychromasia [Presence] in Blood by Light microscopy",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Polychromasia [Presence] in Blood by Light microscopy"
+              },
+              "valueCodeableConcept": {
+                  "coding": [
+                      {
+                          "code": "260415000",
+                          "display": "not detected",
+                          "system": "http://snomed.info/sct"
+                      }
+                  ],
+                  "text": "None seen"
+              },
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "N",
+                              "display": "Normal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
+          },
+          "request": {
+              "method": "PUT",
+              "url": "Observation/90c2203d-56d6-be20-2be4-9b879d3647a5"
+          }
+      },
+      {
+          "fullUrl": "urn:uuid:3260b2c2-a8f9-1a32-d09f-556192b37dcd",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "3260b2c2-a8f9-1a32-d09f-556192b37dcd",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "6742-1",
+                          "display": "Erythrocyte morphology finding [Identifier] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Erythrocyte morphology finding [Identifier] in Blood"
+              },
+              "valueString": "Many spherocytes present.",
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "A",
+                              "display": "Abnormal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
+          },
+          "request": {
+              "method": "PUT",
+              "url": "Observation/3260b2c2-a8f9-1a32-d09f-556192b37dcd"
+          }
+      },
+      {
+          "fullUrl": "urn:uuid:ff76c538-2861-d8cf-7fc6-418d7f0688ef",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "ff76c538-2861-d8cf-7fc6-418d7f0688ef",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "11156-7",
+                          "display": "Leukocyte morphology finding [Identifier] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Leukocyte morphology finding [Identifier] in Blood"
+              },
+              "valueString": "Reactive morphology in lymphoid cells.",
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "A",
+                              "display": "Abnormal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
+          },
+          "request": {
+              "method": "PUT",
+              "url": "Observation/ff76c538-2861-d8cf-7fc6-418d7f0688ef"
+          }
+      },
+      {
+          "fullUrl": "urn:uuid:7cb9f3da-bf77-1317-12a2-d70c8577ca71",
+          "resource": {
+              "resourceType": "Observation",
+              "id": "7cb9f3da-bf77-1317-12a2-d70c8577ca71",
+              "status": "final",
+              "code": {
+                  "coding": [
+                      {
+                          "code": "11125-2",
+                          "display": "Platelet morphology finding [Identifier] in Blood",
+                          "system": "http://loinc.org"
+                      }
+                  ],
+                  "text": "Platelet morphology finding [Identifier] in Blood"
+              },
+              "valueString": "Platelets show defective granulation.",
+              "effectiveDateTime": "2011-01-04T04:04:28+05:30",
+              "performer": [
+                  {
+                      "reference": "PractitionerRole/fbbaa96a-8a5d-f670-0fcf-838b21d4c6a8"
+                  }
+              ],
+              "interpretation": [
+                  {
+                      "coding": [
+                          {
+                              "code": "A",
+                              "display": "Abnormal",
+                              "system": "http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation"
+                          }
+                      ]
+                  }
+              ]
+          },
+          "request": {
+              "method": "PUT",
+              "url": "Observation/7cb9f3da-bf77-1317-12a2-d70c8577ca71"
+          }
+      },
+      {
+          "fullUrl": "urn:uuid:a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963",
+          "resource": {
+              "resourceType": "Specimen",
+              "id": "a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963",
+              "collection": {
+                  "collectedDateTime": "2011-01-04T04:04:28+05:30"
+              },
+              "type": {
+                  "coding": [
+                      {
+                          "code": "119297000",
+                          "display": "BLD",
+                          "system": "http://snomed.info/sct"
+                      }
+                  ],
+                  "text": "Blood"
+              }
+          },
+          "request": {
+              "method": "PUT",
+              "url": "Specimen/a1b19bd0-91c3-dbfa-4f1e-fdeb0eeb6963"
+          }
       }
-    }
   ]
 }

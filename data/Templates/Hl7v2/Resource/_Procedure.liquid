@@ -8,6 +8,12 @@ Procedure_Encounter_ID: A resource Id, used to fill "encounter.reference" proper
 Procedure_Recorder_ID: A resource Id, used to fill "recorder.reference" property.
 Procedure_Asserter_ID: A resource Id, used to fill "asserter.reference" property.
 {% endcomment -%}
+{% evaluate Practitioner_ID_PR1_8 using 'ID/Practitioner' XCN: PR1.8 -%}
+{% evaluate Practitioner_ID_PR1_11 using 'ID/Practitioner' XCN: PR1.11 -%}
+{% evaluate Practitioner_ID_PR1_12 using 'ID/Practitioner' XCN: PR1.12 -%}
+{% evaluate Procedure_ID_PR1_25 using 'ID/Procedure' PR1: PR1.25, baseId: Procedure_Subject_ID -%}
+{% evaluate Location_ID_PR1_23_1 using 'ID/Location' PL: PR1.23.1 -%}
+{% evaluate Location_ID_PR1_23_2 using 'ID/Location' PL: PR1.23.2 -%}
 
 {
     "fullUrl":"urn:uuid:{{ ID }}",
@@ -16,29 +22,92 @@ Procedure_Asserter_ID: A resource Id, used to fill "asserter.reference" property
         "id":"{{ ID }}",
         "code":
         {
+            {% if PR1.3 -%}
+                {% include 'DataType/CNECodeableConcept' CNE: PR1.3 -%}
+            {% endif -%}
             {% if PR1.3.9 == null -%}
                 "text":"{{ PR1.4.Value }}",
             {% endif -%}
         },
-        {% if PR1.7 == null -%}
+
+        {% if PR1 -%}
+            "status": "completed",
+        {% endif %}
+
+        {% if PR1_25 -%}
+            "status": "unknown",
+        {% endif -%}
+
+        "performedDateTime":"{{ PR1.5.Value | format_as_date_time }}",
+
+        {% comment %}
+        {% assign procedureDateTime = PR1.5.Value | format_as_date_time %}
+        {% assign performedMinute = procedureDateTime | date: "%m" %}
+        
+        {% if PR1.7 and performedMinute == null -%}
             "performedDateTime":"{{ PR1.5.Value | format_as_date_time }}",
         {% endif -%}
-        {% if PR1.7 and PR1.5.5 == null -%}
-            "performedDateTime":"{{ PR1.5.Value | format_as_date_time }}",
-        {% endif -%}
+
         "performedPeriod":
         {
-            {% if PR1.7 and PR1.5.5 -%}
+            {% if PR1.7 and performedMinute -%}
                 "start":"{{ PR1.5.Value | format_as_date_time }}",
-            {% endif -%}
-            {% if PR1.5.5.Value -%}
-                "end":Procedure.performedPeriod.start+PR1-7,
+            {% endif -%}  
+            {% if performedMinute -%}
+                "end": "{{ procedureDateTime | date_add: 5, "day"}}",  
             {% endif -%}
         },
+        {% endcomment %}
         "category":
         {
             {% include 'DataType/CWECodeableConcept' CWE: PR1.6 -%}
         },
+        "performer" : [
+            {% if PR1.8-%}
+            {
+                "actor" : { 
+                    "reference":"Practitioner/{{ Practitioner_ID_PR1_8 }}",
+                }, 
+                "function" : { 
+                    "coding":[
+                        {
+                            "code": "88189002",
+                            "system": "http://snomed.info/sct",
+                            "display": "Anesthesiologist",
+                        },
+                    ],
+                    "text": "Anesthesiologist",
+                }, 
+            },
+            {% endif -%}
+            {% if PR1.11-%}
+            {
+                "actor" : { 
+                    "reference":"Practitioner/{{ Practitioner_ID_PR1_11 }}",
+                }, 
+                "function" : { 
+                    "coding":[
+                        {
+                            "code":"304292004",
+                            "system":"http://snomed.info/sct",
+                            "display": "Surgeon",
+                        },
+                    ],
+                    "text": "Surgeon",
+                },
+            },
+            {% endif -%}
+            {% if PR1.12-%}
+            {
+                "actor" : { 
+                    "reference":"Practitioner/{{ Practitioner_ID_PR1_12 }}",
+                },
+                "function":{
+                    "text": "Procedure Practitioner",
+                } 
+            },
+            {% endif -%}
+        ],
         "reasonCode":
         [
             {
@@ -50,12 +119,19 @@ Procedure_Asserter_ID: A resource Id, used to fill "asserter.reference" property
             {
                 {% include 'DataType/EIIdentifier' EI: PR1.19 -%}
             },
+            {
+                {% include 'DataType/EIIdentifier' EI: PR1_25 -%}
+            },
         ],
         "location":
         {
-            {% if PR1.23 and Location_ID_PR1_23 -%}
-                "reference":"Location/{{ Location_ID_PR1_23 }}",
-            {% endif -%}
+            {% if PR1.23.1 -%}
+                "reference":"Location/{{ Location_ID_PR1_23_1 }}",
+            {% else %}
+                {% if PR1.23.2 %}
+                    "reference":"Location/{{ Location_ID_PR1_23_2 }}",
+                {% endif %}
+            {% endif %}
         },
         "partOf":
         [

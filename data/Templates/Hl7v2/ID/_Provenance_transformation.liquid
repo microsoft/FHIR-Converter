@@ -1,0 +1,6 @@
+{% capture identifiers -%}
+    {% if prov_id -%}
+        {{prov_id}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'Provenance_transformation', false | generate_uuid }}

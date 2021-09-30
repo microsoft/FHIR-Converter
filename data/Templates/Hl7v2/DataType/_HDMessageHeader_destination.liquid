@@ -1,0 +1,17 @@
+{% if HD -%}
+    "name":"{{ HD.1.Value }}",
+    {% if HD.3 %}
+        {% if HD.3.Value == "ISO" -%}
+            "endpoint":"urn:oid:{{HD.2.Value}}",
+        {% elsif HD.3.Value == "UUID" -%}
+            "endpoint":"urn:uuid:{{HD.2.Value}}",
+        {% else %}
+            "endpoint":"unknown",
+        {% endif -%}
+    {% else %}
+        "_endpoint":
+        {
+            {% include 'Extensions/DataAbsentReason' -%},
+        },
+    {% endif -%}
+{% endif -%}

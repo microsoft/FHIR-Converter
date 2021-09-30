@@ -1,0 +1,16 @@
+{% if HD -%}
+    
+    {% if HD.1 and HD.2 == null or HD.2 == "" and HD.3 == null or HD.3 == "" -%}
+        "system":"http://example.com/v2-to-fhir-converter/assigning-authority-local-system-{{HD.1 | replace: ' ', '-' }}",
+
+    {% elsif HD.3 == "ISO" or HD.3 == "CLIA" or HD.3 == "CLIP" -%}
+        "system":"urn:oid:{{HD.2}}",
+
+    {% elsif HD.3 == "UUID" or HD.3 == "GUID" -%}
+        "system":"urn:uuid:{{HD.2}}",
+
+    {% else -%}
+        "system":"http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-{{HD.3 | replace: ' ', '-' }}",
+    {% endif -%}
+    
+{% endif -%}

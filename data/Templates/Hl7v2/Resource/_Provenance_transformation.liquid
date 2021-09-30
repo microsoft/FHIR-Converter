@@ -1,0 +1,42 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Provenance",
+        "id":"{{ ID }}",
+       
+        {% assign templateVersion = "4.1" -%}
+
+        {% if Root_Template -%}
+        {% assign generationInstant = "{{ "" | now }}" -%}
+        "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on {{ generationInstant }} using Microsoft FHIR Converter.</span><span>Template Version: {{ templateVersion }}</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/v{{ templateVersion }}/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: {{ Root_Template }}.</span></p></div>"
+        },
+        {% endif -%}
+
+        "occurredDateTime" : "{{ generationInstant }}",
+        "recorded":"{{ generationInstant }}",
+
+        "agent":
+        [
+            {
+                "who":
+                {
+                    {% if Provenance_Organization_ID %}
+                        "reference": "Organization/{{Provenance_Organization_ID}}",
+                    {% endif %}
+                },
+            },
+        ],
+       
+        {% if REF_MSH -%}
+        "target": [{
+            "reference":"MessageHeader/{{ REF_MSH }}",
+         }],  
+        {% endif -%}     
+    }, 
+    "request":{
+        "method":"PUT",
+        "url":"Provenance/{{ ID }}",
+    },
+},
