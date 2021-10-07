@@ -262,15 +262,9 @@ Device_ID_MSH_3: A resource Id, used to fill "entity.what.reference" property. T
                 {% endif -%}
             {% endif %}
         }, 
-        {% if EVN -%}
         "target": [{
-           "reference":"MessageHeader/{{ REF_EVN }}",
-        }],
-        {% elsif MSH -%}
-        "target": [{
-            "reference":"MessageHeader/{{ REF_MSH }}",
-         }],  
-        {% endif -%}     
+           "reference":"Bundle/{{ REF_BUNDLE }}",
+        }],   
     }, 
     "request":{
         "method":"PUT",
