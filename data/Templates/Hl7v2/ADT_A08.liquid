@@ -482,9 +482,9 @@
             {% if dg1Segment.22 -%}
                 {% evaluate conditionId_DG1_22 using 'ID/Condition' DG1: dg1Segment.22, baseId: patientId -%}
                 {% include 'Resource/Condition' DG1_22: dg1Segment.22, Condition_Subject_ID_DG1_22: fullPatientId, ID: conditionId_DG1_22 -%}
-
-                {% include 'Extensions/Condition/ConditionExtension' DG1: dg1Segment, ID_DG1_22:conditionId_DG1_22, ID: conditionId %}
             {% endif -%}
+                {% include 'Extensions/Condition/ConditionExtension' DG1: dg1Segment, ID_DG1_22:conditionId_DG1_22, ID: conditionId %}
+            
         {% endfor -%} 
 
         {% for rf1Segment in rf1SegmentLists.RF1 -%}
