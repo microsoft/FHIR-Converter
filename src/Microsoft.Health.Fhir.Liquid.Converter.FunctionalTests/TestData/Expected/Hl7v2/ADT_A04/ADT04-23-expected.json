@@ -1,10 +1,11 @@
 {
     "resourceType": "Bundle",
-    "type": "transaction",
+    "type": "batch",
     "timestamp": "2001-01-01T00:00:00",
     "identifier": {
         "value": "Q123456789T123456789X123456"
     },
+    "id": "c9b7c305-0ed7-eb69-1e29-b4cc6251c12d",
     "entry": [
         {
             "fullUrl": "urn:uuid:18548d54-14a8-815a-c1bb-396f35b37164",
@@ -67,7 +68,7 @@
                 "id": "2f736e70-b192-155c-b224-66a1c8102fac",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-09-27T04:46:31.812Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-07T12:50:51.504Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
                 },
                 "occurredDateTime": "2001-01-01T00:00:00",
                 "recorded": "2001-01-01T00:00:00",
@@ -95,7 +96,7 @@
                 },
                 "target": [
                     {
-                        "reference": "MessageHeader/18548d54-14a8-815a-c1bb-396f35b37164"
+                        "reference": "Bundle/c9b7c305-0ed7-eb69-1e29-b4cc6251c12d"
                     }
                 ]
             },
@@ -550,7 +551,7 @@
                 },
                 "target": [
                     {
-                        "reference": "MessageHeader/18548d54-14a8-815a-c1bb-396f35b37164"
+                        "reference": "Bundle/c9b7c305-0ed7-eb69-1e29-b4cc6251c12d"
                     }
                 ]
             },
