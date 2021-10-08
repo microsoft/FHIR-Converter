@@ -85,8 +85,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         public static IEnumerable<object[]> GetDefaultTemplatesInfo()
         {
-            yield return new object[] { "microsofthealth/fhirconverter:default", 834 };
-            yield return new object[] { "microsofthealth/hl7v2templates:default", 834 };
+            yield return new object[] { "microsofthealth/fhirconverter:default", 827 };
+            yield return new object[] { "microsofthealth/hl7v2templates:default", 827 };
             yield return new object[] { "microsofthealth/ccdatemplates:default", 821 };
             yield return new object[] { "microsofthealth/jsontemplates:default", 2 };
         }
