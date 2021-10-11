@@ -12,16 +12,16 @@ The following table shows the differences between two converter engines:
 | ----- | ----- | ----- |
 | **Template language** | [Handlebars](https://handlebarsjs.com/) | [Liquid](https://shopify.github.io/liquid/) |
 | **Template authoring tool** | Self-hosted web-app | [VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-health-fhir-converter)|
-| **Supported conversions** | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR|
-| **Available as** | 1. Self-deployed web service <br> (on-prem or on Azure)| 1. Command line tool <br> 2. $convert-data operation in  [FHIR Server for Azure](https://github.com/microsoft/fhir-server/blob/main/docs/ConvertDataOperation.md) <br> 3. $convert-data operation in [Azure API for FHIR](https://docs.microsoft.com/en-us/azure/healthcare-apis/fhir/convert-data).|
+| **Supported conversions** | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR <br> 3. JSON to FHIR | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR <br> 3. JSON to FHIR |
+| **Available as** | 1. Self-deployed web service <br> (on-prem or on Azure)| 1. Command line tool <br> 2. $convert-data operation in  [FHIR Server for Azure (OSS)](https://github.com/microsoft/fhir-server/blob/main/docs/ConvertDataOperation.md) <br> 3. $convert-data operation in [Azure Healthcare APIs](https://docs.microsoft.com/en-us/azure/healthcare-apis/fhir/convert-data)|
 
 ⚠ Rest of this document is about the Liquid converter. For the Handlebars converter, please refer to the [Handlebars branch](https://github.com/microsoft/FHIR-Converter/tree/handlebars).
 
-Currently, FHIR Converter supports two types of conversions, **HL7v2 to FHIR** and **C-CDA to FHIR**. The converter uses templates that define mappings between these different data formats. The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/Filters-and-Tags.md), which make it easy with work with HL7v2 messages and C-CDA documents.
+Currently, FHIR Converter supports three types of conversions, **HL7v2 to FHIR**, **C-CDA to FHIR**, and **JSON to FHIR**. The converter uses templates that define mappings between these different data formats. The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/Filters-and-Tags.md).
 
 The converter comes with a few ready-to-use templates. If needed, you can create a new template, or modify existing templates to meet your specific conversion requirements.
 
-FHIR Converter with DotLiquid engine transforms the input data into FHIR bundles that are persisted to a FHIR server. The converter is integrated into both [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/) and [FHIR Server](https://github.com/microsoft/fhir-server) as a [$convert-data](https://docs.microsoft.com/en-us/azure/healthcare-apis/convert-data) operation. It is also available as a command line tool.
+FHIR Converter with DotLiquid engine transforms the input data into FHIR bundles that are persisted to a FHIR server. The converter is integrated into both [Azure Healthcare APIs](https://docs.microsoft.com/en-us/azure/healthcare-apis/) and [FHIR Server](https://github.com/microsoft/fhir-server) as a [$convert-data](https://docs.microsoft.com/en-us/azure/healthcare-apis/convert-data) operation. It is also available as a command line tool.
 
 ## Using $convert-data in FHIR server
 
@@ -29,7 +29,7 @@ The `$convert-data` operation is integrated into both Azure API for FHIR and FHI
 
 For more information on configuring and using `$convert-data` operation on your server, please refer to these documentation:
 
-- [$convert-data for Azure API for FHIR](https://docs.microsoft.com/en-us/azure/healthcare-apis/fhir/convert-data)
+- [$convert-data for Azure Healthcare APIs](https://docs.microsoft.com/en-us/azure/healthcare-apis/fhir/convert-data)
 - [$convert-data for FHIR Server](https://github.com/microsoft/fhir-server/blob/main/docs/ConvertDataOperation.md)
 
 ## Using Command line tool
@@ -41,7 +41,7 @@ The command line tool is another way of converting data, as well as managing tem
 | Option | Name | Optionality | Default | Description |
 | ----- | ----- | ----- |----- |----- |
 | -d | TemplateDirectory | Required | | Root directory of templates. |
-| -r | RootTemplate | Required | | Name of root template.<br><br> Valid values for **HL7v2 to FHIR** conversion: "ADT_A01", "OML_O21", "ORU_R01", "VXU_V04". <br><br> Valid values for **C-CDA to FHIR** conversion: "CCD", "ConsultationNote", "DischargeSummary", "HistoryandPhysical", "OperativeNote", "ProcedureNote", "ProgressNote", "ReferralNote", "TransferSummary". |
+| -r | RootTemplate | Required | | Name of root template.<br><br> **HL7v2 to FHIR**: "ADT_A01", "OML_O21", "ORU_R01", "VXU_V04" <br><br> **C-CDA to FHIR**: "CCD", "ConsultationNote", "DischargeSummary", "HistoryandPhysical", "OperativeNote", "ProcedureNote", "ProgressNote", "ReferralNote", "TransferSummary" <br><br> **JSON to FHIR**: "Stu3ChargeItem", "ExamplePatient" |
 | -c | InputDataContent | Optional| | Input data content. Specify OutputDataFile to get the results. |
 | -n | InputDataFile | Optional| | Input data file. Specify OutputDataFile to get the results. |
 | -f | OutputDataFile | Optional | | Output data file. |
@@ -53,15 +53,15 @@ The command line tool is another way of converting data, as well as managing tem
 
 ### Command line example
 
-Build your executable file, `Microsoft.Health.Fhir.Liquid.Converter.Tool.exe`.
+First, build the executable file, `Microsoft.Health.Fhir.Liquid.Converter.Tool.exe`, in your local directory. Have the input data, as well as the conversion templates, saved in separate folders. You can then run the built .exe file in your terminal by running the following command line and specifying the directories:
 
-For converting HL7v2 messages to FHIR resources in a folder:
 ```
 >.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r myRootTemplate -i myInputDataFolder -o myOutputDataFolder
 ```
-For converting C-CDA documents to FHIR resources in a folder:
+
+Instead of converting multiples messages and documents inside a folder, you can also convert single files using the parameters in the table above. For example, if you were to convert the sample JSON message into a FHIR resource using the `Stu3ChargeItem` template:
 ```
->.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r myRootTemplate -i myInputDataFolder -o myOutputDataFolder
+>.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -n {path}\SampleData\Json\Stu3ChargeItem.json -d {path}\Templates\Json -f {output_path}\Stu3ChargeItem.json -r Stu3ChargeItem
 ```
 
 After running the command line, there will be a series of "Processing..." lines being written in the terminal window. When the conversion is complete, you will see "Conversion completed!" message.
@@ -98,6 +98,8 @@ The default templates provided with the Converter computes Resource IDs using th
 For **HL7v2 to FHIR conversion**, [HL7v2 DotLiquid templates](data/Templates/Hl7v2/ID) help generate FHIR resource IDs from HL7v2 messages. An ID generation template does three things: 1) extract identifiers from the input segment or field; 2) combine the identifers with resource type and base ID (optional) as hash seed; 3) compute hash as output ID.
 
 For **C-CDA to FHIR conversion**, [C-CDA DotLiquid templates](data/Templates/Ccda/Utils) generate FHIR resource IDs in two ways: 1) [ID generation template](data/Templates/Ccda/Utils/_GenerateId.liquid) helps generate Patient ID and Practitioner ID; 2) the resource IDs for other resources are generated from the resource object directly.
+
+For **JSON to FHIR conversion**, {need info here}
 
 The Converter introduces a concept of "base resource/base ID". Base resources are independent entities, like Patient, Organization, Device, etc, whose IDs are defined as base ID. Base IDs could be used to generate IDs for other resources that relate to them. It helps enrich the input for hash and thus reduce ID collision.
 For example, a Patient ID is used as part of hash input for an AllergyIntolerance ID, as this resource is closely related with a specific patient.
