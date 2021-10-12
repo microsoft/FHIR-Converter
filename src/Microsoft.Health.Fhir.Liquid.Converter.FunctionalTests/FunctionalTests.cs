@@ -222,30 +222,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             var expectedObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(expectedContent)));
             var actualObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(actualContent)));
 
-            // new List<string>
-            // {
-            //     "$.entry[?(@.resource.resourceType=='Provenance')].resource.text.div",
-            // }.ForEach(path =>
-            // {
-            //     expectedObject.SelectToken(path).Parent.Remove();
-            //     actualObject.SelectToken(path).Parent.Remove();
-            // });
-
             new List<string>
             {
                 "$.entry[?(@.resource.resourceType=='Provenance')].resource.text.div",
             }.ForEach(path =>
             {
-                JToken expectedObjectToken = expectedObject.SelectToken(path,false);
-                if(expectedObjectToken != null) 
-                {
-                    expectedObject.SelectToken(path,false).Parent.Remove();
-                }
-                JToken actualObjectToken = actualObject.SelectToken(path,false);
-                if(actualObjectToken != null)
-                {
-                    actualObject.SelectToken(path,false).Parent.Remove();
-                }
+                expectedObject.SelectToken(path).Parent.Remove();
+                actualObject.SelectToken(path).Parent.Remove();
             });
 
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
