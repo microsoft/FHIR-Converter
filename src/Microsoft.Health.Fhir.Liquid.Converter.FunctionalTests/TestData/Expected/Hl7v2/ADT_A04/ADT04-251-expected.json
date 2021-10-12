@@ -1,10 +1,11 @@
 {
     "resourceType": "Bundle",
-    "type": "transaction",
+    "type": "batch",
     "timestamp": "2019-05-04T18:12:05",
     "identifier": {
         "value": "1270326314"
     },
+    "id": "a04e38af-61c9-8af1-875d-ea2b4c1ffac6",
     "entry": [
         {
             "fullUrl": "urn:uuid:aa9b0327-0d9f-945a-888c-07658da974df",
@@ -51,7 +52,7 @@
                 "id": "2f44b60d-43f6-3deb-3f3d-3a1041aa219c",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-09-27T06:09:45.404Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-07T12:52:28.121Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
                 },
                 "occurredDateTime": "2019-05-04T18:12:05",
                 "recorded": "2019-05-04T18:12:05",
@@ -79,7 +80,7 @@
                 },
                 "target": [
                     {
-                        "reference": "MessageHeader/aa9b0327-0d9f-945a-888c-07658da974df"
+                        "reference": "Bundle/a04e38af-61c9-8af1-875d-ea2b4c1ffac6"
                     }
                 ]
             },

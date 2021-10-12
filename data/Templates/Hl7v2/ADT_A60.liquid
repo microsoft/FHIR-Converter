@@ -4,10 +4,10 @@
 {% assign arvSegmentLists = hl7v2Data | get_segment_lists: 'ARV' -%}
 {% assign nteSegmentLists = hl7v2Data | get_segment_lists: 'NTE' -%}
 {% assign iarSegmentLists = hl7v2Data | get_segment_lists: 'IAR' -%}
-
+{% evaluate bundleID using 'ID/Bundle' Data: firstSegments.MSH.10 -%}
 {
     "resourceType": "Bundle",
-    "type": "transaction",
+    "type": "batch",
     {% if firstSegments.MSH.7 -%}
     "timestamp":"{{ firstSegments.MSH.7.Value | format_as_date_time }}",
     {% endif -%}
@@ -15,6 +15,7 @@
     {
         "value":"{{ firstSegments.MSH.10.Value }}",
     },
+    "id":"{{ bundleID }}",
     "entry": [
         {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
         {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
@@ -23,7 +24,7 @@
         {% if firstSegments.MSH -%}   
             {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, ID: messageHeaderId -%}              
             {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseId: patientId -%}
-            {% include 'Resource/Provenance' Root_Template: 'ADT_A60', MSH: firstSegments.MSH, REF_MSH: messageHeaderId, ID: provenanceId -%}
+            {% include 'Resource/Provenance' Root_Template: 'ADT_A60', MSH: firstSegments.MSH, REF_BUNDLE: bundleID, ID: provenanceId -%}
            
         {%- comment -%}
         {% assign transformation_val = 'provenance_transformation' %}
@@ -231,7 +232,7 @@
         
         {% if firstSegments.EVN -%}
             {% evaluate provenanceId using 'ID/Provenance' EVN: firstSegments.EVN, baseId: patientId -%}
-            {% include 'Resource/Provenance' EVN: firstSegments.EVN, EVNTEXT: firstSegments.MSH.9, REF_EVN: messageHeaderId,  ID: provenanceId -%}
+            {% include 'Resource/Provenance' EVN: firstSegments.EVN, EVNTEXT: firstSegments.MSH.9, REF_BUNDLE: bundleID,  ID: provenanceId -%}
             {% if firstSegments.EVN.5 -%}
                 {% if firstSegments.EVN.5.9.1 != "" and firstSegments.EVN.5.9.1 != null and firstSegments.EVN.5.9.2 != "" and firstSegments.EVN.5.9.2 != null and firstSegments.EVN.5.9.3 != "" and firstSegments.EVN.5.9.3 != null -%}
                     {% evaluate Organization_ID_EVN_5_9 using 'ID/Organization' HDORG: firstSegments.EVN.5.9 -%}
