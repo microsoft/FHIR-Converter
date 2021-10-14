@@ -13,6 +13,20 @@
         {{HD.1.Value}},{{HD.2.Value}}
     {% elsif HD -%}
         {{HD.Value}}
+    {% elsif HDORG.1 and HDORG.2 -%}
+        {{HDORG.1}},{{HDORG.2}}
+    {% elsif HDORG -%}
+        {{HDORG}}
+    {% elsif CX.3 -%}
+        {{CX.3.Repeats[0].1.Value}},{{CX.3.Repeats[0].4.Value}}
+    {% elsif CX -%}
+        {{CX.Value}}
+    {% elsif CX_IN1.10 -%}
+        {{CX_IN1.10.Repeats[0].1.Value}},{{CX_IN1.10.Repeats[0].4.Value}}
+    {% elsif CX -%}
+        {{CX_IN1.Value}}
+    {% elsif prov_id -%}
+        {{prov_id.Value}}
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'Organization', false | generate_uuid }}

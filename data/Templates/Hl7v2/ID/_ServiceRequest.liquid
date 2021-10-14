@@ -13,6 +13,10 @@
         {{OBR.2.3.Value}},{{OBR.2.4.Value}}
     {% elsif OBR -%}
         {{OBR.Value}}
+    {% elsif NTE -%}
+        {{NTE.Value}}
+    {% elsif RF1 -%}
+        {{RF1.Value}}
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'ServiceRequest', true, baseId | generate_uuid }}

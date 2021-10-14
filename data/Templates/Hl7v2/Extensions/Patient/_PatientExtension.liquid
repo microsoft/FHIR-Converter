@@ -1,0 +1,56 @@
+{
+    "resource":{
+        "resourceType": "Patient",
+        "id":"{{ ID }}",
+        "extension":
+        [
+            {% if PID.10 -%}
+            {% include 'Extensions/Race' RACE: PID.10 -%},
+            {% endif -%}
+            {% if PID.6-%}
+            {% include 'Extensions/MotherMaidenName' PID: PID -%},
+            {% endif -%}
+            {% if PID.23 -%}
+            {% include 'Extensions/BirthPlace' PID: PID -%},
+            {% endif -%}
+            {% comment -%}
+            {% if PID.7.Value.size > 8 -%}
+            {% include 'Extensions/BirthTime' PID: PID -%},
+            {% endif -%}
+            {% endcomment -%}
+            {% if PID.17 -%}
+            {% include 'Extensions/PatientReligion' PID: PID -%},
+            {% endif -%}
+            {% if PID.22 -%}
+            {% include 'Extensions/EthnicGroup' PID: PID-%},
+            {% endif -%}
+            {% if PID.27 -%}
+            {% include 'Extensions/VeteranMilitaryStatus' CWE: PID.27-%},
+            {% endif -%}
+            {% if PID.35 or PID.36 -%}
+            {% include 'Extensions/Animal' PID: PID-%},
+            {% endif -%}
+            {% if PID.26 -%}
+            {% include 'Extensions/PatientCitizenship' CITIZENSHIP: PID.26 -%},
+            {% endif -%}
+            {% if PID.39 -%}
+            {% include 'Extensions/PatientCitizenship' CITIZENSHIP: PID.39 -%},
+            {% endif -%}
+            {% if PID.28 -%}
+            {% include 'Extensions/PatientNationality' NATIONALITY: PID.28 -%},
+            {% endif -%}
+            {% if PD1.14 -%}
+            {% include 'Extensions/PatientCongregation' PD1: PD1.14 -%},
+            {% endif -%}
+            {% if PV1..16 -%}
+            {% include 'Extensions/PatientImportance' PV1: PV1.16 -%},
+            {% endif -%}
+            {% if DB1.4 -%}
+            {% include 'Extensions/DisabilityIndicator' DB1: DB1.4 -%},
+            {% endif -%}
+            {% if DB1.5 or DB1.6 -%}
+            {% include 'Extensions/DisabilityPeriod' DB1: DB1 -%},
+            {% endif -%}
+        ],
+    },
+},

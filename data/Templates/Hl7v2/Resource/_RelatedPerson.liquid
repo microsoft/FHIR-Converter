@@ -11,21 +11,105 @@ RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" proper
         "id":"{{ ID }}",
         "identifier":
         [
+            {% for pid in PID.21.Repeats -%}
             {
-                {% include 'DataType/CX' CX: PID.21 -%}
+                {% include 'DataType/CX' CX: pid -%}
             },
+            {% endfor -%}
+            {
+                {% include 'DataType/CX' CX: NK1.12 -%}
+            },
+            {% for nk33 in NK1.33.Repeats -%}
+                {
+                    {% include 'DataType/CX' CX: nk33 -%}
+                },
+            {% endfor -%}
+            {% if NK1.37 -%}
+                {
+                    "value": "{{ NK1.37.Value }}",
+                    "system": "http://hl7.org/fhir/sid/us-ssn",
+                },
+            {% endif -%}
             {
                 {% include 'DataType/EIIdentifier' EI: ROL.1 -%}
             },
             {
                 {% include 'DataType/PLN' PLN: PRT.24 -%}
             },
+            {% for gt1_2 in GT1.2.Repeats -%}
+            {
+                {% include 'DataType/CX' CX: gt1_2 -%}
+            },
+            {% endfor -%}
+            {% for gt1_19 in GT1.19.Repeats -%}
+            {
+                {% include 'DataType/CX' CX: gt1_19 -%}
+            },
+            {% endfor -%}
+            {% for in1_49 in IN1.49.Repeats -%}
+                {
+                    {% include 'DataType/CX' CX: in1_49 -%}
+                },
+            {% endfor -%}
+            {
+                "value":"{{ GT1.12.Value }}",
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            {% if GT1.12 -%}
+                                "code":"SB",
+                            {% endif -%}
+                            {% if GT1.12 -%}
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                            {% endif -%}
+                        },
+                    ],
+                },
+                {% if GT1.12 -%}
+                    "system":"http://hl7.org/fhir/sid/us-ssn",
+                {% endif -%}
+            },
+            {% for in2_1 in IN2.1.Repeats -%}
+                {
+                    {% include 'DataType/CX' CX: in2_1 -%}
+                },
+            {% endfor -%}
+            {% if IN2.2 -%}
+                {
+                "value":"{{ IN2.2.Value }}",
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            "code":"SS",
+                            "display": "Social Security number",
+                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                        },
+                    ],
+                },
+                "system":"http://hl7.org/fhir/sid/us-ssn",
+            },
+            {% endif -%}
         ],
         "relationship":
         [
             {
                 {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Relationship', CWE: NK1.3 -%}
             },
+            {
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Relationship', CWE: GT1.11 -%}
+            },
+            {
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Relationship', CWE: IN1.17 -%}
+            },
+            {% if IAM.15.1.Value != "CGV" and IAM.15.1.Value != "SEL" -%}
+                {
+                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Relationship', CWE: IAM.15 -%}
+                },
+            {% endif -%}
             {
                 {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Role', CWE: ROL.3 -%}
             },
@@ -35,6 +119,27 @@ RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" proper
             {
                 {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: PRT.4 -%}
             },
+            {% if PID.21 -%}
+            {
+                "coding": [
+                    {
+                        "code": "MTH",
+                        "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+                    }
+                ]
+            },
+            {% endif -%}
+            {% if IN2_3.3 -%}
+            {
+                "coding": [
+                    {
+                        "code": "E",
+                        "display": "Employer",
+                        "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+                    }
+                ]
+            },
+            {% endif -%}
         ],
         {% include 'DataType/XCNRelatedPerson' XCN: ROL.4 -%}
         "period":
@@ -51,15 +156,29 @@ RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" proper
             {
                 {% include 'DataType/XAD' XAD: ROL.11 -%}
             },
-            {
-                {% include 'DataType/XAD' XAD: NK1.4.Repeats[0] -%}
-            },
-            {
-                {% include 'DataType/XAD' XAD: NK1.32 -%}
-            },
+            {% for nk14 in NK1.4.Repeats -%}
+                {
+                    {% include 'DataType/XAD' XAD: nk14 -%}
+                },
+            {% endfor -%}
+            {% for nk132 in NK1.32.Repeats -%}
+                {
+                    {% include 'DataType/XAD' XAD: nk132 -%}
+                },
+            {% endfor -%}   
             {
                 {% include 'DataType/XAD' XAD: PRT.14.Repeats[0] -%}
             },
+            {% for gt1_5 in GT1.5.Repeats -%}
+                {
+                    {% include 'DataType/XAD' XAD: gt1_5 -%}
+                },
+            {% endfor -%}
+            {% for in1_19 in IN1.19.Repeats -%}
+                {
+                    {% include 'DataType/XAD' XAD: in1_19 -%}
+                },
+            {% endfor -%}
         ],
         "telecom":
         [
@@ -71,15 +190,19 @@ RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" proper
                     {% include 'DataType/XTN' XTN: n -%}
                 },
             {% endfor -%}
-            {
-                {% include 'DataType/XTN' XTN: NK1.6 -%}
-                {% if NK1.6 -%}
-                    "use":"work",
-                {% endif -%}
-            },
-            {
-                {% include 'DataType/XTN' XTN: NK1.31 -%}
-            },
+            {% for nk16 in NK1.6.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: nk16 -%}
+                    {% if nk16.2 == null -%}
+                        "use":"work",
+                    {% endif -%}
+                },
+            {% endfor -%}
+            {% for nk131 in NK1.31.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: nk131 -%}
+                },
+            {% endfor -%}
             {
                 {% include 'DataType/XTN' XTN: NK1.40 -%}
             },
@@ -89,18 +212,84 @@ RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" proper
             {
                 {% include 'DataType/XTN' XTN: PRT.15.Repeats[0] -%}
             },
+            {% for gt1_6 in GT1.6.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: gt1_6 -%}
+                    "use":"home",
+                },
+            {% endfor -%}
+            {% for gt1_7 in GT1.7.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: gt1_7 -%}
+                    "use":"work",
+                },
+            {% endfor -%}
+            {% for in2_63 in IN2.63.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: in2_63 -%}
+                },
+            {% endfor -%}
+            {% for in2_64 in IN2_3.64.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: in2_64 -%}
+                },
+            {% endfor -%}
         ],
         "name":
         [
-            {
-                {% include 'DataType/XPN' XPN: NK1.2.Repeats[0] -%}
-            },
-            {
-                {% include 'DataType/XPN' XPN: NK1.30 -%}
-            },
+            {% for nk1 in NK1.2.Repeats -%}
+                {
+                    {% include 'DataType/XPN' XPN: nk1 -%}
+                },
+            {% endfor -%}
+            {% for nk1_30 in NK1.30.Repeats -%}
+                {
+                    {% include 'DataType/XPN' XPN: nk1_30 -%}
+                },
+            {% endfor -%}
+            {% if IAM.14 -%}
+                {
+                    {% include 'DataType/XPN' XPN: IAM.14 -%}
+                },
+            {% endif -%}
+            {% for gt1 in GT1.3.Repeats -%}
+                {
+                    {% include 'DataType/XPN' XPN: gt1 -%}
+                },
+            {% endfor -%}
+            {% if GT1.11.1.Value == "SPO" -%}
+                {% for gt1_4 in GT1.4.Repeats -%}
+                    {
+                        {% include 'DataType/XPN' XPN: gt1_4 -%}
+                    },
+                {% endfor -%}
+            {% endif -%}
+            {% for in1_16 in IN1.16.Repeats -%}
+                {
+                    {% include 'DataType/XPN' XPN: in1_16 -%}
+                },
+            {% endfor -%}
         ],
-        "gender":"{{ NK1.15.Value | get_property: 'CodeSystem/Gender', 'code' }}",
+        {% if NK1.15 -%}
+            "gender":{% include 'DataType/CWECode' mapping: 'CodeSystem/Gender', CWE: NK1.15 -%},
+        {% endif -%}
+        {% unless NK1.15 -%}
+            {% if GT1.9 -%}
+                "gender":{% include 'DataType/CWECode' mapping: 'CodeSystem/Gender', CWE: GT1.9 -%},
+            {% endif -%}
+        {% endunless -%}
+        {% unless NK1_IN1.8 -%}
+            {% if IN1.43 -%}
+            "gender":{% include 'DataType/CWECode' mapping: 'CodeSystem/Gender', CWE: IN1.43 -%},
+            {% endif -%}
+        {% endunless -%}
         "birthDate":"{{ NK1.16.Value | add_hyphens_date }}",
+        {% unless NK1.16 -%}
+            "birthDate":"{{ GT1.8.Value | add_hyphens_date }}",
+        {% endunless -%}
+        {% unless NK1_IN1.16 -%}
+            "birthDate":"{{ IN1.18.Value | add_hyphens_date }}",
+        {% endunless -%}
         "communication":
         [
             {
@@ -109,12 +298,33 @@ RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" proper
                     {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Language', CWE: NK1.20 -%}
                 },
             },
+            {% unless NK1.20 -%}
+            {
+                "language":
+                {
+                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Language', CWE: GT1.36 -%}
+                },
+                {% if GT1.36 -%}
+                    "preferred":true,
+                {% endif -%}
+            },
+            {% endunless -%}
+            {
+                "language":
+                {
+                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Language', CWE: IN2.34 -%}
+                },
+                {% if IN2.34 -%}
+                    "preferred":true,
+                {% endif -%}
+            },
         ],
         {% include 'DataType/XCNRelatedPerson' XCN: PRT.5.Repeats[0] -%}
         "patient":
         {
             "reference":"{{ RelatedPerson_Patient_ID }}",
         },
+        {% include 'DataType/XCNRelatedPerson' XCN: IN2_3.3.Repeats[0] -%}
     },
     "request":{
         "method":"PUT",

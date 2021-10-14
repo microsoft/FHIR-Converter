@@ -1,0 +1,189 @@
+{% assign namestring = "" -%}
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Coverage",
+        "id":"{{ ID }}",
+        
+        "class":
+        [
+            {% if IN1.2.1 -%}
+            {
+                "value" : "{{IN1.2.1.Value}}", 
+                "name" : "{{IN1.2.2.Value}}",
+                "type": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/coverage-class",
+                            "code": "plan",
+                            "display": "Plan"
+                        }
+                    ]
+                },
+            },
+            {% endif -%}
+            {% if IN1.8 -%}
+            {
+                "value" : "{{IN1.8.Value}}",
+                {% for in1_9 in IN1.9.Repeats -%}
+                    {% if in1_9 -%}
+                        {% assign namevalue = in1_9.1.Value -%}
+                    {% unless in1_9.1 -%}
+                         {% assign namevalue =  in1_9.10.Value -%}
+                    {% endunless -%}
+                    {% endif -%}
+                {% capture namestring %}{{ namestring | append: namevalue | append: ":" }}{% endcapture -%}
+                {% endfor %}
+                "name" : "{{ namestring | split: ":" | join: "+"}}",
+                "type": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/coverage-class",
+                            "code": "group",
+                            "display": "Group"
+                        }
+                    ]
+                },
+            },
+            {% endif -%}
+        ],
+        "network" : "{{IN1.2.2.Value}}",
+        {% comment -%}
+        {% if REF_ORG -%}
+        "payor" : [
+            { 
+                "reference": "Organization/{{REF_ORG}}" 
+            }
+        ],
+        {% endif -%}
+        {% if REF_ORG_11 -%}
+        "policyHolder": {
+
+                "reference": "{{REF_ORG_11}}" 
+        },
+        {% endif -%}
+        {% endcomment -%}
+        "period":
+            {
+                "start":"{{ IN1.12.Value | format_as_date_time }}",
+                "end":"{{ IN1.13.Value | format_as_date_time }}"
+        },
+        "type":{
+
+            {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/PlanType', CWE: IN1.15 -%}
+        },
+        {% unless IN1.15 -%}
+        "type":{
+
+            {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/CoverageType', CWE: IN1.47 -%}
+        },
+        {% endunless -%}
+        {% comment -%}
+        "subscriber" : {
+            {% if IN1.17.1.Value == "SEL" -%}
+                "reference": "{{REF_PATIENT}}"
+            {% else -%}
+                "reference": "RelatedPerson/{{REF_REL_PER}}"
+            {% endif -%}
+        },
+        
+        "beneficiary": {
+            "reference": "{{REF_PATIENT}}"
+        },
+        {% endcomment -%}
+        
+        "identifier": [
+            {% if IN1.36 -%}
+            {
+                "value":"{{ IN1.36.Value }}",
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            "code":"PLN",
+                            "display": "Policy Number",
+                            "system":"http://example.com/CodeSystem/additional-identifier",
+                        },
+                    ],
+                },
+                "system":"http://www.examplehealthplan.com/fhir/policyidentifier",
+            },
+            {% endif -%}
+            {% if IN2.6 -%}
+            {
+                "value":"{{ IN2.6.Value }}",
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            "code":"MC",
+                            "display": "Patient's Medicare number",
+                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                        },
+                    ],
+                },
+                "system":"http://hl7.org/fhir/sid/us-medicare",
+            },
+            {% endif -%}
+            {% if IN2.8 -%}
+            {
+                "value":"{{ IN2.8.Value }}",
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            "code":"MA",
+                            "display": "Patient Medicaid number",
+                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                        },
+                    ],
+                },
+                "system":"http://example.com/v2-to-fhir-converter/identifier-medicaid",
+            },
+            {% endif -%}
+            {% for in2_61 in IN2.61.Repeats -%}
+                {
+                    {% include 'DataType/CX' CX: in2_61 -%}
+                },
+            {% endfor -%}
+            {% for in1_49 in IN1.49.Repeats -%}
+                {
+                    {% include 'DataType/CX' CX: in1_49 -%}
+                },
+            {% endfor -%}
+        ],
+        "costToBeneficiary" : [
+            { 
+                "type" : {                   
+                    "coding":
+                    [
+                        {
+                            {% include 'DataType/IDCoding' mapping: 'CodeSystem/PriceType', CD: IN1.37.2 -%}
+                        },
+                    ],
+                }, 
+                "valueMoney" : {
+                    {% if IN1.37.1.1 -%}
+                    "value" : {{IN1.37.1.1}},
+                    {% endif -%}
+                    "currency" : "{{IN1.37.1.2}}"
+                 },
+            }
+        ],
+        "subscriberId" : "{{ IN1.49.1.Value }}",
+        "status" : "active",
+        {% if IN1.55.Value == "D" -%}
+            "status" : "entered-in-error",
+        {% endif -%}
+        "relationship" : {
+            {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/PatientRelationship', CWE: IN2.72 -%}
+         },
+    },    
+    "request":{
+        "method":"PUT",
+        "url":"Coverage/{{ ID }}",
+    },
+},

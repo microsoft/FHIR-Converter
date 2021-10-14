@@ -9,6 +9,8 @@
         {{XCN.1.Value}},{{XCN.9.Value}}
     {% elsif XCN -%}
         {{XCN.Value}}
+    {% elsif XPN -%}
+        {{XPN.Value}}
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'Practitioner', false | generate_uuid }}

@@ -1,0 +1,36 @@
+{% assign ombCategorylimit = '' -%}
+{% assign textstring = "" -%}
+{
+    "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
+    "extension": [
+        {% for p in PID.22.Repeats -%}
+            {
+                {% if p.1.Value -%}
+                {% if ombCategorylimit.size < 1 -%}
+                "url": "ombCategory",
+                "valueCoding": {
+                    {% include 'DataType/CWECoding' mapping: 'CodeSystem/Ethnicity', CWE: p -%}
+                    {%comment -%}
+                    "code":"{{ p.1.Value | get_property: 'CodeSystem/Ethnicity', 'code' }}",
+                    "display":"{{ p.1.Value | get_property: 'CodeSystem/Ethnicity', 'display' }}",
+                    "system":"{{ p.1.Value | get_property: 'CodeSystem/Ethnicity', 'system' }}",
+                    "version":"{{ p.7.Value }}"
+                    {%endcomment -%}
+                }
+                {% assign ombCategorylimit = ombCategorylimit | append: 'x' -%}
+                {% endif -%}
+                {% endif -%}
+                {% if p.1 %}
+                    {% assign displayvalue = p.1.Value | get_property: 'CodeSystem/Ethnicity', 'display' -%}
+                    {% capture textstring %}{{ textstring | append: displayvalue | append: ":" }}{% endcapture -%}
+                {% else -%}
+                    {% capture textstring %}{{ textstring | append: p.2.Value | append: ":" }}{% endcapture -%}
+                {% endif -%}
+            },
+        {% endfor -%}
+        {        
+            "url": "text",
+            "valueString": "{{ textstring | split: ":" | join: "+"}}"
+        }
+    ]
+}

@@ -7,10 +7,18 @@
                 "display":"{{ CWE.1.Value | get_property: mapping, 'display' }}",
                 "system":"{{ CWE.1.Value | get_property: mapping, 'system' }}",
                 "version":"{{ CWE.1.Value | get_property: mapping, 'version' }}",
+                "version":"{{ CWE.7.Value }}",
             {% else -%}
                 "code":"{{ CWE.1.Value }}",
                 "display":"{{ CWE.2.Value }}",
-                "system":"{{ CWE.3.Value }}",
+
+                {% if CWE.3 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.3.Value}}",
+                {% endif %}
+                {% capture temp %}{{ CWE.3.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+                {% if temp%}
+                    "system":"{{temp}}",              
+                {% endif %}
                 "version":"{{ CWE.7.Value }}",
             {% endif -%}
         },
@@ -20,10 +28,17 @@
                 "display":"{{ CWE.4.Value | get_property: mapping, 'display' }}",
                 "system":"{{ CWE.4.Value | get_property: mapping, 'system' }}",
                 "version":"{{ CWE.4.Value | get_property: mapping, 'version' }}",
+                "version":"{{ CWE.8.Value }}",
             {% else -%}
                 "code":"{{ CWE.4.Value }}",
                 "display":"{{ CWE.5.Value }}",
-                "system":"{{ CWE.6.Value }}",
+                {% if CWE.6 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.6.Value}}",
+                {% endif %}
+                {% capture temp %}{{ CWE.6.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+                {% if temp%}
+                    "system":"{{temp}}",              
+                {% endif %}
                 "version":"{{ CWE.8.Value }}",
             {% endif -%}
         },
@@ -33,10 +48,17 @@
                 "display":"{{ CWE.10.Value | get_property: mapping, 'display' }}",
                 "system":"{{ CWE.10.Value | get_property: mapping, 'system' }}",
                 "version":"{{ CWE.10.Value | get_property: mapping, 'version' }}",
+                "version":"{{ CWE.13.Value }}",
             {% else -%}
                 "code":"{{ CWE.10.Value }}",
                 "display":"{{ CWE.11.Value }}",
-                "system":"{{ CWE.12.Value }}",
+                {% if CWE.12 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.12.Value}}",
+                {% endif %}
+                {% capture temp %}{{ CWE.12.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+                {% if temp%}
+                    "system":"{{temp}}",              
+                {% endif %}
                 "version":"{{ CWE.13.Value }}",
             {% endif -%}
         },

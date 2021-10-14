@@ -1,1 +1,18 @@
-{{ MSH.Value | generate_id_input: 'Provenance', true, baseId | generate_uuid }}
+{% capture identifiers -%}
+    {% if MSH.3 -%}
+        {{MSH.4.Value}}
+    {% elsif MSH.3 and MSH.24-%}
+        {{MSH.3.Value}},{{MSH.24.Value}}
+    {% elsif MSH.5 and MSH.25-%}
+        {{MSH.5.Value}},{{MSH.25.Value}}
+    {% elsif MSH.22 -%}
+        {{MSH.22.Value}}
+    {% elsif MSH -%}
+        {{MSH.Value}}
+    {% elsif EVN -%}
+        {{EVN.Value}}
+    {% elsif HD -%}
+        {{HD.Value}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'Provenance', true, baseId | generate_uuid }}

@@ -1,0 +1,35 @@
+{  
+    
+    {% if NATIONALITY -%}
+    "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality",
+    "extension": 
+        [
+            {"url": "code",
+            "valueCodeableConcept": 
+            {
+                "coding":
+                    [   
+                        {% assign CWE_2 = NATIONALITY.2.Value %}
+                        {% assign CWE_5 = NATIONALITY.5.Value %}
+                        {% assign CWE_11 = NATIONALITY.11.Value %}
+                        {% assign CWE_2_doubleDash = NATIONALITY.2.Value |append: '--' %} 
+                        {% assign CWE_5_doubleDash = NATIONALITY.5.Value |append: '--' %} 
+                        {% include 'DataType/CWECodeableConceptRepeatable' CWE:NATIONALITY %}    
+                    ],
+                    {% if CWE_2_doubleDash and CWE_5_doubleDash == null and CWE_11 == null %}
+                    "text":"{{ CWE_2 }}",
+                {% elsif CWE_2_doubleDash and CWE_5 and CWE_11 == null %}
+                    "text":"{{ CWE_2_doubleDash }}{{ CWE_5 }}",
+                {% elsif CWE_2_doubleDash and CWE_11 and CWE_5_doubleDash == null %}
+                    "text":"{{ CWE_2_doubleDash }}{{ CWE_11 }}",
+                {% elsif CWE_5_doubleDash and CWE_11 and CWE_2_doubleDash == null %}
+                    "text":"{{ CWE_5_doubleDash }}{{ CWE_11 }}",
+                {% elsif CWE_2_doubleDash and CWE_5_doubleDash and CWE_11%}
+                    "text":"{{ CWE_2_doubleDash }}{{ CWE_5_doubleDash }}{{ CWE_11 }}",
+                {% endif %}  
+            }
+        },
+        ],
+        
+    {% endif -%}  
+}

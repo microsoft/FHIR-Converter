@@ -1,0 +1,50 @@
+{% assign ombCategorylimit = '' -%}
+{% assign textstring = "" -%}
+{
+    "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+    "extension": [
+        {% for p in RACE.Repeats -%}
+            {
+                {% if {{p.1.Value}} == "2131-1" -%}
+                "url": "detailed",
+                "valueCoding": {
+                    {% include 'DataType/CWECoding' mapping: 'CodeSystem/Race', CWE: p -%}
+                    {%comment -%} 
+                    "code":"{{ p.1.Value | get_property: 'CodeSystem/Race', 'code' }}",
+                    "display":"{{ p.1.Value | get_property: 'CodeSystem/Race', 'display' }}",
+                    "system":"{{ p.1.Value | get_property: 'CodeSystem/Race', 'system' }}",
+                    "version":"{{ p.7.Value }}"
+                    {%endcomment -%}
+                }
+                {% else -%}
+                    {% if p.1.Value -%}
+                    {% if ombCategorylimit.size < 5 -%}
+                    "url": "ombCategory",
+                    "valueCoding": {
+                    {% include 'DataType/CWECoding' mapping: 'CodeSystem/Race', CWE: p -%}
+                    {%comment -%}
+                        "code":"{{ p.1.Value | get_property: 'CodeSystem/Race', 'code' }}",
+                        "display":"{{ p.1.Value | get_property: 'CodeSystem/Race', 'display' }}",
+                        "system":"{{ p.1.Value | get_property: 'CodeSystem/Race', 'system' }}",
+                        "version":"{{ p.7.Value }}"
+                    {%endcomment -%}
+                    }
+                    {% assign ombCategorylimit = ombCategorylimit | append: 'x' -%}
+                    {% endif -%}
+                    {% endif -%}
+                {% endif -%}               
+                {% if p.1 %}
+                    {% assign displayvalue = p.1.Value | get_property: 'CodeSystem/Race', 'display' -%}
+                    {% capture textstring %}{{ textstring | append: displayvalue | append: ":" }}{% endcapture -%}
+                {% else -%}
+                    {% capture textstring %}{{ textstring | append: p.2.Value | append: ":" }}{% endcapture -%}
+                {% endif -%}
+
+            },
+        {% endfor -%}
+        {        
+            "url": "text",
+            "valueString": "{{ textstring | split: ":" | join: "+"}}"
+        }
+    ]
+}

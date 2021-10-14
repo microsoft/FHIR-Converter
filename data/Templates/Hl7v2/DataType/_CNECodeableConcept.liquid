@@ -1,0 +1,42 @@
+{% if CNE -%}
+    "coding":
+    [
+        {
+            "code":"{{ CNE.1.Value }}",
+            "display":"{{ CNE.2.Value }}",
+            {% if CNE.3 %}
+                "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CNE.3.Value}}",
+            {% endif %}
+            {% capture temp %}{{ CNE.3.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+            {% if temp%}
+                "system":"{{temp}}",              
+            {% endif %}
+            "version":"{{ CNE.7.Value }}",
+        },
+        {
+            "code":"{{ CNE.4.Value }}",
+            "display":"{{ CNE.5.Value }}",
+            {% if CNE.6 %}
+                "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CNE.6.Value}}",
+            {% endif %}
+            {% capture temp %}{{ CNE.6.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+            {% if temp%}
+                "system":"{{temp}}",              
+            {% endif %}
+            "version":"{{ CNE.8.Value }}",
+        },
+        {
+            "code":"{{ CNE.10.Value }}",
+            "display":"{{ CNE.11.Value }}",
+            {% if CNE.12 %}
+                "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CNE.12.Value}}",
+            {% endif %}
+            {% capture temp %}{{ CNE.12.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+            {% if temp%}
+                "system":"{{temp}}",              
+            {% endif %}
+            "version":"{{ CNE.13.Value }}",
+        },
+    ],
+    "text":"{{ CNE.9.Value }}",
+{% endif -%}

@@ -1,0 +1,20 @@
+"identifier" : [
+    { 
+        "value": "{{CWE.1}}",
+        {% if CWE.3 %}
+        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.3}}",
+        {% endif %}
+    },
+    { 
+        "value": "{{CWE.4}}",
+        {% if CWE.6 %}
+        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.6}}",
+        {% endif %}
+    },
+    { 
+        "value": "{{CWE.10}}",
+        {% if CWE.12 %}
+        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.12}}",
+        {% endif %}
+    },
+],

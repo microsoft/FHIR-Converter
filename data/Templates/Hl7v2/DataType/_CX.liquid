@@ -7,9 +7,19 @@
             {
                 "code":"{{ CX.5.Value | get_property: 'CodeSystem/IDType', 'code' }}",
                 "system":"{{ CX.5.Value | get_property: 'CodeSystem/IDType', 'system' }}",
+                "display":"{{ CX.5.Value | get_property: 'CodeSystem/IDType', 'display' }}",
             },
         ],
     },
+    {% if CX.4 -%}
+        {% include 'DataType/HDUri' HD: CX.4 -%}
+    {% endif -%}
+    {% if CX.4.1 != "" and CX.4.1 != null and CX.4.2 != "" and CX.4.2 != null and CX.4.3 != "" and CX.4.3 != null -%}
+        {% evaluate Organization_ID_CX using 'ID/Organization' HDORG: CX.4 -%}
+        "assigner": {
+            "reference": "Organization/{{ Organization_ID_CX }}",
+        },
+    {% endif -%}
     "period":
     {
         "start":"{{ CX.7.Value | format_as_date_time }}",

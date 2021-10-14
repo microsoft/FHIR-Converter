@@ -1,0 +1,217 @@
+{% evaluate locationId_PL_1 using 'ID/Location' PL: PL.1 -%}
+{% evaluate locationId_PL_2 using 'ID/Location' PL: PL.2 -%}
+{% evaluate locationId_PL_3 using 'ID/Location' PL: PL.3 -%}
+{% evaluate locationId_PL_4 using 'ID/Location' PL: PL.4 -%}
+{% evaluate locationId_PL_7 using 'ID/Location' PL: PL.7 -%}
+{% evaluate locationId_PL_8 using 'ID/Location' PL: PL.8 -%}
+{% if PL.1 -%}
+{
+    "fullUrl":"urn:uuid:{{ locationId_PL_1 }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ locationId_PL_1 }}",
+        {% if locationId_PL_8 -%}
+        "partOf":{
+            "reference":"Location/{{locationId_PL_8}}"
+        },
+        {% endif %}
+        {% include 'DataType/PL_HDLocation' HD: PL.1 -%},
+        "mode":"instance",
+        "physicalType":{
+            "coding":[
+               {
+                  "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code":"lvl"
+               }
+            ]
+         },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ locationId_PL_1 }}",
+    },
+},
+{% endif -%}
+{% if PL.2 -%}
+{
+    "fullUrl":"urn:uuid:{{ locationId_PL_2 }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ locationId_PL_2 }}",
+        {% if locationId_PL_1 -%}
+        "partOf":{
+            "reference":"Location/{{locationId_PL_1}}"
+        },
+        {% endif %}
+        {% include 'DataType/PL_HDLocation' HD: PL.2 -%},
+        "mode":"instance",
+        "physicalType":{
+            "coding":[
+               {
+                  "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code":"ro",
+               }
+            ]
+         },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ locationId_PL_2 }}",
+    },
+},
+{% endif -%}
+{% if PL.3 -%}
+{
+    "fullUrl":"urn:uuid:{{ locationId_PL_3 }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ locationId_PL_3 }}",
+        {% if locationId_PL_2 -%}
+        "partOf":{
+            "reference":"Location/{{locationId_PL_2}}"
+        },
+        {% endif %}
+        {% include 'DataType/PL_HDLocation' HD: PL.3 -%},
+        "mode":"instance",
+        "physicalType":{
+            "coding":[
+               {
+                  "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code":"bd",
+               }
+            ]
+         },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ locationId_PL_3 }}",
+    },
+},
+{% endif -%}
+{% if PL.4 -%}
+{
+    "fullUrl":"urn:uuid:{{ locationId_PL_4 }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ locationId_PL_4 }}",
+        {% include 'DataType/PL_HDLocation' HD: PL.4 -%},
+        "mode":"instance",
+        "physicalType":{
+            "coding":[
+               {
+                  "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code":"si",
+               }
+            ]
+         },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ locationId_PL_4 }}",
+    },
+},
+{% endif -%}
+{% if PL.7 -%}
+{
+    "fullUrl":"urn:uuid:{{ locationId_PL_7 }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ locationId_PL_7 }}",
+        {% if locationId_PL_4 -%}
+        "partOf":{
+            "reference":"Location/{{locationId_PL_4}}"
+        },
+        {% endif %}
+        {% include 'DataType/PL_HDLocation' HD: PL.7 -%},
+        "mode":"instance",
+        "physicalType":{
+            "coding":[
+               {
+                  "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code":"bu",
+               }
+            ]
+         },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ locationId_PL_7 }}",
+    },
+},
+{% endif -%}
+{% if PL.8 -%}
+{
+    "fullUrl":"urn:uuid:{{ locationId_PL_8 }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ locationId_PL_8 }}",
+        {% if locationId_PL_7 -%}
+        "partOf":{
+            "reference":"Location/{{locationId_PL_7}}"
+        },
+        {% endif %}
+        {% include 'DataType/PL_HDLocation' HD: PL.8 -%},
+        "mode":"instance",
+        "physicalType":{
+            "coding":[
+               {
+                  "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code":"lvl",
+               }
+            ]
+         },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ locationId_PL_8 }}",
+    },
+},
+{% endif -%}
+
+{% if PL_1 -%}
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ ID }}",
+        {% include 'DataType/PL_HDLocation' HD: PL_1 -%},
+        "mode":"instance",
+        "physicalType":{
+            "coding":[
+               {
+                  "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code":"lvl"
+               }
+            ]
+         },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ ID }}",
+    },
+},
+{% endif -%}
+
+{% if PL_2 -%}
+    {
+        "fullUrl":"urn:uuid:{{ ID }}",
+        "resource":{
+            "resourceType": "Location",
+            "id":"{{ ID }}",
+            {% include 'DataType/PL_HDLocation' HD: PL_2 -%},
+            "mode":"instance",
+            "physicalType":{
+                "coding":[
+                {
+                    "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                    "code":"ro",
+                }
+                ]
+            },
+        },
+        "request":{
+            "method":"PUT",
+            "url":"Location/{{ ID }}",
+        },
+    },
+{% endif -%}

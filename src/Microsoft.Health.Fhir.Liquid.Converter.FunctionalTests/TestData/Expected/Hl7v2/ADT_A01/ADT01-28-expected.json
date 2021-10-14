@@ -1,387 +1,545 @@
 {
-  "resourceType": "Bundle",
-  "type": "batch",
-  "timestamp": "1988-08-18T11:26:00",
-  "identifier": {
-    "value": "MSG00001"
-  },
-  "entry": [
-    {
-      "fullUrl": "urn:uuid:64c2d51b-34a4-e841-fb1c-03f1f7762d1a",
-      "resource": {
-        "resourceType": "MessageHeader",
-        "id": "64c2d51b-34a4-e841-fb1c-03f1f7762d1a",
-        "source": {
-          "name": "ADT1"
-        },
-        "destination": [
-          {
-            "name": "GHH LAB, INC."
-          }
-        ],
-        "meta": {
-          "tag": [
-            {
-              "code": "P",
-              "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
-            }
-          ]
-        },
-        "eventCoding": {
-          "code": "A01",
-          "system": "http://terminology.hl7.org/CodeSystem/v2-0003"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "MessageHeader/64c2d51b-34a4-e841-fb1c-03f1f7762d1a"
-      }
+    "resourceType": "Bundle",
+    "type": "batch",
+    "timestamp": "1988-08-18T11:26:00",
+    "identifier": {
+        "value": "MSG00001"
     },
-    {
-      "fullUrl": "urn:uuid:d5fe6802-a680-e762-8f43-9659340b00ac",
-      "resource": {
-        "resourceType": "Patient",
-        "id": "d5fe6802-a680-e762-8f43-9659340b00ac",
-        "identifier": [
-          {
-            "value": "PATID1234",
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+    "id": "513a3d06-5e87-6fbc-ad1b-170ab430499f",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:64c2d51b-34a4-e841-fb1c-03f1f7762d1a",
+            "resource": {
+                "resourceType": "MessageHeader",
+                "id": "64c2d51b-34a4-e841-fb1c-03f1f7762d1a",
+                "source": {
+                    "name": "ADT1",
+                    "_endpoint": {
+                        "extension": [
+                            {
+                                "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                                "valueCode": "unknown"
+                            }
+                        ]
+                    }
+                },
+                "destination": [
+                    {
+                        "name": "GHH LAB, INC.",
+                        "_endpoint": {
+                            "extension": [
+                                {
+                                    "url": "http://hl7.org/fhir/StructureDefinition/data-absent-reason",
+                                    "valueCode": "unknown"
+                                }
+                            ]
+                        },
+                        "receiver": {
+                            "reference": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
+                        }
+                    }
+                ],
+                "meta": {
+                    "security": [
+                        {
+                            "display": "SECURITY",
+                            "system": "http://example.com/v2-to-fhirconverter/security-label"
+                        }
+                    ],
+                    "tag": [
+                        {
+                            "code": "P",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0103"
+                        }
+                    ]
+                },
+                "eventCoding": {
+                    "code": "A01",
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0003",
+                    "display": "ADT^A01^ADT_A01"
+                },
+                "sender": {
+                    "reference": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
                 }
-              ]
-            }
-          },
-          {
-            "value": "123456789",
-            "type": {
-              "coding": [
-                {
-                  "code": "SS",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            }
-          },
-          {
-            "value": "444333333",
-            "type": {
-              "coding": [
-                {
-                  "code": "SS",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
             },
-            "system": "http://hl7.org/fhir/sid/us-ssn"
-          },
-          {
-            "value": "987654",
-            "type": {
-              "coding": [
-                {
-                  "code": "DL"
-                }
-              ]
-            },
-            "system": "NC"
-          }
-        ],
-        "name": [
-          {
-            "family": "EVERYMAN",
-            "given": [
-              "ADAM",
-              "A"
-            ],
-            "suffix": [
-              "III"
-            ]
-          }
-        ],
-        "birthDate": "1961-06-15",
-        "gender": "male",
-        "address": [
-          {
-            "line": [
-              "2222 HOME STREET"
-            ],
-            "city": "GREENSBORO",
-            "state": "NC",
-            "postalCode": "27401-1020"
-          },
-          {
-            "district": "GL"
-          }
-        ],
-        "telecom": [
-          {
-            "value": "(555) 555-2004",
-            "use": "home"
-          },
-          {
-            "value": "(555)555-2004",
-            "use": "work"
-          }
-        ],
-        "maritalStatus": {
-          "coding": [
-            {
-              "code": "S",
-              "display": "Never Married",
-              "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+            "request": {
+                "method": "PUT",
+                "url": "MessageHeader/64c2d51b-34a4-e841-fb1c-03f1f7762d1a"
             }
-          ]
         },
-        "contact": [
-          {
-            "name": {
-              "family": "NUCLEAR",
-              "given": [
-                "NELDA",
-                "W"
-              ]
-            },
-            "relationship": [
-              {
-                "coding": [
-                  {
-                    "code": "NK",
-                    "display": "NK"
-                  }
+        {
+            "fullUrl": "urn:uuid:ae8c8e53-d120-6815-afb1-783160fb3e48",
+            "resource": {
+                "resourceType": "Provenance",
+                "id": "ae8c8e53-d120-6815-afb1-783160fb3e48",
+                "text": {
+                    "status": "generated",
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-07T12:40:34.086Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A01.</span></p></div>"
+                },
+                "occurredDateTime": "1988-08-18T11:26:00",
+                "recorded": "1988-08-18T11:26:00",
+                "agent": [
+                    {
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "author",
+                                    "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
+                                }
+                            ]
+                        },
+                        "who": {
+                            "reference": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
+                        }
+                    }
+                ],
+                "activity": {
+                    "coding": [
+                        {
+                            "display": "ADT^A01^ADT_A01"
+                        }
+                    ]
+                },
+                "target": [
+                    {
+                        "reference": "Bundle/513a3d06-5e87-6fbc-ad1b-170ab430499f"
+                    }
                 ]
-              }
-            ]
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Patient/d5fe6802-a680-e762-8f43-9659340b00ac"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Practitioner"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Practitioner/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:15d1e2fd-66ed-373c-919f-8204c9c27ec6",
-      "resource": {
-        "resourceType": "Practitioner",
-        "id": "15d1e2fd-66ed-373c-919f-8204c9c27ec6"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Practitioner/15d1e2fd-66ed-373c-919f-8204c9c27ec6"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:3e9d1ae2-2dbe-bdd9-8da6-6a9fdfc18068",
-      "resource": {
-        "resourceType": "Account",
-        "id": "3e9d1ae2-2dbe-bdd9-8da6-6a9fdfc18068",
-        "identifier": [
-          {
-            "value": "PATID12345001",
-            "type": {
-              "coding": [
-                {
-                  "code": "AN",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Provenance/ae8c8e53-d120-6815-afb1-783160fb3e48"
             }
-          }
-        ],
-        "subject": [
-          {
-            "reference": "Patient/d5fe6802-a680-e762-8f43-9659340b00ac"
-          }
-        ]
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Account/3e9d1ae2-2dbe-bdd9-8da6-6a9fdfc18068"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Location"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Location/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:29eb5214-21d0-ed82-39f9-da4e50277c80",
-      "resource": {
-        "resourceType": "Location",
-        "id": "29eb5214-21d0-ed82-39f9-da4e50277c80",
-        "mode": "instance",
-        "physicalType": {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/location-physical-type"
-            }
-          ]
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Location/29eb5214-21d0-ed82-39f9-da4e50277c80"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:a6091df2-6411-bec2-7f42-36d851d96cbe",
-      "resource": {
-        "resourceType": "Provenance",
-        "id": "a6091df2-6411-bec2-7f42-36d851d96cbe",
-        "text": {
-          "status": "generated",
-          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on GENERATED_INSTANT_PLACEHOLDER using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: TEMPLATE_URL_PLACEHOLDER.</span><span>Root template: ADT_A01.</span></p></div>"
         },
-        "agent": [
-          {
-            "type": {
-              "coding": [
-                {
-                  "code": "author",
-                  "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type"
-                }
-              ]
-            }
-          }
-        ],
-        "recorded": "1988-08-18T11:26:00"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Provenance/a6091df2-6411-bec2-7f42-36d851d96cbe"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:8add615d-1d8a-1bf3-bffc-9bd789bee0a3",
-      "resource": {
-        "resourceType": "Encounter",
-        "id": "8add615d-1d8a-1bf3-bffc-9bd789bee0a3",
-        "class": {
-          "code": "IMP",
-          "display": "inpatient encounter",
-          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
-        },
-        "status": "unknown",
-        "location": [
-          {
-            "status": "active",
-            "location": {
-              "reference": "Location/29eb5214-21d0-ed82-39f9-da4e50277c80"
-            }
-          }
-        ],
-        "hospitalization": {
-          "admitSource": {
-            "coding": [
-              {
-                "code": "ADM"
-              }
-            ]
-          }
-        },
-        "participant": [
-          {
-            "type": [
-              {
-                "coding": [
-                  {
-                    "code": "ATND",
-                    "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
-                    "display": "attender"
-                  }
+        {
+            "fullUrl": "urn:uuid:2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4",
+                "identifier": [
+                    {
+                        "value": "GOOD HEALTH HOSPITAL",
+                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-GOOD-HEALTH-HOSPITAL"
+                    }
                 ]
-              }
-            ],
-            "individual": {
-              "reference": "Practitioner/15d1e2fd-66ed-373c-919f-8204c9c27ec6"
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/2d7d77cd-0ca7-13a5-c9ed-6e70b739adb4"
             }
-          }
-        ],
-        "serviceType": {
-          "coding": [
-            {
-              "code": "SUR"
-            }
-          ]
         },
-        "subject": {
-          "reference": "Patient/d5fe6802-a680-e762-8f43-9659340b00ac"
+        {
+            "fullUrl": "urn:uuid:d5fe6802-a680-e762-8f43-9659340b00ac",
+            "resource": {
+                "resourceType": "Patient",
+                "id": "d5fe6802-a680-e762-8f43-9659340b00ac",
+                "identifier": [
+                    {
+                        "value": "PATID1234",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "MR",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                                    "display": "Medical record number"
+                                }
+                            ]
+                        },
+                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-ADT1"
+                    },
+                    {
+                        "value": "123456789",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "SS",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                                    "display": "Social Security number"
+                                }
+                            ]
+                        },
+                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-USSSA"
+                    },
+                    {
+                        "value": "444333333",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "SB",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        },
+                        "system": "http://hl7.org/fhir/sid/us-ssn"
+                    },
+                    {
+                        "value": "987654",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "DL"
+                                }
+                            ]
+                        },
+                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/NC"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "EVERYMAN",
+                        "given": [
+                            "ADAM",
+                            "A"
+                        ],
+                        "suffix": [
+                            "III"
+                        ]
+                    }
+                ],
+                "birthDate": "1961-06-15",
+                "gender": "male",
+                "address": [
+                    {
+                        "line": [
+                            "2222 HOME STREET"
+                        ],
+                        "city": "GREENSBORO",
+                        "state": "NC",
+                        "postalCode": "27401-1020"
+                    },
+                    {
+                        "district": "GL"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "value": "(555) 555-2004",
+                        "use": "home"
+                    },
+                    {
+                        "value": "(555)555-2004",
+                        "use": "work"
+                    }
+                ],
+                "maritalStatus": {
+                    "coding": [
+                        {
+                            "code": "S",
+                            "display": "Never Married",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
+                        }
+                    ]
+                },
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+                        "extension": [
+                            {
+                                "url": "ombCategory",
+                                "valueCoding": {
+                                    "code": "C",
+                                    "display": "C"
+                                }
+                            },
+                            {
+                                "url": "text",
+                                "valueString": "C"
+                            }
+                        ]
+                    }
+                ],
+                "contact": [
+                    {
+                        "name": {
+                            "family": "NUCLEAR",
+                            "given": [
+                                "NELDA",
+                                "W"
+                            ]
+                        },
+                        "relationship": [
+                            {
+                                "coding": [
+                                    {
+                                        "code": "NK",
+                                        "display": "NK"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Patient/d5fe6802-a680-e762-8f43-9659340b00ac"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:3e9d1ae2-2dbe-bdd9-8da6-6a9fdfc18068",
+            "resource": {
+                "resourceType": "Account",
+                "id": "3e9d1ae2-2dbe-bdd9-8da6-6a9fdfc18068",
+                "identifier": [
+                    {
+                        "value": "PATID12345001",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "AN",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                                    "display": "Account number"
+                                }
+                            ]
+                        },
+                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-ADT1"
+                    }
+                ],
+                "status": "active",
+                "subject": [
+                    {
+                        "reference": "Patient/d5fe6802-a680-e762-8f43-9659340b00ac"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Account/3e9d1ae2-2dbe-bdd9-8da6-6a9fdfc18068"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:15d1e2fd-66ed-373c-919f-8204c9c27ec6",
+            "resource": {
+                "resourceType": "Practitioner",
+                "id": "15d1e2fd-66ed-373c-919f-8204c9c27ec6",
+                "identifier": [
+                    {
+                        "value": "004777"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "ATTEND",
+                        "given": [
+                            "AARON",
+                            "A"
+                        ]
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/15d1e2fd-66ed-373c-919f-8204c9c27ec6"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:55fb6bcf-59d7-2cc4-2ddc-d38ba31ff1d2",
+            "resource": {
+                "resourceType": "Location",
+                "id": "55fb6bcf-59d7-2cc4-2ddc-d38ba31ff1d2",
+                "name": "2000",
+                "mode": "instance",
+                "physicalType": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                            "code": "lvl"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/55fb6bcf-59d7-2cc4-2ddc-d38ba31ff1d2"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:95fb96ed-bf64-1327-6204-e8e66a472eb6",
+            "resource": {
+                "resourceType": "Location",
+                "id": "95fb96ed-bf64-1327-6204-e8e66a472eb6",
+                "partOf": {
+                    "reference": "Location/55fb6bcf-59d7-2cc4-2ddc-d38ba31ff1d2"
+                },
+                "name": "2012",
+                "mode": "instance",
+                "physicalType": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                            "code": "ro"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/95fb96ed-bf64-1327-6204-e8e66a472eb6"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:408220ee-3137-d895-e8a9-8937117bf0c1",
+            "resource": {
+                "resourceType": "Location",
+                "id": "408220ee-3137-d895-e8a9-8937117bf0c1",
+                "partOf": {
+                    "reference": "Location/95fb96ed-bf64-1327-6204-e8e66a472eb6"
+                },
+                "name": "01",
+                "mode": "instance",
+                "physicalType": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                            "code": "bd"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/408220ee-3137-d895-e8a9-8937117bf0c1"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:8add615d-1d8a-1bf3-bffc-9bd789bee0a3",
+            "resource": {
+                "resourceType": "Encounter",
+                "id": "8add615d-1d8a-1bf3-bffc-9bd789bee0a3",
+                "class": {
+                    "code": "IMP",
+                    "display": "inpatient encounter",
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
+                },
+                "status": "in-progress",
+                "location": [
+                    {
+                        "status": "active",
+                        "location": {
+                            "reference": "Location/55fb6bcf-59d7-2cc4-2ddc-d38ba31ff1d2"
+                        }
+                    },
+                    {
+                        "status": "active",
+                        "location": {
+                            "reference": "Location/95fb96ed-bf64-1327-6204-e8e66a472eb6"
+                        }
+                    },
+                    {
+                        "status": "active",
+                        "location": {
+                            "reference": "Location/408220ee-3137-d895-e8a9-8937117bf0c1"
+                        }
+                    }
+                ],
+                "hospitalization": {
+                    "admitSource": {
+                        "coding": [
+                            {
+                                "code": "ADM"
+                            }
+                        ]
+                    }
+                },
+                "participant": [
+                    {
+                        "type": [
+                            {
+                                "coding": [
+                                    {
+                                        "code": "ATND",
+                                        "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                                        "display": "attender"
+                                    }
+                                ]
+                            }
+                        ],
+                        "individual": {
+                            "reference": "Practitioner/15d1e2fd-66ed-373c-919f-8204c9c27ec6"
+                        }
+                    }
+                ],
+                "serviceType": {
+                    "coding": [
+                        {
+                            "code": "SUR"
+                        }
+                    ]
+                },
+                "text": {
+                    "status": "generated",
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Visit Description: </span></p></div>"
+                },
+                "subject": {
+                    "reference": "Patient/d5fe6802-a680-e762-8f43-9659340b00ac"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Encounter/8add615d-1d8a-1bf3-bffc-9bd789bee0a3"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:c6a03972-34d3-7649-0b8f-004e4d442eca",
+            "resource": {
+                "resourceType": "Provenance",
+                "id": "c6a03972-34d3-7649-0b8f-004e4d442eca",
+                "recorded": "2007-08-18T11:23:00",
+                "activity": {
+                    "text": "ADT^A01^ADT_A01"
+                },
+                "target": [
+                    {
+                        "reference": "Bundle/513a3d06-5e87-6fbc-ad1b-170ab430499f"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Provenance/c6a03972-34d3-7649-0b8f-004e4d442eca"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:b3a71bad-ca58-a43e-78c3-228806a2f316",
+            "resource": {
+                "resourceType": "RelatedPerson",
+                "id": "b3a71bad-ca58-a43e-78c3-228806a2f316",
+                "relationship": [
+                    {
+                        "coding": [
+                            {
+                                "code": "SPS",
+                                "display": "spouse",
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+                            }
+                        ]
+                    },
+                    {
+                        "coding": [
+                            {
+                                "code": "NK",
+                                "display": "NK"
+                            }
+                        ]
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "NUCLEAR",
+                        "given": [
+                            "NELDA",
+                            "W"
+                        ]
+                    }
+                ],
+                "patient": {
+                    "reference": "Patient/d5fe6802-a680-e762-8f43-9659340b00ac"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "RelatedPerson/b3a71bad-ca58-a43e-78c3-228806a2f316"
+            }
         }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Encounter/8add615d-1d8a-1bf3-bffc-9bd789bee0a3"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:",
-      "resource": {
-        "resourceType": "Organization"
-      },
-      "request": {
-        "method": "PUT",
-        "url": "Organization/"
-      }
-    },
-    {
-      "fullUrl": "urn:uuid:b3a71bad-ca58-a43e-78c3-228806a2f316",
-      "resource": {
-        "resourceType": "RelatedPerson",
-        "id": "b3a71bad-ca58-a43e-78c3-228806a2f316",
-        "relationship": [
-          {
-            "coding": [
-              {
-                "code": "SPS",
-                "display": "spouse",
-                "system": "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
-              }
-            ]
-          },
-          {
-            "coding": [
-              {
-                "code": "NK",
-                "display": "NK"
-              }
-            ]
-          }
-        ],
-        "name": [
-          {
-            "family": "NUCLEAR",
-            "given": [
-              "NELDA",
-              "W"
-            ]
-          }
-        ],
-        "patient": {
-          "reference": "Patient/d5fe6802-a680-e762-8f43-9659340b00ac"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "RelatedPerson/b3a71bad-ca58-a43e-78c3-228806a2f316"
-      }
-    }
-  ]
+    ]
 }

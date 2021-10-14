@@ -9,12 +9,64 @@
                 {% include 'DataType/CX' CX: PID.18 -%}
             },
         ],
+        "status": "active",
         "subject":
         [
             {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
             {% if PID.18 -%}
             {% endif -%}
         ],
+        {% if GT1 -%}
+        "guarantor" : 
+        [
+            
+            {  
+                {% if GT1.11 -%}
+                    {% if GT1.11.1.Value == "SEL" -%}
+                        "party" : {
+                            "reference": "{{ REF_PATIENT }}",
+                        },
+                        {% if GT1.22 -%}
+                        "onHold" : {{ GT1.22.Value | get_property: 'CodeSystem/Yes_No', 'code' }},
+                        {% endif -%}
+                        "period" : 
+                        {
+                            "start":"{{ GT1.13.Value | format_as_date_time }}",
+                            "end":"{{ GT1.14.Value | format_as_date_time }}"
+                        },
+                    {% else -%}
+                        "party" : {
+                            "reference" : "RelatedPerson/{{ REF_RELATED_PERSON }}",
+                        },
+                        {% if GT1.22 -%}
+                        "onHold" : {{ GT1.22.Value | get_property: 'CodeSystem/Yes_No', 'code' }},
+                        {% endif -%}
+                        "period" : 
+                        {
+                            "start":"{{ GT1.13.Value | format_as_date_time }}",
+                            "end":"{{ GT1.14.Value | format_as_date_time }}"
+                        },
+                    {% endif -%} 
+                {% endif -%}              
+            },    
+            {  
+                {% if GT1.21 -%}
+                    "party" : {
+                        "reference": "Organization/{{ REF_ORG }}",
+                    },
+                    {% if GT1.22 -%}
+                        "onHold" : {{ GT1.22.Value | get_property: 'CodeSystem/Yes_No', 'code' }},
+                        {% endif -%}
+                    "period" : 
+                     {
+                        "start":"{{ GT1.13.Value | format_as_date_time }}",
+                        "end":"{{ GT1.14.Value | format_as_date_time }}"
+                     },
+                {% endif -%}              
+            }
+            
+        ],
+        {% endif -%}
     },
     "request":{
         "method":"PUT",

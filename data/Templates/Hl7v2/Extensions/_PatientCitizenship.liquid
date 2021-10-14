@@ -1,0 +1,38 @@
+{
+    {% if CITIZENSHIP -%}   
+        "url": "http://hl7.org/fhir/StructureDefinition/patient-citizenship",                                
+        "extension": 
+        [
+            {
+                "url": "code",
+                "valueCodeableConcept": 
+                {
+                    "coding":
+                    [  
+                    {% for citizen in CITIZENSHIP.Repeats -%}
+                        {% if citizen -%} 
+                            {% assign CWE_2 = citizen.2.Value %}
+                            {% assign CWE_5 = citizen.5.Value %}
+                            {% assign CWE_11 = citizen.11.Value %}
+                            {% assign CWE_2_doubleDash = citizen.2.Value |append: '--' %} 
+                            {% assign CWE_5_doubleDash = citizen.5.Value |append: '--' %} 
+                            {% include 'DataType/CWECodeableConceptRepeatable' CWE:citizen %}
+                        {% endif -%}   
+                    {% endfor -%}     
+                    ],
+                {% if CWE_2_doubleDash and CWE_5_doubleDash == null and CWE_11 == null %}
+                    "text":"{{ CWE_2 }}",
+                {% elsif CWE_2_doubleDash and CWE_5 and CWE_11 == null %}
+                    "text":"{{ CWE_2_doubleDash }}{{ CWE_5 }}",
+                {% elsif CWE_2_doubleDash and CWE_11 and CWE_5_doubleDash == null %}
+                    "text":"{{ CWE_2_doubleDash }}{{ CWE_11 }}",
+                {% elsif CWE_5_doubleDash and CWE_11 and CWE_2_doubleDash == null %}
+                    "text":"{{ CWE_5_doubleDash }}{{ CWE_11 }}",
+                {% elsif CWE_2_doubleDash and CWE_5_doubleDash and CWE_11%}
+                    "text":"{{ CWE_2_doubleDash }}{{ CWE_5_doubleDash }}{{ CWE_11 }}",
+                {% endif %}       
+                }
+            }
+        ],    
+    {% endif -%}
+}

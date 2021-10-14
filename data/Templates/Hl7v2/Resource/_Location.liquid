@@ -4,11 +4,11 @@
         "resourceType": "Location",
         "id":"{{ ID }}",
         {% include 'DataType/PL' PL: ROL.13 -%}
-        {% include 'DataType/PL' PL: PV1.3 -%}
-        {% include 'DataType/PL' PL: PV1.6 -%}
         {% include 'DataType/PL' PL: PL -%}
+        {% include 'DataType/HDLocation' HD: EVN -%}
         {% include 'DataType/PL' PL: PR1.23.Repeats[0] -%}
         {% include 'DataType/PL' PL: PRT.9.Repeats[0] -%}
+        {% include 'DataType/DLDLocation' DLD: PV1 -%}
         {% include 'DataType/XONLocation' XON: ORC.21.Repeats[0] -%}
         "address":
         {
