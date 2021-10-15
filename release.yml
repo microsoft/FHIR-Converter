@@ -29,12 +29,12 @@ stages:
   - job: Windows_Functional_Test
     pool:
         vmImage: 'windows-latest'
-    with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
+    steps:
     - script: |
         git clone -q https://github.com/sowu880/dockerfiles-windows.git
         cd dockerfiles-windows/registry/
         docker build -t registry-windows:2.7.1 .
+        echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
         docker push ghcr.io/sowu/registry-windows:2.7.1
         docker pull ghcr.io/sowu/registry-windows:2.7.1
         docker run --rm -d -p 5000:5000 --name registry ghcr.io/sowu/registry-windows:2.7.1
