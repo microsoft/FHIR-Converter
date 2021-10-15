@@ -31,8 +31,5 @@ stages:
         vmImage: 'windows-latest'
     steps:
     - script: |
-        docker pull registry:2
-        docker login -u {user} -p {password}
-        docker tag registry:2 docker.io/wusongrui/registry:sowu
-        docker push docker.io/wusongrui/registry:sowu
+        docker login docker.io -u wusongrui -p feimititiambp@@^
       displayName: start registry
