@@ -31,8 +31,6 @@ stages:
         vmImage: 'windows-latest'
     steps:
     
-    - task: Docker@2
-      displayName: Build Image
     - script: |
         docker pull registry:2
         docker tag registry:2 dockerhub.io/wusongrui/registry:2.7.1.sowu
