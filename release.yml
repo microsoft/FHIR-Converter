@@ -27,8 +27,7 @@ stages:
 - stage: FunctionalTests
   jobs:
   - job: Windows_Functional_Test
-    pool:
-        vmImage: 'windows-latest'
+    pool: CompassMacHosted
     steps:
     
     - script: |
