@@ -32,7 +32,7 @@ stages:
     
     - script: |
         docker pull registry:2
-        docker tag registry:2 dockerhub.io/wusongrui/registry:2.7.1.sowu
+        docker tag registry:2 docker.io/wusongrui/registry:2.7.1.sowu
       displayName: start registry
     - task: Docker@2
       inputs:
