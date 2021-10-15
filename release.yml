@@ -32,7 +32,7 @@ stages:
     steps:
     - script: |
         docker pull registry:2
-        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-        docker tag registry:2 ghcr.io/sowu/registry:sowu
-        docker push ghcr.io/sowu/registry:sowu
+        docker login -u {user} -p {password}
+        docker tag registry:2 docker.io/wusongrui/registry:sowu
+        docker push docker.io/wusongrui/registry:sowu
       displayName: start registry
