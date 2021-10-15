@@ -37,7 +37,7 @@ stages:
     - task: Docker@2
       inputs:
         containerRegistry: 'dockerhubsowu'
-        repository: 'dockerhub.io/wusongrui/registry'
+        repository: 'docker.io/wusongrui/registry'
         command: 'push'
         tags: '2.7.1.sowu'
     
