@@ -31,11 +31,8 @@ stages:
         vmImage: 'windows-latest'
     steps:
     - script: |
-        git clone -q https://github.com/sowu880/dockerfiles-windows.git
-        cd dockerfiles-windows/registry/
-        docker build -t registry-windows:2.7.1 .
-        echo $CR_PAT | docker login ghcr.io -u USERNAME --password-stdin
-        docker push ghcr.io/sowu/registry-windows:2.7.1
-        docker pull ghcr.io/sowu/registry-windows:2.7.1
-        docker run --rm -d -p 5000:5000 --name registry ghcr.io/sowu/registry-windows:2.7.1
+        docker pull registry:2
+        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+        docker tag registry:2 ghcr.io/sowu/registry:sowu
+        docker push ghcr.io/sowu/registry:sowu
       displayName: start registry
