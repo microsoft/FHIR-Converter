@@ -179,17 +179,9 @@ stages:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
-        git clone -q https://github.com/sowu880/dockerfiles-windows.git
-        cd dockerfiles-windows/registry/
-        docker build -t registry-windows:2.7.1 .
-        docker run --rm -d -p 5000:5000 --name registry registry-windows:2.7.1
+        docker pull wusongrui/registry-windows:2.7.1
+        docker run --rm -d -p 5000:5000 --name registry wusongrui/registry-windows:2.7.1
       displayName: start registry
-
-    # - script: |
-    #     docker pull mcr.microsoft.com/windows/servercore:ltsc2019
-    #     docker tag mcr.microsoft.com/windows/servercore:ltsc2019 localhost:5000/windows
-    #     docker push localhost:5000/windows
-    #   displayName: test push
 
     - script: |
         dotnet test FhirConverterBuild/**/*FunctionalTests.dll
