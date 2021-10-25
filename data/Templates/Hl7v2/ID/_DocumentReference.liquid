@@ -1,0 +1,8 @@
+{% capture identifiers -%}
+    {% if EI.1 and EI.3 -%}
+        {{EI.1.Value}},{{EI.3.Value}}
+    {% elsif EI -%}
+        {{EI.Value}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'DocumentReference', false | generate_uuid }}

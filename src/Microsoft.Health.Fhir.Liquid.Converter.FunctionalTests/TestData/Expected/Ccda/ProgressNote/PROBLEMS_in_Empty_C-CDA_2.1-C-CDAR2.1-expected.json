@@ -3,10 +3,10 @@
   "type": "batch",
   "entry": [
     {
-      "fullUrl": "urn:uuid:3ca52ba9-ae49-fe85-c18d-6cc5a9b835ff",
+      "fullUrl": "urn:uuid:46a4ae4a-031e-7e0a-fee4-540ad5938724",
       "resource": {
         "resourceType": "Composition",
-        "id": "3ca52ba9-ae49-fe85-c18d-6cc5a9b835ff",
+        "id": "46a4ae4a-031e-7e0a-fee4-540ad5938724",
         "identifier": {
           "use": "official",
           "value": "2.16.840.1.113883.19.5.99999.1"
@@ -37,7 +37,7 @@
           {
             "period": {
               "start": "2015-07-23T07:00:00+08:00",
-              "end": "2015-07-23T09:00:00+08:00"
+              "end": "2015-07-23T12:00:00+08:00"
             }
           }
         ],
@@ -385,7 +385,7 @@
           "reference": "Patient/89236d99-8509-7d3a-9dfb-a82c6b81d268"
         },
         "encounter": {
-          "reference": "Encounter/adcab029-7e17-83ea-f6fd-de590f2deae8"
+          "reference": "Encounter/b6f5ed56-7748-00d5-9ceb-39811c553b86"
         },
         "custodian": {
           "reference": "Organization/60584e77-f1e2-7864-31ce-931c9781c1dc"
@@ -398,7 +398,7 @@
       },
       "request": {
         "method": "PUT",
-        "url": "Composition/3ca52ba9-ae49-fe85-c18d-6cc5a9b835ff"
+        "url": "Composition/46a4ae4a-031e-7e0a-fee4-540ad5938724"
       }
     },
     {
@@ -453,10 +453,10 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:adcab029-7e17-83ea-f6fd-de590f2deae8",
+      "fullUrl": "urn:uuid:b6f5ed56-7748-00d5-9ceb-39811c553b86",
       "resource": {
         "resourceType": "Encounter",
-        "id": "adcab029-7e17-83ea-f6fd-de590f2deae8",
+        "id": "b6f5ed56-7748-00d5-9ceb-39811c553b86",
         "status": "unknown",
         "identifier": [
           {
@@ -466,12 +466,12 @@
         ],
         "period": {
           "start": "2015-07-23T07:00:00+08:00",
-          "end": "2015-07-23T09:00:00+08:00"
+          "end": "2015-07-23T12:00:00+08:00"
         }
       },
       "request": {
         "method": "PUT",
-        "url": "Encounter/adcab029-7e17-83ea-f6fd-de590f2deae8"
+        "url": "Encounter/b6f5ed56-7748-00d5-9ceb-39811c553b86"
       }
     },
     {

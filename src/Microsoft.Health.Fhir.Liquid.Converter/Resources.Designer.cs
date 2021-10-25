@@ -104,7 +104,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("InvalidDateTimeFormat", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to The type of Date or DateTime is invalid: {0}..
+        /// </summary>
+        internal static string InvalidDateTimeType
+        {
+            get
+            {
+                return ResourceManager.GetString("InvalidDateTimeType", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to The hexadecimal number is invalid: {0}..
         /// </summary>

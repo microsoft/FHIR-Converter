@@ -13,10 +13,24 @@
         {{OBR.2.3.Value}},{{OBR.2.4.Value}}
     {% elsif OBR -%}
         {{OBR.Value}}
+    {% elsif OBR_29_1 -%}
+        {{OBR_29_1.Value}}
+    {% elsif OBR_29_2 -%}
+        {{OBR_29_2.Value}}
+    {% elsif OBR_29 -%}
+        {{OBR_29.Value}}
+    {% elsif OBR_29.1 and OBR_29.2 -%}
+        {{OBR_29.1.Value}}, {{OBR_29.2.Value}}
+    {% elsif OBR_50 -%}
+        {{OBR_50.Value}}
     {% elsif NTE -%}
         {{NTE.Value}}
     {% elsif RF1 -%}
         {{RF1.Value}}
+    {% elsif AIS.3 -%}
+        {{AIS.3.Value}}
+    {% elsif AIS -%}
+        {{AIS.Value}}
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'ServiceRequest', true, baseId | generate_uuid }}

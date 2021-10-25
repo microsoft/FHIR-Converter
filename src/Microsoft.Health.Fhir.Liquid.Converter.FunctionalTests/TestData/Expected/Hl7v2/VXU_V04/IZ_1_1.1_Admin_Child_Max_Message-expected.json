@@ -138,7 +138,8 @@
                                 "url": "ombCategory",
                                 "valueCoding": {
                                     "code": "2186-5",
-                                    "display": "2186-5"
+                                    "display": "non Hispanic or Latino",
+                                    "system": "http://example.com/v2-to-fhir-converter/CodeSystem/CDCREC"
                                 }
                             },
                             {
@@ -268,13 +269,13 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:6f2bb641-ec94-319f-da95-e6ed7262b018",
+            "fullUrl": "urn:uuid:cab498e7-22e3-614e-b9ff-079c8535c9d8",
             "resource": {
                 "resourceType": "Provenance",
-                "id": "6f2bb641-ec94-319f-da95-e6ed7262b018",
+                "id": "cab498e7-22e3-614e-b9ff-079c8535c9d8",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-07T14:01:13.556Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: VXU_V04.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T08:47:48.697Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: VXU_V04.</span></p></div>"
                 },
                 "occurredDateTime": "2012-07-01T08:22:00",
                 "recorded": "2012-07-01T08:22:00",
@@ -308,7 +309,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Provenance/6f2bb641-ec94-319f-da95-e6ed7262b018"
+                "url": "Provenance/cab498e7-22e3-614e-b9ff-079c8535c9d8"
             }
         },
         {
@@ -556,6 +557,9 @@
                         }
                     ]
                 },
+                "subject": {
+                    "reference": "Patient/1b2dce0f-93ae-fae4-cc64-b90257c96f1b"
+                },
                 "partOf": [
                     {
                         "reference": "Immunization/9d7483ec-3273-a9d9-0d6c-da4895472607"
@@ -591,6 +595,9 @@
                         }
                     ]
                 },
+                "subject": {
+                    "reference": "Patient/1b2dce0f-93ae-fae4-cc64-b90257c96f1b"
+                },
                 "partOf": [
                     {
                         "reference": "Immunization/9d7483ec-3273-a9d9-0d6c-da4895472607"
@@ -617,6 +624,9 @@
                         }
                     ]
                 },
+                "subject": {
+                    "reference": "Patient/1b2dce0f-93ae-fae4-cc64-b90257c96f1b"
+                },
                 "partOf": [
                     {
                         "reference": "Immunization/9d7483ec-3273-a9d9-0d6c-da4895472607"
@@ -642,6 +652,9 @@
                             "system": "http://loinc.org"
                         }
                     ]
+                },
+                "subject": {
+                    "reference": "Patient/1b2dce0f-93ae-fae4-cc64-b90257c96f1b"
                 },
                 "partOf": [
                     {

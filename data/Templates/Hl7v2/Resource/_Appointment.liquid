@@ -1,12 +1,284 @@
+
+{% evaluate practitioner_ID_AIP_3 using 'ID/Practitioner' XCN: AIP.3 -%}
+{% evaluate device_Id_AIG_3 using 'ID/Device' CWE: AIG.3 -%}
+{% evaluate practitionerRoleId_SCH_12 using 'ID/PractitionerRole' XCN: SCH.12 -%}
+{% evaluate practitionerRoleId_SCH_16 using 'ID/PractitionerRole' XCN: SCH.16 -%}
+{% evaluate practitionerRoleId_SCH_20 using 'ID/PractitionerRole' XCN: SCH.20 -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
         "resourceType" : "Appointment",
         "id": "{{ ID }}",
+        "identifier":
+        [    
+            {% if SCH.1 -%}       
+            {
+                {% include 'DataType/EIIdentifier' EI: SCH.1 -%}
+                "type":{
+                    "coding": [
+                        {
+                                "code": "PLAC",
+                                "display": "Placer Identifier",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                        }
+                    ]
+                },
+            },
+            {% endif -%}
+            {% if SCH.2 -%}       
+            {
+                {% include 'DataType/EIIdentifier' EI: SCH.2 -%}
+                "type":{
+                    "coding": [
+                        {
+                                "code": "FILL",
+                                "display": "Filler Identifier",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                        }
+                    ]
+                },
+            },
+            {% endif -%}
+        ],
+        "appointmentType" : {
+            {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/AppointmentType', CWE: SCH.7 -%}
+        },
+        {% if TQ1.9.1 -%}
+            {% if TQ1.9.1.Value == "S" or TQ1.9.1.Value == "Stat" or TQ1.9.1.Value == "stat" -%}
+                "priority" : 1,
+            {% elsif TQ1.9.1.Value == "A" or TQ1.9.1.Value == "ASAP" or TQ1.9.1.Value == "asap" -%}
+                "priority" : 2,
+            {% elsif TQ1.9.1.Value == "R" or TQ1.9.1.Value == "Routine" or TQ1.9.1.Value == "routine" -%}
+                "priority" : 3,
+            {% elsif TQ1.9.1.Value == "P" or TQ1.9.1.Value == "Preop" or TQ1.9.1.Value == "preop" -%}
+                "priority" : 4,
+            {% elsif TQ1.9.1.Value == "C" or TQ1.9.1.Value == "Callback" or TQ1.9.1.Value == "callback" -%}
+                "priority" : 5,
+            {% elsif TQ1.9.1.Value == "T" or TQ1.9.1.Value == "Timing critical" or TQ1.9.1.Value == "timing critical" -%}
+                "priority" : 6,
+            {% elsif TQ1.9.1.Value == "PRN" or TQ1.9.1.Value == "As needed" or TQ1.9.1.Value == "as needed" -%}
+                "priority" : 7,
+            {% else -%}
+                {% assign textvalue = TQ1.9.1.Value | slice: 0 -%}
+                    {% if textvalue == "T" or textvalue == "t" -%}
+                    "priority" : 6,
+                    {% endif %}
+            {% endif %}
+        {% else -%}
+            {% if SCH.11.6.Value == "S" or SCH.11.6.Value == "Stat" or SCH.11.6.Value == "stat" -%}
+                "priority" : 1,
+            {% elsif SCH.11.6.Value == "A" or SCH.11.6.Value == "ASAP" or SCH.11.6.Value == "asap" -%}
+                "priority" : 2,
+            {% elsif SCH.11.6.Value == "R" or SCH.11.6.Value == "Routine" or SCH.11.6.Value == "routine" -%}
+                "priority" : 3,
+            {% elsif SCH.11.6.Value == "P" or SCH.11.6.Value == "Preop" or SCH.11.6.Value == "preop" -%}
+                "priority" : 4,
+            {% elsif SCH.11.6.Value == "C" or SCH.11.6.Value == "Callback" or SCH.11.6.Value == "callback" -%}
+                "priority" : 5,
+            {% elsif SCH.11.6.Value == "T" or SCH.11.6.Value == "Timing critical" or SCH.11.6.Value == "timing critical" -%}
+                "priority" : 6,
+            {% elsif SCH.11.6.Value == "PRN" or SCH.11.6.Value == "As needed" or SCH.11.6.Value == "as needed" -%}
+                "priority" : 7,
+            {% else -%}
+                {% assign textvalue = SCH.11.6.Value | slice: 0 -%}
+                    {% if textvalue == "T" or textvalue == "t" -%}
+                    "priority" : 6,
+                    {% endif %}
+            {% endif %}
+        {% endif -%}
+        {% if TQ1.7 -%}
+            "start" : "{{ TQ1.7.Value | format_as_date_time }}",
+        {% else -%}
+            "start" : "{{ SCH.11.4.Value | format_as_date_time }}",
+        {% endif -%}
+        {% if TQ1.8 -%}
+            "end" : "{{ TQ1.8.Value | format_as_date_time }}",
+        {% else -%}
+            "end" : "{{ SCH.11.5.Value | format_as_date_time }}",
+        {% endif -%}
+
+        {% if SCH.10.Value == 'Min' or SCH.10 == 'min' -%}
+            {% if SCH.9 -%}
+            "minutesDuration": {{ SCH.9.Value }},
+            {% endif -%}
+        {% endif -%}
+
+        {% if SCH.10.Value == 's' or SCH.10.Value == 'sec' or SCH.10 == null -%}
+            {% if SCH.9 -%}
+            "minutesDuration": {{ SCH.9.Value | divide: 60 | truncate_number }},
+            {% endif -%}
+        {% endif -%}
+
+        {% if SCH.10.Value == 'Hr' or SCH.10.Value == 'hr' -%}
+            {% if SCH.9 -%}
+            {% assign hour = SCH.9.Value | times: 1.0 %}
+            {% assign minutesDuration = hour | times: 60 %}
+            "minutesDuration": {{ minutesDuration }},
+            {% endif -%}
+        {% endif -%}
+        {% if SCH.10.Value == 'ann' or SCH.10.Value == 'yr' -%}
+            {% if SCH.9 -%}
+            {% assign year = SCH.9.Value | times: 1.0 %}
+            {% assign minutesDuration = year | times: 3628800 %}
+            "minutesDuration": {{ minutesDuration }},
+            {% endif -%}
+        {% endif -%}
+        {% if SCH.10.Value == 'd' -%}
+            {% if SCH.9 -%}
+            {% assign day = SCH.9.Value | times: 1.0 %}
+            {% assign minutesDuration = day | times: 1440 %}
+            "minutesDuration": {{ minutesDuration }},
+            {% endif -%}
+        {% endif -%}
+        {% if SCH.10.Value == 'wk' -%}
+            {% if SCH.9 -%}
+            {% assign wk = SCH.9.Value | times: 1.0 %}
+            {% assign minutesDuration = wk | times: 10080 %}
+            "minutesDuration": {{ minutesDuration }},
+            {% endif -%}
+        {% endif -%}
+        {% if SCH.10.Value == 'mo' -%}
+            {% if SCH.9 -%}
+            {% assign mo = SCH.9.Value | times: 1.0 %}
+            {% assign minutesDuration = mo | times: 302400 %}
+            "minutesDuration": {{ minutesDuration }},
+            {% endif -%}
+        {% endif -%}
+
+        {% if SCH -%}
+            {% unless type_sch -%}
+                {% if SCH.25 -%}
+                    "status": {% include 'DataType/CWECode' mapping: 'CodeSystem/FillerStatus', CWE: SCH.25 -%},
+                {% else -%}
+                    "status": "booked",
+                {% endif -%}
+            {% endunless -%}
+            {% if type_sch -%}
+                {% if type_sch == "15" or type_sch == "16" -%}
+                    "status": "cancelled",
+                {% elsif type_sch == "17" -%}
+                    "status": "entered-in-error",
+                {% elsif type_sch == "26" -%}
+                    "status": "noshow",
+                {% endif -%}
+            {% endif -%}
+        {% endif -%}
+        
+        "supportingInformation" : [
+            {% if SCH.12 -%}
+            {
+                "reference":"PractitionerRole/{{ practitionerRoleId_SCH_12 }}"
+            },
+            {% endif -%}
+            {% if SCH.16 -%}
+            {
+                "reference":"PractitionerRole/{{ practitionerRoleId_SCH_16 }}"
+            },
+            {% endif -%}
+            {% if SCH.20 -%}
+            {
+                "reference":"PractitionerRole/{{ practitionerRoleId_SCH_20 }}"
+            },
+            {% endif -%}
+        ],
         "comment": "{{NTE.3.Value}}",
+        "participant" : [
+            {% if AIG -%}
+            {      
+                {% if AIG.3 -%}
+                    "actor" : {
+                        "reference":"Device/{{ device_ID_AIG_3 }}"
+                    },
+                {% endif -%}
+                "type" : [
+                    { 
+                        {% include 'DataType/CWECodeableConcept', CWE: AIG.4-%}
+                    },
+                ],
+                "period" : { 
+                    "start" : "{{ AIG.8.Value | format_as_date_time }}",
+                },
+                {% if AIG.14 -%}
+                    "status": {% include 'DataType/CWECode' mapping: 'CodeSystem/FillerStatusAppointmentParticipantStatus', CWE: AIG.14 -%},
+                {% else -%}
+                    "status": "tentative",
+                {% endif -%}                
+            },
+            {% endif -%}
+            {% if AIL -%}
+            {      
+                {% if AIL.3 -%}
+                    "actor" : {
+                        {% if AIL.3.1 -%}
+                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: AIL.3.1 -%}
+                            "reference":"Location/{{ Location_ID_AIL_3 }}",
+                        {% elseif AIL.3.2 -%}
+                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: AIL.3.2 -%}
+                            "reference":"Location/{{ Location_ID_AIL_3 }}",
+                        {% elseif AIL.3.3 -%}
+                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: AIL.3.3 -%}
+                            "reference":"Location/{{ Location_ID_AIL_3 }}",
+                        {% elseif AIL.3.4 -%}
+                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: AIL.3.4 -%}
+                            "reference":"Location/{{ Location_ID_AIL_3 }}",
+                        {% elseif AIL.3.7 -%}
+                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: AIL.3.7 -%}
+                            "reference":"Location/{{ Location_ID_AIL_3 }}",
+                        {% elseif AIL.3.8 -%}
+                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: AIL.3.8 -%}
+                            "reference":"Location/{{ Location_ID_AIL_3 }}",
+                        {% endif %}
+                    },
+                {% endif -%}
+                "period" : { 
+                    "start" : "{{ AIL.6.Value | format_as_date_time }}",
+                },
+                {% if AIL.12 -%}
+                    "status": {% include 'DataType/CWECode' mapping: 'CodeSystem/FillerStatusAppointmentParticipantStatus', CWE: AIL.12 -%},
+                {% else -%}
+                    "status": "tentative",
+                {% endif -%}                
+            },
+            {% endif -%}
+            {% if AIP -%}
+            {      
+                {% if AIP.3 -%}
+                    "actor" : {
+                        "reference":"Practitioner/{{ practitioner_ID_AIP_3 }}"
+                    },
+                {% endif -%}
+                "type" : [
+                    {
+                        {% include 'DataType/CWECodeableConcept', CWE: AIP.4 -%}
+                    },
+                ],
+                "period" : { 
+                    "start" : "{{ AIP.6.Value | format_as_date_time }}",
+                },
+                {% if AIP.12 -%}
+                    "status": {% include 'DataType/CWECode' mapping: 'CodeSystem/FillerStatusAppointmentParticipantStatus', CWE: AIP.12 -%},
+                {% else -%}
+                    "status": "tentative",
+                {% endif -%}                
+            },
+            {% endif -%}
+            {% if pidseg -%}
+                {% for pidSegment in pidseg.PID -%}
+                {
+                    {% evaluate patientId using 'ID/Patient' PID: pidSegment, type: 'First' -%}
+                    {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
+                    "actor" : {
+                        "reference":"{{ fullPatientId }}"
+                    },
+                    "status" : "accepted",
+                },
+                {% endfor -%}
+            {% endif -%}
+        ],
     },
     "request":{
         "method":"PUT",
         "url":"Appointment/{{ ID }}",
     },
-}
+},

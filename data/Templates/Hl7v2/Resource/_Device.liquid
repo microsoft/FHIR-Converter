@@ -18,6 +18,8 @@ Device_Parent_ID: A resource Id used to fill "parent.reference" property.
             {% include 'DataType/HDDevice' HD: MSH.3 -%}
         {% endif -%}
         
+        {% include 'DataType/CWEIdentifier' CWE_InternalValue: AIG.3 -%}
+        
         "identifier":
         [
         {% for ei_obx18 in EI_OBX18.Repeats -%}
@@ -53,7 +55,18 @@ Device_Parent_ID: A resource Id used to fill "parent.reference" property.
                 "type": "manufacturer-name",
             }
             {% endif -%} 
+            {% if AIG.3.2 -%}
+            {
+                "name":"{{AIG.3.2.Value}}",
+                "type": "model-name",
+            }
+            {% endif -%} 
         ],
+        {% if AIG.2.Value == "D" -%}
+            "status": "entered-in error",
+        {% elsif AIG.2.Value == "A" or AIG.2.Value == "U" or AIG.2.Value == "X"%}
+            "status": "active",
+        {% endif -%}
         "version":
             [
                 {
@@ -62,9 +75,11 @@ Device_Parent_ID: A resource Id used to fill "parent.reference" property.
             ],
         "modelNumber": "{{SFT.4.Value}}",
         "note": [
-        {
-            "text": "{{SFT.5.Value}}",
-        }
+            {
+                "text": "{{SFT.5.Value}}",
+                "text": "{{NTE.3.Value}}",
+                "time": "{{NTE.6.Value | format_as_date_time}}",
+            },
         ],
         "manufactureDate":"{{ PRT.17.Value | format_as_date_time }}",
         "expirationDate":"{{ PRT.18.Value | format_as_date_time }}",
@@ -99,6 +114,9 @@ Device_Parent_ID: A resource Id used to fill "parent.reference" property.
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Device/{{ ID }}",
     },
 },

@@ -8,7 +8,7 @@ trigger:
 pr:
 - dotliquid
 - main
-- xoriant/*
+- templates/*
 
 variables:
   solution: '**/*.sln'
@@ -17,7 +17,7 @@ variables:
   functionalTests: "**/*FunctionalTests/*.csproj"
   buildConfiguration: 'Release'
   major: 4
-  minor: 3
+  minor: 4
   patch: 0
   buildnum: $[counter(format('{0}.{1}.{2}',variables['major'],variables['minor'], variables['patch']), 1)]
   version: $(major).$(minor).$(patch).$(buildnum)

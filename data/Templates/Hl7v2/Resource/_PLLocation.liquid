@@ -17,6 +17,19 @@
         {% endif %}
         {% include 'DataType/PL_HDLocation' HD: PL.1 -%},
         "mode":"instance",
+        {% assign PLValue= PL.Value%}
+        {% capture textstring %}{{ PLValue  | split: "^" | join: "--" }}{% endcapture -%}
+        {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+        {% capture description %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+        "description" : "{{ description }}",
+        "alias" : [
+            "{{NTE.3.Value}}",
+            ],
+        "type" : [
+            { 
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/LocationRoleType', CWE: AIL_4 -%}
+            },
+        ],
         "physicalType":{
             "coding":[
                {
@@ -28,6 +41,9 @@
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Location/{{ locationId_PL_1 }}",
     },
 },
@@ -45,6 +61,19 @@
         {% endif %}
         {% include 'DataType/PL_HDLocation' HD: PL.2 -%},
         "mode":"instance",
+        {% assign PLValue= PL.Value%}
+        {% capture textstring %}{{ PLValue  | split: "^" | join: "--" }}{% endcapture -%}
+        {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+        {% capture description %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+        "description" : "{{ description }}",
+        "alias" : [
+            "{{NTE.3.Value}}",
+            ],
+        "type" : [
+            { 
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/LocationRoleType', CWE: AIL_4 -%}
+            },
+        ],
         "physicalType":{
             "coding":[
                {
@@ -56,6 +85,9 @@
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Location/{{ locationId_PL_2 }}",
     },
 },
@@ -73,6 +105,19 @@
         {% endif %}
         {% include 'DataType/PL_HDLocation' HD: PL.3 -%},
         "mode":"instance",
+        {% assign PLValue= PL.Value%}
+        {% capture textstring %}{{ PLValue  | split: "^" | join: "--" }}{% endcapture -%}
+        {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+        {% capture description %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+        "description" : "{{ description }}",
+        "alias" : [
+            "{{NTE.3.Value}}",
+            ],
+        "type" : [
+            { 
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/LocationRoleType', CWE: AIL_4 -%}
+            },
+        ],
         "physicalType":{
             "coding":[
                {
@@ -84,6 +129,9 @@
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Location/{{ locationId_PL_3 }}",
     },
 },
@@ -96,6 +144,19 @@
         "id":"{{ locationId_PL_4 }}",
         {% include 'DataType/PL_HDLocation' HD: PL.4 -%},
         "mode":"instance",
+        {% assign PLValue= PL.Value%}
+        {% capture textstring %}{{ PLValue  | split: "^" | join: "--" }}{% endcapture -%}
+        {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+        {% capture description %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+        "description" : "{{ description }}",
+        "alias" : [
+            "{{NTE.3.Value}}",
+            ],
+        "type" : [
+            { 
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/LocationRoleType', CWE: AIL_4 -%}
+            },
+        ],
         "physicalType":{
             "coding":[
                {
@@ -107,6 +168,9 @@
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Location/{{ locationId_PL_4 }}",
     },
 },
@@ -124,6 +188,19 @@
         {% endif %}
         {% include 'DataType/PL_HDLocation' HD: PL.7 -%},
         "mode":"instance",
+        {% assign PLValue= PL.Value%}
+        {% capture textstring %}{{ PLValue  | split: "^" | join: "--" }}{% endcapture -%}
+        {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+        {% capture description %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+        "description" : "{{ description }}",
+        "alias" : [
+            "{{NTE.3.Value}}",
+            ],
+        "type" : [
+            { 
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/LocationRoleType', CWE: AIL_4 -%}
+            },
+        ],
         "physicalType":{
             "coding":[
                {
@@ -135,6 +212,9 @@
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Location/{{ locationId_PL_7 }}",
     },
 },
@@ -152,6 +232,19 @@
         {% endif %}
         {% include 'DataType/PL_HDLocation' HD: PL.8 -%},
         "mode":"instance",
+        {% assign PLValue= PL.Value%}
+        {% capture textstring %}{{ PLValue  | split: "^" | join: "--" }}{% endcapture -%}
+        {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+        {% capture description %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+        "description" : "{{ description }}",
+        "alias" : [
+            "{{NTE.3.Value}}",
+            ],
+        "type" : [
+            { 
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/LocationRoleType', CWE: AIL_4 -%}
+            },
+        ],
         "physicalType":{
             "coding":[
                {
@@ -163,6 +256,9 @@
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Location/{{ locationId_PL_8 }}",
     },
 },
@@ -183,15 +279,17 @@
                   "code":"lvl"
                }
             ]
-         },
+        },
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Location/{{ ID }}",
     },
 },
 {% endif -%}
-
 {% if PL_2 -%}
     {
         "fullUrl":"urn:uuid:{{ ID }}",
@@ -211,6 +309,9 @@
         },
         "request":{
             "method":"PUT",
+            {% if Root_Template == "ADT_A29" -%}
+                "method":"DELETE",
+            {% endif -%} 
             "url":"Location/{{ ID }}",
         },
     },

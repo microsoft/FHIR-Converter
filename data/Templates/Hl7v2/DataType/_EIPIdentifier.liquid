@@ -22,3 +22,56 @@
         ],
     },
 {% endif -%}
+{% if EIP_Specimen_child1 -%}
+    "value":"{{ EIP_Specimen_child1.1 }}",
+    "type":
+    {
+        "coding":
+        [
+            {
+                {% if EIP_Specimen_child1 -%}
+                    "code":"PGN",
+                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                {% endif -%}
+            },
+        ],
+    },
+{% endif -%}
+{% if EIP_Specimen_child2 -%}
+    "value":"{{ EIP_Specimen_child2.1 }}",
+    "type":
+    {
+        "coding":
+        [
+            {
+                {% if EIP_Specimen_child2 -%}
+                    "code":"FGN",
+                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                {% endif -%}
+            },
+        ],
+    },
+{% endif -%}
+{% if EIP_Specimen_parent1 or EIP_Specimen_parent2 -%}
+    {% if EIP_Specimen_parent1 -%}
+        "value":"{{ EIP_Specimen_parent1.1 }}",
+    {% elsif EIP_Specimen_parent2 -%}
+        "value":"{{ EIP_Specimen_parent2.1 }}",
+    {% endif -%}
+    "type":
+    {
+        "coding":
+        [
+            {
+                {% if EIP_Specimen_parent1 -%}
+                    "code":"PGN",
+                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                {% endif -%}
+                {% if EIP_Specimen_parent2 -%}
+                    "code":"FGN",
+                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                {% endif -%}
+            },
+        ],
+    },
+{% endif -%}

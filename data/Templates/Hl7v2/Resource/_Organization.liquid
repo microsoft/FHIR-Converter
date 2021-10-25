@@ -22,9 +22,41 @@
         {% if MSHXON2 -%}
             {% include 'DataType/XONOrganization' XON: MSHXON2 -%}
         {% endif -%}
+
+        {% if OBR_NTE -%}  
+            {% include 'DataType/HDOrganization_InternalValue' HD: OBR_NTE -%}
+        {% endif -%}
+
+        {% if OBX_NTE -%}  
+            {% include 'DataType/HDOrganization_InternalValue' HD: OBX_NTE -%}
+        {% endif -%}
         
         {% if OBX_23 -%}
             {% include 'DataType/XONOrganization' XON: OBX_23 -%}
+        {% endif -%}
+
+        {% if OBR_SEG_10 %}
+            {% include 'DataType/HDOrganization_InternalValue' HD: OBR_SEG_10 -%}
+        {% endif %}
+
+        {% if OBR_SEG_16 %}
+            {% include 'DataType/HDOrganization_InternalValue' HD: OBR_SEG_16 -%}
+        {% endif %}
+
+        {% if OBR_SEG_34 %}
+            {% include 'DataType/HDOrganization_InternalValue' HD: OBR_SEG_34 -%}
+        {% endif %}
+
+        {% if OBR_SEG_35 %}
+            {% include 'DataType/HDOrganization_InternalValue' HD: OBR_SEG_35 -%}
+        {% endif %}
+
+        {% if ORC_SEG.21 %}
+            {% include 'DataType/XONOrganization' XON: ORC_SEG.21 -%}
+        {% endif %}
+
+        {% if SPM -%}  
+            {% include 'DataType/HDOrganization_InternalValue' HD: SPM -%}
         {% endif -%}
 
         {% if PID -%}  
@@ -49,6 +81,10 @@
 
         {% if IN2_61 -%}  
             {% include 'DataType/HDOrganization_InternalValue' HD: IN2_61.4 -%}
+        {% endif -%}
+
+        {% if TXA -%}  
+            {% include 'DataType/HDOrganization_InternalValue' HD: TXA -%}
         {% endif -%}
 
         {% if PV1 -%}  
@@ -126,6 +162,8 @@
             {% include 'DataType/XONOrganization' XON: IN2_70.70.Repeats[0] -%}
         {% endif -%}
 
+        {% include 'DataType/HDOrganization_InternalValue' HD: AIP -%}
+
         {% if MSHHD1 %}
             {% if MSH.22 and organization_ID_MSH_22 -%}
                 "partOf": 
@@ -146,23 +184,27 @@
         [
             {
                 "country":"{{ MSH.17.Value | get_property: 'CodeSystem/Countries', 'code' }}",
-            },   
+            }, 
+            {
+                {% if ORC_SEG_22 %}
+                    {% for orc22 in ORC_SEG_22.Repeats %}
+                        {% include 'DataType/XADAddress' XAD: orc22 -%}
+                    {% endfor -%}    
+                {% endif %}
+            },     
+            {
+                {% include 'DataType/XAD' XAD: OBX_ORU.24 -%}
+            },
             {
                 {% if OBX_24 -%}
                     {% include 'DataType/XADAddress' XAD: OBX_24 -%}
                 {% endif -%}
-            },
-            {
-                {% include 'DataType/XAD' XAD: OBX_ORU.24 -%}
             },
             {% if OBX_ORU.25 -%}
                 {
                     {% include 'DataType/XAD' XAD: OBX_ORU.24 -%}
                 },
             {% endif -%}
-            {
-                    {% include 'DataType/XAD' XAD: ORC.22.Repeats[0] -%}
-            },
             {% for gt1_5 in GT1.5.Repeats -%}
             {
                 {% include 'DataType/XAD' XAD: gt1_5 -%}
@@ -198,6 +240,11 @@
                             {% include 'DataType/XTN' XTN: gt1_46 -%}
                         },
                     {% endfor -%}
+                    {% for orc23 in ORC_SEG_23.Repeats -%}
+                    {
+                        {% include 'DataType/XTN' XTN: orc23 -%}
+                    },
+            {% endfor -%}
                 ],
                 "address":
                 {
@@ -254,9 +301,6 @@
         ],
         "telecom":
         [
-            {
-                {% include 'DataType/XTN' XTN: ORC.23.Repeats[0] -%}
-            },
             {% for gt1_6 in GT1.6.Repeats -%}
                 {
                     {% include 'DataType/XTN' XTN: gt1_6 -%}
@@ -340,6 +384,9 @@
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Organization/{{ ID }}",
     },
 },

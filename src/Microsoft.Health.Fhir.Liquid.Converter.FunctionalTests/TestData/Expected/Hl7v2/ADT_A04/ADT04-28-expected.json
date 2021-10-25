@@ -46,13 +46,13 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:2c3f6df7-9434-e16e-8340-f505268b140b",
+            "fullUrl": "urn:uuid:312fba25-b9c6-151e-8c0c-45a36f66ed03",
             "resource": {
                 "resourceType": "Provenance",
-                "id": "2c3f6df7-9434-e16e-8340-f505268b140b",
+                "id": "312fba25-b9c6-151e-8c0c-45a36f66ed03",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-07T12:51:46.188Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T11:31:38.533Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
                 },
                 "occurredDateTime": "2019-05-04T18:12:05",
                 "recorded": "2019-05-04T18:12:05",
@@ -86,7 +86,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Provenance/2c3f6df7-9434-e16e-8340-f505268b140b"
+                "url": "Provenance/312fba25-b9c6-151e-8c0c-45a36f66ed03"
             }
         },
         {
@@ -346,6 +346,7 @@
                 "id": "1d17bd3e-c217-b488-dd0a-b87c0652a3f1",
                 "name": "3N",
                 "mode": "instance",
+                "description": "3N--136--B--RES General Hospital--Inpatient",
                 "physicalType": {
                     "coding": [
                         {
@@ -370,6 +371,7 @@
                 },
                 "name": "136",
                 "mode": "instance",
+                "description": "3N--136--B--RES General Hospital--Inpatient",
                 "physicalType": {
                     "coding": [
                         {
@@ -394,6 +396,7 @@
                 },
                 "name": "B",
                 "mode": "instance",
+                "description": "3N--136--B--RES General Hospital--Inpatient",
                 "physicalType": {
                     "coding": [
                         {
@@ -415,6 +418,7 @@
                 "id": "9e9deb57-14b7-3c6a-e9da-3874ac02bb5f",
                 "name": "RES General Hospital",
                 "mode": "instance",
+                "description": "3N--136--B--RES General Hospital--Inpatient",
                 "physicalType": {
                     "coding": [
                         {
@@ -445,24 +449,6 @@
                         "status": "active",
                         "location": {
                             "reference": "Location/1d17bd3e-c217-b488-dd0a-b87c0652a3f1"
-                        }
-                    },
-                    {
-                        "status": "active",
-                        "location": {
-                            "reference": "Location/d5dd2e32-efbc-854a-cf3c-2bd6a7ff075e"
-                        }
-                    },
-                    {
-                        "status": "active",
-                        "location": {
-                            "reference": "Location/5783dafa-c6c0-e673-cca4-42087ee1831b"
-                        }
-                    },
-                    {
-                        "status": "active",
-                        "location": {
-                            "reference": "Location/9e9deb57-14b7-3c6a-e9da-3874ac02bb5f"
                         }
                     }
                 ],

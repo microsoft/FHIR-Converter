@@ -4,11 +4,25 @@
         "resourceType": "EpisodeOfCare",
         "id":"{{ ID }}",
         {% if PV1.45 == null -%}
-            "status": "{{ PV1.2.Value | get_property: 'CodeSystem/EncounterStatus', 'code' }}",
+            "status": "{{ PV1.2.Value | get_property: 'CodeSystem/EpisodeOfCareStatus', 'code' }}",
         {% endif -%}
         {% if PV1.45 -%}
             "status":"finished",
         {% endif -%}
+
+        {% if Root_Template == "ADT_A11" or Root_Template =="ADT_A27" -%}
+            "status":"cancelled",
+        {% endif -%}
+        {% if Root_Template == "ADT_A13" or Root_Template =="ADT_A15" or Root_Template =="ADT_A16" or Root_Template =="ADT_A25" or Root_Template =="ADT_A26" or Root_Template == "ADT_A01" or Root_Template == "ADT_A02" or  Root_Template == "ADT_A04" -%}
+            "status":"active",
+        {% endif -%}
+        {% if Root_Template == "ADT_A03" -%}
+            "status":"finished",
+        {% endif -%}
+        {% if Root_Template == "ADT_A05" or Root_Template =="ADT_A14" -%}
+            "status":"planned",
+        {% endif -%}
+
         "identifier":
         [
             {
@@ -46,6 +60,9 @@
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%}
         "url":"EpisodeOfCare/{{ ID }}",
     },
 },
