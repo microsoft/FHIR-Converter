@@ -66,21 +66,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         private static string ConvertDate(string input, GroupCollection groups)
         {
-            try
+            var dateTime = ParseDate(input, groups);
+            return groups["year"].Success switch
             {
-                var dateTime = ParseDate(input, groups);
-                return groups["year"].Success switch
-                {
-                    true when groups["month"].Success && groups["day"].Success => dateTime.ToString("yyyy-MM-dd"),
-                    true when groups["month"].Success => dateTime.ToString("yyyy-MM"),
-                    true => dateTime.ToString("yyyy"),
-                    _ => throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input))
-                };
-            }
-            catch (Exception)
-            {
-                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
-            }
+                true when groups["month"].Success && groups["day"].Success => dateTime.ToString("yyyy-MM-dd"),
+                true when groups["month"].Success => dateTime.ToString("yyyy-MM"),
+                true => dateTime.ToString("yyyy"),
+                _ => throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input))
+            };
         }
 
         private static string ConvertDateTime(string input, GroupCollection groups, string timeZoneHandling)
