@@ -23,6 +23,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { @"19850101000000", @"1985-01-01" };
         }
 
+        public static IEnumerable<object[]> GetValidDataForAddSeconds()
+        {
+            yield return new object[] { null, 60, "local", null };
+            yield return new object[] { string.Empty, 60, "local", string.Empty };
+
+            yield return new object[] { @"1970-01-01T00:01:00+10:00", -60, "utc", @"1969-12-31T14:00:00Z" };
+
+            yield return new object[] { @"1970-01-01T00:01:00Z",  60, "preserve", @"1970-01-01T00:02:00Z" };
+            yield return new object[] { @"1970-01-01T00:01:00+06:00", 60, "preserve", @"1970-01-01T00:02:00+06:00" };
+            yield return new object[] { @"2001-01", 60, "preserve", @"2001-01-01T00:01:00" };
+
+            // Skip this test in pipeline, as the local time zone is different
+            // yield return new object[] { @"1924-10-10", 60000, "utc", @"1924-10-10T08:40:00Z" };
+            // yield return new object[] { @"1970-01-01T00:01:00+06:00", 60, "local", @"1970-01-01T02:02:00+08:00" };
+            // yield return new object[] { @"1924-10-10", 60000, "local", @"1924-10-10T16:40:00" };
+        }
+
         public static IEnumerable<object[]> GetValidDataForFormatAsDateTime()
         {
             // TimeZoneHandling does not affect dateTime without time
@@ -88,6 +105,35 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { @"20050110045253", null };
             yield return new object[] { @"20110103143428-0800", string.Empty };
             yield return new object[] { @"19701231115959+0600", "abc" };
+        }
+
+        public static IEnumerable<object[]> GetInvalidDataForAddSeconds()
+        {
+            yield return new object[] { @"20badInput" };
+            yield return new object[] { @"20140130080051--0500" };
+            yield return new object[] { @"2014.051-0500" };
+            yield return new object[] { @"20140130080051123+0500" };
+            yield return new object[] { @"20201" };
+            yield return new object[] { @"2020060" };
+            yield return new object[] { @"1970-01-01T00:01:00" };
+            yield return new object[] { @"1970-01-01T00:01" };
+            yield return new object[] { @"2001-01T" };
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidDataForAddSeconds))]
+        public void GivenSeconds_WhenAddOnValidDateTime_CorrectDateTimeShouldBeReturned(string originalDateTime, double seconds, string timeZoneHandling, string expectedDateTime)
+        {
+            var result = Filters.AddSeconds(originalDateTime, seconds, timeZoneHandling);
+            Assert.Equal(expectedDateTime, result);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInvalidDataForAddSeconds))]
+        public void GivenSeconds_WhenAddOnInvalidDateTime_ExceptionShouldBeThrow(string originalDateTime)
+        {
+            var exception = Assert.Throws<RenderException>(() => Filters.AddSeconds(originalDateTime, 0));
+            Assert.Equal(FhirConverterErrorCode.InvalidDateTimeFormat, exception.FhirConverterErrorCode);
         }
 
         [Theory]
