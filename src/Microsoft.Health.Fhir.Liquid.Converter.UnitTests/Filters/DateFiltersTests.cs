@@ -33,6 +33,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { @"1970-01-01T00:01:00Z",  60, "preserve", @"1970-01-01T00:02:00Z" };
             yield return new object[] { @"1970-01-01T00:01:00+06:00", 60, "preserve", @"1970-01-01T00:02:00+06:00" };
             yield return new object[] { @"2001-01", 60, "preserve", @"2001-01-01T00:01:00" };
+            yield return new object[] { @"1970-01-01T00:01:00+14:00", 60, "utc", @"1969-12-31T10:02:00Z" };
 
             // Skip this test in pipeline, as the local time zone is different
             // yield return new object[] { @"1924-10-10", 60000, "utc", @"1924-10-10T08:40:00Z" };
