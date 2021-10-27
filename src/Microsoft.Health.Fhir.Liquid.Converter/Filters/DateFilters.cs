@@ -25,7 +25,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return input;
             }
 
-            var groups = RegexParsing(input, FhirDateTimeRegex);
+            var groups = MatchRegex(input, FhirDateTimeRegex);
             var dateTimeOffset = ParseDateTimeOffset(input, groups);
             dateTimeOffset = dateTimeOffset.AddSeconds(seconds);
             return DateTimeToFhirString(dateTimeOffset, groups["timeZone"].Success, timeZoneHandling);
@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return input;
             }
 
-            var groups = RegexParsing(input, Hl7v2DateTimeRegex);
+            var groups = MatchRegex(input, Hl7v2DateTimeRegex);
             return ConvertDate(input, groups);
         }
 
@@ -49,7 +49,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return input;
             }
 
-            var groups = RegexParsing(input, Hl7v2DateTimeRegex);
+            var groups = MatchRegex(input, Hl7v2DateTimeRegex);
             if (!groups["time"].Success)
             {
                 return ConvertDate(input, groups);
@@ -96,7 +96,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return resultdateTime.ToString(dateTimeFormat);
         }
 
-        private static GroupCollection RegexParsing(string input, Regex regex)
+        private static GroupCollection MatchRegex(string input, Regex regex)
         {
             var matches = regex.Matches(input);
             if (matches.Count != 1)
@@ -141,7 +141,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 }
                 else
                 {
-                    var sign = groups["sign"].Value == "+" ? 1 : -1;
+                    var sign = groups["sign"].Success && groups["sign"].Value == "-" ? -1 : 1;
                     var timeZoneHour = int.Parse(groups["timeZoneHour"].Value) * sign;
                     var timeZoneMinute = int.Parse(groups["timeZoneMinute"].Value) * sign;
                     timeSpan = new TimeSpan(timeZoneHour, timeZoneMinute, 0);
