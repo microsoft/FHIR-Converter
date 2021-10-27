@@ -1,0 +1,20 @@
+{    
+    {% if ED %}
+    {% if OBX.2.Value == "ED" and OBX.5.4.Value == "Base64" or OBX.5.4.Value == "HEX" -%}
+    "url": "http://example.com/v2-to-fhir-converter/ObservationValueAttachment",
+    "valueAttachment": {       
+        {% include 'DataType/EDAttachment1' ED: ED -%}
+    },
+{% elsif OBX.2.Value == "ED" and OBX.5.4.Value == "A" and OBX.5.2.Value != "text" -%}
+    "url": "http://example.com/v2-to-fhir-converter/ObservationValueAttachment",
+    "valueAttachment": {       
+        {% include 'DataType/EDAttachment2' ED: ED -%}
+    },
+{% elsif OBX.2.Value == "RP" -%}
+    "url": "http://example.com/v2-to-fhir-converter/ObservationValueAttachment",
+    "valueAttachment": {       
+        {% include 'DataType/RPAttachment' RP: ED -%}
+    },
+{% endif -%}
+    {% endif %}
+}

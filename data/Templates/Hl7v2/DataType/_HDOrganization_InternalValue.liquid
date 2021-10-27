@@ -1,0 +1,36 @@
+{% if HD -%}
+    "identifier":
+    [
+        {   
+            "value":"{{ HD.1 }}",
+            "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-{{HD.1 | replace: ' ', '-' }}"
+        },
+        {% if HD.2 and HD.3 -%}
+        {
+            {% if HD.3 == "ISO" or HD.3 == "CLIA" or HD.3 == "CLIP" -%}
+                "value":"urn:oid:{{ HD.2 }}",
+            {% elsif HD.3 == "UUID" or HD.3 == "GUID"-%}
+                "value":"urn:uuid:{{ HD.2 }}",
+            {% else %}
+                "value":"{{ HD.2 }}",
+            {% endif -%}
+            
+            {% if HD.3 == "ISO" or HD.3 == "UUID" or HD.3 == "CLIA" or HD.3 == "CLIP" or HD.3 == "GUID" or HD.3 == "URI" -%}
+                "system": "urn:ietf:rfc:3986",
+            {% else -%}
+                "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-{{HD.3 | replace: ' ', '-' }}",
+            {% endif -%}
+
+            "type":{
+                "coding": [
+                    {
+                            "code": "{{ HD.3 | get_property: 'CodeSystem/UniversalIDType', 'code' }}",
+                            "display": "{{ HD.3 | get_property: 'CodeSystem/UniversalIDType', 'display' }}",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0301",
+                    }
+                ]
+            },
+        },
+        {% endif -%}
+    ],
+{% endif -%}    

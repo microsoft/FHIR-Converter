@@ -1,3 +1,14 @@
+{% comment -%}
+    CWECode datatype template is use to display code value.  
+    Before calling CWECode template please ensure that value is present in associated CWE feild.
+{% endcomment -%}
 {% if CWE -%}
-    "code":"{{ CWE.1.Value }}",
+    {% if mapping -%}
+        {% if CWE.1.Value -%}
+            "{{ CWE.1.Value | get_property: mapping, 'code' }}"
+        {% endif -%}
+        {% unless CWE.1.Value -%}
+            "{{ CWE.4.Value | get_property: mapping, 'code' }}"
+        {% endunless %}
+    {% endif -%}  
 {% endif -%}

@@ -1,0 +1,41 @@
+{
+    "url": "http://hl7.org/fhir/StructureDefinition/patient-animal",
+    "extension": [
+        {% if PID.35.Value -%}
+        {
+            "url": "species",
+            "valueCodeableConcept": {
+                "coding":
+                [
+                    {
+                        {% include 'DataType/CWECoding', CWE: PID.35 -%}
+                        {% comment %}
+                        "system":"http://hl7.org/fhir/animal-species",
+                        {% endcomment %}
+                    },
+                ],
+                "text":"{{ PID.35.2.Value }}",
+            },
+        },
+        {% endif -%}
+
+        {% if PID.36.Value -%}
+        {
+            "url": "breed",
+            "valueCodeableConcept": {
+                "coding":
+                [
+                    {
+                        {% include 'DataType/CWECoding', CWE: PID.36 -%}
+                        {% comment %}
+                        "system":"http://hl7.org/fhir/ValueSet/animal-breeds",
+                        {% endcomment %}
+                    },
+                ],
+                "text":"{{ PID.36.2.Value }}",
+            },
+        },
+        {% endif -%}
+                      
+    ]
+}

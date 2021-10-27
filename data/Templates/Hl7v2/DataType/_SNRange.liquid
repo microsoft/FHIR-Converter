@@ -1,10 +1,14 @@
 {% if SN -%}
+{% if SN.2 %}
     "low":
     {
-        "value":"{{ SN.2.Value }}",
+            "value":{{ SN.2.Value }},
     },
+{% endif %}
+{% if SN.4 %}
     "high":
     {
-        "value":"{{ SN.4.Value }}",
+        "value":{{ SN.4.Value }},
     },
+{% endif %}
 {% endif -%}

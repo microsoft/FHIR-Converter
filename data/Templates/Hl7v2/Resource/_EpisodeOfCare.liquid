@@ -3,12 +3,46 @@
     "resource":{
         "resourceType": "EpisodeOfCare",
         "id":"{{ ID }}",
+        {% if PV1.45 == null -%}
+            "status": "{{ PV1.2.Value | get_property: 'CodeSystem/EncounterStatus', 'code' }}",
+        {% endif -%}
+        {% if PV1.45 -%}
+            "status":"finished",
+        {% endif -%}
         "identifier":
         [
             {
-                "value":"{{ PV1.54.Value }}",
+                {% include 'DataType/CX' CX: PV1.54 -%}
             },
         ],
+        "diagnosis":
+        [ 
+            {% if conditionId %}
+            {
+                "condition" : { 
+                    "reference":"Condition/{{ conditionId }}", 
+                },
+                "role" : { 
+                    {% if DG1.6 -%}
+                        {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/DiagnosisType', CWE: DG1.6 -%}
+                    {% endif -%}
+                },
+              
+                {% assign temp = DG1.15.Value | sign %}
+                {% if DG1.15 and temp != -1 %}
+                    {% assign splitResult = DG1.15.Value | split: '.' %}
+                    {% assign splitResultSize = splitResult | size %}
+                    {% if splitResultSize == 1 %}
+                        "rank": {{ DG1.15.Value }},
+                    {% endif %}
+                {% endif %}
+            },
+            {% endif %}        
+        ],
+        "patient" : { 
+            "reference":"{{ patientRefrenceID }}", 
+        },
+        
     },
     "request":{
         "method":"PUT",

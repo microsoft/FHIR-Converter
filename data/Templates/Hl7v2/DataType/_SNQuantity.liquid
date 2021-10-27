@@ -1,3 +1,6 @@
 {% if SN -%}
     "comparator":"{{ SN.1.Value }}",
+    {% if SN.2 %}
+        "value":{{ SN.2.Value }},
+    {% endif %}
 {% endif -%}

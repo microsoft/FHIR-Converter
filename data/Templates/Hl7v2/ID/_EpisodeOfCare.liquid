@@ -1,0 +1,10 @@
+{% capture identifiers -%}
+    {% if PV1.1 and PV1.4 -%}
+        {{PV1.1.Value}},{{PV1.4.Value}}
+    {% elsif PV1 -%}
+        {{PV1.Value}}
+    {% elsif DG1 -%}
+        {{ DG1.Value }}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'EpisodeOfCare', false, | generate_uuid }}

@@ -1,0 +1,26 @@
+{% if CE -%}
+    "coding":
+    [
+        {
+            {% if mapping -%}
+                "code":"{{ CE.1.Value | get_property: mapping, 'code' }}",
+                "display":"{{ CE.1.Value | get_property: mapping, 'display' }}",
+                "system":"{{ CE.1.Value | get_property: mapping, 'system' }}",
+                "version":"{{ CE.1.Value | get_property: mapping, 'version' }}",
+                "version":"{{ CE.7.Value }}",
+            {% else -%}
+                "code":"{{ CE.1.Value }}",
+                "display":"{{ CE.2.Value }}",
+
+                {% if CE.3 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CE.3.Value}}",
+                {% endif %}
+                {% capture temp %}{{ CE.3.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+                {% if temp%}
+                    "system":"{{temp}}",              
+                {% endif %}
+                "version":"{{ CE.7.Value }}",
+            {% endif -%}
+        },
+    ],
+{% endif -%}

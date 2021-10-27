@@ -34,6 +34,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         private static readonly FhirJsonParser _fhirParser = new FhirJsonParser();
 
         private static readonly int _maxRevealDepth = 1 << 7;
+        private static readonly bool _skipValidator = true;
 
         private readonly ITestOutputHelper _output;
 
@@ -46,6 +47,33 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         {
             var cases = new List<object[]>
             {
+                new object[] { "ADT_A01", "ADT_A01.hl7" },
+                new object[] { "ADT_A01", "ADT_A01-2.hl7" },
+                new object[] { "ADT_A02", "ADT_A02.hl7" },
+                new object[] { "ADT_A02", "ADT_A02-2.hl7" },
+                new object[] { "ADT_A03", "ADT_A03.hl7" },
+                new object[] { "ADT_A03", "ADT_A03-2.hl7" },
+                new object[] { "ADT_A04", "ADT_A04.hl7" },
+                new object[] { "ADT_A04", "ADT_A04-2.hl7" },
+                new object[] { "ADT_A05", "ADT_A05.hl7" },
+                new object[] { "ADT_A05", "ADT_A05-2.hl7" },
+                new object[] { "ADT_A08", "ADT_A08.hl7" },
+                new object[] { "ADT_A08", "ADT_A08-2.hl7" },  
+                new object[] { "ADT_A14", "ADT_A14.hl7" },
+                new object[] { "ADT_A14", "ADT_A14-2.hl7" },
+                new object[] { "ADT_A15", "ADT_A15.hl7" },
+                new object[] { "ADT_A15", "ADT_A15-2.hl7" },
+                new object[] { "ADT_A16", "ADT_A16.hl7" },
+                new object[] { "ADT_A16", "ADT_A16-2.hl7" },
+                new object[] { "ADT_A28", "ADT_A28.hl7" },
+                new object[] { "ADT_A28", "ADT_A28-2.hl7" },
+                new object[] { "ADT_A31", "ADT_A31.hl7" },
+                new object[] { "ADT_A31", "ADT_A31-2.hl7" },
+                new object[] { "ADT_A47", "ADT_A47.hl7" },
+                new object[] { "ADT_A47", "ADT_A47-2.hl7" },
+                new object[] { "ADT_A60", "ADT_A60.hl7" },
+                new object[] { "ADT_A60", "ADT_A60-2.hl7" },
+
                 new object[] { "ADT_A01", "ADT01-23.hl7" },
                 new object[] { "ADT_A01", "ADT01-28.hl7" },
                 new object[] { "VXU_V04", "VXU.hl7" },
@@ -190,11 +218,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetHL7V2Cases))]
-
-        // comment out the fhir validator for ccda since it takes too much time
-        // [MemberData(nameof(GetCcdaCases))]
+        [MemberData(nameof(GetCcdaCases))]
         public async Task CheckPassOfficialValidator(string templateName, string samplePath, DataType dataType)
         {
+            if (_skipValidator)
+            {
+                return;
+            }
+
             (bool javaStatus, string javaMessage) = await ExecuteCommand("-version");
             Assert.True(javaStatus, javaMessage);
 
@@ -382,12 +413,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             private static readonly HashSet<string> _explicitProps = new HashSet<string>
             {
                 "resourceType", "type", "fullUrl", "id", "method", "url", "reference", "system",
-                "code", "display", "gender", "use", "preferred", "status", "mode", "div",
+                "code", "display", "gender", "use", "preferred", "status", "mode", "div", "valueString", "valueCode",
+                "text", "endpoint", "value", "category", "type", "criticality", "priority", "severity", "description",
             };
 
             private static readonly HashSet<string> _explicitValues = new HashSet<string>
             {
                 "order",
+                "unknown",
+                "source",
             };
 
             public static readonly List<Func<string, bool>> NonCompareProperties = new List<Func<string, bool>>

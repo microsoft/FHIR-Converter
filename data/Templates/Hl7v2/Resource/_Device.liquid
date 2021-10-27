@@ -13,11 +13,19 @@ Device_Parent_ID: A resource Id used to fill "parent.reference" property.
     "resource":{
         "resourceType": "Device",
         "id":"{{ ID }}",
+
+        {% if MSH.3 -%}  
+            {% include 'DataType/HDDevice' HD: MSH.3 -%}
+        {% endif -%}
+        
         "identifier":
         [
+        {% for ei_obx18 in EI_OBX18.Repeats -%}
             {
-                {% include 'DataType/EIIdentifier' EI: OBX.18.Repeats[0] -%}
+                {% include 'DataType/EIIdentifier' EI: ei_obx18 -%}
             },
+        {% endfor -%}
+
             {
                 {% include 'DataType/EIIdentifier' EI: PRT.10 -%}
             },
@@ -31,14 +39,43 @@ Device_Parent_ID: A resource Id used to fill "parent.reference" property.
             {
             },
         ],
+        
+            {% unless SFT.1.10 -%}
+            {% if SFT.1.1 -%}
+            "manufacturer": "{{SFT.1.1.Value}}",
+            {% endif -%}
+            {% endunless -%}
+        "deviceName":
+        [
+            {% if SFT -%}
+            {
+                "name":"{{SFT.3.Value}}",
+                "type": "manufacturer-name",
+            }
+            {% endif -%} 
+        ],
+        "version":
+            [
+                {
+                "value":"{{SFT.2.Value}}",
+                }
+            ],
+        "modelNumber": "{{SFT.4.Value}}",
+        "note": [
+        {
+            "text": "{{SFT.5.Value}}",
+        }
+        ],
         "manufactureDate":"{{ PRT.17.Value | format_as_date_time }}",
         "expirationDate":"{{ PRT.18.Value | format_as_date_time }}",
         "lotNumber":"{{ PRT.19.Value }}",
         "serialNumber":"{{ PRT.20.Value }}",
-        {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+        
+         {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
         "type":
-        {
-        },
+            {
+            },
+        
         "definition":
         {
             "reference":"{{ Device_Definition_ID }}",

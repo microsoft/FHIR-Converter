@@ -1,0 +1,25 @@
+{
+    "resource":{
+        "resourceType": "AllergyIntolerance",
+        "id":"{{ ID }}",
+        {% comment -%}
+        "modifierExtension":
+        [
+            {% if IAM.6 -%}
+                {% include 'Extensions/AllergyIntoleranceActionCode' IAM: IAM -%},
+            {% endif -%}
+        ],
+        {% endcomment -%}
+        {% if IAM.9 -%}
+            {% if IAM.9.1 and IAM.9.1.Value != "AL" and IAM.9.1.Value != "IN" -%}
+            "type": "allergy",
+            "_type": {
+                "extension": 
+                    [
+                        {% include 'Extensions/AllergyIntoleranceTypeCode' IAM: IAM -%},
+                    ],
+            },
+            {% endif -%}
+        {% endif -%}
+    },
+},

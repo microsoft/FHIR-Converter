@@ -7,6 +7,10 @@
     {% endif -%}
     "unit":"{{ CWE.2.Value }}",
     {% if CWE.1 and CWE.3 -%}
-        "system":"{{ CWE.3.Value }}",
-    {% endif -%}
+        "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.3.Value}}",
+    {% endif %}
+    {% capture temp %}{{ CWE.3.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+    {% if temp %}
+        "system":"{{temp}}",              
+    {% endif %}
 {% endif -%}

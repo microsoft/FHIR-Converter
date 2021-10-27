@@ -1,0 +1,16 @@
+{
+    "resource":
+    {
+        "resourceType": "Condition",
+        "id":"{{ ID }}",
+        "extension":
+        [
+            {% if DG1.19 -%}
+                {% include 'Extensions/Condition-assertedDate' DG1: DG1 -%},
+            {% endif %}
+            {% if DG1.22 and ID_DG1_22 %}
+                  {% include 'Extensions/Condition-dueTo' DG1: DG1, ID: ID_DG1_22 -%},
+            {% endif %}  
+        ],
+    },
+},

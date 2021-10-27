@@ -1,12 +1,27 @@
 {% if XTN -%}
-    "value":"{{ XTN.1.Value }}",
-    {% if XTN.1 -%}
+    {% if XTN.7 == null and XTN.12 == null -%}
+        {% unless XTN.3 == "Internet" or XTN.3 == "X.400" -%}
+        "value":"{{ XTN.1.Value }}",
+        {% endunless -%}
+    {% endif -%}
+    {% if XTN.3.Value == "X.400" or XTN.3.Value == "Internet" -%}
+        "value":"{{ XTN.4.Value }}",
+    {% endif -%}
+    {% if XTN.3.Value != "X.400" and  XTN.3.Value != "Internet" -%}
+        "value":"{{ XTN.12.Value }}",
+    {% endif -%}
+    {% if XTN.2 -%}
         "use":"{{ XTN.2.Value | get_property: 'CodeSystem/TelecomUseCode', 'code' }}",
+    {% endif -%}
+    {% if XTN.3 -%}
+        "system" : "{{ XTN.3.Value | get_property: 'CodeSystem/TelecomEquipmentType', 'code' }}",
     {% endif -%}
     "period":
     {
         "start":"{{ XTN.13.Value | format_as_date_time }}",
         "end":"{{ XTN.14.Value | format_as_date_time }}"
     },
-    "rank":"{{ XTN.18.Value }}",
+    {% if XTN.18 -%}
+    "rank":{{ XTN.18.Value }},
+    {% endif -%}
 {% endif -%}

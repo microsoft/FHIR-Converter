@@ -1,0 +1,10 @@
+{% comment -%}
+{% assign datebirthsize = PID.7.Value.size -%}
+{% assign datebirth = PID.7.Value | slice: 0, 8 | add_hyphens_date -%}
+{% assign timezone =  PID.7.Value | slice: 8, {{datebirthsize}} -%}
+{% assign datetimevalue = datebirth | append: timezone -%}
+{% endcomment -%}
+{
+    "url": "http://hl7.org/fhir/StructureDefinition/patient-birthTime",
+    "valueDateTime": "{{ PID.7.Value | format_as_date_time }}"
+}

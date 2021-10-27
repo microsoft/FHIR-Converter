@@ -1,0 +1,6 @@
+{% if DG1 %}
+    {
+        "url": "http://hl7.org/fhir/StructureDefinition/condition-assertedDate",
+        "valueDateTime" : "{{ DG1.19.Value | format_as_date_time }}",
+    }
+{% endif %}

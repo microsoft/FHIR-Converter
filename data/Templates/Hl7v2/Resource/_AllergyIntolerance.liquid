@@ -7,36 +7,193 @@ AllergyIntolerance_Recorder_ID: A resource Id, used to fill "recorder.reference"
 AllergyIntolerance_Asserter_ID: A resource Id, used to fill "asserter.reference" property.
 {% endcomment -%}
 
+{% evaluate Practitioner_ID_NTE_5 using 'ID/Practitioner' XCN: NTE.5 -%}
+
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
         "resourceType": "AllergyIntolerance",
         "id":"{{ ID }}",
+        "identifier":
+        [
+            {
+                {% include 'DataType/EIIdentifier' EI: IAM.7 -%}
+            },
+        ],
         {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+
         "category":
         [
+                {% if AL1.2 -%}
+                    {% include 'DataType/CWECode' mapping: 'CodeSystem/AllergyCategory', CWE: AL1.2 -%},
+                {% endif -%}
+                {% if IAM.2 -%}
+                    {% include 'DataType/CWECode' mapping: 'CodeSystem/AllergyCategory', CWE: IAM.2 -%},
+                {% endif -%}
         ],
-        "type":"{{ AL1.2.Value | get_property: 'CodeSystem/AllergyType', 'code' }}",
+
+        {% if AL1.2 -%}
+        "type": {% include 'DataType/CWECode' mapping: 'CodeSystem/AllergyType', CWE: AL1.2 -%},
+        {% endif -%}
+
+        {% unless IAM.9 -%}
+            {% if IAM.2 -%}
+                "type": {% include 'DataType/CWECode' mapping: 'CodeSystem/AllergyType', CWE: IAM.2 -%},
+            {% endif -%}
+        {% endunless -%}
+
+        {% if IAM.9.1.Value == "AL" or IAM.9.1.Value == "IN" -%}
+            "type": {% include 'DataType/CWECode' mapping: 'CodeSystem/AllergySensitivity', CWE: IAM.9 -%},
+        {% endif -%}
+
         "code":
         {
-            {% include 'DataType/CWECodeableConcept' CWE: AL1.3 -%}
+                {% if AL1 -%}
+                    {% include 'DataType/CWECodeableConcept' CWE: AL1.3 -%},
+                {% endif -%}
+                {% if IAM -%}
+                    "coding": [
+                                    {% include 'DataType/CWECodeableConceptRepeatable' CWE: IAM.3 -%},
+                                    {% include 'DataType/CWECodeableConceptRepeatable' CWE: IAM.27 -%},
+                        ],
+                {% endif -%}            
         },
+
+        "note": [
+           {
+            {% if NTE -%}
+            "text": "{{NTE.3.Value}}",
+            "time": "{{ NTE.6.Value | format_as_date_time }}",
+            {% if NTE.5 and Practitioner_ID_NTE_5 %}
+                "authorReference":
+                {
+                    "reference":"Practitioner/{{ Practitioner_ID_NTE_5 }}",
+                }
+            {% endif %}
+            {% endif -%}
+          }
+        ],
+
         "reaction":
         [
             {
+                {% comment -%}
                 {% if AL1.4.1.Value != "U" -%}
                     "severity":"{{ AL1.4.1.Value | get_property: 'CodeSystem/AllergyIntoleranceSeverity', 'code' }}",
                 {% endif -%}
+                {% endcomment -%}
+                {% if IAR.2 -%}
+                    "severity": {% include 'DataType/CWECode' mapping: 'CodeSystem/AllergyIntoleranceSeverity', CWE: IAR.2 -%},
+                {% endif -%}
+                {% unless IAR.2 -%}
+                    {% if IAM.4 -%}
+                        "severity": {% include 'DataType/CWECode' mapping: 'CodeSystem/AllergyIntoleranceSeverity', CWE: IAM.4 -%},
+                    {% endif -%}
+                {% endunless -%}
+                {% if IAR.3.2 -%}
+                    {% if IAR.4 %}
+                        {% capture description %}{{IAR.3.2.Value | append: "+" | append: IAR.4.Value}}{% endcapture -%}
+                        "description" : "{{description}}",
+                    {% else %}
+                        {% capture description %}{{IAR.3.2.Value}}{% endcapture -%}
+                        "description" : "{{description}}",
+                    {% endif -%}
+                {% else -%}
+                    {% if IAR.4 %}
+                        {% capture description %}{{IAR.3.1.Value | append: "+" | append: IAR.4.Value}}{% endcapture -%}
+                        "description" : "{{description}}",
+                    {% else %}
+                        {% capture description %}{{IAR.3.1.Value}}{% endcapture -%}
+                        "description" : "{{description}}",
+                    {% endif -%}
+                {% endif -%}
+                {% if IAR.3 == null -%}
+                    {% capture description %}{{ IAR.4.Value }}{% endcapture -%}
+                    "description" : "{{description}}",
+                {% endif -%}
                 "manifestation":
                 [
+                    {% if IAR.1.1 -%}
                     {
-                        "text":"{{ AL1.5.Value }}",
+                        {% include 'DataType/CWECodeableConcept' CWE: IAR.1 -%}
                     },
+                    {% endif -%}
+                    {% unless IAR.1.1 -%}
+                        {
+                            "text":"{{ IAR.1.2.Value }}",
+                        },
+                    {% endunless -%}
+                    {% if AL1.5 -%}
+                        {
+                            "text":"{{ AL1.5.Value }}",
+                        },
+                    {% endif -%}
+                    {% unless IAR.1 -%}
+                        {% if IAM.5 -%}
+                            {
+                                "text":"{{ IAM.5.Value }}",
+                            },
+                        {% endif -%}
+                    {% endunless -%}
                 ],
+                "onset" : "{{ AL1.6.Value | format_as_date_time }}",
             },
         ],
-        "criticality":"{{ AL1.4.1.Value | get_property: 'CodeSystem/AllergyIntoleranceCriticality', 'code' }}",
-        "onsetDateTime":"{{ AL1.6.Value | format_as_date_time }}",
+
+        {% if AL1.4 -%}
+            "criticality": {% include 'DataType/CWECode' mapping: 'CodeSystem/AllergyIntoleranceCriticality', CWE: AL1.4 -%},
+        {% endif -%}
+        {% comment -%} "onsetDateTime":"{{ AL1.6.Value | format_as_date_time }}", {% endcomment -%}
+
+        "onsetDateTime":"{{ IAM.11.Value | format_as_date_time }}",
+        {% unless IAM.11 -%}
+            "onsetString":"{{ IAM.12.Value }}",
+        {% endunless -%}
+
+        {% if IAM.24 -%}
+            "recordedDate": "{{ IAM.24.Value | format_as_date_time }}",
+        {% else -%}
+            "recordedDate": "{{ IAM.13.Value | format_as_date_time }}",
+        {% endif -%}
+
+        "verificationStatus" : {
+            {% if IAM.6.1.Value == "D" -%}            
+                "coding": [
+                        {
+                            "code": "entered-in-error",
+                            "display": "Entered in Error",
+                            "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-verification"
+                        }
+                    ],
+            {% else -%}
+                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/AllergyVerificationStatus', CWE: IAM.17 -%},
+            {% endif -%}    
+        },
+
+        {% if IAM.17.1.Value != "E" and IAM.6.1.Value != "D" -%}
+        "clinicalStatus" : {
+            {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/AllergyClinicalStatus', CWE: IAM.17 -%},
+        },
+        {% endif-%}
+
+        {% if AL1 -%}
+        "clinicalStatus" :
+        {
+            "coding": 
+            [
+                {
+                    "code": "active",
+                    "display": "Active",
+                    "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+                },
+            ],
+        },
+        {% endif -%}
+
+        "meta": {
+            "lastUpdated" : "{{ IAM.26.value | format_as_date_time }}",
+        },
+
         "patient":
         {
             "reference":"{{ AllergyIntolerance_Patient_ID }}",
@@ -47,11 +204,26 @@ AllergyIntolerance_Asserter_ID: A resource Id, used to fill "asserter.reference"
         },
         "recorder":
         {
-            "reference":"{{ AllergyIntolerance_Recorder_ID }}",
+            {% if IAM.23 -%}
+                {% evaluate Practitioner_ID_IAM_23 using 'ID/Practitioner' XCN: IAM.23 -%}
+                "reference":"Practitioner/{{ Practitioner_ID_IAM_23 }}",
+            {% endif -%}
         },
         "asserter":
         {
-            "reference":"{{ AllergyIntolerance_Asserter_ID }}",
+            {% if IAM -%}
+                {% if IAM.15.1.Value == "SEL" -%}
+                    "reference":"{{ AllergyIntolerance_Patient_ID }}",
+                {% endif -%}
+                {% if IAM.15.1.Value == "CGV" -%}
+                    {% evaluate Practitioner_ID_IAM_14 using 'ID/Practitioner' XPN: IAM.14 -%}
+                    "reference":"Practitioner/{{ Practitioner_ID_IAM_14 }}",
+                {% endif -%}
+                {% if IAM.15 == null or IAM.15.1.Value != "CGV" and IAM.15.1.Value != "SEL" -%}
+                    {% evaluate RelatedPerson_ID_IAM_14 using 'ID/RelatedPerson' IAM: IAM.14, baseId: PatientBase -%}
+                    "reference":"RelatedPerson/{{ RelatedPerson_ID_IAM_14 }}",
+                {% endif -%}
+            {% endif -%}
         },
     },
     "request":{

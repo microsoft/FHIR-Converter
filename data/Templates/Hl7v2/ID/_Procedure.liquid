@@ -1,1 +1,8 @@
-{{ PR1.Value | generate_id_input: 'Procedure', true, baseId | generate_uuid }}
+{% capture identifiers -%}
+    {% if PR1.19 -%}
+        {{ PR1.19.Value }}
+    {% elsif PR1 %}
+        {{PR1.Value}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'Procedure', true, baseId | generate_uuid }}

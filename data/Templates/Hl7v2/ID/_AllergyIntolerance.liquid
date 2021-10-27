@@ -1,4 +1,14 @@
 {% capture identifiers -%}
-    {{AL1.2.Value}},{{AL1.3.Value}},{{AL1.4.Value}},{{AL1.5.Value}}
+    {% if AL1.2 and AL1.3 and AL1.4 and AL1.5 -%}
+        {{AL1.2.Value}},{{AL1.3.Value}},{{AL1.4.Value}},{{AL1.5.Value}}
+    {% elsif AL1 -%}
+        {{AL1.Value}}
+    {% elsif NTE -%}
+        {{NTE.Value}}
+    {% elsif IAM.1 and IAM.3 and IAM.6 -%}
+        {{IAM.1.Value}},{{IAM.3.Value}},{{IAM.6.Value}}
+    {% elsif IAM -%}
+        {{IAM.Value}}
+    {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'AllergyIntolerance', true, baseId | generate_uuid }}
