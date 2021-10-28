@@ -21,6 +21,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     /// </summary>
     public partial class Filters
     {
+        public static double ToDouble(string data)
+        {
+            return double.Parse(data);
+        }
+
         public static char CharAt(string data, int index)
         {
             return data[index];
