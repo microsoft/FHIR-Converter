@@ -25,10 +25,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return input;
             }
 
-            var groups = MatchRegex(input, FhirDateTimeRegex);
-            var dateTimeOffset = ParseDateTimeOffset(input, groups);
-            dateTimeOffset = dateTimeOffset.AddSeconds(seconds);
-            return DateTimeToFhirString(dateTimeOffset, groups["timeZone"].Success, timeZoneHandling);
+            var dateTimeObject = ParseDateTimeObject(input, FhirDateTimeRegex);
+            var result = new DateTimeObject()
+            {
+                DateValue = dateTimeObject.DateValue.AddSeconds(seconds),
+                HasTimeZone = dateTimeObject.HasTimeZone,
+            };
+            return DateTimeObjectToFhirString(input, result, timeZoneHandling);
         }
 
         public static string AddHyphensDate(string input)
@@ -38,8 +41,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return input;
             }
 
-            var groups = MatchRegex(input, Hl7v2DateTimeRegex);
-            return ConvertDate(input, groups);
+            var dateTimeObject = ParseDateTimeObject(input, Hl7v2DateTimeRegex);
+            dateTimeObject.HasTime = false;
+            return DateTimeObjectToFhirString(input, dateTimeObject, null);
         }
 
         public static string FormatAsDateTime(string input, string timeZoneHandling = "local")
@@ -49,14 +53,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return input;
             }
 
-            var groups = MatchRegex(input, Hl7v2DateTimeRegex);
-            if (!groups["time"].Success)
-            {
-                return ConvertDate(input, groups);
-            }
-
-            // Convert DateTime with time zone
-            return ConvertDateTime(input, groups, timeZoneHandling);
+            var dateTimeObject = ParseDateTimeObject(input, Hl7v2DateTimeRegex);
+            return DateTimeObjectToFhirString(input, dateTimeObject, timeZoneHandling);
         }
 
         public static string Now(string input, string format = "yyyy-MM-ddTHH:mm:ss.FFFZ")
@@ -64,39 +62,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return DateTime.UtcNow.ToString(format);
         }
 
-        private static string ConvertDate(string input, GroupCollection groups)
-        {
-            var dateTime = ParseDate(input, groups);
-            return groups["year"].Success switch
-            {
-                true when groups["month"].Success && groups["day"].Success => dateTime.ToString("yyyy-MM-dd"),
-                true when groups["month"].Success => dateTime.ToString("yyyy-MM"),
-                true => dateTime.ToString("yyyy"),
-                _ => throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input))
-            };
-        }
-
-        private static string ConvertDateTime(string input, GroupCollection groups, string timeZoneHandling)
-        {
-            var dateTimeOffset = ParseDateTimeOffset(input, groups);
-            return DateTimeToFhirString(dateTimeOffset, groups["timeZone"].Success, timeZoneHandling);
-        }
-
-        private static string DateTimeToFhirString(DateTimeOffset dateTimeOffset, bool hasTimezone, string timeZoneHandling)
-        {
-            var resultdateTime = timeZoneHandling?.ToLower() switch
-            {
-                "preserve" => dateTimeOffset,
-                "utc" => dateTimeOffset.ToUniversalTime(),
-                "local" => dateTimeOffset.ToLocalTime(),
-                _ => throw new RenderException(FhirConverterErrorCode.InvalidTimeZoneHandling, Resources.InvalidTimeZoneHandling),
-            };
-            var timeZoneSuffix = hasTimezone || string.Equals(timeZoneHandling.ToLower(), "utc") ? (resultdateTime.Offset == TimeSpan.Zero ? "Z" : "%K") : string.Empty;
-            var dateTimeFormat = dateTimeOffset.Millisecond == 0 ? "yyyy-MM-ddTHH:mm:ss" + timeZoneSuffix : "yyyy-MM-ddTHH:mm:ss.fff" + timeZoneSuffix;
-            return resultdateTime.ToString(dateTimeFormat);
-        }
-
-        private static GroupCollection MatchRegex(string input, Regex regex)
+        private static DateTimeObject ParseDateTimeObject(string input, Regex regex)
         {
             var matches = regex.Matches(input);
             if (matches.Count != 1)
@@ -104,26 +70,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
             }
 
-            return matches[0].Groups;
-        }
+            var groups = matches[0].Groups;
 
-        private static DateTime ParseDate(string input, GroupCollection groups)
-        {
-            var year = groups["year"].Success ? int.Parse(groups["year"].Value) : 1;
-            var month = groups["month"].Success ? int.Parse(groups["month"].Value) : 1;
-            var day = groups["day"].Success ? int.Parse(groups["day"].Value) : 1;
-            try
-            {
-                return new DateTime(year, month, day);
-            }
-            catch (Exception)
-            {
-                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
-            }
-        }
-
-        private static DateTimeOffset ParseDateTimeOffset(string input, GroupCollection groups)
-        {
             int year = groups["year"].Success ? int.Parse(groups["year"].Value) : 1;
             int month = groups["month"].Success ? int.Parse(groups["month"].Value) : 1;
             int day = groups["day"].Success ? int.Parse(groups["day"].Value) : 1;
@@ -150,12 +98,56 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
             try
             {
-                return new DateTimeOffset(year, month, day, hour, minute, second, millisecond, timeSpan);
+                return new DateTimeObject()
+                {
+                    DateValue = new DateTimeOffset(year, month, day, hour, minute, second, millisecond, timeSpan),
+                    HasDay = groups["day"].Success,
+                    HasMonth = groups["month"].Success,
+                    HasYear = groups["year"].Success,
+                    HasTime = groups["time"].Success,
+                    HasHour = groups["hour"].Success,
+                    HasMinute = groups["minute"].Success,
+                    HasSecond = groups["second"].Success,
+                    HasMilliSecond = groups["millisecond"].Success,
+                    HasTimeZone = groups["timeZone"].Success,
+                };
             }
             catch (Exception)
             {
                 throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
             }
+        }
+
+        private static string DateTimeObjectToFhirString(string input, DateTimeObject dateTimeObject, string timeZoneHandling)
+        {
+            if (!dateTimeObject.HasTime)
+            {
+                return dateTimeObject.HasYear switch
+                {
+                    true when dateTimeObject.HasMonth && dateTimeObject.HasDay => dateTimeObject.DateValue.ToString("yyyy-MM-dd"),
+                    true when dateTimeObject.HasMonth => dateTimeObject.DateValue.ToString("yyyy-MM"),
+                    true => dateTimeObject.DateValue.ToString("yyyy"),
+                    _ => throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input))
+                };
+            }
+
+            var resultdateTime = timeZoneHandling?.ToLower() switch
+            {
+                "preserve" => dateTimeObject.DateValue,
+                "utc" => dateTimeObject.DateValue.ToUniversalTime(),
+                "local" => dateTimeObject.DateValue.ToLocalTime(),
+                _ => throw new RenderException(FhirConverterErrorCode.InvalidTimeZoneHandling, Resources.InvalidTimeZoneHandling),
+            };
+
+            var timeZoneSuffix = string.Empty;
+            if (dateTimeObject.HasTimeZone || string.Equals(timeZoneHandling.ToLower(), "utc"))
+            {
+                // Using "Z" to represent zero timezone.
+                timeZoneSuffix = resultdateTime.Offset == TimeSpan.Zero ? "Z" : "%K";
+            }
+
+            var dateTimeFormat = dateTimeObject.DateValue.Millisecond == 0 ? "yyyy-MM-ddTHH:mm:ss" + timeZoneSuffix : "yyyy-MM-ddTHH:mm:ss.fff" + timeZoneSuffix;
+            return resultdateTime.ToString(dateTimeFormat);
         }
     }
 }

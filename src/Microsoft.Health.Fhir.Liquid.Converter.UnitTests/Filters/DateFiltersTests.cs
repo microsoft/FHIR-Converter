@@ -41,6 +41,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             // yield return new object[] { @"1924-10-10", 60000, "local", @"1924-10-10T16:40:00" };
         }
 
+        public static IEnumerable<object[]> GetValidDataForAddSecondsRelatedWithLocalTimeZone()
+        {
+            yield return new object[] { @"1924-10-10", 60000, "utc", @"1924-10-10T08:40:00Z" };
+            yield return new object[] { @"1970-01-01T00:01:00+06:00", 60, "local", @"1970-01-01T02:02:00+08:00" };
+            yield return new object[] { @"1924-10-10", 60000, "local", @"1924-10-10T16:40:00" };
+        }
+
         public static IEnumerable<object[]> GetValidDataForFormatAsDateTime()
         {
             // TimeZoneHandling does not affect dateTime without time
@@ -71,6 +78,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             // yield return new object[] { @"20050110045253", "utc", @"2005-01-09T20:52:53Z" };
             // yield return new object[] { @"20110103143428-0800", "local", @"2011-01-04T06:34:28+08:00" };
             // yield return new object[] { @"19701231115959+0600", "local", @"1970-12-31T13:59:59+08:00" };
+        }
+
+        public static IEnumerable<object[]> GetValidDataForFormatAsDateTimeWithLocalTimeZone()
+        {
+            yield return new object[] { @"20050110045253", "utc", @"2005-01-09T20:52:53Z" };
+            yield return new object[] { @"20110103143428-0800", "local", @"2011-01-04T06:34:28+08:00" };
+            yield return new object[] { @"19701231115959+0600", "local", @"1970-12-31T13:59:59+08:00" };
         }
 
         public static IEnumerable<object[]> GetInvalidDataForAddHyphensDate()
@@ -123,10 +137,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         [Theory]
         [MemberData(nameof(GetValidDataForAddSeconds))]
-        public void GivenSeconds_WhenAddOnValidDateTime_CorrectDateTimeShouldBeReturned(string originalDateTime, double seconds, string timeZoneHandling, string expectedDateTime)
+        public void GivenSeconds_WhenAddOnValidDateTime_CorrectDateTimeStringShouldBeReturned(string originalDateTime, double seconds, string timeZoneHandling, string expectedDateTime)
         {
             var result = Filters.AddSeconds(originalDateTime, seconds, timeZoneHandling);
             Assert.Equal(expectedDateTime, result);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidDataForAddSecondsRelatedWithLocalTimeZone))]
+        public void GivenSeconds_WhenAddOnValidDateTime_CorrectDateTimeShouldBeReturned(string originalDateTime, double seconds, string timeZoneHandling, string expectedDateTimeString)
+        {
+            var result = Filters.AddSeconds(originalDateTime, seconds, timeZoneHandling);
+            var dateTime = DateTime.Parse(result);
+            var expectedDateTime = DateTime.Parse(expectedDateTimeString);
+            Assert.Equal(expectedDateTime, dateTime);
         }
 
         [Theory]
@@ -147,10 +171,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         [Theory]
         [MemberData(nameof(GetValidDataForFormatAsDateTime))]
-        public void GivenADateTime_WhenFormatAsDateTime_ConvertedDateShouldBeReturned(string input, string timeZoneHandling, string expected)
+        public void GivenADateTime_WhenFormatAsDateTime_ConvertedDateTimeStringShouldBeReturned(string input, string timeZoneHandling, string expected)
         {
             var result = Filters.FormatAsDateTime(input, timeZoneHandling);
             Assert.Equal(expected, result);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidDataForFormatAsDateTimeWithLocalTimeZone))]
+        public void GivenADateTime_WhenFormatAsDateTime_ConvertedDateTimeShouldBeReturned(string input, string timeZoneHandling, string expectedDateTimeString)
+        {
+            var result = Filters.FormatAsDateTime(input, timeZoneHandling);
+            var dateTime = DateTime.Parse(result);
+            var expectedDateTime = DateTime.Parse(expectedDateTimeString);
+            Assert.Equal(expectedDateTime, dateTime);
         }
 
         [Theory]
