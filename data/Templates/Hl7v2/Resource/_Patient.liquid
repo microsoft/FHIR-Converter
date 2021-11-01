@@ -402,6 +402,7 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                     {% if NK1_PER.7.1.Value == "E" -%}
                         {% include 'DataType/XPN' XPN: GT1.16.Repeats[0] -%}
                     {% endif -%}
+                    {% include 'DataType/XPN' XPN: CTD.2.Repeats[0] -%}
                 },
                 "address":
                 {
@@ -409,6 +410,7 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                     {% if NK1_PER.7.1.Value == "E" -%}
                         {% include 'DataType/XAD' XAD: GT1.17.Repeats[0] -%}
                     {% endif -%}
+                    {% include 'DataType/XAD' XAD: CTD.3.Repeats[0] -%}
                 },
                 "telecom":
                 [
@@ -434,12 +436,22 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                     {
                         {% include 'DataType/XTN' XTN: NK1.41 -%}
                     },
+                    {% for ctd5 in CTD.5.Repeats -%}
+                        {
+                            {% include 'DataType/XTN' XTN: ctd5 -%}
+                        },
+                    {% endfor -%}
                 ],
                 "relationship":
                 [
                     {
                         {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/ContactRole', CWE: NK1.7 -%}
                     },
+                    {% for ctd1 in CTD.1.Repeats -%}
+                    {
+                        {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/ContactRole', CWE: ctd1 -%}
+                    },
+                    {% endfor -%}
                 ],
                 "period":
                 {
@@ -506,6 +518,9 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Patient/{{ ID }}",
     },
 },

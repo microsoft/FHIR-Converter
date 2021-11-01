@@ -25,6 +25,9 @@
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Location/{{ ID }}",
     },
 },

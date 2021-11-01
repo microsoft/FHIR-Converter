@@ -12,8 +12,6 @@ Procedure_Asserter_ID: A resource Id, used to fill "asserter.reference" property
 {% evaluate Practitioner_ID_PR1_11 using 'ID/Practitioner' XCN: PR1.11 -%}
 {% evaluate Practitioner_ID_PR1_12 using 'ID/Practitioner' XCN: PR1.12 -%}
 {% evaluate Procedure_ID_PR1_25 using 'ID/Procedure' PR1: PR1.25, baseId: Procedure_Subject_ID -%}
-{% evaluate Location_ID_PR1_23_1 using 'ID/Location' PL: PR1.23.1 -%}
-{% evaluate Location_ID_PR1_23_2 using 'ID/Location' PL: PR1.23.2 -%}
 
 {
     "fullUrl":"urn:uuid:{{ ID }}",
@@ -124,15 +122,28 @@ Procedure_Asserter_ID: A resource Id, used to fill "asserter.reference" property
             },
         ],
         "location":
-        {
-            {% if PR1.23.1 -%}
-                "reference":"Location/{{ Location_ID_PR1_23_1 }}",
-            {% else %}
-                {% if PR1.23.2 %}
-                    "reference":"Location/{{ Location_ID_PR1_23_2 }}",
+            {   
+                {% if PR1.23 -%}
+                    {% if PR1.23.1 -%}
+                        {% evaluate Location_ID_PR1_23 using 'ID/Location' PL: PR1.23.1 -%}
+                    {% elseif PR1.23.2 -%}
+                        {% evaluate Location_ID_PR1_23 using 'ID/Location' PL: PR1.23.2 -%}
+                    {% elseif PR1.23.3 -%}
+                        {% evaluate Location_ID_PR1_23 using 'ID/Location' PL: PR1.23.3 -%}
+                    {% elseif PR1.23.4 -%}
+                        {% evaluate Location_ID_PR1_23 using 'ID/Location' PL: PR1.23.4 -%}
+                    {% elseif PR1.23.7 -%}
+                        {% evaluate Location_ID_PR1_23 using 'ID/Location' PL: PR1.23.7 -%}
+                    {% elseif PR1.23.8 -%}
+                        {% evaluate Location_ID_PR1_23 using 'ID/Location' PL: PR1.23.8 -%}
+                    {% endif %}
+
+                    {% if PR1.23 and Location_ID_PR1_23 -%}
+                            "reference":"Location/{{ Location_ID_PR1_23 }}",
+                    {% endif -%}
                 {% endif %}
-            {% endif %}
-        },
+            },
+            
         "partOf":
         [
             {

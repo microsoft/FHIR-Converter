@@ -109,6 +109,9 @@ MessageHeader_Response_Details_ID: A resource Id, used to fill "response.details
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"MessageHeader/{{ ID }}",
     },
 },
