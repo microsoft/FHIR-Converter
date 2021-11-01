@@ -62,13 +62,13 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:2f736e70-b192-155c-b224-66a1c8102fac",
+            "fullUrl": "urn:uuid:b8bf5f81-bc6a-5fda-5fb2-fd273ac267a8",
             "resource": {
                 "resourceType": "Provenance",
-                "id": "2f736e70-b192-155c-b224-66a1c8102fac",
+                "id": "b8bf5f81-bc6a-5fda-5fb2-fd273ac267a8",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-07T12:50:51.504Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T11:30:59.573Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
                 },
                 "occurredDateTime": "2001-01-01T00:00:00",
                 "recorded": "2001-01-01T00:00:00",
@@ -102,7 +102,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Provenance/2f736e70-b192-155c-b224-66a1c8102fac"
+                "url": "Provenance/b8bf5f81-bc6a-5fda-5fb2-fd273ac267a8"
             }
         },
         {
@@ -386,6 +386,7 @@
                 "id": "a0f6171b-0f81-c7fd-61da-2c2db32aafc9",
                 "name": "ABCD",
                 "mode": "instance",
+                "description": "ABCD--EFGH",
                 "physicalType": {
                     "coding": [
                         {
@@ -410,6 +411,7 @@
                 },
                 "name": "EFGH",
                 "mode": "instance",
+                "description": "ABCD--EFGH",
                 "physicalType": {
                     "coding": [
                         {
@@ -441,9 +443,6 @@
                         "location": {
                             "reference": "Location/a0f6171b-0f81-c7fd-61da-2c2db32aafc9"
                         }
-                    },
-                    {
-                        "status": "active"
                     }
                 ],
                 "participant": [

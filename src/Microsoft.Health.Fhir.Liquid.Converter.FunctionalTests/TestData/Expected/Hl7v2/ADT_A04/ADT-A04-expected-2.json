@@ -58,13 +58,13 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:f65d2168-02c8-1897-210d-361176172856",
+            "fullUrl": "urn:uuid:0a7545d7-202f-96e5-31e9-bb7d27ade3c2",
             "resource": {
                 "resourceType": "Provenance",
-                "id": "f65d2168-02c8-1897-210d-361176172856",
+                "id": "0a7545d7-202f-96e5-31e9-bb7d27ade3c2",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-07T12:48:40.101Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T11:29:35.836Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
                 },
                 "occurredDateTime": "1989-08-18T14:41:00+05:30",
                 "recorded": "1989-08-18T14:41:00+05:30",
@@ -106,7 +106,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Provenance/f65d2168-02c8-1897-210d-361176172856"
+                "url": "Provenance/0a7545d7-202f-96e5-31e9-bb7d27ade3c2"
             }
         },
         {
@@ -1140,6 +1140,81 @@
             }
         },
         {
+            "fullUrl": "urn:uuid:24d4bddf-a1c3-4dc8-049b-1dda7e5112b6",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "24d4bddf-a1c3-4dc8-049b-1dda7e5112b6",
+                "identifier": [
+                    {
+                        "value": "TE",
+                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-TE"
+                    },
+                    {
+                        "value": "Provider Master.Community Health and Hospitals",
+                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-DNS",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "DNS",
+                                    "display": "An Internet host name, in accordance with RFC 1035; or an IP address. Either in ASCII or as integers, with periods between components (“dotted” notation).",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/24d4bddf-a1c3-4dc8-049b-1dda7e5112b6"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:36e3aaa4-569a-7d9d-037f-27235ed05701",
+            "resource": {
+                "resourceType": "Practitioner",
+                "id": "36e3aaa4-569a-7d9d-037f-27235ed05701",
+                "identifier": [
+                    {
+                        "value": "12188",
+                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-DNS",
+                        "assigner": {
+                            "reference": "Organization/24d4bddf-a1c3-4dc8-049b-1dda7e5112b6"
+                        },
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "DN",
+                                    "display": "Doctor number",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Hippocrates",
+                        "given": [
+                            "Harold",
+                            "H"
+                        ],
+                        "suffix": [
+                            "IV",
+                            "MD"
+                        ],
+                        "prefix": [
+                            "Dr"
+                        ]
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/36e3aaa4-569a-7d9d-037f-27235ed05701"
+            }
+        },
+        {
             "fullUrl": "urn:uuid:9172e4a0-1ca5-646d-2183-b179f4daa737",
             "resource": {
                 "resourceType": "Location",
@@ -1155,6 +1230,7 @@
                     }
                 ],
                 "mode": "instance",
+                "description": "HUH AE OMU--9.8--ISO--OMU B--Bed 03--HOMERTON UNIVER--C--Homerton UH--Floor5",
                 "physicalType": {
                     "coding": [
                         {
@@ -1179,6 +1255,7 @@
                 },
                 "name": "OMU B",
                 "mode": "instance",
+                "description": "HUH AE OMU--9.8--ISO--OMU B--Bed 03--HOMERTON UNIVER--C--Homerton UH--Floor5",
                 "physicalType": {
                     "coding": [
                         {
@@ -1203,6 +1280,7 @@
                 },
                 "name": "Bed 03",
                 "mode": "instance",
+                "description": "HUH AE OMU--9.8--ISO--OMU B--Bed 03--HOMERTON UNIVER--C--Homerton UH--Floor5",
                 "physicalType": {
                     "coding": [
                         {
@@ -1224,6 +1302,7 @@
                 "id": "c043880b-0fab-1cb8-14f7-0475282c4d0e",
                 "name": "HOMERTON UNIVER",
                 "mode": "instance",
+                "description": "HUH AE OMU--9.8--ISO--OMU B--Bed 03--HOMERTON UNIVER--C--Homerton UH--Floor5",
                 "physicalType": {
                     "coding": [
                         {
@@ -1248,6 +1327,7 @@
                 },
                 "name": "Homerton UH",
                 "mode": "instance",
+                "description": "HUH AE OMU--9.8--ISO--OMU B--Bed 03--HOMERTON UNIVER--C--Homerton UH--Floor5",
                 "physicalType": {
                     "coding": [
                         {
@@ -1272,6 +1352,7 @@
                 },
                 "name": "Floor5",
                 "mode": "instance",
+                "description": "HUH AE OMU--9.8--ISO--OMU B--Bed 03--HOMERTON UNIVER--C--Homerton UH--Floor5",
                 "physicalType": {
                     "coding": [
                         {
@@ -1293,6 +1374,7 @@
                 "id": "59de4aa7-44c6-860a-88ad-53ae51ef49e8",
                 "name": "4 East, room 136, bed B 4E",
                 "mode": "instance",
+                "description": "4 East, room 136, bed B 4E--136--B--CommunityHospital--N",
                 "physicalType": {
                     "coding": [
                         {
@@ -1317,6 +1399,7 @@
                 },
                 "name": "136",
                 "mode": "instance",
+                "description": "4 East, room 136, bed B 4E--136--B--CommunityHospital--N",
                 "physicalType": {
                     "coding": [
                         {
@@ -1341,6 +1424,7 @@
                 },
                 "name": "B",
                 "mode": "instance",
+                "description": "4 East, room 136, bed B 4E--136--B--CommunityHospital--N",
                 "physicalType": {
                     "coding": [
                         {
@@ -1362,6 +1446,7 @@
                 "id": "8b39e6e5-78cd-63ab-2441-f43ca5554096",
                 "name": "CommunityHospital",
                 "mode": "instance",
+                "description": "4 East, room 136, bed B 4E--136--B--CommunityHospital--N",
                 "physicalType": {
                     "coding": [
                         {
@@ -1409,6 +1494,7 @@
                 "id": "84634858-74aa-5cdb-4547-60ec27339ac6",
                 "name": "POC",
                 "mode": "instance",
+                "description": "POC--Room-2--Bed-103--C--Greenland",
                 "physicalType": {
                     "coding": [
                         {
@@ -1433,6 +1519,7 @@
                 },
                 "name": "Room-2",
                 "mode": "instance",
+                "description": "POC--Room-2--Bed-103--C--Greenland",
                 "physicalType": {
                     "coding": [
                         {
@@ -1457,6 +1544,7 @@
                 },
                 "name": "Bed-103",
                 "mode": "instance",
+                "description": "POC--Room-2--Bed-103--C--Greenland",
                 "physicalType": {
                     "coding": [
                         {
@@ -1478,6 +1566,7 @@
                 "id": "055e10f1-222e-df73-2325-0e4396db1a55",
                 "name": "Greenland",
                 "mode": "instance",
+                "description": "POC--Room-2--Bed-103--C--Greenland",
                 "physicalType": {
                     "coding": [
                         {
@@ -1499,6 +1588,7 @@
                 "id": "1154e6b2-b022-b3be-7dce-2b940ab5376d",
                 "name": "Nursing home",
                 "mode": "instance",
+                "description": "Nursing home--Rosewood",
                 "physicalType": {
                     "coding": [
                         {
@@ -1520,6 +1610,7 @@
                 "id": "08b7f694-ec03-e35a-d0b0-2fae5940fe37",
                 "name": "Rosewood",
                 "mode": "instance",
+                "description": "Nursing home--Rosewood",
                 "physicalType": {
                     "coding": [
                         {
@@ -1532,6 +1623,131 @@
             "request": {
                 "method": "PUT",
                 "url": "Location/08b7f694-ec03-e35a-d0b0-2fae5940fe37"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:c7f1b9ec-ffd8-321e-ad87-abafc1c1a333",
+            "resource": {
+                "resourceType": "Location",
+                "id": "c7f1b9ec-ffd8-321e-ad87-abafc1c1a333",
+                "name": "ROOM1",
+                "identifier": [
+                    {
+                        "value": "urn:oid:2.16.840.1.113883.4.642.1.1108",
+                        "system": "urn:ietf:rfc:3986"
+                    }
+                ],
+                "mode": "instance",
+                "description": "ROOM1--2.16.840.1.113883.4.642.1.1108--ISO--BED1--FACILITY1--BUILDING1--FLOOR1",
+                "physicalType": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                            "code": "ro"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/c7f1b9ec-ffd8-321e-ad87-abafc1c1a333"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:6f159848-5f01-01b3-9594-80fbbe9ab510",
+            "resource": {
+                "resourceType": "Location",
+                "id": "6f159848-5f01-01b3-9594-80fbbe9ab510",
+                "partOf": {
+                    "reference": "Location/c7f1b9ec-ffd8-321e-ad87-abafc1c1a333"
+                },
+                "name": "BED1",
+                "mode": "instance",
+                "description": "ROOM1--2.16.840.1.113883.4.642.1.1108--ISO--BED1--FACILITY1--BUILDING1--FLOOR1",
+                "physicalType": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                            "code": "bd"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/6f159848-5f01-01b3-9594-80fbbe9ab510"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:4bca6ba2-be65-ef37-3911-03b70a00a3a6",
+            "resource": {
+                "resourceType": "Location",
+                "id": "4bca6ba2-be65-ef37-3911-03b70a00a3a6",
+                "name": "FACILITY1",
+                "mode": "instance",
+                "description": "ROOM1--2.16.840.1.113883.4.642.1.1108--ISO--BED1--FACILITY1--BUILDING1--FLOOR1",
+                "physicalType": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                            "code": "si"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/4bca6ba2-be65-ef37-3911-03b70a00a3a6"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:3b0911cb-4361-cd8d-b188-463af033c699",
+            "resource": {
+                "resourceType": "Location",
+                "id": "3b0911cb-4361-cd8d-b188-463af033c699",
+                "partOf": {
+                    "reference": "Location/4bca6ba2-be65-ef37-3911-03b70a00a3a6"
+                },
+                "name": "BUILDING1",
+                "mode": "instance",
+                "description": "ROOM1--2.16.840.1.113883.4.642.1.1108--ISO--BED1--FACILITY1--BUILDING1--FLOOR1",
+                "physicalType": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                            "code": "bu"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/3b0911cb-4361-cd8d-b188-463af033c699"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:0d9c3424-329f-4c95-ee30-ac2da4a35bff",
+            "resource": {
+                "resourceType": "Location",
+                "id": "0d9c3424-329f-4c95-ee30-ac2da4a35bff",
+                "partOf": {
+                    "reference": "Location/3b0911cb-4361-cd8d-b188-463af033c699"
+                },
+                "name": "FLOOR1",
+                "mode": "instance",
+                "description": "ROOM1--2.16.840.1.113883.4.642.1.1108--ISO--BED1--FACILITY1--BUILDING1--FLOOR1",
+                "physicalType": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                            "code": "lvl"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/0d9c3424-329f-4c95-ee30-ac2da4a35bff"
             }
         },
         {
@@ -1569,7 +1785,7 @@
             "resource": {
                 "resourceType": "EpisodeOfCare",
                 "id": "919a86bd-c9a1-86a7-2c9d-e34ae2559ffb",
-                "status": "planned",
+                "status": "active",
                 "identifier": [
                     {
                         "value": "EOC124",
@@ -1607,84 +1823,18 @@
                     "display": "pre-admission",
                     "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
                 },
-                "status": "planned",
+                "status": "in-progress",
                 "location": [
                     {
-                        "status": "planned",
+                        "status": "active",
                         "location": {
                             "reference": "Location/9172e4a0-1ca5-646d-2183-b179f4daa737"
-                        }
-                    },
-                    {
-                        "status": "planned",
-                        "location": {
-                            "reference": "Location/3913ec4d-6576-5e1a-ac31-e8280583371c"
-                        }
-                    },
-                    {
-                        "status": "planned",
-                        "location": {
-                            "reference": "Location/804a03f1-4eb5-d01d-82f9-0d4b52a9ea3b"
-                        }
-                    },
-                    {
-                        "status": "planned",
-                        "location": {
-                            "reference": "Location/c043880b-0fab-1cb8-14f7-0475282c4d0e"
-                        }
-                    },
-                    {
-                        "status": "planned",
-                        "location": {
-                            "reference": "Location/f7ef3d02-a5d5-a361-e9d9-b316ba1ff78c"
-                        }
-                    },
-                    {
-                        "status": "planned",
-                        "location": {
-                            "reference": "Location/7e38808c-44a8-cb0c-4709-9d6092abc32c"
                         }
                     },
                     {
                         "status": "completed",
                         "location": {
                             "reference": "Location/59de4aa7-44c6-860a-88ad-53ae51ef49e8"
-                        },
-                        "extension": [
-                            {
-                                "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/temporary-location",
-                                "valueBoolean": false
-                            }
-                        ]
-                    },
-                    {
-                        "status": "completed",
-                        "location": {
-                            "reference": "Location/d5dd2e32-efbc-854a-cf3c-2bd6a7ff075e"
-                        },
-                        "extension": [
-                            {
-                                "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/temporary-location",
-                                "valueBoolean": false
-                            }
-                        ]
-                    },
-                    {
-                        "status": "completed",
-                        "location": {
-                            "reference": "Location/5783dafa-c6c0-e673-cca4-42087ee1831b"
-                        },
-                        "extension": [
-                            {
-                                "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/temporary-location",
-                                "valueBoolean": false
-                            }
-                        ]
-                    },
-                    {
-                        "status": "completed",
-                        "location": {
-                            "reference": "Location/8b39e6e5-78cd-63ab-2441-f43ca5554096"
                         },
                         "extension": [
                             {
@@ -1706,42 +1856,6 @@
                         ]
                     },
                     {
-                        "status": "planned",
-                        "location": {
-                            "reference": "Location/9bbd3aa6-8cb1-1abe-2b2a-9f320c263b42"
-                        },
-                        "extension": [
-                            {
-                                "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/temporary-location",
-                                "valueBoolean": false
-                            }
-                        ]
-                    },
-                    {
-                        "status": "planned",
-                        "location": {
-                            "reference": "Location/35353f20-6254-e794-98ed-8007490447e3"
-                        },
-                        "extension": [
-                            {
-                                "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/temporary-location",
-                                "valueBoolean": false
-                            }
-                        ]
-                    },
-                    {
-                        "status": "planned",
-                        "location": {
-                            "reference": "Location/055e10f1-222e-df73-2325-0e4396db1a55"
-                        },
-                        "extension": [
-                            {
-                                "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/temporary-location",
-                                "valueBoolean": false
-                            }
-                        ]
-                    },
-                    {
                         "status": "completed",
                         "location": {
                             "reference": "Location/1154e6b2-b022-b3be-7dce-2b940ab5376d"
@@ -1754,14 +1868,14 @@
                         ]
                     },
                     {
-                        "status": "completed",
+                        "status": "planned",
                         "location": {
-                            "reference": "Location/08b7f694-ec03-e35a-d0b0-2fae5940fe37"
+                            "reference": "Location/c7f1b9ec-ffd8-321e-ad87-abafc1c1a333"
                         },
                         "extension": [
                             {
                                 "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/temporary-location",
-                                "valueBoolean": true
+                                "valueBoolean": false
                             }
                         ]
                     }
@@ -1922,6 +2036,22 @@
                         "individual": {
                             "reference": "Practitioner/84aa3f43-eefe-c16a-90e0-8ebf2306a77d"
                         }
+                    },
+                    {
+                        "type": [
+                            {
+                                "coding": [
+                                    {
+                                        "code": "REF",
+                                        "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType"
+                                    }
+                                ],
+                                "text": "referrer"
+                            }
+                        ],
+                        "individual": {
+                            "reference": "Practitioner/36e3aaa4-569a-7d9d-037f-27235ed05701"
+                        }
                     }
                 ],
                 "serviceType": {
@@ -1966,15 +2096,67 @@
                     }
                 ],
                 "period": {
-                    "start": "2015-02-08T15:54:19+05:30"
+                    "start": "2015-02-08T15:54:19+05:30",
+                    "end": "2015-02-09T15:54:19+05:30"
+                },
+                "reasonCode": [
+                    {
+                        "coding": [
+                            {
+                                "code": "140004",
+                                "display": "Chronic pharyngitis",
+                                "system": "http://snomed.info/sct"
+                            }
+                        ]
+                    }
+                ],
+                "length": {
+                    "value": 2,
+                    "unit": "d",
+                    "system": "http://unitsofmeasure.org/"
+                },
+                "meta": {
+                    "security": [
+                        {
+                            "code": "N",
+                            "display": "normal",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+                        }
+                    ]
                 },
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Visit Description: </span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Visit Description: Health Checkup</span></p></div>"
+                },
+                "priority": {
+                    "coding": [
+                        {
+                            "code": "UR",
+                            "display": "urgent",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-ActPriority",
+                            "version": "V1.2"
+                        },
+                        {
+                            "code": "EL",
+                            "display": "elective",
+                            "system": "http://terminology.hl7.org/CodeSystem/v3-ActPriority",
+                            "version": "V1.3"
+                        }
+                    ]
                 },
                 "subject": {
                     "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
-                }
+                },
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/StructureDefinition/encounter-modeOfArrival",
+                        "valueCoding": {
+                            "code": "C",
+                            "display": "Car",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0430"
+                        }
+                    }
+                ]
             },
             "request": {
                 "method": "PUT",
