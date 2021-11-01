@@ -1,4 +1,4 @@
-{% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|MSH|UAC|EVN' -%}
+{% assign firstSegments = hl7v2Data | get_first_segments: 'MSH|UAC|EVN|PID|PD1|PV1|PV2|DRG|ACC|UB1|UB2|PDA' -%}
 {% assign sftSegmentLists = hl7v2Data | get_segment_lists: 'SFT' -%}
 {% assign arvSegmentLists = hl7v2Data | get_segment_lists: 'ARV' -%}
 {% assign rolSegmentLists = hl7v2Data | get_segment_lists: 'ROL' -%}
@@ -7,7 +7,6 @@
 {% assign obxSegmentLists = hl7v2Data | get_segment_lists: 'OBX' -%}
 {% assign al1SegmentLists = hl7v2Data | get_segment_lists: 'AL1' -%}
 {% assign dg1SegmentLists = hl7v2Data | get_segment_lists: 'DG1' -%}
-{% assign drgSegmentLists = hl7v2Data | get_segment_lists: 'DRG' -%}
 {% assign pr1SegmentLists = hl7v2Data | get_segment_lists: 'PR1' -%}
 {% assign gt1SegmentLists = hl7v2Data | get_segment_lists: 'GT1' -%}
 {% assign in1SegmentLists = hl7v2Data | get_segment_lists: 'IN1' -%}
@@ -15,15 +14,12 @@
 {% assign in3SegmentLists = hl7v2Data | get_segment_lists: 'IN3' -%}
 {% assign autSegmentLists = hl7v2Data | get_segment_lists: 'AUT' -%}
 {% assign rf1SegmentLists = hl7v2Data | get_segment_lists: 'RF1' -%}
-{% assign accSegmentLists = hl7v2Data | get_segment_lists: 'ACC' -%}
-{% assign ub1SegmentLists = hl7v2Data | get_segment_lists: 'UB1' -%}
-{% assign ub2SegmentLists = hl7v2Data | get_segment_lists: 'UB2' -%}                                         
 {% evaluate bundleID using 'ID/Bundle' Data: firstSegments.MSH.10 -%}
 {
     "resourceType": "Bundle",
     "type": "batch",
     {% if firstSegments.MSH.7 -%}
-        "timestamp":"{{ firstSegments.MSH.7.Value | format_as_date_time }}",
+    "timestamp":"{{ firstSegments.MSH.7.Value | format_as_date_time }}",
     {% endif -%}
     "identifier":
     {
@@ -31,7 +27,6 @@
     },
     "id":"{{ bundleID }}",
     "entry": [
-
         {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
         {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
         {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
@@ -39,15 +34,15 @@
         {% if firstSegments.MSH -%}   
             {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, ID: messageHeaderId -%}              
             {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseId: patientId -%}
-            {% include 'Resource/Provenance' Root_Template: 'ADT_A05', MSH: firstSegments.MSH, REF_BUNDLE: bundleID, ID: provenanceId -%}
-            
+            {% include 'Resource/Provenance' Root_Template: 'ADT_A13', MSH: firstSegments.MSH, REF_BUNDLE: bundleID, ID: provenanceId -%}
+           
              {%- comment -%}
         {% assign transformation_val = 'provenance_transformation' %}
-          {% evaluate provenanceOrganizationId using 'ID/Organization', prov_id: firstSegments.MSH -%}
-        {% evaluate provenanceTransformationId using 'ID/Provenance_transformation' prov_id: transformation_val -%}
-        {% include 'Resource/Organization' org_name: 'Microsoft Corporation', ID: provenanceOrganizationId -%}
-        {% include 'Resource/Provenance_transformation' Root_Template: 'ADT_A05', Provenance_Organization_ID: provenanceOrganizationId, REF_MSH: messageHeaderId, provenanceOrganizationId, ID: provenanceTransformationId -%}
-            {%- endcomment -%}     
+              {% evaluate provenanceOrganizationId using 'ID/Organization', prov_id: firstSegments.MSH -%}
+            {% evaluate provenanceTransformationId using 'ID/Provenance_transformation' prov_id: transformation_val -%}
+            {% include 'Resource/Organization' org_name: 'Microsoft Corporation', ID: provenanceOrganizationId -%}
+            {% include 'Resource/Provenance_transformation' Root_Template: 'ADT_A13', Provenance_Organization_ID: provenanceOrganizationId, REF_MSH: messageHeaderId, provenanceOrganizationId, ID: provenanceTransformationId -%}
+            {%- endcomment -%}    
             {% if firstSegments.MSH.4 -%}
                 {% if firstSegments.MSH.4.1 != "" and firstSegments.MSH.4.1 != null or firstSegments.MSH.4.2 != "" and firstSegments.MSH.4.2 != null or firstSegments.MSH.4.3 != "" and firstSegments.MSH.4.3 != null -%}
                     {% evaluate organization_ID_MSH_4 using 'ID/Organization' HD: firstSegments.MSH.4 -%}
@@ -76,8 +71,8 @@
                 {% evaluate device_Id_MSH_3 using 'ID/Device' HD: firstSegments.MSH.3 -%}
                 {% include 'Resource/Device' MSH: firstSegments.MSH, ID: device_Id_MSH_3 -%}
             {% endif -%}
-        {% endif -%}
-    
+        {% endif -%}    
+
         {% for sftSegment in sftSegmentLists.SFT -%}
             {% evaluate deviceId_SFT using 'ID/Device' SFT: sftSegment -%}    
             {% include 'Resource/Device' SFT:sftSegment, ID: deviceId_SFT -%}
@@ -139,7 +134,7 @@
                 {% endif -%}
                 {% include 'Resource/Account' GT1: gt1SegmentLists, ID: accountId, REF_PATIENT: fullPatientId, REF_RELATED_PERSON: gt1relatedPersonId, REF_ORG: Organization_ID_gt1_XON_21 -%}
             {% endfor -%}
-            
+
         {% endif -%}
 
         {% if firstSegments.PID.2 -%}
@@ -287,18 +282,18 @@
             {% if firstSegments.PV2.1 -%}
             {% include 'Resource/PLLocation' PL: firstSegments.PV2.1-%}
             {% endif -%}
-            
+
             {% if firstSegments.PV1.54 -%}
                 {% if firstSegments.PV1.54.4.1 != "" and firstSegments.PV1.54.4.1 != null and firstSegments.PV1.54.4.2 != "" and firstSegments.PV1.54.4.2 != null and firstSegments.PV1.54.4.3 != "" and firstSegments.PV1.54.4.3 != null -%}
                     {% evaluate Organization_ID_PV1_54_4 using 'ID/Organization' HDORG: firstSegments.PV1.54.4 -%}
                 {% include 'Resource/Organization', PV1: firstSegments.PV1.54.4, ID: Organization_ID_PV1_54_4 -%}
                 {% endif -%} 
                 {% evaluate EpisodeOfCare_ID using 'ID/EpisodeOfCare' PV1: firstSegments.PV1.54 -%}
-                {% include 'Resource/EpisodeOfCare' PV1: firstSegments.PV1, ID: EpisodeOfCare_ID, patientRefrenceID: fullPatientId, Root_Template: 'ADT_A05' -%}
+                {% include 'Resource/EpisodeOfCare' PV1: firstSegments.PV1, ID: EpisodeOfCare_ID, patientRefrenceID: fullPatientId, Root_Template: 'ADT_A13' -%}
             {% endif -%}
 
             {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
-            {% include 'Resource/Encounter' Root_Template: 'ADT_A05', PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
+            {% include 'Resource/Encounter' Root_Template: 'ADT_A13', PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
             {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
             {% include 'Extensions/Encounter/EncounterExtension' ID: encounterId, PV1: firstSegments.PV1, PV2: firstSegments.PV2, -%}
         {% endif -%}
@@ -319,7 +314,7 @@
                 {% endif -%}
             {% endif -%}
         {% endif -%}
-
+        
         {% for pr1Segment in pr1SegmentLists.PR1 -%}
             {% if pr1Segment.8 -%}
                 {% if pr1Segment.8.9.1 != "" and pr1Segment.8.9.1 != null and pr1Segment.8.9.2 != "" and pr1Segment.8.9.2 != null and pr1Segment.8.9.3 != "" and pr1Segment.8.9.3 != null -%}
@@ -468,6 +463,7 @@
             {% if encounterId -%}
                 {% include 'Resource/Encounter' DG1: dg1Segment, conditionId: conditionId, ID: encounterId -%}
             {% endif -%}
+            
             {% if EpisodeOfCare_ID %}
                 {% include 'Resource/EpisodeOfCare' DG1: dg1Segment, conditionId: conditionId, ID: EpisodeOfCare_ID -%}
             {% endif %}
@@ -477,7 +473,7 @@
             {% endif -%}
             {% include 'Extensions/Condition/ConditionExtension' DG1: dg1Segment, ID_DG1_22:conditionId_DG1_22, ID: conditionId %}
 
-        {% endfor -%}  
+        {% endfor -%} 
 
         {% for rf1Segment in rf1SegmentLists.RF1 -%}
             {% if rf1Segment.19 -%}
@@ -496,7 +492,7 @@
             
             {% evaluate serviceRequestId using 'ID/ServiceRequest' RF1: rf1Segment, baseId: patientId -%}
             {% include 'Resource/ServiceRequest' RF1: rf1Segment, ID: serviceRequestId, ServiceRequest_Subject_ID: fullPatientId -%}
-        {% endfor -%}
+        {% endfor -%}  
 
         {% for in1Segment in in1SegmentLists.IN1 -%}     
 
