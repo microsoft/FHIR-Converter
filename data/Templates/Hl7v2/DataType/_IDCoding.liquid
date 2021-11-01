@@ -1,7 +1,14 @@
 {% if ID -%}
     {% if mapping -%}
         "code":"{{ ID.1.Value | get_property: mapping, 'code' }}",
-        "display":"{{ ID.1.Value | get_property: mapping, 'display' }}",
+        {% capture displayURL %}{{ ID.1.Value | get_property: mapping, 'display' }}{% endcapture %}
+            "display":"{{ displayURL }}",
+        {% if displayURL ==  ID.1.Value %}
+            "display":"{{ ID.2.Value }}",
+        {% endif %}
+        {% if ID.3 %}
+            "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{ID.3.Value | replace: ' ', '-'}}",
+        {% endif %}
         "system":"{{ ID.1.Value | get_property: mapping, 'system' }}",
     {% endif -%}
 {% endif -%}

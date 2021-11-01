@@ -4,7 +4,14 @@
         {
             {% if mapping -%}
                 "code":"{{ CE.1.Value | get_property: mapping, 'code' }}",
-                "display":"{{ CE.1.Value | get_property: mapping, 'display' }}",
+                {% capture displayURL %}{{ CE.1.Value | get_property: mapping, 'display' }}{% endcapture %}
+                    "display":"{{ displayURL }}",
+                {% if displayURL ==  CE.1.Value %}
+                    "display":"{{ CE.2.Value }}",
+                {% endif %}
+                {% if CE.3 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CE.3.Value | replace: ' ', '-'}}",
+                {% endif %}
                 "system":"{{ CE.1.Value | get_property: mapping, 'system' }}",
                 "version":"{{ CE.1.Value | get_property: mapping, 'version' }}",
                 "version":"{{ CE.7.Value }}",
@@ -13,7 +20,7 @@
                 "display":"{{ CE.2.Value }}",
 
                 {% if CE.3 %}
-                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CE.3.Value}}",
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CE.3.Value | replace: ' ', '-'}}",
                 {% endif %}
                 {% capture temp %}{{ CE.3.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
                 {% if temp%}

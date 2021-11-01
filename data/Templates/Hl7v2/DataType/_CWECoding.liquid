@@ -1,7 +1,14 @@
 {% if CWE -%}
     {% if mapping -%}
         "code":"{{ CWE.1.Value | get_property: mapping, 'code' }}",
-        "display":"{{ CWE.1.Value | get_property: mapping, 'display' }}",
+        {% capture displayURL %}{{ CWE.1.Value | get_property: mapping, 'display' }}{% endcapture %}
+            "display":"{{ displayURL }}",
+        {% if displayURL ==  CWE.1.Value %}
+            "display":"{{ CWE.2.Value }}",
+        {% endif %}
+        {% if CWE.3 %}
+            "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.3.Value | replace: ' ', '-'}}",
+        {% endif %}
         "system":"{{ CWE.1.Value | get_property: mapping, 'system' }}",
         "version":"{{ CWE.1.Value | get_property: mapping, 'version' }}",
         "version":"{{ CWE.7.Value }}",

@@ -16,7 +16,6 @@
             {% else -%}
                 "code":"{{ CWE.1.Value }}",
                 "display":"{{ CWE.2.Value }}",
-               
                 {% if CWE.3 %}
                     "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.3.Value | replace: ' ', '-'}}",
                 {% endif %}
@@ -24,7 +23,7 @@
                 {% if SYSTEM_PROPERTY_VALUE -%}
                     "system":"{{SYSTEM_PROPERTY_VALUE}}",              
                 {% endif %}
-                {% if systemHardcodedUrl and CWE.3-%}
+                {% if systemHardcodedUrl and CWE.1 or CWE.2 or CWE.3 or CWE.7-%}
                     "system":"{{systemHardcodedUrl}}",              
                 {% endif %}
                 "version":"{{ CWE.7.Value }}",
@@ -54,7 +53,7 @@
                 {% if SYSTEM_PROPERTY_VALUE -%}
                     "system":"{{SYSTEM_PROPERTY_VALUE}}",              
                 {% endif %}
-                {% if systemHardcodedUrl and CWE.6-%}
+                {% if systemHardcodedUrl and CWE.4 or CWE.5 or CWE.6 or CWE.8 -%}
                     "system":"{{systemHardcodedUrl}}",              
                 {% endif %}
                 "version":"{{ CWE.8.Value }}",
@@ -84,7 +83,7 @@
                 {% if SYSTEM_PROPERTY_VALUE -%}
                     "system":"{{SYSTEM_PROPERTY_VALUE}}",              
                 {% endif %}
-                {% if systemHardcodedUrl and CWE.12-%}
+                {% if systemHardcodedUrl and CWE.10 or CWE.11 or CWE.12 or CWE.13 -%}
                     "system":"{{systemHardcodedUrl}}",              
                 {% endif %}
                 "version":"{{ CWE.13.Value }}",

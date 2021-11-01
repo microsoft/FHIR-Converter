@@ -1,0 +1,59 @@
+{% if RPT -%}
+        {% if RPT.5 -%}
+            "period" : {{ RPT.5.Value }},
+        {% endif -%}  
+        "periodUnit" : {% include 'DataType/CWECode' mapping: 'CodeSystem/DurationUnit', CWE_internal: RPT.6 -%}, 
+        "when" : [
+            "{{ RPT.8.Value | get_property: 'CodeSystem/EventTiming', 'code' }}",
+        ],
+        {% if RPT.10.1 -%}     
+            {% assign durationunit = RPT.10.1 | get_property: 'CodeSystem/DurationUnit', 'code' -%}
+        {% else -%}
+            {% assign durationunit = RPT.10.4 | get_property: 'CodeSystem/DurationUnit', 'code' -%}
+        {% endif -%}
+        {% if durationunit == 'min' -%}
+            {% if RPT.9 -%}
+            "offset" : {{ RPT.9.Value }},
+            {% endif -%}
+        {% endif -%}
+        {% if durationunit == 's' -%}
+            {% if RPT.9 -%}
+            "offset" : {{ RPT.9.Value | divide: 60 | truncate_number }},
+            {% endif -%}
+        {% endif -%}
+        {% if durationunit == 'h' -%}
+            {% if RPT.9 -%}
+            {% assign hour = RPT.9.Value | times: 1.0 %}
+            {% assign minutesDuration = hour | times: 60 %}
+            "offset" : {{ minutesDuration }},
+            {% endif -%}
+        {% endif -%}
+        {% if durationunit == 'd' -%}
+            {% if RPT.9 -%}
+            {% assign day = RPT.9.Value | times: 1.0 %}
+            {% assign minutesDuration = day | times: 1440 %}
+            "offset" : {{ minutesDuration }},
+            {% endif -%}
+        {% endif -%}
+        {% if durationunit == 'wk' -%}
+            {% if RPT.9 -%}
+            {% assign wk = RPT.9.Value | times: 1.0 %}
+            {% assign minutesDuration = wk | times: 10080 %}
+            "offset" : {{ minutesDuration }},
+            {% endif -%}
+        {% endif -%}
+        {% if durationunit == 'mo' -%}
+            {% if RPT.9 -%}
+            {% assign mo = RPT.9.Value | times: 1.0 %}
+            {% assign minutesDuration = mo | times: 302400 %}
+            "offset" : {{ minutesDuration }},
+            {% endif -%}
+        {% endif -%}   
+        {% if durationunit == 'a' -%}
+            {% if RPT.9 -%}
+            {% assign year = RPT.9.Value | times: 1.0 %}
+            {% assign minutesDuration = year | times: 3628800 %}
+            "offset" : {{ minutesDuration }},
+            {% endif -%}
+        {% endif -%}  
+{% endif -%}

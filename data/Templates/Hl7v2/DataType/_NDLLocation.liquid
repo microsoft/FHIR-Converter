@@ -1,0 +1,207 @@
+{% evaluate Location_ID_NDL_4 using 'ID/Location' PL: NDL.4 -%}
+{% evaluate Location_ID_NDL_5 using 'ID/Location' PL: NDL.5 -%}
+{% evaluate Location_ID_NDL_6 using 'ID/Location' PL: NDL.6 -%}
+{% evaluate Location_ID_NDL_7 using 'ID/Location' PL: NDL.7 -%}
+{% evaluate Location_ID_NDL_10 using 'ID/Location' PL: NDL.10 -%}
+{% evaluate Location_ID_NDL_11 using 'ID/Location' PL: NDL.11 -%}
+
+{% if NDL.4 -%}
+{
+    "fullUrl":"urn:uuid:{{ Location_ID_NDL_4 }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ Location_ID_NDL_4 }}",
+        {% if Location_ID_NDL_11 -%}
+        "partOf":{
+            "reference":"Location/{{Location_ID_NDL_11}}"
+        },
+        {% endif %}
+        "name" : "{{NDL.4.Value}}", 
+        "mode":"instance",
+        {% assign NDLValue= NDL.Value%}
+        {% capture textstring %}{{ NDLValue  | split: "^" | join: "--" }}{% endcapture -%}
+        {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+        {% capture description %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+        "description" : "{{ description }}",
+
+        "physicalType":{
+            "coding":[
+               {
+                  "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code":"lvl"
+               }
+            ]
+         },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ Location_ID_NDL_4 }}",
+    },
+},
+{% endif -%}
+{% if NDL.5 -%}
+{
+    "fullUrl":"urn:uuid:{{ Location_ID_NDL_5 }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ Location_ID_NDL_5 }}",
+        {% if Location_ID_NDL_4 -%}
+        "partOf":{
+            "reference":"Location/{{Location_ID_NDL_4}}"
+        },
+        {% endif %}
+        "name" : "{{NDL.5.Value}}", 
+        "mode":"instance",
+        {% assign NDLValue= NDL.Value%}
+        {% capture textstring %}{{ NDLValue  | split: "^" | join: "--" }}{% endcapture -%}
+        {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+        {% capture description %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+        "description" : "{{ description }}",
+        
+        "physicalType":{
+            "coding":[
+               {
+                  "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code":"ro",
+               }
+            ]
+         },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ Location_ID_NDL_5 }}",
+    },
+},
+{% endif -%}
+{% if NDL.6 -%}
+{
+    "fullUrl":"urn:uuid:{{ Location_ID_NDL_6 }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ Location_ID_NDL_6 }}",
+        {% if Location_ID_NDL_5 -%}
+        "partOf":{
+            "reference":"Location/{{Location_ID_NDL_5}}"
+        },
+        {% endif %}
+        "name" : "{{NDL.6.Value}}", 
+        "mode":"instance",
+        {% assign NDLValue= NDL.Value%}
+        {% capture textstring %}{{ NDLValue  | split: "^" | join: "--" }}{% endcapture -%}
+        {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+        {% capture description %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+        "description" : "{{ description }}",
+
+        "physicalType":{
+            "coding":[
+               {
+                  "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code":"bd",
+               }
+            ]
+         },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ Location_ID_NDL_6 }}",
+    },
+},
+{% endif -%}
+{% if NDL.7-%}
+{
+    "fullUrl":"urn:uuid:{{ Location_ID_NDL_7 }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ Location_ID_NDL_7 }}",
+        {% include 'DataType/PL_HDLocation' HD: NDL.7 -%},
+        "mode":"instance",
+        {% assign NDLValue= NDL.Value%}
+        {% capture textstring %}{{ NDLValue  | split: "^" | join: "--" }}{% endcapture -%}
+        {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+        {% capture description %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+        "description" : "{{ description }}",
+        
+        "physicalType":{
+            "coding":[
+               {
+                  "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code":"si",
+               }
+            ]
+         },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ Location_ID_NDL_7 }}",
+    },
+},
+{% endif -%}
+{% if NDL.10 -%}
+{
+    "fullUrl":"urn:uuid:{{ Location_ID_NDL_10 }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ Location_ID_NDL_10 }}",
+        
+        {% if Location_ID_NDL_7 -%}
+        "partOf":{
+            "reference":"Location/{{Location_ID_NDL_7}}"
+        },
+        {% endif %}
+        "name": "{{NDL.10.Value}}",
+        "mode":"instance",
+        {% assign NDLValue= NDL.Value%}
+        {% capture textstring %}{{ NDLValue  | split: "^" | join: "--" }}{% endcapture -%}
+        {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+        {% capture description %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+        "description" : "{{ description }}",
+
+        "physicalType":{
+            "coding":[
+               {
+                  "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code":"bu",
+               }
+            ]
+         },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ Location_ID_NDL_10 }}",
+    },
+},
+{% endif -%}
+{% if NDL.11 -%}
+{
+    "fullUrl":"urn:uuid:{{ Location_ID_NDL_11 }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ Location_ID_NDL_11 }}",
+        {% if Location_ID_NDL_10 -%}
+        "partOf":{
+            "reference":"Location/{{Location_ID_NDL_10}}"
+        },
+        {% endif %}
+        "name": "{{NDL.11.Value}}",
+        "mode":"instance",
+        {% assign NDLValue= NDL.Value%}
+        {% capture textstring %}{{ NDLValue  | split: "^" | join: "--" }}{% endcapture -%}
+        {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+        {% capture description %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+        "description" : "{{ description }}",
+        
+        "physicalType":{
+            "coding":[
+               {
+                  "system":"http://terminology.hl7.org/CodeSystem/location-physical-type",
+                  "code":"lvl",
+               }
+            ]
+         },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ Location_ID_NDL_11 }}",
+    },
+},
+{% endif -%}
