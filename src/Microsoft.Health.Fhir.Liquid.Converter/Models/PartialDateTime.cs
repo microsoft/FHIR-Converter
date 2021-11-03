@@ -8,10 +8,21 @@ using System.Text.RegularExpressions;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 {
-    public class DateTimeObject
+    public class PartialDateTime
     {
-        public DateTimeObject(string input, Regex regex)
+        private static readonly Regex DateTimeRegex = new Regex(@"^((?<year>\d{4})((?<month>\d{2})((?<day>\d{2})(?<time>((?<hour>\d{2})((?<minute>\d{2})((?<second>\d{2})(\.(?<millisecond>\d+))?)?)?))?)?)?(?<timeZone>(?<sign>-|\+)(?<timeZoneHour>\d{2})(?<timeZoneMinute>\d{2}))?)$");
+        private static readonly Regex FhirDateTimeRegex = new Regex(@"^(?<year>([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000))((-(?<month>0[1-9]|1[0-2]))((-(?<day>0[1-9]|[1-2][0-9]|3[0-1]))(?<time>T(?<hour>[01][0-9]|2[0-3]):(?<minute>[0-5][0-9]):(?<second>([0-5][0-9]|60)(\.[0-9]+)?)(?<timeZone>Z|(?<sign>\+|-)((?<timeZoneHour>0[0-9]|1[0-3]):(?<timeZoneMinute>[0-5][0-9])|(?<timeZoneHour>14):(?<timeZoneMinute>00))))?)?)?$");
+
+        public PartialDateTime(string input, DateTimeType type)
         {
+            var regex = type switch
+            {
+                DateTimeType.Ccda => DateTimeRegex,
+                DateTimeType.Hl7v2 => DateTimeRegex,
+                DateTimeType.Fhir => FhirDateTimeRegex,
+                _ => throw new ArgumentException(Resources.InvalidDateTimeFormat),
+            };
+
             var matches = regex.Matches(input);
             if (matches.Count != 1 || !matches[0].Groups["year"].Success)
             {
@@ -45,57 +56,34 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
             }
 
             DateValue = new DateTimeOffset(year, month, day, hour, minute, second, millisecond, timeSpan);
-            HasDay = groups["day"].Success;
-            HasMonth = groups["month"].Success;
-            HasYear = groups["year"].Success;
-            HasTime = groups["time"].Success;
-            HasHour = groups["hour"].Success;
-            HasMinute = groups["minute"].Success;
-            HasSecond = groups["second"].Success;
-            HasMilliSecond = groups["millisecond"].Success;
+            Precision =
+                    groups["millisecond"].Success ? DateTimePrecision.Milliseconds :
+                    groups["second"].Success ? DateTimePrecision.Second :
+                    groups["minute"].Success ? DateTimePrecision.Minute :
+                    groups["hour"].Success ? DateTimePrecision.Hour :
+                    groups["day"].Success ? DateTimePrecision.Day :
+                    groups["month"].Success ? DateTimePrecision.Month :
+                    DateTimePrecision.Year;
             HasTimeZone = groups["timeZone"].Success;
         }
 
-        public DateTimeOffset DateValue { get; set; }
+        public DateTimeOffset DateValue { get; private set; }
 
-        public bool HasTimeZone { get; set; } = true;
+        public bool HasTimeZone { get; private set; }
 
-        public bool HasTime { get; set; } = true;
+        public DateTimePrecision Precision { get; private set; }
 
-        public bool HasMilliSecond { get; set; } = true;
-
-        public bool HasSecond { get; set; } = true;
-
-        public bool HasMinute { get; set; } = true;
-
-        public bool HasHour { get; set; } = true;
-
-        public bool HasDay { get; set; } = true;
-
-        public bool HasMonth { get; set; } = true;
-
-        public bool HasYear { get; set; } = true;
-
-        public void ConvertToDate()
+        public PartialDateTime ConvertToDate()
         {
-            HasTime = false;
-            HasHour = false;
-            HasMinute = false;
-            HasSecond = false;
-            HasTimeZone = false;
-            HasMilliSecond = false;
+            Precision = Precision < DateTimePrecision.Day ? Precision : DateTimePrecision.Day;
+            return this;
         }
 
-        public void AddSeconds(double seconds)
+        public PartialDateTime AddSeconds(double seconds)
         {
             DateValue = DateValue.AddSeconds(seconds);
-            HasYear = true;
-            HasMonth = true;
-            HasDay = true;
-            HasTime = true;
-            HasHour = true;
-            HasMinute = true;
-            HasSecond = true;
+            Precision = Precision > DateTimePrecision.Second ? Precision : DateTimePrecision.Second;
+            return this;
         }
 
         public string ToFhirString(string timeZoneHandling)
@@ -108,25 +96,30 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
                 _ => throw new ArgumentException(Resources.InvalidTimeZoneHandling),
             };
 
-            if (!HasTime)
+            if (Precision <= DateTimePrecision.Day)
             {
-                return HasYear switch
+                return Precision switch
                 {
-                    true when HasMonth && HasDay => resultDateTime.ToString("yyyy-MM-dd"),
-                    true when HasMonth => resultDateTime.ToString("yyyy-MM"),
-                    true => resultDateTime.ToString("yyyy"),
+                    DateTimePrecision.Day => resultDateTime.ToString("yyyy-MM-dd"),
+                    DateTimePrecision.Month => resultDateTime.ToString("yyyy-MM"),
+                    DateTimePrecision.Year => resultDateTime.ToString("yyyy"),
                     _ => throw new ArgumentException("Invalid dateTimeObject with empty Year field.")
                 };
             }
 
             var timeZoneSuffix = string.Empty;
-            if (HasTimeZone || string.Equals(timeZoneHandling.ToLower(), "utc"))
+            if (HasTimeZone)
             {
                 // Using "Z" to represent zero timezone.
                 timeZoneSuffix = resultDateTime.Offset == TimeSpan.Zero ? "Z" : "%K";
             }
 
-            var dateTimeFormat = !HasMilliSecond ? "yyyy-MM-ddTHH:mm:ss" + timeZoneSuffix : "yyyy-MM-ddTHH:mm:ss.fff" + timeZoneSuffix;
+            if (string.Equals(timeZoneHandling.ToLower(), "utc"))
+            {
+                timeZoneSuffix = "Z";
+            }
+
+            var dateTimeFormat = Precision < DateTimePrecision.Milliseconds ? "yyyy-MM-ddTHH:mm:ss" + timeZoneSuffix : "yyyy-MM-ddTHH:mm:ss.fff" + timeZoneSuffix;
             return resultDateTime.ToString(dateTimeFormat);
         }
     }

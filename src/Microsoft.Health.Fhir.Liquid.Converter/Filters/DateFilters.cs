@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
@@ -16,8 +15,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     /// </summary>
     public partial class Filters
     {
-        private static readonly Regex DateTimeRegex = new Regex(@"^((?<year>\d{4})((?<month>\d{2})((?<day>\d{2})(?<time>((?<hour>\d{2})((?<minute>\d{2})((?<second>\d{2})(\.(?<millisecond>\d+))?)?)?))?)?)?(?<timeZone>(?<sign>-|\+)(?<timeZoneHour>\d{2})(?<timeZoneMinute>\d{2}))?)$");
-        private static readonly Regex FhirDateTimeRegex = new Regex(@"^(?<year>([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000))((-(?<month>0[1-9]|1[0-2]))((-(?<day>0[1-9]|[1-2][0-9]|3[0-1]))(?<time>T(?<hour>[01][0-9]|2[0-3]):(?<minute>[0-5][0-9]):(?<second>([0-5][0-9]|60)(\.[0-9]+)?)(?<timeZone>Z|(?<sign>\+|-)((?<timeZoneHour>0[0-9]|1[0-3]):(?<timeZoneMinute>[0-5][0-9])|(?<timeZoneHour>14):(?<timeZoneMinute>00))))?)?)?$");
         private static readonly HashSet<string> TimezoneHandlingMethods = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "preserve", "utc", "local" };
 
         public static string AddSeconds(string input, double seconds, string timeZoneHandling = "preserve")
@@ -27,10 +24,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return input;
             }
 
-            DateTimeObject dateTimeObject;
+            PartialDateTime dateTimeObject;
             try
             {
-                dateTimeObject = new DateTimeObject(input, FhirDateTimeRegex);
+                dateTimeObject = new PartialDateTime(input, DateTimeType.Fhir);
             }
             catch (Exception)
             {
@@ -48,10 +45,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return input;
             }
 
-            DateTimeObject dateTimeObject;
+            PartialDateTime dateTimeObject;
             try
             {
-                dateTimeObject = new DateTimeObject(input, DateTimeRegex);
+                dateTimeObject = new PartialDateTime(input, DateTimeType.Hl7v2);
             }
             catch (Exception)
             {
@@ -74,10 +71,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 throw new RenderException(FhirConverterErrorCode.InvalidTimeZoneHandling, Resources.InvalidTimeZoneHandling);
             }
 
-            DateTimeObject dateTimeObject;
+            PartialDateTime dateTimeObject;
             try
             {
-                dateTimeObject = new DateTimeObject (input, DateTimeRegex);
+                dateTimeObject = new PartialDateTime(input, DateTimeType.Hl7v2);
             }
             catch (Exception)
             {
