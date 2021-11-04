@@ -148,7 +148,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 actualObject.SelectToken(path).Parent.Remove();
             });
 
-            Assert.True(JToken.DeepEquals(expectedObject, actualObject));
+            Assert.Equal(expectedObject.ToString(), actualObject.ToString());
             Assert.True(traceInfo.UnusedSegments.Count > 0);
         }
 
