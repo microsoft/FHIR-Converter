@@ -13,14 +13,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
         private static readonly Regex DateTimeRegex = new Regex(@"^((?<year>\d{4})((?<month>\d{2})((?<day>\d{2})(?<time>((?<hour>\d{2})((?<minute>\d{2})((?<second>\d{2})(\.(?<millisecond>\d+))?)?)?))?)?)?(?<timeZone>(?<sign>-|\+)(?<timeZoneHour>\d{2})(?<timeZoneMinute>\d{2}))?)$");
         private static readonly Regex FhirDateTimeRegex = new Regex(@"^(?<year>([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000))((-(?<month>0[1-9]|1[0-2]))((-(?<day>0[1-9]|[1-2][0-9]|3[0-1]))(?<time>T(?<hour>[01][0-9]|2[0-3]):(?<minute>[0-5][0-9]):((?<second>[0-5][0-9]|60)(\.(?<millisecond>[0-9]+))?)(?<timeZone>Z|(?<sign>\+|-)((?<timeZoneHour>0[0-9]|1[0-3]):(?<timeZoneMinute>[0-5][0-9])|(?<timeZoneHour>14):(?<timeZoneMinute>00))))?)?)?$");
 
-        public PartialDateTime(string input, DateTimeType type)
+        public PartialDateTime(string input, DateTimeType type = DateTimeType.Fhir)
         {
             var regex = type switch
             {
                 DateTimeType.Ccda => DateTimeRegex,
                 DateTimeType.Hl7v2 => DateTimeRegex,
                 DateTimeType.Fhir => FhirDateTimeRegex,
-                _ => throw new ArgumentException(Resources.InvalidDateTimeFormat),
+                _ => throw new ArgumentException(string.Format(Resources.InvalidDateTimeFormat, type.ToString())),
             };
 
             var matches = regex.Matches(input);
@@ -55,7 +55,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
                 }
             }
 
-            DateValue = new DateTimeOffset(year, month, day, hour, minute, second, millisecond, timeSpan);
+            DateTimeValue = new DateTimeOffset(year, month, day, hour, minute, second, millisecond, timeSpan);
             Precision =
                     groups["millisecond"].Success ? DateTimePrecision.Milliseconds :
                     groups["second"].Success ? DateTimePrecision.Second :
@@ -67,7 +67,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
             HasTimeZone = groups["timeZone"].Success;
         }
 
-        public DateTimeOffset DateValue { get; private set; }
+        public DateTimeOffset DateTimeValue { get; private set; }
 
         public bool HasTimeZone { get; private set; }
 
@@ -81,22 +81,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 
         public PartialDateTime AddSeconds(double seconds)
         {
-            DateValue = DateValue.AddSeconds(seconds);
+            DateTimeValue = DateTimeValue.AddSeconds(seconds);
             if (Precision != DateTimePrecision.Milliseconds)
             {
-                Precision = DateValue.Millisecond == 0 ? DateTimePrecision.Second : DateTimePrecision.Milliseconds;
+                Precision = DateTimeValue.Millisecond == 0 ? DateTimePrecision.Second : DateTimePrecision.Milliseconds;
             }
 
             return this;
         }
 
-        public string ToFhirString(string timeZoneHandling)
+        public string ToFhirString(TimeZoneHandlingMethod timeZoneHandling = TimeZoneHandlingMethod.Preserve)
         {
-            var resultDateTime = timeZoneHandling?.ToLower() switch
+            var resultDateTime = timeZoneHandling switch
             {
-                "preserve" => DateValue,
-                "utc" => DateValue.ToUniversalTime(),
-                "local" => DateValue.ToLocalTime(),
+                TimeZoneHandlingMethod.Preserve => DateTimeValue,
+                TimeZoneHandlingMethod.Utc => DateTimeValue.ToUniversalTime(),
+                TimeZoneHandlingMethod.Local => DateTimeValue.ToLocalTime(),
                 _ => throw new ArgumentException(Resources.InvalidTimeZoneHandling),
             };
 
@@ -118,7 +118,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
                 timeZoneSuffix = resultDateTime.Offset == TimeSpan.Zero ? "Z" : "%K";
             }
 
-            if (string.Equals(timeZoneHandling.ToLower(), "utc"))
+            if (timeZoneHandling == TimeZoneHandlingMethod.Utc)
             {
                 timeZoneSuffix = "Z";
             }

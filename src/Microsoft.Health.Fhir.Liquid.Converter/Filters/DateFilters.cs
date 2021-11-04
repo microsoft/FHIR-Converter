@@ -4,7 +4,6 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
@@ -15,13 +14,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     /// </summary>
     public partial class Filters
     {
-        private static readonly HashSet<string> TimezoneHandlingMethods = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "preserve", "utc", "local" };
-
         public static string AddSeconds(string input, double seconds, string timeZoneHandling = "preserve")
         {
             if (string.IsNullOrEmpty(input))
             {
                 return input;
+            }
+
+            if (!Enum.TryParse(timeZoneHandling, true, out TimeZoneHandlingMethod outputTimeZoneHandling))
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidTimeZoneHandling, Resources.InvalidTimeZoneHandling);
             }
 
             PartialDateTime dateTimeObject;
@@ -35,7 +37,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
 
             dateTimeObject.AddSeconds(seconds);
-            return dateTimeObject.ToFhirString(timeZoneHandling);
+            return dateTimeObject.ToFhirString(outputTimeZoneHandling);
         }
 
         public static string AddHyphensDate(string input, string timeZoneHandling = "preserve")
@@ -45,28 +47,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 return input;
             }
 
-            PartialDateTime dateTimeObject;
-            try
-            {
-                dateTimeObject = new PartialDateTime(input, DateTimeType.Hl7v2);
-            }
-            catch (Exception)
-            {
-                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
-            }
-
-            dateTimeObject.ConvertToDate();
-            return dateTimeObject.ToFhirString(timeZoneHandling);
-        }
-
-        public static string FormatAsDateTime(string input, string timeZoneHandling = "local")
-        {
-            if (string.IsNullOrEmpty(input))
-            {
-                return input;
-            }
-
-            if (!TimezoneHandlingMethods.Contains(timeZoneHandling))
+            if (!Enum.TryParse(timeZoneHandling, true, out TimeZoneHandlingMethod outputTimeZoneHandling))
             {
                 throw new RenderException(FhirConverterErrorCode.InvalidTimeZoneHandling, Resources.InvalidTimeZoneHandling);
             }
@@ -81,7 +62,33 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
             }
 
-            return dateTimeObject.ToFhirString(timeZoneHandling);
+            dateTimeObject.ConvertToDate();
+            return dateTimeObject.ToFhirString(outputTimeZoneHandling);
+        }
+
+        public static string FormatAsDateTime(string input, string timeZoneHandling = "local")
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return input;
+            }
+
+            if (!Enum.TryParse(timeZoneHandling, true, out TimeZoneHandlingMethod outputTimeZoneHandling))
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidTimeZoneHandling, Resources.InvalidTimeZoneHandling);
+            }
+
+            PartialDateTime dateTimeObject;
+            try
+            {
+                dateTimeObject = new PartialDateTime(input, DateTimeType.Hl7v2);
+            }
+            catch (Exception)
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
+            }
+
+            return dateTimeObject.ToFhirString(outputTimeZoneHandling);
         }
 
         public static string Now(string input, string format = "yyyy-MM-ddTHH:mm:ss.FFFZ")
