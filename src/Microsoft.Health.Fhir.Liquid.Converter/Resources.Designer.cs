@@ -106,7 +106,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to The format of Date or DateTime is invalid: {0}..
+        ///   Looks up a localized string similar to The type of Date or DateTime is invalid: {0}..
         /// </summary>
         internal static string InvalidDateTimeType
         {
