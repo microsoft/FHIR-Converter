@@ -9,6 +9,10 @@
         {{SFT.Value}}
     {% elsif EI -%}
         {{EI.Value}}
+    {% elsif AIG.3 -%}
+        {{AIG.3.Value}}
+    {% elsif AIG.4 -%}
+        {{AIG.4.Value}}
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'Device', false | generate_uuid }}

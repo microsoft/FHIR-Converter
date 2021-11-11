@@ -18,8 +18,9 @@
 {% assign accSegmentLists = hl7v2Data | get_segment_lists: 'ACC' -%}
 {% assign ub1SegmentLists = hl7v2Data | get_segment_lists: 'UB1' -%}
 {% assign ub2SegmentLists = hl7v2Data | get_segment_lists: 'UB2' -%}
-{% assign pdaSegmentLists = hl7v2Data | get_segment_lists: 'PDA' -%}                                         
-{% evaluate bundleID using 'ID/Bundle' Data: firstSegments.MSH.10 -%}      
+{% assign pdaSegmentLists = hl7v2Data | get_segment_lists: 'PDA' -%}
+{% evaluate bundleID using 'ID/Bundle' Data: firstSegments.MSH.10 -%}                                     
+        
 {
     "resourceType": "Bundle",
     "type": "batch",
@@ -295,7 +296,7 @@
                 {% include 'Resource/Organization', PV1: firstSegments.PV1.54.4, ID: Organization_ID_PV1_54_4 -%}
                 {% endif -%} 
                 {% evaluate EpisodeOfCare_ID using 'ID/EpisodeOfCare' PV1: firstSegments.PV1.54 -%}
-                {% include 'Resource/EpisodeOfCare' PV1: firstSegments.PV1, ID: EpisodeOfCare_ID, patientRefrenceID: fullPatientId -%}
+                {% include 'Resource/EpisodeOfCare' PV1: firstSegments.PV1, ID: EpisodeOfCare_ID, patientRefrenceID: fullPatientId, Root_Template: 'ADT_A04' -%}
             {% endif -%}
 
             {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
@@ -349,14 +350,8 @@
                 {% include 'Resource/Practitioner' PR1: pr1Segment.12, ID: practitionerId_PR1_12 -%}
             {% endif -%}
 
-            {% if pr1Segment.23.1 -%}
-                {% evaluate Location_ID_PR1_23_1 using 'ID/Location' PL: pr1Segment.23.1 -%}
-                {% include 'Resource/PLLocation' PL_1: pr1Segment.23.1, ID: Location_ID_PR1_23_1-%}
-            {% else %}
-                {% if pr1Segment.23.2 %}
-                    {% evaluate Location_ID_PR1_23_2 using 'ID/Location' PL: pr1Segment.23.2 -%}
-                    {% include 'Resource/PLLocation' PL_2: pr1Segment.23.2, ID: Location_ID_PR1_23_2-%}
-                {% endif %}
+            {% if pr1Segment.23 -%}
+                {% include 'Resource/PLLocation' PL: pr1Segment.23-%}
             {% endif %}
 
             {% if pr1Segment.25 -%}
@@ -481,8 +476,8 @@
                 {% evaluate conditionId_DG1_22 using 'ID/Condition' DG1: dg1Segment.22, baseId: patientId -%}
                 {% include 'Resource/Condition' DG1_22: dg1Segment.22, Condition_Subject_ID_DG1_22: fullPatientId, ID: conditionId_DG1_22 -%}
             {% endif -%}
-                {% include 'Extensions/Condition/ConditionExtension' DG1: dg1Segment, ID_DG1_22:conditionId_DG1_22, ID: conditionId %}
-            
+            {% include 'Extensions/Condition/ConditionExtension' DG1: dg1Segment, ID_DG1_22:conditionId_DG1_22, ID: conditionId %}
+
         {% endfor -%}  
 
         {% for rf1Segment in rf1SegmentLists.RF1 -%}

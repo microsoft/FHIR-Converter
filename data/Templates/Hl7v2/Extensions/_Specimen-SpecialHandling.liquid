@@ -1,0 +1,17 @@
+{
+    {% if SPL_HANDLING -%}                                     
+        "url": "http://hl7.org/fhir/StructureDefinition/specimen-specialHandling",
+        "valueCodeableConcept": 
+        {
+            "coding":
+            [  
+                {% for specimen in SPL_HANDLING.Repeats -%}
+                    {% if specimen -%} 
+                        {% assign hardcodedUrl = "http://terminology.hl7.org/CodeSystem/v2-0376" %} 
+                        {% include 'DataType/CWECodeableConceptRepeatable' CWE:specimen, systemHardcodedUrl: hardcodedUrl %}
+                    {% endif -%}   
+                {% endfor -%}     
+            ],
+        }   
+    {% endif -%}
+}

@@ -13,8 +13,33 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
     "resource":{
         "resourceType": "PractitionerRole",
         "id":"{{ ID }}",
-        {% include 'DataType/XCNPractitionerRole' XCN: PD1.4 -%}
-         
+        {% include 'DataType/XCNPractitionerRole' XCN: PD1.4 -%}        
+        {% include 'DataType/NDLPractitionerRole' NDL: OBR_32 -%}
+        {% if OBR_34 %}
+            "code": [
+                {
+                    "coding": [
+                    {
+                        "code": "TECH",
+                    },
+                    ],
+                }
+            ],
+            {% include 'DataType/NDLPractitionerRole' NDL: OBR_34 -%}
+        {% endif %}
+        {% if OBR_35 %}
+            "code": [
+                {
+                    "coding": [
+                    {
+                        "code": "TRANS",
+                    },
+                    ],
+                }
+            ],
+            {% include 'DataType/NDLPractitionerRole' NDL: OBR_35 -%}
+        {% endif %}
+        
         "identifier":
         [
             {
@@ -39,9 +64,29 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
                     "system" : "http://example.com/v2-to-fhir-converter/PractitionerRole",
                     }
                 {% endif %}
+                {% if SCH_12.12 %}
+                    {
+                    "code" : "placer-contact",
+                    "display" : "Placer Contact",
+                    "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-practitioner-role",
+                    }
+                {% endif %}
+                {% if SCH_16.16 %}
+                    {
+                    "code" : "filler-contact",
+                    "display" : "Filler Contact",
+                    "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-practitioner-role",
+                    }
+                {% endif %}
+                {% if SCH_20.20 %}
+                    {
+                    "code" : "enterer",
+                    "display" : "Enterer",
+                    "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-practitioner-role",
+                    }
+                {% endif %}
                 ],
-            },
-            
+            },       
                 {
                     {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Role', CWE: ROL.3 -%}
                     {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: ROL.4 -%}
@@ -73,6 +118,105 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
                     "reference":"Location/{{ Location_ID_ROL_13 }}",
                 {% endif -%}
             },
+            {% if SCH_12.15 -%}
+                {% if SCH_12.15.1 -%}
+                {
+                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL: SCH_12.15.1 -%}
+                    "reference":"Location/{{ Location_ID_SCH_12 }}",
+                },
+                {% elseif SCH_12.15.2 -%}
+                {
+                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL: SCH_12.15.2 -%}
+                    "reference":"Location/{{ Location_ID_SCH_12 }}",
+                },
+                {% elseif SCH_12.15.3 -%}
+                {
+                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL: SCH_12.15.3 -%}
+                    "reference":"Location/{{ Location_ID_SCH_12 }}",
+                },
+                {% elseif SCH_12.15.4 -%}
+                {
+                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL: SCH_12.15.4 -%}
+                    "reference":"Location/{{ Location_ID_SCH_12 }}",
+                },
+                {% elseif SCH_12.15.7 -%}
+                {
+                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL: SCH_12.15.7 -%}
+                    "reference":"Location/{{ Location_ID_SCH_12 }}",
+                },
+                {% elseif SCH_12.15.8 -%}
+                {
+                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL: SCH_12.15.8 -%}
+                    "reference":"Location/{{ Location_ID_SCH_12 }}",
+                },
+                {% endif %}
+            {% endif %}
+            {% if SCH_16.19 -%}
+               {% if SCH_16.19.1 -%}
+               {
+                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL: SCH_16.19.1 -%}
+                    "reference":"Location/{{ Location_ID_SCH_16 }}",
+               },
+                {% elseif SCH_16.19.2 -%}
+                {
+                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL: SCH_16.19.2 -%}
+                    "reference":"Location/{{ Location_ID_SCH_16 }}",
+                },
+                {% elseif SCH_16.19.3 -%}
+                {
+                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL: SCH_16.19.3 -%}
+                    "reference":"Location/{{ Location_ID_SCH_16 }}",
+                },
+                {% elseif SCH_16.19.4 -%}
+                {
+                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL: SCH_16.19.4 -%}
+                    "reference":"Location/{{ Location_ID_SCH_16 }}",
+                },
+                {% elseif SCH_16.19.7 -%}
+                {
+                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL: SCH_16.19.7 -%}
+                    "reference":"Location/{{ Location_ID_SCH_16 }}",
+                },
+                {% elseif SCH_16.19.8 -%}
+                {
+                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL: SCH_16.19.8 -%}
+                    "reference":"Location/{{ Location_ID_SCH_16 }}",
+                },
+                {% endif %}
+            {% endif -%}
+            {% if SCH_20.22 -%}
+                {% if SCH_20.22.1 -%}
+                {
+                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL: SCH_20.22.1 -%}
+                    "reference":"Location/{{ Location_ID_SCH_20 }}",
+                },
+                {% elseif SCH_20.22.2 -%}
+                {
+                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL: SCH_20.22.2 -%}
+                    "reference":"Location/{{ Location_ID_SCH_20 }}",
+                },
+                {% elseif SCH_20.22.3 -%}
+                {
+                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL: SCH_20.22.3 -%}
+                    "reference":"Location/{{ Location_ID_SCH_20 }}",
+                },
+                {% elseif SCH_20.22.4 -%}
+                {
+                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL: SCH_20.22.4 -%}
+                    "reference":"Location/{{ Location_ID_SCH_20 }}",
+                },
+                {% elseif SCH_20.22.7 -%}
+                {
+                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL: SCH_20.22.7 -%}
+                    "reference":"Location/{{ Location_ID_SCH_20 }}",
+                },
+                {% elseif SCH_20.22.8 -%}
+                {
+                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL: SCH_20.22.8 -%}
+                    "reference":"Location/{{ Location_ID_SCH_20 }}",
+                },
+                {% endif %}
+            {% endif -%}
         ],
         {% include 'DataType/XCNPractitionerRole' XCN: ROL.4 -%}
         
@@ -81,8 +225,8 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
             {% if PRT.8 and Organization_ID_PRT_8 -%}
                 "reference":"Organization/{{ Organization_ID_PRT_8 }}",
             {% endif -%}
-            {% if ORC.21 and Organization_ID_ORC_21 -%}
-                "reference":"Organization/{{ Organization_ID_ORC_21 }}",
+            {% if requestor_organization %}
+                "reference":"Organization/{{requestor_organization}}",
             {% endif -%}
         },
         {% include 'DataType/XCNPractitionerRole' XCN: PRT.5.Repeats[0] -%}
@@ -92,13 +236,38 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
                 {% include 'DataType/CWECodeableConcept' CWE: PRT.6 -%}
             },
         ],
+        {%- comment -%}
         {% include 'DataType/XCNPractitionerRole' XCN: ORC.12.Repeats[0] -%}
-        {% include 'DataType/NDLPractitionerRole' NDL: OBR.32 -%}
-        {% include 'DataType/NDLPractitionerRole' NDL: OBR.34 -%}
-        {% include 'DataType/NDLPractitionerRole' NDL: OBR.35 -%}
+      {%- endcomment -%}
+        "practitioner" : { 
+            {% if requestor_practitioner1 %}
+                "reference":"Practitioner/{{requestor_practitioner1}}",
+            {% elsif requestor_practitioner2 %}
+                "reference":"Practitioner/{{requestor_practitioner2}}",
+            {% endif %}
+            {% if collection_collector_practitioner %}
+                "reference":"Practitioner/{{collection_collector_practitioner}}",
+            {% endif %}
+            {% if REF_SCH_12 -%}
+                "reference":"Practitioner/{{REF_SCH_12}}",
+            {% endif -%}
+            {% if REF_SCH_16 -%}
+            "reference":"Practitioner/{{ REF_SCH_16 }}",
+            {% endif -%}
+            {% if REF_SCH_20 -%}
+            "reference":"Practitioner/{{ REF_SCH_20 }}",
+            {% endif -%}
+            {% if practitionerId_TXA -%}
+            "reference":"Practitioner/{{ practitionerId_TXA }}",
+            {% endif -%}
+            
+         },
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"PractitionerRole/{{ ID }}",
     },
 },

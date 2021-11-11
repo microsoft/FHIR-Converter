@@ -2,6 +2,31 @@
     "resource":{
         "resourceType": "ServiceRequest",
         "id":"{{ ID }}",
+        "identifier":
+        [   
+            {% if OBR %}
+            {
+                "type":
+                {
+                    "coding":
+                    [
+                        {
+                            {% if OBR.29.1 and OBR.50 == null -%}
+                                "code": "PLAC",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                            {% elsif OBR.29.2 and OBR.50 == null %}
+                                "code": "FILL",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"  
+                            {% elsif OBR.50 %}
+                                {% include 'DataType/CWECodeableConcept' CWE: OBR.50 %}
+                            {% endif %}
+                        }
+                    ],
+                },
+            },
+            {% endif -%}
+        ],
+       
         "basedOn":
         [
             {

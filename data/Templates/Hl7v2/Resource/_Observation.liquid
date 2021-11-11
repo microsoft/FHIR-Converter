@@ -48,7 +48,14 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
         {
             {% include 'DataType/CWECodeableConcept' CWE: OBX.3 -%}
         },
-
+        "basedOn":
+        [
+            {
+                {% if Observation_ServiceRequest_ID %}
+                    "reference":"ServiceRequest/{{ Observation_ServiceRequest_ID }}",
+                {% endif %}
+            },
+        ],
         {% if OBX.11.1.Value == 'X' or OBX.11.1.Value == 'N' %}
             "dataAbsentReason" : { 
                 "coding" : [
@@ -365,26 +372,29 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                 },
             {% endfor %}
         ],
-
-    
-        
-      {%- comment -%}  
+        "specimen":
+        {
+            {% if Observation_Specimen_ID %}
+                "reference":"{{ Observation_Specimen_ID }}",
+            {% endif %}
+        },
         "subject":
         {
             "reference":"{{ Observation_Subject_ID }}",
         },
+        {%- comment -%}  
         "encounter":
         {
             "reference":"{{ Observation_Encounter_ID }}",
         }, 
-        "specimen":
-        {
-            "reference":"{{ Observation_Specimen_ID }}",
-        },
-        {%- endcomment -%}
+         {%- endcomment -%}
+       
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Observation/{{ ID }}",
     },
 },

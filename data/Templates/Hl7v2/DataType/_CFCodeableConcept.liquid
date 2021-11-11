@@ -4,15 +4,22 @@
         {
             {% if mapping -%}
                 "code":"{{CF.1.Value | get_property: mapping, 'code' }}",
-                "display":"{{CF.1.Value | get_property: mapping, 'display' }}",
-                "system":"{{CF.1.Value | get_property: mapping, 'system' }}",
+                {% capture displayURL %}{{ CF.1.Value | get_property: mapping, 'display' }}{% endcapture %}
+                    "display":"{{ displayURL }}",
+                {% if displayURL ==  CF.1.Value %}
+                    "display":"{{ CF.2.Value }}",
+                {% endif %}
+                {% if CF.3 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CF.3.Value | replace: ' ', '-'}}",
+                {% endif %}
+                "system":"{{ CF.1.Value | get_property: mapping, 'system' }}",
                 "version":"{{CF.1.Value | get_property: mapping, 'version' }}",
                 "version":"{{CF.7.Value }}",
             {% else -%}
                 "code":"{{CF.1.Value }}",
                 "display":"{{CF.2.Value }}",
                 {% if CF.3 %}
-                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CF.3.Value}}",
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CF.3.Value | replace: ' ', '-'}}",
                 {% endif %}
                 {% capture SYSTEM_PROPERTY_VALUE %}{{ CF.3.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
                 {% if SYSTEM_PROPERTY_VALUE -%}
@@ -24,15 +31,22 @@
         {
             {% if mapping -%}
                 "code":"{{CF.4.Value | get_property: mapping, 'code' }}",
-                "display":"{{CF.4.Value | get_property: mapping, 'display' }}",
-                "system":"{{CF.4.Value | get_property: mapping, 'system' }}",
+                {% capture displayURL %}{{ CF.4.Value | get_property: mapping, 'display' }}{% endcapture %}
+                    "display":"{{ displayURL }}",
+                {% if displayURL ==  CF.4.Value %}
+                    "display":"{{ CF.5.Value }}",
+                {% endif %}
+                {% if CF.6 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CF.6.Value | replace: ' ', '-'}}",
+                {% endif %}
+                "system":"{{ CF.4.Value | get_property: mapping, 'system' }}",
                 "version":"{{CF.4.Value | get_property: mapping, 'version' }}",
                 "version":"{{CF.8.Value }}",
             {% else -%}
                 "code":"{{CF.4.Value }}",
                 "display":"{{CF.5.Value }}",
                 {% if CF.6 %}
-                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CF.6.Value}}",
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CF.6.Value | replace: ' ', '-'}}",
                 {% endif %}
                 {% capture SYSTEM_PROPERTY_VALUE %}{{ CF.6.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
                 {% if SYSTEM_PROPERTY_VALUE -%}
@@ -44,15 +58,23 @@
         {
             {% if mapping -%}
                 "code":"{{CF.10.Value | get_property: mapping, 'code' }}",
-                "display":"{{CF.10.Value | get_property: mapping, 'display' }}",
-                "system":"{{CF.10.Value | get_property: mapping, 'system' }}",
+                "code":"{{ CF.10.Value | get_property: mapping, 'code' }}",
+                {% capture displayURL %}{{ CF.10.Value | get_property: mapping, 'display' }}{% endcapture %}
+                    "display":"{{ displayURL }}",
+                {% if displayURL ==  CF.10.Value %}
+                    "display":"{{ CF.11.Value }}",
+                {% endif %}
+                {% if CF.12 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CF.12.Value | replace: ' ', '-'}}",
+                {% endif %}
+                "system":"{{ CF.10.Value | get_property: mapping, 'system' }}",
                 "version":"{{CF.10.Value | get_property: mapping, 'version' }}",
                 "version":"{{CF.13.Value }}",
             {% else -%}
                 "code":"{{CF.10.Value }}",
                 "display":"{{CF.11.Value }}",
                 {% if CF.12 %}
-                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CF.12.Value}}",
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CF.12.Value | replace: ' ', '-'}}",
                 {% endif %}
                 {% capture SYSTEM_PROPERTY_VALUE %}{{ CF.12.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
                 {% if SYSTEM_PROPERTY_VALUE -%}

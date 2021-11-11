@@ -1,0 +1,33 @@
+{% if CM %}
+{% if CM.1 %}
+    "type": {
+        {% include 'DataType/CWECodeableConcept' CWE: CM.1 %}
+    },
+{% endif %}
+{% if CM.2 %}
+    "container": {
+        "additiveCodeableConcept": "{{CM.2.Value}} ";
+    },
+{% endif %}
+{% if CM.3 %}
+    "note": [
+        {
+            "text": "{{CM.3.Value}}",
+        }
+    ],
+{% endif %}
+{% if CM.4 %}
+"collection": [
+    {
+        "site": {
+            {% include 'DataType/CWECodeableConcept' CWE: CM.4 %}
+        }
+    }
+],
+{% endif %}
+{% if CM.5 %}
+    "condition": {
+        {% include 'DataType/CWECodeableConcept' CWE: CM.5 %}
+    },
+{% endif %}
+{% endif %}

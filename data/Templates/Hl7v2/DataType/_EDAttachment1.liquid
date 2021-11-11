@@ -1,4 +1,14 @@
 {% if ED -%}
-    "contentType":"{{ ED.2.Value }}",
+    {% assign mimetype = ED.2.Value | get_property: 'CodeSystem/MimeType', 'code' -%}
+    {% if ED.3 -%}
+        {% if ED.3.Value == "Octet-stream" or ED.3.Value == "PostScript" -%}
+            {% assign mimesubtype = ED.2.Value | get_property: 'CodeSystem/MimeType', 'display' -%}
+        {% else -%}
+            {% assign mimesubtype = ED.3.Value | get_property: 'CodeSystem/MimeSubType', 'code' -%}
+        {% endif -%}
+    {% else -%}
+        {% assign mimesubtype = ED.2.Value | get_property: 'CodeSystem/MimeType', 'display' -%}
+    {% endif -%}
+    "contentType": "{{mimetype | append: "/" | append: mimesubtype}}",
     "data":"{{ ED.5.Value }}",
 {% endif -%}
