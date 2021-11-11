@@ -1,7 +1,6 @@
 {% if CQ -%}
-    "repeat":
-    {
-        "duration":"{{ CQ.1.Value }}",
-        "durationUnit":"{{ CQ.2.Value }}",
-    },
+    {% if CQ.1 -%}
+        "duration":{{ CQ.1.Value }},
+    {% endif -%}
+    "durationUnit":"{{ CQ.2.1 | get_property: 'CodeSystem/DurationUnit', 'code' }}",
 {% endif -%}

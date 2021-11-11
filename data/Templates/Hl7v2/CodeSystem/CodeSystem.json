@@ -1573,6 +1573,48 @@
                 "system": "http://hl7.org/fhir/specimen-status"
             }
         }, 
+        "CodeSystem/SpecimenCondition": {
+            "AUT": {
+                "code": "AUT", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            }, 
+            "CFU": {
+                "code": "CFU", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            },
+			"LIVE": {
+                "code": "LIVE", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            }, 
+            "CLOT": {
+                "code": "CLOT", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            },
+			"CON": {
+                "code": "CON", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            }, 
+            "COOL": {
+                "code": "COOL", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            },
+			"FROZ": {
+                "code": "FROZ", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            }, 
+            "HEM": {
+                "code": "HEM", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            },
+			"ROOM": {
+                "code": "ROOM", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            }, 
+            "SNR": {
+                "code": "SNR", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0493"
+            }
+        }, 
         "CodeSystem/SecurityLabelHandlingInstructions": {}, 
         "CodeSystem/Yes_No": {
             "Y": {
@@ -2250,7 +2292,63 @@
                 "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
             }
         }, 
-        "CodeSystem/DurationUnit": {}, 
+        "CodeSystem/DurationUnit": {
+            "s": {
+                "code": "s", 
+                "display": "second", 
+                "system": "http://unitsofmeasure.org"
+            },
+            "Min": {
+                "code": "min", 
+                "display": "minute", 
+                "system": "http://unitsofmeasure.org"
+            },
+            "Hr": {
+                "code": "h", 
+                "display": "hour", 
+                "system": "http://unitsofmeasure.org"
+            },
+            "d": {
+                "code": "d", 
+                "display": "day", 
+                "system": "http://unitsofmeasure.org"
+            },
+            "wk": {
+                "code": "wk", 
+                "display": "week", 
+                "system": "http://unitsofmeasure.org"
+            },
+            "mo": {
+                "code": "mo", 
+                "display": "month", 
+                "system": "http://unitsofmeasure.org"
+            },
+            "yr": {
+                "code": "a", 
+                "display": "year", 
+                "system": "http://unitsofmeasure.org"
+            },
+            "ann": {
+                "code": "a", 
+                "display": "year", 
+                "system": "http://unitsofmeasure.org"
+            },
+            "sec": {
+                "code": "s", 
+                "display": "second", 
+                "system": "http://unitsofmeasure.org"
+            },
+            "min": {
+                "code": "min", 
+                "display": "minute", 
+                "system": "http://unitsofmeasure.org"
+            },
+            "hr": {
+                "code": "h", 
+                "display": "hour", 
+                "system": "http://unitsofmeasure.org"
+            }
+        }, 
         "CodeSystem/AllergyType": {
             "AA": {
                 "code": "allergy", 
@@ -3209,63 +3307,262 @@
                 "system": "http://terminology.hl7.org/CodeSystem/v2-0315"
             }
         }, 
-        "CodeSystem/ResultStatus": {
-            "A": {
-                "code": "partial", 
-                "display": "Partial", 
+        "CodeSystem/DiagnosticReportStatus": {
+            "C": {
+                "code": "corrected",  
                 "system": "http://hl7.org/fhir/diagnostic-report-status"
             }, 
-            "C": {
-                "code": "corrected", 
-                "display": "Corrected", 
+            "D": {
+                "code": "cancelled", 
                 "system": "http://hl7.org/fhir/diagnostic-report-status"
             }, 
             "F": {
                 "code": "final", 
-                "display": "Final", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "I": {
+                "code": "preliminary", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 			
+            "N": {
+                "code": "unknown"
+            }, 
+			"O": {
+                "code": "unknown"
+            }, 
+			"P": {
+                "code": "preliminary", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            },
+            "S": {
+                "code": "partial", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "R": {
+                "code": "unknown"
+            }, 
+			"X": {
+                "code": "cancelled", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "U": {
+                "code": "unknown"
+            }, 
+            "W": {
+                "code": "entered-in-error", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }
+        }, 
+        "CodeSystem/ResultStatus": {
+            "A": {
+                "code": "partial", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "C": {
+                "code": "corrected",  
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
+            }, 
+            "F": {
+                "code": "final", 
                 "system": "http://hl7.org/fhir/diagnostic-report-status"
             }, 
             "I": {
                 "code": "registered", 
-                "display": "Registered", 
                 "system": "http://hl7.org/fhir/diagnostic-report-status"
             }, 
             "O": {
                 "code": "registered", 
-                "display": "Registered", 
                 "system": "http://hl7.org/fhir/diagnostic-report-status"
             }, 
             "P": {
                 "code": "preliminary", 
-                "display": "Preliminary", 
                 "system": "http://hl7.org/fhir/diagnostic-report-status"
             }, 
             "S": {
                 "code": "registered", 
-                "display": "Registered", 
                 "system": "http://hl7.org/fhir/diagnostic-report-status"
             }, 
             "R": {
                 "code": "partial", 
-                "display": "Partial", 
                 "system": "http://hl7.org/fhir/diagnostic-report-status"
             }, 
             "Y": {
-                "code": "", 
-                "display": "", 
-                "system": ""
+                "code": "unknown", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
             }, 
             "X": {
                 "code": "cancelled", 
-                "display": "Cancelled", 
                 "system": "http://hl7.org/fhir/diagnostic-report-status"
             }, 
             "Z": {
-                "code": "", 
-                "display": "", 
-                "system": ""
+                "code": "unknown", 
+                "system": "http://hl7.org/fhir/diagnostic-report-status"
             }
         }, 
+
+        "CodeSystem/DiagnosticServiceSection": {
+            "AU": {
+                "code": "AU", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+            "BG": {
+                "code": "BG", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "BLB": {
+                "code": "BLB", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "CG": {
+                "code": "CG", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "CUS": {
+                "code": "CUS", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "CTH": {
+                "code": "CTH", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "CT": {
+                "code": "CH", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "CP": {
+                "code": "CP", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "EC": {
+                "code": "EC", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "EN": {
+                "code": "EN", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "GE": {
+                "code": "GE", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "HM": {
+                "code": "HM", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "ICU": {
+                "code": "ICU", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "IMM": {
+                "code": "IMM", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "LAB": {
+                "code": "LAB", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "MB": {
+                "code": "MB", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "MCB": {
+                "code": "MCB", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "MYC": {
+                "code": "MYC", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "NMS": {
+                "code": "NMS", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "NMR": {
+                "code": "NMR", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "NRS": {
+                "code": "NRS", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "OUS": {
+                "code": "OUS", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "OT": {
+                "code": "OT", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "OTH": {
+                "code": "OTH", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "OSL": {
+                "code": "OSL", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "PHR": {
+                "code": "PHR", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "PT": {
+                "code": "PT", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "PHY": {
+                "code": "PHY", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "PF": {
+                "code": "PF", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "RAD": {
+                "code": "RAD", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "RX": {
+                "code": "RX", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "RUS": {
+                "code": "RUS", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "RC": {
+                "code": "RC", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "RT": {
+                "code": "RT", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "SR": {
+                "code": "SR", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "SP": {
+                "code": "SP", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "TX": {
+                "code": "TX", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "VUS": {
+                "code": "VUS", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "VR": {
+                "code": "VR", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }, 
+           "VXC": {
+                "code": "VXC", 
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074"
+            }
+        }, 
+
         "CodeSystem/ConsentRelationship": {
             "3": {
                 "code": "N", 
@@ -4038,6 +4335,53 @@
                 "system": "http://hl7.org/fhir/encounter-status"
             }
         },
+        "CodeSystem/EpisodeOfCareStatus": {
+            "E": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/encounter-status"
+            }, 
+            "I": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/encounter-status"
+            }, 
+            "O": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/encounter-status"
+            }, 
+            "P": {
+                "code": "planned", 
+                "display": "Planned", 
+                "system": "http://hl7.org/fhir/encounter-status"
+            }, 
+            "R": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/encounter-status"
+            },
+            "B": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/encounter-status"
+            },
+            "C": {
+                "code": "active", 
+                "display": "Active", 
+                "system": "http://hl7.org/fhir/encounter-status"
+            },
+            "N": {
+                "code": "cancelled", 
+                "display": "Cancelled", 
+                "system": "http://hl7.org/fhir/encounter-status"
+            },  
+            "U": {
+                "code": "", 
+                "display": "", 
+                "system": "http://hl7.org/fhir/encounter-status"
+            }
+        },
         "CodeSystem/AllergyIntoleranceCriticality": {
             "SV": {
                 "code" : "high",
@@ -4795,6 +5139,533 @@
                 "code" : "19",
                 "display" : "Grandparent",
                 "system" : "http://terminology.hl7.org/CodeSystem/v2-0344"
+            }
+        },
+        "CodeSystem/FillerStatusServiceRequestStatus": {
+            "Pending" : {
+                 "code" : "draft",
+                 "display" : "Draft",
+                 "system" : "http://hl7.org/fhir/request-status"
+            },
+            "Waitlist" : {
+                "code" : "draft",
+                "display" : "Draft",
+                "system" : "http://hl7.org/fhir/request-status"
+           },
+           "Booked" : {
+                 "code" : "active",
+                 "display" : "Active",
+                 "system" : "http://hl7.org/fhir/request-status"
+            },
+            "Started" : {
+                "code" : "active",
+                "display" : "Active",
+                "system" : "http://hl7.org/fhir/request-status"
+           },
+           "Complete" : {
+                "code" : "completed",
+                "display" : "Completed",
+                "system" : "http://hl7.org/fhir/request-status"
+           },
+           "Cancelled" : {
+                "code" : "revoked",
+                "display" : "Revoked",
+                "system" : "http://hl7.org/fhir/request-status"
+           },
+           "Dc" : {
+                "code" : "revoked",
+                "display" : "Revoked",
+                "system" : "http://hl7.org/fhir/request-status"
+           },
+           "Deleted" : {
+                "code" : "entered-in-error",
+                "display" : "Entered In Error",
+                "system" : "http://hl7.org/fhir/request-status"
+           },
+           "Blocked" : {
+                "code" : "draft",
+                "display" : "Draft",
+                "system" : "http://hl7.org/fhir/request-status"
+           },
+           "Overbook" : {
+                "code" : "draft",
+                "display" : "Draft",
+                "system" : "http://hl7.org/fhir/request-status"
+           },
+           "Noshow" : {
+                "code" : "revoked",
+                "display" : "Revoked",
+                "system" : "http://hl7.org/fhir/request-status"
+           }
+        },
+        "CodeSystem/FillerStatusAppointmentParticipantStatus": {
+            "Pending" : {
+                 "code" : "tentative",
+                 "display" : "Tentative",
+                 "system" : "http://hl7.org/fhir/participationstatus"
+            },
+            "Waitlist" : {
+                "code" : "tentative",
+                "display" : "Tentative",
+                "system" : "http://hl7.org/fhir/participationstatus"
+           },
+           "Booked" : {
+                 "code" : "accepted",
+                 "display" : "Accepted",
+                 "system" : "http://hl7.org/fhir/participationstatus"
+            },
+            "Started" : {
+                "code" : "accepted",
+                "display" : "Accepted",
+                "system" : "http://hl7.org/fhir/participationstatus"
+           },
+           "Complete" : {
+                "code" : "accepted",
+                "display" : "Accepted",
+                "system" : "http://hl7.org/fhir/participationstatus"
+           },
+           "Cancelled" : {
+                "code" : "declined",
+                "display" : "Declined",
+                "system" : "http://hl7.org/fhir/participationstatus"
+           },
+           "Dc" : {
+                "code" : "declined",
+                "display" : "Declined",
+                "system" : "http://hl7.org/fhir/participationstatus"
+           },
+           "Deleted" : {
+                "code" : "declined",
+                "display" : "Declined",
+                "system" : "http://hl7.org/fhir/participationstatus"
+           },
+           "Blocked" : {
+                "code" : "needs-action",
+                "display" : "Needs Action",
+                "system" : "http://hl7.org/fhir/participationstatus"
+           },
+           "Overbook" : {
+                "code" : "needs-action",
+                "display" : "Needs Action",
+                "system" : "http://hl7.org/fhir/participationstatus"
+           },
+           "Noshow" : {
+                "code" : "declined",
+                "display" : "Declined",
+                "system" : "http://hl7.org/fhir/participationstatus"
+           }
+        },
+        "CodeSystem/LocationRoleType": {
+            "C" : {
+                 "code" : "C",
+                 "display" : "Clinic",
+                 "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-LocationRoleType"
+            },
+            "D" : {
+                "code" : "D",
+                "display" : "Department",
+                "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-LocationRoleType"
+           },
+           "H" : {
+                 "code" : "H",
+                 "display" : "Home",
+                 "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-LocationRoleType"
+            },
+            "N" : {
+                "code" : "N",
+                "display" : "Nursing Unit",
+                "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-LocationRoleType"
+           },
+           "O" : {
+                "code" : "PROFF",
+                "display" : "Provider's Office",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+           },
+           "P" : {
+                "code" : "P",
+                "display" : "Phone",
+                "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-LocationRoleType"
+           },
+           "S" : {
+                "code" : "SNF",
+                "display" : "Skilled nursing facility",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-RoleCode"
+           }
+        },
+        "CodeSystem/AppointmentType": {
+            "ROUTINE" : {
+                 "code" : "ROUTINE",
+                 "display" : "Routine appointment - default if not valued",
+                 "system" : "http://terminology.hl7.org/CodeSystem/v2-0276"
+            },
+            "WALKIN" : {
+                "code" : "WALKIN",
+                "display" : "A previously unscheduled walk-in visit",
+                "system" : "http://terminology.hl7.org/CodeSystem/v2-0276"
+           },
+           "CHECKUP" : {
+                 "code" : "CHECKUP",
+                 "display" : "A routine check-up, such as an annual physical",
+                 "system" : "http://terminology.hl7.org/CodeSystem/v2-0276"
+            },
+            "FOLLOWUP" : {
+                "code" : "FOLLOWUP",
+                "display" : "A follow up visit from a previous appointment",
+                "system" : "http://terminology.hl7.org/CodeSystem/v2-0276"
+           },
+           "EMERGENCY" : {
+                "code" : "EMERGENCY",
+                "display" : "Emergency appointment",
+                "system" : "http://terminology.hl7.org/CodeSystem/v2-0276"
+           }
+        },
+        "CodeSystem/FillerStatus" : {
+            "Pending" : {
+                 "code" : "pending",
+                 "display" : "Proposed",
+                 "system" : "http://hl7.org/fhir/R4/codesystem-appointmentstatus.html"
+            },
+            "Waitlist" : {
+                "code" : "waitlist",
+                "display" : "Waitlisted",
+                "system" : "http://hl7.org/fhir/R4/codesystem-appointmentstatus.html"
+           },
+           "Booked" : {
+                 "code" : "booked",
+                 "display" : "Booked",
+                 "system" : "http://hl7.org/fhir/R4/codesystem-appointmentstatus.html"
+            },
+            "Started" : {
+                "code" : "checked-in",
+                "display" : "Checked In",
+                "system" : "http://hl7.org/fhir/R4/codesystem-appointmentstatus.html"
+           },
+           "Complete" : {
+                "code" : "fulfilled",
+                "display" : "Fulfilled",
+                "system" : "http://hl7.org/fhir/R4/codesystem-appointmentstatus.html"
+           },
+           "Cancelled" : {
+                "code" : "cancelled",
+                "display" : "Cancelled",
+                "system" : "http://hl7.org/fhir/R4/codesystem-appointmentstatus.html"
+            },
+            "Dc" : {
+                "code" : "cancelled",
+                "display" : "Cancelled",
+                "system" : "http://hl7.org/fhir/R4/codesystem-appointmentstatus.html"
+            },
+            "Deleted" : {
+                "code" : "entered-in-error",
+                "display" : "Entered In Error",
+                "system" : "http://hl7.org/fhir/R4/codesystem-appointmentstatus.html"
+            },
+            "Blocked" : {
+                "code" : "waitlist",
+                "display" : "Waitlisted",
+                "system" : "http://hl7.org/fhir/R4/codesystem-appointmentstatus.html"
+            },
+            "Overbook" : {
+                "code" : "waitlist",
+                "display" : "Waitlisted",
+                "system" : "http://hl7.org/fhir/R4/codesystem-appointmentstatus.html"
+            },
+            "Noshow" : {
+                "code" : "noshow",
+                "display" : "No Show",
+                "system" : "http://hl7.org/fhir/R4/codesystem-appointmentstatus.html"
+            }
+        },
+        "CodeSystem/DocumentAvailabilityStatus" : {
+            "AV" : {
+                "code" : "current",
+                "display" : "Current",
+                "system" : "http://hl7.org/fhir/document-reference-status"
+            },
+            "CA" : {
+               "code" : "entered-in-error",
+               "display" : "Entered in Error",
+               "system" : "http://hl7.org/fhir/document-reference-status"
+            },
+            "OB" : {
+                "code" : "entered-in-error",
+                "display" : "Entered in Error",
+                "system" : "http://hl7.org/fhir/document-reference-status"
+            },
+            "UN" : {
+               "code" : "current",
+               "display" : "Current",
+               "system" : "http://hl7.org/fhir/document-reference-status"
+            }
+        },
+        "CodeSystem/SecurityLableHandingInstructions": {
+            "R" : {
+                "code" : "R",
+                "display" : "restricted",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+            },
+            "U" : {
+               "code" : "U",
+               "display" : "unrestricted",
+               "system" : "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+            },
+            "V" : {
+                "code" : "V",
+                "display" : "very restricted",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-Confidentiality"
+            }
+        },
+        "CodeSystem/DocumentCompletionStatus" : {
+            "AU" : {
+                "code" : "preliminary",
+                "display" : "Preliminary",
+                "system" : "http://hl7.org/fhir/composition-status"
+            },
+            "DI" : {
+                "code" : "preliminary",
+                "display" : "Preliminary",
+                "system" : "http://hl7.org/fhir/composition-status"
+            },
+            "DO" : {
+                "code" : "preliminary",
+                "display" : "Preliminary",
+                "system" : "http://hl7.org/fhir/composition-status"
+            },
+            "IN" : {
+                "code" : "preliminary",
+                "display" : "Preliminary",
+                "system" : "http://hl7.org/fhir/composition-status"
+            },
+            "IP" : {
+                "code" : "preliminary",
+                "display" : "Preliminary",
+                "system" : "http://hl7.org/fhir/composition-status"
+            },
+            "LA" : {
+                "code" : "final",
+                "display" : "Final",
+                "system" : "http://hl7.org/fhir/composition-status"
+            },
+            "PA" : {
+                "code" : "preliminary",
+                "display" : "Preliminary",
+                "system" : "http://hl7.org/fhir/composition-status"
+            }
+        },
+        "CodeSystem/MimeType": {
+            "AP" : {
+                 "code" : "application",
+                 "display" : "pdf",
+                 "system" : "urn:ietf:bcp:13"
+            },
+            "AU" : {
+                "code" : "audio",
+                "display" : "basic",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "FT" : {
+                "code" : "text",
+                "display" : "x-hl7-ft",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "IM" : {
+                "code" : "image",
+                "display" : "jpeg",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "NS" : {
+                    "code" : "image",
+                    "display" : "jpeg",
+                    "system" : "urn:ietf:bcp:13"
+            },
+            "SD" : {
+                "code" : "image",
+                "display" : "jpeg",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "SI" : {
+                "code" : "image",
+                "display" : "jpeg",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "TX" : {
+                "code" : "text",
+                "display" : "plain",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "application" : {
+                "code" : "application",
+                "display" : "pdf",
+                "system" : "urn:ietf:bcp:13"
+            },
+           "audio" : {
+               "code" : "audio",
+               "display" : "basic",
+               "system" : "urn:ietf:bcp:13"
+            },
+            "image" : {
+                "code" : "image",
+                "display" : "jpeg",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "model" : {
+                "code" : "model",
+                "display" : "vrml",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "multipart" : {
+                "code" : "multipart",
+                "display" : "x-hl7-cda-level-one",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "text" : {
+                "code" : "text",
+                "display" : "plain",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "video" : {
+                "code" : "video",
+                "display" : "mpeg",
+                "system" : "urn:ietf:bcp:13"
+            }
+        },
+        "CodeSystem/MimeSubType": {
+            "BASIC" : {
+                 "code" : "basic",
+                 "display" : "Basic",
+                 "system" : "urn:ietf:bcp:13"
+            },
+            "DICOM" : {
+                "code" : "dicom",
+                "display" : "DICOM",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "FAX" : {
+                    "code" : "g3fax",
+                    "display" : "",
+                    "system" : "urn:ietf:bcp:13"
+            },
+            "GIF" : {
+                "code" : "gif",
+                "display" : "GIF",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "HTML" : {
+                    "code" : "html",
+                    "display" : "HTML",
+                    "system" : "urn:ietf:bcp:13"
+            },
+            "JOT" : {
+                "code" : "jpeg",
+                "display" : "",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "JPEG" : {
+                "code" : "jpeg",
+                "display" : "JPEG",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "Octet-stream" : {
+                "code" : "",
+                "display" : "",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "PICT" : {
+                "code" : "pict",
+                "display" : "",
+                "system" : "urn:ietf:bcp:13"
+            },
+           "PostScript" : {
+               "code" : "",
+               "display" : "",
+               "system" : "urn:ietf:bcp:13"
+            },
+            "RTF" : {
+                "code" : "rtf",
+                "display" : "RTF",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "TIFF" : {
+                "code" : "tiff",
+                "display" : "TIFF",
+                "system" : "urn:ietf:bcp:13"
+            },
+            "x-hl7-cda-level-one" : {
+                "code" : "x-hl7-cda-level-one",
+                "display" : "",
+                "system" : "urn:ietf:bcp:13"
+            }
+        },
+        "CodeSystem/EventTiming": {
+            "AC" : {
+                 "code" : "AC",
+                 "display" : "AC",
+                 "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
+            },
+            "ACD" : {
+                "code" : "ACD",
+                "display" : "ACD",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
+            },
+            "ACM" : {
+                "code" : "ACM",
+                "display" : "ACM",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
+            },
+            "ACV" : {
+                "code" : "ACV",
+                "display" : "ACV",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
+            },
+            "HS" : {
+                "code" : "HS",
+                "display" : "HS",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
+            },
+            "IC" : {
+                "code" : "C",
+                "display" : "C",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
+            },
+            "ICD" : {
+                "code" : "CD",
+                "display" : "CD",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
+            },
+            "ICM" : {
+                "code" : "CM",
+                "display" : "CM",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
+            },
+            "ICV" : {
+                "code" : "CV",
+                "display" : "CV",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
+            },
+           "PC" : {
+               "code" : "PC",
+               "display" : "PC",
+               "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
+            },
+            "PCD" : {
+                "code" : "PCD",
+                "display" : "PCD",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
+            },
+            "PCM" : {
+                "code" : "PCM",
+                "display" : "PCM",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
+            },
+            "PCV" : {
+                "code" : "PCV",
+                "display" : "PCV",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
+            },
+            "WAKE" : {
+                "code" : "WAKE",
+                "display" : "WAKE",
+                "system" : "http://terminology.hl7.org/CodeSystem/v3-TimingEvent"
             }
         }
     }

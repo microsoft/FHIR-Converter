@@ -1,0 +1,14 @@
+{
+    "resource":{
+        "resourceType": "Specimen",
+        "id":"{{ ID }}",
+        "collection": {
+            "extension":
+            [
+                {% if SPM.15 -%}
+                    {% include 'Extensions/Specimen-SpecialHandling' SPL_HANDLING: SPM.15 -%},
+                {% endif -%}
+            ],
+        },
+    },
+},

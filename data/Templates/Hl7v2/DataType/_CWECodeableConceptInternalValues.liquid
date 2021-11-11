@@ -1,0 +1,43 @@
+{% if CWE -%}
+    "coding":
+    [
+        {
+                "code":"{{ CWE.1 }}",
+                "display":"{{ CWE.2 }}",
+
+                {% if CWE.3 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.3 | replace: ' ', '-'}}",
+                {% endif %}
+                {% capture temp %}{{ CWE.3 | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+                {% if temp%}
+                    "system":"{{temp}}",              
+                {% endif %}
+                "version":"{{ CWE.7 }}",
+        },
+        {
+                "code":"{{ CWE.4 }}",
+                "display":"{{ CWE.5 }}",
+                {% if CWE.6 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.6 | replace: ' ', '-'}}",
+                {% endif %}
+                {% capture temp %}{{ CWE.6 | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+                {% if temp%}
+                    "system":"{{temp}}",              
+                {% endif %}
+                "version":"{{ CWE.8 }}",
+        },
+        {
+                "code":"{{ CWE.10 }}",
+                "display":"{{ CWE.11 }}",
+                {% if CWE.12 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.12 | replace: ' ', '-'}}",
+                {% endif %}
+                {% capture temp %}{{ CWE.12 | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+                {% if temp%}
+                    "system":"{{temp}}",              
+                {% endif %}
+                "version":"{{ CWE.13 }}",
+        },
+    ],
+    "text":"{{ CWE.9 }}",
+{% endif -%}

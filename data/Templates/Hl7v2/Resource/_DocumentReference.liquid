@@ -1,0 +1,123 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "DocumentReference",
+        "id":"{{ ID }}",
+        "type" :{
+            {% include 'DataType/CWECodeableConcept' CWE: TXA.2 -%}
+        },
+        "context" : { 
+            "period" : {
+                "start" : "{{ TXA.4.Value | format_as_date_time }}",
+            },
+            {% if TXA.5 -%}
+            "related" : [
+                {% for txa_5 in TXA.5.Repeats -%}
+                {% evaluate practitionerId_TXA_5 using 'ID/Practitioner' XCN: txa_5 -%}
+                    {
+                        "reference" : "Practitioner/{{practitionerId_TXA_5}}",
+                    },
+                {% endfor -%}
+            ]
+            {% endif -%}
+        },       
+        "content" : [
+            { 
+                "attachment" : {
+                    {% if OBX.2.Value == "ED" and OBX.14 == null -%}
+                        "creation" : "{{ TXA.6.Value | format_as_date_time }}",
+                    {% endif -%}
+                    {% unless OBX.Value %}
+                        "creation" : "{{ TXA.6.Value | format_as_date_time }}",
+                    {% endunless %}
+
+                    "title": "{{OBX.3.2.Value}}",
+                    {% if OBX.2.Value == "RP" -%}
+                        {% include 'DataType/RPAttachment' RP: OBX.5 %}
+                    {% endif -%}
+                    {% if OBX.2.Value == "ED" and OBX.5.4.Value == "Base64" -%}
+                        {% include 'DataType/EDAttachment1' ED: OBX.5 %}
+                    {% endif -%}
+                },      
+            }
+        ],
+        
+        "meta": {
+            "lastUpdated" : "{{ TXA.8.Value | format_as_date_time }}",
+        },
+        "author" : [
+            {% if TXA.9 -%}
+                {% for txa_9 in TXA.9.Repeats -%}
+                    {% if txa_9.Value != null and txa_9.Value != "" -%}
+                    { 
+                        {% evaluate practitionerRoleId_TXA9 using 'ID/PractitionerRole' XCN: txa_9 -%}
+                        "reference" : "PractitionerRole/{{practitionerRoleId_TXA9}}",
+                    },
+                    {% endif -%}
+                {% endfor -%}
+            {% endif -%}
+        ],
+        "authenticator" : { 
+            {% if TXA.10.Repeats[0] -%}
+                {% evaluate practitionerRoleId_TXA10 using 'ID/PractitionerRole' XCN: TXA.10.Repeats[0]-%}
+                "reference" : "PractitionerRole/{{practitionerRoleId_TXA10}}",
+            {% endif -%}
+         },
+         "masterIdentifier" : {
+             {% include 'DataType/EIIdentifier' EI: TXA.12 -%}
+         },
+         "identifier" : [
+             {% if TXA.16 -%}
+             {
+                "value" : "{{ TXA.16.Value }}",
+                "type" : { 
+                   "coding": [
+                        {
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-identifertype",
+                            "code" : "DOCI",
+                            "display" : "Document unique identifier"
+                        }
+                    ],
+                    "text" : "Document unique file name",
+                }
+            }
+            {% endif -%}
+        ],
+         "relatesTo" : [
+            {% if TXA.13 -%}
+            {
+                "code" : "appends",
+                "target" : { 
+                    "identifier":
+                        {
+                            {% include 'DataType/EIIdentifier' EI: TXA.13 -%}
+                        }
+                }
+            }
+            {% endif -%}
+        ],
+        "docStatus" : "{{ TXA.17.Value | get_property: 'CodeSystem/DocumentCompletionStatus', 'code' }}",
+        "securityLabel" : [
+            { 
+                {% include 'DataType/IDCodeableConcept' mapping: 'CodeSystem/SecurityLableHandingInstructions' , ID: TXA.18 -%}
+            }
+        ],
+        "status" : "{{ TXA.19.Value | get_property: 'CodeSystem/DocumentAvailabilityStatus', 'code' }}",
+        {% unless TXA.19 -%}
+            "status": "current",
+        {% endunless -%}
+        "category" : [
+            {% for txa_24 in TXA.24.Repeats -%}
+                {
+                    {% include 'DataType/CWECodeableConcept' CWE: txa_24 -%}
+                },
+            {% endfor -%}
+        ],
+       {% capture textstring %}{{TXA.25.Value  | split: "~" | join: "+" }}{% endcapture -%}     
+        "description" : "{{ textstring }}"
+    },
+    "request":{
+        "method":"PUT",
+        "url":"DocumentReference/{{ ID }}",
+    },
+},

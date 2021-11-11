@@ -1,4 +1,14 @@
 {% if RP -%}
-    "url":"http://example.com/v2-to-fhir-converter/CodeSystem/{{ RP.1.Value }}",
-    "contentType":"{{ RP.3.Value }}",
+    {% assign mimetype = RP.3.Value | get_property: 'CodeSystem/MimeType', 'code' -%}
+    {% if RP.4 -%}
+        {% if RP.4.Value == "Octet-stream" or RP.4.Value == "PostScript" -%}
+            {% assign mimesubtype = RP.3.Value | get_property: 'CodeSystem/MimeType', 'display' -%}
+        {% else -%}
+            {% assign mimesubtype = RP.4.Value | get_property: 'CodeSystem/MimeSubType', 'code' -%}
+        {% endif -%}
+    {% else -%}
+        {% assign mimesubtype = RP.3.Value | get_property: 'CodeSystem/MimeType', 'display' -%}
+    {% endif -%}
+    "contentType": "{{mimetype | append: "/" | append: mimesubtype}}",
+    "url":"{{ RP.1.Value }}",
 {% endif -%}

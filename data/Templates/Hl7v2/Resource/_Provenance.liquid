@@ -268,6 +268,9 @@ Device_ID_MSH_3: A resource Id, used to fill "entity.what.reference" property. T
     }, 
     "request":{
         "method":"PUT",
+        {% if Root_Template_1 == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Provenance/{{ ID }}",
     },
 },

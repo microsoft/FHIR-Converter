@@ -23,6 +23,13 @@
 
         "address":
         [
+            {% if ORC_SEG_24 %}
+                {% for orc24 in ORC_SEG_24.Repeats %}
+                {
+                    {% include 'DataType/XAD' XAD: orc24 -%}
+                },  
+                {% endfor -%}    
+            {% endif %}
             {
                 {% include 'DataType/XAD' XAD: ROL.11 -%}
             },
@@ -32,10 +39,57 @@
             {
                 {% include 'DataType/XAD' XAD: ORC.24.Repeats[0] -%}
             },
+            {% for sch_14 in SCH_12.14.Repeats -%}
+                {
+                    {% include 'DataType/XAD' XAD: sch_14 -%}
+                },
+            {% endfor -%}
+            {% for sch_18 in SCH_16.18.Repeats -%}
+                {
+                    {% include 'DataType/XAD' XAD: sch_18 -%}
+                },
+            {% endfor -%}
         ],
-    
+        "telecom":
+        [
+            {% for sch_13 in SCH_12.13.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: sch_13 -%}
+                },
+            {% endfor -%}
+            {% for sch_17 in SCH_16.17.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: sch_17 -%}
+                },
+            {% endfor -%}
+            {% for sch_21 in SCH_20.21.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: sch_21 -%}
+                },
+            {% endfor -%}
+        ],    
         {% if OBXXCN1 %}
             {% include 'DataType/XCNPractitioner' XCN: OBXXCN1 -%}       
+        {% endif %}
+        {% if OBR_SEG %}
+            {% include 'DataType/XCNPractitioner' XCN: OBRXCN_10 -%}       
+        {% endif %}
+        {% if OBR_SEG %}
+            {% include 'DataType/XCNPractitioner' XCN: OBRXCN_16 -%}       
+        {% endif %}
+
+        {% if ORC_SEG %}
+            {% include 'DataType/XCNPractitioner' XCN: ORCXCN_12 -%}       
+        {% endif %}
+
+        {% if CNN_OBR_32 %}   
+            {% include 'DataType/CNN' CNN_val: CNN_OBR_32.1 -%}       
+        {% endif %}
+        {% if CNN_OBR_34_1 %}
+            {% include 'DataType/CNN' CNN_val: CNN_OBR_34_1 -%}       
+        {% endif %}
+        {% if CNN_OBR_35_1 %}
+            {% include 'DataType/CNN' CNN_val: CNN_OBR_35_1 -%}       
         {% endif %}
         {% include 'DataType/XCNPractitioner' XCN: DG1.16.Repeats[0] -%}
         {% include 'DataType/XCNPractitioner' XCN: PR1 -%}
@@ -50,6 +104,11 @@
         {% include 'DataType/XCNPractitioner' XCN: NTE -%}
         {% include 'DataType/XCNPractitioner' XCN: RF1 -%}
         {% include 'DataType/XCNPractitioner' XCN: IAM -%}
+        {% include 'DataType/XCNPractitioner' XCN: AIP -%}
+        {% include 'DataType/XCNPractitioner' XCN: SCH_12.12.Repeats[0] -%}
+        {% include 'DataType/XCNPractitioner' XCN: SCH_16.16.Repeats[0] -%}
+        {% include 'DataType/XCNPractitioner' XCN: SCH_20.20.Repeats[0] -%}
+        {% include 'DataType/XCNPractitioner' XCN: TXA -%}
 
 
         {% if IAM_NAME -%}
@@ -62,6 +121,9 @@
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"Practitioner/{{ ID }}",
     },
 },

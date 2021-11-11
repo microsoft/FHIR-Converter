@@ -1,13 +1,38 @@
 {% if RI -%}
     {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
-    "code":
+    "code": 
     {
+        "coding": 
+        [
+            {
+                "code": "{{RI.1}}",
+            }
+        ]
     },
     "repeat":
     {
         "timeOfDay":
         [
             "{{ RI.2.Value }}",
+        ],
+    },
+{% endif -%}
+{% if RI_val -%}
+    {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
+    "code": 
+    {
+        "coding": 
+        [
+            {
+                "code": "{{RI_val.1}}",
+            }
+        ]
+    },
+    "repeat":
+    {
+        "timeOfDay":
+        [
+            "{{ RI_val.2 }}",
         ],
     },
 {% endif -%}

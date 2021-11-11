@@ -1,7 +1,29 @@
 {% if NDL -%}
+
     "period":
     {
         "start":"{{ NDL.2.Value | format_as_date_time }}",
         "end":"{{ NDL.3.Value | format_as_date_time }}",
     },
+    {% if NDL.4 or NDL.5 or NDL.6 or NDL.7 or NDL.10 or NDL.11 %}
+    {% if NDL.4 -%}
+        {% evaluate Location_ID_NDL using 'ID/Location' PL: NDL.4 -%}
+    {% elseif NDL.5 -%}
+        {% evaluate Location_ID_NDL using 'ID/Location' PL: NDL.5 -%}
+    {% elseif NDL.6 -%}
+        {% evaluate Location_ID_NDL using 'ID/Location' PL: NDL.6 -%}
+    {% elseif NDL.7 -%}
+        {% evaluate Location_ID_NDL using 'ID/Location' PL: NDL.7 -%}
+    {% elseif NDL.10 -%}
+        {% evaluate Location_ID_NDL using 'ID/Location' PL: NDL.10 -%}
+    {% elseif NDL.11 -%}
+        {% evaluate Location_ID_NDL using 'ID/Location' PL: NDL.11 -%}
+    {% endif %}
+        "location" : [
+        {  
+            "reference":"Location/{{ Location_ID_NDL }}",
+        }
+    ],
+    {% endif %} 
+
 {% endif -%}
