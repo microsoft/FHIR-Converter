@@ -41,7 +41,7 @@ The command line tool is another way of converting data, as well as managing tem
 | Option | Name | Optionality | Default | Description |
 | ----- | ----- | ----- |----- |----- |
 | -d | TemplateDirectory | Required | | Root directory of templates. |
-| -r | RootTemplate | Required | | Name of root template.<br><br> **HL7v2 to FHIR**: "ADT_A01", "OML_O21", "ORU_R01", "VXU_V04" <br><br> **C-CDA to FHIR**: "CCD", "ConsultationNote", "DischargeSummary", "HistoryandPhysical", "OperativeNote", "ProcedureNote", "ProgressNote", "ReferralNote", "TransferSummary" <br><br> **JSON to FHIR**: "Stu3ChargeItem", "ExamplePatient" |
+| -r | RootTemplate | Required | | Name of root template.<br><br> **HL7v2 to FHIR**: "ADT_A01", "OML_O21", "ORU_R01", "VXU_V04" <br><br> **C-CDA to FHIR**: "CCD", "ConsultationNote", "DischargeSummary", "HistoryandPhysical", "OperativeNote", "ProcedureNote", "ProgressNote", "ReferralNote", "TransferSummary" <br><br> **JSON to FHIR**: "Stu3ChargeItem", "ExamplePatient" <br> (*These are sample templates for use, not default templates that adhere to any pre-defined JSON message types. JSON does not have any standardized message types, unlike HL7v2 messages or C-CDA documents. Therefore, instead of default templates we provide you with some sample templates that you can use as a starting guide for you to modify and customize.*)  |
 | -c | InputDataContent | Optional| | Input data content. Specify OutputDataFile to get the results. |
 | -n | InputDataFile | Optional| | Input data file. Specify OutputDataFile to get the results. |
 | -f | OutputDataFile | Optional | | Output data file. |
@@ -65,6 +65,8 @@ Instead of converting multiples messages and documents inside a folder, you can 
 ```
 
 After running the command line, there will be a series of "Processing..." lines being written in the terminal window. When the conversion is complete, you will see "Conversion completed!" message.
+
+For example, if you were doing the C-CDA to FHIR conversion, you will see something like this:
 
 ![Conversion running on the terminal (screenshot)](docs/conversion-terminal-screenshot.png)
 
@@ -99,7 +101,7 @@ For **HL7v2 to FHIR conversion**, [HL7v2 DotLiquid templates](data/Templates/Hl7
 
 For **C-CDA to FHIR conversion**, [C-CDA DotLiquid templates](data/Templates/Ccda/Utils) generate FHIR resource IDs in two ways: 1) [ID generation template](data/Templates/Ccda/Utils/_GenerateId.liquid) helps generate Patient ID and Practitioner ID; 2) the resource IDs for other resources are generated from the resource object directly.
 
-For **JSON to FHIR conversion**, {need info here}
+For **JSON to FHIR conversion**, there is no standardized JSON input message types unlike HL7v2 messages or C-CDA documents. Therefore, instead of default templates we provide you with some sample JSON DotLiquid templates that you can use as a starting guide for your custom JSON conversion templates. You can decide how to generate the resource IDs according to your own inputs, and use our sample templates as a reference.
 
 The Converter introduces a concept of "base resource/base ID". Base resources are independent entities, like Patient, Organization, Device, etc, whose IDs are defined as base ID. Base IDs could be used to generate IDs for other resources that relate to them. It helps enrich the input for hash and thus reduce ID collision.
 For example, a Patient ID is used as part of hash input for an AllergyIntolerance ID, as this resource is closely related with a specific patient.
