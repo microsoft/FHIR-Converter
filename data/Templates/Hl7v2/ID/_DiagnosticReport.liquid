@@ -11,6 +11,8 @@
         {{ORC.2.3.Value}},{{ORC.2.4.Value}}
     {% elsif ORC -%}
         {{ORC.Value}}
+    {% elsif OBX -%}
+        {{OBX.Value}}
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'DiagnosticReport', false, baseId | generate_uuid }}

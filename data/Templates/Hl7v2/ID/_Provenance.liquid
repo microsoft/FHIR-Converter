@@ -1,6 +1,6 @@
 {% capture identifiers -%}
     {% if MSH.3 -%}
-        {{MSH.4.Value}}
+        {{MSH.3.Value}}
     {% elsif MSH.3 and MSH.24-%}
         {{MSH.3.Value}},{{MSH.24.Value}}
     {% elsif MSH.5 and MSH.25-%}

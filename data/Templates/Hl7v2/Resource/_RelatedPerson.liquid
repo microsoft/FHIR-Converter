@@ -328,6 +328,9 @@ RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" proper
     },
     "request":{
         "method":"PUT",
+        {% if Root_Template == "ADT_A29" -%}
+            "method":"DELETE",
+        {% endif -%} 
         "url":"RelatedPerson/{{ ID }}",
     },
 },

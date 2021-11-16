@@ -1,7 +1,30 @@
 {% if CQ -%}
-    "value":"{{ CQ.1.Value }}",
+    {% if CQ.1 %}
+        "value":{{ CQ.1.Value }},
+    {% endif %}
     {% if CQ.2.9 == null -%}
         "unit":"{{ CQ.2.2 }}",
     {% endif -%}
     "unit":"{{ CQ.2.9 }}",
+{% endif -%}
+{% if CQ_val -%}
+    {% assign temp = CQ_val.1 %}
+    {% if temp != "" and temp != null   -%}
+        "value": {{temp}},
+    {% endif %}    
+    {% if CQ.2.9 == null -%}
+        "unit":"{{ CQ_val.2 }}",
+    {% endif -%}
+    "unit":"{{ CQ_val.2.9 }}",
+{% endif -%}
+{% if CQ_duration -%}
+    {% if CQ_duration.1 %}
+        "value":{{ CQ_duration.1.Value }},
+    {% endif %}
+    {% if CQ_duration.2.9 == null -%}
+        "unit":"{{ CQ_duration.2.2 }}",
+    {% endif -%}
+    "unit":"{{ CQ_duration.2.9 }}",
+    "code" : "{{ CQ_duration.2.1 | get_property: 'CodeSystem/DurationUnit', 'code' }}",
+    "system" : "http://unitsofmeasure.org",
 {% endif -%}

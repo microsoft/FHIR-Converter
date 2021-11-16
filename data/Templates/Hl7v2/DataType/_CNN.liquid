@@ -26,3 +26,31 @@
         },
     ],
 {% endif -%}
+{% if CNN_val -%}
+    "identifier":
+    [
+        {
+            "value":"{{ CNN_val.1 }}",
+        },
+    ],
+    "name":
+    [
+        {
+            "family":"{{ CNN_val.2 }}",
+            "given":
+            [
+                "{{ CNN_val.3 }}",
+                "{{ CNN_val.4 }}",
+            ],
+            "suffix":
+            [
+                "{{ CNN_val.5 }}",
+                "{{ CNN_val.7 }}",
+            ],
+            "prefix":
+            [
+                "{{ CNN_val.6 }}",
+            ],
+        },
+    ],
+{% endif -%}

@@ -1,6 +1,12 @@
 {% capture identifiers -%}
     {% if NTE -%}
         {{NTE.3.Value}}
+    {% elsif SCH.1 -%}
+        {{SCH.1.Value}}
+    {% elsif SCH.2 -%}
+        {{SCH.2.Value}}
+    {% elsif SCH -%}
+        {{SCH.Value}}
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'Appointment', true, baseId | generate_uuid }}
