@@ -12,7 +12,7 @@ The following table shows the differences between two converter engines:
 | ----- | ----- | ----- |
 | **Template language** | [Handlebars](https://handlebarsjs.com/) | [Liquid](https://shopify.github.io/liquid/) |
 | **Template authoring tool** | Self-hosted web-app | [VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-health-fhir-converter)|
-| **Supported conversions** | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR <br> 3. JSON to FHIR | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR <br> 3. JSON to FHIR |
+| **Supported conversions** | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR <br> 3. JSON to FHIR |
 | **Available as** | 1. Self-deployed web service <br> (on-prem or on Azure)| 1. Command line tool <br> 2. $convert-data operation in  [FHIR Server for Azure (OSS)](https://github.com/microsoft/fhir-server/blob/main/docs/ConvertDataOperation.md) <br> 3. $convert-data operation in both [Azure API for FHIR](https://docs.microsoft.com/en-us/azure/healthcare-apis/azure-api-for-fhir/convert-data) and [Azure Healthcare APIs (preview)](https://docs.microsoft.com/en-us/azure/healthcare-apis/fhir/convert-data)|
 
 ⚠ Rest of this document is about the Liquid converter. For the Handlebars converter, please refer to the [Handlebars branch](https://github.com/microsoft/FHIR-Converter/tree/handlebars).
@@ -29,6 +29,7 @@ The `$convert-data` operation is integrated into both Azure API for FHIR and FHI
 
 For more information on configuring and using `$convert-data` operation on your server, please refer to these documentation:
 
+- [$convert-data for Azure API for FHIR](https://docs.microsoft.com/en-us/azure/healthcare-apis/azure-api-for-fhir/convert-data)
 - [$convert-data for Azure Healthcare APIs](https://docs.microsoft.com/en-us/azure/healthcare-apis/fhir/convert-data)
 - [$convert-data for FHIR Server](https://github.com/microsoft/fhir-server/blob/main/docs/ConvertDataOperation.md)
 
