@@ -139,7 +139,8 @@
                                 "url": "ombCategory",
                                 "valueCoding": {
                                     "code": "2186-5",
-                                    "display": "2186-5"
+                                    "display": "Not Hispanic or Latino",
+                                    "system": "http://example.com/v2-to-fhir-converter/CodeSystem/CDCREC"
                                 }
                             },
                             {
@@ -315,13 +316,13 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:e07c0451-5793-a1b1-e817-578764a7cc5b",
+            "fullUrl": "urn:uuid:87847f45-4a99-9d88-c439-65574d8fd20b",
             "resource": {
                 "resourceType": "Provenance",
-                "id": "e07c0451-5793-a1b1-e817-578764a7cc5b",
+                "id": "87847f45-4a99-9d88-c439-65574d8fd20b",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-07T14:01:51.579Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: VXU_V04.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T08:47:17.095Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: VXU_V04.</span></p></div>"
                 },
                 "occurredDateTime": "2015-06-24T19:17:27.655+05:30",
                 "recorded": "2015-06-24T19:17:27.655+05:30",
@@ -355,7 +356,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Provenance/e07c0451-5793-a1b1-e817-578764a7cc5b"
+                "url": "Provenance/87847f45-4a99-9d88-c439-65574d8fd20b"
             }
         },
         {
@@ -519,6 +520,9 @@
                     ]
                 },
                 "effectiveDateTime": "2015-06-24",
+                "subject": {
+                    "reference": "Patient/8dc947ee-0db3-5fa2-04bb-16fd7680cfbe"
+                },
                 "partOf": [
                     {
                         "reference": "Immunization/c0f2ddcb-f061-279f-d5e1-7b54b437e9db"
@@ -564,6 +568,9 @@
                         }
                     ]
                 },
+                "subject": {
+                    "reference": "Patient/8dc947ee-0db3-5fa2-04bb-16fd7680cfbe"
+                },
                 "partOf": [
                     {
                         "reference": "Immunization/c0f2ddcb-f061-279f-d5e1-7b54b437e9db"
@@ -600,6 +607,9 @@
                     ]
                 },
                 "effectiveDateTime": "2015-06-24",
+                "subject": {
+                    "reference": "Patient/8dc947ee-0db3-5fa2-04bb-16fd7680cfbe"
+                },
                 "partOf": [
                     {
                         "reference": "Immunization/c0f2ddcb-f061-279f-d5e1-7b54b437e9db"
@@ -628,6 +638,9 @@
                 },
                 "valueDateTime": "2015-06-24",
                 "effectiveDateTime": "2015-06-24",
+                "subject": {
+                    "reference": "Patient/8dc947ee-0db3-5fa2-04bb-16fd7680cfbe"
+                },
                 "partOf": [
                     {
                         "reference": "Immunization/c0f2ddcb-f061-279f-d5e1-7b54b437e9db"
