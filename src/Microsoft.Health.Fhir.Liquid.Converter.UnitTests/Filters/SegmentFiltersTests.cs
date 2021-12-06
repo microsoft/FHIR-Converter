@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
@@ -114,6 +115,58 @@ RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical 
             // Hl7v2Data and segment id content could not be null
             Assert.Throws<NullReferenceException>(() => Filters.HasSegments(null, "PID"));
             Assert.Throws<NullReferenceException>(() => Filters.HasSegments(new Hl7v2Data(), null));
+        }
+
+        [Fact]
+        public void GivenAnHl7v2Data_WhenSliceDataBySegments_CorrectResultShouldBeReturned()
+        {
+            Dictionary<string, List<Hl7v2Segment>> segmentList = Filters.GetSegmentLists(TestData, "PID|ORC|OBX");
+            Dictionary<string, Hl7v2Segment> firstSegment = Filters.GetFirstSegments(TestData, "RXR");
+
+            // Slicing data using segmentList and endSegment
+            Filters.SliceDataBySegments(TestData, segmentList["ORC"], firstSegment["RXR"]);
+            List<Hl7v2Data> pidSlicedData = Filters.SliceDataBySegments(TestData, segmentList["PID"], firstSegment["RXR"]);
+            Assert.Single(pidSlicedData);
+            string expectedPidValue = @"PID|1||90012^^^NIST-MPI-1^MR||Wong^Elise^^^^^L||19830615|F||2028-9^Asian^CDCREC|9200 Wellington Trail^^Bozeman^MT^59715^USA^P||^PRN^PH^^^406^5557896~^NET^^Elise.Wong@isp.com|||||||||2186-5^Not Hispanic or Latino^CDCREC||N|1|||||N" + System.Environment.NewLine + "PD1|||||||||||02^Reminder/recall - any method^HL70215|N|20150624|||A|19830615|20150624" + System.Environment.NewLine + "ORC|RE|4422^NIST-AA-IZ-2|13696^NIST-AA-IZ-2|||||||7824^Jackson^Lily^Suzanne^^^^^NIST-PI-1^L^^^PRN||654^Thomas^Wilma^Elizabeth^^^^^NIST-PI-1^L^^^MD|||||NISTEHRFAC^NISTEHRFacility^HL70362|" + System.Environment.NewLine + "RXA|0|1|20150624||49281-0215-88^TENIVAC^NDC|0.5|mL^mL^UCUM||00^New Record^NIP001|7824^Jackson^Lily^Suzanne^^^^^NIST-PI-1^L^^^PRN|^^^NIST-Clinic-1||||315841|20151216|PMC^Sanofi Pasteur^MVX|||CP|A" + System.Environment.NewLine;
+            Assert.Equal(expectedPidValue, pidSlicedData[0].Value);
+            Assert.Equal(4, pidSlicedData[0].Meta.Count);
+            Assert.Equal(4, pidSlicedData[0].Data.Count);
+            Assert.Equal("PID", pidSlicedData[0].Meta[0]);
+            Assert.Equal("PD1", pidSlicedData[0].Meta[1]);
+            Assert.Equal(@"PD1|||||||||||02^Reminder/recall - any method^HL70215|N|20150624|||A|19830615|20150624", pidSlicedData[0].Data[1].Value);
+
+            // Sliced data could only contain single segment and endSegment cound be null
+            List<Hl7v2Data> obxSlicedData = Filters.SliceDataBySegments(TestData, segmentList["OBX"]);
+            Assert.Equal(4, obxSlicedData.Count);
+            Assert.Single(obxSlicedData[0].Meta);
+            Assert.Single(obxSlicedData[1].Meta);
+            Assert.Single(obxSlicedData[2].Meta);
+            Assert.Equal(5, obxSlicedData[3].Meta.Count);
+            Assert.Single(obxSlicedData[0].Data);
+            Assert.Single(obxSlicedData[1].Data);
+            Assert.Single(obxSlicedData[2].Data);
+            Assert.Equal(5, obxSlicedData[3].Data.Count);
+            Assert.Equal("OBX", obxSlicedData[0].Meta[0]);
+            Assert.Equal(@"OBX|1|CE|30963-3^Vaccine Funding Source^LN|1|PHC70^Private^CDCPHINVS||||||F|||20150624", obxSlicedData[0].Data[0].Value);
+            string expectedObxValue = @"OBX|1|CE|30963-3^Vaccine Funding Source^LN|1|PHC70^Private^CDCPHINVS||||||F|||20150624" + System.Environment.NewLine;
+            Assert.Equal(expectedObxValue, obxSlicedData[0].Value);
+
+            // Sliced data could contain multiple segments
+            List<Hl7v2Data> orcSlicedData = Filters.SliceDataBySegments(TestData, segmentList["ORC"]);
+            Assert.Equal(3, orcSlicedData.Count);
+            Assert.Equal(7, orcSlicedData[0].Meta.Count);
+            Assert.Equal(2, orcSlicedData[1].Meta.Count);
+            Assert.Equal(2, orcSlicedData[2].Meta.Count);
+            Assert.Equal(7, orcSlicedData[0].Data.Count);
+            Assert.Equal(2, orcSlicedData[1].Data.Count);
+            Assert.Equal(2, orcSlicedData[2].Data.Count);
+            Assert.Equal("ORC", orcSlicedData[0].Meta[0]);
+            string expectedOrcValue = @"ORC|RE|4422^NIST-AA-IZ-2|13696^NIST-AA-IZ-2|||||||7824^Jackson^Lily^Suzanne^^^^^NIST-PI-1^L^^^PRN||654^Thomas^Wilma^Elizabeth^^^^^NIST-PI-1^L^^^MD|||||NISTEHRFAC^NISTEHRFacility^HL70362|";
+            Assert.Equal(expectedOrcValue, orcSlicedData[0].Data[0].Value);
+
+            // Hl7v2Data and segmentList could not be null
+            Assert.Throws<NullReferenceException>(() => Filters.SliceDataBySegments(null, segmentList["ORC"]));
+            Assert.Throws<NullReferenceException>(() => Filters.SliceDataBySegments(TestData, null));
         }
 
         private static Hl7v2Data LoadTestData()

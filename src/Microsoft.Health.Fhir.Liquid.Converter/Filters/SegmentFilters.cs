@@ -128,5 +128,50 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
             return result;
         }
+
+        public static List<Hl7v2Data> SliceDataBySegments(Hl7v2Data hl7v2Data, List<Hl7v2Segment> segmentList, Hl7v2Segment endSegment = null)
+        {
+            var results = new List<Hl7v2Data>();
+            var result = new Hl7v2Data();
+            string[] segmentSeparators = { "\r\n", "\r", "\n" };
+            var valueList = hl7v2Data.Value.Split(segmentSeparators, StringSplitOptions.RemoveEmptyEntries);
+            var startSegmentFound = false;
+            var segmentIndex = 0;
+            for (var i = 0; i < hl7v2Data.Meta.Count; ++i)
+            {
+                if (segmentIndex == 0 && segmentList.Count > 0 && ReferenceEquals(hl7v2Data.Data[i], segmentList[segmentIndex]))
+                {
+                    startSegmentFound = true;
+                    segmentIndex++;
+                }
+                else if (segmentIndex > 0)
+                {
+                    if (endSegment != null && ReferenceEquals(hl7v2Data.Data[i], endSegment))
+                    {
+                        break;
+                    }
+                    else if (segmentIndex < segmentList.Count && ReferenceEquals(hl7v2Data.Data[i], segmentList[segmentIndex]))
+                    {
+                        results.Add(result);
+                        result = new Hl7v2Data();
+                        segmentIndex++;
+                    }
+                }
+
+                if (startSegmentFound)
+                {
+                    result.Meta.Add(hl7v2Data.Meta[i]);
+                    result.Data.Add(hl7v2Data.Data[i]);
+                    result.Value += valueList[i] + System.Environment.NewLine;
+                }
+            }
+
+            if (result != null)
+            {
+                results.Add(result);
+            }
+
+            return results;
+        }
     }
 }
