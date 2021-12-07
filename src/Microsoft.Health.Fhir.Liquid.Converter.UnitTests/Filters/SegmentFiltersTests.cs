@@ -164,6 +164,12 @@ RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical 
             string expectedOrcValue = @"ORC|RE|4422^NIST-AA-IZ-2|13696^NIST-AA-IZ-2|||||||7824^Jackson^Lily^Suzanne^^^^^NIST-PI-1^L^^^PRN||654^Thomas^Wilma^Elizabeth^^^^^NIST-PI-1^L^^^MD|||||NISTEHRFAC^NISTEHRFacility^HL70362|";
             Assert.Equal(expectedOrcValue, orcSlicedData[0].Data[0].Value);
 
+            // If segmentList is nonexistent in data, an empty List<Hl7v2Data> will be returned.
+            Assert.Empty(Filters.SliceDataBySegments(orcSlicedData[0], segmentList["PID"]));
+
+            // If segmentList is an empty list, an empty List<Hl7v2Data> will be returned.
+            Assert.Empty(Filters.SliceDataBySegments(TestData, new List<Hl7v2Segment>()));
+
             // Hl7v2Data and segmentList could not be null
             Assert.Throws<NullReferenceException>(() => Filters.SliceDataBySegments(null, segmentList["ORC"]));
             Assert.Throws<NullReferenceException>(() => Filters.SliceDataBySegments(TestData, null));

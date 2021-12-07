@@ -166,7 +166,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 }
             }
 
-            if (result != null)
+            if (result.Meta.Count > 0)
             {
                 results.Add(result);
             }
