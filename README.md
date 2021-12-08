@@ -60,14 +60,14 @@ First, build the executable file, `Microsoft.Health.Fhir.Liquid.Converter.Tool.e
 >.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r myRootTemplate -i myInputDataFolder -o myOutputDataFolder
 ```
 
-Instead of converting multiples messages and documents inside a folder, you can also convert single files using the parameters in the table above. For example, if you were to convert the sample JSON message into a FHIR resource using the `Stu3ChargeItem` template:
+Instead of converting multiples messages and documents inside a folder, you can also convert single files using the parameters in the table above. For example, if you were to convert a C-CDA document into a FHIR resource using the `CCD` template:
 ```
->.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -n {path}\SampleData\Json\Stu3ChargeItem.json -d {path}\Templates\Json -f {output_path}\Stu3ChargeItem.json -r Stu3ChargeItem
+>.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -n {path}\SampleData\Ccda\CCD.ccda -d {path}\Templates\Ccda -f {output_path}\CCDout.json -r CCD
 ```
 
 After running the command line, there will be a series of "Processing..." lines being written in the terminal window. When the conversion is complete, you will see "Conversion completed!" message.
 
-For example, if you were doing the C-CDA to FHIR conversion, you will see something like this:
+For example, if you were doing the C-CDA to FHIR conversion in a folder, you will see something like this:
 
 ![Conversion running on the terminal (screenshot)](docs/conversion-terminal-screenshot.png)
 
