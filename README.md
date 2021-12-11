@@ -54,22 +54,34 @@ The command line tool is another way of converting data, as well as managing tem
 
 ### Command line example
 
-First, build the executable file, `Microsoft.Health.Fhir.Liquid.Converter.Tool.exe`, in your local directory. Have the input data, as well as the conversion templates, saved in separate folders. You can then run the built .exe file in your terminal by running the following command line and specifying the directories:
+First, build the executable file, `Microsoft.Health.Fhir.Liquid.Converter.Tool.exe`, in your local directory. Have the input data, as well as the conversion templates, saved in separate folders.
+
+#### Converting data inside folders
+
+You can run the built .exe file in your terminal by running the following command line and specifying the directories:
 
 ```
 >.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r myRootTemplate -i myInputDataFolder -o myOutputDataFolder
 ```
 
-Instead of converting multiples messages and documents inside a folder, you can also convert single files using the parameters in the table above. For example, if you were to convert a C-CDA document into a FHIR resource using the `CCD` template:
+For example, you can run a command like below to convert all C-CDA sample documents inside the `SampleData\Ccda` folder using the default `CCD` template:
+
 ```
->.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -n {path}\SampleData\Ccda\CCD.ccda -d {path}\Templates\Ccda -f {output_path}\CCDout.json -r CCD
+>.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d {path}\Templates\Ccda -r CCD -i {path}\SampleData\Ccda -o {path to your output folder}
 ```
 
 After running the command line, there will be a series of "Processing..." lines being written in the terminal window. When the conversion is complete, you will see "Conversion completed!" message.
 
-For example, if you were doing the C-CDA to FHIR conversion in a folder, you will see something like this:
+For example, if you were doing the C-CDA to FHIR conversion in a folder as in the command above, you will see something like this:
 
 ![Conversion running on the terminal (screenshot)](docs/conversion-terminal-screenshot.png)
+
+#### Converting individual files
+
+Instead of converting multiples messages and documents inside a folder, you can also convert single files using the parameters in the table above. For example, if you were to convert a C-CDA document into a FHIR resource using the `CCD` template:
+```
+>.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -n {path}\SampleData\Ccda\CCD.ccda -d {path}\Templates\Ccda -f {path to your output json file} -r CCD
+```
 
 ## Using Templates
 
