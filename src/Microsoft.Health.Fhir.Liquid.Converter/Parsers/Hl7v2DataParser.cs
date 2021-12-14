@@ -10,6 +10,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.InputProcessors;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 using Microsoft.Health.Fhir.Liquid.Converter.Validators;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
@@ -17,7 +18,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
     public class Hl7v2DataParser : IDataParser
     {
         private static readonly Hl7v2DataValidator Validator = new Hl7v2DataValidator();
-        private static readonly string[] SegmentSeparators = { "\r\n", "\r", "\n" };
 
         public object Parse(string message)
         {
@@ -30,7 +30,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
             {
                 var result = new Hl7v2Data(message);
 
-                var segments = message.Split(SegmentSeparators, StringSplitOptions.RemoveEmptyEntries);
+                var segments = new Hl7v2DataUtility().SplitSegment(message);
                 Validator.ValidateMessageHeader(segments[0]);
                 var encodingCharacters = ParseHl7v2EncodingCharacters(segments[0]);
                 result.EncodingCharacters = encodingCharacters;

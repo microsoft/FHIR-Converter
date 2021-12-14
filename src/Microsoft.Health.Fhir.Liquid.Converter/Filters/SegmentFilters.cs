@@ -133,8 +133,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             var results = new List<Hl7v2Data>();
             var result = new Hl7v2Data();
-            string[] segmentSeparators = { "\r\n", "\r", "\n" };
-            var valueList = hl7v2Data.Value.Split(segmentSeparators, StringSplitOptions.RemoveEmptyEntries);
             var startSegmentFound = false;
             var segmentIndex = 0;
             for (var i = 0; i < hl7v2Data.Meta.Count; ++i)
@@ -162,7 +160,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 {
                     result.Meta.Add(hl7v2Data.Meta[i]);
                     result.Data.Add(hl7v2Data.Data[i]);
-                    result.Value += valueList[i] + System.Environment.NewLine;
                 }
             }
 

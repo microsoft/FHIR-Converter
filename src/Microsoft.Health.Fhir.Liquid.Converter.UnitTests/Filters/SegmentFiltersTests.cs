@@ -164,7 +164,10 @@ RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical 
             string expectedOrcValue = @"ORC|RE|4422^NIST-AA-IZ-2|13696^NIST-AA-IZ-2|||||||7824^Jackson^Lily^Suzanne^^^^^NIST-PI-1^L^^^PRN||654^Thomas^Wilma^Elizabeth^^^^^NIST-PI-1^L^^^MD|||||NISTEHRFAC^NISTEHRFacility^HL70362|";
             Assert.Equal(expectedOrcValue, orcSlicedData[0].Data[0].Value);
 
-            // Endsegment precedes the last object in the segmentList
+            // If endSegment precedes the last object in the segmentList, only the sliced data before endSegment will be returned.
+            // There are three ORC segments in the segmentList, but the RXR segment is before the second ORC segment.
+            // Therefore, only the sliced data with the first ORC segment will be returned when the endSegment is found.
+            // The sliced data with the second and third ORC segment will not be returned. (orcSlicedData.count != 3)
             orcSlicedData = Filters.SliceDataBySegments(TestData, segmentList["ORC"], firstSegment["RXR"]);
             Assert.Single(orcSlicedData);
             Assert.Equal(2, orcSlicedData[0].Meta.Count);
