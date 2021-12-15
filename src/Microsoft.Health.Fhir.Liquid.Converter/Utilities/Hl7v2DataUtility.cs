@@ -4,11 +4,11 @@ using System.Text;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
 {
-    public class Hl7v2DataUtility
+    public static class Hl7v2DataUtility
     {
         private static readonly string[] SegmentSeparators = { "\r\n", "\r", "\n" };
 
-        public string[] SplitSegment(string message)
+        public static string[] SplitSegment(string message)
         {
             var segments = message.Split(SegmentSeparators, StringSplitOptions.RemoveEmptyEntries);
             return segments;
