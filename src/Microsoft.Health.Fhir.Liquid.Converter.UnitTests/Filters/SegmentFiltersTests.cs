@@ -199,7 +199,7 @@ IN1|3|SELF PAY|1|SELF PAY|||||||||||5||1";
             Dictionary<string, List<Hl7v2Segment>> segmentListAdtA01 = Filters.GetSegmentLists(TestDataAdtA01, "IN1");
             Dictionary<string, Hl7v2Segment> firstSegmentAdtA01 = Filters.GetFirstSegments(TestDataAdtA01, "PV1");
 
-            // If the segment in the segmentList is not found in the datam, an empty List<Hl7v2Data> will be returned.
+            // If the segment in the segmentList is not found in the data, an empty List<Hl7v2Data> will be returned.
             Assert.Empty(Filters.SliceDataBySegments(TestDataVxuV04, segmentListAdtA01["IN1"]));
             Assert.Empty(Filters.SliceDataBySegments(TestDataVxuV04, segmentListAdtA01["IN1"], firstSegment["RXR"]));
 
