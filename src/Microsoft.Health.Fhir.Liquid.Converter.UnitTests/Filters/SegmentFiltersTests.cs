@@ -29,7 +29,21 @@ RXA|0|1|20141012||88^influenza, unspecified formulation^CVX|999|||01^Historical 
 ORC|RE||35508^NIST-AA-IZ-2|||||||7824^Jackson^Lily^Suzanne^^^^^NIST-PI-1^L^^^PRN|||||||NISTEHRFAC^NISTEHRFacility^HL70362
 RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical Administration^NIP001|||||||||||CP|A";
 
-        private static readonly Hl7v2Data TestData = LoadTestData();
+        private const string TestDataContent2 = @"MSH|^~\&|AccMgr|1|||20050110045504||ADT^A01|599102|P|2.3||| 
+EVN|A01|20050110045502||||| 
+PID|1||10006579^^^1^MR^1||DUCK^DONALD^D||19241010|M||1|111 DUCK ST^^FOWL^CA^999990000^^M|1|8885551212|8885551212|1|2||40007716^^^AccMgr^VN^1|123121234|||||||||||NO
+NK1|1|DUCK^HUEY|SO|3583 DUCK RD^^FOWL^CA^999990000|8885552222||Y|||||||||||||| 
+PV1|1|I|PREOP^101^1^1^^^S|3|||37^DISNEY^WALT^^^^^^AccMgr^^^^CI|||01||||1|||37^DISNEY^WALT^^^^^^AccMgr^^^^CI|2|40007716^^^AccMgr^VN|4|||||||||||||||||||1||G|||20050110045253|||||| 
+GT1|1|8291|DUCK^DONALD^D||111^DUCK ST^^FOWL^CA^999990000|8885551212||19241010|M||1|123121234||||#Cartoon Ducks Inc|111^DUCK ST^^FOWL^CA^999990000|8885551212||PT| 
+DG1|1|I9|71596^OSTEOARTHROS NOS-L/LEG ^I9|OSTEOARTHROS NOS-L/LEG ||A| 
+IN1|1|MEDICARE|3|MEDICARE|||||||Cartoon Ducks Inc|19891001|||4|DUCK^DONALD^D|1|19241010|111^DUCK ST^^FOWL^CA^999990000|||||||||||||||||123121234A||||||PT|M|111 DUCK ST^^FOWL^CA^999990000|||||8291 
+IN2|1||123121234|Cartoon Ducks Inc|||123121234A|||||||||||||||||||||||||||||||||||||||||||||||||||||||||8885551212 
+IN1|2|NON-PRIMARY|9|MEDICAL MUTUAL CALIF.|PO BOX 94776^^HOLLYWOOD^CA^441414776||8003621279|PUBSUMB|||Cartoon Ducks Inc||||7|DUCK^DONALD^D|1|19241010|111 DUCK ST^^FOWL^CA^999990000|||||||||||||||||056269770||||||PT|M|111^DUCK ST^^FOWL^CA^999990000|||||8291 
+IN2|2||123121234|Cartoon Ducks Inc||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||8885551212 
+IN1|3|SELF PAY|1|SELF PAY|||||||||||5||1";
+
+        private static readonly Hl7v2Data TestData = LoadTestData(TestDataContent);
+        private static readonly Hl7v2Data TestData2 = LoadTestData(TestDataContent2);
 
         [Fact]
         public void GivenAnHl7v2Data_WhenGetFirstSegments_CorrectResultShouldBeReturned()
@@ -181,12 +195,20 @@ RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical 
             // Hl7v2Data and segmentList could not be null
             Assert.Throws<NullReferenceException>(() => Filters.SliceDataBySegments(null, segmentList["ORC"]));
             Assert.Throws<NullReferenceException>(() => Filters.SliceDataBySegments(TestData, null));
+
+            // If the segment in the segmentList / endSegment is not found in the data
+            Dictionary<string, List<Hl7v2Segment>> invalidSegmentList = Filters.GetSegmentLists(TestData2, "IN1");
+            Dictionary<string, Hl7v2Segment> invalidFirstSegment = Filters.GetFirstSegments(TestData2, "PV1");
+            Assert.Empty(Filters.SliceDataBySegments(TestData, invalidSegmentList["IN1"]));
+            Assert.Empty(Filters.SliceDataBySegments(TestData, invalidSegmentList["IN1"], firstSegment["RXR"]));
+            obxSlicedData = Filters.SliceDataBySegments(TestData, segmentList["OBX"], invalidFirstSegment["PV1"]);
+            Assert.Equal(4, obxSlicedData.Count);
         }
 
-        private static Hl7v2Data LoadTestData()
+        private static Hl7v2Data LoadTestData(string testDataContent)
         {
             var parser = new Hl7v2DataParser();
-            var data = parser.Parse(TestDataContent);
+            var data = parser.Parse(testDataContent);
             return data as Hl7v2Data;
         }
     }
