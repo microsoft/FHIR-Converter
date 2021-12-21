@@ -16,6 +16,7 @@ If these filters do not meet your needs, you can also write your own filters.
 | get_related_segment_list | Given a segment and related segment name, returns the collection of related named segments | `{% assign result = hl7v2Data \| get_related_segment_list: parentSegment, 'childSegmentName' -%}` |
 | get_parent_segment | Given a child segment name and overall message index, returns the first matched parent segment | `{% assign result = hl7v2Data \| get_parent_segment: 'childSegmentName', 3, 'parentSegmentName' -%}` |
 | has_segments | Checks if HL7 v2 message has segments | `{% assign result = hl7v2Data \| has_segments: 'segment1\|segment2\|...' -%}` | 
+| split_data_by_segments | Given an HL7 v2 message and segment name(s) as the separator(s), returns the message list split by separator(s). <br> Note: Each segment separator will be retained as the first segment of each message in the list, while the segments before the first separator (which may be empty) will be retained as the first message in the list without any separator. |  `{% assign result = hl7v2Data \| split_data_by_segments: 'segment1\|segment2\|...' -%}` | 
 
 ### C-CDA specific filters
 | Filter | Description | Syntax |
