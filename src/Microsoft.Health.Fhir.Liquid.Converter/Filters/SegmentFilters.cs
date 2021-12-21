@@ -128,5 +128,37 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
             return result;
         }
+
+        public static List<Hl7v2Data> SplitDataBySegments(Hl7v2Data hl7v2Data, string segmentIdSeparators)
+        {
+            var results = new List<Hl7v2Data>();
+            var result = new Hl7v2Data();
+            var segmentIds = new HashSet<string>(segmentIdSeparators.Split(@"|", StringSplitOptions.RemoveEmptyEntries));
+
+            if (segmentIdSeparators == string.Empty || !segmentIds.Intersect(hl7v2Data.Meta).Any())
+            {
+                results.Add(hl7v2Data);
+                return results;
+            }
+
+            for (var i = 0; i < hl7v2Data.Meta.Count; ++i)
+            {
+                if (segmentIds.Contains(hl7v2Data.Meta[i]))
+                {
+                    results.Add(result);
+                    result = new Hl7v2Data();
+                }
+
+                result.Meta.Add(hl7v2Data.Meta[i]);
+                result.Data.Add(hl7v2Data.Data[i]);
+            }
+
+            if (result.Meta.Count > 0)
+            {
+                results.Add(result);
+            }
+
+            return results;
+        }
     }
 }
