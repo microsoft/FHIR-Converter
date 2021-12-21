@@ -30,7 +30,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
             {
                 var result = new Hl7v2Data(message);
 
-                var segments = Hl7v2DataUtility.SplitSegment(message);
+                var segments = Hl7v2DataUtility.SplitMessageToSegments(message);
                 Validator.ValidateMessageHeader(segments[0]);
                 var encodingCharacters = ParseHl7v2EncodingCharacters(segments[0]);
                 result.EncodingCharacters = encodingCharacters;

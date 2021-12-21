@@ -13,7 +13,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
     {
         private static readonly string[] SegmentSeparators = { "\r\n", "\r", "\n" };
 
-        public static string[] SplitSegment(string message)
+        public static string[] SplitMessageToSegments(string message)
         {
             var segments = message.Split(SegmentSeparators, StringSplitOptions.RemoveEmptyEntries);
             return segments;

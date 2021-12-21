@@ -12,7 +12,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
     public class Hl7v2DataUtilityTests
     {
         [Fact]
-        public void GivenValidMessage_WhenSplitSegment_CorrectResultShouldBeReturned()
+        public void GivenValidMessage_WhenSplitMessageToSegments_CorrectResultShouldBeReturned()
         {
             string[] testMessage =
             {
@@ -24,7 +24,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
 
             foreach (string message in testMessage)
             {
-                string[] segments = Hl7v2DataUtility.SplitSegment(message);
+                string[] segments = Hl7v2DataUtility.SplitMessageToSegments(message);
                 Assert.Equal(4, segments.Length);
                 Assert.Equal("MSH|^~\\&|test", segments[0]);
                 Assert.Equal("PID|test", segments[1]);
@@ -32,10 +32,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
                 Assert.Equal("PD1|test", segments[3]);
             }
 
-            Assert.Empty(Hl7v2DataUtility.SplitSegment(string.Empty));
+            Assert.Empty(Hl7v2DataUtility.SplitMessageToSegments(string.Empty));
 
             // message could not be null
-            Assert.Throws<NullReferenceException>(() => Hl7v2DataUtility.SplitSegment(null));
+            Assert.Throws<NullReferenceException>(() => Hl7v2DataUtility.SplitMessageToSegments(null));
         }
     }
 }

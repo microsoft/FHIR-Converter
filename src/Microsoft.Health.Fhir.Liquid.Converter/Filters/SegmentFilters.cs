@@ -133,9 +133,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             var results = new List<Hl7v2Data>();
             var result = new Hl7v2Data();
-            var segmentIds = segmentIdSeparators.Split(@"|", StringSplitOptions.RemoveEmptyEntries);
+            var segmentIds = new HashSet<string>(segmentIdSeparators.Split(@"|", StringSplitOptions.RemoveEmptyEntries));
 
-            if (segmentIdSeparators == string.Empty || segmentIds.Intersect(hl7v2Data.Meta).ToList().Count == 0)
+            if (segmentIdSeparators == string.Empty || !segmentIds.Intersect(hl7v2Data.Meta).Any())
             {
                 results.Add(hl7v2Data);
                 return results;
