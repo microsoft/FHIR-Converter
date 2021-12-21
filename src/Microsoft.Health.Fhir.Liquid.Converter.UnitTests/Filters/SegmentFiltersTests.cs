@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
@@ -114,6 +115,65 @@ RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical 
             // Hl7v2Data and segment id content could not be null
             Assert.Throws<NullReferenceException>(() => Filters.HasSegments(null, "PID"));
             Assert.Throws<NullReferenceException>(() => Filters.HasSegments(new Hl7v2Data(), null));
+        }
+
+        [Fact]
+        public void GivenAnHl7v2Data_WhenSplitDataBySegments_CorrectResultShouldBeReturned()
+        {
+            List<Hl7v2Data> splitDataByOrc = Filters.SplitDataBySegments(TestData, "ORC");
+            Assert.Equal(4, splitDataByOrc.Count);
+            Assert.Equal(3, splitDataByOrc[0].Meta.Count);
+            Assert.Equal(7, splitDataByOrc[1].Meta.Count);
+            Assert.Equal(2, splitDataByOrc[2].Meta.Count);
+            Assert.Equal(2, splitDataByOrc[3].Meta.Count);
+            Assert.Equal(3, splitDataByOrc[0].Data.Count);
+            Assert.Equal(7, splitDataByOrc[1].Data.Count);
+            Assert.Equal(2, splitDataByOrc[2].Data.Count);
+            Assert.Equal(2, splitDataByOrc[3].Data.Count);
+            Assert.Equal("MSH", splitDataByOrc[0].Meta[0]);
+            Assert.Equal("ORC", splitDataByOrc[1].Meta[0]);
+            string expectedOrcValue = @"ORC|RE|4422^NIST-AA-IZ-2|13696^NIST-AA-IZ-2|||||||7824^Jackson^Lily^Suzanne^^^^^NIST-PI-1^L^^^PRN||654^Thomas^Wilma^Elizabeth^^^^^NIST-PI-1^L^^^MD|||||NISTEHRFAC^NISTEHRFacility^HL70362|";
+            Assert.Equal(expectedOrcValue, splitDataByOrc[1].Data[0].Value);
+
+            List<Hl7v2Data> splitDataByMsh = Filters.SplitDataBySegments(TestData, "MSH");
+            Assert.Equal(2, splitDataByMsh.Count);
+            Assert.Empty(splitDataByMsh[0].Meta);
+            Assert.Empty(splitDataByMsh[0].Data);
+            Assert.Equal(14, splitDataByMsh[1].Meta.Count);
+            Assert.Equal(14, splitDataByMsh[1].Data.Count);
+
+            List<Hl7v2Data> splitData = Filters.SplitDataBySegments(TestData, "PID|OBX");
+            Assert.Equal(6, splitData.Count);
+            Assert.Single(splitData[0].Meta);
+            Assert.Equal(5, splitData[1].Meta.Count);
+            Assert.Single(splitData[2].Meta);
+            Assert.Single(splitData[3].Meta);
+            Assert.Single(splitData[4].Meta);
+            Assert.Equal(5, splitData[5].Meta.Count);
+            Assert.Single(splitData[0].Data);
+            Assert.Equal(5, splitData[1].Data.Count);
+            Assert.Single(splitData[2].Data);
+            Assert.Single(splitData[3].Data);
+            Assert.Single(splitData[4].Data);
+            Assert.Equal(5, splitData[5].Data.Count);
+            Assert.Equal("MSH", splitData[0].Meta[0]);
+            Assert.Equal("PID", splitData[1].Meta[0]);
+            Assert.Equal("OBX", splitData[2].Meta[0]);
+            Assert.Equal(@"OBX|1|CE|30963-3^Vaccine Funding Source^LN|1|PHC70^Private^CDCPHINVS||||||F|||20150624", splitData[2].Data[0].Value);
+
+            splitData = Filters.SplitDataBySegments(TestData, "PID|||OBX|KKK|");
+            Assert.Equal(6, splitData.Count);
+            Assert.Equal("MSH", splitData[0].Meta[0]);
+            Assert.Equal("PID", splitData[1].Meta[0]);
+            Assert.Equal("OBX", splitData[2].Meta[0]);
+
+            // If separators are not in the data or empty, a data list containing only the original data will be returned.
+            Assert.StrictEqual(TestData, Filters.SplitDataBySegments(TestData, string.Empty)[0]);
+            Assert.StrictEqual(TestData, Filters.SplitDataBySegments(TestData, "PV1")[0]);
+
+            // Hl7v2Data and separators could not be null. If one of them is null, NullReferenceException will be thrown.
+            Assert.Throws<NullReferenceException>(() => Filters.SplitDataBySegments(null, "ORC"));
+            Assert.Throws<NullReferenceException>(() => Filters.SplitDataBySegments(TestData, null));
         }
 
         private static Hl7v2Data LoadTestData()
