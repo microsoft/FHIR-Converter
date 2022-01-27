@@ -12,6 +12,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
     public class StringFiltersTests
     {
         [Fact]
+        public void ToDoubleTest()
+        {
+            Assert.Equal(0, Filters.ToDouble("0"));
+            Assert.Equal(1000, Filters.ToDouble("1000"));
+            Assert.Equal(50.05, Filters.ToDouble("50.05"));
+
+            Assert.Throws<FormatException>(() => Filters.ToDouble("invalid"));
+            Assert.Throws<ArgumentNullException>(() => Filters.ToDouble(null));
+        }
+
+        [Fact]
         public void CharAtTest()
         {
             Assert.Equal('b', Filters.CharAt("abc", 1));

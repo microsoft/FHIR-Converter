@@ -8,7 +8,7 @@ By default, Liquid provides a set of [standard filters](https://github.com/Shopi
 Besides these filters, FHIR Converter also provides some other filters that are useful in conversion, which are listed below.
 If these filters do not meet your needs, you can also write your own filters.
 
-### Hl7 v2 specific filters
+### Hl7v2 specific filters
 | Filter | Description | Syntax |
 |-|-|-|
 | get_first_segments | Returns first instance of the segments | `{% assign result = hl7v2Data \| get_first_segments: 'segment1\|segment2\|...' -%}` |
@@ -16,6 +16,7 @@ If these filters do not meet your needs, you can also write your own filters.
 | get_related_segment_list | Given a segment and related segment name, returns the collection of related named segments | `{% assign result = hl7v2Data \| get_related_segment_list: parentSegment, 'childSegmentName' -%}` |
 | get_parent_segment | Given a child segment name and overall message index, returns the first matched parent segment | `{% assign result = hl7v2Data \| get_parent_segment: 'childSegmentName', 3, 'parentSegmentName' -%}` |
 | has_segments | Checks if HL7 v2 message has segments | `{% assign result = hl7v2Data \| has_segments: 'segment1\|segment2\|...' -%}` | 
+| split_data_by_segments | Given an HL7 v2 message and segment name(s) as the separator(s), returns the message list split by separator(s). <br> Note: Each segment separator will be retained as the first segment of each message in the list, while the segments before the first separator (which may be empty) will be retained as the first message in the list without any separator. |  `{% assign result = hl7v2Data \| split_data_by_segments: 'segment1\|segment2\|...' -%}` | 
 
 ### C-CDA specific filters
 | Filter | Description | Syntax |
@@ -33,6 +34,7 @@ If these filters do not meet your needs, you can also write your own filters.
 | unescape_special_chars | Returns string after removing escaping of special char | `{{ '\\E' \| unescape_special_chars }} #=> '\E'` |
 | match | Returns an array containing matches with a regular expression | `{% assign m = code \| match: '[0123456789.]+' -%}` |
 | to_json_string | Converts to JSON string | `{% assign msgJsonString = msg \| to_json_string -%}` |
+| to_double | Converts string to double | `{{ "100.01" \| to_double }} ` |
 | base64_encode | Returns base64 encoded string | `{{ decodedData \| base64_encode }}` |
 | base64_decode | Returns base64 decoded string | `{{ encodedData \| base64_decode }}` |
 | sha1_hash | Returns SHA1 hash (in hex) of given string | `{{ inputData \| sha1_hash }}` |
@@ -54,8 +56,9 @@ If these filters do not meet your needs, you can also write your own filters.
 | Filter | Description | Syntax |
 |-|-|-|
 | add_hyphens_date | Adds hyphens to a date without hyphens | `{{ PID.7.Value \| add_hyphens_date }}` |
-| format_as_date_time | Convert an YYYYMMDDHHmmssSSS string, e.g. 20040629175400000 to dateTime format, e.g. 2004-06-29T17:54:00.000z. A parameter could be set to handle time zone with "preserve", "utc" or "local". The default method is "local" | {{ PID.29.Value \| format_as_date_time: 'utc' }} |
-| now | Provides current time in a specific format. The default format is "yyyy-MM-ddTHH:mm:ss.FFFZ" | {{ '' \| now: 'dddd, dd MMMM yyyy HH:mm:ss' }} |
+| format_as_date_time | Converts an YYYYMMDDHHmmssSSS string (e.g. 20040629175400000) to a dateTime format (e.g. 2004-06-29T17:54:00.000z). Provides parameters to handle time zone: `preserve`, `utc`, `local`. The default method is `local`. | `{{ PID.29.Value \| format_as_date_time: 'utc' }}` |
+| now | Provides current time in a specific format. The default format is "yyyy-MM-ddTHH:mm:ss.FFFZ". | `{{ '' \| now: 'dddd, dd MMMM yyyy HH:mm:ss' }}` |
+| add_seconds | Adds double seconds on datetime in FHIR format. Provides parameters to set time zones: `preserve`, `utc`, `local`. The default is set to the parameter `preserve`. | `{{ "2021-01-01T00:00:00Z" \| add_seconds:100.1 }}` |
 
 ### Collection filters
 | Filter | Description | Syntax |
