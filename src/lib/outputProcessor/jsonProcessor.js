@@ -3,7 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-const antlr4 = require('antlr4/index');
+const antlr4 = require('antlr4');
 const jsonLexer = require('./autogen/jsonLexer');
 const jsonParser = require('./autogen/jsonParser');
 const jsonCustomListener = require('./jsonCustomListener').jsonCustomListener;

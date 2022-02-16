@@ -1,4 +1,6 @@
-# FHIR® Converter
+⚠ **This document applies to the Handlebars engine. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/dotliquid) link for the documentation of Liquid engine.** <br></br>
+
+# FHIR® Converter (Handlebars engine)
 
 ![Node.js CI](https://github.com/microsoft/FHIR-Converter/workflows/Node.js%20CI/badge.svg?branch=master)
 
@@ -8,7 +10,7 @@ The Converter makes use of templates that define the mappings between different 
 
 Templates for HL7v2, and CCDA, to FHIR conversion come pre-installed with the Converter. HL7v2 to FHIR templates are based on the [spreadsheet](https://docs.google.com/spreadsheets/d/1PaFYPSSq4oplTvw_4OgOn6h2Bs_CMvCAU9CqC4tPBgk/edit#gid=0) created by the HL7 [2-To-FHIR project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project). If needed, you can create new, or modify existing templates by following this document, and deploy those to meet your specific conversion requirements.
 
-FHIR converter runs as a REST web service and can be deployed on-prem or in the cloud. It takes raw data as input and converts it to FHIR bundles. These bundles can be persisted to a FHIR server such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/). 
+FHIR converter runs as a REST web service and can be deployed on-prem or in the cloud. It takes raw data as input and converts it to FHIR bundles. These bundles can be persisted to a FHIR server such as the [Azure API for FHIR](https://azure.microsoft.com/en-us/services/azure-api-for-fhir/).
 
 The FHIR Converter consists of the following components:
 
@@ -17,7 +19,6 @@ The FHIR Converter consists of the following components:
 1. [Sample data](src/sample-data) for testing purpose.
 1. A [Browser based editor](docs/web-ui-summary.md) to modify, create, and test templates.
 1. [Template management APIs](docs/api-summary.md) to manage the templates
-1. An embedded git server as another way to manage the templates
 
 The FHIR Converter released to open source on Thursday March 6th, 2020 with support for HL7 v2 to FHIR conversion. On Friday June 12th, 2020, C-CDA to FHIR conversion was added to the OSS FHIR Converter.
 
@@ -37,7 +38,7 @@ Once you have your subscription, click the link below. Note the service name as 
     <img src="https://azuredeploy.net/deploybutton.png"/>
 </a>
 
-Once it is deployed, you can access the UI and the service at [https://<SERVICE_NAME>.azurewebsites.net](https://SERVICE_NAME.azurewebsites.net). 
+Once it is deployed, you can access the UI and the service at [https://<SERVICE_NAME>.azurewebsites.net](https://SERVICE_NAME.azurewebsites.net).
 
 If you need to view or edit your API Key later, take the following steps:
 
@@ -47,11 +48,12 @@ If you need to view or edit your API Key later, take the following steps:
 
 ### Deploy on-prem
 
-Make sure that you have Node.js >=10.10.0 < 11.0 installed
+Make sure that you have Node.js >=14.0 < 15.0 installed
 
 ```
 git clone https://github.com/microsoft/FHIR-Converter/
 cd FHIR-Converter
+git checkout handlebars
 npm install
 npm start
 ```
@@ -60,7 +62,7 @@ Once this completes, you can access the UI and the service at http://localhost:2
 
 ## Using the FHIR Converter
 
-HL7v2 to FHIR, and CCDA to FHIR conversion templates come pre-installed on the FHIR converter. You can test the default conversion behavior of the service either by using the [UI](docs/web-ui-summary.md), or the [API](docs/web-ui-summary.md). In case the default templates do not meet your requirements, you can modify the templates by following [How to create templates](docs/template-creation-how-to-guide.md) document.
+HL7v2 to FHIR, and CCDA to FHIR conversion templates come pre-installed on the FHIR converter. You can test the default conversion behavior of the service either by using the [UI](docs/web-ui-summary.md), or the [API](docs/api-summary.md). In case the default templates do not meet your requirements, you can modify the templates by following [How to create templates](docs/template-creation-how-to-guide.md) document.
 
 ### Sample pipeline using FHIR converter
 

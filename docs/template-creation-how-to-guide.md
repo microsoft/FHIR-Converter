@@ -1,3 +1,5 @@
+⚠ **This document applies to the Handlebars engine. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/dotliquid) link for the documentation of Liquid engine.** <br></br>
+
 # How to create a template
 
 In this how-to guide, we will cover some of the basics around creating templates for converting healthcare data into FHIR bundles. The templates are an implementation of the open-source project [handlebars](https://handlebarsjs.com/). Handlebars compiles templates into JavaScript functions. The handlebars website has the most up to date information and is a great reference as you get into template building.
@@ -37,7 +39,6 @@ For step by step instructions for how to get started updating/creating C-CDA tem
 1. As part of handlebars, there are some built-in helper functions available to you. The handlebars documentation will have the most up to date information on this.
 1. Leveraging partial templates allows you to build building blocks and utilize those building blocks across multiple templates.
 1. Helper functions give you additional functionality for parsing the data. See the [helper concept guide](using-helpers-concept.md) for more details.
-1. When updating templates, you may not want to save the updates immediately in your production system. To assist with this, the FHIR Converter includes basic Git functionality.
 
 ## Partial templates
 

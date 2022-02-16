@@ -1,3 +1,5 @@
+⚠ **This document applies to the Handlebars engine. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/dotliquid) link for the documentation of Liquid engine.** <br></br>
+
 # Web UI Auto-Update Issue
 This is a known issue for old installation(v1.0.0) users that the converter UI gets updated to v2.0.0 version automatically and users' previous templates are no longer visible.
 

@@ -247,7 +247,56 @@
                         "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
                     ]
                 },
-                "id": "4939e179-a309-30ef-9889-e04751868181"
+                "id": "4939e179-a309-30ef-9889-e04751868181",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "5555555555"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Primary",
+                        "given": [
+                            "Patricia",
+                            "Patty"
+                        ],
+                        "suffix": [
+                            "M.D."
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "1004 Healthcare Drive"
+                        ],
+                        "city": "Portland",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "99123"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "+1(555)555-1004",
+                        "use": "work"
+                    }
+                ],
+                "qualification": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "207QA0505X",
+                                    "display": "Adult Medicine",
+                                    "system": "http://nucc.org/provider-taxonomy"
+                                }
+                            ]
+                        }
+                    }
+                ]
             },
             "request": {
                 "method": "PUT",
@@ -1251,7 +1300,7 @@
                         }
                     ]
                 },
-                "date": "2020-09-30T03:00:40.987Z",
+                "date": "2021-07-02T05:58:01.728Z",
                 "status": "current",
                 "content": [
                     {

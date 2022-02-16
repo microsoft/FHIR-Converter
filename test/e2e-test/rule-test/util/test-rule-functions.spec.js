@@ -240,15 +240,15 @@ describe('testRule', function () {
         const reqJson = null;
         const resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample3-right.json')));
         assert.ok(testRules.officialValidator(reqJson, resJson).valid);
-    }).timeout(60000);
+    }).timeout(300 * 1000);
 
     it('Rule officialValidator should return an object with invalid status and error message when the resource is invalid.', () => {
         const reqJson = null;
         const resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample3-wrong.json')));
         const result = testRules.officialValidator(reqJson, resJson);
 
-        const errorMessage = "Error @ Bundle.entry[1].resource.ofType(Practitioner) (line 57, col26) : Profile http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner, Element 'Bundle.entry[1].resource.ofType(Practitioner).identifier': minimum required = 1, but only found 0\nError @ Bundle.entry[1].resource.ofType(Practitioner) (line 57, col26) : Profile http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner, Element 'Bundle.entry[1].resource.ofType(Practitioner).name': minimum required = 1, but only found 0";
+        const errorMessage = "Fatal @ (document) : Error parsing JSON: Error parsing JSON source: JSON syntax error - found Close expecting String at Line 1 (path=[/null])";
         assert.strictEqual(result.valid, false);
         assert.strictEqual(result.errorMessage, errorMessage);
-    }).timeout(60000);
+    }).timeout(300 * 1000);
 });

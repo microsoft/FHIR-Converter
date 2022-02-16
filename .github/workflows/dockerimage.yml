@@ -1,11 +1,9 @@
 name: Docker Image CI
 
 on: 
-  push:
-    branches:
-      - master
-  schedule:
-    - cron: '0 9 * * 1'
+  release:
+    types:
+      - published
 
 jobs:
 
@@ -16,7 +14,7 @@ jobs:
     steps:
     - name: 'Checkout Github Action'
       uses: actions/checkout@master
-      
+
     - uses: azure/docker-login@v1
       with:
         login-server: healthplatformregistry.azurecr.io
@@ -32,4 +30,5 @@ jobs:
         IMAGE_NAME: healthplatformregistry.azurecr.io/fhirconverter
       run: |
         docker build . -t $IMAGE_NAME:${{ github.sha }} -t $IMAGE_NAME:v${{ steps.package-version.outputs.current-version }} -t $IMAGE_NAME:latest
+        docker push $IMAGE_NAME:v${{ steps.package-version.outputs.current-version }}
         docker push $IMAGE_NAME
