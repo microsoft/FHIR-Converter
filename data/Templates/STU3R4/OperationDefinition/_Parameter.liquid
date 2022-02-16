@@ -1,0 +1,10 @@
+{% diff msg -%}
+{
+  "targetProfile" : [
+    {{msg.profile | to_json_string}}
+  ],
+  "profile" : "",
+  "binding" : {% include 'OperationDefinition/Binding' msg: msg.binding -%},
+  "part" : [ {{ msg.part | to_array | batch_render: 'OperationDefinition/parameter', 'msg' }} ]
+}
+{% enddiff -%}

@@ -71,7 +71,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         [Fact]
         public void ToJsonStringTests()
         {
-            Assert.Null(Filters.ToJsonString(null));
             Assert.Equal(@"[""a"",""b""]", Filters.ToJsonString(new List<string>() { "a", "b" }));
         }
 

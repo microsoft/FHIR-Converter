@@ -1,0 +1,5 @@
+{% diff msg -%}
+{
+  "parameter" : [ {{ msg.parameter | to_array | batch_render: 'Parameters/SubParameter', 'msg' }} ]
+}
+{% enddiff -%}

@@ -59,7 +59,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static string ToJsonString(object data)
         {
-            return data == null ? null : JsonConvert.SerializeObject(data, Formatting.None);
+            return data == null ? "\"\"" : JsonConvert.SerializeObject(data, Formatting.None);
         }
 
         public static string Gzip(string data)
