@@ -26,9 +26,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         // We assume the local timezone is +08:00.
         public static IEnumerable<object[]> GetValidDataWithoutTimeZoneForAddHyphensDateWithUtcTimeZoneHandling()
         {
-            yield return new object[] { @"200101", "utc", @"2000-12" };
-            yield return new object[] { @"20010102", "utc", @"2001-01-01" };
-            yield return new object[] { @"19850101000000", "utc", @"1984-12-31" };
+            yield return new object[] { @"200101", "utc", @"2000-12", new DateTime(2001, 1, 1) };
+            yield return new object[] { @"20010102", "utc", @"2001-01-01", new DateTime(2001, 1, 2) };
+            yield return new object[] { @"19880101000000", "utc", @"1987-12-31", new DateTime(1988, 1, 1, 0, 0, 0) };
         }
 
         public static IEnumerable<object[]> GetValidDataForAddSeconds()
@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
             yield return new object[] { @"1970-01-01T00:01:00.000+10:00", -60, "utc", @"1969-12-31T14:00:00.000Z" };
 
-            yield return new object[] { @"1970-01-01T00:01:00Z",  60.123, "preserve", @"1970-01-01T00:02:00.123Z" };
+            yield return new object[] { @"1970-01-01T00:01:00Z", 60.123, "preserve", @"1970-01-01T00:02:00.123Z" };
             yield return new object[] { @"1970-01-01T00:01:00+06:00", 60.000, "preserve", @"1970-01-01T00:02:00+06:00" };
             yield return new object[] { @"2001-01", 60, "preserve", @"2001-01-01T00:01:00" };
             yield return new object[] { @"1970-01-01T00:01:00+14:00", 60, "utc", @"1969-12-31T10:02:00Z" };
@@ -52,8 +52,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         // We assume the local timezone is +08:00.
         public static IEnumerable<object[]> GetValidDataWithoutTimeZoneForAddSecondsWithUtcTimeZoneHandling()
         {
-            yield return new object[] { @"1924-10-10", 60000, "utc", @"1924-10-10T08:40:00Z" };
-            yield return new object[] { @"1970-01-01", 60, "utc", @"1969-12-31T16:01:00Z" };
+            yield return new object[] { @"1988-10-10", 60000, "utc", @"1988-10-10T08:40:00Z", new DateTime(1988, 10, 10) };
+            yield return new object[] { @"1970-01-01", 60, "utc", @"1969-12-31T16:01:00Z", new DateTime(1970, 1, 1) };
         }
 
         public static IEnumerable<object[]> GetValidDataForFormatAsDateTime()
@@ -90,10 +90,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         // We assume the local timezone is +08:00.
         public static IEnumerable<object[]> GetValidDataWithoutTimeZoneForFormatAsDateTimeWithUtcTimeZoneHandling()
         {
-            yield return new object[] { @"200101", "utc", @"2000-12" };
-            yield return new object[] { @"20050110045253", "utc", @"2005-01-09T20:52:53Z" };
-            yield return new object[] { @"20110103143428", "utc", @"2011-01-03T06:34:28Z" };
-            yield return new object[] { @"19701231115959", "utc", @"1970-12-31T03:59:59Z" };
+            yield return new object[] { @"200101", "utc", @"2000-12", new DateTime(2001, 1, 1) };
+            yield return new object[] { @"20050110045253", "utc", @"2005-01-09T20:52:53Z", new DateTime(2005, 1, 10, 4, 52, 53) };
+            yield return new object[] { @"19880103143428", "utc", @"1988-01-03T06:34:28Z", new DateTime(1988, 1, 3, 14, 34, 28) };
+            yield return new object[] { @"19701231115959", "utc", @"1970-12-31T03:59:59Z", new DateTime(1970, 12, 31, 11, 59, 59) };
         }
 
         public static IEnumerable<object[]> GetInvalidDataForAddHyphensDate()
@@ -154,11 +154,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         [Theory]
         [MemberData(nameof(GetValidDataWithoutTimeZoneForAddSecondsWithUtcTimeZoneHandling))]
-        public void GivenSeconds_WhenAddOnValidDataWithoutTimeZone_CorrectDateTimeShouldBeReturned(string originalDateTime, double seconds, string timeZoneHandling, string expectedDateTime)
+        public void GivenSeconds_WhenAddOnValidDataWithoutTimeZone_CorrectDateTimeShouldBeReturned(string originalDateTime, double seconds, string timeZoneHandling, string expectedDateTime, DateTime inputDateTime)
         {
             var result = Filters.AddSeconds(originalDateTime, seconds, timeZoneHandling);
             var dateTimeOffset = DateTimeOffset.Parse(result);
-            dateTimeOffset = dateTimeOffset.AddHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).Hours - 8);
+            dateTimeOffset = dateTimeOffset.AddHours(TimeZoneInfo.Local.GetUtcOffset(inputDateTime).TotalHours - 8);
             var dateTimeString = dateTimeOffset.ToString("yyyy-MM-ddTHH:mm:ssZ");
             Assert.Equal(expectedDateTime, dateTimeString);
         }
@@ -181,11 +181,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         [Theory]
         [MemberData(nameof(GetValidDataWithoutTimeZoneForAddHyphensDateWithUtcTimeZoneHandling))]
-        public void GivenAValidDataWithoutTimeZone_WhenAddHyphensDate_CorrectDateTimeShouldBeReturned(string input, string timeZoneHandling, string expected)
+        public void GivenAValidDataWithoutTimeZone_WhenAddHyphensDate_CorrectDateTimeShouldBeReturned(string input, string timeZoneHandling, string expected, DateTime inputDateTime)
         {
             var result = Filters.AddHyphensDate(input, timeZoneHandling);
             var dateTimeOffset = DateTimeOffset.Parse(result);
-            dateTimeOffset = dateTimeOffset.AddHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).Hours - 8);
+            dateTimeOffset = dateTimeOffset.AddHours(TimeZoneInfo.Local.GetUtcOffset(inputDateTime).TotalHours - 8);
             var dateTimeString = dateTimeOffset.ToString("yyyy-MM-dd");
             Assert.Contains(expected, dateTimeString);
         }
@@ -200,11 +200,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         [Theory]
         [MemberData(nameof(GetValidDataWithoutTimeZoneForFormatAsDateTimeWithUtcTimeZoneHandling))]
-        public void GivenAValidDataWithoutTimeZone_WhenFormatAsDateTime_ConvertedDateTimeShouldBeReturned(string input, string timeZoneHandling, string expectedDateTime)
+        public void GivenAValidDataWithoutTimeZone_WhenFormatAsDateTime_ConvertedDateTimeShouldBeReturned(string input, string timeZoneHandling, string expectedDateTime, DateTime inputDateTime)
         {
             var result = Filters.FormatAsDateTime(input, timeZoneHandling);
             var dateTimeOffset = DateTimeOffset.Parse(result);
-            dateTimeOffset = dateTimeOffset.AddHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).Hours - 8);
+            dateTimeOffset = dateTimeOffset.AddHours(TimeZoneInfo.Local.GetUtcOffset(inputDateTime).TotalHours - 8);
             var dateTimeString = dateTimeOffset.ToString("yyyy-MM-ddTHH:mm:ssZ");
             Assert.Contains(expectedDateTime, dateTimeString);
         }
