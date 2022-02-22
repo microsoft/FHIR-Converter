@@ -1,9 +1,48 @@
-{% evaluate locationId_PL_1 using 'ID/Location' PL: PL.1 -%}
-{% evaluate locationId_PL_2 using 'ID/Location' PL: PL.2 -%}
-{% evaluate locationId_PL_3 using 'ID/Location' PL: PL.3 -%}
-{% evaluate locationId_PL_4 using 'ID/Location' PL: PL.4 -%}
-{% evaluate locationId_PL_7 using 'ID/Location' PL: PL.7 -%}
-{% evaluate locationId_PL_8 using 'ID/Location' PL: PL.8 -%}
+{% if PL.5 or PL.9 -%}
+    {% if PL.5 and PL.9 -%}
+        {% assign PL_Value_Except_PL5_PL9 = PL.Value | remove: PL.5.Value | remove: PL.9.Value %}
+    {% endif -%}
+    {% if PL.5 and PL.9 == null or PL.9 == "" -%}
+        {% assign PL_Value_Except_PL5_PL9= PL.Value | remove: PL.5.Value %}
+    {% endif -%}
+    {% if PL.9 and PL.5 == null or PL.5 == "" -%}
+        {% assign PL_Value_Except_PL5_PL9= PL.Value | remove: PL.9.Value %}
+    {% endif -%}
+{% else -%}
+    {% assign PL_Value_Except_PL5_PL9 = PL.Value %}
+{% endif -%}
+
+{% if PL.1 -%}
+    {% evaluate locationId_PL_1 using 'ID/Location' PL_Field_Value: PL.1, PL: PL, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+{% else -%}
+    {% assign locationId_PL_1= null -%}
+{% endif -%}
+{% if PL.2 -%}
+    {% evaluate locationId_PL_2 using 'ID/Location' PL_Field_Value: PL.2, PL: PL, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+{% else -%}
+    {% assign locationId_PL_2 = null -%}
+{% endif -%}
+{% if PL.3 -%}
+    {% evaluate locationId_PL_3 using 'ID/Location' PL_Field_Value: PL.3, PL: PL, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+{% else -%}
+    {% assign locationId_PL_3 = null -%}
+{% endif -%}
+{% if PL.4 -%}
+    {% evaluate locationId_PL_4 using 'ID/Location' PL_Field_Value: PL.4, PL: PL, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+{% else -%}
+    {% assign locationId_PL_4 = null -%}
+{% endif -%}
+{% if PL.7 -%}
+    {% evaluate locationId_PL_7 using 'ID/Location' PL_Field_Value: PL.7, PL: PL, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+{% else -%}
+    {% assign locationId_PL_7 = null -%}
+{% endif -%}
+{% if PL.8 -%}
+    {% evaluate locationId_PL_8 using 'ID/Location' PL_Field_Value: PL.8, PL: PL, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+{% else -%}
+    {% assign locationId_PL_8 = null -%}
+{% endif -%}
+
 {% if PL.1 -%}
 {
     "fullUrl":"urn:uuid:{{ locationId_PL_1 }}",
@@ -38,6 +77,10 @@
                }
             ]
          },
+        "address":
+        {
+            {% include 'DataType/XADAddress' XAD: RXA.28 -%}
+        },
     },
     "request":{
         "method":"PUT",
@@ -82,6 +125,10 @@
                }
             ]
          },
+        "address":
+        {
+            {% include 'DataType/XADAddress' XAD: RXA.28 -%}
+        },
     },
     "request":{
         "method":"PUT",
@@ -126,6 +173,10 @@
                }
             ]
          },
+        "address":
+        {
+            {% include 'DataType/XADAddress' XAD: RXA.28 -%}
+        },
     },
     "request":{
         "method":"PUT",
@@ -165,6 +216,10 @@
                }
             ]
          },
+        "address":
+        {
+            {% include 'DataType/XADAddress' XAD: RXA.28 -%}
+        },
     },
     "request":{
         "method":"PUT",
@@ -209,6 +264,10 @@
                }
             ]
          },
+        "address":
+        {
+            {% include 'DataType/XADAddress' XAD: RXA.28 -%}
+        },
     },
     "request":{
         "method":"PUT",
@@ -253,6 +312,10 @@
                }
             ]
          },
+        "address":
+        {
+            {% include 'DataType/XADAddress' XAD: RXA.28 -%}
+        },
     },
     "request":{
         "method":"PUT",

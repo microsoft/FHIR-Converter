@@ -61,7 +61,7 @@
                 "id": "2f0f2d7d-7f93-e624-fa21-11d1c490897f",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T08:53:34.627Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: OML_O21.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T09:16:11.017Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: OML_O21.</span></p></div>"
                 },
                 "occurredDateTime": "2016-03-09T21:02:05+05:30",
                 "recorded": "2016-03-09T21:02:05+05:30",
@@ -245,6 +245,42 @@
             }
         },
         {
+            "fullUrl": "urn:uuid:0c8a9af0-2231-f818-ed7c-40bdb2aea2d1",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "0c8a9af0-2231-f818-ed7c-40bdb2aea2d1",
+                "name": "Walmart"
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/0c8a9af0-2231-f818-ed7c-40bdb2aea2d1"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:2a2e4b87-f7cb-9731-bd5a-fa9bc1dc854a",
+            "resource": {
+                "resourceType": "Account",
+                "id": "2a2e4b87-f7cb-9731-bd5a-fa9bc1dc854a",
+                "status": "active",
+                "guarantor": [
+                    {
+                        "party": {
+                            "reference": "Organization/0c8a9af0-2231-f818-ed7c-40bdb2aea2d1"
+                        }
+                    }
+                ],
+                "subject": [
+                    {
+                        "reference": "Patient/daed9284-6d12-ca12-4260-9aad09e1f201"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Account/2a2e4b87-f7cb-9731-bd5a-fa9bc1dc854a"
+            }
+        },
+        {
             "fullUrl": "urn:uuid:2839c7cc-58ca-f08d-1358-a15fa18660d3",
             "resource": {
                 "resourceType": "Coverage",
@@ -342,18 +378,6 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:0c8a9af0-2231-f818-ed7c-40bdb2aea2d1",
-            "resource": {
-                "resourceType": "Organization",
-                "id": "0c8a9af0-2231-f818-ed7c-40bdb2aea2d1",
-                "name": "Walmart"
-            },
-            "request": {
-                "method": "PUT",
-                "url": "Organization/0c8a9af0-2231-f818-ed7c-40bdb2aea2d1"
-            }
-        },
-        {
             "fullUrl": "urn:uuid:ff1b880e-468e-7a2f-41cb-8b6e204901f3",
             "resource": {
                 "resourceType": "RelatedPerson",
@@ -400,11 +424,11 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:bafe469c-5cc7-f800-feae-81b33cf36940",
+            "fullUrl": "urn:uuid:c0150cb3-0fdf-5809-54b6-8e3f186a90d7",
             "resource": {
                 "resourceType": "ServiceRequest",
-                "id": "bafe469c-5cc7-f800-feae-81b33cf36940",
-                "status": "active",
+                "id": "c0150cb3-0fdf-5809-54b6-8e3f186a90d7",
+                "status": "unknown",
                 "intent": "order",
                 "identifier": [
                     {
@@ -474,7 +498,45 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "ServiceRequest/bafe469c-5cc7-f800-feae-81b33cf36940"
+                "url": "ServiceRequest/c0150cb3-0fdf-5809-54b6-8e3f186a90d7"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:c9463523-7143-2510-6861-24e4a2703f22",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "c9463523-7143-2510-6861-24e4a2703f22",
+                "name": "Detroit City Hospital",
+                "identifier": [
+                    {
+                        "value": "8175000005"
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "2405 Garden St"
+                        ],
+                        "city": "Detroit",
+                        "state": "MI",
+                        "postalCode": "48201",
+                        "country": "USA"
+                    }
+                ],
+                "contact": [
+                    {
+                        "telecom": [
+                            {
+                                "use": "work",
+                                "system": "phone"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/c9463523-7143-2510-6861-24e4a2703f22"
             }
         },
         {
@@ -510,6 +572,20 @@
             "resource": {
                 "resourceType": "PractitionerRole",
                 "id": "9996be7d-26c8-997e-2f57-9ce40fe59181",
+                "code": [
+                    {
+                        "coding": [
+                            {
+                                "code": "ordering-provider",
+                                "display": "Ordering Provider",
+                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/PractitionerRole"
+                            }
+                        ]
+                    }
+                ],
+                "organization": {
+                    "reference": "Organization/c9463523-7143-2510-6861-24e4a2703f22"
+                },
                 "practitioner": {
                     "reference": "Practitioner/0ac4aa7e-de74-bd40-3b64-97a1c0f3a414"
                 }
@@ -524,12 +600,6 @@
             "resource": {
                 "resourceType": "Specimen",
                 "id": "29fb3250-9864-4dad-e590-4126768684d4",
-                "collection": {
-                    "collectedPeriod": {
-                        "start": "2016-03-08T21:02:05+05:30",
-                        "end": "2016-03-08T21:02:05+05:30"
-                    }
-                },
                 "identifier": [
                     {
                         "value": "ORD723222",
@@ -555,6 +625,17 @@
                             ]
                         }
                     }
+                ],
+                "collection": {
+                    "collectedPeriod": {
+                        "start": "2016-03-08T21:02:05+05:30",
+                        "end": "2016-03-08T21:02:05+05:30"
+                    }
+                },
+                "request": [
+                    {
+                        "reference": "ServiceRequest/c0150cb3-0fdf-5809-54b6-8e3f186a90d7"
+                    }
                 ]
             },
             "request": {
@@ -563,10 +644,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:c55789d4-78ae-5836-21d4-48191c4763a7",
+            "fullUrl": "urn:uuid:7fd7b81a-cae2-53b5-1d4c-b220a32a5695",
             "resource": {
                 "resourceType": "Observation",
-                "id": "c55789d4-78ae-5836-21d4-48191c4763a7",
+                "id": "7fd7b81a-cae2-53b5-1d4c-b220a32a5695",
                 "status": "unknown",
                 "code": {
                     "coding": [
@@ -579,7 +660,7 @@
                 },
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/bafe469c-5cc7-f800-feae-81b33cf36940"
+                        "reference": "ServiceRequest/c0150cb3-0fdf-5809-54b6-8e3f186a90d7"
                     }
                 ],
                 "valueString": "NO",
@@ -605,7 +686,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/c55789d4-78ae-5836-21d4-48191c4763a7"
+                "url": "Observation/7fd7b81a-cae2-53b5-1d4c-b220a32a5695"
             }
         },
         {
@@ -613,9 +694,6 @@
             "resource": {
                 "resourceType": "Specimen",
                 "id": "92af9b9a-bcfc-b6f6-ce19-bf5bc7b28707",
-                "collection": {
-                    "collectedDateTime": "2016-03-08T21:02:05+05:30"
-                },
                 "type": {
                     "coding": [
                         {
@@ -624,6 +702,9 @@
                             "system": "http://terminology.hl7.org/CodeSystem/v2-0487"
                         }
                     ]
+                },
+                "collection": {
+                    "collectedDateTime": "2016-03-08T21:02:05+05:30"
                 },
                 "container": [
                     {
@@ -639,7 +720,7 @@
                 ],
                 "request": [
                     {
-                        "reference": "ServiceRequest/bafe469c-5cc7-f800-feae-81b33cf36940"
+                        "reference": "ServiceRequest/c0150cb3-0fdf-5809-54b6-8e3f186a90d7"
                     }
                 ]
             },

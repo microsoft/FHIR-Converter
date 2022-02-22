@@ -62,7 +62,7 @@
                 "id": "9f79a1ce-a1d5-c6dd-a0d6-3bc75109716c",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T08:49:16.824Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ORU_R01.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T09:23:37.264Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ORU_R01.</span></p></div>"
                 },
                 "occurredDateTime": "2014-10-06T06:45:00",
                 "recorded": "2014-10-06T06:45:00",
@@ -210,10 +210,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:f70a39cb-cf13-6f75-885d-cf691752c711",
+            "fullUrl": "urn:uuid:58bd65b3-7fe0-55cf-19e9-b3cfbc026fbf",
             "resource": {
                 "resourceType": "Account",
-                "id": "f70a39cb-cf13-6f75-885d-cf691752c711",
+                "id": "58bd65b3-7fe0-55cf-19e9-b3cfbc026fbf",
                 "identifier": [
                     {
                         "value": "40007716",
@@ -238,7 +238,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Account/f70a39cb-cf13-6f75-885d-cf691752c711"
+                "url": "Account/58bd65b3-7fe0-55cf-19e9-b3cfbc026fbf"
             }
         },
         {
@@ -276,7 +276,7 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/0c653f12-916b-8b2a-511a-96b2fb03e3af"
+                        "reference": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
                     }
                 ]
             },
@@ -286,10 +286,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:1ef60c39-1161-0129-a263-b693d23f90c3",
+            "fullUrl": "urn:uuid:6d823dfd-8d69-fc55-bb7c-5115364bdb34",
             "resource": {
                 "resourceType": "Observation",
-                "id": "1ef60c39-1161-0129-a263-b693d23f90c3",
+                "id": "6d823dfd-8d69-fc55-bb7c-5115364bdb34",
                 "status": "preliminary",
                 "code": {
                     "coding": [
@@ -336,13 +336,13 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/0c653f12-916b-8b2a-511a-96b2fb03e3af"
+                        "reference": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/1ef60c39-1161-0129-a263-b693d23f90c3"
+                "url": "Observation/6d823dfd-8d69-fc55-bb7c-5115364bdb34"
             }
         },
         {
@@ -380,7 +380,7 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/0c653f12-916b-8b2a-511a-96b2fb03e3af"
+                        "reference": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
                     }
                 ]
             },
@@ -390,10 +390,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:2f7b51cf-44f5-547d-2815-747fd4ec7a88",
+            "fullUrl": "urn:uuid:e8be578a-267e-864d-eee7-21df040facdd",
             "resource": {
                 "resourceType": "Observation",
-                "id": "2f7b51cf-44f5-547d-2815-747fd4ec7a88",
+                "id": "e8be578a-267e-864d-eee7-21df040facdd",
                 "status": "preliminary",
                 "code": {
                     "coding": [
@@ -440,20 +440,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/0c653f12-916b-8b2a-511a-96b2fb03e3af"
+                        "reference": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/2f7b51cf-44f5-547d-2815-747fd4ec7a88"
+                "url": "Observation/e8be578a-267e-864d-eee7-21df040facdd"
             }
         },
         {
-            "fullUrl": "urn:uuid:73bdfe72-5f9f-31fc-ad22-90e1ccf2d7fe",
+            "fullUrl": "urn:uuid:4e088562-d23b-7850-733a-32f2e0ef18f9",
             "resource": {
                 "resourceType": "Observation",
-                "id": "73bdfe72-5f9f-31fc-ad22-90e1ccf2d7fe",
+                "id": "4e088562-d23b-7850-733a-32f2e0ef18f9",
                 "status": "final",
                 "code": {
                     "coding": [
@@ -500,20 +500,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/0c653f12-916b-8b2a-511a-96b2fb03e3af"
+                        "reference": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/73bdfe72-5f9f-31fc-ad22-90e1ccf2d7fe"
+                "url": "Observation/4e088562-d23b-7850-733a-32f2e0ef18f9"
             }
         },
         {
-            "fullUrl": "urn:uuid:0c653f12-916b-8b2a-511a-96b2fb03e3af",
+            "fullUrl": "urn:uuid:5c4619c4-2cf9-44bb-a2cd-262665709d4a",
             "resource": {
                 "resourceType": "ServiceRequest",
-                "id": "0c653f12-916b-8b2a-511a-96b2fb03e3af",
+                "id": "5c4619c4-2cf9-44bb-a2cd-262665709d4a",
                 "status": "active",
                 "intent": "filler-order",
                 "identifier": [
@@ -563,7 +563,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "ServiceRequest/0c653f12-916b-8b2a-511a-96b2fb03e3af"
+                "url": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
             }
         },
         {
@@ -590,6 +590,17 @@
             "resource": {
                 "resourceType": "PractitionerRole",
                 "id": "907170a0-a8af-89c5-5a30-6b78cdb227c5",
+                "code": [
+                    {
+                        "coding": [
+                            {
+                                "code": "ordering-provider",
+                                "display": "Ordering Provider",
+                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/PractitionerRole"
+                            }
+                        ]
+                    }
+                ],
                 "practitioner": {
                     "reference": "Practitioner/15decf11-00dc-6867-9c35-ffd79977d5b9"
                 }
@@ -643,7 +654,7 @@
                 },
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/0c653f12-916b-8b2a-511a-96b2fb03e3af"
+                        "reference": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
                     }
                 ],
                 "specimen": [
@@ -656,16 +667,16 @@
                         "reference": "Observation/f736fbb2-aafc-4e52-abb9-20d77d01d302"
                     },
                     {
-                        "reference": "Observation/1ef60c39-1161-0129-a263-b693d23f90c3"
+                        "reference": "Observation/6d823dfd-8d69-fc55-bb7c-5115364bdb34"
                     },
                     {
                         "reference": "Observation/fa77427d-7606-99a5-ae91-f316de160668"
                     },
                     {
-                        "reference": "Observation/2f7b51cf-44f5-547d-2815-747fd4ec7a88"
+                        "reference": "Observation/e8be578a-267e-864d-eee7-21df040facdd"
                     },
                     {
-                        "reference": "Observation/73bdfe72-5f9f-31fc-ad22-90e1ccf2d7fe"
+                        "reference": "Observation/4e088562-d23b-7850-733a-32f2e0ef18f9"
                     }
                 ]
             },
@@ -679,11 +690,6 @@
             "resource": {
                 "resourceType": "Specimen",
                 "id": "1385d82a-b545-84d8-803a-e65c038399c8",
-                "collection": {
-                    "collector": {
-                        "reference": "PractitionerRole/be571888-010e-9a32-e87f-f1ee1bd631a8"
-                    }
-                },
                 "identifier": [
                     {
                         "value": "88502218",
@@ -707,7 +713,12 @@
                             ]
                         }
                     }
-                ]
+                ],
+                "collection": {
+                    "collector": {
+                        "reference": "PractitionerRole/be571888-010e-9a32-e87f-f1ee1bd631a8"
+                    }
+                }
             },
             "request": {
                 "method": "PUT",
@@ -752,10 +763,6 @@
             "resource": {
                 "resourceType": "Specimen",
                 "id": "7c7cbbd6-4a47-b606-9d5b-dc2d6a03e663",
-                "collection": {
-                    "collectedDateTime": "2014-10-06T05:35:00"
-                },
-                "receivedTime": "2014-10-06T08:21:00",
                 "identifier": [
                     {
                         "value": "SpecimenID",
@@ -777,6 +784,10 @@
                         }
                     ]
                 },
+                "collection": {
+                    "collectedDateTime": "2014-10-06T05:35:00"
+                },
+                "receivedTime": "2014-10-06T08:21:00",
                 "status": "available"
             },
             "request": {
@@ -785,10 +796,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:f3f13545-5a9c-5279-e1a3-6faff5d56778",
+            "fullUrl": "urn:uuid:21983e67-0a20-c7c1-8c83-0b5c101ff0c7",
             "resource": {
                 "resourceType": "Observation",
-                "id": "f3f13545-5a9c-5279-e1a3-6faff5d56778",
+                "id": "21983e67-0a20-c7c1-8c83-0b5c101ff0c7",
                 "status": "preliminary",
                 "code": {
                     "coding": [
@@ -838,20 +849,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                        "reference": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/f3f13545-5a9c-5279-e1a3-6faff5d56778"
+                "url": "Observation/21983e67-0a20-c7c1-8c83-0b5c101ff0c7"
             }
         },
         {
-            "fullUrl": "urn:uuid:690c7dfd-8d22-ac69-0f11-bf58da18db99",
+            "fullUrl": "urn:uuid:f8678fde-a167-6a3d-1462-97a40d24fd8f",
             "resource": {
                 "resourceType": "Observation",
-                "id": "690c7dfd-8d22-ac69-0f11-bf58da18db99",
+                "id": "f8678fde-a167-6a3d-1462-97a40d24fd8f",
                 "status": "preliminary",
                 "code": {
                     "coding": [
@@ -901,20 +912,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                        "reference": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/690c7dfd-8d22-ac69-0f11-bf58da18db99"
+                "url": "Observation/f8678fde-a167-6a3d-1462-97a40d24fd8f"
             }
         },
         {
-            "fullUrl": "urn:uuid:4bb79fc0-148e-6d5b-b111-6e09c39ec56e",
+            "fullUrl": "urn:uuid:0ec3b929-1338-f630-dcca-b251cd2f3e4f",
             "resource": {
                 "resourceType": "Observation",
-                "id": "4bb79fc0-148e-6d5b-b111-6e09c39ec56e",
+                "id": "0ec3b929-1338-f630-dcca-b251cd2f3e4f",
                 "status": "preliminary",
                 "code": {
                     "coding": [
@@ -964,20 +975,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                        "reference": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/4bb79fc0-148e-6d5b-b111-6e09c39ec56e"
+                "url": "Observation/0ec3b929-1338-f630-dcca-b251cd2f3e4f"
             }
         },
         {
-            "fullUrl": "urn:uuid:5597ddac-19fb-6893-705d-65097d31b66b",
+            "fullUrl": "urn:uuid:cfec5d8d-8d98-3ae1-e5fc-a2b3f986b14f",
             "resource": {
                 "resourceType": "Observation",
-                "id": "5597ddac-19fb-6893-705d-65097d31b66b",
+                "id": "cfec5d8d-8d98-3ae1-e5fc-a2b3f986b14f",
                 "status": "preliminary",
                 "code": {
                     "coding": [
@@ -1027,20 +1038,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                        "reference": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/5597ddac-19fb-6893-705d-65097d31b66b"
+                "url": "Observation/cfec5d8d-8d98-3ae1-e5fc-a2b3f986b14f"
             }
         },
         {
-            "fullUrl": "urn:uuid:e4412677-d1c2-f97d-b765-5bdfb16cdac5",
+            "fullUrl": "urn:uuid:6bd3891e-fce2-4551-e162-52bcb7f1e205",
             "resource": {
                 "resourceType": "Observation",
-                "id": "e4412677-d1c2-f97d-b765-5bdfb16cdac5",
+                "id": "6bd3891e-fce2-4551-e162-52bcb7f1e205",
                 "status": "preliminary",
                 "code": {
                     "coding": [
@@ -1090,20 +1101,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                        "reference": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/e4412677-d1c2-f97d-b765-5bdfb16cdac5"
+                "url": "Observation/6bd3891e-fce2-4551-e162-52bcb7f1e205"
             }
         },
         {
-            "fullUrl": "urn:uuid:99bb45ed-8d61-675b-dec1-6ee32bfa054a",
+            "fullUrl": "urn:uuid:425b6ad3-9304-3f7b-2771-0aa0dcd954ca",
             "resource": {
                 "resourceType": "ServiceRequest",
-                "id": "99bb45ed-8d61-675b-dec1-6ee32bfa054a",
+                "id": "425b6ad3-9304-3f7b-2771-0aa0dcd954ca",
                 "status": "active",
                 "intent": "filler-order",
                 "identifier": [
@@ -1153,7 +1164,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                "url": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
             }
         },
         {
@@ -1200,7 +1211,7 @@
                 },
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                        "reference": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
                     }
                 ],
                 "specimen": [
@@ -1210,19 +1221,19 @@
                 ],
                 "result": [
                     {
-                        "reference": "Observation/f3f13545-5a9c-5279-e1a3-6faff5d56778"
+                        "reference": "Observation/21983e67-0a20-c7c1-8c83-0b5c101ff0c7"
                     },
                     {
-                        "reference": "Observation/690c7dfd-8d22-ac69-0f11-bf58da18db99"
+                        "reference": "Observation/f8678fde-a167-6a3d-1462-97a40d24fd8f"
                     },
                     {
-                        "reference": "Observation/4bb79fc0-148e-6d5b-b111-6e09c39ec56e"
+                        "reference": "Observation/0ec3b929-1338-f630-dcca-b251cd2f3e4f"
                     },
                     {
-                        "reference": "Observation/5597ddac-19fb-6893-705d-65097d31b66b"
+                        "reference": "Observation/cfec5d8d-8d98-3ae1-e5fc-a2b3f986b14f"
                     },
                     {
-                        "reference": "Observation/e4412677-d1c2-f97d-b765-5bdfb16cdac5"
+                        "reference": "Observation/6bd3891e-fce2-4551-e162-52bcb7f1e205"
                     }
                 ]
             },
@@ -1236,11 +1247,6 @@
             "resource": {
                 "resourceType": "Specimen",
                 "id": "e8c2bedc-f247-6e63-2c6f-a58e26f24c33",
-                "collection": {
-                    "collector": {
-                        "reference": "PractitionerRole/be571888-010e-9a32-e87f-f1ee1bd631a8"
-                    }
-                },
                 "identifier": [
                     {
                         "value": "855238581",
@@ -1264,7 +1270,12 @@
                             ]
                         }
                     }
-                ]
+                ],
+                "collection": {
+                    "collector": {
+                        "reference": "PractitionerRole/be571888-010e-9a32-e87f-f1ee1bd631a8"
+                    }
+                }
             },
             "request": {
                 "method": "PUT",

@@ -7,6 +7,8 @@
         {{DG1.Value}}
     {% elsif EI -%}
         {{EI.Value}}
+    {% elsif PDA -%}
+        {{PDA.Value}}
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'Condition', true, baseId | generate_uuid }}
