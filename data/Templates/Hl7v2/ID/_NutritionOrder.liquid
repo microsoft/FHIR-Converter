@@ -1,0 +1,8 @@
+{% capture identifiers -%}
+    {% if ODS.1 and ODS.3 -%}
+        {{ODS.1.Value}},{{ODS.3.1.Value}},{{ODS.3.3.Value}}
+    {% elsif ODS -%}
+        {{ODS.Value}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'NutritionOrder', false| generate_uuid }}

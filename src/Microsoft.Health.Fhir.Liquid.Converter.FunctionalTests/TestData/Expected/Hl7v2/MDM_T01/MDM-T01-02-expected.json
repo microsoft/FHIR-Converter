@@ -70,7 +70,7 @@
                 "id": "62e243a9-2299-8d17-3755-2ea9dcea5246",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T09:21:28.605Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: MDM_T01.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T08:50:39.786Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: MDM_T01.</span></p></div>"
                 },
                 "occurredDateTime": "2008-01-31T19:15:00+05:30",
                 "recorded": "2008-01-31T19:15:00+05:30",
@@ -246,10 +246,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:53abf53e-4d5f-9ac3-01fc-1c57fbc8ff1b",
+            "fullUrl": "urn:uuid:3abc02b1-c901-fe43-7d5b-01759e09083b",
             "resource": {
                 "resourceType": "Account",
-                "id": "53abf53e-4d5f-9ac3-01fc-1c57fbc8ff1b",
+                "id": "3abc02b1-c901-fe43-7d5b-01759e09083b",
                 "identifier": [
                     {
                         "value": "10000001"
@@ -264,7 +264,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Account/53abf53e-4d5f-9ac3-01fc-1c57fbc8ff1b"
+                "url": "Account/3abc02b1-c901-fe43-7d5b-01759e09083b"
             }
         },
         {
@@ -340,13 +340,13 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:b4c8d42e-dbcb-9290-7593-7586f4b5d0c9",
+            "fullUrl": "urn:uuid:4507c0f9-4c86-399e-40d7-12c8f4d6443f",
             "resource": {
                 "resourceType": "Location",
-                "id": "b4c8d42e-dbcb-9290-7593-7586f4b5d0c9",
+                "id": "4507c0f9-4c86-399e-40d7-12c8f4d6443f",
                 "name": "CCU",
                 "mode": "instance",
-                "description": "CCU--2003--1",
+                "description": "CCU--2000--1",
                 "physicalType": {
                     "coding": [
                         {
@@ -358,16 +358,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/b4c8d42e-dbcb-9290-7593-7586f4b5d0c9"
+                "url": "Location/4507c0f9-4c86-399e-40d7-12c8f4d6443f"
             }
         },
         {
-            "fullUrl": "urn:uuid:55fb6bcf-59d7-2cc4-2ddc-d38ba31ff1d2",
+            "fullUrl": "urn:uuid:40db9d51-986d-9b0d-52bc-abe440370627",
             "resource": {
                 "resourceType": "Location",
-                "id": "55fb6bcf-59d7-2cc4-2ddc-d38ba31ff1d2",
+                "id": "40db9d51-986d-9b0d-52bc-abe440370627",
                 "partOf": {
-                    "reference": "Location/b4c8d42e-dbcb-9290-7593-7586f4b5d0c9"
+                    "reference": "Location/4507c0f9-4c86-399e-40d7-12c8f4d6443f"
                 },
                 "name": "2000",
                 "mode": "instance",
@@ -383,20 +383,20 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/55fb6bcf-59d7-2cc4-2ddc-d38ba31ff1d2"
+                "url": "Location/40db9d51-986d-9b0d-52bc-abe440370627"
             }
         },
         {
-            "fullUrl": "urn:uuid:b2d5327c-354a-b91d-541d-c6b0fe91a841",
+            "fullUrl": "urn:uuid:6a61736d-4483-b458-c780-a0d2ce5753e1",
             "resource": {
                 "resourceType": "Location",
-                "id": "b2d5327c-354a-b91d-541d-c6b0fe91a841",
+                "id": "6a61736d-4483-b458-c780-a0d2ce5753e1",
                 "partOf": {
-                    "reference": "Location/66fd3f3f-1ed8-35f5-002d-40ca03271177"
+                    "reference": "Location/40db9d51-986d-9b0d-52bc-abe440370627"
                 },
                 "name": "1",
                 "mode": "instance",
-                "description": "CCU--2003--1",
+                "description": "CCU--2000--1",
                 "physicalType": {
                     "coding": [
                         {
@@ -408,16 +408,38 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/b2d5327c-354a-b91d-541d-c6b0fe91a841"
+                "url": "Location/6a61736d-4483-b458-c780-a0d2ce5753e1"
             }
         },
         {
-            "fullUrl": "urn:uuid:66fd3f3f-1ed8-35f5-002d-40ca03271177",
+            "fullUrl": "urn:uuid:d3b45888-01fe-96f5-3ec2-b40a707ad4d3",
             "resource": {
                 "resourceType": "Location",
-                "id": "66fd3f3f-1ed8-35f5-002d-40ca03271177",
+                "id": "d3b45888-01fe-96f5-3ec2-b40a707ad4d3",
+                "name": "CCU",
+                "mode": "instance",
+                "description": "CCU--2003--1",
+                "physicalType": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                            "code": "lvl"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/d3b45888-01fe-96f5-3ec2-b40a707ad4d3"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:6b17118e-cb1a-8e12-c7d0-86f90db5f151",
+            "resource": {
+                "resourceType": "Location",
+                "id": "6b17118e-cb1a-8e12-c7d0-86f90db5f151",
                 "partOf": {
-                    "reference": "Location/b4c8d42e-dbcb-9290-7593-7586f4b5d0c9"
+                    "reference": "Location/d3b45888-01fe-96f5-3ec2-b40a707ad4d3"
                 },
                 "name": "2003",
                 "mode": "instance",
@@ -433,7 +455,32 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/66fd3f3f-1ed8-35f5-002d-40ca03271177"
+                "url": "Location/6b17118e-cb1a-8e12-c7d0-86f90db5f151"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:6591dc44-ea0d-c947-2a6c-2ad123face9c",
+            "resource": {
+                "resourceType": "Location",
+                "id": "6591dc44-ea0d-c947-2a6c-2ad123face9c",
+                "partOf": {
+                    "reference": "Location/6b17118e-cb1a-8e12-c7d0-86f90db5f151"
+                },
+                "name": "1",
+                "mode": "instance",
+                "description": "CCU--2003--1",
+                "physicalType": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                            "code": "bd"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/6591dc44-ea0d-c947-2a6c-2ad123face9c"
             }
         },
         {
@@ -451,20 +498,14 @@
                     {
                         "status": "active",
                         "location": {
-                            "reference": "Location/b4c8d42e-dbcb-9290-7593-7586f4b5d0c9"
+                            "reference": "Location/4507c0f9-4c86-399e-40d7-12c8f4d6443f"
                         }
                     },
                     {
                         "status": "completed",
                         "location": {
-                            "reference": "Location/b4c8d42e-dbcb-9290-7593-7586f4b5d0c9"
-                        },
-                        "extension": [
-                            {
-                                "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/temporary-location",
-                                "valueBoolean": false
-                            }
-                        ]
+                            "reference": "Location/d3b45888-01fe-96f5-3ec2-b40a707ad4d3"
+                        }
                     }
                 ],
                 "participant": [
@@ -535,6 +576,11 @@
                     "status": "generated",
                     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Visit Description: </span></p></div>"
                 },
+                "account": [
+                    {
+                        "reference": "Account/3abc02b1-c901-fe43-7d5b-01759e09083b"
+                    }
+                ],
                 "subject": {
                     "reference": "Patient/073b77fa-7722-30cf-cd8f-218a179da613"
                 }
@@ -576,16 +622,6 @@
                 "masterIdentifier": {
                     "value": "1.2.840.317.5947431.51.20080131160038"
                 },
-                "relatesTo": [
-                    {
-                        "code": "appends",
-                        "target": {
-                            "identifier": {
-                                "value": "1.2.840.317.5947431.51.20080131155715"
-                            }
-                        }
-                    }
-                ],
                 "docStatus": "preliminary",
                 "status": "current"
             },
@@ -625,11 +661,11 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:01cd87ac-cb24-4ae6-239f-a3c355aafd49",
+            "fullUrl": "urn:uuid:ef3ae95d-d9b8-5abb-0018-a626275a71a0",
             "resource": {
                 "resourceType": "ServiceRequest",
-                "id": "01cd87ac-cb24-4ae6-239f-a3c355aafd49",
-                "status": "active",
+                "id": "ef3ae95d-d9b8-5abb-0018-a626275a71a0",
+                "status": "unknown",
                 "intent": "order",
                 "identifier": [
                     {
@@ -726,9 +762,9 @@
                     "code": {
                         "coding": [
                             {
-                                "code": "ACM",
-                                "display": "Before Breakfast",
-                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/HL7xxx"
+                                "code": "P",
+                                "display": "Post (after)",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0335"
                             }
                         ]
                     },
@@ -736,7 +772,7 @@
                         "period": 12,
                         "periodUnit": "min",
                         "when": [
-                            "ACM"
+                            "PC"
                         ],
                         "offset": 2,
                         "boundsPeriod": {
@@ -752,7 +788,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "ServiceRequest/01cd87ac-cb24-4ae6-239f-a3c355aafd49"
+                "url": "ServiceRequest/ef3ae95d-d9b8-5abb-0018-a626275a71a0"
             }
         },
         {
@@ -788,9 +824,6 @@
             "resource": {
                 "resourceType": "Specimen",
                 "id": "c4e417ca-4a99-cb34-3d98-3f3ab1ae7363",
-                "collection": {
-                    "collectedDateTime": "2008-01-31T19:10:00+05:30"
-                },
                 "identifier": [
                     {
                         "value": "00012345",
@@ -814,7 +847,10 @@
                             ]
                         }
                     }
-                ]
+                ],
+                "collection": {
+                    "collectedDateTime": "2008-01-31T19:10:00+05:30"
+                }
             },
             "request": {
                 "method": "PUT",
@@ -822,11 +858,11 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:ad3dd95e-23fb-17ca-7fa9-259b0939a4f4",
+            "fullUrl": "urn:uuid:affc614c-f1e3-c5c4-22f2-e9023fd178f6",
             "resource": {
                 "resourceType": "ServiceRequest",
-                "id": "ad3dd95e-23fb-17ca-7fa9-259b0939a4f4",
-                "status": "active",
+                "id": "affc614c-f1e3-c5c4-22f2-e9023fd178f6",
+                "status": "unknown",
                 "intent": "order",
                 "identifier": [
                     {
@@ -903,7 +939,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "ServiceRequest/ad3dd95e-23fb-17ca-7fa9-259b0939a4f4"
+                "url": "ServiceRequest/affc614c-f1e3-c5c4-22f2-e9023fd178f6"
             }
         },
         {
@@ -911,9 +947,6 @@
             "resource": {
                 "resourceType": "Specimen",
                 "id": "8544aeea-6c95-cc4e-9d21-19aa26595386",
-                "collection": {
-                    "collectedDateTime": "2008-01-31T20:00:00+05:30"
-                },
                 "identifier": [
                     {
                         "value": "00012367",
@@ -937,7 +970,10 @@
                             ]
                         }
                     }
-                ]
+                ],
+                "collection": {
+                    "collectedDateTime": "2008-01-31T20:00:00+05:30"
+                }
             },
             "request": {
                 "method": "PUT",

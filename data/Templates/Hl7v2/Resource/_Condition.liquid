@@ -18,8 +18,11 @@ Condition_Recorder_ID: A resource Id, used to fill "recorder.reference" property
         {
             {% include 'DataType/CWECodeableConcept' CWE: DG1.3 -%}
             "text": "{{ DG1.4.Value }}",
+            {% if PDA_1 %}
+                {% include 'DataType/CWECodeableConcept' CWE: PDA_1 -%}
+            {% endif %}
         },
-        
+       
         "onsetDateTime":"{{ DG1.5.Value | format_as_date_time }}",
         
         "identifier":
@@ -61,6 +64,7 @@ Condition_Recorder_ID: A resource Id, used to fill "recorder.reference" property
         "subject":
         {
             "reference":"{{ Condition_Subject_ID }}",
+           
         },
         "encounter":
         {
