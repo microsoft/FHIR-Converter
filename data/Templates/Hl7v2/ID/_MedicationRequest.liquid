@@ -1,0 +1,22 @@
+{% capture identifiers -%}
+    {% if ORC.2 and RXO.1 -%}
+        {{ORC.2.Value}},{{RXO.1.Value}},{{intent_value.Value}}
+    {% elsif ORC.2 and RXO.6.2 -%}
+        {{ORC.2.Value}},{{RXO.6.2.Value}},{{intent_value.Value}}
+    {% elsif ORC.15 and RXO.1 -%}
+        {{ORC.15.Value}},{{RXO.1.Value}},{{intent_value.Value}}
+    {% elsif ORC.15 and RXO.6.2 -%}
+        {{ORC.15.Value}},{{RXO.6.2.Value}},{{intent_value.Value}}
+    {% elsif MSH.7 and RXO.1 -%}
+        {{MSH.7.Value}},{{RXO.1.Value}},{{intent_value.Value}}
+    {% elsif MSH.7 and RXO.6.2 -%}
+        {{MSH.7.Value}},{{RXO.6.2.Value}},{{intent_value.Value}}
+    {% elsif RXE.15 and RXE.2 -%}
+        {{RXE.15.Value}},{{RXE.2.Value}},{{intent_value.Value}}
+    {% elsif RXE -%}
+        {{RXE.Value}}
+    {% elsif ORC -%}
+        {{ORC.Value}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'MedicationRequest', true, baseId | generate_uuid }}

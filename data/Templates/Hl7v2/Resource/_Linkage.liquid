@@ -1,0 +1,57 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Linkage",
+        "id":"{{ ID }}",
+        "item" : [
+            {% for p in PID.3.Repeats -%}
+            {
+                "type" : "source",
+                "resource" : { 
+                    "type" : "Patient",
+                    "identifier" : { 
+                        {% include 'DataType/CX' CX: p -%}
+                     },
+                }
+            },
+            {% endfor -%}
+            {% for mrg in MRG.1.Repeats -%}
+            {
+                "type" : "historical",
+                "resource" : { 
+                    "type" : "Patient",
+                    "identifier" : { 
+                        {% include 'DataType/CX' CX: mrg -%}
+                     },
+                }
+            },
+            {% endfor -%}
+            {% if PID_A41.18 -%}
+            {
+                "type" : "source",
+                "resource" : { 
+                    "type" : "Account",
+                    "identifier" : { 
+                        {% include 'DataType/CX' CX: PID_A41.18 -%}
+                     },
+                }
+            },
+            {% endif -%}
+            {% if MRG_A41.3 -%}
+            {
+                "type" : "historical",
+                "resource" : { 
+                    "type" : "Account",
+                    "identifier" : { 
+                        {% include 'DataType/CX' CX: MRG_A41.3 -%}
+                     },
+                }
+            },
+            {% endif -%}
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Linkage/{{ ID }}",
+    },
+},

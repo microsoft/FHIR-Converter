@@ -1,8 +1,10 @@
 {% if RPT -%}
         {% if RPT.5 -%}
             "period" : {{ RPT.5.Value }},
-        {% endif -%}  
-        "periodUnit" : {% include 'DataType/CWECode' mapping: 'CodeSystem/DurationUnit', CWE_internal: RPT.6 -%}, 
+        {% endif -%} 
+        {% if RPT.6 -%}
+            "periodUnit" : {% include 'DataType/CWECode' mapping: 'CodeSystem/DurationUnit', CWE_internal: RPT.6 -%}, 
+        {% endif -%}
         "when" : [
             "{{ RPT.8.Value | get_property: 'CodeSystem/EventTiming', 'code' }}",
         ],

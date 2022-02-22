@@ -17,20 +17,30 @@ Device_Parent_ID: A resource Id used to fill "parent.reference" property.
         {% if MSH.3 -%}  
             {% include 'DataType/HDDevice' HD: MSH.3 -%}
         {% endif -%}
-        
-        {% include 'DataType/CWEIdentifier' CWE_InternalValue: AIG.3 -%}
-        
+
+        "identifier" : [
+            {% include 'DataType/CWEIdentifier' CWE_InternalValue: AIG.3 -%}
+            {% include 'DataType/CWEIdentifier' CWE_InternalValue: FT1.34 -%}
+        ],
         "identifier":
         [
-        {% for ei_obx18 in EI_OBX18.Repeats -%}
-            {
-                {% include 'DataType/EIIdentifier' EI: ei_obx18 -%}
-            },
-        {% endfor -%}
+            {% for ei_obx18 in EI_OBX18.Repeats -%}
+                {
+                    {% include 'DataType/EIIdentifier' EI: ei_obx18 -%}
+                },
+            {% endfor -%}
 
+            {% for prt_10 in PRT.10.Repeats -%}
+                {
+                    {% include 'DataType/EIIdentifier' EI: prt_10 -%}
+                },
+            {% endfor -%}
+            {% if PRT.16 %}
             {
-                {% include 'DataType/EIIdentifier' EI: PRT.10 -%}
+                {% include 'DataType/EIIdentifier' EI: PRT.16 -%}
             },
+            {% endif %}
+           
         ],
         "udiCarrier":
         [
@@ -74,6 +84,7 @@ Device_Parent_ID: A resource Id used to fill "parent.reference" property.
                 }
             ],
         "modelNumber": "{{SFT.4.Value}}",
+        "modelNumber": "{{FT1.35.Value}}",
         "note": [
             {
                 "text": "{{SFT.5.Value}}",
@@ -88,8 +99,11 @@ Device_Parent_ID: A resource Id used to fill "parent.reference" property.
         
          {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
         "type":
-            {
-            },
+        {
+            {% if PRT.22 %}
+                {% include 'DataType/CNECodeableConcept' CNE: PRT.22 -%}
+            {% endif %}
+        },
         
         "definition":
         {

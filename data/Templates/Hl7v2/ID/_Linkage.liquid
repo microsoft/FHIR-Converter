@@ -1,0 +1,6 @@
+{% capture identifiers -%}
+    {% if MRG -%}
+        {{MRG.1.Repeats[0].1.Value}},{{{MRG.1.Repeats[0].4.Value}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'Linkage', false | generate_uuid }}
