@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "security" : {% include 'CapabilityStatement/Security' msg: msg.security -%},
+  "resource" : [ {{ msg.resource | to_array | batch_render: 'CapabilityStatement/Resource', 'msg' }} ]
+}
+{% endmergeDiff -%}

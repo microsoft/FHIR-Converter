@@ -1,0 +1,5 @@
+{% mergeDiff msg -%}
+{
+  "contains" : [ {{ msg.contains | to_array | batch_render: 'ValueSet/Contains', 'msg' }} ]
+}
+{% endmergeDiff -%}

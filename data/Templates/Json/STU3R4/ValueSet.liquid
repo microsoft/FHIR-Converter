@@ -1,0 +1,14 @@
+{% mergeDiff msg -%}
+{
+  "extension" : [
+    {%if msg.extensible -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-ValueSet.extensible",
+      "valueBoolean" : "{{msg.extensible}}"
+    },
+    {% endif -%}
+  ],
+  "extensible" : "",
+  "expansion" : {% include 'ValueSet/Expansion' msg: msg.expansion -%}
+}
+{% endmergeDiff -%}

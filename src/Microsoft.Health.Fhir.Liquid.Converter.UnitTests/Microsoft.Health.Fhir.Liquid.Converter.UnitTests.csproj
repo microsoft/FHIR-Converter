@@ -30,7 +30,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestTemplates\TimeOutTemplate.liquid">
+    <None Update="TestTemplates\**">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="ExpectedMergeDiffResults\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

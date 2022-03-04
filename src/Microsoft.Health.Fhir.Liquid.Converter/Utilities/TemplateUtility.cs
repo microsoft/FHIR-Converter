@@ -25,7 +25,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
         static TemplateUtility()
         {
             Template.RegisterTag<Evaluate>("evaluate");
-            Template.RegisterTag<Diff>("diff");
+            Template.RegisterTag<MergeDiff>("mergeDiff");
         }
 
         /// <summary>

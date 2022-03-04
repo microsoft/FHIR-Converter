@@ -1,5 +1,0 @@
-{% diff msg -%}
-{
-  "concept" : [ {{ msg.concept | to_array | batch_render: 'CodeSystem/concept', 'msg' }} ]
-}
-{% enddiff -%}

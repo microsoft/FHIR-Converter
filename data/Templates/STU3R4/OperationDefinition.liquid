@@ -1,8 +1,0 @@
-{% diff msg -%}
-{
-  "affectsState" : "{{msg.idempotent}}",
-  "idempotent" : "",
-  "base" : {% include 'Shared/Reference2Canonical' msg: msg.base -%},
-  "parameter" : [ {{ msg.parameter | to_array | batch_render: 'OperationDefinition/Parameter', 'msg' }} ]
-}
-{% enddiff -%}

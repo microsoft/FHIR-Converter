@@ -77,7 +77,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("EvaluateTagSyntaxError", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax Error in &apos;mergeDiff&apos; tag - Valid syntax: mergeDiff [input].
+        /// </summary>
+        internal static string MergeDiffTagSyntaxError
+        {
+            get
+            {
+                return ResourceManager.GetString("MergeDiffTagSyntaxError", resourceCulture);
+            }
+        }
+
+
         /// <summary>
         ///   Looks up a localized string similar to The input data could not be parsed correctly: {0}.
         /// </summary>
