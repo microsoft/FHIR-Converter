@@ -62,6 +62,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return data == null ? "\"\"" : JsonConvert.SerializeObject(data, Formatting.None);
         }
 
+
         public static string Gzip(string data)
         {
             using var inputStream = new MemoryStream(Encoding.UTF8.GetBytes(data));
