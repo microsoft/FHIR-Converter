@@ -1,0 +1,8 @@
+{% mergeDiff msg -%}
+{
+  "extension" : [
+    {% include 'Patient/Animal' msg: msg.animal -%}
+  ],
+  "animal" : ""
+}
+{% endmergeDiff -%}

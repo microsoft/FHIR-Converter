@@ -1,0 +1,19 @@
+{% mergeDiff msg -%}
+{
+  "instantiatesCanonical" : {{msg.definition | to_json_string}},
+  "encounter" : {{msg.context | to_json_string}},
+  "extension" : [
+    {%if msg.requester.onBehalfOf -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MedicationRequest.requester.onBehalfOf",
+      "valueReference" : {{msg.requester.onBehalfOf | to_json_string }}
+    },
+    {% endif -%}
+  ],
+  "requester" : {{msg.requester.agent | to_json_string}},
+  "dosageInstruction" : [ {{ msg.dosageInstruction | to_array | batch_render: 'Shared/Dosage', 'msg' }} ],
+  "substitution" : {% include 'MedicationRequest/Subst' msg: msg.substitution -%},
+  "context" : "",
+  "definition" : ""
+}
+{% endmergeDiff -%}

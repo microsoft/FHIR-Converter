@@ -1,0 +1,15 @@
+{% mergeDiff msg -%}
+{
+  "name" : "{{msg.eventName}}",
+  "timingTiming" : {{msg.eventTimingTiming | to_json_string}},
+  "timingReference" : {{msg.eventTimingReference | to_json_string}},
+  "timingDate" : "{{msg.eventTimingDate}}",
+  "timingDateTime" : "{{msg.eventTimingDateTime}}",
+  "data" : [
+    {% include 'Shared/DataRequirement' msg: msg.eventData -%}
+  ],
+  "eventData" : "",
+  "eventTiming[x]" : "",
+  "eventName" : ""
+}
+{% endmergeDiff -%}

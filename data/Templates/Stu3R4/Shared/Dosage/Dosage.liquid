@@ -1,0 +1,16 @@
+{% mergeDiff msg -%}
+{
+  "doseAndRate" : [
+    {{msg.doseRange | to_json_string}},
+    {{msg.doseQuantity | to_json_string}},
+    {{msg.rateRatio | to_json_string}},
+    {{msg.rateRange | to_json_string}},
+    {{msg.rateQuantity | to_json_string}},
+  ]
+  "doseRange" : "",
+  "doseQuantity" : "",
+  "rateRatio" : "",
+  "rateRange" : "",
+  "rateQuantity" : ""
+}
+{% endmergeDiff -%}

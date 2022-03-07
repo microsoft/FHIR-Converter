@@ -1,0 +1,28 @@
+{% mergeDiff msg -%}
+{
+  "performer" : [ {{ msg.performer | to_array | batch_render: 'MedicationDispense/Actor', 'msg' }} ],
+  "dosageInstruction" : [ {{ msg.dosageInstruction | to_array | batch_render: 'Shared/Dosage', 'msg' }} ],
+  "extension" : [
+    {%if msg.notDone -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MedicationDispense.notDone",
+      "valueBoolean" : "{{msg.notDone}}"
+    },
+    {% endif -%},
+    {%if msg.notDoneReasonCodeableConcept -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MedicationDispense.notDoneReason",
+      "valueCodeableConcept" : {{msg.notDoneReasonCodeableConcept | to_json_string }}
+    },
+    {% endif -%}
+    {%if msg.notDoneReasonReference -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MedicationDispense.notDoneReason",
+      "valueReference" : {{msg.notDoneReasonReference | to_json_string }}
+    },
+    {% endif -%}
+  ],
+  "notDone" : "",
+  "notDoneReasonReference[x]" : ""
+}
+{% endmergeDiff -%}

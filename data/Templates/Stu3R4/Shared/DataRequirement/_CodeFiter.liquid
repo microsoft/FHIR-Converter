@@ -1,0 +1,19 @@
+{% mergeDiff msg -%}
+{
+  "valueSet[x]" : "",
+  "valueSet" : "{{msg.valueSetReference.reference}}",
+  "code" : [
+    {
+      "code" : "{{msg.valueCode}}"
+    },
+    {{msg.valueCoding | to_json_string}},
+    {% for c in msg.valueCodeableConcept.coding -%}
+    {{c | to_json_string}},
+    {% endfor -%}
+  ],
+  "code" : {{msg.valueCoding | to_json_string}},
+  "valueCoding" : "",
+  "valueCode" : "",
+  "valueCodeableConcept" : ""
+}
+{% endmergeDiff -%}

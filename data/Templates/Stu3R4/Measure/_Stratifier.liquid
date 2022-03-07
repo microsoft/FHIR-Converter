@@ -1,0 +1,18 @@
+{% mergeDiff msg -%}
+{
+  "code" : {% include 'Shared/Identifier2CodeableConcept' msg: msg.identifier -%},
+  "criteria" : {
+    "expression" : "{{msg.criteria}}"
+  },
+  "extension" : [
+    {%if msg.path -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-Measure.group.stratifier.path",
+      "valueString" : "{{msg.path}}"
+    },
+    {% endif -%}
+  ],
+  "identifier" : "",
+  "path" : ""
+}
+{% endmergeDiff -%}

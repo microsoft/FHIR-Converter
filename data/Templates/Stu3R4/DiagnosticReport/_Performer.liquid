@@ -1,0 +1,14 @@
+{% mergeDiff msg -%}
+{
+  "extension" : [
+    {%if msg.role -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-DiagnosticReport.performer.role",
+      "valueCodeableConcept" : {{msg.role | to_json_string }}
+    },
+    {% endif -%}
+  ],
+  "actor" : "",
+  "role" : ""
+}
+{% endmergeDiff -%}

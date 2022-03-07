@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "encounter" : {{msg.context | to_json_string}},
+  "context" : ""
+}
+{% endmergeDiff -%}

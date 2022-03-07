@@ -1,0 +1,10 @@
+{% mergeDiff msg -%}
+{
+  "reasonCode" : {{msg.reason | to_json_string}},
+  "reasonReference" : {{msg.indication | to_json_string}},
+  "basedOn" : {{msg.incomingReferral | to_json_string}},
+  "incomingReferral" : "",
+  "indication" : "",
+  "reason" : ""
+}
+{% endmergeDiff -%}

@@ -1,0 +1,10 @@
+{% mergeDiff msg -%}
+{
+  "outcome" : "",
+  {% assign value = msg.outcome.coding[0].code %}
+  {% if value == 'complete' or value == 'error' or value == 'partial' -%}
+  "outcome" : "{{value}}",
+  {% endif -%}
+  "requestOrganization" : ""
+}
+{% endmergeDiff -%}

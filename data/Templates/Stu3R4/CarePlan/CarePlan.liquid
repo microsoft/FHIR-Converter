@@ -1,0 +1,9 @@
+{% mergeDiff msg -%}
+{
+  "instantiatesCanonical" : {% include 'Shared/Reference2Canonical'' msg: msg.definition -%},
+  "encounter" : {{msg.context | to_json_string}},
+  "activity" : [ {{ msg.activity | to_array | batch_render: 'CarePlan/Activity', 'msg' }} ],
+  "context" : "",
+  "definition" : ""
+}
+{% endmergeDiff -%}

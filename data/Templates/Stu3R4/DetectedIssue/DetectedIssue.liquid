@@ -1,0 +1,8 @@
+{% mergeDiff msg -%}
+{
+  "code" : {{msg.category | to_json_string}},
+  "identifiedDateTime" : "{{msg.date}}",
+  "date" : "",
+  "category" : ""
+}
+{% endmergeDiff -%}

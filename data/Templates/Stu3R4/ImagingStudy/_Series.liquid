@@ -1,0 +1,16 @@
+{% mergeDiff msg -%}
+{
+  "uid" : {% include 'Shared/Oid2Id' msg: msg.uid -%},
+  "extension" : [
+    {%if msg.availability -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-ImagingStudy.series.availability",
+      "valueCode" : "{{msg.availability}}"
+    },
+    {% endif -%}
+  ],
+  "performer" : [ {{ msg.performer | to_array | batch_render: 'ImagingStudy/Performer', 'msg' }} ],
+  "instance" : [ {{ msg.instance | to_array | batch_render: 'ImagingStudy/Instance', 'msg' }} ],
+  "availability" : ""
+}
+{% endmergeDiff -%}

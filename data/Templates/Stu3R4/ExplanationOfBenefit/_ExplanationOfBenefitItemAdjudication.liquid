@@ -1,0 +1,5 @@
+{% mergeDiff msg -%}
+{
+  "amount" : {% include 'Shared/Money' msg: msg.amount -%}
+}
+{% endmergeDiff -%}

@@ -1,0 +1,10 @@
+{% mergeDiff msg -%}
+{
+  "definitionUri" : {{msg.definition | to_json_string}},
+  "performer" : [ {{ msg.participant | to_array | batch_render: 'ChargeItem/ChargeItemPerformer', 'msg' }} ],
+  "priceOverride" : {% include 'Shared/Money' msg: msg.priceOverride -%},
+  "participant" : "",
+  "definition" : ""
+}
+{% endmergeDiff -%}
+

@@ -1,0 +1,12 @@
+{% mergeDiff msg -%}
+{
+  "itemSequence" : "{{msg.sequenceLinkId}}",
+  "adjudication" : [ {{ msg.adjudication | to_array | batch_render: '_ClaimResponseItemAdjudication', 'msg' }} ],
+  "detail" : [ {{ msg.detail | to_array | batch_render: 'ClaimResponse/ClaimResponseAddItemDetail', 'msg' }} ],
+  "fee" : "",
+  "service" : "",
+  "category" : "",
+  "revenue" : "",
+  "sequenceLinkId" : ""
+}
+{% endmergeDiff -%}

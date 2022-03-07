@@ -1,0 +1,13 @@
+{% mergeDiff msg -%}
+{
+  "fhirVersion" : "4.0.1",
+  "context":[
+    {% for c in msg.context -%}
+    {
+      "expression" : {{c}}
+    },
+    {% endfor -%}
+  ],
+  "contextType" : ""
+}
+{% endmergeDiff -%}

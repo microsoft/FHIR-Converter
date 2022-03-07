@@ -1,0 +1,10 @@
+{
+  "period" : {{msg.period | to_json_string }},
+  "actor" : {{msg.actor | to_json_string}},
+  "action" : {{msg.action | to_json_string}},
+  "securityLabel" : {{msg.securityLabel | to_json_string}},
+  "purpose" : {{msg.purpose | to_json_string}},
+  "dataPeriod" : {{msg.dataPeriod | to_json_string}},
+  "data" : {{msg.data | to_json_string}},
+  "provision" : [ {{ msg.except | to_array | batch_render: 'Consent/Provision', 'msg' }} ]
+}

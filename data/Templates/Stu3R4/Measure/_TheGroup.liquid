@@ -1,0 +1,17 @@
+{% mergeDiff msg -%}
+{
+  "code" : {% include 'Shared/Identifier2CodeableConcept' msg: msg.identifier -%},
+  "extension" : [
+    {%if msg.name -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-Measure.group.name",
+      "valueString" : "{{msg.name}}"
+    },
+    {% endif -%}
+  ],
+  "population" : [ {{ msg.population | to_array | batch_render: 'Measure/Population', 'msg' }} ],
+  "stratifier" : [ {{ msg.stratifier | to_array | batch_render: 'Measure/Stratifier', 'msg' }} ],
+  "identifier" : "",
+  "name" : ""
+}
+{% endmergeDiff -%}

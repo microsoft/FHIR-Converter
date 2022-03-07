@@ -1,0 +1,5 @@
+{% mergeDiff msg -%}
+{
+  "detail" : {% include 'CarePlan/Detail' msg: msg.detail -%}
+}
+{% endmergeDiff -%}

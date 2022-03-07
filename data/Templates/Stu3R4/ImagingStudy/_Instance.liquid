@@ -1,0 +1,11 @@
+{% mergeDiff msg -%}
+{
+  "uid" : {% include 'Shared/Oid2Id' msg: msg.uid -%},
+  {%if msg.sopClass -%}
+  "sopClass" : {
+    "system" : "urn:ietf:rfc:3986",
+    "code" : "{{msg.sopClass}}"
+  },
+  {% endif -%}
+}
+{% endmergeDiff -%}
