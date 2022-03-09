@@ -47,14 +47,6 @@ stages:
         projects: '$(solution)'
         arguments: '--configuration $(buildConfiguration) -p:Version=$(version)'
 
-    - task: DotNetCoreCLI@2
-      displayName: 'dotnet test'
-      inputs:
-        command: test
-        projects: '$(unitTestProjects)'
-        arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-        nobuild: true
-
     - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
       condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
       displayName: 'component detection'
@@ -179,8 +171,7 @@ stages:
         artifactName: FhirConverterBuild
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
-        docker pull wusongrui/registry-windows:2.7.1
-        docker run --rm -d -p 5000:5000 --name registry wusongrui/registry-windows:2.7.1
+        docker run -d -p 5000:5000 --restart=always --name registry stefanscherer/registry-windows:2.6.2
       displayName: start registry
 
     - script: |
