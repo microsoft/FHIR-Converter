@@ -169,7 +169,7 @@ stages:
   jobs:
   - job: Windows_Functional_Test
     pool:
-        vmImage: 'windows-latest'
+        vmImage: 'windows-2019'
     continueOnError: false
     steps:
     - checkout: none #skip checking out the default repository resource
