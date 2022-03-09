@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "paymentDate" : "{{msg.statusDate}}",
   "recipient" : {{msg.target | to_json_string}},
@@ -6,4 +6,4 @@
   "target" : "",
   "statusDate" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

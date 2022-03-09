@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "relatedArtifact" : [ {{ msg.relatedArtifact | to_array | batch_render: 'Shared/RelatedArtifact', 'msg' }} ],
   "extension" : [
@@ -12,4 +12,4 @@
   "arm" : [ {{ msg.arm | to_array | batch_render: 'ResearchStudy/Arm', 'msg' }} ],
   "jurisdiction" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

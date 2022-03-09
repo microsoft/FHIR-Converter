@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "instantiatesUri" : "{{msg.definitionUri}}",
   "instantiatesCanonical" : {% include 'Shared/Reference2Canonical' msg : msg.definitionReference -%},
@@ -9,4 +9,4 @@
   "context" : "",
   "definition[x]" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

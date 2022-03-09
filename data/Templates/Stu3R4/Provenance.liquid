@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "occurredPeriod" : {{msg.period | to_json_string}},
   "reason" : [ {{ msg.reason | to_array | batch_render: 'Shared/Coding2CodeableConcept', 'msg' }} ],
@@ -8,4 +8,4 @@
   "signature" : [ {{ msg.signature | to_array | batch_render: 'Shared/Signature', 'msg' }} ],
   "period" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

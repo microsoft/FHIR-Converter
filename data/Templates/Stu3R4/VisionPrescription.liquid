@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "extension" : [
     {%if msg.reasonCodeableConcept -%}
@@ -18,4 +18,4 @@
   "dispense" : "",
   "reason[x]" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "metadata" : {% include 'TestScript/Metadata' msg: msg.metadata -%},
   "setup" : {% include 'TestScript/Setup' msg: msg.setup -%},
@@ -6,4 +6,4 @@
   "rule" : "",
   "ruleset" : "",
 }
-{% enddiff -%}
+{% endmergeDiff -%}

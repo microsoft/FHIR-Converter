@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "doseAndRate" : [
     {{msg.doseRange | to_json_string}},
@@ -13,4 +13,4 @@
   "rateRange" : "",
   "rateQuantity" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

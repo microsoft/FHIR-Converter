@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "what[x]" : "",
   {%if msg.whatUri -%}
@@ -16,4 +16,4 @@
   {% endif -%}
   "agent" : [ {{ msg.agent | to_array | batch_render: 'Provenance/Agent', 'msg' }} ]
 }
-{% enddiff -%}
+{% endmergeDiff -%}

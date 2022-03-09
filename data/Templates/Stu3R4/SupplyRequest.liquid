@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "identifier" : [ {{msg.identifier | to_json_string}} ],
   "itemCodeableConcept" : {{msg.orderedItem.itemCodeableConcept | to_json_string}},
@@ -18,4 +18,4 @@
   "reasonCodeableConcept" : "",
   "orderedItem" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

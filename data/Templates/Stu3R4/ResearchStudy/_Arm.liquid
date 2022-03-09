@@ -1,6 +1,6 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "type" : {{msg.code | to_json_string}},
   "code" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

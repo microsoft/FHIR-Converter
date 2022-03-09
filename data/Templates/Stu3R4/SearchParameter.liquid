@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "component" : [
     {%for item in msg.component -%}
@@ -9,4 +9,4 @@
     {% endfor -%}
   ]
 }
-{% enddiff -%}
+{% endmergeDiff -%}

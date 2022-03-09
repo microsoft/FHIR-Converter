@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "prefix" : "{{msg.label}}",
   "documentation" : [ {{ msg.documentation | to_array | batch_render: 'Shared/RelatedArtifact', 'msg' }} ],
@@ -14,4 +14,4 @@
   "triggerDefinition" : "",
   "label" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

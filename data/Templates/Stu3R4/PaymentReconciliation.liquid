@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "paymentIssuer" : {{msg.organization | to_json_string}},
   {% assign value = msg.outcome.coding[0].code -%}
@@ -16,4 +16,4 @@
   "requestProvider" : "",
   "organization" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "instantiatesCanonical" : [{{msg.definition | to_array | batch_render : 'Shared/Reference2Canonical', 'msg'}} ],
   "encounter" : {{msg.context | to_json_string}},
@@ -9,4 +9,4 @@
   "context" : "",
   "definition" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

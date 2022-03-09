@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "name" : "{{msg.eventName}}",
   "timingTiming" : {{msg.eventTimingTiming | to_json_string}},
@@ -12,4 +12,4 @@
   "eventTiming[x]" : "",
   "eventName" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

@@ -1,5 +1,5 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "action" : [ {{ msg.action | to_array | batch_render: 'TestScript/Action', 'msg' }} ]
 }
-{% enddiff -%}
+{% endmergeDiff -%}

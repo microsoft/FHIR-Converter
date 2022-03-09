@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "onBehalfOf[x]" : "",
   "who[x]" : "",
@@ -27,4 +27,4 @@
   "type" : {{msg.relatedAgentType | to_json_string}},
   "relatedAgentType" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

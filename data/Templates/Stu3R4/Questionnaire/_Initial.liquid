@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "valueBoolean" : {{msg.initialBoolean}},
   "valueDecimal" : {{msg.initialDecimal}},
@@ -14,5 +14,5 @@
   "valueReference" : {{msg.initialReference | to_json_string}},
   "initial[x]" : "",
 }
-{% enddiff -%}
+{% endmergeDiff -%}
 

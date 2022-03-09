@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "enableWhen" : [ {{ msg.enableWhen | to_array | batch_render: 'Questionnaire/EnableWhen', 'msg' }} ],
   "answerValueSet" : {% include 'Shared/Reference2Canonical' msg : msg.options -%},
@@ -11,4 +11,4 @@
   "option" : "",
   "options" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

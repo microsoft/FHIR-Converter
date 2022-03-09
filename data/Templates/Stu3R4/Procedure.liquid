@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   {% if msg.notDone == true -%}
   "status" : "not-done",
@@ -11,4 +11,4 @@
   "notDoneReason" : "",
   "definition" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}

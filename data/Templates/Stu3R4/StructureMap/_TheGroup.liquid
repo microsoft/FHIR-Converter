@@ -1,5 +1,5 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "rule" : [ {{ msg.rule | to_array | batch_render: 'StructureMap/Rule', 'msg' }} ]
 }
-{% enddiff -%}
+{% endmergeDiff -%}

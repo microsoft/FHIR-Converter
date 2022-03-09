@@ -1,4 +1,4 @@
-{% diff msg -%}
+{% mergeDiff msg -%}
 {
   "valueSet[x]" : "",
   "valueSet" : "{{msg.valueSetReference.reference}}",
@@ -16,4 +16,4 @@
   "valueCode" : "",
   "valueCodeableConcept" : ""
 }
-{% enddiff -%}
+{% endmergeDiff -%}
