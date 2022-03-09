@@ -1,0 +1,6 @@
+{% diff msg -%}
+{
+  "source" : [ {{ msg.source | to_array | batch_render: 'StructureMap/TheSource', 'msg' }} ],
+  "rule" : [ {{ msg.rule | to_array | batch_render: 'StructureMap/Rule', 'msg' }} ]
+}
+{% enddiff -%}

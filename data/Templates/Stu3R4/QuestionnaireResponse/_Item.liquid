@@ -1,0 +1,15 @@
+{% diff msg -%}
+{
+  "extension" : [
+    {%if msg.subject -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-QuestionnaireResponse.item.subject",
+      "valueReference" : {{msg.subject | to_json_string }}
+    },
+    {% endif -%}
+  ],
+  "answer" : [ {{ msg.answer | to_array | batch_render: 'QuestionnaireResponse/Answer', 'msg' }} ],
+  "item" : [ {{ msg.item | to_array | batch_render: 'QuestionnaireResponse/item', 'msg' }} ],
+  "subject" : ""
+}
+{% enddiff -%}

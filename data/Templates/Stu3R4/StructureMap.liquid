@@ -1,0 +1,5 @@
+{% diff msg -%}
+{
+  "group" : [ {{ msg.group | to_array | batch_render: 'StructureMap/TheGroup', 'msg' }} ]
+}
+{% enddiff -%}

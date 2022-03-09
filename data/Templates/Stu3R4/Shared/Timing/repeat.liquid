@@ -1,8 +1,0 @@
-{% diff msg -%}
-{
-  "count" : {% include 'integer2positiveInt' msg: msg.count -%},
-  "countMax" : {% include 'integer2positiveInt' msg: msg.countMax -%},
-  "frequency" : {% include 'integer2positiveInt' msg: msg.frequency -%},
-  "frequencyMax" : {% include 'integer2positiveInt' msg: msg.frequencyMax -%}
-}
-{% enddiff -%}

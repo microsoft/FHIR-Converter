@@ -1,0 +1,5 @@
+{% diff msg -%}
+{
+  "capability" : [ {{ msg.capability | to_array | batch_render: 'TestScript/Capability', 'msg' }} ]
+}
+{% enddiff -%}

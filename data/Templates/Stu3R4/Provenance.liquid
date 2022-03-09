@@ -1,0 +1,11 @@
+{% diff msg -%}
+{
+  "occurredPeriod" : {{msg.period | to_json_string}},
+  "reason" : [ {{ msg.reason | to_array | batch_render: 'Shared/Coding2CodeableConcept', 'msg' }} ],
+  "activity" : {% include 'Shared/Coding2CodeableConcept' msg: msg.activity -%},
+  "agent" : [ {{ msg.agent | to_array | batch_render: 'Provenance/Agent', 'msg' }} ],
+  "entity" : [ {{ msg.entity | to_array | batch_render: 'Provenance/Entity', 'msg' }} ],
+  "signature" : [ {{ msg.signature | to_array | batch_render: 'Shared/Signature', 'msg' }} ],
+  "period" : ""
+}
+{% enddiff -%}

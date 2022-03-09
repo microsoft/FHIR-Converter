@@ -1,0 +1,6 @@
+{% diff msg -%}
+{
+  "defaultValueMoney" : {% include 'Shared/Money' msg: msg.defaultValueMoney -%},
+  "defaultValueSignature" : {% include 'Shared/Signature' msg: msg.defaultValueSignature -%}
+}
+{% enddiff -%}

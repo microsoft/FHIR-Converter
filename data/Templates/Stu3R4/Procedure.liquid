@@ -1,0 +1,14 @@
+{% diff msg -%}
+{
+  {% if msg.notDone == true -%}
+  "status" : "not-done",
+  {% endif -%}
+  "statusReason" : {{msg.notDoneReason | to_json_string}},
+  "encounter" : {{msg.context | to_json_string}},
+  "performer" : [ {{ msg.performer | to_array | batch_render: 'Procedure/ProcedurePerformer', 'msg' }} ],
+  "context" : "",
+  "notDone" : "",
+  "notDoneReason" : "",
+  "definition" : ""
+}
+{% enddiff -%}

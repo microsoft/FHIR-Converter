@@ -1,0 +1,9 @@
+{% diff msg -%}
+{
+  "paymentDate" : "{{msg.statusDate}}",
+  "recipient" : {{msg.target | to_json_string}},
+  "organization" : "",
+  "target" : "",
+  "statusDate" : ""
+}
+{% enddiff -%}

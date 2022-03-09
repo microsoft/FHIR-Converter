@@ -1,0 +1,11 @@
+{% diff msg -%}
+{
+  {% if msg.answer == null -%}
+  "answerBoolean" : {{msg.hasAnswer}},
+  "operator" : "exists",
+  {% else -%}
+  "operator" : "=",
+  {% endif -%}
+  "hasAnswer" : ""
+}
+{% enddiff -%}

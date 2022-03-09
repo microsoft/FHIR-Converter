@@ -1,7 +1,0 @@
-{% mergeDiff msg -%}
-{
-  "resourceType" : "MolecularSequence",
-  "referenceSeq" : {% include 'Sequence/ReferenceSeq' msg:msg.referenceSeq -%},
-  "quality" : [ {{ msg.quality | to_array | batch_render: 'Sequence/Quality', 'msg' }} ]
-}
-{% endmergeDiff -%}

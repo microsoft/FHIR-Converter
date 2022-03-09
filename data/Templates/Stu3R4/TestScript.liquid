@@ -1,0 +1,9 @@
+{% diff msg -%}
+{
+  "metadata" : {% include 'TestScript/Metadata' msg: msg.metadata -%},
+  "setup" : {% include 'TestScript/Setup' msg: msg.setup -%},
+  "test" : [ {{ msg.test | to_array | batch_render: 'TestScript/Test', 'msg' }} ],
+  "rule" : "",
+  "ruleset" : "",
+}
+{% enddiff -%}

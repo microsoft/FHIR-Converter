@@ -1,0 +1,12 @@
+{% diff msg -%}
+{
+  "component" : [
+    {%for item in msg.component -%}
+    {
+      "definition" : {% include 'Shared/Reference2Canonical' msg: item.definition -%},
+      "expression" : "{{item.expression}}"
+    },
+    {% endfor -%}
+  ]
+}
+{% enddiff -%}
