@@ -1,6 +1,5 @@
 {% mergeDiff msg -%}
 {
-  "resource": {% include 'Resource' msg -%}
-    
+  "resource": {% include 'Resource' msg : msg.resource -%}
 }
 {% endmergeDiff -%}
