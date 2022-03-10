@@ -1,8 +1,0 @@
-{% mergeDiff msg -%}
-{
-  "agent" : [ {{ msg.agent | to_array | batch_render: 'AuditEvent/AuditEventAgent', 'msg' }} ],
-  "source" : {% include 'AuditEvent/AuditEventSource' msg: msg.source -%},
-  "entity" : [ {{ msg.entity | to_array | batch_render: 'AuditEvent/AuditEventEntity', 'msg' }} ]
-}
-{% endmergeDiff -%}
-

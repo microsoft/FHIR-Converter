@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+    "unitPrice" : {% include 'Shared/Money' msg: msg.unitPrice -%},
+    "net" : {% include 'Shared/Money' msg: msg.net -%}
+}
+{% endmergeDiff -%}

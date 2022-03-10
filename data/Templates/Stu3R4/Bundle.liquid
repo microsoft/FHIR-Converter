@@ -1,0 +1,15 @@
+{% if msg.resourceType == 'Bundle' -%}
+{% include 'Bundle/Bundle' msg : msg -%}
+{% else -%}
+{
+  "resourceType": "Bundle",
+  "id": "converter",
+  "type": "message",
+  "entry": [
+    {
+        "fullUrl": "",
+        "resource": {% include 'Resource' msg -%}
+    }
+  ]
+}
+{% endif -%}

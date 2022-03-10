@@ -1,9 +1,0 @@
-{% mergeDiff msg -%}
-{
-  "resourceType":"BodyStructure",
-  "location" : {{msg.code | to_json_string}},
-  "locationQualifier" : {{msg.qualifier | to_json_string}},
-  "qualifier" : "",
-  "code" : ""
-}
-{% endmergeDiff -%}

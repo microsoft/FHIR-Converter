@@ -1,5 +1,0 @@
-{% mergeDiff msg -%}
-{
-  "item" : [ {{ msg.item | to_array | batch_render: 'Questionnaire/Item', 'msg' }} ]
-}
-{% endmergeDiff -%}

@@ -1,9 +1,0 @@
-{% mergeDiff msg -%}
-{
-  "intent" : {{msg.intent.coding[0].code | to_json_string}},
-  "encounter" : {{msg.context | to_json_string}},
-  "requester" : {{msg.requester.agent | to_json_string}},
-  "context" : "",
-  "definition" : ""
-}
-{% endmergeDiff -%}

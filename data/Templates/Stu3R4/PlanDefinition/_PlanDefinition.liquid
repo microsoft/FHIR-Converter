@@ -1,0 +1,38 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "author" :[
+    {% for c in msg.contributor %}
+    {% if c.type == 'author' -%}
+    {% include 'Shared/Contributor2ContactDetail' msg : c -%},
+    {% endif %}
+    {% endfor %}
+  ],
+  "editor" :[
+    {% for c in msg.contributor %}
+    {% if c.type == "editor" -%}
+    {% include 'Shared/Contributor2ContactDetail' msg : c -%},
+    {% endif %}
+    {% endfor %}
+  ],
+  "reviewer" :[
+    {% for c in msg.contributor %}
+    {% if c.type == "reviewer" -%}
+    {% include 'Shared/Contributor2ContactDetail' msg : c -%},
+    {% endif %}
+    {% endfor %}
+  ],
+  "endorser" :[
+    {% for c in msg.contributor %}
+    {% if c.type == "endorser" -%}
+    {% include 'Shared/Contributor2ContactDetail' msg : c -%},
+    {% endif %}
+    {% endfor %}
+  ],
+  "relatedArtifact" : [ {{ msg.relatedArtifact | to_array | batch_render: 'Shared/RelatedArtifact', 'msg' }} ],
+  "library" : [ {{ msg.library | to_array | batch_render: 'Shared/Reference2Canonical', 'msg' }} ],
+  "goal" : [ {{ msg.goal | to_array | batch_render: 'PlanDefinition/Goal', 'msg' }} ],
+  "action" : [ {{ msg.action | to_array | batch_render: 'PlanDefinition/Action', 'msg' }} ],
+  "contributor" : ""
+}
+{% endmergeDiff -%}

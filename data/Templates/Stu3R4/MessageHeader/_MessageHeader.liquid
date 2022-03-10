@@ -1,0 +1,19 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "eventCoding" : {{msg.event | to_json_string}},
+  "destination" : [
+    {% for d in msg.destination -%}
+    {
+      "name" : "{{d.name}}",
+      "target" : {{d.target | to_json_string}},
+      "endpoint" : "{{d.endpoint}}",
+      "receiver" : {{msg.receiver | to_json_string}}
+    },
+    {% endfor -%}
+  ],
+  "event" : "",
+  "timestamp" : "",
+  "receiver" : ""
+}
+{% endmergeDiff -%}

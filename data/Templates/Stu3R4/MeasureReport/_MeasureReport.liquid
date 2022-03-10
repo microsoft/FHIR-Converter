@@ -1,0 +1,16 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "identifier" : [{{msg.identifier | to_json_string }}],
+  "measure" : {% include 'Shared/Reference2Canonical' msg: msg.measure -%},
+  "subject" : {{msg.patient | to_json_string}},
+  "reporter" : {{msg.reportingOrganization | to_json_string}},
+  "group" : [ {{ msg.group | to_array | batch_render: 'MeasureReport/TheGroup', 'msg' }} ],
+  "evaluatedResource" : [
+    {{msg.evaluatedResources | to_json_string}}
+  ],
+  "evaluatedResources" : "",
+  "reportingOrganization" : "",
+  "patient" : ""
+}
+{% endmergeDiff -%}

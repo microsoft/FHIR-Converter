@@ -1,0 +1,13 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "instantiatesUri" : "{{msg.definitionUri}}",
+  "instantiatesCanonical" : {% include 'Shared/Reference2Canonical' msg : msg.definitionReference -%},
+  "encounter" : {{msg.context | to_json_string}},
+  "requester" : {{msg.requester.agent | to_json_string}},
+  "reasonCode" : {{msg.reason | to_json_string}},
+  "reason" : "",
+  "context" : "",
+  "definition[x]" : ""
+}
+{% endmergeDiff -%}

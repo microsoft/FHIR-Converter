@@ -1,0 +1,5 @@
+{% mergeDiff msg -%}
+{
+  "signature" : [ {{ msg.signature | to_array | batch_render: 'Shared/Signature', 'msg' }} ]
+}
+{% endmergeDiff -%}
