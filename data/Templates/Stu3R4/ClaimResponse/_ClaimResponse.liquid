@@ -2,9 +2,9 @@
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "requestor" : {{msg.requestProvider | to_json_string}},
-  {% assign value = msg.outcome.coding.code %}
+  {% assign value = msg.outcome.coding[0].code %}
   {% if value == 'queued' or value =='complete' or value =='error' or value == 'partial' -%}
-  "outcome" : "{{outcome.coding.code}}",
+  "outcome" : "{{value}}",
   {% else %}
   "outcome" : "",
   {% endif -%}

@@ -7,6 +7,7 @@
   "parent" : {% include 'Shared/Reference2Canonical' msg : msg.parent -%},
   "replaces" : [{{msg.replaces | to_array | batch_render : 'Shared/Reference2Canonical', 'msg' }}],
   "focus" : [{{msg.focus | to_array | batch_render : 'MessageDefinition/Focus', 'msg' }}],
+  "category" : {% include 'MessageDefinition/TranslateCategoryCode' msg : msg.category -%},
   "allowedResponse" : [{{msg.allowedResponse | to_array | batch_render : 'MessageDefinition/AllowedResponse', 'msg' }}],
   {% if msg.responseRequired == true -%}
   "responseRequired" : "always",

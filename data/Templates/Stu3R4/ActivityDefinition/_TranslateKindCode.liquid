@@ -1,0 +1,8 @@
+{% case msg -%}
+    {% when "ProcedureRequest" -%}
+        "ServiceRequest"
+    {% when "ReferralRequest" -%}
+        "ServiceRequest"
+    {% else -%}
+        "{{msg}}"
+{% endcase -%}

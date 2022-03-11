@@ -3,6 +3,8 @@
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   {% if msg.notDone == true -%}
   "status" : "not-done",
+  {% else -%}
+  "status" : {% include 'Procedure/TranslateStatusCode' msg: msg.status -%},
   {% endif -%}
   "statusReason" : {{msg.notDoneReason | to_json_string}},
   "encounter" : {{msg.context | to_json_string}},
