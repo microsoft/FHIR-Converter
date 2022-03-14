@@ -2,6 +2,9 @@
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
     {% include 'Patient/Animal' msg: msg.animal -%}
   ],
   "animal" : ""

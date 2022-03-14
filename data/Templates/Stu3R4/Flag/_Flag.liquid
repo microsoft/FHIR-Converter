@@ -2,7 +2,7 @@
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
     "category" : [
-        {{msg.category | to_json_string }},
+        {{msg.category | to_json_string | default : '""' }},
     ]
 }
 {% endmergeDiff -%}

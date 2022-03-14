@@ -9,9 +9,9 @@
     },
     {% endif -%}
     {% for i in msg.identifier -%}
-    {{ i | to_json_string}},
+    {{ i | to_json_string | default : '""'}},
     {% endfor -%}
-    {{msg.accession | to_json_string}}
+    {{msg.accession | to_json_string | default : '""'}}
   ],
   {% if msg.availability == 'OFFLINE' or msg.availability == 'UNAVAILABLE' -%}
   "status" : "registered",
@@ -20,12 +20,12 @@
   {% elseif msg.availability == null -%}
   "status" : "unknown",
   {% endif -%}
-  "modality" : {{msg.modalityList | to_json_string}},
-  "subject" : {{msg.patient | to_json_string}},
-  "encounter" : {{msg.context | to_json_string}},
-  "procedureReference": {{msg.procedureReference[0] | to_json_string}},
+  "modality" : {{msg.modalityList | to_json_string | default : '""'}},
+  "subject" : {{msg.patient | to_json_string | default : '""'}},
+  "encounter" : {{msg.context | to_json_string | default : '""'}},
+  "procedureReference": {{msg.procedureReference[0] | to_json_string | default : '""'}},
   "reasonCode" : [
-    {{msg.reason | to_json_string}}
+    {{msg.reason | to_json_string | default : '""'}}
   ],
   "series" : [ {{ msg.series | to_array | batch_render: 'ImagingStudy/Series', 'msg' }} ],
   "reason" : "",

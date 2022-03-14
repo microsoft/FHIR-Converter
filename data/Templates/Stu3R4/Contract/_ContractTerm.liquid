@@ -8,7 +8,7 @@
   "securityLable":[
     {% for s in msg.securityLabel -%}
     {
-      "classification" : {{ s | to_json_string}}
+      "classification" : {{ s | to_json_string | default : '""'}},
     },
     {% endfor -%}
   ],

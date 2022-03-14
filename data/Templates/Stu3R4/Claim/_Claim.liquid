@@ -3,7 +3,7 @@
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "use" : {% include 'Claim/TranslateUseCode' msg : msg.use -%},
   {% if msg.provider == null -%}
-  "provider" : {{msg.organization | to_json_string}},
+  "provider" : {{msg.organization | to_json_string | default : '""'}},
   {% endif -%}
   "payee" : 
   {% mergeDiff msg.payee %}
@@ -11,17 +11,17 @@
     "resourceType" : ""
   }
   {% endmergeDiff %},
-  "supportingInfo" : {{msg.information | to_json_string}},
+  "supportingInfo" : {{msg.information | to_json_string | default : '""'}},
   "item" : [
     {% for i in msg.item %}
     {% mergeDiff i %}
     {
-      "careTeamSequence" : {{i.careTeamLinkId | to_json_string}},
-      "diagnosisSequence" : {{i.diagnosisLinkId | to_json_string}},
-      "procedureSequence" : {{i.procedureLinkId | to_json_string}},
-      "informationSequence" : {{i.informationLinkId | to_json_string}},
-      "productOrService" : {{i.service | to_json_string}},
-      "diagnosisCodeableConcept" : {{i.locationCodeableConcept | to_json_string}},
+      "careTeamSequence" : {{i.careTeamLinkId | to_json_string | default : '""'}},
+      "diagnosisSequence" : {{i.diagnosisLinkId | to_json_string | default : '""'}},
+      "procedureSequence" : {{i.procedureLinkId | to_json_string | default : '""'}},
+      "informationSequence" : {{i.informationLinkId | to_json_string | default : '""'}},
+      "productOrService" : {{i.service | to_json_string | default : '""'}},
+      "diagnosisCodeableConcept" : {{i.locationCodeableConcept | to_json_string | default : '""'}},
       "careTeamLinkId" : "",
       "diagnosisLinkId" : "",
       "procedureLinkId" : "",
@@ -34,7 +34,7 @@
         {% for d in i.detail %}
         {% mergeDiff d %}
         {
-          "productOrService" : {{d.service | to_json_string}},
+          "productOrService" : {{d.service | to_json_string | default : '""'}},
           "unitPrice" : {% include 'Shared/Money' msg: d.unitPrice -%},
           "net" : {% include 'Shared/Money' msg: d.net -%},
           "service": "",
@@ -42,7 +42,7 @@
             {% for s in d.subDetail %}
             {% mergeDiff s %}
             {
-              "productOrService" : {{s.service | to_json_string}},
+              "productOrService" : {{s.service | to_json_string | default : '""'}},
               "unitPrice" : {% include 'Shared/Money' msg: s.unitPrice -%},
               "net" : {% include 'Shared/Money' msg: s.net -%},
               "service": ""

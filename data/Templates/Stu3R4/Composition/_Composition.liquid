@@ -2,7 +2,7 @@
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "category" : [
-    {{msg.class | to_json_string}}
+    {{msg.class | to_json_string | default : '""'}}
   ],
   "class" : ""
 }

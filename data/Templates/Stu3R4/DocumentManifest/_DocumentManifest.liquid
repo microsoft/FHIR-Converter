@@ -4,7 +4,7 @@
   "content" : [ 
     {% for c in msg.content %}
       {% if c.pReference %}
-        {{c.pReference | to_json_string}},
+        {{c.pReference | to_json_string | default : '""'}},
       {% endif %}
     {% endfor %}
    ]

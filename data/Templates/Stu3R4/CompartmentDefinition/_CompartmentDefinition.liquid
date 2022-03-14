@@ -2,6 +2,13 @@
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "jurisdiction" : "",
-  "title" : ""
+  "title" : "",
+  "resource" : [ 
+    {% for r in mag.resource -%}
+      {% if r.code != "DeviceComponent" and r.code != "ImagingManifest" and r.code != "ServiceDefinition" -%}
+        {% include 'CompartmentDefinition/_CompartmentDefinitionResource' msg : r -%},
+      {% endif -%}
+    {% endfor -%}
+  ]
 }
 {% endmergeDiff -%}

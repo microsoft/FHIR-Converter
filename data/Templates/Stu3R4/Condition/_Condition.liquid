@@ -17,7 +17,7 @@
     }
   },
   {% endif -%}
-  "encounter" : {{msg.context | to_json_string}},
+  "encounter" : {{msg.context | to_json_string | default : '""'}},
   "recordedDate" : "{{msg.assertedDate | date: "yyyy-MM-dd"}}",
   "assertedDate" : "",
   "context" : ""

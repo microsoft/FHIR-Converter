@@ -7,7 +7,7 @@
   "outcome" : "{{value}}",
   {% endif -%}
   "payee" : {% include 'ExplanationOfBenefit/ExplanationOfBenefitPayee' msg: msg.payee -%},
-  "supportingInfo" : {{msg.information | to_json_string }},
+  "supportingInfo" : {{msg.information | to_json_string | default : '""' }},
   "item" : [ {{ msg.item | to_array | batch_render: 'ExplanationOfBenefit/ExplanationOfBenefitItem', 'msg' }} ],
   "addItem" : [ {{ msg.addItem | to_array | batch_render: 'ExplanationOfBenefit/ExplanationOfBenefitAddItem', 'msg' }} ],
   "total" : [

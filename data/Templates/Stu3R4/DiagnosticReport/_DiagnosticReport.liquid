@@ -1,10 +1,10 @@
 {% mergeDiff msg -%}
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
-  "encounter" : {{msg.context | to_json_string}},
+  "encounter" : {{msg.context | to_json_string | default : '""'}},
   "performer" : [ {{ msg.performer | to_array | batch_render: 'DiagnosticReport/Performer', 'msg' }} ],
-  "media" : {{msg.image | to_json_string }},
-  "conclusionCode" : {{msg.codedDiagnosis | to_json_string}},
+  "media" : {{msg.image | to_json_string | default : '""' }},
+  "conclusionCode" : {{msg.codedDiagnosis | to_json_string | default : '""'}},
   "codedDiagnosis" : "",
   "image" : "",
   "context" : ""

@@ -2,7 +2,7 @@
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "paymentDate" : "{{msg.statusDate}}",
-  "recipient" : {{msg.target | to_json_string}},
+  "recipient" : {{msg.target | to_json_string | default : '""'}},
   "organization" : "",
   "target" : "",
   "statusDate" : ""

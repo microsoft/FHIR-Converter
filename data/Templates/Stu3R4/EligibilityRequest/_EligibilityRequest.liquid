@@ -5,13 +5,13 @@
   "insurance" : [
     {
       "focal" : true,
-      "coverage" : {{msg.coverage | to_json_string }},
+      "coverage" : {{msg.coverage | to_json_string | default : '""' }},
       "businessArrangement" : "{{msg.businessArrangement}}"
     }
   ],
   "item" : [
     {
-      "category" : {{msg.benefitCategory | to_json_string }}
+      "category" : {{msg.benefitCategory | to_json_string | default : '""' }}
     }
   ],
   "benefitSubCategory" : "",

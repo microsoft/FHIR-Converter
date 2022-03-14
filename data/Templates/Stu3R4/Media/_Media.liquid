@@ -9,10 +9,10 @@
     }
   },
   {% endif -%}
-  "modality" : {{msg.subtype | to_json_string}},
-  "encounter" : {{msg.context | to_json_string}},
+  "modality" : {{msg.subtype | to_json_string | default : '""'}},
+  "encounter" : {{msg.context | to_json_string | default : '""'}},
   "createdDateTime" : "{{msg.occurrenceDateTime}}",
-  "createdPeriod" : {{msg.occurrencePeriod | to_json_string}},
+  "createdPeriod" : {{msg.occurrencePeriod | to_json_string | default : '""'}},
   "occurrence[x]" : "",
   "context" : "",
   "subtype" : ""

@@ -1,4 +1,4 @@
 {
-    "coding" : [{{msg.type | to_json_string}}],
+    "coding" : [{{msg.type | to_json_string | default : '""'}}],
     "text" : "{{msg.value}}"
 }

@@ -1,6 +1,6 @@
 {% mergeDiff msg -%}
 {
-  "who" : {{msg.reference | to_json_string}},
+  "who" : {{msg.reference | to_json_string | default : '""'}},
   "who" : {% include 'Shared/Identifier2Reference' msg: msg.userId -%},
   "userId" : "",
   "reference" : ""

@@ -6,6 +6,9 @@
   "exampleCanonical" : {% include 'Shared/Reference2Canonical' msg: msg.exampleFor -%},
   {% endif -%}
   "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
     {%if msg.acronym -%}
     {
       "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-ImplementationGuide.package.resource.acronym",
@@ -23,7 +26,7 @@
   },
   {% endif -%}
   {%if msg.sourceReference -%}
-  "reference" : {{msg.sourceReference | to_json_string}},
+  "reference" : {{msg.sourceReference | to_json_string | default : '""'}},
   {% endif -%}
   "exampleFor" : "",
   "example" : "",

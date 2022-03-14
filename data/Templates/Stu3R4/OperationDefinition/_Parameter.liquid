@@ -1,7 +1,7 @@
 {% mergeDiff msg -%}
 {
   "targetProfile" : [
-    {{msg.profile | to_json_string}}
+    {{msg.profile | to_json_string | default : '""'}}
   ],
   "profile" : "",
   "binding" : {% include 'OperationDefinition/Binding' msg: msg.binding -%},

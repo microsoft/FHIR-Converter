@@ -6,8 +6,8 @@
   {% else -%}
   "status" : {% include 'Procedure/TranslateStatusCode' msg: msg.status -%},
   {% endif -%}
-  "statusReason" : {{msg.notDoneReason | to_json_string}},
-  "encounter" : {{msg.context | to_json_string}},
+  "statusReason" : {{msg.notDoneReason | to_json_string | default : '""'}},
+  "encounter" : {{msg.context | to_json_string | default : '""'}},
   "performer" : [ {{ msg.performer | to_array | batch_render: 'Procedure/ProcedurePerformer', 'msg' }} ],
   "context" : "",
   "notDone" : "",

@@ -1,5 +1,5 @@
 [
     {
-        "coding" : {{msg | to_json_string}}
+        "coding" : {{msg | to_json_string | default : '""'}}
     }
 ]

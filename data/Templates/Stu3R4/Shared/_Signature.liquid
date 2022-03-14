@@ -11,10 +11,10 @@
     }
   },
   {% else if msg.whoReference -%}
-  "who" : {{msg.whoReference | to_json_string}},
+  "who" : {{msg.whoReference | to_json_string | default : '""'}},
   {% endif -%}
   {%if msg.onBehalfOfUri -%}
-  "onBehalfOfUri" : {
+  "onBehalfOf" : {
     "reference" : "{{msg.onBehalfOfUri}}",
     "extension" : {
       "url" : "http://hl7.org/fhir/r3/StructureDefinition/BaseType",
@@ -22,7 +22,7 @@
     }
   },
   {% else if msg.onBehalfOfReference -%}
-  "onBehalfOf" : {{msg.onBehalfOfReference | to_json_string}},
+  "onBehalfOf" : {{msg.onBehalfOfReference | to_json_string | default : '""'}},
   {% endif -%}
   "sigFormat" : "{{msg.contentType}}",
   "data" : "{{msg.blob}}",
@@ -30,3 +30,4 @@
   "contentType" : "",
 }
 {% endmergeDiff -%}
+

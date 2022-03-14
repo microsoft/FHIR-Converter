@@ -11,7 +11,7 @@
     },
     {% endif -%}
   ],
-  "event" : {{msg.type | to_json_string}},
+  "event" : {{msg.type | to_json_string | default : '""'}},
   {% if msg.type == null -%}
   "event" : {
     "text" : "{{msg.description}}"

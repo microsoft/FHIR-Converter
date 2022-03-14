@@ -3,7 +3,7 @@
   "related" : [ 
     {% for r in msg.related %}
       {% if r.ref %}
-        {{ r.ref | to_json_string }}
+        {{ r.ref | to_json_string | default : '""' }}
       {% endif %}
     {% endfor %}
    ]

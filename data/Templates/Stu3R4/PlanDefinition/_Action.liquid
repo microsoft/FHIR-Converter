@@ -2,7 +2,7 @@
 {
   "prefix" : "{{msg.label}}",
   "documentation" : [ {{ msg.documentation | to_array | batch_render: 'Shared/RelatedArtifact', 'msg' }} ],
-  "trigger" : {{msg.triggerDefinition | to_json_string}},
+  "trigger" : {{msg.triggerDefinition | to_json_string | default : '""'}},
   "condition" : [ {{ msg.condition | to_array | batch_render: 'PlanDefinition/Condition', 'msg' }} ],
   "input" : [ {{ msg.input | to_array | batch_render: 'Shared/DataRequirement', 'msg' }} ],
   "output" : [ {{ msg.output | to_array | batch_render: 'Shared/DataRequirement', 'msg' }} ],

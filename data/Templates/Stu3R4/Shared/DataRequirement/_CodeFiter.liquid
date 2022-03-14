@@ -6,12 +6,12 @@
     {
       "code" : "{{msg.valueCode}}"
     },
-    {{msg.valueCoding | to_json_string}},
+    {{msg.valueCoding | to_json_string | default : '""'}},
     {% for c in msg.valueCodeableConcept.coding -%}
-    {{c | to_json_string}},
+    {{c | to_json_string | default : '""'}},
     {% endfor -%}
   ],
-  "code" : {{msg.valueCoding | to_json_string}},
+  "code" : {{msg.valueCoding | to_json_string | default : '""'}},
   "valueCoding" : "",
   "valueCode" : "",
   "valueCodeableConcept" : ""

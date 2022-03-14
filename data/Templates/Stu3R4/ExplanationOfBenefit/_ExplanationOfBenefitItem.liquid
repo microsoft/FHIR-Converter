@@ -1,10 +1,10 @@
 {% mergeDiff msg -%}
 {
-  "careTeamSequence" : {{msg.careTeamLinkId | to_json_string}},
-  "diagnosisSequence" : {{msg.diagnosisLinkId | to_json_string}},
-  "procedureSequence" : {{msg.procedureLinkId | to_json_string}},
-  "informationSequence" : {{msg.informationLinkId | to_json_string}},
-  "productOrService" : {{msg.service | to_json_string}},
+  "careTeamSequence" : {{msg.careTeamLinkId | to_json_string | default : '""'}},
+  "diagnosisSequence" : {{msg.diagnosisLinkId | to_json_string | default : '""'}},
+  "procedureSequence" : {{msg.procedureLinkId | to_json_string | default : '""'}},
+  "informationSequence" : {{msg.informationLinkId | to_json_string | default : '""'}},
+  "productOrService" : {{msg.service | to_json_string | default : '""'}},
   "unitPrice" : {% include 'Shared/Money' msg: msg.unitPrice -%},
   "net" : {% include 'Shared/Money' msg: msg.net -%},
   "adjudication" : [ {{ msg.adjudication | to_array | batch_render: 'ExplanationOfBenefit/ExplanationOfBenefitItemAdjudication', 'msg' }} ],

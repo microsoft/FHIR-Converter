@@ -1,14 +1,17 @@
 {% mergeDiff msg -%}
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
-  "instantiates" : {{msg.definition | to_json_string}},
+  "instantiates" : {{msg.definition | to_json_string | default : '""'}},
   "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
     {%if msg.status -%}
     {
       "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MedicationAdministration.status",
       "valueCode" : "{{msg.status}}"
     },
-    {% endif -%},
+    {% endif -%}
     {%if msg.notGiven -%}
     {
       "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MedicationAdministration.notGiven",
@@ -20,8 +23,8 @@
   "status" : "not-done",
   {% endif -%}
   "performer" : [ {{ msg.performer | to_array | batch_render: 'MedicationAdministration/Actor', 'msg' }} ],
-  "reasonCode" : {{msg.reasonNotGiven | to_json_string}},
-  "request" : {{msg.prescription | to_json_string}},
+  "reasonCode" : {{msg.reasonNotGiven | to_json_string | default : '""'}},
+  "request" : {{msg.prescription | to_json_string | default : '""'}},
   "dosage" : {% include 'Shared/Dosage' msg: msg.dosage -%},
   "prescription" : "",
   "reasonNotGiven" : "",

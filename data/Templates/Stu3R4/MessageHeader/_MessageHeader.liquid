@@ -1,14 +1,14 @@
 {% mergeDiff msg -%}
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
-  "eventCoding" : {{msg.event | to_json_string}},
+  "eventCoding" : {{msg.event | to_json_string | default : '""'}},
   "destination" : [
     {% for d in msg.destination -%}
     {
       "name" : "{{d.name}}",
-      "target" : {{d.target | to_json_string}},
+      "target" : {{d.target | to_json_string | default : '""'}},
       "endpoint" : "{{d.endpoint}}",
-      "receiver" : {{msg.receiver | to_json_string}}
+      "receiver" : {{msg.receiver | to_json_string | default : '""'}}
     },
     {% endfor -%}
   ],

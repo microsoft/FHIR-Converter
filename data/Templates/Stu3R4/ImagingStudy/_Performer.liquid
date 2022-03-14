@@ -7,5 +7,5 @@
       }
     ]
   },
-  "actor" : {{msg | to_json_string}}
+  "actor" : {{msg | to_json_string | default : '""'}},
 }

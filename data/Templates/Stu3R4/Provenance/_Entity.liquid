@@ -4,15 +4,17 @@
   {%if msg.whatUri -%}
   "what" : {
     "reference" : "{{msg.whatUri}}",
-    "extension" : [{
+    "extension" : [
+      {
       "url" : "http://hl7.org/fhir/r3/StructureDefinition/BaseType",
       "valueString" : "uri"
-    }]
+      }
+      ]
   },
   {% else if msg.whatReference -%}
-  "what" : {{msg.whatReference |to_json_string}},
+  "what" : {{msg.whatReference |to_json_string | default : '""'}},
   {% else if msg.whatIdentifier -%}
-  "what" : {{msg.whatIdentifier |to_json_string}},
+  "what" : {{msg.whatIdentifier |to_json_string | default : '""'}},
   {% endif -%}
   "agent" : [ {{ msg.agent | to_array | batch_render: 'Provenance/Agent', 'msg' }} ]
 }

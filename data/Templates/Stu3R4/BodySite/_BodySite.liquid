@@ -2,8 +2,8 @@
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "resourceType":"BodyStructure",
-  "location" : {{msg.code | to_json_string}},
-  "locationQualifier" : {{msg.qualifier | to_json_string}},
+  "location" : {{msg.code | to_json_string | default : '""'}},
+  "locationQualifier" : {{msg.qualifier | to_json_string | default : '""'}},
   "qualifier" : "",
   "code" : ""
 }
