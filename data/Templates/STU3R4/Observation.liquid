@@ -1,46 +1,50 @@
 {% mergeDiff msg -%}
 {
-  "encounter" : {{msg.context | to_json_string}},
+  "encounter" : {{msg.context | to_json_string | default : '""'}},
   "related" : "",
   "note" : [
     {% include 'Shared/String2Annotation' msg: msg.comment -%}
   ],
   "comment" : "",
-  {% for r in msg.related %}
-  {% case r.type %}
-    {% when "has-member" %}
-      "hasMember" : {{r.target | to_json_string }},
-    {% when "derived-from" %}
-      "derivedFrom" : {{r.target | to_json_string }},
-  {% endcase %}
-  {% endfor %}
-
+  "hasMember" : [
+    {% for r in msg.related %}
+      {% if r.type == "has-member" -%}
+        {{r.target | to_json_string | default : '""' }},
+      {% endif -%}
+    {% endfor -%}
+  ],
+  "derivedFrom" : [
+    {% for r in msg.related %}
+      {% if r.type == "derived-from" -%}
+        {{r.target | to_json_string | default : '""' }},
+      {% endif -%}
+    {% endfor -%}
+  ],
   "extension":[
     {% for e in msg.extension -%}
-    {{e | to_json_string}},
+    {{ e | to_json_string | default : '""'}},
     {% endfor -%}
-    
     {% for r in msg.related %}
     {% case r.type %}
       {% when "sequel-to" %}
         {
             "url":"http://hl7.org/fhir/3.0/StructureDefinition/Observation.sequelTo",
-            "valueReference": {{r.target | to_json_string }}
+            "valueReference": {{r.target | to_json_string | default : '""' }}
         },
       {% when "replaces" %}
         {
             "url":"http://hl7.org/fhir/3.0/StructureDefinition/Observation.replaces",
-            "valueReference": {{r.target | to_json_string }}
+            "valueReference": {{r.target | to_json_string | default : '""' }}
         },
       {% when "qualified-by" %}
         {
             "url":"http://hl7.org/fhir/3.0/StructureDefinition/Observation.qualifiedBy",
-            "valueReference": {{r.target | to_json_string }}
+            "valueReference": {{r.target | to_json_string | default : '""' }}
         },
       {% when "interfered-by" %}
         {
             "url":"http://hl7.org/fhir/3.0/StructureDefinition/Observation.interferedBy",
-            "valueReference": {{r.target | to_json_string }}
+            "valueReference": {{r.target | to_json_string | default : '""' }}
         },
     {% endcase %}
   {% endfor %}

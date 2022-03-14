@@ -167,23 +167,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         public static IEnumerable<object[]> GetDataForStu3ToR4()
         {
-            var data = new List<string[]>
+            var data = new List<string>
             {
-                new[] { @"CapabilityStatement" },
-                new[] { @"CodeSystem" },
-                new[] { @"Observation" },
-                new[] { @"OperationDefinition" },
-                new[] { @"OperationOutcome" },
-                new[] { @"Parameters" },
-                new[] { @"Patient" },
-                new[] { @"StructureDefinition" },
-                new[] { @"ValueSet" },
+                @"CapabilityStatement",
+                @"CodeSystem",
+                @"Observation",
+                @"OperationDefinition",
+                @"OperationOutcome",
+                @"Parameters",
+                @"Patient",
+                @"StructureDefinition",
+                @"ValueSet",
             };
             return data.Select(item => new[]
             {
-                item[0],
-                Path.Join(Constants.SampleDataDirectory, "STU3", item[0] + ".json"),
-                Path.Join(Constants.ExpectedDataFolder, "Json", "ExpectedR4Resource", item[0] + ".json"),
+                item,
+                Path.Join(Constants.SampleDataDirectory, "STU3", item + ".json"),
+                Path.Join(Constants.ExpectedDataFolder, "R3ToR4", item + ".json"),
             });
         }
 

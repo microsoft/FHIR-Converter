@@ -30,10 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="TestTemplates\**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="ExpectedMergeDiffResults\**">
+    <None Update="TestData\**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

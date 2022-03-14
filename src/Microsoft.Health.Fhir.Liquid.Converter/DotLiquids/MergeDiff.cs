@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,9 +21,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
     {
         private static readonly Regex Syntax = R.B(@"^({0}+)\s$", DotLiquid.Liquid.VariableSignature);
         private string _variableName;
-        private Dictionary<string, string> _attributes;
 
-        private List<object> DiffBlock { get; set; }
+        private List<object> _diffBlock;
 
         /// <summary>
         /// Initializes the mergeDiff tag
@@ -35,14 +35,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             Match match = Syntax.Match(markup);
             if (match.Success)
             {
-                NodeList = DiffBlock = new List<object>();
+                NodeList = _diffBlock = new List<object>();
                 _variableName = match.Groups[0].Value;
-                _attributes = new Dictionary<string, string>(Template.NamingConvention.StringComparer);
-                R.Scan(markup, DotLiquid.Liquid.TagAttributes, (key, value) => _attributes[key] = value);
             }
             else
             {
-                throw new SyntaxException(Resources.EvaluateTagSyntaxError);
+                throw new SyntaxException(Resources.MergeDiffTagSyntaxError);
             }
 
             base.Initialize(tagName, markup, tokens);
@@ -50,14 +48,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
         public override void Render(Context context, TextWriter result)
         {
-
             context.Stack(() =>
             {
                 using StringWriter writer = new StringWriter();
 
                 var inputContent = context[_variableName];
 
-                // If input message is null, it returns empty string to makesure the output is still a valid json object.
+                // If input message is null, it returns empty string to make sure the output is still a valid json object.
                 // And the element with empty string value will be removed in post processor.
                 if (inputContent == null)
                 {
@@ -68,55 +65,56 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 // Input message should be a valid json object.
                 if (!(inputContent is Dictionary<string, object> || inputContent is Hash))
                 {
-                    throw new RenderException(FhirConverterErrorCode.InvalidInputOfMergeDiffBlock, "The input message of MergeDiff tag should be a json object.");
+                    throw new RenderException(FhirConverterErrorCode.InvalidInputOfMergeDiffBlock, "The input message of 'MergeDiff' tag should be a json object.");
                 }
 
-                RenderAll(DiffBlock, context, writer);
+                RenderAll(_diffBlock, context, writer);
 
                 // Diff content should be a valid json object.
                 // If diff content is empty, the input message will output directly.
-                Dictionary<string, object> diffDic = null;
+                Dictionary<string, object> diffDict = null;
                 try
                 {
-                    diffDic = JsonConvert.DeserializeObject<Dictionary<string, object>>(writer.ToString());
+                    diffDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(writer.ToString());
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw new RenderException(FhirConverterErrorCode.InvalidMergeDiffBlockContent, "MergeDiff block content should be a json object.");
+                    throw new RenderException(FhirConverterErrorCode.InvalidMergeDiffBlockContent, "Content in 'MergeDiff' block should be a json object.", ex);
                 }
 
                 var mergedResult = inputContent;
-                if (diffDic != null)
+                if (diffDict != null)
                 {
-                    mergedResult = MergeDiffContent(inputContent, diffDic);
+                    mergedResult = MergeDiffContent(inputContent, diffDict);
                 }
 
-                result.Write(mergedResult == null ? null : JsonConvert.SerializeObject(mergedResult));
+                result.Write(JsonConvert.SerializeObject(mergedResult));
             });
         }
 
-        public object MergeDiffContent(object source, Dictionary<string, object> diffDic)
+        private object MergeDiffContent(object source, Dictionary<string, object> diffDict)
         {
             Dictionary<string, object> result;
 
-            if (source is Hash)
+            if (source is Hash hashSource)
             {
-                result = new Dictionary<string, object>(source as Hash);
+                result = new Dictionary<string, object>(hashSource);
             }
-            else if (source is Dictionary<string, object>)
+            else if (source is Dictionary<string, object> dictSource)
             {
-                result = new Dictionary<string, object>(source as Dictionary<string, object>);
+                result = new Dictionary<string, object>(dictSource);
             }
             else
             {
-                throw new RenderException(FhirConverterErrorCode.InvalidInputOfMergeDiffBlock, "MergeDiff block is empty.");
+                throw new RenderException(FhirConverterErrorCode.InvalidInputOfMergeDiffBlock, "'MergeDiff' block is empty.");
             }
 
-            foreach (var item in diffDic)
+            foreach (var item in diffDict)
             {
+                // [x] represent choice type elements.
                 if (item.Key.EndsWith("[x]"))
                 {
-                    var choiceTypeName = item.Key.Replace("[x]", string.Empty);
+                    var choiceTypeName = item.Key.Remove(item.Key.Length - 3);
                     var choiceElements = result.Where(x => x.Key.StartsWith(choiceTypeName)).Select(x => x.Key).ToList();
                     foreach (var ele in choiceElements)
                     {
