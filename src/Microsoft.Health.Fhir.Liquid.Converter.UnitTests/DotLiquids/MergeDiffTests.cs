@@ -79,7 +79,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         {
             var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
 
-            var templateFolder = @"TestTemplates/InValidMergeDiffTemplates";
+            var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"InvalidMergeDiffTemplates");
             var templateProvider = new TemplateProvider(templateFolder, DataType.Json);
             var inputContent = "{\"id\": \"\\\"0\",\"resourceType\" : \"oldType\",\"extension\":{\"test\" : \"test\"}}";
             var parser = new JsonDataParser();
