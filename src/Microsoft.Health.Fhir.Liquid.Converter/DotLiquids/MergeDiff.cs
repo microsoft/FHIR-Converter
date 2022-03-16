@@ -52,6 +52,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             {
                 using StringWriter writer = new StringWriter();
 
+                RenderAll(_diffBlock, context, writer);
+
                 var inputContent = context[_variableName];
 
                 // If input message is null, it returns empty string to make sure the output is still a valid json object.
@@ -62,17 +64,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                     return;
                 }
 
-                // Input message should be a valid json object.
-                if (!(inputContent is Dictionary<string, object> || inputContent is Hash))
-                {
-                    throw new RenderException(FhirConverterErrorCode.InvalidInputOfMergeDiffBlock, "The input message of 'MergeDiff' tag should be a json object.");
-                }
-
-                RenderAll(_diffBlock, context, writer);
-
                 // Diff content should be a valid json object.
                 // If diff content is empty, the input message will output directly.
                 Dictionary<string, object> diffDict = null;
+
                 try
                 {
                     diffDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(writer.ToString());
@@ -83,7 +78,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 }
 
                 var mergedResult = inputContent;
-                if (diffDict != null)
+
+                // diffDict is null when diff content is empty.
+                if (diffDict?.Count > 0)
                 {
                     mergedResult = MergeDiffContent(inputContent, diffDict);
                 }
@@ -92,9 +89,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             });
         }
 
-        private object MergeDiffContent(object source, Dictionary<string, object> diffDict)
+        private Dictionary<string, object> MergeDiffContent(object source, Dictionary<string, object> diffDict)
         {
             Dictionary<string, object> result;
+
+            // Input message should be a valid json object.
 
             if (source is Hash hashSource)
             {
@@ -106,20 +105,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
             else
             {
-                throw new RenderException(FhirConverterErrorCode.InvalidInputOfMergeDiffBlock, "'MergeDiff' block is empty.");
+                throw new RenderException(FhirConverterErrorCode.InvalidInputOfMergeDiffBlock, "The input message of 'MergeDiff' tag should be a json object.");
             }
 
             foreach (var item in diffDict)
             {
                 // [x] represent choice type elements.
+                // Only handle choice type element for the first match.
                 if (item.Key.EndsWith("[x]"))
                 {
                     var choiceTypeName = item.Key.Remove(item.Key.Length - 3);
-                    var choiceElements = result.Where(x => x.Key.StartsWith(choiceTypeName)).Select(x => x.Key).ToList();
-                    foreach (var ele in choiceElements)
+                    if (string.IsNullOrEmpty(choiceTypeName))
                     {
-                        result[ele] = item.Value;
+                        throw new RenderException(FhirConverterErrorCode.InvalidMergeDiffBlockContent, "'[x]' is an invalid key in 'MergeDiff' block.");
                     }
+
+                    var choiceElement = result.Where(x => x.Key.StartsWith(choiceTypeName)).First().Key;
+                    result[choiceElement] = item.Value;
                 }
                 else
                 {
