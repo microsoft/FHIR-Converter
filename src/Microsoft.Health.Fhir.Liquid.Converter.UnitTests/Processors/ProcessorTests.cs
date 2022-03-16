@@ -183,5 +183,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             var exception = Assert.Throws<RenderException>(() => processor.Convert(data, "LargeForLoopTemplate", templateProvider));
             Assert.Contains("Render Error - Maximum number of iterations 100000 exceeded", exception.Message);
         }
+
+        [Theory]
+        [MemberData(nameof(GetValidInputsWithLargeForLoop))]
+        public void GivenTemplateWithNestedForLoop_WhenConvert_CorrectResultShouldBeReturned(IFhirConverter processor, ITemplateProvider templateProvider, string data)
+        {
+            var result = processor.Convert(data, "NestedForLoopTemplate", templateProvider);
+            Assert.True(result.Length > 0);
+        }
     }
 }
