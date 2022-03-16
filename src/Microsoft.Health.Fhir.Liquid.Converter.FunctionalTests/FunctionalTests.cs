@@ -78,20 +78,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new[] { @"SIU_S26", @"SIU-S26-01.hl7", @"SIU-S26-01-expected.json" },
                 new[] { @"SIU_S26", @"SIU-S26-02.hl7", @"SIU-S26-02-expected.json" },
 
-                new[] { "ORU_R01", "ORU-R01-01.hl7",  @"ORU-R01-01-expected.json"},
+                new[] { "ORU_R01", "ORU-R01-01.hl7",  @"ORU-R01-01-expected.json" },
 
                 new[] { @"ORM_O01", @"ORM-O01-01.hl7", @"ORM-O01-01-expected.json" },
                 new[] { @"ORM_O01", @"ORM-O01-02.hl7", @"ORM-O01-02-expected.json" },
                 new[] { @"ORM_O01", @"ORM-O01-03.hl7", @"ORM-O01-03-expected.json" },
 
-                new[] { "MDM_T01", "MDM-T01-01.hl7",  @"MDM-T01-01-expected.json"},
-                new[] { "MDM_T01", "MDM-T01-02.hl7",  @"MDM-T01-02-expected.json"},
-                new[] { "MDM_T02", "MDM-T02-01.hl7",  @"MDM-T02-01-expected.json"},
-                new[] { "MDM_T02", "MDM-T02-02.hl7",  @"MDM-T02-02-expected.json"},
-                new[] { "MDM_T02", "MDM-T02-03.hl7",  @"MDM-T02-03-expected.json"},
+                new[] { "MDM_T01", "MDM-T01-01.hl7",  @"MDM-T01-01-expected.json" },
+                new[] { "MDM_T01", "MDM-T01-02.hl7",  @"MDM-T01-02-expected.json" },
+                new[] { "MDM_T02", "MDM-T02-01.hl7",  @"MDM-T02-01-expected.json" },
+                new[] { "MDM_T02", "MDM-T02-02.hl7",  @"MDM-T02-02-expected.json" },
+                new[] { "MDM_T02", "MDM-T02-03.hl7",  @"MDM-T02-03-expected.json" },
 
-                new[] { "OML_O21", "OML-O21-01.hl7",  @"OML-O21-01-expected.json"},
-                new[] { "OML_O21", "OML-O21-02.hl7",  @"OML-O21-02-expected.json"},
+                new[] { "OML_O21", "OML-O21-01.hl7",  @"OML-O21-01-expected.json" },
+                new[] { "OML_O21", "OML-O21-02.hl7",  @"OML-O21-02-expected.json" },
 
                 new[] { @"ADT_A01", @"ADT01-23.hl7", @"ADT01-23-expected.json" },
                 new[] { @"ADT_A01", @"ADT01-28.hl7", @"ADT01-28-expected.json" },
