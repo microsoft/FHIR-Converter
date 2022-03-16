@@ -208,7 +208,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var newTemplateCollectionProvider = new TemplateCollectionProvider(imageInfo, _emptyClient, _cache, _defaultConfig);
             var templateCollection = await newTemplateCollectionProvider.GetTemplateCollectionAsync();
-            Assert.Equal(expectedTemplatesCounts, templateCollection.First().Count());
+            Assert.True(expectedTemplatesCounts <= templateCollection.First().Count());
         }
 
         [Fact]
