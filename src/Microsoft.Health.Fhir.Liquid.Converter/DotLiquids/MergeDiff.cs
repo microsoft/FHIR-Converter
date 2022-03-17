@@ -43,6 +43,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 throw new SyntaxException(Resources.MergeDiffTagSyntaxError);
             }
 
+            // Initialize block content into variable 'Nodelist'
+            // Variable '_diffBlock' will also be initialized since they refer to the same object.
             base.Initialize(tagName, markup, tokens);
         }
 
