@@ -97,6 +97,30 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             Assert.Throws<RenderException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
         }
 
+        [Fact]
+        public void GivenInvalidDiffBlockContentWithTooMuchRecursive_WhenParseAndRender_ExceptionsShouldBeThrown()
+        {
+            var templateContent = File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidMergeDiffTemplates/RecursiveTooMuchTemplate.liquid"));
+            var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
+
+            var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"InvalidMergeDiffTemplates");
+            var templateProvider = new TemplateProvider(templateFolder, DataType.Json);
+            var inputContent = "{\"id\": \"\\\"0\",\"resourceType\" : \"oldType\",\"extension\":{\"test\" : \"test\"}}";
+            var parser = new JsonDataParser();
+            var jsonData = parser.Parse(inputContent);
+            var dictionary = new Dictionary<string, object> { { "msg", jsonData } };
+            var context = new Context(
+                environments: new List<Hash> { Hash.FromDictionary(dictionary) },
+                outerScope: new Hash(),
+                registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
+                errorsOutputMode: ErrorsOutputMode.Rethrow,
+                maxIterations: 0,
+                timeout: 0,
+                formatProvider: CultureInfo.InvariantCulture);
+            context.AddFilters(typeof(Filters));
+            Assert.Throws<DotLiquid.Exceptions.StackLevelException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
+        }
+
         [Theory]
         [MemberData(nameof(GetInvalidMergeDiffTemplateWithErrorSyntax))]
         public void GivenInvalidMergeDiffTemplateWithErrorSyntax_WhenParse_ExceptionsShouldBeThrown(string templateContent)

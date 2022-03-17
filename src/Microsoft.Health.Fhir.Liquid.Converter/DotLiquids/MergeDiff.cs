@@ -48,45 +48,45 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
         public override void Render(Context context, TextWriter result)
         {
+            using StringWriter writer = new StringWriter();
+
             context.Stack(() =>
             {
-                using StringWriter writer = new StringWriter();
-
                 RenderAll(_diffBlock, context, writer);
-
-                var inputContent = context[_variableName];
-
-                // If input message is null, it returns empty string to make sure the output is still a valid json object.
-                // And the element with empty string value will be removed in post processor.
-                if (inputContent == null)
-                {
-                    result.Write("\"\"");
-                    return;
-                }
-
-                // Diff content should be a valid json object.
-                // If diff content is empty, the input message will output directly.
-                Dictionary<string, object> diffDict = null;
-
-                try
-                {
-                    diffDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(writer.ToString());
-                }
-                catch (Exception ex)
-                {
-                    throw new RenderException(FhirConverterErrorCode.InvalidMergeDiffBlockContent, "Content in 'MergeDiff' block should be a json object.", ex);
-                }
-
-                var mergedResult = inputContent;
-
-                // diffDict is null when diff content is empty.
-                if (diffDict?.Count > 0)
-                {
-                    mergedResult = MergeDiffContent(inputContent, diffDict);
-                }
-
-                result.Write(JsonConvert.SerializeObject(mergedResult));
             });
+
+            var inputContent = context[_variableName];
+
+            // If input message is null, it returns empty string to make sure the output is still a valid json object.
+            // And the element with empty string value will be removed in post processor.
+            if (inputContent == null)
+            {
+                result.Write("\"\"");
+                return;
+            }
+
+            // Diff content should be a valid json object.
+            // If diff content is empty, the input message will output directly.
+            Dictionary<string, object> diffDict = null;
+
+            try
+            {
+                diffDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(writer.ToString());
+            }
+            catch (Exception ex)
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidMergeDiffBlockContent, "Content in 'MergeDiff' block should be a json object.", ex);
+            }
+
+            var mergedResult = inputContent;
+
+            // diffDict is null when diff content is empty.
+            if (diffDict?.Count > 0)
+            {
+                mergedResult = MergeDiffContent(inputContent, diffDict);
+            }
+
+            result.Write(JsonConvert.SerializeObject(mergedResult));
         }
 
         private Dictionary<string, object> MergeDiffContent(object source, Dictionary<string, object> diffDict)
@@ -99,7 +99,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             {
                 result = new Dictionary<string, object>(hashSource);
             }
-            else if (source is Dictionary<string, object> dictSource)
+            else if (source is IDictionary<string, object> dictSource)
             {
                 result = new Dictionary<string, object>(dictSource);
             }
