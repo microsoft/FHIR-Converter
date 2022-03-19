@@ -96,6 +96,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { @"19701231115959", "utc", @"1970-12-31T03:59:59Z" };
         }
 
+        public static IEnumerable<object[]> GetValidDataForFormatAsDateTimeWithDefaultTimeZoneHandling()
+        {
+            yield return new object[] { @"200101" , @"2000-12" };
+            yield return new object[] { @"20050110045253", @"2005-01-09T20:52:53Z" };
+            yield return new object[] { @"20110103143428", @"2011-01-03T06:34:28Z" };
+            yield return new object[] { @"19701231115959", @"1970-12-31T03:59:59Z" };
+            yield return new object[] { @"20110103143428-0800", @"2011-01-03T14:34:28-08:00" };
+            yield return new object[] { @"20110103143428-0800", @"2011-01-03T22:34:28Z" };
+            yield return new object[] { @"19701231115959+0600", @"1970-12-31T11:59:59+06:00" };
+            yield return new object[] { @"19701231115959+0600", @"1970-12-31T05:59:59Z" };
+        }
+
         public static IEnumerable<object[]> GetInvalidDataForAddHyphensDate()
         {
             yield return new object[] { @"20badInput" };
@@ -207,6 +219,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             dateTimeOffset = dateTimeOffset.AddHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).Hours - 8);
             var dateTimeString = dateTimeOffset.ToString("yyyy-MM-ddTHH:mm:ssZ");
             Assert.Contains(expectedDateTime, dateTimeString);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidDataForFormatAsDateTimeWithDefaultTimeZoneHandling))]
+        public void GivenAValidData_WhenFormatAsDateTimeWithDefaultTimeZoneHandling_ConvertedDateTimeShouldBeReturned(string input, string expectedDateTime)
+        {
+            var result = Filters.FormatAsDateTime(input);
+            Assert.Equal(expectedDateTime, result);
         }
 
         [Theory]
