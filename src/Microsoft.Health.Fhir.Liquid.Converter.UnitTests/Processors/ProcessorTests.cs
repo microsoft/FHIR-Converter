@@ -79,6 +79,28 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             };
         }
 
+        public static IEnumerable<object[]> GetValidInputsWithLargeForLoop()
+        {
+            yield return new object[]
+            {
+                new Hl7v2Processor(),
+                new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Hl7v2),
+                _hl7v2TestData,
+            };
+            yield return new object[]
+            {
+                new CcdaProcessor(),
+                new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Ccda),
+                _ccdaTestData,
+            };
+            yield return new object[]
+            {
+                new JsonProcessor(),
+                new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json),
+                _jsonTestData,
+            };
+        }
+
         [Theory]
         [MemberData(nameof(GetValidInputsWithTemplateDirectory))]
         public void GivenAValidTemplateDirectory_WhenConvert_CorrectResultShouldBeReturned(IFhirConverter processor, ITemplateProvider templateProvider, string data, string rootTemplate)
@@ -152,6 +174,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
 
             cts.Cancel();
             Assert.Throws<OperationCanceledException>(() => processor.Convert(data, rootTemplate, templateProvider, cts.Token));
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidInputsWithLargeForLoop))]
+        public void GivenTemplateWithLargeForLoop_WhenConvert_ExceptionShouldBeThrown(IFhirConverter processor, ITemplateProvider templateProvider, string data)
+        {
+            var exception = Assert.Throws<RenderException>(() => processor.Convert(data, "LargeForLoopTemplate", templateProvider));
+            Assert.Contains("Render Error - Maximum number of iterations 100000 exceeded", exception.Message);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidInputsWithLargeForLoop))]
+        public void GivenTemplateWithNestedForLoop_WhenConvert_CorrectResultShouldBeReturned(IFhirConverter processor, ITemplateProvider templateProvider, string data)
+        {
+            var result = processor.Convert(data, "NestedForLoopTemplate", templateProvider);
+            Assert.True(result.Length > 0);
         }
     }
 }

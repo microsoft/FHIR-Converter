@@ -454,7 +454,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 "resourceType", "type", "fullUrl", "id", "method", "url", "reference", "system",
                 "code", "display", "gender", "use", "preferred", "status", "mode", "div", "valueString", "valueCode",
                 "text", "endpoint", "value", "category", "type", "criticality", "priority", "severity", "description",
-                "intent", "docStatus", "contentType", "authorString"
+                "intent", "docStatus", "contentType", "authorString",
             };
 
             private static readonly HashSet<string> _explicitValues = new HashSet<string>
