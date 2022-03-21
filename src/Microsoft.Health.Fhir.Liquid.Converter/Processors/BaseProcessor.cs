@@ -18,6 +18,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
     public abstract class BaseProcessor : IFhirConverter
     {
         private readonly ProcessorSettings _settings;
+        private const int _maxIterations = 100000;
 
         protected BaseProcessor(ProcessorSettings processorSettings = null)
         {
@@ -43,7 +44,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 outerScope: new Hash(),
                 registers: Hash.FromDictionary(new Dictionary<string, object> { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
-                maxIterations: 0,
+                maxIterations: _maxIterations,
                 timeout: timeout,
                 formatProvider: CultureInfo.InvariantCulture);
 
