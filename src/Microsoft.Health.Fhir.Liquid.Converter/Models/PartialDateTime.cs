@@ -111,17 +111,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
                 };
             }
 
-            var timeZoneSuffix = string.Empty;
-            if (HasTimeZone)
-            {
-                // Using "Z" to represent zero timezone.
-                timeZoneSuffix = resultDateTime.Offset == TimeSpan.Zero ? "Z" : "%K";
-            }
-
-            if (timeZoneHandling == TimeZoneHandlingMethod.Utc)
-            {
-                timeZoneSuffix = "Z";
-            }
+            var timeZoneSuffix = resultDateTime.Offset == TimeSpan.Zero ? "Z" : "%K";
 
             var dateTimeFormat = Precision < DateTimePrecision.Milliseconds ? "yyyy-MM-ddTHH:mm:ss" + timeZoneSuffix : "yyyy-MM-ddTHH:mm:ss.fff" + timeZoneSuffix;
             return resultDateTime.ToString(dateTimeFormat);

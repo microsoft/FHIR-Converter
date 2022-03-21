@@ -31,6 +31,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { @"19850101000000", "utc", @"1984-12-31" };
         }
 
+        public static IEnumerable<object[]> GetValidDataForAddHyphensDateWithDefaultTimeZoneHandling()
+        {
+            yield return new object[] { null, null };
+            yield return new object[] { string.Empty, string.Empty };
+            yield return new object[] { @"2001", @"2001" };
+            yield return new object[] { @"200101", @"2001-01" };
+            yield return new object[] { @"19241010", @"1924-10-10" };
+            yield return new object[] { @"19850101000000", @"1985-01-01" };
+        }
+
         public static IEnumerable<object[]> GetValidDataForAddSeconds()
         {
             yield return new object[] { null, 60, "local", null };
@@ -40,10 +50,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
             yield return new object[] { @"1970-01-01T00:01:00Z",  60.123, "preserve", @"1970-01-01T00:02:00.123Z" };
             yield return new object[] { @"1970-01-01T00:01:00+06:00", 60.000, "preserve", @"1970-01-01T00:02:00+06:00" };
-            yield return new object[] { @"2001-01", 60, "preserve", @"2001-01-01T00:01:00" };
             yield return new object[] { @"1970-01-01T00:01:00+14:00", 60, "utc", @"1969-12-31T10:02:00Z" };
 
             // Skip this test in pipeline, as the local time zone is different
+            // yield return new object[] { @"2001-01", 60, "preserve", @"2001-01-01T00:01:00+08:00" };
             // yield return new object[] { @"1924-10-10", 60000, "utc", @"1924-10-10T08:40:00Z" };
             // yield return new object[] { @"1970-01-01T00:01:00+06:00", 60, "local", @"1970-01-01T02:02:00+08:00" };
             // yield return new object[] { @"1924-10-10", 60000, "local", @"1924-10-10T16:40:00" };
@@ -54,6 +64,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         {
             yield return new object[] { @"1924-10-10", 60000, "utc", @"1924-10-10T08:40:00Z" };
             yield return new object[] { @"1970-01-01", 60, "utc", @"1969-12-31T16:01:00Z" };
+        }
+
+        public static IEnumerable<object[]> GetValidDataForAddSecondsWithDefaultTimeZoneHandling()
+        {
+            yield return new object[] { null, 60, null };
+            yield return new object[] { string.Empty, 60, string.Empty };
+            yield return new object[] { @"1970-01-01T00:01:00Z", 60.123, @"1970-01-01T00:02:00.123Z" };
+            yield return new object[] { @"1970-01-01T00:01:00+06:00", 60.000, @"1970-01-01T00:02:00+06:00" };
+
+            // Skip this test in pipeline, as the local time zone is different
+            // yield return new object[] { @"2001-01", 60, @"2001-01-01T00:01:00+08:00" };
+            // yield return new object[] { @"1924-10-10", 60000, @"1924-10-10T16:40:00+08:00" };
         }
 
         public static IEnumerable<object[]> GetValidDataForFormatAsDateTime()
@@ -70,10 +92,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { @"200101", "preserve", @"2001-01" };
             yield return new object[] { @"200101", "local", @"2001-01" };
 
-            // If no time zone provided, it is treated as local
-            yield return new object[] { @"20050110045253", "preserve", @"2005-01-10T04:52:53" };
-            yield return new object[] { @"20050110045253", "local", @"2005-01-10T04:52:53" };
-
             // If time zone provided, it should be formatted according to TimeZoneHandling
             yield return new object[] { @"20110103143428-0800", "preserve", @"2011-01-03T14:34:28-08:00" };
             yield return new object[] { @"20110103143428-0800", "utc", @"2011-01-03T22:34:28Z" };
@@ -81,10 +99,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { @"19701231115959+0600", "utc", @"1970-12-31T05:59:59Z" };
 
             // Skip this test in pipeline, as the local time zone is different
-            // yield return new object[] { @"2001", "utc", @"2000" };
-            // yield return new object[] { @"20050110045253", "utc", @"2005-01-09T20:52:53Z" };
             // yield return new object[] { @"20110103143428-0800", "local", @"2011-01-04T06:34:28+08:00" };
             // yield return new object[] { @"19701231115959+0600", "local", @"1970-12-31T13:59:59+08:00" };
+
+            // If no time zone provided, it is treated as local
+            // yield return new object[] { @"2001", "utc", @"2000" };
+            // yield return new object[] { @"20050110045253", "utc", @"2005-01-09T20:52:53Z" };
+            // yield return new object[] { @"20050110045253", "preserve", @"2005-01-10T04:52:53+08:00" };
+            // yield return new object[] { @"20050110045253", "local", @"2005-01-10T04:52:53+08:00" };
         }
 
         // We assume the local timezone is +08:00.
@@ -98,14 +120,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         public static IEnumerable<object[]> GetValidDataForFormatAsDateTimeWithDefaultTimeZoneHandling()
         {
-            yield return new object[] { @"200101" , @"2000-12" };
-            yield return new object[] { @"20050110045253", @"2005-01-09T20:52:53Z" };
-            yield return new object[] { @"20110103143428", @"2011-01-03T06:34:28Z" };
-            yield return new object[] { @"19701231115959", @"1970-12-31T03:59:59Z" };
+            yield return new object[] { @"200101", @"2001-01" };
             yield return new object[] { @"20110103143428-0800", @"2011-01-03T14:34:28-08:00" };
-            yield return new object[] { @"20110103143428-0800", @"2011-01-03T22:34:28Z" };
             yield return new object[] { @"19701231115959+0600", @"1970-12-31T11:59:59+06:00" };
-            yield return new object[] { @"19701231115959+0600", @"1970-12-31T05:59:59Z" };
+            yield return new object[] { @"19701231115959+0600", @"1970-12-31T11:59:59+06:00" };
+            yield return new object[] { @"19701231115959+0000", @"1970-12-31T11:59:59Z" };
+            yield return new object[] { @"19701231115959-0000", @"1970-12-31T11:59:59Z" };
+
+            // If no time zone provided, it is treated as local
+            // yield return new object[] { @"20050110045253", @"2005-01-10T04:52:53+08:00" };
+            // yield return new object[] { @"20110103143428", @"2011-01-03T14:34:28+08:00" };
         }
 
         public static IEnumerable<object[]> GetInvalidDataForAddHyphensDate()
@@ -176,6 +200,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         }
 
         [Theory]
+        [MemberData(nameof(GetValidDataForAddSecondsWithDefaultTimeZoneHandling))]
+        public void GivenAValidData_WhenAddSecondsWithDefaultTimeZoneHandling_ConvertedDateTimeShouldBeReturned(string originalDateTime, double seconds, string expectedDateTime)
+        {
+            var result = Filters.AddSeconds(originalDateTime, seconds);
+            Assert.Equal(expectedDateTime, result);
+        }
+
+        [Theory]
         [MemberData(nameof(GetInvalidDataForAddSeconds))]
         public void GivenSeconds_WhenAddOnInvalidDateTime_ExceptionShouldBeThrow(string originalDateTime)
         {
@@ -200,6 +232,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             dateTimeOffset = dateTimeOffset.AddHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).Hours - 8);
             var dateTimeString = dateTimeOffset.ToString("yyyy-MM-dd");
             Assert.Contains(expected, dateTimeString);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidDataForAddHyphensDateWithDefaultTimeZoneHandling))]
+        public void GivenAValidData_WhenAddHyphensDateWithDefaultTimeZoneHandling_ConvertedDateTimeShouldBeReturned(string input, string expectedDateTime)
+        {
+            var result = Filters.AddHyphensDate(input);
+            Assert.Equal(expectedDateTime, result);
         }
 
         [Theory]
