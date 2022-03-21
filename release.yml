@@ -25,7 +25,7 @@ variables:
 stages:
 - stage: Build
   pool:
-      vmImage: 'windows-latest'
+      vmImage: 'windows-2019'
   jobs:
   - job: Build
     steps:
@@ -169,7 +169,7 @@ stages:
   jobs:
   - job: Windows_Functional_Test
     pool:
-        vmImage: 'windows-latest'
+        vmImage: 'windows-2019'
     continueOnError: false
     steps:
     - checkout: none #skip checking out the default repository resource
@@ -227,7 +227,7 @@ stages:
   jobs:
   - job: publish
     pool:
-        vmImage: 'windows-latest'
+        vmImage: 'windows-2019'
     steps:
     - checkout: none #skip checking out the default repository resource
     - task: DownloadBuildArtifacts@0

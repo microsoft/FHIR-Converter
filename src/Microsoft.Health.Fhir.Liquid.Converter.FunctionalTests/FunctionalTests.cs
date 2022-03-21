@@ -90,7 +90,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new[] { @"SIU_S26", @"SIU-S26-01.hl7", @"SIU-S26-01-expected.json" },
                 new[] { @"SIU_S26", @"SIU-S26-02.hl7", @"SIU-S26-02-expected.json" },
 
-                new[] { "ORU_R01", "ORU-R01-01.hl7",  @"ORU-R01-01-expected.json"},
+                new[] { "ORU_R01", "ORU-R01-01.hl7",  @"ORU-R01-01-expected.json" },
 
                 new[] { @"ORM_O01", @"ORM-O01-01.hl7", @"ORM-O01-01-expected.json" },
                 new[] { @"ORM_O01", @"ORM-O01-02.hl7", @"ORM-O01-02-expected.json" },
@@ -133,7 +133,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
                 new[] { @"VXU_V04", @"VXU-V04-01.hl7",  @"VXU-V04-01-expected.json"},
                 new[] { @"VXU_V04", @"VXU-V04-02.hl7",  @"VXU-V04-02-expected.json"},
-
+              
                 new[] { @"ADT_A01", @"ADT01-23.hl7", @"ADT01-23-expected.json" },
                 new[] { @"ADT_A01", @"ADT01-28.hl7", @"ADT01-28-expected.json" },
                 new[] { @"ADT_A04", @"ADT04-23.hl7", @"ADT04-23-expected.json" },
