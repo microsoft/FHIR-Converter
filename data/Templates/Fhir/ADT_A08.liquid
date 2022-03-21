@@ -1,0 +1,64 @@
+{% comment %} debug {% endcomment %}
+{% comment %} {{ '' | debug }} {% endcomment %}
+start
+{{ fhirData.timestamp }} {% comment %} timezone and format {% endcomment %}
+{% comment %} {{ fhirData.timestamp | format_as_hl7_date_time }} {% endcomment %}
+{% assign patient = fhirData.entry | get_resource: 'Patient' %}
+{% assign patientMR = patient.identifier[0] %}
+{% assign patientMRalt = patient.identifier[1] %}
+{% assign patientSB = patient.identifier | get_by_code: 'SB' %}
+patient: {{ patient.id }}
+extension: {{ patient.extension }}
+MSH|^~\&|3|4|5|6|{{ fhirData.timestamp }}|8|9|{{ fhirData.identifier.value }}
+
+
+PID
+(0)PID|
+(1)1|
+(2)1234567^4^M11^test^MR^University Hospital^19241011^19241012|
+{{ patientMR.value }}^^^^{{ patientMR.type.coding[0].code  }}^^{{ patientMR.period.start }}^{{ patientMR.period.end }}|
+(3)PATID1234^5^M11^test1&2.16.1&HCD^MR^GOOD HEALTH HOSPITAL~123456789^^^USSSA^SS|
+{{ patientMRalt.value }}^^^^{{ patientMRalt.type.coding[0].code  }}^^{{ patientMRalt.period.start }}^{{ patientMRalt.period.end }}|
+(4)PATID567^^^test2|
+(5)EVERYMAN&&&&Aniston^ADAM^A^III^Dr.^MD^D^^^19241012^^^^PF^Addsm~Josh&&&&Bing^^stanley^^^^L^^^^^19241010^19241015|
+{{ patient.name[0].family }}
+{% for name in patient.name %}
+    {{ name.family }}^^^^^{{ name.given[0] ? name.given[0] }}^{{ name.given[1] }}^{{ name.suffix[0] }}^{{ name.prefix[0] }}
+{% endfor %}
+(6)SMITH^Angela^L|
+(7)198808181126+0215|
+(8)M|
+(9)elbert^Son|
+(10)2106-3^White^HL70005~2028-9^Asian^HL70005|
+(11)1000&Hospital Lane^Ste. 123^Ann Arbor ^MI^99999^USA^M^^&W^^^20000110&20000120^^^^^^^Near Highway|
+(12)GL|
+(13)78788788^^CP^5555^^^1111^^^^^2222^20010110^20020110^^^^18~12121212^^CP|
+(14)7777^^CP~1111^^TDD|
+(15)ara^^HL70296^eng^English-us^HL70296^v2^v2.1^TextInEnglish|
+(16)M^Married|
+(17)AME|
+(18)4000776^^^AccMgr&2.4&ISO^VN^1^19241011^19241012|
+(19)PSSN123121234|
+{{ patientSB.value }}|
+(20)DLN-123^US^20010123|
+(21)1212121^^^NTH&rt23&HCD^AND^^19241011^19241012|
+(22)N^NOT HISPANIC OR LATINO^HL70189|
+(23)St. Francis Community Hospital of Lower South Side|
+(24)N|
+(25)2|
+(26)US^United States of America^ISO3166_1|
+(27)Vet123^retired^ART|
+(28)BT^Bhutan^ISO3166_1|
+(29)20080825111630+0115|
+(30)Y|
+(31)|
+(32)|
+(33)20050110015014+0315|
+(34)|
+(35)125097000^Goat^SCT|
+(36)4880003^Beagle^SCT|
+(37)|
+(38)|
+(39)CA^Canada^ISO3166_1|
+(40)89898989^WPN^Internet
+end
