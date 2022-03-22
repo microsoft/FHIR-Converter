@@ -56,9 +56,9 @@ If these filters do not meet your needs, you can also write your own filters.
 | Filter | Description | Syntax |
 |-|-|-|
 | add_hyphens_date | Adds hyphens to a date or partial date without hyphens. The input date format is YYYY, YYYYMM, or YYYYMMDD. The output format is valid FHIR date or partial date format: YYYY, YYYY-MM, or YYYY-MM-DD.  | `{{ PID.7.Value \| add_hyphens_date }}` |
-| format_as_date_time | Converts valid [Hl7v2](https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/DTM) and CCDA datetime (datetime or partial datetime without hyphens, e.g. 20040629175400000) to valid [FHIR datetime format](http://hl7.org/fhir/R4/datatypes.html) (e.g. 2004-06-29T17:54:00.000Z). Provides parameters to handle time zone: `preserve`, `utc`, `local`. The default method is `preserve`. | `{{ PID.29.Value \| format_as_date_time: 'utc' }}` |
+| format_as_date_time | Converts valid [HL7v2 and C-CDA datetime](https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/DTM)  (datetime or partial datetime without hyphens, e.g. 20040629175400000) to valid [FHIR datetime format](http://hl7.org/fhir/R4/datatypes.html) (e.g. 2004-06-29T17:54:00.000Z). Provides parameters to handle time zone: `preserve`, `utc`, `local`. The default method is `preserve`. | `{{ PID.29.Value \| format_as_date_time: 'utc' }}` |
 | now | Provides current time in a specific format. The default format is "yyyy-MM-ddTHH:mm:ss.FFFZ". | `{{ '' \| now: 'dddd, dd MMMM yyyy HH:mm:ss' }}` |
-| add_seconds | Adds double seconds on valid [FHIR datetime](http://hl7.org/fhir/R4/datatypes.html) as input (e.g.2021-01-01T00:00:00Z ) and output a valid FHIR datetime . Provides parameters of double seconds to add and settings of time zones: `preserve`, `utc`, `local`. The default set of time zone parameter is `preserve`. | `{{ "2021-01-01T00:00:00Z" \| add_seconds:100.1, 'utc' }}` |
+| add_seconds | Adds double seconds on valid [FHIR datetime](http://hl7.org/fhir/R4/datatypes.html) as input (e.g.2021-01-01T00:00:00Z ) and output a valid FHIR datetime. Provides parameters of double seconds to add and settings of time zones: `preserve`, `utc`, `local`. The default set of time zone parameter is `preserve`. | `{{ "2021-01-01T00:00:00Z" \| add_seconds:100.1, 'utc' }}` |
 
 Examples:
 
@@ -75,7 +75,7 @@ Examples:
     {{ "20110103143428-0800" | format_as_date_time: 'preserve' }} -> 2011-01-03T14:34:28-08:00
     {{ "20110103143428-0800" | format_as_date_time: 'utc' }} -> 2011-01-03T22:34:28Z
 ```
->[Note] : `format_as_date_time` and `add_hyphens_date` are used to convert hl7v2 and ccda date and datetime format to FHIR. For other date or datetime's reformat, please refer to the standard filter [date](https://shopify.dev/api/liquid/filters/additional-filters#date).
+>[Note] : `format_as_date_time` and `add_hyphens_date` are used to convert HL7v2 and C-CDA date and datetime format to FHIR. For other date or datetime's reformat, please refer to the standard filter [date](https://shopify.dev/api/liquid/filters/additional-filters#date).
 - now
 ```
     {{ "" | now  }} -> 2022-03-22T06:50:25.071Z // an example time
@@ -90,7 +90,7 @@ Examples:
     {{ "1970-01-01T00:01:00+14:00" | add_seconds: 60, 'preserve' }} -> 1970-01-01T00:01:01+14:00
 ```
 
-> [Note] : If the input is a partial datetime without time zone, it will be set to the first day of the year and 00:00:00 clock time with local time zone as suffix. e.g. in a location with +08:00 time zone, the input string "201101031434" will be filled to "20110103143400+0800",
+> [Note] : If the input is a partial datetime without time zone, it will be set to the first day of the year and 00:00:00 clock time with local time zone as suffix. e.g. In the location with +08:00 time zone, the input string "201101031434" will be filled to "20110103143400+0800",
    the template `{{ "201101031434"| format_as_date_time: 'utc'}}` will output 2011-01-03T06:34:00Z at +08:00 location.
 
 
