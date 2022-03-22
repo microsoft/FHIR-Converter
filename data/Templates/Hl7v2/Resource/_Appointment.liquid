@@ -210,25 +210,41 @@
             {      
                 {% if AIL.3 -%}
                     "actor" : {
+
+                        {% if AIL.3.5 or AIL.3.9 -%}
+                            {% if AIL.3.5 and AIL.3.9 -%}
+                                {% assign PL_Value_Except_PL5_PL9 = AIL.3.Value | remove: AIL.3.5.Value | remove: AIL.3.9.Value %}
+                            {% endif -%}
+                            {% if AIL.3.5 and AIL.3.9 == null or AIL.3.9 == "" -%}
+                                {% assign PL_Value_Except_PL5_PL9= AIL.3.Value | remove: AIL.3.5.Value %}
+                            {% endif -%}
+                            {% if AIL.3.9 and AIL.3.5 == null or AIL.3.5 == "" -%}
+                                {% assign PL_Value_Except_PL5_PL9= AIL.3.Value | remove: AIL.3.9.Value %}
+                            {% endif -%}
+                        {% else -%}
+                            {% assign PL_Value_Except_PL5_PL9 = AIL.3.Value %}
+                        {% endif -%}
+
                         {% if AIL.3.1 -%}
-                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: AIL.3.1 -%}
+                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL_Field_Value: AIL.3.1, PL: AIL.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                             "reference":"Location/{{ Location_ID_AIL_3 }}",
                         {% elseif AIL.3.2 -%}
-                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: AIL.3.2 -%}
+                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL_Field_Value: AIL.3.2, PL: AIL.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                             "reference":"Location/{{ Location_ID_AIL_3 }}",
                         {% elseif AIL.3.3 -%}
-                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: AIL.3.3 -%}
-                            "reference":"Location/{{ Location_ID_AIL_3 }}",
+                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL_Field_Value: AIL.3.3, PL: AIL.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                            "reference":"Location/{{ Location_ID_AIL_3 }}",    
                         {% elseif AIL.3.4 -%}
-                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: AIL.3.4 -%}
-                            "reference":"Location/{{ Location_ID_AIL_3 }}",
+                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL_Field_Value: AIL.3.4, PL: AIL.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                            "reference":"Location/{{ Location_ID_AIL_3 }}",    
                         {% elseif AIL.3.7 -%}
-                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: AIL.3.7 -%}
+                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL_Field_Value: AIL.3.7, PL: AIL.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                             "reference":"Location/{{ Location_ID_AIL_3 }}",
                         {% elseif AIL.3.8 -%}
-                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: AIL.3.8 -%}
-                            "reference":"Location/{{ Location_ID_AIL_3 }}",
-                        {% endif %}
+                            {% evaluate Location_ID_AIL_3 using 'ID/Location' PL_Field_Value: AIL.3.8, PL: AIL.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                            "reference":"Location/{{ Location_ID_AIL_3 }}",    
+                        {% endif -%}
+
                     },
                 {% endif -%}
                 "period" : { 

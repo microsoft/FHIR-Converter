@@ -1,0 +1,63 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Consent",
+        "id":"{{ ID }}",
+        
+        "scope" : {
+            {% unless CON.2 %}
+            "coding": [
+            {
+                "code": "treatment",
+                "display": "Treatment",
+                "system": "http://terminology.hl7.org/CodeSystem/consentscope"
+            },
+            ],
+            {% endunless %}
+            {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/ConsentScope', CWE: CON.2 -%}
+        },
+        "category" : [
+            { 
+                {% unless CON.2 %}
+                "coding": [
+                    {
+                        "code": "59284-0",
+                        "display": "Patient Consent",
+                        "system": "http://loinc.org",
+                    },
+                ],
+                {% endunless %}
+                {% include 'DataType/CWECodeableConcept' CWE: CON.2 -%}
+            },
+        ],
+        "identifier" : [
+            { 
+                {% include 'DataType/EIIdentifier' EI: CON.4 -%} 
+            },
+        ],
+        
+        {% assign textValue = CON.5.Repeats[0].Value | append: " + " | append: CON.6.Repeats[0].Value %}
+
+        "policyRule" : {
+            "text": "{{CON.5.Repeats[0].Value}}",
+            "text": "{{CON.6.Repeats[0].Value}}",
+            {% if CON.5.Repeats[0] and CON.6.Repeats[0] %}
+                "text": "{{ textValue }}",
+            {% endif %}
+        },
+
+        {% if CON.11.1 %}
+            "status" : "{{ CON.11.1.Value | get_property: 'CodeSystem/ConsentStatusCode', 'code' }}",
+        {% else %}
+            "status": "active",
+        {% endif %}
+
+        "dateTime" : "{{ CON.13.Value | format_as_date_time }}",
+        
+
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Consent/{{ ID }}",
+    },
+},
