@@ -1,0 +1,32 @@
+{% if CWE -%}
+    {% if mapping -%}
+        {% if CWE.3 %}
+            "code": "{{ CWE.1.Value }}",
+            "unit": "{{ CWE.2.Value }}",
+            "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.3.Value | replace: ' ', '-'}}",
+        {% else %}
+            {% if CWE.1 and CWE.2 == null -%}
+                "unit":"{{ CWE.1.Value }}",
+            {% elsif CWE.2 -%}
+                "unit":"{{ CWE.2.Value }}",
+            {% endif %}
+        {% endif %}
+        "system":"{{ CWE.1.Value | get_property: mapping, 'system' }}",
+    {% else %}
+        {% if CWE.3 %}
+            "code": "{{ CWE.1.Value }}",
+            "unit": "{{ CWE.2.Value }}",
+            "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.3.Value | replace: ' ', '-'}}",
+        {% else %}
+            {% if CWE.1 and CWE.2 == null -%}
+                "unit":"{{ CWE.1.Value }}",
+            {% elsif CWE.2 -%}
+                "unit":"{{ CWE.2.Value }}",
+            {% endif %}
+        {% endif %}
+        {% capture temp %}{{ CWE.3.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+        {% if temp%}
+            "system":"{{temp}}",              
+        {% endif %}
+    {% endif %}
+{% endif -%}

@@ -68,7 +68,7 @@
                 "id": "ff198209-2ee9-a32c-124f-d63637240f8d",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T09:22:44.962Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: MDM_T02.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T08:53:47.709Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: MDM_T02.</span></p></div>"
                 },
                 "occurredDateTime": "2021-08-01T12:21:42+05:30",
                 "recorded": "2021-08-01T12:21:42+05:30",
@@ -420,11 +420,11 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:cb755da5-d1d4-2d4f-0f4d-363679151ac4",
+            "fullUrl": "urn:uuid:c031cd63-1fa2-cb31-8841-e4a2a3c936bb",
             "resource": {
                 "resourceType": "ServiceRequest",
-                "id": "cb755da5-d1d4-2d4f-0f4d-363679151ac4",
-                "status": "active",
+                "id": "c031cd63-1fa2-cb31-8841-e4a2a3c936bb",
+                "status": "unknown",
                 "intent": "reflex-order",
                 "orderDetail": [
                     {
@@ -581,7 +581,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "ServiceRequest/cb755da5-d1d4-2d4f-0f4d-363679151ac4"
+                "url": "ServiceRequest/c031cd63-1fa2-cb31-8841-e4a2a3c936bb"
             }
         },
         {
@@ -661,7 +661,7 @@
                         }
                     }
                 ],
-                "status": "active",
+                "status": "unknown",
                 "intent": "reflex-order",
                 "subject": {
                     "reference": "Patient/a6ea438d-b20e-d59e-c9bf-e31dd88f7e4e"
@@ -677,29 +677,6 @@
             "resource": {
                 "resourceType": "Specimen",
                 "id": "2cb11a40-e62b-7255-c309-1dd5b722b803",
-                "collection": {
-                    "quantity": {
-                        "value": 150,
-                        "unit": "lb"
-                    },
-                    "collector": {
-                        "reference": "PractitionerRole/9f64bd3b-d5e9-678b-2f14-b0d756a4e7f1"
-                    },
-                    "bodySite": {
-                        "coding": [
-                            {
-                                "code": "BN",
-                                "display": "223.3",
-                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
-                            }
-                        ]
-                    },
-                    "method": {
-                        "text": "Collection Method"
-                    },
-                    "collectedDateTime": "2002-02-15T10:45:00+05:30"
-                },
-                "receivedTime": "2002-02-12T10:45:00+05:30",
                 "identifier": [
                     {
                         "value": "845439",
@@ -746,6 +723,29 @@
                         }
                     ]
                 },
+                "collection": {
+                    "quantity": {
+                        "value": 150,
+                        "unit": "lb"
+                    },
+                    "collector": {
+                        "reference": "PractitionerRole/9f64bd3b-d5e9-678b-2f14-b0d756a4e7f1"
+                    },
+                    "bodySite": {
+                        "coding": [
+                            {
+                                "code": "BN",
+                                "display": "223.3",
+                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
+                            }
+                        ]
+                    },
+                    "method": {
+                        "text": "Collection Method"
+                    },
+                    "collectedDateTime": "2002-02-15T10:45:00+05:30"
+                },
+                "receivedTime": "2002-02-12T10:45:00+05:30",
                 "container": [
                     {
                         "additiveCodeableConcept": {

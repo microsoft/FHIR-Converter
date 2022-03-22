@@ -1,0 +1,16 @@
+{% if CWE -%}
+    {% if CWE.1 and CWE.3 -%}
+        "code":"{{ CWE.1}}",
+    {% endif -%}
+    {% if CWE.2 == null and CWE.3 == null -%}
+        "unit":"{{ CWE.1 }}",
+    {% endif -%}
+    "unit":"{{ CWE.2 }}",
+    {% if CWE.1 and CWE.3 -%}
+        "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.3}}",
+    {% endif %}
+    {% capture temp %}{{ CWE.3 | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+    {% if temp %}
+        "system":"{{temp}}",              
+    {% endif %}
+{% endif -%}
