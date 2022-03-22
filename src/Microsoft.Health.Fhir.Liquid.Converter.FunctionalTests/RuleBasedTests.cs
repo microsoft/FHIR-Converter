@@ -60,7 +60,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new object[] { "ADT_A06", "ADT-A06-01.hl7" },
                 new object[] { "ADT_A06", "ADT-A06-02.hl7" },
                 new object[] { "ADT_A07", "ADT-A07-01.hl7" },
-                new object[] { "ADT_A07", "ADT-A07-02.hl7" },                
+                new object[] { "ADT_A07", "ADT-A07-02.hl7" },
                 new object[] { "ADT_A08", "ADT-A08-01.hl7" },
                 new object[] { "ADT_A08", "ADT-A08-02.hl7" },
                 new object[] { "ADT_A09", "ADT-A09-01.hl7" },
@@ -117,7 +117,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new object[] { "ORM_O01", "ORM-O01-03.hl7" },
                 new object[] { "ORM_O01", "ORM-O01-04.hl7" },
                 new object[] { "ORM_O01", "ORM-O01-05.hl7" },
-                
 
                 new object[] { "MDM_T01", "MDM-T01-01.hl7" },
                 new object[] { "MDM_T01", "MDM-T01-02.hl7" },
@@ -233,10 +232,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         {
             var result = await ConvertData(templateName, samplePath, dataType);
             var patients = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Patient')].resource.id");
-            if (templateName == "ADT_A40" || templateName == "ADT_A41" ) {
+            if (templateName == "ADT_A40" || templateName == "ADT_A41")
+            {
                 Assert.Equal(0, patients?.Count());
             }
-            else {
+            else
+            {
                 Assert.Equal(1, patients?.Count());
             }
         }
@@ -500,7 +501,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 "resourceType", "type", "fullUrl", "id", "method", "url", "reference", "system",
                 "code", "display", "gender", "use", "preferred", "status", "mode", "div", "valueString", "valueCode",
                 "text", "endpoint", "value", "category", "type", "criticality", "priority", "severity", "description",
-                "intent", "docStatus", "contentType", "authorString", "unit"
+                "intent", "docStatus", "contentType", "authorString", "unit",
             };
 
             private static readonly HashSet<string> _explicitValues = new HashSet<string>
