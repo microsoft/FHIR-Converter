@@ -63,6 +63,7 @@ RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" proper
                             {% endif -%}
                             {% if GT1.12 -%}
                                 "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                "display": "Social Beneficiary Identifier",
                             {% endif -%}
                         },
                     ],
@@ -140,6 +141,9 @@ RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" proper
                 ]
             },
             {% endif -%}
+            {
+                {% include 'DataType/CWECodeableConcept' CWE: CON_25 -%}
+            },
         ],
         {% include 'DataType/XCNRelatedPerson' XCN: ROL.4 -%}
         "period":
@@ -257,18 +261,14 @@ RelatedPerson_Patient_ID: A resource Id, used to fill "patient.reference" proper
                     {% include 'DataType/XPN' XPN: gt1 -%}
                 },
             {% endfor -%}
-            {% if GT1.11.1.Value == "SPO" -%}
-                {% for gt1_4 in GT1.4.Repeats -%}
-                    {
-                        {% include 'DataType/XPN' XPN: gt1_4 -%}
-                    },
-                {% endfor -%}
-            {% endif -%}
             {% for in1_16 in IN1.16.Repeats -%}
                 {
                     {% include 'DataType/XPN' XPN: in1_16 -%}
                 },
             {% endfor -%}
+            {
+                {% include 'DataType/XPN' XPN: CON -%}
+            },
         ],
         {% if NK1.15 -%}
             "gender":{% include 'DataType/CWECode' mapping: 'CodeSystem/Gender', CWE: NK1.15 -%},
