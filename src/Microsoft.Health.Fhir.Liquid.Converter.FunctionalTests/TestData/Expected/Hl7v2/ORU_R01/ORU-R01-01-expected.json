@@ -56,7 +56,7 @@
                 "id": "4b8e3786-de8b-c12f-345b-3c83fc1c4a0d",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T08:48:50.118Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ORU_R01.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T09:23:01.071Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ORU_R01.</span></p></div>"
                 },
                 "occurredDateTime": "2012-03-14T20:44:00+05:30",
                 "recorded": "2012-03-14T20:44:00+05:30",
@@ -414,7 +414,7 @@
                         "coding": [
                             {
                                 "code": "ResponsibleObserver",
-                                "system": "http://example.com/v2-to-fhir-converter/PractitionerRole"
+                                "system": "http://example.com/v2-to-fhir-converter/Codesystem/PractitionerRole"
                             }
                         ]
                     }
@@ -568,6 +568,7 @@
                     {
                         "code": "appends",
                         "target": {
+                            "type": "DocumentReference",
                             "identifier": {
                                 "value": "1307506",
                                 "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-test"
@@ -596,7 +597,10 @@
                         ]
                     }
                 ],
-                "description": "string ofCharacters"
+                "description": "string ofCharacters",
+                "subject": {
+                    "reference": "Patient/389b3d01-dc6f-2c15-38c5-8c4e86a515c8"
+                }
             },
             "request": {
                 "method": "PUT",
@@ -731,10 +735,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:e3f8a0a0-4237-82ce-d31d-1529c13ad523",
+            "fullUrl": "urn:uuid:805f1b25-f43a-3bca-8bbd-49d530107363",
             "resource": {
                 "resourceType": "ServiceRequest",
-                "id": "e3f8a0a0-4237-82ce-d31d-1529c13ad523",
+                "id": "805f1b25-f43a-3bca-8bbd-49d530107363",
                 "status": "completed",
                 "intent": "filler-order",
                 "orderDetail": [
@@ -912,9 +916,9 @@
                     "code": {
                         "coding": [
                             {
-                                "code": "ACM",
-                                "display": "Before Breakfast",
-                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/HL7xxx"
+                                "code": "P",
+                                "display": "Post (after)",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0335"
                             }
                         ]
                     },
@@ -922,7 +926,7 @@
                         "period": 12,
                         "periodUnit": "min",
                         "when": [
-                            "ACM"
+                            "PC"
                         ],
                         "offset": 2,
                         "boundsPeriod": {
@@ -937,7 +941,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "ServiceRequest/e3f8a0a0-4237-82ce-d31d-1529c13ad523"
+                "url": "ServiceRequest/805f1b25-f43a-3bca-8bbd-49d530107363"
             }
         },
         {
@@ -1354,7 +1358,7 @@
                 },
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/e3f8a0a0-4237-82ce-d31d-1529c13ad523"
+                        "reference": "ServiceRequest/805f1b25-f43a-3bca-8bbd-49d530107363"
                     }
                 ],
                 "specimen": [
@@ -1364,7 +1368,7 @@
                 ],
                 "result": [
                     {
-                        "reference": "Observation/700b7d4e-2516-cae2-2f83-a0a85eab1025"
+                        "reference": "Observation/cdbf1614-4191-7f8c-d914-c071cc2a44bc"
                     }
                 ]
             },
@@ -1661,29 +1665,6 @@
             "resource": {
                 "resourceType": "Specimen",
                 "id": "95c9f253-3bac-cf73-202b-907e4e997489",
-                "collection": {
-                    "quantity": {
-                        "value": 150,
-                        "unit": "lb"
-                    },
-                    "collector": {
-                        "reference": "PractitionerRole/9f64bd3b-d5e9-678b-2f14-b0d756a4e7f1"
-                    },
-                    "bodySite": {
-                        "coding": [
-                            {
-                                "code": "BN",
-                                "display": "223.3",
-                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
-                            }
-                        ]
-                    },
-                    "method": {
-                        "text": "Collection Method"
-                    },
-                    "collectedDateTime": "2002-02-15T10:45:00+05:30"
-                },
-                "receivedTime": "2002-02-12T10:45:00+05:30",
                 "identifier": [
                     {
                         "value": "845439",
@@ -1730,6 +1711,29 @@
                         }
                     ]
                 },
+                "collection": {
+                    "quantity": {
+                        "value": 150,
+                        "unit": "lb"
+                    },
+                    "collector": {
+                        "reference": "PractitionerRole/9f64bd3b-d5e9-678b-2f14-b0d756a4e7f1"
+                    },
+                    "bodySite": {
+                        "coding": [
+                            {
+                                "code": "BN",
+                                "display": "223.3",
+                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
+                            }
+                        ]
+                    },
+                    "method": {
+                        "text": "Collection Method"
+                    },
+                    "collectedDateTime": "2002-02-15T10:45:00+05:30"
+                },
+                "receivedTime": "2002-02-12T10:45:00+05:30",
                 "container": [
                     {
                         "additiveCodeableConcept": {
@@ -1899,7 +1903,7 @@
                         "coding": [
                             {
                                 "code": "ResponsibleObserver",
-                                "system": "http://example.com/v2-to-fhir-converter/PractitionerRole"
+                                "system": "http://example.com/v2-to-fhir-converter/Codesystem/PractitionerRole"
                             }
                         ]
                     }
@@ -1914,26 +1918,26 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:fe0adb86-ebe9-6479-0055-9db8dc1ff99a",
+            "fullUrl": "urn:uuid:960162f4-e8c5-e229-eb52-e6f3f6224edc",
             "resource": {
                 "resourceType": "Device",
-                "id": "fe0adb86-ebe9-6479-0055-9db8dc1ff99a",
+                "id": "960162f4-e8c5-e229-eb52-e6f3f6224edc",
                 "identifier": [
                     {
                         "value": "EI12.3",
-                        "system": "urn:uuid:UI2",
+                        "system": "urn:uuid:426d2726-51fc-89fe-a946-8596e80a80eb",
                         "type": {
                             "coding": [
                                 {
                                     "code": "GUID",
-                                    "display": "Same as UUID.",
+                                    "display": "The DCE Universal Unique Identifier, in accordance with RFC 4122. Recommended format is 32 hexadecimal digits separated by hyphens, in the digit grouping 8-4-4-4-12",
                                     "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
                                 }
                             ]
                         }
                     },
                     {
-                        "system": "urn:oid:UI1",
+                        "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "type": {
                             "coding": [
                                 {
@@ -1948,7 +1952,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Device/fe0adb86-ebe9-6479-0055-9db8dc1ff99a"
+                "url": "Device/960162f4-e8c5-e229-eb52-e6f3f6224edc"
             }
         },
         {
@@ -1983,7 +1987,7 @@
                         "coding": [
                             {
                                 "code": "LabMedicalDirector",
-                                "system": "http://example.com/v2-to-fhir-converter/PractitionerRole"
+                                "system": "http://example.com/v2-to-fhir-converter/Codesystem/PractitionerRole"
                             }
                         ]
                     }
@@ -1992,7 +1996,7 @@
                     "reference": "Practitioner/45f65e47-46c4-1a54-f9fb-1321258e79b2"
                 },
                 "organization": {
-                    "reference": "Organization/08c155be-912e-af06-d464-5b6bb63d660f"
+                    "reference": "Organization/471d566b-0070-ed72-9053-acae6a39acb6"
                 }
             },
             "request": {
@@ -2001,10 +2005,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:08c155be-912e-af06-d464-5b6bb63d660f",
+            "fullUrl": "urn:uuid:471d566b-0070-ed72-9053-acae6a39acb6",
             "resource": {
                 "resourceType": "Organization",
-                "id": "08c155be-912e-af06-d464-5b6bb63d660f",
+                "id": "471d566b-0070-ed72-9053-acae6a39acb6",
                 "name": "State Hygienic Laboratory",
                 "identifier": [
                     {
@@ -2035,14 +2039,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Organization/08c155be-912e-af06-d464-5b6bb63d660f"
+                "url": "Organization/471d566b-0070-ed72-9053-acae6a39acb6"
             }
         },
         {
-            "fullUrl": "urn:uuid:700b7d4e-2516-cae2-2f83-a0a85eab1025",
+            "fullUrl": "urn:uuid:cdbf1614-4191-7f8c-d914-c071cc2a44bc",
             "resource": {
                 "resourceType": "Observation",
-                "id": "700b7d4e-2516-cae2-2f83-a0a85eab1025",
+                "id": "cdbf1614-4191-7f8c-d914-c071cc2a44bc",
                 "identifier": [
                     {
                         "value": "EI21",
@@ -2075,8 +2079,7 @@
                         {
                             "code": "27268008",
                             "display": "Salmonella",
-                            "system": "http://snomed.info/sct",
-                            "version": "20090731"
+                            "system": "http://snomed.info/sct"
                         }
                     ],
                     "text": "Salmonella species"
@@ -2091,7 +2094,7 @@
                     "text": "Bacterial Culture"
                 },
                 "device": {
-                    "reference": "Device/fe0adb86-ebe9-6479-0055-9db8dc1ff99a"
+                    "reference": "Device/960162f4-e8c5-e229-eb52-e6f3f6224edc"
                 },
                 "bodySite": {
                     "coding": [
@@ -2127,7 +2130,7 @@
                 },
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/e3f8a0a0-4237-82ce-d31d-1529c13ad523"
+                        "reference": "ServiceRequest/805f1b25-f43a-3bca-8bbd-49d530107363"
                     }
                 ],
                 "extension": [
@@ -2164,7 +2167,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/700b7d4e-2516-cae2-2f83-a0a85eab1025"
+                "url": "Observation/cdbf1614-4191-7f8c-d914-c071cc2a44bc"
             }
         },
         {
@@ -2196,10 +2199,76 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:ea6d5bd5-5c2e-227c-c792-f3f8eb46691b",
+            "fullUrl": "urn:uuid:e42df22d-2f6d-d024-aa57-9d069936760a",
             "resource": {
                 "resourceType": "Specimen",
-                "id": "ea6d5bd5-5c2e-227c-c792-f3f8eb46691b",
+                "id": "e42df22d-2f6d-d024-aa57-9d069936760a",
+                "identifier": [
+                    {
+                        "value": "2012545",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "PGN",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "value": "2012999999",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "FGN",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "value": "OSI-31",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "PI",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                                    "display": "Patient internal identifier"
+                                }
+                            ]
+                        },
+                        "system": "urn:uuid:426d2726-51fc-89fe-a946-8596e80a80eb",
+                        "assigner": {
+                            "reference": "Organization/0912ab5e-fd38-78ec-6eb8-13abac5db6a5"
+                        }
+                    },
+                    {
+                        "value": "ShipID-32",
+                        "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "SHIP",
+                                    "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-identifierType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "type": {
+                    "coding": [
+                        {
+                            "code": "ASERU",
+                            "display": "Serum",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0487"
+                        },
+                        {
+                            "code": "FUR",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0487"
+                        }
+                    ],
+                    "text": "Blood"
+                },
                 "collection": {
                     "quantity": {
                         "value": 40,
@@ -2247,72 +2316,6 @@
                     ]
                 },
                 "receivedTime": "2012-03-01",
-                "identifier": [
-                    {
-                        "value": "2012545",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "PGN",
-                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "value": "2012999999",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "FGN",
-                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "value": "OSI-31",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "PI",
-                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
-                                    "display": "Patient internal identifier"
-                                }
-                            ]
-                        },
-                        "system": "urn:uuid:2.16.840.1.114222",
-                        "assigner": {
-                            "reference": "Organization/322ca8cf-e43e-973c-3149-9e499675ddca"
-                        }
-                    },
-                    {
-                        "value": "ShipID-32",
-                        "system": "urn:oid:SID-32",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "SHIP",
-                                    "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-identifierType"
-                                }
-                            ]
-                        }
-                    }
-                ],
-                "type": {
-                    "coding": [
-                        {
-                            "code": "ASERU",
-                            "display": "Serum",
-                            "system": "http://terminology.hl7.org/CodeSystem/v2-0487"
-                        },
-                        {
-                            "code": "FUR",
-                            "system": "http://terminology.hl7.org/CodeSystem/v2-0487"
-                        }
-                    ],
-                    "text": "Blood"
-                },
                 "container": [
                     {
                         "additiveCodeableConcept": {
@@ -2396,7 +2399,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Specimen/ea6d5bd5-5c2e-227c-c792-f3f8eb46691b"
+                "url": "Specimen/e42df22d-2f6d-d024-aa57-9d069936760a"
             }
         },
         {
@@ -2454,23 +2457,23 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:322ca8cf-e43e-973c-3149-9e499675ddca",
+            "fullUrl": "urn:uuid:0912ab5e-fd38-78ec-6eb8-13abac5db6a5",
             "resource": {
                 "resourceType": "Organization",
-                "id": "322ca8cf-e43e-973c-3149-9e499675ddca",
+                "id": "0912ab5e-fd38-78ec-6eb8-13abac5db6a5",
                 "identifier": [
                     {
                         "value": "IPHIMS Stage",
                         "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-IPHIMS-Stage"
                     },
                     {
-                        "value": "urn:uuid:2.16.840.1.114222",
+                        "value": "urn:uuid:426d2726-51fc-89fe-a946-8596e80a80eb",
                         "system": "urn:ietf:rfc:3986",
                         "type": {
                             "coding": [
                                 {
                                     "code": "GUID",
-                                    "display": "Same as UUID.",
+                                    "display": "The DCE Universal Unique Identifier, in accordance with RFC 4122. Recommended format is 32 hexadecimal digits separated by hyphens, in the digit grouping 8-4-4-4-12",
                                     "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
                                 }
                             ]
@@ -2480,7 +2483,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Organization/322ca8cf-e43e-973c-3149-9e499675ddca"
+                "url": "Organization/0912ab5e-fd38-78ec-6eb8-13abac5db6a5"
             }
         },
         {
@@ -2511,7 +2514,7 @@
                 },
                 "specimen": [
                     {
-                        "reference": "Specimen/ea6d5bd5-5c2e-227c-c792-f3f8eb46691b"
+                        "reference": "Specimen/e42df22d-2f6d-d024-aa57-9d069936760a"
                     }
                 ]
             },
@@ -2575,7 +2578,7 @@
                     "reference": "Patient/389b3d01-dc6f-2c15-38c5-8c4e86a515c8"
                 },
                 "specimen": {
-                    "reference": "Specimen/ea6d5bd5-5c2e-227c-c792-f3f8eb46691b"
+                    "reference": "Specimen/e42df22d-2f6d-d024-aa57-9d069936760a"
                 },
                 "extension": [
                     {

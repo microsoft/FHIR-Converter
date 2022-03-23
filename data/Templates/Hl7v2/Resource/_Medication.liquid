@@ -1,0 +1,92 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Medication",
+        "id":"{{ ID }}",
+        
+        "code" : { 
+            {% if RXO.1 %}
+                {% include 'DataType/CWECodeableConcept' CWE: RXO.1  %}                
+            {% else %}
+                "text": "{{RXO.6.2.Value}}",
+            {% endif %}
+            {% if RXC.2 %}
+                {% include 'DataType/CWECodeableConcept' CWE: RXC.2  %}  
+            {% endif %}
+            {% if RXE.2 %}
+                {% include 'DataType/CWECodeableConcept' CWE: RXE.2  %}  
+            {% endif %}
+            "coding":
+                [
+                    {% if RXD.2 %}
+                        {
+                            {% include 'DataType/CWECoding' CWE: RXD.2  %}  
+                        },
+                    {% endif %}
+                
+                    {% if RXD.25 %}
+                        {
+                            {% include 'DataType/CWECoding' CWE: RXD.25  %}
+                        }, 
+                    {% endif %}
+                ],
+         },
+
+        "form" : { 
+            {% if RXO.5 %}
+                {% include 'DataType/CWECodeableConcept' CWE: RXO.5  %}
+            {% endif %}
+            {% if RXE.6 %}
+                {% include 'DataType/CWECodeableConcept' CWE: RXE.6  %}
+            {% endif %}
+            {% if RXD.6 %}
+                {% include 'DataType/CWECodeableConcept' CWE: RXD.6  %}
+            {% endif %}
+        }, 
+        "amount": { 
+             "numerator": {
+                {% if RXC.3 %}
+                    "value": {{RXC.3.Value}},
+                {% endif %}
+                {% include 'DataType/CWEQuantity' CWE: RXC.4 %}  
+            },
+            "denominator": {
+                {% if RXC.3 %}
+                    "value": 1,
+                {% endif %} 
+            },
+        },
+        "ingredient": [
+            { 
+                "strength" : { 
+                    "numerator": {
+                        {% if RXO_RXC.5 %}
+                            "value": {{RXO_RXC.5.Value}},
+                            {% include 'DataType/CWEQuantity' CWE: RXO_RXC.6 %} 
+                        {% endif %} 
+                    },
+                    "denominator": {
+                        {% if RXO_RXC.5 %}
+                            {% if RXO_RXC.8 %}
+                                "value": {{RXO_RXC.8.Value}},
+                            {% else %}
+                                "value": 1,
+                            {% endif %}
+                            {% include 'DataType/CWEQuantity' CWE: RXO_RXC.9 %}  
+                        {% endif %}
+                    },
+                },
+                "itemReference":
+                {
+                    {% if ingredient_ItemReferenceID %}
+                        "reference":"{{ ingredient_ItemReferenceID }}",
+                    {% endif %}
+                },
+            }
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Medication/{{ ID }}",
+    },
+},

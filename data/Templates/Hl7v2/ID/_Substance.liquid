@@ -1,0 +1,8 @@
+{% capture identifiers -%}
+    {% if INV.1 -%}
+        {{INV.1.Value}}
+    {% elsif INV -%}
+        {{INV.Value}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'Substance', false | generate_uuid }}

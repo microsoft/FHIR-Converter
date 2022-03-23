@@ -1,0 +1,8 @@
+{% capture identifiers -%}
+    {% if EI.3 and EI.4 -%}
+        {{EI.1.Value}},{{EI.3.Value}},{{EI.4.Value}}
+    {% elsif EI -%}
+        {{EI.1.Value}},{{EI.2.Value}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'ResearchStudy', false | generate_uuid }}

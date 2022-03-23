@@ -5,8 +5,8 @@
         "collection": {
             "extension":
             [
-                {% if SPM.15 -%}
-                    {% include 'Extensions/Specimen-SpecialHandling' SPL_HANDLING: SPM.15 -%},
+                {% if SPL_HANDLING -%}
+                    {% include 'Extensions/Specimen-SpecialHandling' SPL_HANDLING: SPL_HANDLING -%},
                 {% endif -%}
             ],
         },

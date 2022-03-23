@@ -63,7 +63,7 @@
                 "id": "9f79a1ce-a1d5-c6dd-a0d6-3bc75109716c",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T08:49:47.115Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ORU_R01.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T09:25:06.091Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ORU_R01.</span></p></div>"
                 },
                 "occurredDateTime": "2014-10-06T09:31:00",
                 "recorded": "2014-10-06T09:31:00",
@@ -211,10 +211,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:f70a39cb-cf13-6f75-885d-cf691752c711",
+            "fullUrl": "urn:uuid:58bd65b3-7fe0-55cf-19e9-b3cfbc026fbf",
             "resource": {
                 "resourceType": "Account",
-                "id": "f70a39cb-cf13-6f75-885d-cf691752c711",
+                "id": "58bd65b3-7fe0-55cf-19e9-b3cfbc026fbf",
                 "identifier": [
                     {
                         "value": "40007716",
@@ -239,14 +239,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Account/f70a39cb-cf13-6f75-885d-cf691752c711"
+                "url": "Account/58bd65b3-7fe0-55cf-19e9-b3cfbc026fbf"
             }
         },
         {
-            "fullUrl": "urn:uuid:24b96f9a-359e-fc62-bf8a-45e4f1b4c6e9",
+            "fullUrl": "urn:uuid:bc01c14a-802a-ef1a-7310-6285f43792ee",
             "resource": {
                 "resourceType": "Observation",
-                "id": "24b96f9a-359e-fc62-bf8a-45e4f1b4c6e9",
+                "id": "bc01c14a-802a-ef1a-7310-6285f43792ee",
                 "status": "final",
                 "code": {
                     "coding": [
@@ -293,20 +293,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                        "reference": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/24b96f9a-359e-fc62-bf8a-45e4f1b4c6e9"
+                "url": "Observation/bc01c14a-802a-ef1a-7310-6285f43792ee"
             }
         },
         {
-            "fullUrl": "urn:uuid:1b81a0d2-b102-41aa-421b-ac645e962ce4",
+            "fullUrl": "urn:uuid:4bdb7be4-1916-b9c7-6bdd-68b92259d75b",
             "resource": {
                 "resourceType": "Observation",
-                "id": "1b81a0d2-b102-41aa-421b-ac645e962ce4",
+                "id": "4bdb7be4-1916-b9c7-6bdd-68b92259d75b",
                 "status": "final",
                 "code": {
                     "coding": [
@@ -353,20 +353,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                        "reference": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/1b81a0d2-b102-41aa-421b-ac645e962ce4"
+                "url": "Observation/4bdb7be4-1916-b9c7-6bdd-68b92259d75b"
             }
         },
         {
-            "fullUrl": "urn:uuid:26534e50-b8b4-2ec3-7f8d-c33d4c7792f1",
+            "fullUrl": "urn:uuid:f887f318-33d2-677f-4fc9-a657502b2f93",
             "resource": {
                 "resourceType": "Observation",
-                "id": "26534e50-b8b4-2ec3-7f8d-c33d4c7792f1",
+                "id": "f887f318-33d2-677f-4fc9-a657502b2f93",
                 "status": "final",
                 "code": {
                     "coding": [
@@ -413,20 +413,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                        "reference": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/26534e50-b8b4-2ec3-7f8d-c33d4c7792f1"
+                "url": "Observation/f887f318-33d2-677f-4fc9-a657502b2f93"
             }
         },
         {
-            "fullUrl": "urn:uuid:7878e0ad-8700-5b8b-47d9-7acff0e1eb34",
+            "fullUrl": "urn:uuid:daed3fa1-35de-05c8-848b-b368834784e0",
             "resource": {
                 "resourceType": "Observation",
-                "id": "7878e0ad-8700-5b8b-47d9-7acff0e1eb34",
+                "id": "daed3fa1-35de-05c8-848b-b368834784e0",
                 "status": "final",
                 "code": {
                     "coding": [
@@ -473,20 +473,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                        "reference": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/7878e0ad-8700-5b8b-47d9-7acff0e1eb34"
+                "url": "Observation/daed3fa1-35de-05c8-848b-b368834784e0"
             }
         },
         {
-            "fullUrl": "urn:uuid:437fa03d-5559-9f37-42ed-482f65dd47ce",
+            "fullUrl": "urn:uuid:9b917bd6-891c-83e1-df59-27d2a89f65fb",
             "resource": {
                 "resourceType": "Observation",
-                "id": "437fa03d-5559-9f37-42ed-482f65dd47ce",
+                "id": "9b917bd6-891c-83e1-df59-27d2a89f65fb",
                 "status": "final",
                 "code": {
                     "coding": [
@@ -533,20 +533,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                        "reference": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/437fa03d-5559-9f37-42ed-482f65dd47ce"
+                "url": "Observation/9b917bd6-891c-83e1-df59-27d2a89f65fb"
             }
         },
         {
-            "fullUrl": "urn:uuid:99bb45ed-8d61-675b-dec1-6ee32bfa054a",
+            "fullUrl": "urn:uuid:425b6ad3-9304-3f7b-2771-0aa0dcd954ca",
             "resource": {
                 "resourceType": "ServiceRequest",
-                "id": "99bb45ed-8d61-675b-dec1-6ee32bfa054a",
+                "id": "425b6ad3-9304-3f7b-2771-0aa0dcd954ca",
                 "status": "active",
                 "intent": "filler-order",
                 "identifier": [
@@ -596,7 +596,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                "url": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
             }
         },
         {
@@ -623,6 +623,17 @@
             "resource": {
                 "resourceType": "PractitionerRole",
                 "id": "907170a0-a8af-89c5-5a30-6b78cdb227c5",
+                "code": [
+                    {
+                        "coding": [
+                            {
+                                "code": "ordering-provider",
+                                "display": "Ordering Provider",
+                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/PractitionerRole"
+                            }
+                        ]
+                    }
+                ],
                 "practitioner": {
                     "reference": "Practitioner/15decf11-00dc-6867-9c35-ffd79977d5b9"
                 }
@@ -676,7 +687,7 @@
                 },
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/99bb45ed-8d61-675b-dec1-6ee32bfa054a"
+                        "reference": "ServiceRequest/425b6ad3-9304-3f7b-2771-0aa0dcd954ca"
                     }
                 ],
                 "specimen": [
@@ -686,19 +697,19 @@
                 ],
                 "result": [
                     {
-                        "reference": "Observation/24b96f9a-359e-fc62-bf8a-45e4f1b4c6e9"
+                        "reference": "Observation/bc01c14a-802a-ef1a-7310-6285f43792ee"
                     },
                     {
-                        "reference": "Observation/1b81a0d2-b102-41aa-421b-ac645e962ce4"
+                        "reference": "Observation/4bdb7be4-1916-b9c7-6bdd-68b92259d75b"
                     },
                     {
-                        "reference": "Observation/26534e50-b8b4-2ec3-7f8d-c33d4c7792f1"
+                        "reference": "Observation/f887f318-33d2-677f-4fc9-a657502b2f93"
                     },
                     {
-                        "reference": "Observation/7878e0ad-8700-5b8b-47d9-7acff0e1eb34"
+                        "reference": "Observation/daed3fa1-35de-05c8-848b-b368834784e0"
                     },
                     {
-                        "reference": "Observation/437fa03d-5559-9f37-42ed-482f65dd47ce"
+                        "reference": "Observation/9b917bd6-891c-83e1-df59-27d2a89f65fb"
                     }
                 ]
             },
@@ -712,11 +723,6 @@
             "resource": {
                 "resourceType": "Specimen",
                 "id": "e8c2bedc-f247-6e63-2c6f-a58e26f24c33",
-                "collection": {
-                    "collector": {
-                        "reference": "PractitionerRole/be571888-010e-9a32-e87f-f1ee1bd631a8"
-                    }
-                },
                 "identifier": [
                     {
                         "value": "855238581",
@@ -740,7 +746,12 @@
                             ]
                         }
                     }
-                ]
+                ],
+                "collection": {
+                    "collector": {
+                        "reference": "PractitionerRole/be571888-010e-9a32-e87f-f1ee1bd631a8"
+                    }
+                }
             },
             "request": {
                 "method": "PUT",
@@ -785,10 +796,6 @@
             "resource": {
                 "resourceType": "Specimen",
                 "id": "6006d57e-e0a3-d90e-7d9b-546ed575c527",
-                "collection": {
-                    "collectedDateTime": "2014-10-06T05:35:00"
-                },
-                "receivedTime": "2014-10-06T06:21:00",
                 "identifier": [
                     {
                         "value": "SpecimenID",
@@ -810,6 +817,10 @@
                         }
                     ]
                 },
+                "collection": {
+                    "collectedDateTime": "2014-10-06T05:35:00"
+                },
+                "receivedTime": "2014-10-06T06:21:00",
                 "status": "available"
             },
             "request": {
@@ -818,10 +829,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:8c207e70-3fd2-2bf4-df75-256240c60258",
+            "fullUrl": "urn:uuid:9a972e53-b6e1-db45-025d-a4ba9c9fb63f",
             "resource": {
                 "resourceType": "Observation",
-                "id": "8c207e70-3fd2-2bf4-df75-256240c60258",
+                "id": "9a972e53-b6e1-db45-025d-a4ba9c9fb63f",
                 "status": "final",
                 "code": {
                     "coding": [
@@ -871,20 +882,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/b1410115-e911-9d20-3570-fc3c1e5c347e"
+                        "reference": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/8c207e70-3fd2-2bf4-df75-256240c60258"
+                "url": "Observation/9a972e53-b6e1-db45-025d-a4ba9c9fb63f"
             }
         },
         {
-            "fullUrl": "urn:uuid:874ee31e-885c-d582-b76d-e145e99a2945",
+            "fullUrl": "urn:uuid:3c8a0ec2-08ed-15e2-b8b4-271ea74bef9c",
             "resource": {
                 "resourceType": "Observation",
-                "id": "874ee31e-885c-d582-b76d-e145e99a2945",
+                "id": "3c8a0ec2-08ed-15e2-b8b4-271ea74bef9c",
                 "status": "final",
                 "code": {
                     "coding": [
@@ -934,20 +945,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/b1410115-e911-9d20-3570-fc3c1e5c347e"
+                        "reference": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/874ee31e-885c-d582-b76d-e145e99a2945"
+                "url": "Observation/3c8a0ec2-08ed-15e2-b8b4-271ea74bef9c"
             }
         },
         {
-            "fullUrl": "urn:uuid:be4f90a2-a433-fb21-0f23-70e43de46be5",
+            "fullUrl": "urn:uuid:04dbbc1a-dc3f-55ab-4ded-9baf6bd4f700",
             "resource": {
                 "resourceType": "Observation",
-                "id": "be4f90a2-a433-fb21-0f23-70e43de46be5",
+                "id": "04dbbc1a-dc3f-55ab-4ded-9baf6bd4f700",
                 "status": "final",
                 "code": {
                     "coding": [
@@ -997,20 +1008,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/b1410115-e911-9d20-3570-fc3c1e5c347e"
+                        "reference": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/be4f90a2-a433-fb21-0f23-70e43de46be5"
+                "url": "Observation/04dbbc1a-dc3f-55ab-4ded-9baf6bd4f700"
             }
         },
         {
-            "fullUrl": "urn:uuid:146f1ba0-2940-de97-93af-6c0dc64e54b2",
+            "fullUrl": "urn:uuid:e8be578a-267e-864d-eee7-21df040facdd",
             "resource": {
                 "resourceType": "Observation",
-                "id": "146f1ba0-2940-de97-93af-6c0dc64e54b2",
+                "id": "e8be578a-267e-864d-eee7-21df040facdd",
                 "status": "final",
                 "code": {
                     "coding": [
@@ -1060,20 +1071,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/b1410115-e911-9d20-3570-fc3c1e5c347e"
+                        "reference": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/146f1ba0-2940-de97-93af-6c0dc64e54b2"
+                "url": "Observation/e8be578a-267e-864d-eee7-21df040facdd"
             }
         },
         {
-            "fullUrl": "urn:uuid:30282793-eed9-7f34-ea78-c9465ef05757",
+            "fullUrl": "urn:uuid:4e088562-d23b-7850-733a-32f2e0ef18f9",
             "resource": {
                 "resourceType": "Observation",
-                "id": "30282793-eed9-7f34-ea78-c9465ef05757",
+                "id": "4e088562-d23b-7850-733a-32f2e0ef18f9",
                 "status": "final",
                 "code": {
                     "coding": [
@@ -1123,20 +1134,20 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/b1410115-e911-9d20-3570-fc3c1e5c347e"
+                        "reference": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/30282793-eed9-7f34-ea78-c9465ef05757"
+                "url": "Observation/4e088562-d23b-7850-733a-32f2e0ef18f9"
             }
         },
         {
-            "fullUrl": "urn:uuid:b1410115-e911-9d20-3570-fc3c1e5c347e",
+            "fullUrl": "urn:uuid:5c4619c4-2cf9-44bb-a2cd-262665709d4a",
             "resource": {
                 "resourceType": "ServiceRequest",
-                "id": "b1410115-e911-9d20-3570-fc3c1e5c347e",
+                "id": "5c4619c4-2cf9-44bb-a2cd-262665709d4a",
                 "status": "active",
                 "intent": "filler-order",
                 "identifier": [
@@ -1186,7 +1197,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "ServiceRequest/b1410115-e911-9d20-3570-fc3c1e5c347e"
+                "url": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
             }
         },
         {
@@ -1233,7 +1244,7 @@
                 },
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/b1410115-e911-9d20-3570-fc3c1e5c347e"
+                        "reference": "ServiceRequest/5c4619c4-2cf9-44bb-a2cd-262665709d4a"
                     }
                 ],
                 "specimen": [
@@ -1243,19 +1254,19 @@
                 ],
                 "result": [
                     {
-                        "reference": "Observation/8c207e70-3fd2-2bf4-df75-256240c60258"
+                        "reference": "Observation/9a972e53-b6e1-db45-025d-a4ba9c9fb63f"
                     },
                     {
-                        "reference": "Observation/874ee31e-885c-d582-b76d-e145e99a2945"
+                        "reference": "Observation/3c8a0ec2-08ed-15e2-b8b4-271ea74bef9c"
                     },
                     {
-                        "reference": "Observation/be4f90a2-a433-fb21-0f23-70e43de46be5"
+                        "reference": "Observation/04dbbc1a-dc3f-55ab-4ded-9baf6bd4f700"
                     },
                     {
-                        "reference": "Observation/146f1ba0-2940-de97-93af-6c0dc64e54b2"
+                        "reference": "Observation/e8be578a-267e-864d-eee7-21df040facdd"
                     },
                     {
-                        "reference": "Observation/30282793-eed9-7f34-ea78-c9465ef05757"
+                        "reference": "Observation/4e088562-d23b-7850-733a-32f2e0ef18f9"
                     }
                 ]
             },
@@ -1269,11 +1280,6 @@
             "resource": {
                 "resourceType": "Specimen",
                 "id": "f59e2ae9-1b51-5e9f-9ef1-2f05d070db75",
-                "collection": {
-                    "collector": {
-                        "reference": "PractitionerRole/be571888-010e-9a32-e87f-f1ee1bd631a8"
-                    }
-                },
                 "identifier": [
                     {
                         "value": "88502218",
@@ -1297,7 +1303,12 @@
                             ]
                         }
                     }
-                ]
+                ],
+                "collection": {
+                    "collector": {
+                        "reference": "PractitionerRole/be571888-010e-9a32-e87f-f1ee1bd631a8"
+                    }
+                }
             },
             "request": {
                 "method": "PUT",

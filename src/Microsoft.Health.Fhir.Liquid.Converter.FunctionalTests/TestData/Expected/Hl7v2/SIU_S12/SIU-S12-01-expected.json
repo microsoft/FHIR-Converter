@@ -64,7 +64,7 @@
                 "id": "09e54df1-8856-96ca-cdbf-4bdbd94a26a3",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T08:39:05.598Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: SIU_S12.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T09:52:45.417Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: SIU_S12.</span></p></div>"
                 },
                 "occurredDateTime": "2021-09-14T14:35:00+05:30",
                 "recorded": "2021-09-14T14:35:00+05:30",
@@ -311,7 +311,7 @@
                     },
                     {
                         "actor": {
-                            "reference": "Location/b13417bd-d0fb-e50f-b65a-cd07396a0608"
+                            "reference": "Location/a0594ee2-fcaa-cab0-e434-8c015b6b539d"
                         },
                         "period": {
                             "start": "2021-09-24T12:45:00+05:30"
@@ -475,7 +475,7 @@
                 ],
                 "location": [
                     {
-                        "reference": "Location/92a004c0-d02e-68e3-bde6-bc78f980b3bb"
+                        "reference": "Location/01972772-633a-aae6-c377-70073d6923d3"
                     }
                 ],
                 "practitioner": {
@@ -488,10 +488,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:92a004c0-d02e-68e3-bde6-bc78f980b3bb",
+            "fullUrl": "urn:uuid:01972772-633a-aae6-c377-70073d6923d3",
             "resource": {
                 "resourceType": "Location",
-                "id": "92a004c0-d02e-68e3-bde6-bc78f980b3bb",
+                "id": "01972772-633a-aae6-c377-70073d6923d3",
                 "name": "FACILITY2",
                 "mode": "instance",
                 "description": "FACILITY2--BUILDING2--FLOOR2",
@@ -506,20 +506,20 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/92a004c0-d02e-68e3-bde6-bc78f980b3bb"
+                "url": "Location/01972772-633a-aae6-c377-70073d6923d3"
             }
         },
         {
-            "fullUrl": "urn:uuid:4204399b-1a0b-7fb2-91ec-9705ef5886e3",
+            "fullUrl": "urn:uuid:3cb60c1b-51ab-5a44-f10e-88ba527a7703",
             "resource": {
                 "resourceType": "Location",
-                "id": "4204399b-1a0b-7fb2-91ec-9705ef5886e3",
+                "id": "3cb60c1b-51ab-5a44-f10e-88ba527a7703",
                 "partOf": {
-                    "reference": "Location/5c36a4d3-74e3-6ef9-4be8-215a47dd229e"
+                    "reference": "Location/01972772-633a-aae6-c377-70073d6923d3"
                 },
                 "name": "BUILDING2",
                 "mode": "instance",
-                "description": "FACILITY3--1.23--ISO--BUILDING2--FLOOR1",
+                "description": "FACILITY2--BUILDING2--FLOOR2",
                 "physicalType": {
                     "coding": [
                         {
@@ -531,16 +531,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/4204399b-1a0b-7fb2-91ec-9705ef5886e3"
+                "url": "Location/3cb60c1b-51ab-5a44-f10e-88ba527a7703"
             }
         },
         {
-            "fullUrl": "urn:uuid:81e28943-22c3-d0f9-8b2b-9fd4a3c86cdf",
+            "fullUrl": "urn:uuid:16c4c7c7-906b-cb78-3752-fd23e6b86947",
             "resource": {
                 "resourceType": "Location",
-                "id": "81e28943-22c3-d0f9-8b2b-9fd4a3c86cdf",
+                "id": "16c4c7c7-906b-cb78-3752-fd23e6b86947",
                 "partOf": {
-                    "reference": "Location/4204399b-1a0b-7fb2-91ec-9705ef5886e3"
+                    "reference": "Location/3cb60c1b-51ab-5a44-f10e-88ba527a7703"
                 },
                 "name": "FLOOR2",
                 "mode": "instance",
@@ -556,7 +556,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/81e28943-22c3-d0f9-8b2b-9fd4a3c86cdf"
+                "url": "Location/16c4c7c7-906b-cb78-3752-fd23e6b86947"
             }
         },
         {
@@ -607,7 +607,7 @@
                 ],
                 "location": [
                     {
-                        "reference": "Location/5c36a4d3-74e3-6ef9-4be8-215a47dd229e"
+                        "reference": "Location/8ee5edb4-b4f6-5efb-f49c-b4aacaf6b2e3"
                     }
                 ],
                 "practitioner": {
@@ -620,10 +620,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:5c36a4d3-74e3-6ef9-4be8-215a47dd229e",
+            "fullUrl": "urn:uuid:8ee5edb4-b4f6-5efb-f49c-b4aacaf6b2e3",
             "resource": {
                 "resourceType": "Location",
-                "id": "5c36a4d3-74e3-6ef9-4be8-215a47dd229e",
+                "id": "8ee5edb4-b4f6-5efb-f49c-b4aacaf6b2e3",
                 "name": "FACILITY3",
                 "identifier": [
                     {
@@ -644,16 +644,41 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/5c36a4d3-74e3-6ef9-4be8-215a47dd229e"
+                "url": "Location/8ee5edb4-b4f6-5efb-f49c-b4aacaf6b2e3"
             }
         },
         {
-            "fullUrl": "urn:uuid:0d9c3424-329f-4c95-ee30-ac2da4a35bff",
+            "fullUrl": "urn:uuid:4286827a-3781-736c-4371-875b4224039d",
             "resource": {
                 "resourceType": "Location",
-                "id": "0d9c3424-329f-4c95-ee30-ac2da4a35bff",
+                "id": "4286827a-3781-736c-4371-875b4224039d",
                 "partOf": {
-                    "reference": "Location/4204399b-1a0b-7fb2-91ec-9705ef5886e3"
+                    "reference": "Location/8ee5edb4-b4f6-5efb-f49c-b4aacaf6b2e3"
+                },
+                "name": "BUILDING2",
+                "mode": "instance",
+                "description": "FACILITY3--1.23--ISO--BUILDING2--FLOOR1",
+                "physicalType": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/location-physical-type",
+                            "code": "bu"
+                        }
+                    ]
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/4286827a-3781-736c-4371-875b4224039d"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:eff1b356-b5a1-cb8a-abad-02924820576b",
+            "resource": {
+                "resourceType": "Location",
+                "id": "eff1b356-b5a1-cb8a-abad-02924820576b",
+                "partOf": {
+                    "reference": "Location/4286827a-3781-736c-4371-875b4224039d"
                 },
                 "name": "FLOOR1",
                 "mode": "instance",
@@ -669,7 +694,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/0d9c3424-329f-4c95-ee30-ac2da4a35bff"
+                "url": "Location/eff1b356-b5a1-cb8a-abad-02924820576b"
             }
         },
         {
@@ -1001,10 +1026,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:78295402-9b84-4829-b945-502ab3402de5",
+            "fullUrl": "urn:uuid:4ad7c7d0-b69a-0653-9ea9-0979b8a66b39",
             "resource": {
                 "resourceType": "Account",
-                "id": "78295402-9b84-4829-b945-502ab3402de5",
+                "id": "4ad7c7d0-b69a-0653-9ea9-0979b8a66b39",
                 "identifier": [
                     {
                         "value": "4000776",
@@ -1017,9 +1042,9 @@
                                 }
                             ]
                         },
-                        "system": "urn:oid:2.4",
+                        "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "assigner": {
-                            "reference": "Organization/9d4c8327-8a28-8152-1898-8251baa707b7"
+                            "reference": "Organization/816e4ec3-f5a6-5969-08c8-a71ef576263e"
                         },
                         "period": {
                             "start": "1924-10-11",
@@ -1036,21 +1061,21 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Account/78295402-9b84-4829-b945-502ab3402de5"
+                "url": "Account/4ad7c7d0-b69a-0653-9ea9-0979b8a66b39"
             }
         },
         {
-            "fullUrl": "urn:uuid:9d4c8327-8a28-8152-1898-8251baa707b7",
+            "fullUrl": "urn:uuid:816e4ec3-f5a6-5969-08c8-a71ef576263e",
             "resource": {
                 "resourceType": "Organization",
-                "id": "9d4c8327-8a28-8152-1898-8251baa707b7",
+                "id": "816e4ec3-f5a6-5969-08c8-a71ef576263e",
                 "identifier": [
                     {
                         "value": "AccMgr",
                         "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMgr"
                     },
                     {
-                        "value": "urn:oid:2.4",
+                        "value": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "system": "urn:ietf:rfc:3986",
                         "type": {
                             "coding": [
@@ -1066,7 +1091,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Organization/9d4c8327-8a28-8152-1898-8251baa707b7"
+                "url": "Organization/816e4ec3-f5a6-5969-08c8-a71ef576263e"
             }
         },
         {
@@ -1251,10 +1276,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:b13417bd-d0fb-e50f-b65a-cd07396a0608",
+            "fullUrl": "urn:uuid:a0594ee2-fcaa-cab0-e434-8c015b6b539d",
             "resource": {
                 "resourceType": "Location",
-                "id": "b13417bd-d0fb-e50f-b65a-cd07396a0608",
+                "id": "a0594ee2-fcaa-cab0-e434-8c015b6b539d",
                 "name": "055",
                 "mode": "instance",
                 "description": "055--Room01--GH Clinic",
@@ -1283,16 +1308,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/b13417bd-d0fb-e50f-b65a-cd07396a0608"
+                "url": "Location/a0594ee2-fcaa-cab0-e434-8c015b6b539d"
             }
         },
         {
-            "fullUrl": "urn:uuid:ee586d80-706a-5933-8500-a8026c48fb27",
+            "fullUrl": "urn:uuid:20316097-b9df-6e97-45d1-6baee31015eb",
             "resource": {
                 "resourceType": "Location",
-                "id": "ee586d80-706a-5933-8500-a8026c48fb27",
+                "id": "20316097-b9df-6e97-45d1-6baee31015eb",
                 "partOf": {
-                    "reference": "Location/b13417bd-d0fb-e50f-b65a-cd07396a0608"
+                    "reference": "Location/a0594ee2-fcaa-cab0-e434-8c015b6b539d"
                 },
                 "name": "Room01",
                 "mode": "instance",
@@ -1322,14 +1347,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/ee586d80-706a-5933-8500-a8026c48fb27"
+                "url": "Location/20316097-b9df-6e97-45d1-6baee31015eb"
             }
         },
         {
-            "fullUrl": "urn:uuid:4b6f7358-191b-8623-f2f4-806a8a0babcf",
+            "fullUrl": "urn:uuid:5ec8a1b6-0c32-d67f-eebb-746378dbf712",
             "resource": {
                 "resourceType": "Location",
-                "id": "4b6f7358-191b-8623-f2f4-806a8a0babcf",
+                "id": "5ec8a1b6-0c32-d67f-eebb-746378dbf712",
                 "name": "GH Clinic",
                 "mode": "instance",
                 "description": "055--Room01--GH Clinic",
@@ -1358,14 +1383,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/4b6f7358-191b-8623-f2f4-806a8a0babcf"
+                "url": "Location/5ec8a1b6-0c32-d67f-eebb-746378dbf712"
             }
         },
         {
-            "fullUrl": "urn:uuid:919b83dc-2853-4a8d-c96a-bdecb51f1fcc",
+            "fullUrl": "urn:uuid:2d2a3226-c568-67d5-b72d-197016a744fe",
             "resource": {
                 "resourceType": "Location",
-                "id": "919b83dc-2853-4a8d-c96a-bdecb51f1fcc",
+                "id": "2d2a3226-c568-67d5-b72d-197016a744fe",
                 "name": "GENOPD",
                 "mode": "instance",
                 "description": "GENOPD--ROOM1--2.16.840.1.113883.4.642.1.1108--ISO--FACILITY1--BUILDING1",
@@ -1380,16 +1405,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/919b83dc-2853-4a8d-c96a-bdecb51f1fcc"
+                "url": "Location/2d2a3226-c568-67d5-b72d-197016a744fe"
             }
         },
         {
-            "fullUrl": "urn:uuid:c7f1b9ec-ffd8-321e-ad87-abafc1c1a333",
+            "fullUrl": "urn:uuid:c2ba7ba9-dc4c-5a59-15ed-c6a2d0ab4e50",
             "resource": {
                 "resourceType": "Location",
-                "id": "c7f1b9ec-ffd8-321e-ad87-abafc1c1a333",
+                "id": "c2ba7ba9-dc4c-5a59-15ed-c6a2d0ab4e50",
                 "partOf": {
-                    "reference": "Location/919b83dc-2853-4a8d-c96a-bdecb51f1fcc"
+                    "reference": "Location/2d2a3226-c568-67d5-b72d-197016a744fe"
                 },
                 "name": "ROOM1",
                 "identifier": [
@@ -1411,14 +1436,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/c7f1b9ec-ffd8-321e-ad87-abafc1c1a333"
+                "url": "Location/c2ba7ba9-dc4c-5a59-15ed-c6a2d0ab4e50"
             }
         },
         {
-            "fullUrl": "urn:uuid:4bca6ba2-be65-ef37-3911-03b70a00a3a6",
+            "fullUrl": "urn:uuid:7edad451-f30a-7bc0-f8b6-8bd61c32fcb1",
             "resource": {
                 "resourceType": "Location",
-                "id": "4bca6ba2-be65-ef37-3911-03b70a00a3a6",
+                "id": "7edad451-f30a-7bc0-f8b6-8bd61c32fcb1",
                 "name": "FACILITY1",
                 "mode": "instance",
                 "description": "GENOPD--ROOM1--2.16.840.1.113883.4.642.1.1108--ISO--FACILITY1--BUILDING1",
@@ -1433,16 +1458,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/4bca6ba2-be65-ef37-3911-03b70a00a3a6"
+                "url": "Location/7edad451-f30a-7bc0-f8b6-8bd61c32fcb1"
             }
         },
         {
-            "fullUrl": "urn:uuid:3b0911cb-4361-cd8d-b188-463af033c699",
+            "fullUrl": "urn:uuid:60f9253f-2278-912d-b0cb-29905def8a31",
             "resource": {
                 "resourceType": "Location",
-                "id": "3b0911cb-4361-cd8d-b188-463af033c699",
+                "id": "60f9253f-2278-912d-b0cb-29905def8a31",
                 "partOf": {
-                    "reference": "Location/4bca6ba2-be65-ef37-3911-03b70a00a3a6"
+                    "reference": "Location/7edad451-f30a-7bc0-f8b6-8bd61c32fcb1"
                 },
                 "name": "BUILDING1",
                 "mode": "instance",
@@ -1458,7 +1483,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/3b0911cb-4361-cd8d-b188-463af033c699"
+                "url": "Location/60f9253f-2278-912d-b0cb-29905def8a31"
             }
         },
         {
@@ -1476,20 +1501,14 @@
                     {
                         "status": "active",
                         "location": {
-                            "reference": "Location/b13417bd-d0fb-e50f-b65a-cd07396a0608"
+                            "reference": "Location/a0594ee2-fcaa-cab0-e434-8c015b6b539d"
                         }
                     },
                     {
                         "status": "completed",
                         "location": {
-                            "reference": "Location/919b83dc-2853-4a8d-c96a-bdecb51f1fcc"
-                        },
-                        "extension": [
-                            {
-                                "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/temporary-location",
-                                "valueBoolean": false
-                            }
-                        ]
+                            "reference": "Location/2d2a3226-c568-67d5-b72d-197016a744fe"
+                        }
                     }
                 ],
                 "participant": [
@@ -1584,6 +1603,11 @@
                         }
                     ]
                 },
+                "account": [
+                    {
+                        "reference": "Account/4ad7c7d0-b69a-0653-9ea9-0979b8a66b39"
+                    }
+                ],
                 "subject": {
                     "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
                 },
@@ -1710,7 +1734,7 @@
                         "coding": [
                             {
                                 "code": "ResponsibleObserver",
-                                "system": "http://example.com/v2-to-fhir-converter/PractitionerRole"
+                                "system": "http://example.com/v2-to-fhir-converter/Codesystem/PractitionerRole"
                             }
                         ]
                     }
@@ -1759,7 +1783,7 @@
                         "coding": [
                             {
                                 "code": "ResponsibleObserver",
-                                "system": "http://example.com/v2-to-fhir-converter/PractitionerRole"
+                                "system": "http://example.com/v2-to-fhir-converter/Codesystem/PractitionerRole"
                             }
                         ]
                     }
@@ -1774,10 +1798,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:053a101a-4c1b-a99a-7a2b-2adf7dd1b55e",
+            "fullUrl": "urn:uuid:41e75a04-7180-c2c5-d139-5abc95b2fe05",
             "resource": {
                 "resourceType": "Observation",
-                "id": "053a101a-4c1b-a99a-7a2b-2adf7dd1b55e",
+                "id": "41e75a04-7180-c2c5-d139-5abc95b2fe05",
                 "status": "final",
                 "code": {
                     "coding": [
@@ -1791,7 +1815,6 @@
                 "valueQuantity": {
                     "value": 72,
                     "code": "beats/min",
-                    "unit": "beats/min",
                     "system": "urn:iso:std:iso:3986"
                 },
                 "referenceRange": [
@@ -1829,7 +1852,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/053a101a-4c1b-a99a-7a2b-2adf7dd1b55e"
+                "url": "Observation/41e75a04-7180-c2c5-d139-5abc95b2fe05"
             }
         },
         {
@@ -1876,7 +1899,7 @@
                 "identifier": [
                     {
                         "value": "DI20",
-                        "system": "urn:oid:DTUI",
+                        "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "type": {
                             "coding": [
                                 {
@@ -1902,7 +1925,7 @@
                     {
                         "url": "http://hl7.org/fhir/StructureDefinition/condition-dueTo",
                         "valueReference": {
-                            "reference": "Condition/98e2ecfc-6e04-bc30-6624-4f3686214b22"
+                            "reference": "Condition/f799c7a6-94d4-720d-3e21-88bafc1c80e9"
                         }
                     }
                 ]
@@ -1913,13 +1936,13 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:98e2ecfc-6e04-bc30-6624-4f3686214b22",
+            "fullUrl": "urn:uuid:f799c7a6-94d4-720d-3e21-88bafc1c80e9",
             "resource": {
                 "resourceType": "Condition",
-                "id": "98e2ecfc-6e04-bc30-6624-4f3686214b22",
+                "id": "f799c7a6-94d4-720d-3e21-88bafc1c80e9",
                 "identifier": [
                     {
-                        "system": "urn:oid:UI",
+                        "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "type": {
                             "coding": [
                                 {
@@ -1937,7 +1960,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Condition/98e2ecfc-6e04-bc30-6624-4f3686214b22"
+                "url": "Condition/f799c7a6-94d4-720d-3e21-88bafc1c80e9"
             }
         },
         {
@@ -2007,7 +2030,7 @@
                 ],
                 "locationReference": [
                     {
-                        "reference": "Location/b13417bd-d0fb-e50f-b65a-cd07396a0608"
+                        "reference": "Location/a0594ee2-fcaa-cab0-e434-8c015b6b539d"
                     }
                 ]
             },

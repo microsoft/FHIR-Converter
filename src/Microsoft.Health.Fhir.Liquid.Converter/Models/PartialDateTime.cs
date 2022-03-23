@@ -39,7 +39,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
             int second = groups["second"].Success ? int.Parse(groups["second"].Value) : 0;
             int millisecond = groups["millisecond"].Success ? int.Parse(groups["millisecond"].Value) : 0;
 
-            var timeSpan = TimeSpan.FromHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).Hours);
+            var timeSpan = TimeZoneInfo.Local.GetUtcOffset(new DateTime(year, month, day, hour, minute, second, millisecond));
             if (groups["timeZone"].Success)
             {
                 if (groups["timeZone"].Value == "Z")
