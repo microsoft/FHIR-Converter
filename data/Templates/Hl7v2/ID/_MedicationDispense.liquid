@@ -1,0 +1,10 @@
+{% capture identifiers -%}
+    {% if RXD.7 -%}
+        {{RXD.7.Value}},{{RXD.2.Value}},{{RXD.3.Value}}
+    {% elsif RXD -%}
+        {{RXD.Value}}
+    {% elsif FT1 -%}
+        {{FT1.29.1.Value}},{{FT1.29.3.Value}},{{FT1.42.Value}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'MedicationDispense', false, baseId | generate_uuid }}

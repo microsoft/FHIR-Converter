@@ -7,13 +7,13 @@ Organization_ID_RXA_17: A resource Id, used to fill "manufacturer.reference" pro
 Location_ID_RXA_27: A resource Id, used to fill "location.reference" property. The resource is of "Location" type and generated based on "RXA.27" HL7 V2 identifier.
 Immunization_Patient_ID: A resource Id, used to fill "patient.reference" property.
 Immunization_Encounter_ID: A resource Id, used to fill "encounter.reference" property.
+{% evaluate Location_ID_RXA_27 using 'ID/Location' CWE: RXA.27 -%}
 {% endcomment -%}
 
 {% evaluate Practitioner_ID_ORC_12 using 'ID/Practitioner' XCN: ORC.12 -%}
 {% evaluate Organization_ID_RXA_17 using 'ID/Organization' CWE: RXA.17 -%}
-{% evaluate Location_ID_RXA_27 using 'ID/Location' CWE: RXA.27 -%}
-{% evaluate Practitioner_ID_RXA_10 using 'ID/Practitioner' XCN: RXA.10 -%}
 
+{% assign textstring = "" -%}
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
@@ -30,8 +30,6 @@ Immunization_Encounter_ID: A resource Id, used to fill "encounter.reference" pro
                         {
                             {% if ORC.2 -%}
                                 "code":"PLAC",
-                            {% endif -%}
-                            {% if ORC.2 -%}
                                 "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
                             {% endif -%}
                         },
@@ -47,8 +45,6 @@ Immunization_Encounter_ID: A resource Id, used to fill "encounter.reference" pro
                         {
                             {% if ORC.3 -%}
                                 "code":"FILL",
-                            {% endif -%}
-                            {% if ORC.3 -%}
                                 "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
                             {% endif -%}
                         },
@@ -57,8 +53,35 @@ Immunization_Encounter_ID: A resource Id, used to fill "encounter.reference" pro
             },
         ],
         "recorded":"{{ ORC.9.Value | format_as_date_time }}",
+        {% if RXA.21.Value == "A" -%}
+            "recorded":"{{ RXA.22.Value | format_as_date_time }}",
+        {% endif -%}
         "performer":
         [
+            {% for rxaSegment10 in RXA.10.Repeats -%}
+            {% evaluate Practitioner_ID_RXA_10 using 'ID/Practitioner' XCN: rxaSegment10 -%}
+            {
+                "function":
+                {
+                    "coding":
+                    [
+                        {
+                            {% if rxaSegment10 -%}
+                                "code":"AP",
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0443",
+                                "display": "Administering Provider"
+                            {% endif -%}
+                        },
+                    ],
+                },
+                "actor":
+                {
+                    {% if rxaSegment10 and Practitioner_ID_RXA_10 -%}
+                        "reference":"Practitioner/{{ Practitioner_ID_RXA_10 }}",
+                    {% endif -%}
+                },
+            },
+            {% endfor -%}
             {
                 "function":
                 {
@@ -67,15 +90,8 @@ Immunization_Encounter_ID: A resource Id, used to fill "encounter.reference" pro
                         {
                             {% if ORC.12 -%}
                                 "code":"OP",
-                            {% endif -%}
-                            {% if RXA.10 -%}
-                                "code":"AP",
-                            {% endif -%}
-                            {% if ORC.12 -%}
                                 "system":"http://terminology.hl7.org/CodeSystem/v2-0443",
-                            {% endif -%}
-                            {% if RXA.10 -%}
-                                "system":"http://terminology.hl7.org/CodeSystem/v2-0443",
+                                "display": "Ordering Provider",
                             {% endif -%}
                         },
                     ],
@@ -85,9 +101,6 @@ Immunization_Encounter_ID: A resource Id, used to fill "encounter.reference" pro
                     {% if ORC.12 and Practitioner_ID_ORC_12 -%}
                         "reference":"Practitioner/{{ Practitioner_ID_ORC_12 }}",
                     {% endif -%}
-                    {% if RXA.10 and Practitioner_ID_RXA_10 -%}
-                        "reference":"Practitioner/{{ Practitioner_ID_RXA_10 }}",
-                    {% endif -%}
                 },
             },
         ],
@@ -96,7 +109,124 @@ Immunization_Encounter_ID: A resource Id, used to fill "encounter.reference" pro
         {
             {% include 'DataType/CWECodeableConcept' CWE: RXA.5 -%}
         },
-        "lotNumber":"{{ RXA.15.Repeats[0].Value }}",
+        "doseQuantity" : {
+            {% if RXA.6 -%}
+                "value": {{ RXA.6.Value }},
+            {% endif -%}
+            {% include 'DataType/CWEQuantity' CWE: RXA.7 -%}
+        },
+        {% for RXA_9 in RXA.9.Repeats %}
+            {% if RXA_9.3.Value == 'NIP001' or RXA_9.6.Value == 'NIP001' or RXA_9.12.Value == 'NIP001' -%}
+                {% if RXA_9.3.Value == 'NIP001' -%}
+                "reportOrigin": {
+                    "coding":
+                        [
+                            {
+                                "code":"{{ RXA_9.1.Value }}",
+                                "display":"{{ RXA_9.2.Value }}",
+                                {% if RXA_9.3 %}
+                                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{RXA_9.3.Value | replace: ' ', '-'}}",
+                                {% endif %}
+                                {% capture temp %}{{ RXA_9.3.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+                                {% if temp%}
+                                    "system":"{{temp}}",              
+                                {% endif %}
+                            },
+                        ]
+                },
+                {% break -%}
+                {% endif -%}
+                {% if RXA_9.6.Value == 'NIP001' -%}
+                "reportOrigin": {
+                    "coding":
+                        [
+                            {
+                                "code":"{{ RXA_9.4.Value }}",
+                                "display":"{{ RXA_9.5.Value }}",
+                                {% if RXA_9.6 %}
+                                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{RXA_9.6.Value | replace: ' ', '-'}}",
+                                {% endif %}
+                                {% capture temp %}{{ RXA_9.6.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+                                {% if temp%}
+                                    "system":"{{temp}}",              
+                                {% endif %}
+                            },
+                        ]
+                },
+                {% break -%}
+                {% endif -%}
+                {% if RXA_9.12.Value == 'NIP001' -%}
+                "reportOrigin": {
+                    "coding":
+                        [
+                            {
+                                "code":"{{ RXA_9.10.Value }}",
+                                "display":"{{ RXA_9.11.Value }}",
+                                {% if RXA_9.12 %}
+                                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{RXA_9.12.Value | replace: ' ', '-'}}",
+                                {% endif %}
+                                {% capture temp %}{{ RXA_9.12.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+                                {% if temp%}
+                                    "system":"{{temp}}",              
+                                {% endif %}
+                            },
+                        ]
+                },
+                {% break -%}
+                {% endif -%}
+            {% break -%}
+            {% endif -%}
+        {% endfor -%}
+        
+        {% for RXA_9 in RXA.9.Repeats %}
+            {% if RXA_9.3.Value == 'NIP001' and RXA_9.1.Value == '00' -%}
+                "primarySource": true,
+            {% break -%}
+            {% elsif RXA_9.6.Value == 'NIP001' and RXA_9.4.Value == '00' -%}
+                "primarySource": true,
+            {% break -%}
+            {% elsif RXA_9.12.Value == 'NIP001' and RXA_9.10.Value == '00' -%}
+                "primarySource": true,
+            {% break -%}
+            {% else %}
+                "primarySource": false,
+            {% endif -%}
+        {% endfor -%}
+
+        "note": [
+            {% for RXA_9 in RXA.9.Repeats %}
+                {% unless RXA_9.3.Value == 'NIP001' -%}
+                    {% capture textstring %}{{ textstring | append: RXA_9.2.Value | append: ":" }}{% endcapture -%}
+                {% endunless -%}
+                {% unless RXA_9.6.Value == 'NIP001' -%}
+                    {% capture textstring %}{{ textstring | append: RXA_9.5.Value | append: ":" }}{% endcapture -%}
+                {% endunless -%}
+                {% if RXA_9.9 -%}
+                    {% capture textstring %}{{ textstring | append: RXA_9.9.Value | append: ":" }}{% endcapture -%}
+                {% endif -%}
+                {% unless RXA_9.12.Value == 'NIP001' -%}
+                    {% capture textstring %}{{ textstring | append: RXA_9.11.Value  }}{% endcapture -%}
+                {% endunless -%}
+                    {
+                        "text" : "{{ textstring | split: ":" | join: "--" }}",
+                    },                
+                {% assign textstring = "" -%}
+            {% endfor -%}
+            {
+                "text": "{{NTE.3.Value}}",
+                "time": "{{ NTE.6.Value | format_as_date_time }}",
+                {% evaluate Practitioner_ID_NTE_5 using 'ID/Practitioner' XCN: NTE.5 -%}
+                "authorReference":
+                {
+                    {% if NTE.5 and Practitioner_ID_NTE_5 -%}
+                        "reference":"Practitioner/{{ Practitioner_ID_NTE_5 }}",
+                    {% endif -%}
+                }
+            },
+        ],
+
+        {% capture lotNumber %}{{ RXA.15.Value  | split: "~" | join: "+" }}{% endcapture -%}     
+        "lotNumber":"{{ lotNumber }}",
         "expirationDate":"{{ RXA.16.Repeats[0].Value | add_hyphens_date }}",
         "statusReason":
         {
@@ -108,9 +238,21 @@ Immunization_Encounter_ID: A resource Id, used to fill "encounter.reference" pro
                 {% include 'DataType/CWECodeableConcept' CWE: RXA.19 -%}
             },
         ],
-        "status":"{{ RXA.20.Value | get_property: 'CodeSystem/CompletionStatus', 'code' }}",
-        {% if RXA.21.Value == "D" -%}
-            "status":"entered-in-error",
+        {% if RXA -%}
+            {% unless RXA.21.Value == "D" -%}
+                "status":"{{ RXA.20.Value | get_property: 'CodeSystem/CompletionStatus', 'code' }}",
+            {% endunless -%}
+            {% unless RXA.21.Value == "D" and RXA.20 == null -%}
+                "status":"completed",
+            {% endunless -%}
+            {% unless RXA.21.Value == "D" -%}
+                {% if RXA.18 -%}
+                    "status":"not-done",
+                {% endif -%}
+            {% endunless -%}
+            {% if RXA.21.Value == "D" -%}
+                "status":"entered-in-error",
+            {% endif -%}
         {% endif -%}
         "manufacturer":
         {
@@ -119,13 +261,39 @@ Immunization_Encounter_ID: A resource Id, used to fill "encounter.reference" pro
             {% endif -%}
         },
         "location":
-        [
-            {
-                {% if RXA.27 and Location_ID_RXA_27 -%}
-                    "reference":"Location/{{ Location_ID_RXA_27 }}",
+        {
+            {% if RXA.27.5 or RXA.27.9 -%}
+                {% if RXA.27.5 and RXA.27.9 -%}
+                    {% assign PL_Value_Except_PL5_PL9 = RXA.27.Value | remove: RXA.27.5.Value | remove: RXA.27.9.Value %}
                 {% endif -%}
-            },
-        ],
+                {% if RXA.27.5 and RXA.27.9 == null or RXA.27.9 == "" -%}
+                    {% assign PL_Value_Except_PL5_PL9= RXA.27.Value | remove: RXA.27.5.Value %}
+                {% endif -%}
+                {% if RXA.27.9 and RXA.27.5 == null or RXA.27.5 == "" -%}
+                    {% assign PL_Value_Except_PL5_PL9= RXA.27.Value | remove: RXA.27.9.Value %}
+                {% endif -%}
+            {% else -%}
+                {% assign PL_Value_Except_PL5_PL9 = RXA.27.Value %}
+            {% endif -%}
+
+            {% if RXA.27.1 -%}
+                {% evaluate Location_ID_RXA_27 using 'ID/Location' PL_Field_Value: RXA.27.1, PL: RXA.27, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+            {% elseif RXA.27.2 -%}
+                {% evaluate Location_ID_RXA_27 using 'ID/Location' PL_Field_Value: RXA.27.2, PL: RXA.27, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+            {% elseif RXA.27.3 -%}
+                {% evaluate Location_ID_RXA_27 using 'ID/Location' PL_Field_Value: RXA.27.3, PL: RXA.27, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+            {% elseif RXA.27.4 -%}
+                {% evaluate Location_ID_RXA_27 using 'ID/Location' PL_Field_Value: RXA.27.4, PL: RXA.27, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+            {% elseif RXA.27.7 -%}
+                {% evaluate Location_ID_RXA_27 using 'ID/Location' PL_Field_Value: RXA.27.7, PL: RXA.27, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+            {% elseif RXA.27.8 -%}
+                {% evaluate Location_ID_RXA_27 using 'ID/Location' PL_Field_Value: RXA.27.8, PL: RXA.27, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+            {% endif -%}
+
+            {% if RXA.27 and Location_ID_RXA_27 -%}
+                "reference":"Location/{{ Location_ID_RXA_27 }}",
+            {% endif -%}
+        },
         "route":
         {
             {% include 'DataType/CWECodeableConcept' CWE: RXR.1 -%}
@@ -141,6 +309,44 @@ Immunization_Encounter_ID: A resource Id, used to fill "encounter.reference" pro
         "encounter":
         {
             "reference":"{{ Immunization_Encounter_ID }}",
+        },
+        "programEligibility" : [
+            {% if OBX_PE.2.Value == "CE" -%}
+                {% for OBX_PE_5 in OBX_PE.5.Repeats -%}
+                    { 
+                        {% include 'DataType/CECodeableConcept' CE: OBX_PE_5 -%}
+                    },
+                {% endfor -%}
+            {% endif -%}
+            {% if OBX_PE.2.Value == "CWE" -%}
+                {% for OBX_PE_5 in OBX_PE.5.Repeats -%}
+                    { 
+                        {% include 'DataType/CWECodeableConcept' CWE: OBX_PE_5 -%}
+                    },
+                {% endfor -%}
+            {% endif -%}
+            {% if OBX_PE.2.Value == "ST" or OBX_PE.2.Value == "TX" or OBX_PE.2.Value == "FT" -%}    
+                {% capture textstring %}{{ OBX_PE.5.Value  | split: "^" | join: "--" }}{% endcapture -%}
+                {% capture valuestring %}{{ textstring  | split: "&" | join: "--" }}{% endcapture -%}
+                {% capture text %}{{ valuestring  | split: "~" | join: "+" }}{% endcapture -%}
+                    { 
+                        "text" : "{{text}}",
+                    },
+            {% endif -%}
+        ],
+        "fundingSource" : {
+            {% if OBX_FS.2.Value == "CE" -%}
+                {% include 'DataType/CECodeableConcept' CE: OBX_FS.5.Repeats[0] -%},
+            {% endif -%}
+            {% if OBX_FS.2.Value == "CWE" -%}
+                {% include 'DataType/CWECodeableConcept' CWE: OBX_FS.5.Repeats[0] -%},
+            {% endif -%}
+            {% if OBX_FS.2.Value == "ST" or OBX_FS.2.Value == "TX" or OBX_FS.2.Value == "FT" -%}    
+                {% capture textstring %}{{ OBX_FS.5.Value  | split: "^" | join: "--" }}{% endcapture -%}
+                {% capture valuestring %}{{ textstring  | split: "&" | join: "--" }}{% endcapture -%}
+                {% capture text %}{{ valuestring  | split: "~" | join: "+" }}{% endcapture -%}
+                    "text" : "{{text}}",
+            {% endif -%}
         },
     },
     "request":{

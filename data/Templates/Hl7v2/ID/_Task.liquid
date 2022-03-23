@@ -5,6 +5,10 @@
         {{ORC.2.3.Value}},{{ORC.2.4.Value}}
     {% elsif ORC -%}
         {{ORC.Value}}
+    {% elsif RXE.15 and RXE.2 -%}
+        {{RXE.15.Value}},{{RXE.2.Value}},{{intent_value.Value}},{{intent_new_value.Value}}
+    {% elsif RXE -%}
+        {{RXE.Value}}
     {% endif -%}
 {% endcapture -%}
-{{ identifiers | generate_id_input: 'Task', false, baseId | generate_uuid }}
+{{ identifiers | generate_id_input: 'Task', true, baseId | generate_uuid }}

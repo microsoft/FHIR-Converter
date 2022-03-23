@@ -26,14 +26,6 @@
             {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, ID: messageHeaderId -%}              
             {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseId: patientId -%}
             {% include 'Resource/Provenance' Root_Template: 'SIU_S15', MSH: firstSegments.MSH, REF_BUNDLE: bundleID, ID: provenanceId -%}
-
-            {%- comment -%}
-            {% assign transformation_val = 'provenance_transformation' %}
-            {% evaluate provenanceOrganizationId using 'ID/Organization', prov_id: firstSegments.MSH -%}
-            {% evaluate provenanceTransformationId using 'ID/Provenance_transformation' prov_id: transformation_val -%}
-            {% include 'Resource/Organization' org_name: 'Microsoft Corporation', ID: provenanceOrganizationId -%}
-            {% include 'Resource/Provenance_transformation' Root_Template: 'ADT_A01', Provenance_Organization_ID: provenanceOrganizationId, REF_MSH: messageHeaderId, provenanceOrganizationId, ID: provenanceTransformationId -%}
-            {%- endcomment -%}
             
             {% if firstSegments.MSH.4 -%}
                 {% if firstSegments.MSH.4.1 != "" and firstSegments.MSH.4.1 != null or firstSegments.MSH.4.2 != "" and firstSegments.MSH.4.2 != null or firstSegments.MSH.4.3 != "" and firstSegments.MSH.4.3 != null -%}
@@ -135,7 +127,7 @@
             {% include 'Extensions/Patient/PatientExtension' ID: PatientId, PID: pidSegment, PD1: pd1Segment, PV1: pv1Segment -%}
 
             {% if pidSegment.18 -%}
-                {% evaluate accountId using 'ID/Account' CX: pidSegment.3 -%}
+                {% evaluate accountId using 'ID/Account' CX: pidSegment.18, baseId: patientId -%}
                 {% include 'Resource/Account' PID: pidSegment, ID: accountId -%}
                 {% include 'Reference/Account/Subject' ID: accountId, REF: fullPatientId -%}
                 {% if pidSegment.18.4.1 != "" and pidSegment.18.4.1 != null and pidSegment.18.4.2 != "" and pidSegment.18.4.2 != null and pidSegment.18.4.3 != "" and pidSegment.18.4.3 != null -%}
@@ -275,6 +267,10 @@
                 {% include 'Resource/PLLocation' PL: pv1Segment.6 -%}
             {% endif -%}
 
+            {% if pv1Segment.11 -%}
+                {% include 'Resource/PLLocation' PL: pv1Segment.11 -%}
+            {% endif -%}
+            
             {% if pv1Segment.37 -%}
                 {% evaluate location_ID_PV1_37 using 'ID/Location' DLD: pv1Segment.37 -%}
                 {% include 'Resource/Location' PV1: pv1Segment.37, ID: location_ID_PV1_37-%}
@@ -298,12 +294,12 @@
                     {% include 'Resource/Organization', PV1: pv1Segment.54.4, ID: Organization_ID_PV1_54_4 -%}
                 {% endif -%} 
                 {% evaluate EpisodeOfCare_ID using 'ID/EpisodeOfCare' PV1: pv1Segment.54 -%}
-                {% include 'Resource/EpisodeOfCare' PV1: pv1Segment, ID: EpisodeOfCare_ID, patientRefrenceID: fullPatientId -%}
+                {% include 'Resource/EpisodeOfCare' PV1: pv1Segment, PV2: pv2Segment, ID: EpisodeOfCare_ID, patientRefrenceID: fullPatientId -%}
             {% endif -%}
 
                 {% evaluate encounterId using 'ID/Encounter' PV1: pv1Segment, baseId: patientId -%}
                 {% assign fullEncounterId = encounterId | prepend: 'Encounter/' -%}
-                {% include 'Resource/Encounter' Root_Template: 'SIU_S15', PV1: pv1Segment, PV2: pv2Segment, ID: encounterId -%}
+                {% include 'Resource/Encounter' Root_Template: 'SIU_S15', PV1: pv1Segment, PV2: pv2Segment, ID: encounterId, AccountId:accountId -%}
                 {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
                 {% include 'Extensions/Encounter/EncounterExtension' ID: encounterId, PV1: pv1Segment, PV2: pv2Segment -%}
             {% endif -%}
@@ -436,19 +432,34 @@
                     {% include 'Resource/PLLocation' PL: ailSegment.3, NTE: nteSegment -%}
                 {% endfor -%}
 
+                {% if ailSegment.3.5 or ailSegment.3.9 -%}
+                    {% if ailSegment.3.5 and ailSegment.3.9 -%}
+                        {% assign PL_Value_Except_PL5_PL9 = ailSegment.3.Value | remove: ailSegment.3.5.Value | remove: ailSegment.3.9.Value %}
+                    {% endif -%}
+                    {% if ailSegment.3.5 and ailSegment.3.9 == null or ailSegment.3.9 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= ailSegment.3.Value | remove: ailSegment.3.5.Value %}
+                    {% endif -%}
+                    {% if ailSegment.3.9 and ailSegment.3.5 == null or ailSegment.3.5 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= ailSegment.3.Value | remove: ailSegment.3.9.Value %}
+                    {% endif -%}
+                {% else -%}
+                    {% assign PL_Value_Except_PL5_PL9 = ailSegment.3.Value %}
+                {% endif -%}
+
                 {% if ailSegment.3.1 -%}
-                    {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: ailSegment.3.1 -%}
+                    {% evaluate Location_ID_AIL_3 using 'ID/Location' PL_Field_Value: ailSegment.3.1, PL: ailSegment.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif ailSegment.3.2 -%}
-                    {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: ailSegment.3.2 -%}
+                    {% evaluate Location_ID_AIL_3 using 'ID/Location' PL_Field_Value: ailSegment.3.2, PL: ailSegment.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif ailSegment.3.3 -%}
-                    {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: ailSegment.3.3 -%}
+                    {% evaluate Location_ID_AIL_3 using 'ID/Location' PL_Field_Value: ailSegment.3.3, PL: ailSegment.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif ailSegment.3.4 -%}
-                    {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: ailSegment.3.4 -%}
+                    {% evaluate Location_ID_AIL_3 using 'ID/Location' PL_Field_Value: ailSegment.3.4, PL: ailSegment.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif ailSegment.3.7 -%}
-                    {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: ailSegment.3.7 -%}
+                    {% evaluate Location_ID_AIL_3 using 'ID/Location' PL_Field_Value: ailSegment.3.7, PL: ailSegment.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif ailSegment.3.8 -%}
-                    {% evaluate Location_ID_AIL_3 using 'ID/Location' PL: ailSegment.3.8 -%}
-                {% endif %}
+                    {% evaluate Location_ID_AIL_3 using 'ID/Location' PL_Field_Value: ailSegment.3.8, PL: ailSegment.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% endif -%}
+
                 {% assign fullLocation_ID_AIL_3 = Location_ID_AIL_3 | prepend: 'Location/' -%}
                 {% if aisSegmentLists.AIS -%}
                     {% include 'Reference/ServiceRequest/LocationReference' ID: serviceRequestId, REF: fullLocation_ID_AIL_3 -%}

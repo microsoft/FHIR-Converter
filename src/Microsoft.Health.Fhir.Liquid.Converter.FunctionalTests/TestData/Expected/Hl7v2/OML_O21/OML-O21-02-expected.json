@@ -64,7 +64,7 @@
                 "id": "58988e57-a45e-285b-5942-4480980652df",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T08:52:56.946Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: OML_O21.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T09:14:17.046Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: OML_O21.</span></p></div>"
                 },
                 "occurredDateTime": "2021-10-20T14:41:00+05:30",
                 "recorded": "2021-10-20T14:41:00+05:30",
@@ -556,10 +556,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:78295402-9b84-4829-b945-502ab3402de5",
+            "fullUrl": "urn:uuid:4ad7c7d0-b69a-0653-9ea9-0979b8a66b39",
             "resource": {
                 "resourceType": "Account",
-                "id": "78295402-9b84-4829-b945-502ab3402de5",
+                "id": "4ad7c7d0-b69a-0653-9ea9-0979b8a66b39",
                 "identifier": [
                     {
                         "value": "4000776",
@@ -572,9 +572,9 @@
                                 }
                             ]
                         },
-                        "system": "urn:oid:2.4",
+                        "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "assigner": {
-                            "reference": "Organization/9d4c8327-8a28-8152-1898-8251baa707b7"
+                            "reference": "Organization/816e4ec3-f5a6-5969-08c8-a71ef576263e"
                         },
                         "period": {
                             "start": "1924-10-11",
@@ -591,21 +591,21 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Account/78295402-9b84-4829-b945-502ab3402de5"
+                "url": "Account/4ad7c7d0-b69a-0653-9ea9-0979b8a66b39"
             }
         },
         {
-            "fullUrl": "urn:uuid:9d4c8327-8a28-8152-1898-8251baa707b7",
+            "fullUrl": "urn:uuid:816e4ec3-f5a6-5969-08c8-a71ef576263e",
             "resource": {
                 "resourceType": "Organization",
-                "id": "9d4c8327-8a28-8152-1898-8251baa707b7",
+                "id": "816e4ec3-f5a6-5969-08c8-a71ef576263e",
                 "identifier": [
                     {
                         "value": "AccMgr",
                         "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMgr"
                     },
                     {
-                        "value": "urn:oid:2.4",
+                        "value": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "system": "urn:ietf:rfc:3986",
                         "type": {
                             "coding": [
@@ -621,7 +621,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Organization/9d4c8327-8a28-8152-1898-8251baa707b7"
+                "url": "Organization/816e4ec3-f5a6-5969-08c8-a71ef576263e"
             }
         },
         {
@@ -806,10 +806,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:ed401da2-2b32-f3d0-d128-9766ac20c0ad",
+            "fullUrl": "urn:uuid:4683678a-6244-d9d8-3643-bd5af6862624",
             "resource": {
                 "resourceType": "Location",
-                "id": "ed401da2-2b32-f3d0-d128-9766ac20c0ad",
+                "id": "4683678a-6244-d9d8-3643-bd5af6862624",
                 "name": "LABUnit01",
                 "mode": "instance",
                 "description": "LABUnit01--Room01--GHH",
@@ -824,16 +824,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/ed401da2-2b32-f3d0-d128-9766ac20c0ad"
+                "url": "Location/4683678a-6244-d9d8-3643-bd5af6862624"
             }
         },
         {
-            "fullUrl": "urn:uuid:ee586d80-706a-5933-8500-a8026c48fb27",
+            "fullUrl": "urn:uuid:9e8ac770-5a35-5cd9-6a6b-02c1fa87b25b",
             "resource": {
                 "resourceType": "Location",
-                "id": "ee586d80-706a-5933-8500-a8026c48fb27",
+                "id": "9e8ac770-5a35-5cd9-6a6b-02c1fa87b25b",
                 "partOf": {
-                    "reference": "Location/ed401da2-2b32-f3d0-d128-9766ac20c0ad"
+                    "reference": "Location/4683678a-6244-d9d8-3643-bd5af6862624"
                 },
                 "name": "Room01",
                 "mode": "instance",
@@ -849,14 +849,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/ee586d80-706a-5933-8500-a8026c48fb27"
+                "url": "Location/9e8ac770-5a35-5cd9-6a6b-02c1fa87b25b"
             }
         },
         {
-            "fullUrl": "urn:uuid:3ffd504f-44ae-ce29-6fc0-6baf5bc0a821",
+            "fullUrl": "urn:uuid:5178e3a0-3de3-daeb-e7bf-97824ca7fade",
             "resource": {
                 "resourceType": "Location",
-                "id": "3ffd504f-44ae-ce29-6fc0-6baf5bc0a821",
+                "id": "5178e3a0-3de3-daeb-e7bf-97824ca7fade",
                 "name": "GHH",
                 "mode": "instance",
                 "description": "LABUnit01--Room01--GHH",
@@ -871,14 +871,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/3ffd504f-44ae-ce29-6fc0-6baf5bc0a821"
+                "url": "Location/5178e3a0-3de3-daeb-e7bf-97824ca7fade"
             }
         },
         {
-            "fullUrl": "urn:uuid:5357a3e3-2c50-7c10-6b22-00b646c8b396",
+            "fullUrl": "urn:uuid:b3e7e8ab-7696-b555-ad2d-db9566b2a249",
             "resource": {
                 "resourceType": "Location",
-                "id": "5357a3e3-2c50-7c10-6b22-00b646c8b396",
+                "id": "b3e7e8ab-7696-b555-ad2d-db9566b2a249",
                 "name": "TraumaCentre",
                 "mode": "instance",
                 "description": "TraumaCentre--ROOM1--2.16.840.1.113883.4.642.1.1108--ISO--GHH1",
@@ -893,16 +893,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/5357a3e3-2c50-7c10-6b22-00b646c8b396"
+                "url": "Location/b3e7e8ab-7696-b555-ad2d-db9566b2a249"
             }
         },
         {
-            "fullUrl": "urn:uuid:c7f1b9ec-ffd8-321e-ad87-abafc1c1a333",
+            "fullUrl": "urn:uuid:a84e4df0-81ee-5e6e-3cf5-8ae8e203702c",
             "resource": {
                 "resourceType": "Location",
-                "id": "c7f1b9ec-ffd8-321e-ad87-abafc1c1a333",
+                "id": "a84e4df0-81ee-5e6e-3cf5-8ae8e203702c",
                 "partOf": {
-                    "reference": "Location/5357a3e3-2c50-7c10-6b22-00b646c8b396"
+                    "reference": "Location/b3e7e8ab-7696-b555-ad2d-db9566b2a249"
                 },
                 "name": "ROOM1",
                 "identifier": [
@@ -924,14 +924,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/c7f1b9ec-ffd8-321e-ad87-abafc1c1a333"
+                "url": "Location/a84e4df0-81ee-5e6e-3cf5-8ae8e203702c"
             }
         },
         {
-            "fullUrl": "urn:uuid:e9bd830d-8f94-01b9-7562-854da22940d3",
+            "fullUrl": "urn:uuid:ac02d40f-1a1d-6502-6fd4-80c4432fded9",
             "resource": {
                 "resourceType": "Location",
-                "id": "e9bd830d-8f94-01b9-7562-854da22940d3",
+                "id": "ac02d40f-1a1d-6502-6fd4-80c4432fded9",
                 "name": "GHH1",
                 "mode": "instance",
                 "description": "TraumaCentre--ROOM1--2.16.840.1.113883.4.642.1.1108--ISO--GHH1",
@@ -946,7 +946,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/e9bd830d-8f94-01b9-7562-854da22940d3"
+                "url": "Location/ac02d40f-1a1d-6502-6fd4-80c4432fded9"
             }
         },
         {
@@ -964,20 +964,14 @@
                     {
                         "status": "active",
                         "location": {
-                            "reference": "Location/ed401da2-2b32-f3d0-d128-9766ac20c0ad"
+                            "reference": "Location/4683678a-6244-d9d8-3643-bd5af6862624"
                         }
                     },
                     {
                         "status": "completed",
                         "location": {
-                            "reference": "Location/5357a3e3-2c50-7c10-6b22-00b646c8b396"
-                        },
-                        "extension": [
-                            {
-                                "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/temporary-location",
-                                "valueBoolean": false
-                            }
-                        ]
+                            "reference": "Location/b3e7e8ab-7696-b555-ad2d-db9566b2a249"
+                        }
                     }
                 ],
                 "participant": [
@@ -1052,6 +1046,11 @@
                     "status": "generated",
                     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Visit Description: </span></p></div>"
                 },
+                "account": [
+                    {
+                        "reference": "Account/4ad7c7d0-b69a-0653-9ea9-0979b8a66b39"
+                    }
+                ],
                 "subject": {
                     "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
                 },
@@ -1079,10 +1078,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:3622230f-85a9-b313-e26b-eabfc755e34f",
+            "fullUrl": "urn:uuid:20d84998-5ed2-d428-4ff3-fbeb9a9054a6",
             "resource": {
                 "resourceType": "ServiceRequest",
-                "id": "3622230f-85a9-b313-e26b-eabfc755e34f",
+                "id": "20d84998-5ed2-d428-4ff3-fbeb9a9054a6",
                 "status": "active",
                 "intent": "order",
                 "identifier": [
@@ -1134,6 +1133,9 @@
                 },
                 "subject": {
                     "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
+                },
+                "encounter": {
+                    "reference": "Encounter/da6f322f-ef5e-4f2c-c1f8-6e38dffbf995"
                 },
                 "requester": {
                     "reference": "PractitionerRole/d4536528-5e14-2c7a-8d87-c0dcd7311649"
@@ -1192,7 +1194,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "ServiceRequest/3622230f-85a9-b313-e26b-eabfc755e34f"
+                "url": "ServiceRequest/20d84998-5ed2-d428-4ff3-fbeb9a9054a6"
             }
         },
         {
@@ -1225,6 +1227,17 @@
             "resource": {
                 "resourceType": "PractitionerRole",
                 "id": "d4536528-5e14-2c7a-8d87-c0dcd7311649",
+                "code": [
+                    {
+                        "coding": [
+                            {
+                                "code": "ordering-provider",
+                                "display": "Ordering Provider",
+                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/PractitionerRole"
+                            }
+                        ]
+                    }
+                ],
                 "practitioner": {
                     "reference": "Practitioner/8af87360-4a75-1531-6192-9bdbb1b0351c"
                 }
@@ -1241,7 +1254,12 @@
                 "id": "b3a1bcae-087f-966b-7cfd-fc61a168d02a",
                 "collection": {
                     "collectedDateTime": "2021-10-20T15:15:00+05:30"
-                }
+                },
+                "request": [
+                    {
+                        "reference": "ServiceRequest/20d84998-5ed2-d428-4ff3-fbeb9a9054a6"
+                    }
+                ]
             },
             "request": {
                 "method": "PUT",
@@ -1377,7 +1395,7 @@
                         "coding": [
                             {
                                 "code": "ResponsibleObserver",
-                                "system": "http://example.com/v2-to-fhir-converter/PractitionerRole"
+                                "system": "http://example.com/v2-to-fhir-converter/Codesystem/PractitionerRole"
                             }
                         ]
                     }
@@ -1392,26 +1410,26 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:fe0adb86-ebe9-6479-0055-9db8dc1ff99a",
+            "fullUrl": "urn:uuid:960162f4-e8c5-e229-eb52-e6f3f6224edc",
             "resource": {
                 "resourceType": "Device",
-                "id": "fe0adb86-ebe9-6479-0055-9db8dc1ff99a",
+                "id": "960162f4-e8c5-e229-eb52-e6f3f6224edc",
                 "identifier": [
                     {
                         "value": "EI12.3",
-                        "system": "urn:uuid:UI2",
+                        "system": "urn:uuid:426d2726-51fc-89fe-a946-8596e80a80eb",
                         "type": {
                             "coding": [
                                 {
                                     "code": "GUID",
-                                    "display": "Same as UUID.",
+                                    "display": "The DCE Universal Unique Identifier, in accordance with RFC 4122. Recommended format is 32 hexadecimal digits separated by hyphens, in the digit grouping 8-4-4-4-12",
                                     "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
                                 }
                             ]
                         }
                     },
                     {
-                        "system": "urn:oid:UI1",
+                        "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "type": {
                             "coding": [
                                 {
@@ -1426,7 +1444,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Device/fe0adb86-ebe9-6479-0055-9db8dc1ff99a"
+                "url": "Device/960162f4-e8c5-e229-eb52-e6f3f6224edc"
             }
         },
         {
@@ -1461,7 +1479,7 @@
                         "coding": [
                             {
                                 "code": "LabMedicalDirector",
-                                "system": "http://example.com/v2-to-fhir-converter/PractitionerRole"
+                                "system": "http://example.com/v2-to-fhir-converter/Codesystem/PractitionerRole"
                             }
                         ]
                     }
@@ -1470,7 +1488,7 @@
                     "reference": "Practitioner/45f65e47-46c4-1a54-f9fb-1321258e79b2"
                 },
                 "organization": {
-                    "reference": "Organization/08c155be-912e-af06-d464-5b6bb63d660f"
+                    "reference": "Organization/471d566b-0070-ed72-9053-acae6a39acb6"
                 }
             },
             "request": {
@@ -1479,10 +1497,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:08c155be-912e-af06-d464-5b6bb63d660f",
+            "fullUrl": "urn:uuid:471d566b-0070-ed72-9053-acae6a39acb6",
             "resource": {
                 "resourceType": "Organization",
-                "id": "08c155be-912e-af06-d464-5b6bb63d660f",
+                "id": "471d566b-0070-ed72-9053-acae6a39acb6",
                 "name": "State Hygienic Laboratory",
                 "identifier": [
                     {
@@ -1513,14 +1531,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Organization/08c155be-912e-af06-d464-5b6bb63d660f"
+                "url": "Organization/471d566b-0070-ed72-9053-acae6a39acb6"
             }
         },
         {
-            "fullUrl": "urn:uuid:07fd2dd3-dbd6-5bb1-cfda-02226795d9a0",
+            "fullUrl": "urn:uuid:16335be6-44e0-0cc2-9a7f-17c89e266592",
             "resource": {
                 "resourceType": "Observation",
-                "id": "07fd2dd3-dbd6-5bb1-cfda-02226795d9a0",
+                "id": "16335be6-44e0-0cc2-9a7f-17c89e266592",
                 "identifier": [
                     {
                         "value": "EI21",
@@ -1550,7 +1568,7 @@
                 },
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/3622230f-85a9-b313-e26b-eabfc755e34f"
+                        "reference": "ServiceRequest/20d84998-5ed2-d428-4ff3-fbeb9a9054a6"
                     }
                 ],
                 "valueCodeableConcept": {
@@ -1558,8 +1576,7 @@
                         {
                             "code": "27268008",
                             "display": "Salmonella",
-                            "system": "http://snomed.info/sct",
-                            "version": "20090731"
+                            "system": "http://snomed.info/sct"
                         }
                     ],
                     "text": "Salmonella species"
@@ -1574,7 +1591,7 @@
                     "text": "Bacterial Culture"
                 },
                 "device": {
-                    "reference": "Device/fe0adb86-ebe9-6479-0055-9db8dc1ff99a"
+                    "reference": "Device/960162f4-e8c5-e229-eb52-e6f3f6224edc"
                 },
                 "bodySite": {
                     "coding": [
@@ -1635,7 +1652,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/07fd2dd3-dbd6-5bb1-cfda-02226795d9a0"
+                "url": "Observation/16335be6-44e0-0cc2-9a7f-17c89e266592"
             }
         },
         {
@@ -1667,10 +1684,76 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:10189bc7-6ef6-44fc-e74d-a24678a00fc2",
+            "fullUrl": "urn:uuid:2c6b831e-bbce-171b-2ba6-c9f247ed1ee5",
             "resource": {
                 "resourceType": "Specimen",
-                "id": "10189bc7-6ef6-44fc-e74d-a24678a00fc2",
+                "id": "2c6b831e-bbce-171b-2ba6-c9f247ed1ee5",
+                "identifier": [
+                    {
+                        "value": "2545",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "PGN",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "value": "2012999999",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "FGN",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "value": "OSI-31",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "PI",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                                    "display": "Patient internal identifier"
+                                }
+                            ]
+                        },
+                        "system": "urn:uuid:426d2726-51fc-89fe-a946-8596e80a80eb",
+                        "assigner": {
+                            "reference": "Organization/0912ab5e-fd38-78ec-6eb8-13abac5db6a5"
+                        }
+                    },
+                    {
+                        "value": "ShipID-32",
+                        "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "SHIP",
+                                    "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-identifierType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "type": {
+                    "coding": [
+                        {
+                            "code": "ASERU",
+                            "display": "Serum",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0487"
+                        },
+                        {
+                            "code": "FUR",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0487"
+                        }
+                    ],
+                    "text": "Blood"
+                },
                 "collection": {
                     "quantity": {
                         "value": 40,
@@ -1718,72 +1801,6 @@
                     ]
                 },
                 "receivedTime": "2012-03-01",
-                "identifier": [
-                    {
-                        "value": "2545",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "PGN",
-                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "value": "2012999999",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "FGN",
-                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "value": "OSI-31",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "PI",
-                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
-                                    "display": "Patient internal identifier"
-                                }
-                            ]
-                        },
-                        "system": "urn:uuid:2.16.840.1.114222",
-                        "assigner": {
-                            "reference": "Organization/322ca8cf-e43e-973c-3149-9e499675ddca"
-                        }
-                    },
-                    {
-                        "value": "ShipID-32",
-                        "system": "urn:oid:SID-32",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "SHIP",
-                                    "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-identifierType"
-                                }
-                            ]
-                        }
-                    }
-                ],
-                "type": {
-                    "coding": [
-                        {
-                            "code": "ASERU",
-                            "display": "Serum",
-                            "system": "http://terminology.hl7.org/CodeSystem/v2-0487"
-                        },
-                        {
-                            "code": "FUR",
-                            "system": "http://terminology.hl7.org/CodeSystem/v2-0487"
-                        }
-                    ],
-                    "text": "Blood"
-                },
                 "container": [
                     {
                         "additiveCodeableConcept": {
@@ -1849,9 +1866,9 @@
                             }
                         ]
                     },
-                    "system": "urn:oid:2.16.840.1.114222",
+                    "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                     "assigner": {
-                        "reference": "Organization/f210e7e3-f1e7-297a-9d54-9db2d312cb96"
+                        "reference": "Organization/b2686a80-120d-ef7a-b107-2a6c1a5c98ff"
                     }
                 },
                 "note": [
@@ -1861,7 +1878,7 @@
                 ],
                 "request": [
                     {
-                        "reference": "ServiceRequest/3622230f-85a9-b313-e26b-eabfc755e34f"
+                        "reference": "ServiceRequest/20d84998-5ed2-d428-4ff3-fbeb9a9054a6"
                     }
                 ],
                 "parent": [
@@ -1872,7 +1889,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Specimen/10189bc7-6ef6-44fc-e74d-a24678a00fc2"
+                "url": "Specimen/2c6b831e-bbce-171b-2ba6-c9f247ed1ee5"
             }
         },
         {
@@ -1900,17 +1917,17 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:f210e7e3-f1e7-297a-9d54-9db2d312cb96",
+            "fullUrl": "urn:uuid:b2686a80-120d-ef7a-b107-2a6c1a5c98ff",
             "resource": {
                 "resourceType": "Organization",
-                "id": "f210e7e3-f1e7-297a-9d54-9db2d312cb96",
+                "id": "b2686a80-120d-ef7a-b107-2a6c1a5c98ff",
                 "identifier": [
                     {
                         "value": "IA PHIMS Stage",
                         "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-IA-PHIMS-Stage"
                     },
                     {
-                        "value": "urn:oid:2.16.840.1.114222",
+                        "value": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "system": "urn:ietf:rfc:3986",
                         "type": {
                             "coding": [
@@ -1926,27 +1943,27 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Organization/f210e7e3-f1e7-297a-9d54-9db2d312cb96"
+                "url": "Organization/b2686a80-120d-ef7a-b107-2a6c1a5c98ff"
             }
         },
         {
-            "fullUrl": "urn:uuid:322ca8cf-e43e-973c-3149-9e499675ddca",
+            "fullUrl": "urn:uuid:0912ab5e-fd38-78ec-6eb8-13abac5db6a5",
             "resource": {
                 "resourceType": "Organization",
-                "id": "322ca8cf-e43e-973c-3149-9e499675ddca",
+                "id": "0912ab5e-fd38-78ec-6eb8-13abac5db6a5",
                 "identifier": [
                     {
                         "value": "IPHIMS Stage",
                         "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-IPHIMS-Stage"
                     },
                     {
-                        "value": "urn:uuid:2.16.840.1.114222",
+                        "value": "urn:uuid:426d2726-51fc-89fe-a946-8596e80a80eb",
                         "system": "urn:ietf:rfc:3986",
                         "type": {
                             "coding": [
                                 {
                                     "code": "GUID",
-                                    "display": "Same as UUID.",
+                                    "display": "The DCE Universal Unique Identifier, in accordance with RFC 4122. Recommended format is 32 hexadecimal digits separated by hyphens, in the digit grouping 8-4-4-4-12",
                                     "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
                                 }
                             ]
@@ -1956,7 +1973,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Organization/322ca8cf-e43e-973c-3149-9e499675ddca"
+                "url": "Organization/0912ab5e-fd38-78ec-6eb8-13abac5db6a5"
             }
         },
         {
@@ -1987,12 +2004,12 @@
                 },
                 "specimen": [
                     {
-                        "reference": "Specimen/10189bc7-6ef6-44fc-e74d-a24678a00fc2"
+                        "reference": "Specimen/2c6b831e-bbce-171b-2ba6-c9f247ed1ee5"
                     }
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/a003235d-4049-0bbd-9cac-d9dee4a90908"
+                        "reference": "ServiceRequest/2a774e77-46ab-f8d2-779a-6dd77c938ed7"
                     }
                 ]
             },
@@ -2002,10 +2019,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:a003235d-4049-0bbd-9cac-d9dee4a90908",
+            "fullUrl": "urn:uuid:2a774e77-46ab-f8d2-779a-6dd77c938ed7",
             "resource": {
                 "resourceType": "ServiceRequest",
-                "id": "a003235d-4049-0bbd-9cac-d9dee4a90908",
+                "id": "2a774e77-46ab-f8d2-779a-6dd77c938ed7",
                 "status": "active",
                 "intent": "order",
                 "identifier": [
@@ -2073,18 +2090,21 @@
                 "subject": {
                     "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
                 },
+                "encounter": {
+                    "reference": "Encounter/da6f322f-ef5e-4f2c-c1f8-6e38dffbf995"
+                },
                 "requester": {
                     "reference": "PractitionerRole/d47a42cd-ee8d-858a-81ba-093cd6c2b737"
                 },
                 "specimen": [
                     {
-                        "reference": "Specimen/27d3f840-ef8c-5086-ea3a-4217ca3dca3f"
+                        "reference": "Specimen/2b31b7a0-ab9d-942c-4611-89590ee58b1f"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "ServiceRequest/a003235d-4049-0bbd-9cac-d9dee4a90908"
+                "url": "ServiceRequest/2a774e77-46ab-f8d2-779a-6dd77c938ed7"
             }
         },
         {
@@ -2117,6 +2137,17 @@
             "resource": {
                 "resourceType": "PractitionerRole",
                 "id": "d47a42cd-ee8d-858a-81ba-093cd6c2b737",
+                "code": [
+                    {
+                        "coding": [
+                            {
+                                "code": "ordering-provider",
+                                "display": "Ordering Provider",
+                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/PractitionerRole"
+                            }
+                        ]
+                    }
+                ],
                 "practitioner": {
                     "reference": "Practitioner/98f6382a-649f-0339-4fa8-982d9760cf42"
                 }
@@ -2158,7 +2189,7 @@
                         "type": {
                             "coding": [
                                 {
-                                    "code": "test50"
+                                    "code": "PU-50"
                                 }
                             ]
                         }
@@ -2176,24 +2207,95 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:27d3f840-ef8c-5086-ea3a-4217ca3dca3f",
+            "fullUrl": "urn:uuid:2b31b7a0-ab9d-942c-4611-89590ee58b1f",
             "resource": {
                 "resourceType": "Specimen",
-                "id": "27d3f840-ef8c-5086-ea3a-4217ca3dca3f",
+                "id": "2b31b7a0-ab9d-942c-4611-89590ee58b1f",
                 "collection": {
                     "collectedDateTime": "2021-10-20T16:15:00+05:30"
-                }
+                },
+                "request": [
+                    {
+                        "reference": "ServiceRequest/2a774e77-46ab-f8d2-779a-6dd77c938ed7"
+                    }
+                ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Specimen/27d3f840-ef8c-5086-ea3a-4217ca3dca3f"
+                "url": "Specimen/2b31b7a0-ab9d-942c-4611-89590ee58b1f"
             }
         },
         {
-            "fullUrl": "urn:uuid:5dccf96a-1490-c206-c930-bded2f3d05fe",
+            "fullUrl": "urn:uuid:0df7b0a3-d581-3f7c-4a37-9aba787cc146",
             "resource": {
                 "resourceType": "Specimen",
-                "id": "5dccf96a-1490-c206-c930-bded2f3d05fe",
+                "id": "0df7b0a3-d581-3f7c-4a37-9aba787cc146",
+                "identifier": [
+                    {
+                        "value": "2012545",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "PGN",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "value": "2012999999",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "FGN",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "value": "OSI-31",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "PI",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                                    "display": "Patient internal identifier"
+                                }
+                            ]
+                        },
+                        "system": "urn:uuid:426d2726-51fc-89fe-a946-8596e80a80eb",
+                        "assigner": {
+                            "reference": "Organization/0912ab5e-fd38-78ec-6eb8-13abac5db6a5"
+                        }
+                    },
+                    {
+                        "value": "ShipID-32",
+                        "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "SHIP",
+                                    "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-identifierType"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "type": {
+                    "coding": [
+                        {
+                            "code": "ASERU",
+                            "display": "Serum",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0487"
+                        },
+                        {
+                            "code": "FUR",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0487"
+                        }
+                    ],
+                    "text": "Blood"
+                },
                 "collection": {
                     "quantity": {
                         "value": 40,
@@ -2241,72 +2343,6 @@
                     ]
                 },
                 "receivedTime": "2012-03-01",
-                "identifier": [
-                    {
-                        "value": "2012545",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "PGN",
-                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "value": "2012999999",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "FGN",
-                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "value": "OSI-31",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "PI",
-                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
-                                    "display": "Patient internal identifier"
-                                }
-                            ]
-                        },
-                        "system": "urn:uuid:2.16.840.1.114222",
-                        "assigner": {
-                            "reference": "Organization/322ca8cf-e43e-973c-3149-9e499675ddca"
-                        }
-                    },
-                    {
-                        "value": "ShipID-32",
-                        "system": "urn:oid:SID-32",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "SHIP",
-                                    "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-identifierType"
-                                }
-                            ]
-                        }
-                    }
-                ],
-                "type": {
-                    "coding": [
-                        {
-                            "code": "ASERU",
-                            "display": "Serum",
-                            "system": "http://terminology.hl7.org/CodeSystem/v2-0487"
-                        },
-                        {
-                            "code": "FUR",
-                            "system": "http://terminology.hl7.org/CodeSystem/v2-0487"
-                        }
-                    ],
-                    "text": "Blood"
-                },
                 "container": [
                     {
                         "additiveCodeableConcept": {
@@ -2384,7 +2420,7 @@
                 ],
                 "request": [
                     {
-                        "reference": "ServiceRequest/a003235d-4049-0bbd-9cac-d9dee4a90908"
+                        "reference": "ServiceRequest/2a774e77-46ab-f8d2-779a-6dd77c938ed7"
                     }
                 ],
                 "parent": [
@@ -2395,7 +2431,37 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Specimen/5dccf96a-1490-c206-c930-bded2f3d05fe"
+                "url": "Specimen/0df7b0a3-d581-3f7c-4a37-9aba787cc146"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:f210e7e3-f1e7-297a-9d54-9db2d312cb96",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "f210e7e3-f1e7-297a-9d54-9db2d312cb96",
+                "identifier": [
+                    {
+                        "value": "IA PHIMS Stage",
+                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-IA-PHIMS-Stage"
+                    },
+                    {
+                        "value": "urn:oid:2.16.840.1.114222",
+                        "system": "urn:ietf:rfc:3986",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "ISO",
+                                    "display": "An International Standards Organization Object Identifier (OID), in accordance with ISO/IEC 8824. Formatted as decimal digits separated by periods; recommended limit of 64 characters",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0301"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/f210e7e3-f1e7-297a-9d54-9db2d312cb96"
             }
         },
         {
@@ -2453,7 +2519,7 @@
                     "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
                 },
                 "specimen": {
-                    "reference": "Specimen/5dccf96a-1490-c206-c930-bded2f3d05fe"
+                    "reference": "Specimen/0df7b0a3-d581-3f7c-4a37-9aba787cc146"
                 },
                 "extension": [
                     {

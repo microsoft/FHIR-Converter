@@ -29,5 +29,33 @@
                 "version":"{{ CE.7.Value }}",
             {% endif -%}
         },
+        {
+            {% if mapping -%}
+                "code":"{{ CE.4.Value | get_property: mapping, 'code' }}",
+                {% capture displayURL %}{{ CE.4.Value | get_property: mapping, 'display' }}{% endcapture %}
+                    "display":"{{ displayURL }}",
+                {% if displayURL ==  CE.4.Value %}
+                    "display":"{{ CE.5.Value }}",
+                {% endif %}
+                {% if CE.6 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CE.6.Value | replace: ' ', '-'}}",
+                {% endif %}
+                "system":"{{ CE.4.Value | get_property: mapping, 'system' }}",
+                "version":"{{ CE.4.Value | get_property: mapping, 'version' }}",
+                "version":"{{ CE.7.Value }}",
+            {% else -%}
+                "code":"{{ CE.4.Value }}",
+                "display":"{{ CE.5.Value }}",
+
+                {% if CE.6 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CE.6.Value | replace: ' ', '-'}}",
+                {% endif %}
+                {% capture temp %}{{ CE.6.Value | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
+                {% if temp%}
+                    "system":"{{temp}}",              
+                {% endif %}
+                "version":"{{ CE.7.Value }}",
+            {% endif -%}
+        },
     ],
 {% endif -%}
