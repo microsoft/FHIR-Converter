@@ -42,8 +42,7 @@
                 "meta": {
                     "security": [
                         {
-                            "display": "SECURITY",
-                            "system": "http://example.com/v2-to-fhirconverter/security-label"
+                            "display": "SECURITY"
                         }
                     ],
                     "tag": [
@@ -74,7 +73,7 @@
                 "id": "aaf37d11-5d66-af8d-c286-16b46b7f9ada",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T07:10:56.702Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A01.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-23T10:45:24.746Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A01.</span></p></div>"
                 },
                 "occurredDateTime": "1988-08-18T11:26:00",
                 "recorded": "1988-08-18T11:26:00",
@@ -119,7 +118,7 @@
                 "identifier": [
                     {
                         "value": "GOOD HEALTH HOSPITAL",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-GOOD-HEALTH-HOSPITAL"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GOOD-HEALTH-HOSPITAL"
                     }
                 ]
             },
@@ -145,7 +144,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-ADT1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/ADT1"
                     },
                     {
                         "value": "123456789",
@@ -158,7 +157,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-USSSA"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/USSSA"
                     },
                     {
                         "value": "444333333",
@@ -292,7 +291,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-ADT1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/ADT1"
                     }
                 ],
                 "status": "active",

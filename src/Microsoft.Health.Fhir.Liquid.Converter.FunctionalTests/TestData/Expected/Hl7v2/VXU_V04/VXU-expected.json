@@ -71,7 +71,7 @@
                 "id": "87847f45-4a99-9d88-c439-65574d8fd20b",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T10:01:59.011Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: VXU_V04.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-23T10:34:52.394Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: VXU_V04.</span></p></div>"
                 },
                 "occurredDateTime": "2015-06-24T19:17:27.655+05:30",
                 "recorded": "2015-06-24T19:17:27.655+05:30",
@@ -116,7 +116,7 @@
                 "identifier": [
                     {
                         "value": "NISTEHRFAC",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NISTEHRFAC"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NISTEHRFAC"
                     }
                 ],
                 "partOf": {
@@ -137,7 +137,7 @@
                 "identifier": [
                     {
                         "value": "NISTIISFAC",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NISTIISFAC"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NISTIISFAC"
                     }
                 ],
                 "partOf": {
@@ -167,7 +167,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST-MPI-1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-MPI-1"
                     }
                 ],
                 "name": [
@@ -468,7 +468,7 @@
                 "identifier": [
                     {
                         "value": "654",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST-PI-1",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-PI-1",
                         "type": {
                             "coding": [
                                 {
@@ -504,7 +504,7 @@
                 "identifier": [
                     {
                         "value": "4422",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-AA-IZ-2",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-AA-IZ-2",
                         "type": {
                             "coding": [
                                 {
@@ -516,7 +516,7 @@
                     },
                     {
                         "value": "13696",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-AA-IZ-2",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-AA-IZ-2",
                         "type": {
                             "coding": [
                                 {
@@ -646,7 +646,7 @@
                 "identifier": [
                     {
                         "value": "4422",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-AA-IZ-2",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-AA-IZ-2",
                         "type": {
                             "coding": [
                                 {
@@ -658,7 +658,7 @@
                     },
                     {
                         "value": "13696",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-AA-IZ-2",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-AA-IZ-2",
                         "type": {
                             "coding": [
                                 {
@@ -690,9 +690,9 @@
                     {
                         "coding": [
                             {
-                                "code": "ordering-provider",
+                                "code": "OP",
                                 "display": "Ordering Provider",
-                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-practitioner-role"
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0443"
                             }
                         ]
                     }
@@ -732,7 +732,7 @@
                 "identifier": [
                     {
                         "value": "7824",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST-PI-1",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-PI-1",
                         "type": {
                             "coding": [
                                 {
@@ -768,7 +768,7 @@
                 "identifier": [
                     {
                         "value": "38760",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-AA-IZ-2",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-AA-IZ-2",
                         "type": {
                             "coding": [
                                 {
@@ -822,7 +822,7 @@
                 "identifier": [
                     {
                         "value": "38760",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-AA-IZ-2",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-AA-IZ-2",
                         "type": {
                             "coding": [
                                 {
@@ -850,7 +850,7 @@
                 "identifier": [
                     {
                         "value": "35508",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-AA-IZ-2",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-AA-IZ-2",
                         "type": {
                             "coding": [
                                 {
@@ -904,7 +904,7 @@
                 "identifier": [
                     {
                         "value": "35508",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-AA-IZ-2",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-AA-IZ-2",
                         "type": {
                             "coding": [
                                 {

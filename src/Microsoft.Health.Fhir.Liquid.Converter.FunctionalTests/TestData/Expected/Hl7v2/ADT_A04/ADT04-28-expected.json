@@ -52,7 +52,7 @@
                 "id": "312fba25-b9c6-151e-8c0c-45a36f66ed03",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T07:25:34.936Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-23T10:47:31.586Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
                 },
                 "occurredDateTime": "2019-05-04T18:12:05",
                 "recorded": "2019-05-04T18:12:05",
@@ -97,7 +97,7 @@
                 "identifier": [
                     {
                         "value": "RDX",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-RDX"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/RDX"
                     }
                 ]
             },
@@ -114,15 +114,15 @@
                 "identifier": [
                     {
                         "value": "0000000001",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-MR"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/MR"
                     },
                     {
                         "value": "e167267c-16c9-4fe3-96ae-9cff5703e90a",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-EHRID"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/EHRID"
                     },
                     {
                         "value": "a1d4ee8aba494ca",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST"
                     },
                     {
                         "value": "101-01-0001",
@@ -302,7 +302,7 @@
                 "identifier": [
                     {
                         "value": "4356789876",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NPI"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NPI"
                     }
                 ],
                 "name": [
@@ -647,7 +647,7 @@
                                 }
                             ]
                         },
-                        "system": "http://www.examplehealthplan.com/fhir/policyidentifier"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/policy-id"
                     }
                 ],
                 "status": "active",

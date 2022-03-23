@@ -30,8 +30,7 @@
                 "meta": {
                     "security": [
                         {
-                            "display": "SECURITY",
-                            "system": "http://example.com/v2-to-fhirconverter/security-label"
+                            "display": "SECURITY"
                         }
                     ],
                     "tag": [
@@ -66,7 +65,7 @@
                 "id": "0a7545d7-202f-96e5-31e9-bb7d27ade3c2",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T08:23:53.225Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A60.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-23T11:13:19.55Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A60.</span></p></div>"
                 },
                 "occurredDateTime": "1989-08-18T14:41:00+05:30",
                 "recorded": "1989-08-18T14:41:00+05:30",
@@ -119,7 +118,7 @@
                 "identifier": [
                     {
                         "value": "GHHSFacility",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-GHHSFacility"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHHSFacility"
                     },
                     {
                         "value": "urn:oid:2.16.840.1.122848.1.30",
@@ -157,7 +156,7 @@
                 "identifier": [
                     {
                         "value": "GHHRFacility",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-GHHRFacility"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHHRFacility"
                     },
                     {
                         "value": "urn:oid:2.16.840.1.1122848.1.32",
@@ -273,7 +272,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-test",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/test",
                         "period": {
                             "start": "1924-10-11",
                             "end": "1924-10-12"
@@ -290,7 +289,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/b3ad3a9f-d4f6-4638-0a09-2da771733488"
                         }
@@ -306,11 +305,11 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-USSSA"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/USSSA"
                     },
                     {
                         "value": "PATID567",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-test2"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/test2"
                     },
                     {
                         "value": "PSSN123121234",
@@ -492,8 +491,8 @@
                             "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
                         },
                         {
-                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-v3-ActCode",
-                            "code": "SpecialAccessRestrictionInstructions",
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-security-label",
+                            "code": "special-access-restriction-instructions",
                             "display": "Access restricted to clinicians other than the consulting clinician"
                         },
                         {
@@ -745,7 +744,7 @@
                 "identifier": [
                     {
                         "value": "AccMgr",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMgr"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/AccMgr"
                     },
                     {
                         "value": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
@@ -775,11 +774,11 @@
                 "identifier": [
                     {
                         "value": "test1",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-test1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/test1"
                     },
                     {
                         "value": "2.16.1",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -805,11 +804,11 @@
                 "identifier": [
                     {
                         "value": "NTH",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NTH"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NTH"
                     },
                     {
                         "value": "rt23",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -844,7 +843,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/f3954ae4-dec6-f114-1b9e-3a8a85d93f99"
                         },
@@ -881,11 +880,11 @@
                 "identifier": [
                     {
                         "value": "t",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-t"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/t"
                     },
                     {
                         "value": "2.16.840.1.113883.19",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -911,11 +910,11 @@
                 "identifier": [
                     {
                         "value": "AccMng",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMng"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/AccMng"
                     },
                     {
                         "value": "1.2",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -941,11 +940,11 @@
                 "identifier": [
                     {
                         "value": "PERSONNELt",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-PERSONNELt"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/PERSONNELt"
                     },
                     {
                         "value": "1.23",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -971,7 +970,7 @@
                 "identifier": [
                     {
                         "value": "1122334",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/0ccb76ca-b97e-1c86-4617-912a6d65c1f9"
                         },
@@ -1021,11 +1020,11 @@
                 "identifier": [
                     {
                         "value": "TEST",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-TEST"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/TEST"
                     },
                     {
                         "value": "23.2",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -1051,7 +1050,7 @@
                 "identifier": [
                     {
                         "value": "C006",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/c613d7b2-525f-8c08-a7ac-b2b91486e257"
                         },
@@ -1130,7 +1129,7 @@
                 "identifier": [
                     {
                         "value": "37",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMgr",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/AccMgr",
                         "type": {
                             "coding": [
                                 {
@@ -1164,7 +1163,7 @@
                 "identifier": [
                     {
                         "value": "T123",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-T123"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/T123"
                     },
                     {
                         "value": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
@@ -1194,7 +1193,7 @@
                 "identifier": [
                     {
                         "value": "Othhel",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD"
                     }
                 ]
             },
@@ -1211,11 +1210,11 @@
                 "identifier": [
                     {
                         "value": "TE",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-TE"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/TE"
                     },
                     {
                         "value": "Provider Master.Community Health and Hospitals",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-DNS",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/DNS",
                         "type": {
                             "coding": [
                                 {
@@ -1241,7 +1240,7 @@
                 "identifier": [
                     {
                         "value": "12188",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-DNS",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/DNS",
                         "assigner": {
                             "reference": "Organization/24d4bddf-a1c3-4dc8-049b-1dda7e5112b6"
                         },
@@ -1631,7 +1630,7 @@
                 "identifier": [
                     {
                         "value": "22",
-                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/FDK"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/FDK"
                     }
                 ],
                 "physicalType": {
@@ -1919,11 +1918,11 @@
                 "identifier": [
                     {
                         "value": "Etest",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-Etest"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/Etest"
                     },
                     {
                         "value": "2.16.1",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -1959,7 +1958,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/08314073-410a-3dc7-512c-0f2d206fb59d"
                         }
@@ -2058,7 +2057,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/11967e28-8dd4-a112-0fdc-377866bf12a0"
                         },
@@ -2219,7 +2218,7 @@
                 "identifier": [
                     {
                         "value": "40007716",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/7452d91f-ae92-d8ce-5b4a-148be5b6538e"
                         },
@@ -2293,8 +2292,8 @@
                             "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
                         },
                         {
-                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-v3-ActCode",
-                            "code": "SpecialAccessRestrictionInstructions",
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-security-label",
+                            "code": "special-access-restriction-instructions",
                             "display": "No disclosure of patient location"
                         },
                         {
@@ -2404,7 +2403,7 @@
                 "identifier": [
                     {
                         "value": "DRNBR",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-DRNBR"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/DRNBR"
                     },
                     {
                         "value": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
@@ -2590,7 +2589,7 @@
                     "extension": [
                         {
                             "url": "http://example.com/v2-to-fhir-converter/StructureDefinition/allergyintolerance-type",
-                            "valueCode": "side-effect"
+                            "valueCode": "SE"
                         }
                     ]
                 },
@@ -2617,7 +2616,7 @@
                 "identifier": [
                     {
                         "value": "NPIID",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NPIID"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NPIID"
                     },
                     {
                         "value": "urn:oid:2.16.840.1.113883.4.6",

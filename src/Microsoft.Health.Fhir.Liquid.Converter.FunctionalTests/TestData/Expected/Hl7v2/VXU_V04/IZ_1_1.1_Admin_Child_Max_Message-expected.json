@@ -67,7 +67,7 @@
                 "id": "cab498e7-22e3-614e-b9ff-079c8535c9d8",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T10:02:38.219Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: VXU_V04.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-23T10:35:27.787Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: VXU_V04.</span></p></div>"
                 },
                 "occurredDateTime": "2012-07-01T08:22:00",
                 "recorded": "2012-07-01T08:22:00",
@@ -112,7 +112,7 @@
                 "identifier": [
                     {
                         "value": "X68",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-X68"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/X68"
                     }
                 ]
             },
@@ -129,7 +129,7 @@
                 "identifier": [
                     {
                         "value": "NIST Test Iz Reg",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST-Test-Iz-Reg"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-Test-Iz-Reg"
                     }
                 ]
             },
@@ -155,7 +155,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST-MPI"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-MPI"
                     }
                 ],
                 "name": [
@@ -533,7 +533,7 @@
                 "identifier": [
                     {
                         "value": "57422",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST-AA-1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-AA-1"
                     }
                 ],
                 "name": [
@@ -559,7 +559,7 @@
                 "identifier": [
                     {
                         "value": "IZ-783274",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NDA",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NDA",
                         "type": {
                             "coding": [
                                 {
@@ -680,7 +680,7 @@
                 "identifier": [
                     {
                         "value": "IZ-783274",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NDA",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NDA",
                         "type": {
                             "coding": [
                                 {
@@ -712,9 +712,9 @@
                     {
                         "coding": [
                             {
-                                "code": "ordering-provider",
+                                "code": "OP",
                                 "display": "Ordering Provider",
-                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-practitioner-role"
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0443"
                             }
                         ]
                     }
@@ -754,7 +754,7 @@
                 "identifier": [
                     {
                         "value": "7832-1",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST-AA-1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-AA-1"
                     }
                 ],
                 "name": [

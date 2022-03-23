@@ -67,7 +67,7 @@
                 "id": "69d21cff-2d4e-b89f-1109-5fb744517c1f",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T09:25:46.081Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ORU_R01.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-23T10:38:54.318Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ORU_R01.</span></p></div>"
                 },
                 "occurredDateTime": "2011-06-01T00:35:51+05:30",
                 "recorded": "2011-06-01T00:35:51+05:30",
@@ -112,7 +112,7 @@
                 "identifier": [
                     {
                         "value": "NIST Lab Facility",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST-Lab-Facility"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-Lab-Facility"
                     }
                 ]
             },
@@ -129,7 +129,7 @@
                 "identifier": [
                     {
                         "value": "NIST EHR Facility",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST-EHR-Facility"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-EHR-Facility"
                     }
                 ]
             },
@@ -155,7 +155,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST-MPI"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-MPI"
                     }
                 ],
                 "name": [
@@ -225,8 +225,9 @@
                     {
                         "coding": [
                             {
-                                "code": "LabMedicalDirector",
-                                "system": "http://example.com/v2-to-fhir-converter/Codesystem/PractitionerRole"
+                                "code": "MDIR",
+                                "display": "Medical Director",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0443"
                             }
                         ]
                     }
@@ -2297,7 +2298,7 @@
                 "identifier": [
                     {
                         "value": "ORD666555",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-EHR",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-EHR",
                         "type": {
                             "coding": [
                                 {
@@ -2309,7 +2310,7 @@
                     },
                     {
                         "value": "R-991133",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-Lab-Filler",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-Lab-Filler",
                         "type": {
                             "coding": [
                                 {
@@ -2321,7 +2322,7 @@
                     },
                     {
                         "value": "GORD874233",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-EHR",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-EHR",
                         "type": {
                             "coding": [
                                 {
@@ -2372,7 +2373,7 @@
                 "identifier": [
                     {
                         "value": "57422",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST-AA-1",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-AA-1",
                         "type": {
                             "coding": [
                                 {
@@ -2408,9 +2409,9 @@
                     {
                         "coding": [
                             {
-                                "code": "ordering-provider",
+                                "code": "OP",
                                 "display": "Ordering Provider",
-                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/PractitionerRole"
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0443"
                             }
                         ]
                     }
@@ -2432,7 +2433,7 @@
                 "identifier": [
                     {
                         "value": "ORD666555",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-EHR",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-EHR",
                         "type": {
                             "coding": [
                                 {
@@ -2444,7 +2445,7 @@
                     },
                     {
                         "value": "R-991133",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-Lab-Filler",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-Lab-Filler",
                         "type": {
                             "coding": [
                                 {
@@ -2456,7 +2457,7 @@
                     },
                     {
                         "value": "GORD874233",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-EHR",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-EHR",
                         "type": {
                             "coding": [
                                 {
@@ -2598,7 +2599,7 @@
                 "identifier": [
                     {
                         "value": "ORD666555",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-EHR",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-EHR",
                         "type": {
                             "coding": [
                                 {
@@ -2610,7 +2611,7 @@
                     },
                     {
                         "value": "R-991133",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-NIST-Lab-Filler",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST-Lab-Filler",
                         "type": {
                             "coding": [
                                 {

@@ -61,7 +61,7 @@
                 "id": "2f0f2d7d-7f93-e624-fa21-11d1c490897f",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T09:16:11.017Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: OML_O21.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-23T10:09:21.027Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: OML_O21.</span></p></div>"
                 },
                 "occurredDateTime": "2016-03-09T21:02:05+05:30",
                 "recorded": "2016-03-09T21:02:05+05:30",
@@ -106,7 +106,7 @@
                 "identifier": [
                     {
                         "value": "MDHHS",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-MDHHS"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/MDHHS"
                     }
                 ]
             },
@@ -123,7 +123,7 @@
                 "identifier": [
                     {
                         "value": "MDHHS",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-MDHHS"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/MDHHS"
                     },
                     {
                         "value": "urn:oid:2.16.840.1.114222.4.3.2.2.3.161.1",
@@ -237,6 +237,23 @@
                             }
                         ]
                     }
+                ],
+                "generalPractitioner": [
+                    {
+                        "reference": "PractitionerRole/6f910e0e-19e4-4de8-a915-1e93a6d5ae35"
+                    },
+                    {
+                        "reference": "PractitionerRole/804c0420-f7b6-c084-1bb9-82a1b37452a7"
+                    },
+                    {
+                        "reference": "PractitionerRole/77770f1e-4428-757c-fa9d-9a95200c9564"
+                    },
+                    {
+                        "reference": "PractitionerRole/d79794f1-c9bb-510f-d57b-254b4858c327"
+                    },
+                    {
+                        "reference": "PractitionerRole/66f87495-aa9f-8e3e-1eff-470789ec5363"
+                    }
                 ]
             },
             "request": {
@@ -278,6 +295,216 @@
             "request": {
                 "method": "PUT",
                 "url": "Account/2a2e4b87-f7cb-9731-bd5a-fa9bc1dc854a"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:6f910e0e-19e4-4de8-a915-1e93a6d5ae35",
+            "resource": {
+                "resourceType": "PractitionerRole",
+                "id": "6f910e0e-19e4-4de8-a915-1e93a6d5ae35",
+                "code": [
+                    {
+                        "coding": [
+                            {
+                                "code": "RCT",
+                                "display": "Results Copies To",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0443"
+                            }
+                        ]
+                    }
+                ],
+                "practitioner": {
+                    "reference": "Practitioner/c7c0beb9-29bf-64ec-8577-13f2758d62a3"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "PractitionerRole/6f910e0e-19e4-4de8-a915-1e93a6d5ae35"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:c7c0beb9-29bf-64ec-8577-13f2758d62a3",
+            "resource": {
+                "resourceType": "Practitioner",
+                "id": "c7c0beb9-29bf-64ec-8577-13f2758d62a3",
+                "identifier": [
+                    {
+                        "value": "8175000004",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/StarLIMS"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/c7c0beb9-29bf-64ec-8577-13f2758d62a3"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:804c0420-f7b6-c084-1bb9-82a1b37452a7",
+            "resource": {
+                "resourceType": "PractitionerRole",
+                "id": "804c0420-f7b6-c084-1bb9-82a1b37452a7",
+                "code": [
+                    {
+                        "coding": [
+                            {
+                                "code": "RCT",
+                                "display": "Results Copies To",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0443"
+                            }
+                        ]
+                    }
+                ],
+                "practitioner": {
+                    "reference": "Practitioner/029ceabd-ae7b-2d10-ed98-0aa344f6711d"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "PractitionerRole/804c0420-f7b6-c084-1bb9-82a1b37452a7"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:029ceabd-ae7b-2d10-ed98-0aa344f6711d",
+            "resource": {
+                "resourceType": "Practitioner",
+                "id": "029ceabd-ae7b-2d10-ed98-0aa344f6711d",
+                "identifier": [
+                    {
+                        "value": "8175000005",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/StarLIMS"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/029ceabd-ae7b-2d10-ed98-0aa344f6711d"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:77770f1e-4428-757c-fa9d-9a95200c9564",
+            "resource": {
+                "resourceType": "PractitionerRole",
+                "id": "77770f1e-4428-757c-fa9d-9a95200c9564",
+                "code": [
+                    {
+                        "coding": [
+                            {
+                                "code": "RCT",
+                                "display": "Results Copies To",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0443"
+                            }
+                        ]
+                    }
+                ],
+                "practitioner": {
+                    "reference": "Practitioner/e31641c7-04dd-56f8-c066-3e1e62006ff2"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "PractitionerRole/77770f1e-4428-757c-fa9d-9a95200c9564"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:e31641c7-04dd-56f8-c066-3e1e62006ff2",
+            "resource": {
+                "resourceType": "Practitioner",
+                "id": "e31641c7-04dd-56f8-c066-3e1e62006ff2",
+                "identifier": [
+                    {
+                        "value": "8175000007",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/StarLIMS"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/e31641c7-04dd-56f8-c066-3e1e62006ff2"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:d79794f1-c9bb-510f-d57b-254b4858c327",
+            "resource": {
+                "resourceType": "PractitionerRole",
+                "id": "d79794f1-c9bb-510f-d57b-254b4858c327",
+                "code": [
+                    {
+                        "coding": [
+                            {
+                                "code": "RCT",
+                                "display": "Results Copies To",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0443"
+                            }
+                        ]
+                    }
+                ],
+                "practitioner": {
+                    "reference": "Practitioner/4aba7aea-e172-4aaa-9e62-04de3fe634da"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "PractitionerRole/d79794f1-c9bb-510f-d57b-254b4858c327"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:4aba7aea-e172-4aaa-9e62-04de3fe634da",
+            "resource": {
+                "resourceType": "Practitioner",
+                "id": "4aba7aea-e172-4aaa-9e62-04de3fe634da",
+                "identifier": [
+                    {
+                        "value": "8175000010",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/StarLIMS"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/4aba7aea-e172-4aaa-9e62-04de3fe634da"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:66f87495-aa9f-8e3e-1eff-470789ec5363",
+            "resource": {
+                "resourceType": "PractitionerRole",
+                "id": "66f87495-aa9f-8e3e-1eff-470789ec5363",
+                "code": [
+                    {
+                        "coding": [
+                            {
+                                "code": "RCT",
+                                "display": "Results Copies To",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0443"
+                            }
+                        ]
+                    }
+                ],
+                "practitioner": {
+                    "reference": "Practitioner/da9542cc-da2c-0072-60bc-b658adf8c84a"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "PractitionerRole/66f87495-aa9f-8e3e-1eff-470789ec5363"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:da9542cc-da2c-0072-60bc-b658adf8c84a",
+            "resource": {
+                "resourceType": "Practitioner",
+                "id": "da9542cc-da2c-0072-60bc-b658adf8c84a",
+                "identifier": [
+                    {
+                        "value": "8175000013",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/StarLIMS"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/da9542cc-da2c-0072-60bc-b658adf8c84a"
             }
         },
         {
@@ -326,7 +553,7 @@
                                 }
                             ]
                         },
-                        "system": "http://www.examplehealthplan.com/fhir/policyidentifier"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/policy-id"
                     }
                 ],
                 "status": "active",
@@ -481,6 +708,23 @@
                 "subject": {
                     "reference": "Patient/daed9284-6d12-ca12-4260-9aad09e1f201"
                 },
+                "supportingInfo": [
+                    {
+                        "reference": "PractitionerRole/6f910e0e-19e4-4de8-a915-1e93a6d5ae35"
+                    },
+                    {
+                        "reference": "PractitionerRole/804c0420-f7b6-c084-1bb9-82a1b37452a7"
+                    },
+                    {
+                        "reference": "PractitionerRole/77770f1e-4428-757c-fa9d-9a95200c9564"
+                    },
+                    {
+                        "reference": "PractitionerRole/d79794f1-c9bb-510f-d57b-254b4858c327"
+                    },
+                    {
+                        "reference": "PractitionerRole/66f87495-aa9f-8e3e-1eff-470789ec5363"
+                    }
+                ],
                 "requester": {
                     "reference": "PractitionerRole/9996be7d-26c8-997e-2f57-9ce40fe59181"
                 },
@@ -547,7 +791,7 @@
                 "identifier": [
                     {
                         "value": "8075000001",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NPI"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NPI"
                     }
                 ],
                 "name": [
@@ -576,9 +820,9 @@
                     {
                         "coding": [
                             {
-                                "code": "ordering-provider",
+                                "code": "OP",
                                 "display": "Ordering Provider",
-                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/PractitionerRole"
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0443"
                             }
                         ]
                     }

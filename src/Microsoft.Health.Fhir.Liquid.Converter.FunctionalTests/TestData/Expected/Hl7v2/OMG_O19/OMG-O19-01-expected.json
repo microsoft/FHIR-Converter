@@ -30,8 +30,7 @@
                 "meta": {
                     "security": [
                         {
-                            "display": "SECURITY",
-                            "system": "http://example.com/v2-to-fhirconverter/security-label"
+                            "display": "SECURITY"
                         }
                     ],
                     "tag": [
@@ -66,7 +65,7 @@
                 "id": "58988e57-a45e-285b-5942-4480980652df",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-11T11:41:59.502Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: OMG_O19.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-23T10:27:13.301Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: OMG_O19.</span></p></div>"
                 },
                 "occurredDateTime": "2021-10-20T14:41:00+05:30",
                 "recorded": "2021-10-20T14:41:00+05:30",
@@ -119,7 +118,7 @@
                 "identifier": [
                     {
                         "value": "GHHSFacility",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-GHHSFacility"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHHSFacility"
                     },
                     {
                         "value": "urn:oid:2.16.840.1.122848.1.30",
@@ -157,7 +156,7 @@
                 "identifier": [
                     {
                         "value": "GHHRFacility",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-GHHRFacility"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHHRFacility"
                     },
                     {
                         "value": "urn:oid:2.16.840.1.1122848.1.32",
@@ -273,7 +272,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/b3ad3a9f-d4f6-4638-0a09-2da771733488"
                         }
@@ -289,7 +288,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-USSSA"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/USSSA"
                     },
                     {
                         "value": "PSSN123121234",
@@ -327,7 +326,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.org/v2-to-fhir-converter/sid/us-military"
+                        "system": "http://example.com/v2-to-fhir-converter/sid/us-military"
                     },
                     {
                         "value": "MB-12345",
@@ -485,7 +484,7 @@
                             "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
                         },
                         {
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/additional-security-label",
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-security-label",
                             "code": "special-access-restriction-instructions",
                             "display": "Access restricted to clinicians other than the consulting clinician"
                         },
@@ -668,14 +667,6 @@
                         },
                         "gender": "female"
                     }
-                ],
-                "link": [
-                    {
-                        "other": {
-                            "reference": "Patient/0d5226d9-1ef9-df53-c664-86374d08bd38"
-                        },
-                        "type": "seealso"
-                    }
                 ]
             },
             "request": {
@@ -749,7 +740,7 @@
                 "identifier": [
                     {
                         "value": "AccMgr",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMgr"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/AccMgr"
                     },
                     {
                         "value": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
@@ -788,7 +779,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-test",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/test",
                         "period": {
                             "start": "1924-10-11",
                             "end": "1924-10-12"
@@ -900,11 +891,11 @@
                 "identifier": [
                     {
                         "value": "test1",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-test1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/test1"
                     },
                     {
                         "value": "2.16.1",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -1276,11 +1267,11 @@
                 "identifier": [
                     {
                         "value": "TE",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-TE"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/TE"
                     },
                     {
                         "value": "Provider Master.Community Health and Hospitals",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-DNS",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/DNS",
                         "type": {
                             "coding": [
                                 {
@@ -1306,7 +1297,7 @@
                 "identifier": [
                     {
                         "value": "12188",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-DNS",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/DNS",
                         "assigner": {
                             "reference": "Organization/24d4bddf-a1c3-4dc8-049b-1dda7e5112b6"
                         },
@@ -1717,7 +1708,7 @@
                 "identifier": [
                     {
                         "value": "5001",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMgr",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/AccMgr",
                         "type": {
                             "coding": [
                                 {
@@ -2026,7 +2017,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/f3954ae4-dec6-f114-1b9e-3a8a85d93f99"
                         },
@@ -2135,11 +2126,11 @@
                 "identifier": [
                     {
                         "value": "NTH",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NTH"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NTH"
                     },
                     {
                         "value": "rt23",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -2260,7 +2251,7 @@
                                 }
                             ]
                         },
-                        "system": "http://www.examplehealthplan.com/fhir/policyidentifier"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/policy-id"
                     },
                     {
                         "value": "Medicare-12345",
@@ -2576,7 +2567,7 @@
                 "identifier": [
                     {
                         "value": "9adf2339de714c6698063e3ddf5d07&L",
-                        "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-47371996286d40019903e76ba57e49e8&L",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/47371996286d40019903e76ba57e49e8&L",
                         "type": {
                             "coding": [
                                 {
@@ -2809,7 +2800,7 @@
                 "identifier": [
                     {
                         "value": "PD-10.1",
-                        "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-PD-10.2"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/PD-10.2"
                     }
                 ]
             },
@@ -2838,7 +2829,7 @@
                 "identifier": [
                     {
                         "value": "PD-10.11",
-                        "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-PD-10.2"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/PD-10.2"
                     }
                 ]
             },
@@ -3021,7 +3012,7 @@
                 "identifier": [
                     {
                         "value": "9adf2339de714c6698063e3ddf5d07&L",
-                        "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-47371996286d40019903e76ba57e49e8&L",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/47371996286d40019903e76ba57e49e8&L",
                         "type": {
                             "coding": [
                                 {
@@ -3124,12 +3115,12 @@
                         {
                             "code": "3DHIS_LABELAREA",
                             "display": "3DHIS L Area Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/L"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
                         },
                         {
                             "code": "S_IMAGE",
                             "display": "Supplemental Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/IHELAW"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/IHELAW"
                         }
                     ]
                 },
@@ -3167,11 +3158,11 @@
                 "identifier": [
                     {
                         "value": "Unknown",
-                        "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-3DHISTECH"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/3DHISTECH"
                     },
                     {
                         "value": "Unknown",
-                        "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-3DHISTECH"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/3DHISTECH"
                     }
                 ]
             },
@@ -3191,12 +3182,12 @@
                         {
                             "code": "3DHIS_LABELAREA",
                             "display": "3DHIS L Area Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/L"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
                         },
                         {
                             "code": "S_IMAGE",
                             "display": "Supplemental Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/IHELAW"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/IHELAW"
                         }
                     ]
                 },
@@ -3210,7 +3201,7 @@
                         {
                             "code": "OB-5",
                             "display": "Observation",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/L"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
                         }
                     ]
                 },
@@ -3289,7 +3280,7 @@
                 ],
                 "accessionIdentifier": {
                     "value": "2017-PT-123456",
-                    "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-L"
+                    "system": "http://example.com/v2-to-fhir-converter/Identifier/L"
                 },
                 "subject": {
                     "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
@@ -3318,7 +3309,7 @@
                 "identifier": [
                     {
                         "value": "40bcbe96bcbf8cda8b07403263b92cb4",
-                        "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-3DHISTECH_SLDID"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/3DHISTECH_SLDID"
                     },
                     {
                         "type": {
@@ -3335,7 +3326,7 @@
                         {
                             "code": "3DHISTECH_LD",
                             "display": "3DHISTECH Digital Slide",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/L"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
                         }
                     ]
                 },
@@ -3375,12 +3366,12 @@
                         {
                             "code": "3DHISTECH_THUMBNAIL",
                             "display": "3DHISTECH Thumbnail Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/L"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
                         },
                         {
                             "code": "S_IMAGE",
                             "display": "Supplemental Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/IHELAW"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/IHELAW"
                         }
                     ]
                 },
@@ -3421,12 +3412,12 @@
                         {
                             "code": "3DHISTECH_THUMBNAIL",
                             "display": "3DHISTECH Thumbnail Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/L"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
                         },
                         {
                             "code": "S_IMAGE",
                             "display": "Supplemental Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/IHELAW"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/IHELAW"
                         }
                     ]
                 },
@@ -3435,7 +3426,7 @@
                         {
                             "code": "OB-5",
                             "display": "Observation",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/L"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
                         }
                     ]
                 },
@@ -3508,12 +3499,12 @@
                         {
                             "code": "3DHISTECH_LABELARE",
                             "display": "3DHISTECH Label Area Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/L"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
                         },
                         {
                             "code": "S_IMAGE",
                             "display": "Supplemental Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/IHELAW"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/IHELAW"
                         }
                     ]
                 },
@@ -3554,12 +3545,12 @@
                         {
                             "code": "3DHISTECH_LABELAREA",
                             "display": "3DHISTECH Label Area Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/L"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
                         },
                         {
                             "code": "S_IMAGE",
                             "display": "Supplemental Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/IHELAW"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/IHELAW"
                         }
                     ]
                 },
@@ -3611,12 +3602,12 @@
                         {
                             "code": "3DHISTECH_PREVIEWCAM",
                             "display": "3DHISTECH Preview Camera Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/L"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
                         },
                         {
                             "code": "S_IMAGE",
                             "display": "Supplemental Image",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/IHELAW"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/IHELAW"
                         }
                     ]
                 },
@@ -3647,6 +3638,283 @@
             }
         },
         {
+            "fullUrl": "urn:uuid:ce04b188-4d90-7a2a-faca-d5dc62ec53ca",
+            "resource": {
+                "resourceType": "Account",
+                "id": "ce04b188-4d90-7a2a-faca-d5dc62ec53ca",
+                "identifier": [
+                    {
+                        "value": "AI168",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "MR",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                                    "display": "Medical record number"
+                                }
+                            ]
+                        },
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/DNS"
+                    }
+                ],
+                "status": "active"
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Account/ce04b188-4d90-7a2a-faca-d5dc62ec53ca"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:efc256b2-6f47-d905-3279-bea236bf89bf",
+            "resource": {
+                "resourceType": "ChargeItem",
+                "id": "efc256b2-6f47-d905-3279-bea236bf89bf",
+                "status": "unknown",
+                "identifier": [
+                    {
+                        "value": "12345",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/L",
+                        "type": {
+                            "coding": [
+                                {
+                                    "system": "http://example.com/v2-to-fhir-converter/CodeSystem/identifier-type-code",
+                                    "code": "TID",
+                                    "display": "ChargeItem Transaction ID"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "occurrenceDateTime": "2019-11-22",
+                "enteredDate": "2019-11-22",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "71045",
+                            "display": "Xray exam chest 1 view",
+                            "system": "http://www.ama-assn.org/go/cpt"
+                        }
+                    ]
+                },
+                "quantity": {
+                    "value": 2
+                },
+                "priceOverride": {
+                    "value": 100,
+                    "currency": "USD"
+                },
+                "reason": [
+                    {
+                        "coding": [
+                            {
+                                "code": "29857009",
+                                "display": "Chest pain",
+                                "system": "http://snomed.info/sct"
+                            }
+                        ]
+                    },
+                    {
+                        "coding": [
+                            {
+                                "code": "68235000",
+                                "display": "Nasal congestion",
+                                "system": "http://snomed.info/sct"
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
+                },
+                "account": [
+                    {
+                        "reference": "Account/4ad7c7d0-b69a-0653-9ea9-0979b8a66b39"
+                    },
+                    {
+                        "reference": "Account/ce04b188-4d90-7a2a-faca-d5dc62ec53ca"
+                    }
+                ],
+                "context": {
+                    "reference": "Encounter/da6f322f-ef5e-4f2c-c1f8-6e38dffbf995"
+                },
+                "costCenter": {
+                    "reference": "Organization/4082dc60-f9b6-5d4a-1ef2-5a40f7454e4b"
+                },
+                "performer": [
+                    {
+                        "actor": {
+                            "reference": "Practitioner/3ec3c243-2f18-287a-4275-a062f0131a03"
+                        }
+                    }
+                ],
+                "enterer": {
+                    "reference": "Practitioner/e43414a7-79a4-70bb-e4d0-245f330edfa6"
+                },
+                "performingOrganization": {
+                    "reference": "Organization/3b0fa4d6-84b9-6c3e-c81d-231c9f16330a"
+                },
+                "requestingOrganization": {
+                    "reference": "Organization/379abbe1-0596-62f8-5218-4f988127cd70"
+                },
+                "productReference": {
+                    "reference": "Device/2676707e-6e0a-3a9d-9b51-1b035b7f5f1f"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "ChargeItem/efc256b2-6f47-d905-3279-bea236bf89bf"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:4082dc60-f9b6-5d4a-1ef2-5a40f7454e4b",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "4082dc60-f9b6-5d4a-1ef2-5a40f7454e4b",
+                "identifier": [
+                    {
+                        "value": "RAD-1",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/L"
+                    }
+                ],
+                "name": "Radiology Deptt"
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/4082dc60-f9b6-5d4a-1ef2-5a40f7454e4b"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:3ec3c243-2f18-287a-4275-a062f0131a03",
+            "resource": {
+                "resourceType": "Practitioner",
+                "id": "3ec3c243-2f18-287a-4275-a062f0131a03",
+                "identifier": [
+                    {
+                        "value": "9941339108",
+                        "system": "urn:oid:2.16.840.1.113883.4.6",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "NPI",
+                                    "display": "National provider identifier",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Smith",
+                        "given": [
+                            "Adam"
+                        ]
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/3ec3c243-2f18-287a-4275-a062f0131a03"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:e43414a7-79a4-70bb-e4d0-245f330edfa6",
+            "resource": {
+                "resourceType": "Practitioner",
+                "id": "e43414a7-79a4-70bb-e4d0-245f330edfa6",
+                "identifier": [
+                    {
+                        "value": "9941339116",
+                        "system": "urn:oid:2.16.840.1.113883.4.6",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "NPI",
+                                    "display": "National provider identifier",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Mellie",
+                        "given": [
+                            "John"
+                        ]
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/e43414a7-79a4-70bb-e4d0-245f330edfa6"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:3b0fa4d6-84b9-6c3e-c81d-231c9f16330a",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "3b0fa4d6-84b9-6c3e-c81d-231c9f16330a",
+                "name": "Good Health Hospital",
+                "identifier": [
+                    {
+                        "value": "544",
+                        "type": {
+                            "coding": [
+                                {
+                                    "code": "XX",
+                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/3b0fa4d6-84b9-6c3e-c81d-231c9f16330a"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:379abbe1-0596-62f8-5218-4f988127cd70",
+            "resource": {
+                "resourceType": "Organization",
+                "id": "379abbe1-0596-62f8-5218-4f988127cd70",
+                "name": "GOOD HEALTH HOSPITAL",
+                "identifier": [
+                    {
+                        "value": "123456789"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Organization/379abbe1-0596-62f8-5218-4f988127cd70"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:2676707e-6e0a-3a9d-9b51-1b035b7f5f1f",
+            "resource": {
+                "resourceType": "Device",
+                "id": "2676707e-6e0a-3a9d-9b51-1b035b7f5f1f",
+                "identifier": [
+                    {
+                        "value": "Item-12345",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/L"
+                    }
+                ],
+                "modelNumber": "Model-12345",
+                "patient": {
+                    "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Device/2676707e-6e0a-3a9d-9b51-1b035b7f5f1f"
+            }
+        },
+        {
             "fullUrl": "urn:uuid:3b64d540-91b3-7d04-a63a-657c83b60a86",
             "resource": {
                 "resourceType": "ServiceRequest",
@@ -3656,7 +3924,7 @@
                 "identifier": [
                     {
                         "value": "9adf2339de714c6698063e3ddf5167",
-                        "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-47371996286d40019903e76ba57e49e8",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/47371996286d40019903e76ba57e49e8",
                         "type": {
                             "coding": [
                                 {
@@ -3677,10 +3945,10 @@
                     ]
                 },
                 "subject": {
-                    "reference": "Patient/0d5226d9-1ef9-df53-c664-86374d08bd38"
+                    "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
                 },
                 "encounter": {
-                    "reference": "Encounter/c31229ec-2a29-2f55-b5b2-2fa309a140ed"
+                    "reference": "Encounter/c5057ffa-0095-fc36-51e7-4a6c801c1ca6"
                 },
                 "supportingInfo": [
                     {
@@ -3865,7 +4133,7 @@
                 "identifier": [
                     {
                         "value": "PDORC-10.1",
-                        "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-PD-10.2"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/PD-10.2"
                     },
                     {
                         "value": "00643169001763",
@@ -4072,7 +4340,7 @@
                 "identifier": [
                     {
                         "value": "9adf2339de714c6698063e3ddf5167",
-                        "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-47371996286d40019903e76ba57e49e8",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/47371996286d40019903e76ba57e49e8",
                         "type": {
                             "coding": [
                                 {
@@ -4095,7 +4363,7 @@
                 },
                 "status": "registered",
                 "subject": {
-                    "reference": "Patient/0d5226d9-1ef9-df53-c664-86374d08bd38"
+                    "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
                 },
                 "basedOn": [
                     {
@@ -4127,7 +4395,7 @@
                 "identifier": [
                     {
                         "value": "40bcbe96bcbf8cda8b07403263b92cb4",
-                        "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-3DHISTECH_SLDID"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/3DHISTECH_SLDID"
                     },
                     {
                         "type": {
@@ -4144,7 +4412,7 @@
                         {
                             "code": "3DHISTECH_SD",
                             "display": "3DHISTECH Digital",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/L"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
                         }
                     ]
                 },
@@ -4161,7 +4429,7 @@
                     }
                 ],
                 "subject": {
-                    "reference": "Patient/0d5226d9-1ef9-df53-c664-86374d08bd38"
+                    "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
                 },
                 "specimen": [
                     {
@@ -4187,7 +4455,7 @@
                 "identifier": [
                     {
                         "value": "40bcbe96bcbf8cda8b07403263b92cb4",
-                        "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-3DHISTECH_SLDID"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/3DHISTECH_SLDID"
                     },
                     {
                         "type": {
@@ -4205,7 +4473,7 @@
                         {
                             "code": "3DHISTECH_SD",
                             "display": "3DHISTECH Digital",
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/L"
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/L"
                         }
                     ]
                 },
@@ -4219,7 +4487,7 @@
                     "reference": "Device/e7598f04-7119-f7a0-b0b7-c788548f491a"
                 },
                 "subject": {
-                    "reference": "Patient/0d5226d9-1ef9-df53-c664-86374d08bd38"
+                    "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
                 },
                 "extension": [
                     {
@@ -4256,363 +4524,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:0d5226d9-1ef9-df53-c664-86374d08bd38",
-            "resource": {
-                "resourceType": "Patient",
-                "id": "0d5226d9-1ef9-df53-c664-86374d08bd38",
-                "identifier": [
-                    {
-                        "value": "PATID001",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "MR",
-                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
-                                    "display": "Medical record number"
-                                }
-                            ]
-                        },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
-                        "assigner": {
-                            "reference": "Organization/b3ad3a9f-d4f6-4638-0a09-2da771733488"
-                        }
-                    },
-                    {
-                        "value": "123456789",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "SS",
-                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
-                                    "display": "Social Security number"
-                                }
-                            ]
-                        },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-USSSA"
-                    },
-                    {
-                        "value": "PSSN123121234",
-                        "type": {
-                            "coding": [
-                                {
-                                    "code": "SB",
-                                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                                }
-                            ]
-                        },
-                        "system": "http://hl7.org/fhir/sid/us-ssn"
-                    }
-                ],
-                "name": [
-                    {
-                        "family": "EVERY",
-                        "given": [
-                            "ETHAN",
-                            "A"
-                        ],
-                        "suffix": [
-                            "III",
-                            "MD",
-                            "PF"
-                        ],
-                        "prefix": [
-                            "Dr."
-                        ],
-                        "use": "usual",
-                        "period": {
-                            "start": "1924-10-12"
-                        }
-                    },
-                    {
-                        "family": "Josh",
-                        "given": [
-                            "stanley"
-                        ],
-                        "use": "official",
-                        "period": {
-                            "start": "1924-10-10",
-                            "end": "1924-10-15"
-                        }
-                    }
-                ],
-                "birthDate": "1988-08-18",
-                "_birthDate": {
-                    "extension": [
-                        {
-                            "url": "http://hl7.org/fhir/StructureDefinition/patient-birthTime",
-                            "valueDateTime": "1988-08-18T14:41:00+05:30"
-                        }
-                    ]
-                },
-                "gender": "male",
-                "address": [
-                    {
-                        "line": [
-                            "1000",
-                            "Hospital Lane",
-                            "Ste. 123",
-                            "Near Highway"
-                        ],
-                        "city": "Ann Arbor ",
-                        "state": "MI",
-                        "postalCode": "99999",
-                        "country": "USA",
-                        "type": "postal",
-                        "district": "W"
-                    }
-                ],
-                "telecom": [
-                    {
-                        "value": "2222",
-                        "system": "phone",
-                        "period": {
-                            "start": "2001-01-10",
-                            "end": "2002-01-10"
-                        },
-                        "rank": 18,
-                        "use": "home"
-                    },
-                    {
-                        "value": "12121212",
-                        "system": "phone",
-                        "use": "home"
-                    },
-                    {
-                        "value": "7777",
-                        "system": "phone",
-                        "use": "work"
-                    },
-                    {
-                        "value": "1111",
-                        "system": "other",
-                        "use": "work"
-                    },
-                    {
-                        "value": "89898989",
-                        "use": "work",
-                        "system": "email"
-                    }
-                ],
-                "communication": [
-                    {
-                        "language": {
-                            "coding": [
-                                {
-                                    "code": "ar",
-                                    "display": "Arabic",
-                                    "system": "urn:ietf:bcp:47",
-                                    "version": "v2"
-                                },
-                                {
-                                    "code": "en",
-                                    "display": "English",
-                                    "system": "urn:ietf:bcp:47",
-                                    "version": "v2.1"
-                                }
-                            ],
-                            "text": "TextInEnglish"
-                        },
-                        "preferred": true
-                    }
-                ],
-                "maritalStatus": {
-                    "coding": [
-                        {
-                            "code": "M",
-                            "display": "Married",
-                            "system": "http://terminology.hl7.org/CodeSystem/v3-MaritalStatus"
-                        }
-                    ]
-                },
-                "multipleBirthInteger": 2,
-                "deceasedDateTime": "2008-08-25T15:31:30+05:30",
-                "meta": {
-                    "lastUpdated": "2005-01-10T04:05:14+05:30",
-                    "security": [
-                        {
-                            "code": "LABEL",
-                            "display": "assign security label",
-                            "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
-                        },
-                        {
-                            "code": "DEMO",
-                            "display": "all demographic information sensitivity",
-                            "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
-                        },
-                        {
-                            "code": "PRS",
-                            "display": "patient requested information sensitivity",
-                            "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode"
-                        },
-                        {
-                            "system": "http://example.org/v2-to-fhir-converter/CodeSystem/additional-security-label",
-                            "code": "special-access-restriction-instructions",
-                            "display": "Access restricted to clinicians other than the consulting clinician"
-                        },
-                        {
-                            "extension": [
-                                {
-                                    "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/access-restriction-range",
-                                    "valuePeriod": {
-                                        "start": "2021-11-18T16:00:00+05:30",
-                                        "end": "2022-11-18T16:00:00+05:30"
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                },
-                "active": true,
-                "generalPractitioner": [
-                    {
-                        "reference": "Organization/719266ca-c272-9569-a797-c0b3fe3b2c91"
-                    },
-                    {
-                        "reference": "Practitioner/864cd641-6bf0-9def-ae05-da0239bb20a7"
-                    },
-                    {
-                        "reference": "PractitionerRole/69919204-f9b6-2966-d568-fa1c1405ca79"
-                    }
-                ],
-                "extension": [
-                    {
-                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
-                        "extension": [
-                            {
-                                "url": "ombCategory",
-                                "valueCoding": {
-                                    "code": "2106-3",
-                                    "display": "White",
-                                    "system": "urn:oid:2.16.840.1.113883.6.238"
-                                }
-                            },
-                            {
-                                "url": "ombCategory",
-                                "valueCoding": {
-                                    "code": "2028-9",
-                                    "display": "Asian",
-                                    "system": "urn:oid:2.16.840.1.113883.6.238"
-                                }
-                            },
-                            {
-                                "url": "text",
-                                "valueString": "White+Asian"
-                            }
-                        ]
-                    },
-                    {
-                        "url": "http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName",
-                        "valueString": "SMITH--Angela--L"
-                    },
-                    {
-                        "url": "http://hl7.org/fhir/StructureDefinition/patient-birthPlace",
-                        "valueAddress": {
-                            "text": "St. Francis Community Hospital of Lower South Side"
-                        }
-                    },
-                    {
-                        "url": "http://hl7.org/fhir/StructureDefinition/patient-religion",
-                        "valueCodeableConcept": {
-                            "coding": [
-                                {
-                                    "code": "1002",
-                                    "display": "African Religions",
-                                    "system": "http://terminology.hl7.org/CodeSystem/v3-ReligiousAffiliation"
-                                }
-                            ]
-                        }
-                    },
-                    {
-                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
-                        "extension": [
-                            {
-                                "url": "ombCategory",
-                                "valueCoding": {
-                                    "code": "2186-5",
-                                    "display": "Non Hispanic or Latino",
-                                    "system": "urn:oid:2.16.840.1.113883.6.238"
-                                }
-                            },
-                            {
-                                "url": "text",
-                                "valueString": "Non Hispanic or Latino"
-                            }
-                        ]
-                    },
-                    {
-                        "url": "http://hl7.org/fhir/StructureDefinition/patient-citizenship",
-                        "extension": [
-                            {
-                                "url": "code",
-                                "valueCodeableConcept": {
-                                    "coding": [
-                                        {
-                                            "code": "US",
-                                            "display": "United States of America",
-                                            "system": "urn:iso:std:iso:3166"
-                                        }
-                                    ],
-                                    "text": "United States of America"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "url": "http://hl7.org/fhir/StructureDefinition/patient-citizenship",
-                        "extension": [
-                            {
-                                "url": "code",
-                                "valueCodeableConcept": {
-                                    "coding": [
-                                        {
-                                            "code": "CA",
-                                            "display": "Canada",
-                                            "system": "urn:iso:std:iso:3166"
-                                        }
-                                    ],
-                                    "text": "Canada"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "url": "http://hl7.org/fhir/StructureDefinition/patient-congregation",
-                        "valueString": "Church"
-                    }
-                ]
-            },
-            "request": {
-                "method": "PUT",
-                "url": "Patient/0d5226d9-1ef9-df53-c664-86374d08bd38"
-            }
-        },
-        {
-            "fullUrl": "urn:uuid:cad7407d-9013-7ba8-1264-f20aa00bae88",
-            "resource": {
-                "resourceType": "Account",
-                "id": "cad7407d-9013-7ba8-1264-f20aa00bae88",
-                "identifier": [
-                    {
-                        "value": "ac2"
-                    }
-                ],
-                "status": "active",
-                "subject": [
-                    {
-                        "reference": "Patient/0d5226d9-1ef9-df53-c664-86374d08bd38"
-                    }
-                ]
-            },
-            "request": {
-                "method": "PUT",
-                "url": "Account/cad7407d-9013-7ba8-1264-f20aa00bae88"
-            }
-        },
-        {
-            "fullUrl": "urn:uuid:c31229ec-2a29-2f55-b5b2-2fa309a140ed",
+            "fullUrl": "urn:uuid:c5057ffa-0095-fc36-51e7-4a6c801c1ca6",
             "resource": {
                 "resourceType": "Encounter",
-                "id": "c31229ec-2a29-2f55-b5b2-2fa309a140ed",
+                "id": "c5057ffa-0095-fc36-51e7-4a6c801c1ca6",
                 "class": {
                     "code": "AMB",
                     "display": "ambulatory",
@@ -4690,8 +4605,8 @@
                 ],
                 "identifier": [
                     {
-                        "value": "5001",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMgr",
+                        "value": "50011",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/AccMgr",
                         "type": {
                             "coding": [
                                 {
@@ -4712,11 +4627,11 @@
                 },
                 "account": [
                     {
-                        "reference": "Account/cad7407d-9013-7ba8-1264-f20aa00bae88"
+                        "reference": "Account/4ad7c7d0-b69a-0653-9ea9-0979b8a66b39"
                     }
                 ],
                 "subject": {
-                    "reference": "Patient/0d5226d9-1ef9-df53-c664-86374d08bd38"
+                    "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
                 },
                 "extension": [
                     {
@@ -4731,52 +4646,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Encounter/c31229ec-2a29-2f55-b5b2-2fa309a140ed"
-            }
-        },
-        {
-            "fullUrl": "urn:uuid:46b66fb4-a2c1-c2a3-8a73-0145a97670ec",
-            "resource": {
-                "resourceType": "AllergyIntolerance",
-                "id": "46b66fb4-a2c1-c2a3-8a73-0145a97670ec",
-                "category": [
-                    "medication"
-                ],
-                "type": "allergy",
-                "code": {
-                    "coding": [
-                        {
-                            "code": "XYZallergen"
-                        }
-                    ]
-                },
-                "reaction": [
-                    {
-                        "manifestation": [
-                            {
-                                "text": "moderate"
-                            }
-                        ],
-                        "onset": "2021-01-21"
-                    }
-                ],
-                "criticality": "low",
-                "clinicalStatus": {
-                    "coding": [
-                        {
-                            "code": "active",
-                            "display": "Active",
-                            "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical"
-                        }
-                    ]
-                },
-                "patient": {
-                    "reference": "Patient/0d5226d9-1ef9-df53-c664-86374d08bd38"
-                }
-            },
-            "request": {
-                "method": "PUT",
-                "url": "AllergyIntolerance/46b66fb4-a2c1-c2a3-8a73-0145a97670ec"
+                "url": "Encounter/c5057ffa-0095-fc36-51e7-4a6c801c1ca6"
             }
         },
         {
@@ -5162,7 +5032,7 @@
                 "identifier": [
                     {
                         "value": "OBX-SAC-10.1",
-                        "system": "http://example.org/v2-to-fhir-converter/local-entity-identifier-PD-10.2"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/PD-10.2"
                     }
                 ]
             },
