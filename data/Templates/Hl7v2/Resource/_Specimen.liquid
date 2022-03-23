@@ -91,7 +91,8 @@ Specimen_Subject_ID: A resource Id, used to fill "subject.reference" property.
                         {
                             {% if SPM.32 -%}
                                 "code": "SHIP",
-                                "system":"http://example.com/v2-to-fhir-converter/CodeSystem/additional-identifierType",
+                                "display": "Shipment ID",
+                                "system":"http://example.com/v2-to-fhir-converter/CodeSystem/identifier-type-code",
                             {% endif -%}
                         },
                     ],

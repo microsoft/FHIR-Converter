@@ -47,9 +47,10 @@
             {
                 {% include 'DataType/XAD' XAD: ROL.11 -%}
             },
-            {
+            {%- comment -%}{
                 {% include 'DataType/XAD' XAD: PRT.14.Repeats[0] -%}
             },
+            {%- endcomment -%}
             {% if ORC_24 %}
                 {% for orc24 in ORC_24.Repeats %}
                     {
@@ -100,6 +101,9 @@
                 },
             {% endfor -%}
         ],    
+        {% if PRT %}
+            {% include 'DataType/XCNPractitioner' XCN: PRT -%}       
+        {% endif %}
         {% if OBXXCN1 %}
             {% include 'DataType/XCNPractitioner' XCN: OBXXCN1 -%}       
         {% endif %}
@@ -163,6 +167,7 @@
         {% include 'DataType/XCNPractitioner' XCN: NTE -%}
         {% include 'DataType/XCNPractitioner' XCN: RF1 -%}
         {% include 'DataType/XCNPractitioner' XCN: IAM -%}
+        {% include 'DataType/XCNPractitioner' XCN: ROL -%}
         {% include 'DataType/XCNPractitioner' XCN: AIP -%}
         {% include 'DataType/XCNPractitioner' XCN: SCH_12.12.Repeats[0] -%}
         {% include 'DataType/XCNPractitioner' XCN: SCH_16.16.Repeats[0] -%}

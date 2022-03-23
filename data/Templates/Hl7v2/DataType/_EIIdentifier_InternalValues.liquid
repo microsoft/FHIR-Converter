@@ -7,7 +7,7 @@
     "value":"{{ EI.1 }}",
     {% unless EI.3 and EI.4  -%}
         {% if EI.2 %}
-            "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-{{EI.2 | replace: ' ', '-'}}",
+            "system": "http://example.com/v2-to-fhir-converter/Identifier/{{EI.2 | replace: ' ', '-'}}",
         {% endif %}
     {% endunless -%}
     {% if EI.4 -%}
@@ -18,7 +18,7 @@
         {% elsif EI.4 == "UUID" or  EI.4 == "GUID" -%}
             "system": "urn:uuid:{{ EI.3 }}",
         {% else -%}
-            "system": "http://example.com/v2-to-fhir-converter/universal-entity-identifier-{{EI.4 | replace: ' ', '-' }}",
+            "system": "http://example.com/v2-to-fhir-converter/Identifier/{{EI.4 | replace: ' ', '-' }}",
         {% endif -%}
         "type":{
                     "coding": [

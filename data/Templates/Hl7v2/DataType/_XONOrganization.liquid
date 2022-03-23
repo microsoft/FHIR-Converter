@@ -1,5 +1,8 @@
 {% if XON -%}
     "name":"{{ XON.1.Value }}",
+    {% if Org_Name %}
+        "name": "{{ Org_Name.Value }}",
+    {% endif %}
     "identifier":
     [
         {
@@ -21,31 +24,5 @@
                 ],
             },
         },
-    ],
-{% endif -%}
-{% if XON_PRT -%}
-    "identifier":
-    [
-        {% for PRT_8 in XON_PRT.Repeats %}
-            {
-                {% if PRT_8.10 -%}
-                "value":"{{ PRT_8.10.Value }}",
-                {% else -%}
-                "value":"{{ PRT_8.3.Value }}",
-                {% endif -%}
-                "type":
-                {
-                    "coding":
-                    [
-                        {
-                            {% if PRT_8.7 -%}
-                                "code":"{{ PRT_8.7.Value }}",
-                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
-                            {% endif -%}
-                        },
-                    ],
-                },
-            },
-        {% endfor %}   
     ],
 {% endif -%}
