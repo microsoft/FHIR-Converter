@@ -159,7 +159,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new object[] { "OMG_O19", "OMG-O19-02.hl7" },
 
                 new object[] { "REF_I12", "REF-I12-01.hl7" },
-                new object[] { "REF_I12", "REF-I12-02.hl7" },                
+                new object[] { "REF_I12", "REF-I12-02.hl7" },
                 new object[] { "REF_I14", "REF-I14-01.hl7" },
                 new object[] { "REF_I14", "REF-I14-02.hl7" },
 
@@ -258,7 +258,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             {
                 Assert.Equal(0, patients?.Count());
             }
-            else if (templateName == "BAR_P02") 
+            else if (templateName == "BAR_P02")
             {
                 Assert.Equal(2, patients?.Count());
             }
