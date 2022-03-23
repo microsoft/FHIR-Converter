@@ -493,7 +493,39 @@
                         "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
                     ]
                 },
-                "id": "6a84aefd-6f50-3666-8ccb-bdad442a4c6a"
+                "id": "6a84aefd-6f50-3666-8ccb-bdad442a4c6a",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "999999999"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Seven",
+                        "given": [
+                            "Henry"
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "1001 Village Avenue"
+                        ],
+                        "city": "Portland",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "99123"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "555-555-1002",
+                        "use": "work"
+                    }
+                ]
             },
             "request": {
                 "method": "PUT",
@@ -1476,7 +1508,7 @@
                         }
                     ]
                 },
-                "date": "2020-09-30T03:00:41.234Z",
+                "date": "2021-07-02T05:58:04.780Z",
                 "status": "current",
                 "content": [
                     {

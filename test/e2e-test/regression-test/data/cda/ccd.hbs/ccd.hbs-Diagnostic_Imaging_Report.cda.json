@@ -156,7 +156,39 @@
                         "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
                     ]
                 },
-                "id": "d276aed6-83a7-313b-b45b-d59f2aafe9ad"
+                "id": "d276aed6-83a7-313b-b45b-d59f2aafe9ad",
+                "identifier": [
+                    {
+                        "system": "urn:oid:2.16.840.1.113883.19.5",
+                        "value": "KP00017"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Seven",
+                        "given": [
+                            "Henry"
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "21 North Ave."
+                        ],
+                        "city": "Burlington",
+                        "state": "MA",
+                        "country": "USA",
+                        "postalCode": "02368"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "(555)555-1003",
+                        "use": "work"
+                    }
+                ]
             },
             "request": {
                 "method": "PUT",
@@ -445,7 +477,7 @@
                         }
                     ]
                 },
-                "date": "2020-09-30T03:00:41.331Z",
+                "date": "2021-07-02T05:58:04.383Z",
                 "status": "current",
                 "content": [
                     {

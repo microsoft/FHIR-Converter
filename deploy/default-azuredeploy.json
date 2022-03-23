@@ -32,19 +32,13 @@
       ],
       "defaultValue": "B2"
     },
-    "imageTag": {
+    "imagePath": {
       "type": "string",
-      "allowedValues": [
-        "v1.0.0",
-        "v2.0.0",
-        "v2.1.0"
-      ],
-      "defaultValue": "v2.1.0"
+      "defaultValue": "healthplatformregistry.azurecr.io/fhirconverter:v2.1.1"
     }
   },
   "variables": {
     "lowerCaseServiceName": "[toLower(parameters('serviceName'))]",
-    "registryName": "healthplatformregistry.azurecr.io",
     "resourcesLocation": "[resourceGroup().location]",
     "serverfarmName": "[concat(variables('lowerCaseServiceName'), '-plan')]",
     "appInsightName": "[concat(variables('lowerCaseServiceName'), '-appinsight')]",
@@ -105,23 +99,11 @@
               "value": "[reference(resourceId('Microsoft.Insights/components', variables('appInsightName')), '2014-04-01').InstrumentationKey]"
             },
             {
-              "name": "DOCKER_REGISTRY_SERVER_URL",
-              "value": "[concat('https://', variables('registryName'))]"
-            },
-            {
-              "name": "DOCKER_REGISTRY_SERVER_USERNAME",
-              "value": ""
-            },
-            {
-              "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
-              "value": ""
-            },
-            {
               "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
               "value": "true"
             }
           ],
-          "linuxFxVersion": "[concat('DOCKER|', variables('registryName'), '/fhirconverter:', parameters('imageTag'))]",
+          "linuxFxVersion": "[concat('DOCKER|', parameters('imagePath'))]",
           "appCommandLine": "./deploy/webapp.sh",
           "alwaysOn": true
         },

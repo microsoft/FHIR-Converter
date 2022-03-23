@@ -119,7 +119,7 @@ var getBranches = function () {
     var currentBranch;
     return new Promise(function (fulfill, reject) {
         getRepository()
-            .then(function (repo) {
+            .then(async repo => {
                 repository = repo;
                 return repository.getCurrentBranch();
             })
@@ -131,8 +131,8 @@ var getBranches = function () {
                     // we can ignore, no current branch (no branches in empty repo)
                 }
             )
-            .then(function () {
-                return repository.getReferences(NodeGit.Reference.TYPE.LISTALL);
+            .then(function() {
+                return NodeGit.Repository.getReferences(repository, NodeGit.Reference.TYPE.ALL);
             })
             .then(function (references) {
                 for (var i = 0; i < references.length; i++) {
