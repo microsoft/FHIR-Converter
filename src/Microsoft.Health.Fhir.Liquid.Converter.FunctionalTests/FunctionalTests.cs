@@ -156,7 +156,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new[] { @"REF_I12", @"REF-I12-02.hl7", @"REF-I12-02-expected.json" },
                 new[] { @"REF_I14", @"REF-I14-01.hl7", @"REF-I14-01-expected.json" },
                 new[] { @"REF_I14", @"REF-I14-02.hl7", @"REF-I14-02-expected.json" },
-                
+
                 new[] { @"ADT_A01", @"ADT01-23.hl7", @"ADT01-23-expected.json" },
                 new[] { @"ADT_A01", @"ADT01-28.hl7", @"ADT01-28-expected.json" },
                 new[] { @"ADT_A04", @"ADT04-23.hl7", @"ADT04-23-expected.json" },
