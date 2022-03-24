@@ -53,5 +53,32 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
             return sb.ToString();
         }
+
+        public static object GetIndex(object[] collection, int index)
+        {
+            if (collection != null && collection.Count() > index)
+            {
+                return collection[index];
+            }
+
+            return null;
+        }
+
+        public static object Slice(object[] collection, int s, int n)
+        {
+            if (collection != null)
+            {
+                if (collection.Count() > n)
+                {
+                    return collection.Skip(s).Take(n);
+                }
+                else
+                {
+                    return collection;
+                }
+            }
+
+            return null;
+        }
     }
 }

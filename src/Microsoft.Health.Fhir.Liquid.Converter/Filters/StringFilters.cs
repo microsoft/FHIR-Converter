@@ -105,5 +105,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             var bytes = Convert.FromBase64String(data);
             return Encoding.UTF8.GetString(bytes);
         }
+
+        public static string RemoveCharFromEnd(string data, char c)
+        {
+            return data.TrimEnd(c);
+        }
     }
 }
