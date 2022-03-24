@@ -68,13 +68,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             if (collection != null)
             {
-                if (collection.Count() > n)
+                if (collection.Count() > s + n)
                 {
                     return collection.Skip(s).Take(n);
-                }
-                else
-                {
-                    return collection;
                 }
             }
 

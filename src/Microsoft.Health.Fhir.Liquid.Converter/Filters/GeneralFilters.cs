@@ -87,36 +87,5 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             Array.Copy(hash, 0, guid, 0, 16);
             return new Guid(guid).ToString();
         }
-
-        public static Dictionary<string, object> GetResource(object[] input, string resourceType)
-        {
-            foreach (Dictionary<string, object> resource in input)
-            {
-                var resourceDict = (Dictionary<string, object>)resource["resource"];
-                if ((string)resourceDict["resourceType"] == resourceType) {
-                    return resourceDict;
-                }
-            }
-
-            return null;
-        }
-
-        public static Dictionary<string, object> GetByCode(object[] input, string code)
-        {
-            foreach (Dictionary<string, object> item in input)
-            {
-                if (item.ContainsKey("type")) {
-                    Dictionary<string, object> iterCode = (Dictionary<string, object>)item["type"];
-                    object[] codingArray = (object[])iterCode["coding"];
-                    Dictionary<string, object> coding = (Dictionary<string, object>)codingArray[0];
-                    if ((string)coding["code"] == code)
-                    {
-                        return item;
-                    }
-                }
-            }
-
-            return null;
-        }
     }
 }
