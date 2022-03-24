@@ -1,0 +1,28 @@
+{% comment -%}
+Example of Input:
+{
+    "value": "2222",
+    "system": "phone",
+    "period": {
+        "start": "2001-01-10",
+        "end": "2002-01-10"
+    },
+    "rank": 18,
+    "use": "home"
+}
+{% endcomment -%}
+{% capture XAD -%}
+{% comment %}   1 Telephone Number             {% endcomment %}^
+{% comment %}   2 Telecom Use Code             {% endcomment %}^
+{% comment %}   3 Telecom Equipment Type       {% endcomment %}^
+{% comment %}   4 Email Address                {% endcomment %}^
+{% comment %}   5 Country Code                 {% endcomment %}^
+{% comment %}   6 Area/City Code               {% endcomment %}^
+{% comment %}   7 Local Number                 {% endcomment %}^
+{% comment %}   8 Extension                    {% endcomment %}^
+{% comment %}   9 Any Text                     {% endcomment %}^
+{% comment %}  10 Extension Prefix             {% endcomment %}^
+{% comment %}  11 Speed Dial Code              {% endcomment %}^
+{% comment %}  12 Unformatted Telephone Number {% endcomment %}
+{% endcapture -%}
+{{ XAD | strip_newlines }}
