@@ -21,7 +21,14 @@ name = {
         "end": "1924-10-12"
     }
 }
+or
+names = [name, name]
+or
+fields = []
 {% endcomment -%}
+{%- if fields -%}
+{{ fields | join: '^' -}}
+{%- else -%}
 {%- if name -%}
     {%- assign names = name | compact -%}
 {%- endif -%}
@@ -33,7 +40,6 @@ name = {
 {%- assign suffix = name.suffix | get_index: 0 -%}
 {%- assign degree = name.suffix | get_index: 1 -%}
 {%- assign proSuffix = name.suffix | get_index: 2 -%}
-{% capture XPN -%}
 {% comment %}  1 Family Name         {% endcomment %}{% include 'DataType/FN-FamilyName' surname: name.family -%}^
 {% comment %}  2 Given Name          {% endcomment %}{{ given | default: "" }}^
 {% comment %}  3 Further Name        {% endcomment %}{{ further | default: "" }}^
@@ -49,8 +55,8 @@ name = {
 {% comment %} 13 Expiration Date     {% endcomment %}{{ name.period.end | default: "" | remove: "-" }}^
 {% comment %} 14 Professional Suffix {% endcomment %}{{ proSuffix | default: "" }}^
 {% comment %} 15 Unknown Extra?????  {% endcomment %}{{ unknownExtraName | default: "" }}
-{% endcapture -%}
-{{ XPN | strip_newlines }}~
+~
 {%- endfor -%}
 {% endcapture -%}
-{{ repeats | strip_newlines | remove_char_from_end: '~' }}
+{{ repeats | strip_newlines | remove_char_from_end: '~' -}}
+{%- endif -%}
