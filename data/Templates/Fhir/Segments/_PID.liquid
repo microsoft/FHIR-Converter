@@ -4,6 +4,10 @@
 {%- if maidenInfo -%}
 {%- assign maidenNames = maidenInfo.valueString | split: '--' -%}
 {%- endif -%}
+{%- assign birthInfo = patient._birthDate.extension | get_by_url: 'http://hl7.org/fhir/StructureDefinition/patient-birthTime' -%}
+{%- if birthInfo -%}
+{%- assign birthDate = birthInfo.valueDateTime -%}
+{%- endif -%}
 
 PID
 (0)PID|
@@ -15,9 +19,9 @@ PID
 {% comment %} 4 Alternate Patient ID    {% endcomment %}(4)PATID567^^^test2|
 {% comment %} 5 Patient Name            {% endcomment %}(5){% include 'DataType/XPN-ExpendedPersonName' names: patientNames -%}|
 {% comment %} 6 Mother's Maiden Name    {% endcomment %}(6){% include 'DataType/XPN-ExpendedPersonName' fields: maidenNames -%}|
-(7)198808181126+0215|
-(8)M|
-(9)elbert^Son|
+{% comment %} 7 Date/Time of Birth      {% endcomment %}(7)198808181126+0215|
+{% comment %} 8 Administrative Sex      {% endcomment %}(8){{ patient.gender | first | upcase }}|
+{% comment %} 9 Patient Alias           {% endcomment %}(9)elbert^Son|
 (10)2106-3^White^HL70005~2028-9^Asian^HL70005|
 (11)1000&Hospital Lane^Ste. 123^Ann Arbor ^MI^99999^USA^M^^&W^^^20000110&20000120^^^^^^^Near Highway|
 (12)GL|
