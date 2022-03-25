@@ -218,10 +218,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             var traceInfo = new Hl7v2TraceInfo();
             var actualContent = hl7v2Processor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Hl7v2), traceInfo);
 
+            /*
+            var newPath = expectedFile.Replace("Hl7v2", "newHl7v2");
+            Directory.CreateDirectory(Path.GetDirectoryName(newPath));
+            File.WriteAllText(newPath, actualContent);
+            */
             JsonSerializer serializer = new JsonSerializer();
             var expectedObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(expectedContent)));
             var actualObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(actualContent)));
-
             new List<string>
             {
                 "$.entry[?(@.resource.resourceType=='Provenance')].resource.text.div",
@@ -230,7 +234,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 expectedObject.SelectToken(path).Parent.Remove();
                 actualObject.SelectToken(path).Parent.Remove();
             });
-
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
             Assert.True(traceInfo.UnusedSegments.Count > 0);
         }
