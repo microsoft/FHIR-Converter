@@ -1,8 +1,8 @@
 {% if PLN -%}
     "value":"{{ PLN.1.Value }}",
     {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
-    "type":
-    {
+    "type": {
+        {% include 'DataType/CWECodeableConceptInternalValues' mapping: 'CodeSystem/PractitionerIDNumberType', CWE: PLN.2 %}
     },
     "period":
     {

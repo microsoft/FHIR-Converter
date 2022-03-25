@@ -1,0 +1,10 @@
+{% capture identifiers -%}
+    {% if RQD.4 -%}
+        {{ORC.2.Value}},{{ORC.3.Value}},{{RQD.4.Value}}
+    {% elsif RQD.2 -%}
+        {{ORC.2.Value}},{{ORC.3.Value}},{{RQD.2.Value}}
+    {% elsif RQD.3 -%}
+        {{ORC.2.Value}},{{ORC.3.Value}},{{RQD.3.Value}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'SupplyRequest', false, baseId | generate_uuid }}
