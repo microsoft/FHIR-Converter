@@ -206,6 +206,47 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
+        [Fact]
+        public void GivenCcdaMessageForDatetimeTesting_WhenConvert_ExpectedResultShouldBeReturned()
+        {
+            var inputFile = Path.Combine("TestData", "TestDatetime", "Input", "CcdaTestDatetimeInput.ccda");
+            var ccdaProcessor = new CcdaProcessor();
+            var templateDirectory = Path.Join("TestData", "TestDatetime", "Template");
+
+            var inputContent = File.ReadAllText(inputFile);
+            var actualContent = ccdaProcessor.Convert(inputContent, "CcdaTestDatetimeTemplate", new TemplateProvider(templateDirectory, DataType.Ccda));
+
+            var actualObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(actualContent);
+
+            Assert.Equal("2001-01", actualObject["datetime1"]);
+            Assert.Equal("2001-01-01", actualObject["datetime2"]);
+            Assert.Equal("2001-01-01", actualObject["datetime3"]);
+            Assert.Contains("2001-11-11T12:00:00", actualObject["datetime4"].ToString());
+            Assert.Contains("2001-11-11T12:23:00", actualObject["datetime5"].ToString());
+            Assert.Equal("2020-01-01T01:01:01+08:00", actualObject["datetime6"]);
+        }
+
+        [Fact]
+        public void GivenHl7v2MessageForDatetimeTesting_WhenConvert_ExpectedResultShouldBeReturned()
+        {
+            var inputFile = Path.Combine("TestData", "TestDatetime", "Input", "Hl7v2TestDatetimeInput.hl7v2");
+            var hl7v2Processor = new Hl7v2Processor();
+            var templateDirectory = Path.Join("TestData", "TestDatetime", "Template");
+
+            var inputContent = File.ReadAllText(inputFile);
+            var traceInfo = new Hl7v2TraceInfo();
+            var actualContent = hl7v2Processor.Convert(inputContent, "Hl7v2TestDatetimeTemplate", new TemplateProvider(templateDirectory, DataType.Hl7v2), traceInfo);
+
+            var actualObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(actualContent);
+
+            Assert.Equal("2001-01", actualObject["datetime1"]);
+            Assert.Equal("2001-01-01", actualObject["datetime2"]);
+            Assert.Equal("2001-01-01", actualObject["datetime3"]);
+            Assert.Contains("2001-11-11T12:00:00", actualObject["datetime4"].ToString());
+            Assert.Contains("2001-11-11T12:23:00", actualObject["datetime5"].ToString());
+            Assert.Equal("2020-01-01T01:01:01+08:00", actualObject["datetime6"]);
+        }
+
         [Theory]
         [MemberData(nameof(GetDataForHl7v2))]
         public void GivenHl7v2Message_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
