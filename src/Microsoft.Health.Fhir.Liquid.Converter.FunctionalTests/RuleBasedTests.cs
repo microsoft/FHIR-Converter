@@ -538,12 +538,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 "source",
             };
 
-            public static readonly List<string> _noPatientTemplate = new List<string>
+            private static readonly List<string> _noPatientTemplate = new List<string>
             {
                 "ADT_A40", "ADT_A41", "ADT_A45", "ADT_A47",
             };
 
-            public static readonly List<string> _multiplePatientTemplate = new List<string>
+            private static readonly List<string> _multiplePatientTemplate = new List<string>
             {
                 "BAR_P02",
             };
