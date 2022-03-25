@@ -254,11 +254,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         {
             var result = await ConvertData(templateName, samplePath, dataType);
             var patients = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Patient')].resource.id");
-            if (templateName == "ADT_A40" || templateName == "ADT_A41" || templateName == "ADT_A45" || templateName == "ADT_A47")
+                  
+            if (ResourceFilter.NonPatientTemplates.All(func => func(templateName)))
             {
                 Assert.Equal(0, patients?.Count());
             }
-            else if (templateName == "BAR_P02")
+            else if (ResourceFilter.MultiplePatientTemplates.All(func => func(templateName)))
             {
                 Assert.Equal(2, patients?.Count());
             }
@@ -537,6 +538,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 "source",
             };
 
+            public static readonly List<string> _noPatientTemplate = new List<string> 
+            { 
+                "ADT_A40", "ADT_A41", "ADT_A45", "ADT_A47",
+            };
+
+            public static readonly List<string> _multiplePatientTemplate = new List<string> 
+            { 
+                "BAR_P02",
+            };
+
             public static readonly List<Func<string, bool>> NonCompareProperties = new List<Func<string, bool>>
             {
                 // Exlude all the properties whose value is written in mapping tables explicitly or peculiar to FHIR
@@ -552,6 +563,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 (string input) => DateTime.TryParse(input, out _),
                 (string input) => bool.TryParse(input, out _),
             };
+
+           public static readonly List<Func<string, bool>> NonPatientTemplates = new List<Func<string, bool>>
+            {
+                // Templates that dosn't contains patient resource
+                _noPatientTemplate.Contains,
+            };
+
+            public static readonly List<Func<string, bool>> MultiplePatientTemplates = new List<Func<string, bool>>
+            {
+                // Templates that contains multiple patient resource
+                _multiplePatientTemplate.Contains,
+            };
+
         }
     }
 }
