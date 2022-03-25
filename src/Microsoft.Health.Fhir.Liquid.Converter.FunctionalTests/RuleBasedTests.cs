@@ -254,7 +254,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         {
             var result = await ConvertData(templateName, samplePath, dataType);
             var patients = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Patient')].resource.id");
-                  
+
             if (ResourceFilter.NonPatientTemplates.All(func => func(templateName)))
             {
                 Assert.Equal(0, patients?.Count());
@@ -538,13 +538,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 "source",
             };
 
-            public static readonly List<string> _noPatientTemplate = new List<string> 
-            { 
+            public static readonly List<string> _noPatientTemplate = new List<string>
+            {
                 "ADT_A40", "ADT_A41", "ADT_A45", "ADT_A47",
             };
 
-            public static readonly List<string> _multiplePatientTemplate = new List<string> 
-            { 
+            public static readonly List<string> _multiplePatientTemplate = new List<string>
+            {
                 "BAR_P02",
             };
 
@@ -564,7 +564,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 (string input) => bool.TryParse(input, out _),
             };
 
-           public static readonly List<Func<string, bool>> NonPatientTemplates = new List<Func<string, bool>>
+            public static readonly List<Func<string, bool>> NonPatientTemplates = new List<Func<string, bool>>
             {
                 // Templates that dosn't contains patient resource
                 _noPatientTemplate.Contains,
@@ -575,7 +575,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 // Templates that contains multiple patient resource
                 _multiplePatientTemplate.Contains,
             };
-
         }
     }
 }
