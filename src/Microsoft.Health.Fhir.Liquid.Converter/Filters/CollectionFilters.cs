@@ -76,5 +76,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
             return null;
         }
+
+        public static object FilterByKeyWithValue(object[] input, string key, string value)
+        {
+            List<Dictionary<string, object>> ret = new List<Dictionary<string, object>>();
+            foreach (Dictionary<string, object> resource in input)
+            {
+                if ((string)resource[key] == value)
+                {
+                    ret.Add(resource);
+                }
+            }
+
+            return ret;
+        }
     }
 }
