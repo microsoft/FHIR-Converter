@@ -20,19 +20,19 @@ Example of Input:
 }
 {% endcomment -%}
 {% capture XAD -%}
-{% comment %}   1 Street Address        {% endcomment %}^
-{% comment %}   2 Other Designation     {% endcomment %}^
-{% comment %}   3 City                  {% endcomment %}{{ address.city }}^
-{% comment %}   4 State Or Province     {% endcomment %}^
-{% comment %}   5 Zip or Postal Code    {% endcomment %}^
-{% comment %}   6 Country               {% endcomment %}^
-{% comment %}   7 Address Type          {% endcomment %}^
-{% comment %}   8 Other Geo Designation {% endcomment %}^
-{% comment %}   9 County/Parish Code    {% endcomment %}^
-{% comment %}  10 Census Tract          {% endcomment %}^
-{% comment %}  11 Address Represen Code {% endcomment %}^
-{% comment %}  12 Address Valid Range   {% endcomment %}^
-{% comment %}  13 Effective Date        {% endcomment %}^
-{% comment %}  14 Expiration Date       {% endcomment %}
+{% comment %}  1 Street Address        {% endcomment %}^
+{% comment %}  2 Other Designation     {% endcomment %}^
+{% comment %}  3 City                  {% endcomment %}{{ address.city }}^
+{% comment %}  4 State Or Province     {% endcomment %}^
+{% comment %}  5 Zip or Postal Code    {% endcomment %}^
+{% comment %}  6 Country               {% endcomment %}^
+{% comment %}  7 Address Type          {% endcomment %}^
+{% comment %}  8 Other Geo Designation {% endcomment %}^
+{% comment %}  9 County/Parish Code    {% endcomment %}^
+{% comment %} 10 Census Tract          {% endcomment %}^
+{% comment %} 11 Address Represen Code {% endcomment %}^
+{% comment %} 12 Address Valid Range   {% endcomment %}^
+{% comment %} 13 Effective Date        {% endcomment %}^
+{% comment %} 14 Expiration Date       {% endcomment %}
 {% endcapture -%}
 {{ XAD | strip_newlines }}
