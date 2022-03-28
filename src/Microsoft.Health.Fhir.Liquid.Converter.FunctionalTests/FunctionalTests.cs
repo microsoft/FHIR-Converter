@@ -206,6 +206,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
+
         public static IEnumerable<object[]> GetDataForStu3ToR4()
         {
             var data = new List<string>
@@ -226,6 +227,46 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 Path.Join(Constants.SampleDataDirectory, "STU3", item + ".json"),
                 Path.Join(Constants.ExpectedDataFolder, "R3ToR4", item + ".json"),
             });
+  
+        [Fact]
+        public void GivenCcdaMessageForTimezoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
+        {
+            var inputFile = Path.Combine("TestData", "TimezoneHandling", "Input", "CcdaTestTimezoneInput.ccda");
+            var ccdaProcessor = new CcdaProcessor();
+            var templateDirectory = Path.Join("TestData", "TimezoneHandling", "Template");
+
+            var inputContent = File.ReadAllText(inputFile);
+            var actualContent = ccdaProcessor.Convert(inputContent, "CcdaTestTimezoneTemplate", new TemplateProvider(templateDirectory, DataType.Ccda));
+
+            var actualObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(actualContent);
+
+            Assert.Equal("2001-01", actualObject["datetime1"]);
+            Assert.Equal("2001-01-01", actualObject["datetime2"]);
+            Assert.Equal("2001-01-01", actualObject["datetime3"]);
+            Assert.Contains("2001-11-11T12:00:00", actualObject["datetime4"].ToString());
+            Assert.Contains("2001-11-11T12:23:00", actualObject["datetime5"].ToString());
+            Assert.Equal("2020-01-01T01:01:01+08:00", actualObject["datetime6"]);
+        }
+
+        [Fact]
+        public void GivenHl7v2MessageForTimeZoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
+        {
+            var inputFile = Path.Combine("TestData", "TimezoneHandling", "Input", "Hl7v2TestTimezoneInput.hl7v2");
+            var hl7v2Processor = new Hl7v2Processor();
+            var templateDirectory = Path.Join("TestData", "TimezoneHandling", "Template");
+
+            var inputContent = File.ReadAllText(inputFile);
+            var traceInfo = new Hl7v2TraceInfo();
+            var actualContent = hl7v2Processor.Convert(inputContent, "Hl7v2TestTimezoneTemplate", new TemplateProvider(templateDirectory, DataType.Hl7v2), traceInfo);
+
+            var actualObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(actualContent);
+
+            Assert.Equal("2001-01", actualObject["datetime1"]);
+            Assert.Equal("2001-01-01", actualObject["datetime2"]);
+            Assert.Equal("2001-01-01", actualObject["datetime3"]);
+            Assert.Contains("2001-11-11T12:00:00", actualObject["datetime4"].ToString());
+            Assert.Contains("2001-11-11T12:23:00", actualObject["datetime5"].ToString());
+            Assert.Equal("2020-01-01T01:01:01+08:00", actualObject["datetime6"]);
         }
 
         [Theory]
