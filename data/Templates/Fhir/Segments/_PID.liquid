@@ -9,6 +9,7 @@
 {%- assign birthDate = birthInfo.valueDateTime -%}
 {%- endif -%}
 {%- assign patientAddress = patient.address | slice: 0, 1 -%}
+{%- assign patientHomePhones = patient.telecom | filter_by_key_with_value: 'use', 'home' -%}
 PID
 (0)PID|
 {% comment %}  1 Set ID - PID            {% endcomment %}(1)1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
@@ -17,17 +18,15 @@ PID
 {% comment %}  3 Patient Identifier List {% endcomment %}(3)PATID1234^5^M11^test1&2.16.1&HCD^MR^GOOD HEALTH HOSPITAL~123456789^^^USSSA^SS|
 {% comment %} ??                         {% endcomment %}{{ patientMRalt.value }}^^^^{{ patientMRalt.type.coding[0].code  }}^^{{ patientMRalt.period.start }}^{{ patientMRalt.period.end }}|
 {% comment %}  4 Alternate Patient ID    {% endcomment %}(4)PATID567^^^test2|
-{% comment %}  5 Patient Name            {% endcomment %}(5){% include 'DataType/XPN-ExpendedPersonName' names: patientNames -%}|
-{% comment %}  6 Mother's Maiden Name    {% endcomment %}(6){% include 'DataType/XPN-ExpendedPersonName' fields: maidenNames -%}|
+{% comment %}  5 Patient Name            {% endcomment %}(5){% include 'DataType/XPN-ExpendedPersonName' names: patientNames %}|
+{% comment %}  6 Mother's Maiden Name    {% endcomment %}(6){% include 'DataType/XPN-ExpendedPersonName' fields: maidenNames %}|
 {% comment %}  7 Date/Time of Birth      {% endcomment %}(7)198808181126+0215|
 {% comment %}  8 Administrative Sex      {% endcomment %}(8){{ patient.gender | first | upcase }}|
 {% comment %}  9 Patient Alias           {% endcomment %}(9)elbert^Son|
 {% comment %} 10 Race                    {% endcomment %}(10)2106-3^White^HL70005~2028-9^Asian^HL70005|
-{% comment %} 11 Patient Address         {% endcomment %}(11){% include 'DataType/XAD-ExtendedAddress' addresses: patientAddress -%}|
-
-
-(12)GL|
-(13)78788788^^CP^5555^^^1111^^^^^2222^20010110^20020110^^^^18~12121212^^CP|
+{% comment %} 11 Patient Address         {% endcomment %}(11){% include 'DataType/XAD-ExtendedAddress' addresses: patientAddress %}|
+{% comment %} 12 Country Code            {% endcomment %}(12)GL|
+{% comment %} 13 Phone Number (Home)     {% endcomment %}(13){% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientHomePhones %}|
 (14)7777^^CP~1111^^TDD|
 (15)ara^^HL70296^eng^English-us^HL70296^v2^v2.1^TextInEnglish|
 (16)M^Married|

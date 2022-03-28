@@ -11,8 +11,13 @@ Example of Input:
     "use": "home"
 }
 {% endcomment -%}
-{% capture XAD -%}
-{% comment %}  1 Telephone Number             {% endcomment %}^
+{%- if phoneNumber -%}
+    {%- assign phoneNumbers = phoneNumber | compact -%}
+{%- endif -%}
+{% capture repeats -%}
+{%- for phoneNumber in phoneNumbers -%}
+{% capture XTN -%}
+{% comment %}  1 Telephone Number             {% endcomment %}{{ phoneNumber.value }}^
 {% comment %}  2 Telecom Use Code             {% endcomment %}^
 {% comment %}  3 Telecom Equipment Type       {% endcomment %}^
 {% comment %}  4 Email Address                {% endcomment %}^
@@ -25,4 +30,8 @@ Example of Input:
 {% comment %} 11 Speed Dial Code              {% endcomment %}^
 {% comment %} 12 Unformatted Telephone Number {% endcomment %}
 {% endcapture -%}
-{{ XAD | strip_newlines }}
+{{ XTN | strip_newlines }}
+~
+{%- endfor -%}
+{% endcapture -%}
+{{ repeats | strip_newlines | remove_char_from_end: '~' -}}
