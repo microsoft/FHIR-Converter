@@ -1,7 +1,7 @@
 {
     "resourceType": "Bundle",
     "type": "batch",
-    "timestamp": "2002-02-15T09:30:00",
+    "timestamp": "2002-02-15T09:30:00+06:00",
     "identifier": {
         "value": "CNTRL-3456"
     },
@@ -68,10 +68,10 @@
                 "id": "1af3c547-cdab-c300-08bf-cc3836b6381a",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-23T10:37:42.463Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ORU_R01.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-25T12:34:29.872Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ORU_R01.</span></p></div>"
                 },
-                "occurredDateTime": "2002-02-15T09:30:00",
-                "recorded": "2002-02-15T09:30:00",
+                "occurredDateTime": "2002-02-15T09:30:00+06:00",
+                "recorded": "2002-02-15T09:30:00+06:00",
                 "agent": [
                     {
                         "type": {
@@ -354,7 +354,7 @@
                 },
                 "specimen": [
                     {
-                        "reference": "Specimen/03cf7725-1dd2-d3e3-65da-f7aa7b36e632"
+                        "reference": "Specimen/c965d3ae-f07a-1943-b184-9471ce1c3b44"
                     }
                 ]
             },
@@ -446,7 +446,7 @@
                         }
                     }
                 ],
-                "effectiveDateTime": "2002-02-15T07:30:00",
+                "effectiveDateTime": "2002-02-15T07:30:00+06:00",
                 "code": {
                     "coding": [
                         {
@@ -466,7 +466,7 @@
                 ],
                 "specimen": [
                     {
-                        "reference": "Specimen/03cf7725-1dd2-d3e3-65da-f7aa7b36e632"
+                        "reference": "Specimen/c965d3ae-f07a-1943-b184-9471ce1c3b44"
                     }
                 ],
                 "result": [
@@ -481,10 +481,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:03cf7725-1dd2-d3e3-65da-f7aa7b36e632",
+            "fullUrl": "urn:uuid:c965d3ae-f07a-1943-b184-9471ce1c3b44",
             "resource": {
                 "resourceType": "Specimen",
-                "id": "03cf7725-1dd2-d3e3-65da-f7aa7b36e632",
+                "id": "c965d3ae-f07a-1943-b184-9471ce1c3b44",
                 "identifier": [
                     {
                         "value": "845439",
@@ -512,12 +512,12 @@
                     }
                 ],
                 "collection": {
-                    "collectedDateTime": "2002-02-15T07:30:00"
+                    "collectedDateTime": "2002-02-15T07:30:00+06:00"
                 }
             },
             "request": {
                 "method": "PUT",
-                "url": "Specimen/03cf7725-1dd2-d3e3-65da-f7aa7b36e632"
+                "url": "Specimen/c965d3ae-f07a-1943-b184-9471ce1c3b44"
             }
         }
     ]

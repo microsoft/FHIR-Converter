@@ -21,7 +21,7 @@ CDA Header
 	<id root="db734647-fc99-424c-a864-7e3cda82e703"/>
 	<code code="34133-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Summarization of Episode Note"/>
 	<title>Community Health and Hospitals: Health Summary</title>
-	<effectiveTime value="20140416115439"/>
+	<effectiveTime value="20140416115439+0500"/>
 	<confidentialityCode code="N" displayName="Normal" codeSystem="2.16.840.1.113883.5.25" codeSystemName="Confidentiality Code"/>
 	<languageCode code="en-US"/>
 	<setId extension="sTT988" root="2.16.840.1.113883.19.5.99999.19"/>
@@ -115,7 +115,7 @@ CDA Header
 		</patientRole>
 	</recordTarget>
 	<author>
-		<time value="20140416115439"/>
+		<time value="20140416115439+0500"/>
 		<assignedAuthor>
 			<id extension="99999999" root="2.16.840.1.113883.4.6"/>
 			<code code="200000000X" codeSystem="2.16.840.1.113883.6.101"
@@ -244,7 +244,7 @@ CDA Header
 		</assignedEntity>
 	</legalAuthenticator>
 	<authenticator>
-		<time value="20140416115439"/>
+		<time value="20140416115439+0500"/>
 		<signatureCode code="S"/>
 		<assignedEntity>
 			<id extension="999999999" root="2.16.840.1.113883.4.6"/>
@@ -287,8 +287,8 @@ CDA Header
 	<documentationOf>
 		<serviceEvent classCode="PCPR">
 			<effectiveTime>
-				<low value="20100331100000"/>
-				<high value="20101024100000"/>
+				<low value="20100331100000+0500"/>
+				<high value="20101024100000+0500"/>
 			</effectiveTime>
 			<performer typeCode="PRF">
 				<functionCode code="PCP" displayName="Primary Care Physician"
@@ -416,7 +416,7 @@ Allergies, Adverse Reactions, Alerts
 									displayName="Allergies, adverse reactions, alerts"/>
 								<statusCode code="active"/>
 								<effectiveTime>
-									<low value="20100331100000"/>
+									<low value="20100331100000+0500"/>
 								</effectiveTime>
 								<entryRelationship typeCode="SUBJ" inversionInd="true">
 									<!--Allergy - Intolerance Observation -->
@@ -501,7 +501,7 @@ encoded in RxNorm, RxNorm, NDF-RT and UNII respectively.
 									displayName="Allergies, adverse reactions, alerts"/>
 								<statusCode code="active"/>
 								<effectiveTime>
-									<low value="20100331100000"/>
+									<low value="20100331100000+0500"/>
 								</effectiveTime>
 								<entryRelationship typeCode="SUBJ" inversionInd="true">
 									<!--Allergy - Intolerance Observation -->
@@ -584,7 +584,7 @@ encoded in RxNorm, RxNorm, NDF-RT and UNII respectively.
 									displayName="Allergies, adverse reactions, alerts"/>
 								<statusCode code="active"/>
 								<effectiveTime>
-									<low value="20100331100000"/>
+									<low value="20100331100000+0500"/>
 								</effectiveTime>
 								<entryRelationship typeCode="SUBJ" inversionInd="true">
 									<!--Allergy - Intolerance Observation -->
@@ -771,7 +771,7 @@ Encounters section
 											displayName="Routine general medical examination at a health care facility" codeSystemName="ICD-9-CM"/>
 								</code>
 								<statusCode code="completed"/>
-								<effectiveTime value="20100331100000"/>
+								<effectiveTime value="20100331100000+0500"/>
 				                    <entryRelationship typeCode="RSON">
 				                        <observation classCode="OBS" moodCode="EVN">
 					                        <templateId root="2.16.840.1.113883.10.20.22.4.19"/>
@@ -782,7 +782,7 @@ Encounters section
 	                            			</text>
 					                        <statusCode code="completed"/>
 					                        <effectiveTime>
-					                            <low value="20100331100000"/>
+					                            <low value="20100331100000+0500"/>
 					                        </effectiveTime>
 					                        <value xsi:type="CD" code="53741008"
 					                        	displayName="Coronary Artery Disease No MI"
@@ -805,7 +805,7 @@ Encounters section
 	                            			</text>
 					                        <statusCode code="completed"/>
 					                        <effectiveTime>
-					                            <low value="20100331100000"/>
+					                            <low value="20100331100000+0500"/>
 					                        </effectiveTime>
 					                        <value xsi:type="CD" code="44054006"
 					                        	displayName="Diabetes"
@@ -828,7 +828,7 @@ Encounters section
 	                            			</text>
 					                        <statusCode code="completed"/>
 					                        <effectiveTime>
-					                            <low value="20100331100000"/>
+					                            <low value="20100331100000+0500"/>
 					                        </effectiveTime>
 					                        <value xsi:type="CD" code="59621000"
 					                        	displayName="Hypertension"
@@ -916,7 +916,7 @@ Encounters section
 											displayName="Routine general medical examination at a health care facility" codeSystemName="ICD-9-CM"/>
 								</code>
 								<statusCode code="completed"/>
-								<effectiveTime value="20100625100000"/>
+								<effectiveTime value="20100625100000+0500"/>
 							</encounter>
 						</entry>
 						<entry typeCode="DRIV">
@@ -935,7 +935,7 @@ Encounters section
 											displayName="Routine general medical examination at a health care facility" codeSystemName="ICD-9-CM"/>
 								</code>
 								<statusCode code="completed"/>
-								<effectiveTime value="20101024100000"/>
+								<effectiveTime value="20101024100000+0500"/>
 							</encounter>
 						</entry>
 				</section>
@@ -1000,7 +1000,7 @@ Immunizations section
 									<reference value="#Immunization1"/>
 								</text>
 								<statusCode code="completed"/>
-								<effectiveTime value="20101024100000"/>
+								<effectiveTime value="20101024100000+0500"/>
 								<routeCode code="C28161" codeSystem="2.16.840.1.113883.3.26.1.1"
 									codeSystemName="NCI Thesaurus"
 									displayName="Intramuscular injection"/>
@@ -1063,7 +1063,7 @@ Immunizations section
 									<reference value="#Immunization2"/>
 								</text>
 								<statusCode code="completed"/>
-								<effectiveTime value="20101024100000"/>
+								<effectiveTime value="20101024100000+0500"/>
 								<routeCode code="C28161" codeSystem="2.16.840.1.113883.3.26.1.1"
 									codeSystemName="NCI Thesaurus"
 									displayName="Intramuscular injection"/>
@@ -1238,7 +1238,7 @@ Medications section
 								<text/>
 								<statusCode code="completed"/>
 								<effectiveTime xsi:type="IVL_TS">
-									<low value="20100331100000"/>
+									<low value="20100331100000+0500"/>
 									<high nullFlavor="UNK"/>
 								</effectiveTime>
 								<consumable>
@@ -1268,7 +1268,7 @@ Medications section
 								<text/>
 								<statusCode code="completed"/>
 								<effectiveTime xsi:type="IVL_TS">
-									<low value="20100331100000"/>
+									<low value="20100331100000+0500"/>
 									<high nullFlavor="UNK"/>
 								</effectiveTime>
 								<consumable>
@@ -1298,7 +1298,7 @@ Medications section
 								<text/>
 								<statusCode code="completed"/>
 								<effectiveTime xsi:type="IVL_TS">
-									<low value="20100331100000"/>
+									<low value="20100331100000+0500"/>
 									<high nullFlavor="UNK"/>
 								</effectiveTime>
 								<consumable>
@@ -1328,7 +1328,7 @@ Medications section
 								<text/>
 								<statusCode code="completed"/>
 								<effectiveTime xsi:type="IVL_TS">
-									<low value="20100331100000"/>
+									<low value="20100331100000+0500"/>
 									<high nullFlavor="UNK"/>
 								</effectiveTime>
 								<consumable>
@@ -1358,7 +1358,7 @@ Medications section
 								<text/>
 								<statusCode code="completed"/>
 								<effectiveTime xsi:type="IVL_TS">
-									<low value="20100331100000"/>
+									<low value="20100331100000+0500"/>
 									<high nullFlavor="UNK"/>
 								</effectiveTime>
 								<consumable>
@@ -1388,7 +1388,7 @@ Medications section
 								<text/>
 								<statusCode code="completed"/>
 								<effectiveTime xsi:type="IVL_TS">
-									<low value="20101024100000"/>
+									<low value="20101024100000+0500"/>
 									<high nullFlavor="UNK"/>
 								</effectiveTime>
 								<consumable>
@@ -1418,7 +1418,7 @@ Medications section
 								<text/>
 								<statusCode code="completed"/>
 								<effectiveTime xsi:type="IVL_TS">
-									<low value="20101024100000"/>
+									<low value="20101024100000+0500"/>
 									<high nullFlavor="UNK"/>
 								</effectiveTime>
 								<consumable>
@@ -1448,7 +1448,7 @@ Medications section
 								<text/>
 								<statusCode code="completed"/>
 								<effectiveTime xsi:type="IVL_TS">
-									<low value="20101024100000"/>
+									<low value="20101024100000+0500"/>
 									<high nullFlavor="UNK"/>
 								</effectiveTime>
 								<consumable>
@@ -1607,7 +1607,7 @@ Problems section
 									codeSystemName="HL7ActClass" displayName="Concern"/>
 								<statusCode code="active"/>
 								<effectiveTime>
-									<low value="20100331100000"/>
+									<low value="20100331100000+0500"/>
 								</effectiveTime>
 								<entryRelationship typeCode="SUBJ">
 									<!-- Problem observation template -->
@@ -1617,7 +1617,7 @@ Problems section
 										<code code="282291009" codeSystem="2.16.840.1.113883.6.96" displayName="Diagnosis"/>
 										<statusCode code="completed"/>
 										<effectiveTime>
-											<low value="20100331100000"/>
+											<low value="20100331100000+0500"/>
 										</effectiveTime>
 										<value xsi:type="CD" code="53741008" codeSystem="2.16.840.1.113883.6.96"
 											displayName="Coronary arteriosclerosis"
@@ -1651,7 +1651,7 @@ Problems section
 									codeSystemName="HL7ActClass" displayName="Concern"/>
 								<statusCode code="active"/>
 								<effectiveTime>
-									<low value="20100331100000"/>
+									<low value="20100331100000+0500"/>
 								</effectiveTime>
 								<entryRelationship typeCode="SUBJ">
 									<!-- Problem observation template -->
@@ -1661,7 +1661,7 @@ Problems section
 										<code code="282291009" codeSystem="2.16.840.1.113883.6.96" displayName="Diagnosis"/>
 										<statusCode code="completed"/>
 										<effectiveTime>
-											<low value="20100331100000"/>
+											<low value="20100331100000+0500"/>
 										</effectiveTime>
 										<value xsi:type="CD" code="44054006" codeSystem="2.16.840.1.113883.6.96"
 											displayName="Diabetes mellitus type 2"
@@ -1695,7 +1695,7 @@ Problems section
 									codeSystemName="HL7ActClass" displayName="Concern"/>
 								<statusCode code="active"/>
 								<effectiveTime>
-									<low value="20100331100000"/>
+									<low value="20100331100000+0500"/>
 								</effectiveTime>
 								<entryRelationship typeCode="SUBJ">
 									<!-- Problem observation template -->
@@ -1705,7 +1705,7 @@ Problems section
 										<code code="282291009" codeSystem="2.16.840.1.113883.6.96" displayName="Diagnosis"/>
 										<statusCode code="completed"/>
 										<effectiveTime>
-											<low value="20100331100000"/>
+											<low value="20100331100000+0500"/>
 										</effectiveTime>
 										<value xsi:type="CD" code="59621000" codeSystem="2.16.840.1.113883.6.96"
 											displayName="Essential hypertension"
@@ -1971,7 +1971,7 @@ Procedures section
 											displayName="Dietary surveillance and counseling" codeSystemName="ICD-9-CM"/>
 								</code>
 								<statusCode code="completed"/>
-								<effectiveTime value="20100331100000"/>
+								<effectiveTime value="20100331100000+0500"/>
 									<methodCode nullFlavor="UNK"/>
 					    	</procedure>
 					    </entry>
@@ -1994,7 +1994,7 @@ Procedures section
 											displayName="Exercise counseling" codeSystemName="ICD-9-CM"/>
 								</code>
 								<statusCode code="completed"/>
-								<effectiveTime value="20100331100000"/>
+								<effectiveTime value="20100331100000+0500"/>
 									<methodCode nullFlavor="UNK"/>
 					    	</procedure>
 					    </entry>
@@ -2015,7 +2015,7 @@ Procedures section
 											displayName="Radiographic imaging procedure (procedure)" codeSystemName="SNOMED-CT"/>
 								</code>
 								<statusCode code="completed"/>
-								<effectiveTime value="20100523100000"/>
+								<effectiveTime value="20100523100000+0500"/>
 									<methodCode nullFlavor="UNK"/>
 					    	</procedure>
 					    </entry>
@@ -2034,7 +2034,7 @@ Procedures section
 									</originalText>
 								</code>
 								<statusCode code="completed"/>
-								<effectiveTime value="20100524100000"/>
+								<effectiveTime value="20100524100000+0500"/>
 									<methodCode nullFlavor="UNK"/>
 					    	</procedure>
 					    </entry>
@@ -2053,7 +2053,7 @@ Procedures section
 									</originalText>
 								</code>
 								<statusCode code="completed"/>
-								<effectiveTime value="20100525100000"/>
+								<effectiveTime value="20100525100000+0500"/>
 									<methodCode nullFlavor="UNK"/>
 					    	</procedure>
 					    </entry>
@@ -2072,7 +2072,7 @@ Procedures section
 									</originalText>
 								</code>
 								<statusCode code="completed"/>
-								<effectiveTime value="20100527100000"/>
+								<effectiveTime value="20100527100000+0500"/>
 									<methodCode nullFlavor="UNK"/>
 					    	</procedure>
 					    </entry>
@@ -2091,7 +2091,7 @@ Procedures section
 									</originalText>
 								</code>
 								<statusCode code="completed"/>
-								<effectiveTime value="20100625100000"/>
+								<effectiveTime value="20100625100000+0500"/>
 									<methodCode nullFlavor="UNK"/>
 					    	</procedure>
 					    </entry>
@@ -2116,7 +2116,7 @@ Procedures section
 											displayName="Ophthalmic examination and evaluation" codeSystemName="SNOMED-CT"/>
 								</code>
 								<statusCode code="completed"/>
-								<effectiveTime value="20100730100000"/>
+								<effectiveTime value="20100730100000+0500"/>
 									<methodCode nullFlavor="UNK"/>
 					    	</procedure>
 					    </entry>
@@ -2135,7 +2135,7 @@ Procedures section
 									</originalText>
 								</code>
 								<statusCode code="completed"/>
-								<effectiveTime value="20101024100000"/>
+								<effectiveTime value="20101024100000+0500"/>
 									<methodCode nullFlavor="UNK"/>
 					    	</procedure>
 					    </entry>
@@ -2602,7 +2602,7 @@ Note that C-CDA schema explicitly allows one, and only one, <organizer> per <ent
 													displayName="Hemoglobin A1c measurement" codeSystemName="SNOMED-CT"/>
 										</code>
 										<statusCode code="completed"/>
-										<effectiveTime value="20100331100000"/>
+										<effectiveTime value="20100331100000+0500"/>
 										<value xsi:type="PQ" value="7" unit="%"/>
 										<interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
 										<referenceRange>
@@ -2636,7 +2636,7 @@ Note that C-CDA schema explicitly allows one, and only one, <organizer> per <ent
 													displayName="High density lipoprotein cholesterol measurement" codeSystemName="SNOMED-CT"/>
 										</code>
 										<statusCode code="completed"/>
-										<effectiveTime value="20100331100000"/>
+										<effectiveTime value="20100331100000+0500"/>
 										<value xsi:type="PQ" value="63" unit="mg/dL"/>
 										<interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
 										<referenceRange>
@@ -2660,7 +2660,7 @@ Note that C-CDA schema explicitly allows one, and only one, <organizer> per <ent
 													displayName="Low density lipoprotein cholesterol measurement" codeSystemName="SNOMED-CT"/>
 										</code>
 										<statusCode code="completed"/>
-										<effectiveTime value="20100331100000"/>
+										<effectiveTime value="20100331100000+0500"/>
 										<value xsi:type="PQ" value="150.2" unit="mg/dL"/>
 										<interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
 										<referenceRange>
@@ -2684,7 +2684,7 @@ Note that C-CDA schema explicitly allows one, and only one, <organizer> per <ent
 													displayName="Total cholesterol measurement" codeSystemName="SNOMED-CT"/>
 										</code>
 										<statusCode code="completed"/>
-										<effectiveTime value="20100331100000"/>
+										<effectiveTime value="20100331100000+0500"/>
 										<value xsi:type="PQ" value="251" unit="mg/dL"/>
 										<interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
 										<referenceRange>
@@ -2708,7 +2708,7 @@ Note that C-CDA schema explicitly allows one, and only one, <organizer> per <ent
 													displayName="Triglycerides measurement" codeSystemName="SNOMED-CT"/>
 										</code>
 										<statusCode code="completed"/>
-										<effectiveTime value="20100331100000"/>
+										<effectiveTime value="20100331100000+0500"/>
 										<value xsi:type="PQ" value="189" unit="mg/dL"/>
 										<interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
 										<referenceRange>
@@ -2776,7 +2776,7 @@ Note that C-CDA schema explicitly allows one, and only one, <organizer> per <ent
 													displayName="Hemoglobin A1c measurement" codeSystemName="SNOMED-CT"/>
 										</code>
 										<statusCode code="completed"/>
-										<effectiveTime value="20101024100000"/>
+										<effectiveTime value="20101024100000+0500"/>
 										<value xsi:type="PQ" value="6.7" unit="%"/>
 										<interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
 										<referenceRange>
@@ -2810,7 +2810,7 @@ Note that C-CDA schema explicitly allows one, and only one, <organizer> per <ent
 													displayName="High density lipoprotein cholesterol measurement" codeSystemName="SNOMED-CT"/>
 										</code>
 										<statusCode code="completed"/>
-										<effectiveTime value="20101024100000"/>
+										<effectiveTime value="20101024100000+0500"/>
 										<value xsi:type="PQ" value="61" unit="mg/dL"/>
 										<interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
 										<referenceRange>
@@ -2834,7 +2834,7 @@ Note that C-CDA schema explicitly allows one, and only one, <organizer> per <ent
 													displayName="Low density lipoprotein cholesterol measurement" codeSystemName="SNOMED-CT"/>
 										</code>
 										<statusCode code="completed"/>
-										<effectiveTime value="20101024100000"/>
+										<effectiveTime value="20101024100000+0500"/>
 										<value xsi:type="PQ" value="106.6" unit="mg/dL"/>
 										<interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
 										<referenceRange>
@@ -2858,7 +2858,7 @@ Note that C-CDA schema explicitly allows one, and only one, <organizer> per <ent
 													displayName="Total cholesterol measurement" codeSystemName="SNOMED-CT"/>
 										</code>
 										<statusCode code="completed"/>
-										<effectiveTime value="20101024100000"/>
+										<effectiveTime value="20101024100000+0500"/>
 										<value xsi:type="PQ" value="197" unit="mg/dL"/>
 										<interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
 										<referenceRange>
@@ -2882,7 +2882,7 @@ Note that C-CDA schema explicitly allows one, and only one, <organizer> per <ent
 													displayName="Triglycerides measurement" codeSystemName="SNOMED-CT"/>
 										</code>
 										<statusCode code="completed"/>
-										<effectiveTime value="20101024100000"/>
+										<effectiveTime value="20101024100000+0500"/>
 										<value xsi:type="PQ" value="147" unit="mg/dL"/>
 										<interpretationCode code="N" codeSystem="2.16.840.1.113883.5.83"/>
 										<referenceRange>
@@ -2954,7 +2954,7 @@ Social History section
 									</code>
 									<statusCode code="completed"/>
 									<effectiveTime>
-										<low value="20100331100000"/>
+										<low value="20100331100000+0500"/>
 									</effectiveTime>
 								<value xsi:type="CD" code="266919005" codeSystem="2.16.840.1.113883.6.96"
 									displayName="Never smoker (Never Smoked)" codeSystemName="SNOMED-CT">
@@ -3185,7 +3185,7 @@ Vital Signs section
 									<code xsi:type="CD" code="46680005" codeSystem="2.16.840.1.113883.6.96"
 									codeSystemName="SNOMED-CT" displayName="Vital signs"/>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100331100000"/>
+									<effectiveTime value="20100331100000+0500"/>
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<!-- ** Vital sign observation ** -->
@@ -3198,7 +3198,7 @@ Vital Signs section
 										<reference value="#VitalSign1"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100331100000"/>
+									<effectiveTime value="20100331100000+0500"/>
 									<value xsi:type="PQ" value="31.3" unit="kg/m2"/>
 								</observation>
 							</component>
@@ -3214,7 +3214,7 @@ Vital Signs section
 										<reference value="#VitalSign2"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100331100000"/>
+									<effectiveTime value="20100331100000+0500"/>
 									<value xsi:type="PQ" value="92" unit="mm[Hg]"/>
 								</observation>
 							</component>
@@ -3230,7 +3230,7 @@ Vital Signs section
 										<reference value="#VitalSign3"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100331100000"/>
+									<effectiveTime value="20100331100000+0500"/>
 									<value xsi:type="PQ" value="145" unit="mm[Hg]"/>
 								</observation>
 							</component>
@@ -3244,7 +3244,7 @@ Vital Signs section
 									<code xsi:type="CD" code="46680005" codeSystem="2.16.840.1.113883.6.96"
 									codeSystemName="SNOMED-CT" displayName="Vital signs"/>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100523100000"/>
+									<effectiveTime value="20100523100000+0500"/>
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<!-- ** Vital sign observation ** -->
@@ -3257,7 +3257,7 @@ Vital Signs section
 										<reference value="#VitalSign4"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100523100000"/>
+									<effectiveTime value="20100523100000+0500"/>
 									<value xsi:type="PQ" value="30.7" unit="kg/m2"/>
 								</observation>
 							</component>
@@ -3273,7 +3273,7 @@ Vital Signs section
 										<reference value="#VitalSign5"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100523100000"/>
+									<effectiveTime value="20100523100000+0500"/>
 									<value xsi:type="PQ" value="100" unit="mm[Hg]"/>
 								</observation>
 							</component>
@@ -3289,7 +3289,7 @@ Vital Signs section
 										<reference value="#VitalSign6"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100523100000"/>
+									<effectiveTime value="20100523100000+0500"/>
 									<value xsi:type="PQ" value="100" unit="/min"/>
 								</observation>
 							</component>
@@ -3305,7 +3305,7 @@ Vital Signs section
 										<reference value="#VitalSign7"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100523100000"/>
+									<effectiveTime value="20100523100000+0500"/>
 									<value xsi:type="PQ" value="160" unit="mm[Hg]"/>
 								</observation>
 							</component>
@@ -3378,7 +3378,7 @@ Vital Signs section
 									<code xsi:type="CD" code="46680005" codeSystem="2.16.840.1.113883.6.96"
 									codeSystemName="SNOMED-CT" displayName="Vital signs"/>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100625100000"/>
+									<effectiveTime value="20100625100000+0500"/>
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<!-- ** Vital sign observation ** -->
@@ -3391,7 +3391,7 @@ Vital Signs section
 										<reference value="#VitalSign11"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100625100000"/>
+									<effectiveTime value="20100625100000+0500"/>
 									<value xsi:type="PQ" value="29.9" unit="kg/m2"/>
 								</observation>
 							</component>
@@ -3407,7 +3407,7 @@ Vital Signs section
 										<reference value="#VitalSign12"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100625100000"/>
+									<effectiveTime value="20100625100000+0500"/>
 									<value xsi:type="PQ" value="88" unit="mm[Hg]"/>
 								</observation>
 							</component>
@@ -3423,7 +3423,7 @@ Vital Signs section
 										<reference value="#VitalSign13"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100625100000"/>
+									<effectiveTime value="20100625100000+0500"/>
 									<value xsi:type="PQ" value="86" unit="/min"/>
 								</observation>
 							</component>
@@ -3439,7 +3439,7 @@ Vital Signs section
 										<reference value="#VitalSign14"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20100625100000"/>
+									<effectiveTime value="20100625100000+0500"/>
 									<value xsi:type="PQ" value="132" unit="mm[Hg]"/>
 								</observation>
 							</component>
@@ -3453,7 +3453,7 @@ Vital Signs section
 									<code xsi:type="CD" code="46680005" codeSystem="2.16.840.1.113883.6.96"
 									codeSystemName="SNOMED-CT" displayName="Vital signs"/>
 									<statusCode code="completed"/>
-									<effectiveTime value="20101024100000"/>
+									<effectiveTime value="20101024100000+0500"/>
 							<component>
 								<observation classCode="OBS" moodCode="EVN">
 									<!-- ** Vital sign observation ** -->
@@ -3466,7 +3466,7 @@ Vital Signs section
 										<reference value="#VitalSign15"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20101024100000"/>
+									<effectiveTime value="20101024100000+0500"/>
 									<value xsi:type="PQ" value="28.2" unit="kg/m2"/>
 								</observation>
 							</component>
@@ -3482,7 +3482,7 @@ Vital Signs section
 										<reference value="#VitalSign16"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20101024100000"/>
+									<effectiveTime value="20101024100000+0500"/>
 									<value xsi:type="PQ" value="84" unit="mm[Hg]"/>
 								</observation>
 							</component>
@@ -3498,7 +3498,7 @@ Vital Signs section
 										<reference value="#VitalSign17"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20101024100000"/>
+									<effectiveTime value="20101024100000+0500"/>
 									<value xsi:type="PQ" value="84" unit="/min"/>
 								</observation>
 							</component>
@@ -3514,7 +3514,7 @@ Vital Signs section
 										<reference value="#VitalSign18"/>
 									</text>
 									<statusCode code="completed"/>
-									<effectiveTime value="20101024100000"/>
+									<effectiveTime value="20101024100000+0500"/>
 									<value xsi:type="PQ" value="130" unit="mm[Hg]"/>
 								</observation>
 							</component>
