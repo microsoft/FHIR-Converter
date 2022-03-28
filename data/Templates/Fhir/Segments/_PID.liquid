@@ -10,6 +10,7 @@
 {%- endif -%}
 {%- assign patientAddress = patient.address | slice: 0, 1 -%}
 {%- assign patientHomePhones = patient.telecom | filter_by_key_with_value: 'use', 'home' -%}
+{%- assign patientWorkPhones = patient.telecom | filter_by_key_with_value: 'use', 'work' -%}
 PID
 (0)PID|
 {% comment %}  1 Set ID - PID            {% endcomment %}(1)1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
@@ -27,7 +28,8 @@ PID
 {% comment %} 11 Patient Address         {% endcomment %}(11){% include 'DataType/XAD-ExtendedAddress' addresses: patientAddress %}|
 {% comment %} 12 Country Code            {% endcomment %}(12)GL|
 {% comment %} 13 Phone Number (Home)     {% endcomment %}(13){% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientHomePhones %}|
-(14)7777^^CP~1111^^TDD|
+{% comment %} 14 Phone Number (Business) {% endcomment %}(14){% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientWorkPhones %}|
+
 (15)ara^^HL70296^eng^English-us^HL70296^v2^v2.1^TextInEnglish|
 (16)M^Married|
 (17)AME|
