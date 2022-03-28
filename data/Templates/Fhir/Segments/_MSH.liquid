@@ -1,0 +1,29 @@
+{%- capture MSH -%}
+{% comment %} 0 Message Type                             {% endcomment %}MSH
+{% comment %} 1 Field Separator                          {% endcomment %}|
+{% comment %} 2 Encoding Characters                      {% endcomment %}^~\&|
+{% comment %} 3 Sending Application                      {% endcomment %}|
+{% comment %} 4 Sending Facility                         {% endcomment %}|
+{% comment %} 5 Receiving Application                    {% endcomment %}|
+{% comment %} 6 Receiving Facility                       {% endcomment %}|
+{% comment %} 7 Date/Time of Message                     {% endcomment %}{{ messageTime }}|
+{% comment %} 8 Security                                 {% endcomment %}|
+{% comment %} 9 Message Type                             {% endcomment %}|
+{% comment %} 10 Message Control ID                      {% endcomment %}{{ messageID }}|
+{% comment %} 11 Processing ID                           {% endcomment %}{%- include 'DataType/PT-ProcessingType' id: 'P' %}|
+{% comment %} 12 Version ID                              {% endcomment %}{%- include 'DataType/VID-VersionIdentifier' id: '2.8' %}|
+{% comment %} 13 Sequence Number                         {% endcomment %}|
+{% comment %} 14 Continuation Pointer                    {% endcomment %}|
+{% comment %} 15 Accept Acknowledgement Type             {% endcomment %}|
+{% comment %} 16 Application Acknowledgement Type        {% endcomment %}|
+{% comment %} 17 Country Code                            {% endcomment %}|
+{% comment %} 18 Character Set                           {% endcomment %}|
+{% comment %} 19 Principal Language Of Message           {% endcomment %}|
+{% comment %} 20 Alternate Character Set Handling Scheme {% endcomment %}|
+{% comment %} 21 Message Profile Indentifier             {% endcomment %}|
+{% comment %} 22 Sending Responsible Organization        {% endcomment %}|
+{% comment %} 23 Receiving Responsible Organization      {% endcomment %}|
+{% comment %} 24 Sending Network Address                 {% endcomment %}|
+{% comment %} 25 Receiving Network Address               {% endcomment %}
+{% endcapture -%}
+{{ MSH | strip_newlines }}
