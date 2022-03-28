@@ -8,7 +8,7 @@
 {%- if birthInfo -%}
 {%- assign birthDate = birthInfo.valueDateTime -%}
 {%- endif -%}
-
+{%- assign patientAddress = patient.address | slice: 0, 1 -%}
 PID
 (0)PID|
 {% comment %}  1 Set ID - PID            {% endcomment %}(1)1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
@@ -23,7 +23,9 @@ PID
 {% comment %}  8 Administrative Sex      {% endcomment %}(8){{ patient.gender | first | upcase }}|
 {% comment %}  9 Patient Alias           {% endcomment %}(9)elbert^Son|
 {% comment %} 10 Race                    {% endcomment %}(10)2106-3^White^HL70005~2028-9^Asian^HL70005|
-{% comment %} 11 Patient Address         {% endcomment %}(11)1000&Hospital Lane^Ste. 123^Ann Arbor ^MI^99999^USA^M^^&W^^^20000110&20000120^^^^^^^Near Highway|
+{% comment %} 11 Patient Address         {% endcomment %}(11){% include 'DataType/XAD-ExtendedAddress' addresses: patientAddress -%}|
+
+
 (12)GL|
 (13)78788788^^CP^5555^^^1111^^^^^2222^20010110^20020110^^^^18~12121212^^CP|
 (14)7777^^CP~1111^^TDD|
