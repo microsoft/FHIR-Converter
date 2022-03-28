@@ -1,5 +1,7 @@
 {% capture identifiers -%}
-    {% if CNN.1 and CNN.9 -%}
+    {% if PRD -%}
+        {{PRD.7.Repeats[0].1.Value}},{{PRD.7.Repeats[0].2.1}},{{PRD.7.Repeats[0].2.3}}
+    {% elsif CNN.1 and CNN.9 -%}
         {{CNN.1.Value}},{{CNN.9.Value}}
     {% elsif CNN.1 and CNN.10 -%}
         {{CNN.1.Value}},{{CNN.10.Value}}
