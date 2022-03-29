@@ -75,15 +75,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
             }
+
             var dictionary = new Dictionary<string, object> { { DataKey, data } };
             var context = CreateContext(templateProvider, dictionary);
-            // Console.WriteLine(string.Join(Environment.NewLine, dictionary.Select(kvp => kvp.Key + ": " + kvp.Value.ToString())));
-            var rawResult = RenderTemplates(template, context);
-            Console.WriteLine(rawResult);
-            var result = PostProcessor.Process(rawResult);
+            var result = RenderTemplates(template, context);
+
+
             CreateTraceInfo(data, traceInfo);
 
-            return result.ToString(Formatting.Indented);
+            if (_settings?.PostProcess ?? true)
+            {
+                var processedResult = PostProcessor.Process(result);
+                return processedResult.ToString(Formatting.Indented);
+            }
+            else
+            {
+                return result;
+            }
         }
 
         protected string RenderTemplates(Template template, Context context)

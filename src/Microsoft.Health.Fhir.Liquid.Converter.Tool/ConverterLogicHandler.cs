@@ -20,7 +20,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
         private const string MetadataFileName = "metadata.json";
         private static readonly List<string> CcdaExtensions = new List<string> { ".ccda", ".xml" };
 
-        internal static void Convert(ConverterOptions options)
+        internal static async void Convert(ConverterOptions options)
         {
             if (!IsValidOptions(options))
             {
@@ -65,7 +65,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 var fileContent = File.ReadAllText(file);
                 var outputFileDirectory = Path.Join(outputFolder, Path.GetRelativePath(inputFolder, Path.GetDirectoryName(file)));
                 var outputFilePath = Path.Join(outputFileDirectory, Path.GetFileNameWithoutExtension(file) + ".json");
-                ConvertSingleFile(dataProcessor, templateProvider, dataType, rootTemplate, fileContent, outputFilePath, isTraceInfo);
+                ConvertSingleFile(dataProcessor, templateProvider, dataType, rootTemplate, fileContent, outputFilePath, isTraceInfo, disablePostProcessing);
             }
         }
 
@@ -99,6 +99,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 DataType.Hl7v2 => new Hl7v2Processor(),
                 DataType.Ccda => new CcdaProcessor(),
                 DataType.Json => new JsonProcessor(),
+                DataType.Fhir => new FhirProcessor(),
                 _ => throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported")
             };
         }
@@ -110,6 +111,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 DataType.Hl7v2 => new TemplateProvider(templateDirectory, DataType.Hl7v2),
                 DataType.Ccda => new TemplateProvider(templateDirectory, DataType.Ccda),
                 DataType.Json => new TemplateProvider(templateDirectory, DataType.Json),
+                DataType.Fhir => new TemplateProvider(templateDirectory, DataType.Fhir),
                 _ => throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported")
             };
         }
@@ -127,6 +129,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 DataType.Ccda => Directory.EnumerateFiles(inputDataFolder, "*.*", SearchOption.AllDirectories)
                     .Where(x => CcdaExtensions.Contains(Path.GetExtension(x).ToLower())).ToList(),
                 DataType.Json => Directory.EnumerateFiles(inputDataFolder, "*.json", SearchOption.AllDirectories).ToList(),
+                DataType.Fhir => Directory.EnumerateFiles(inputDataFolder, "*.json", SearchOption.AllDirectories).ToList(),
                 _ => new List<string>(),
             };
         }

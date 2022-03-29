@@ -18,11 +18,28 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         private readonly IDataParser _parser = new FhirDataParser();
 
         public FhirProcessor(ProcessorSettings processorSettings = null)
-            : base(processorSettings)
+            : base(DisablePostProcessor(processorSettings))
         {
+            if (processorSettings == null)
+            {
+                processorSettings = new ProcessorSettings();
+            }
+
+            processorSettings.PostProcess = false;
         }
 
         protected override string DataKey { get; set; } = "fhirData";
+
+        public static ProcessorSettings DisablePostProcessor(ProcessorSettings processorSettings)
+        {
+            if (processorSettings == null)
+            {
+                processorSettings = new ProcessorSettings();
+            }
+
+            processorSettings.PostProcess = false;
+            return processorSettings;
+        }
 
         public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
