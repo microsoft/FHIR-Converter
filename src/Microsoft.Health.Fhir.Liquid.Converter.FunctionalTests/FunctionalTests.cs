@@ -206,7 +206,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
-
         public static IEnumerable<object[]> GetDataForStu3ToR4()
         {
             var data = new List<string>
@@ -227,7 +226,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 Path.Join(Constants.SampleDataDirectory, "STU3", item + ".json"),
                 Path.Join(Constants.ExpectedDataFolder, "R3ToR4", item + ".json"),
             });
-  
+        }
+
         [Fact]
         public void GivenCcdaMessageForTimezoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
         {
