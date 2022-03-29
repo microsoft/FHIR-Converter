@@ -66,7 +66,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return dateTimeObject.ToFhirString(outputTimeZoneHandling);
         }
 
-        public static string FormatAsDateTime(string input, string timeZoneHandling = "preserve")
+        public static string FormatAsDateTime(string input, string timeZoneHandling = "Preserve")
         {
             if (string.IsNullOrEmpty(input))
             {
