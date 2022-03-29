@@ -566,13 +566,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
             public static readonly List<Func<string, bool>> NonPatientTemplates = new List<Func<string, bool>>
             {
-                // Templates that dosn't contains patient resource
+                // Templates that don't contain patient resource
                 _noPatientTemplate.Contains,
             };
 
             public static readonly List<Func<string, bool>> MultiplePatientTemplates = new List<Func<string, bool>>
             {
-                // Templates that contains multiple patient resource
+                // Templates that contain multiple patient resources
                 _multiplePatientTemplate.Contains,
             };
         }
