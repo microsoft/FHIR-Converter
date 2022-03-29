@@ -1,0 +1,7 @@
+{% comment %} https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/VID {% endcomment %}
+{% capture VID %}
+{% comment %} 1 Version Id                {% endcomment %}{% if id %}{{ id }}{% endif %}^
+{% comment %} 1 Internationalization Code {% endcomment %}{% if code %}{{ code }}{% endif %}^
+{% comment %} 1 International Version ID  {% endcomment %}{% if intVersionID %}{{ intVersionId }}{% endif %}
+{% endcapture -%}
+{{ VID | strip_newlines }}
