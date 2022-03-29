@@ -155,7 +155,7 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                     ],
                 },
                 {% if IN2_6.8 -%}
-                    "system":"http://example.com/v2-to-fhir-converter/identifier-medicaid",
+                    "system":"http://example.com/v2-to-fhir-converter/sid/us-medicaid",
                 {% endif -%}
             },
             {% endif -%}
@@ -174,7 +174,7 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                     ],
                 },
                 {% if IN2_6.10 -%}
-                    "system":"http://example.com/v2-to-fhir-converter/identifier-military",
+                    "system":"http://example.com/v2-to-fhir-converter/sid/us-military",
                 {% endif -%}
             },
             {% endif -%}
@@ -212,8 +212,8 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                             "system" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
                         {% elsif ARV.2.1.Value == 'D' %}
                             "code" : "DELETELABEL",
-                            "display" : "delete security label",
-                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-v3-ActCode",
+                            "display" : "Delete Security Label",
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-security-label",
                         {% endif %}  
                     },
                 {% endif %}
@@ -228,8 +228,8 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                 {% if ARV.5 %}
                     {% for arv_5 in ARV.5.Repeats %}
                         { 
-                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-v3-ActCode",
-                            "code" : "SpecialAccessRestrictionInstructions",
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-security-label",
+                            "code" : "special-access-restriction-instructions",
                             "display" : "{{arv_5.Value}}",
                         },
                     {% endfor %}   

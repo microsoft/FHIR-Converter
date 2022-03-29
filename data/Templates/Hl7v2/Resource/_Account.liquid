@@ -8,9 +8,17 @@
             {
                 {% include 'DataType/CX' CX: PID.18 -%}
             },
+			{% if BLG.3 -%}
+				{
+					{% include 'DataType/CX' CX: BLG.3 -%}
+				},
+			{% endif %}
         ],
         "status": "active",
-
+		{% if BLG -%}
+			"status": "active",
+		{% endif %}
+		
         {% if Root_Template == "BAR_P02" %}
             "status": "entered-in-error",    
         {% endif %}

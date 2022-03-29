@@ -59,9 +59,9 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
             {% if ACC %}
             "coding": [
                 {
-                    "code": "11374-6",
-                    "display": "Injury incident description Narrative",
-                    "system" : "http://loinc.org",
+                    "code": "injury-incident",
+                    "display": "Injury Incident Description Narrative",
+                    "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/observation-code",
                 },
             ],
             {% endif %}
@@ -69,9 +69,9 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                 "coding":
                 [
                     {
-                        "code": "death-certificate-dummy",
-                        "display": "Death Certificate dummy",
-                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/observationCodes-dummy",
+                        "code": "death-certificate",
+                        "display": "Death Certificate",
+                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/observation-code",
                     }
                 ],
             {% endif %}
@@ -79,9 +79,9 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                 "coding":
                 [
                     {
-                        "code": "autopsy-performed-dummy",
-                        "display": "Autopsy Performed dummy",
-                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/observationCodes-dummy",
+                        "code": "autopsy",
+                        "display": "Autopsy",
+                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/observation-code",
                     }
                 ],
             {% endif %}
@@ -89,9 +89,9 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                 "coding":
                 [
                     {
-                        "code": "coroner-dummy",
-                        "display": "Coroner dummy",
-                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/observationCodes-dummy",
+                        "code": "coroner",
+                        "display": "Coroner",
+                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/observation-code",
                     }
                 ],
             {% endif %}
@@ -103,9 +103,9 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                 "code" : { 
                     "coding": [
                         {
-                            "code": "JRII",
-                            "display": "Job related Injury Indicator",
-                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/AccidentIndicators",
+                            "code": "AJRI",
+                            "display": "Accident Job Related Indicator",
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/accident-indicator",
                         },
                     ],
                 },
@@ -119,9 +119,9 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                 "code" : { 
                     "coding": [
                         {
-                            "code": "7878000",
-                            "display": "Accidental Death Indicator",
-                            "system" : "http://snomed.info/sct",
+                            "code": "ADI",
+                            "display": "Accident Death Indicator",
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/accident-indicator",
                         },
                     ],
                 },
@@ -136,8 +136,8 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                     "coding": [
                         {
                             "code": "PNI",
-                            "display": "Police Notification Indicator",
-                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/AccidentIndicators",
+                            "display": "Police Notified Indicator",
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/accident-indicator",
                         },
                     ],
                 },
