@@ -28,8 +28,7 @@
                 "meta": {
                     "security": [
                         {
-                            "display": "SECURITY",
-                            "system": "http://example.com/v2-to-fhirconverter/security-label"
+                            "display": "SECURITY"
                         }
                     ],
                     "tag": [
@@ -64,7 +63,7 @@
                 "id": "aaf37d11-5d66-af8d-c286-16b46b7f9ada",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T07:42:24.349Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A09.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-28T07:17:53.819Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A09.</span></p></div>"
                 },
                 "occurredDateTime": "2021-01-15T19:35:00+05:30",
                 "recorded": "2021-01-15T19:35:00+05:30",
@@ -117,7 +116,7 @@
                 "identifier": [
                     {
                         "value": "GHHSFacility",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-GHHSFacility"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHHSFacility"
                     },
                     {
                         "value": "urn:oid:2.16.840.1.122848.1.30",
@@ -155,7 +154,7 @@
                 "identifier": [
                     {
                         "value": "GHHRFacility",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-GHHRFacility"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHHRFacility"
                     },
                     {
                         "value": "urn:oid:2.16.840.1.1122848.1.32",
@@ -241,7 +240,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-ADT1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/ADT1"
                     },
                     {
                         "value": "123456789"
@@ -959,7 +958,7 @@
                 "identifier": [
                     {
                         "value": "5001",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMgr",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/AccMgr",
                         "type": {
                             "coding": [
                                 {
@@ -1042,7 +1041,7 @@
                 "identifier": [
                     {
                         "value": "NPIID",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NPIID"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NPIID"
                     },
                     {
                         "value": "urn:oid:2.16.840.1.113883.4.6",

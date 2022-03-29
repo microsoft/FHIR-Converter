@@ -70,6 +70,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new[] { @"ADT_A40", @"ADT-A40-02.hl7", @"ADT-A40-02-expected.json" },
                 new[] { @"ADT_A41", @"ADT-A41-01.hl7", @"ADT-A41-01-expected.json" },
                 new[] { @"ADT_A41", @"ADT-A41-02.hl7", @"ADT-A41-02-expected.json" },
+                new[] { @"ADT_A45", @"ADT-A45-01.hl7", @"ADT-A45-01-expected.json" },
+                new[] { @"ADT_A45", @"ADT-A45-02.hl7", @"ADT-A45-02-expected.json" },
                 new[] { @"ADT_A47", @"ADT-A47-01.hl7", @"ADT-A47-01-expected.json" },
                 new[] { @"ADT_A47", @"ADT-A47-02.hl7", @"ADT-A47-02-expected.json" },
                 new[] { @"ADT_A60", @"ADT-A60-01.hl7", @"ADT-A60-01-expected.json" },
@@ -97,6 +99,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new[] { @"ORM_O01", @"ORM-O01-03.hl7", @"ORM-O01-03-expected.json" },
                 new[] { @"ORM_O01", @"ORM-O01-04.hl7", @"ORM-O01-04-expected.json" },
                 new[] { @"ORM_O01", @"ORM-O01-05.hl7", @"ORM-O01-05-expected.json" },
+                new[] { @"ORM_O01", @"ORM-O01-06.hl7", @"ORM-O01-06-expected.json" },
 
                 new[] { @"MDM_T01", @"MDM-T01-01.hl7",  @"MDM-T01-01-expected.json" },
                 new[] { @"MDM_T01", @"MDM-T01-02.hl7",  @"MDM-T01-02-expected.json" },
@@ -133,6 +136,26 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
                 new[] { @"VXU_V04", @"VXU-V04-01.hl7",  @"VXU-V04-01-expected.json" },
                 new[] { @"VXU_V04", @"VXU-V04-02.hl7",  @"VXU-V04-02-expected.json" },
+
+                new[] { @"BAR_P01", @"BAR-P01-01.hl7", @"BAR-P01-01-expected.json" },
+                new[] { @"BAR_P01", @"BAR-P01-02.hl7", @"BAR-P01-02-expected.json" },
+                new[] { @"BAR_P02", @"BAR-P02-01.hl7", @"BAR-P02-01-expected.json" },
+                new[] { @"BAR_P02", @"BAR-P02-02.hl7", @"BAR-P02-02-expected.json" },
+                new[] { @"BAR_P12", @"BAR-P12-01.hl7", @"BAR-P12-01-expected.json" },
+                new[] { @"BAR_P12", @"BAR-P12-02.hl7", @"BAR-P12-02-expected.json" },
+
+                new[] { @"DFT_P03", @"DFT-P03-01.hl7", @"DFT-P03-01-expected.json" },
+                new[] { @"DFT_P03", @"DFT-P03-02.hl7", @"DFT-P03-02-expected.json" },
+                new[] { @"DFT_P11", @"DFT-P11-01.hl7", @"DFT-P11-01-expected.json" },
+                new[] { @"DFT_P11", @"DFT-P11-02.hl7", @"DFT-P11-02-expected.json" },
+
+                new[] { @"OMG_O19", @"OMG-O19-01.hl7", @"OMG-O19-01-expected.json" },
+                new[] { @"OMG_O19", @"OMG-O19-02.hl7", @"OMG-O19-02-expected.json" },
+
+                new[] { @"REF_I12", @"REF-I12-01.hl7", @"REF-I12-01-expected.json" },
+                new[] { @"REF_I12", @"REF-I12-02.hl7", @"REF-I12-02-expected.json" },
+                new[] { @"REF_I14", @"REF-I14-01.hl7", @"REF-I14-01-expected.json" },
+                new[] { @"REF_I14", @"REF-I14-02.hl7", @"REF-I14-02-expected.json" },
 
                 new[] { @"ADT_A01", @"ADT01-23.hl7", @"ADT01-23-expected.json" },
                 new[] { @"ADT_A01", @"ADT01-28.hl7", @"ADT01-28-expected.json" },
@@ -204,6 +227,47 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 Path.Join(Constants.SampleDataDirectory, "Json", item[1]),
                 Path.Join(Constants.ExpectedDataFolder, "Json", item[0], item[2]),
             });
+        }
+
+        [Fact]
+        public void GivenCcdaMessageForTimezoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
+        {
+            var inputFile = Path.Combine("TestData", "TimezoneHandling", "Input", "CcdaTestTimezoneInput.ccda");
+            var ccdaProcessor = new CcdaProcessor();
+            var templateDirectory = Path.Join("TestData", "TimezoneHandling", "Template");
+
+            var inputContent = File.ReadAllText(inputFile);
+            var actualContent = ccdaProcessor.Convert(inputContent, "CcdaTestTimezoneTemplate", new TemplateProvider(templateDirectory, DataType.Ccda));
+
+            var actualObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(actualContent);
+
+            Assert.Equal("2001-01", actualObject["datetime1"]);
+            Assert.Equal("2001-01-01", actualObject["datetime2"]);
+            Assert.Equal("2001-01-01", actualObject["datetime3"]);
+            Assert.Contains("2001-11-11T12:00:00", actualObject["datetime4"].ToString());
+            Assert.Contains("2001-11-11T12:23:00", actualObject["datetime5"].ToString());
+            Assert.Equal("2020-01-01T01:01:01+08:00", actualObject["datetime6"]);
+        }
+
+        [Fact]
+        public void GivenHl7v2MessageForTimeZoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
+        {
+            var inputFile = Path.Combine("TestData", "TimezoneHandling", "Input", "Hl7v2TestTimezoneInput.hl7v2");
+            var hl7v2Processor = new Hl7v2Processor();
+            var templateDirectory = Path.Join("TestData", "TimezoneHandling", "Template");
+
+            var inputContent = File.ReadAllText(inputFile);
+            var traceInfo = new Hl7v2TraceInfo();
+            var actualContent = hl7v2Processor.Convert(inputContent, "Hl7v2TestTimezoneTemplate", new TemplateProvider(templateDirectory, DataType.Hl7v2), traceInfo);
+
+            var actualObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(actualContent);
+
+            Assert.Equal("2001-01", actualObject["datetime1"]);
+            Assert.Equal("2001-01-01", actualObject["datetime2"]);
+            Assert.Equal("2001-01-01", actualObject["datetime3"]);
+            Assert.Contains("2001-11-11T12:00:00", actualObject["datetime4"].ToString());
+            Assert.Contains("2001-11-11T12:23:00", actualObject["datetime5"].ToString());
+            Assert.Equal("2020-01-01T01:01:01+08:00", actualObject["datetime6"]);
         }
 
         [Theory]

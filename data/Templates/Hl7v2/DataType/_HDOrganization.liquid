@@ -3,7 +3,7 @@
     [
         {   
             "value":"{{ HD.1.Value }}",
-            "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-{{HD.1.Value | replace: ' ', '-' }}",
+            "system": "http://example.com/v2-to-fhir-converter/Identifier/{{HD.1.Value | replace: ' ', '-' }}",
         },
         {% if HD.2.Value and HD.3.Value -%}
         {
@@ -18,7 +18,7 @@
             {% if HD.3.Value == "ISO" or HD.3.Value == "UUID" or HD.3.Value == "CLIA" or HD.3.Value == "CLIP" or HD.3.Value == "GUID" or HD.3.Value == "URI" -%}
                 "system": "urn:ietf:rfc:3986",
             {% else -%}
-                "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-{{HD.3.Value | replace: ' ', '-' }}",
+                "system": "http://example.com/v2-to-fhir-converter/Identifier/{{HD.3.Value | replace: ' ', '-' }}",
             {% endif -%}
 
             "type":{

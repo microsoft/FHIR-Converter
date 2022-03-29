@@ -11,6 +11,8 @@
         {{GT1_Account.2.Value}}
     {% elsif GT1_Account -%}
         {{GT1_Account.3.Value}}
+    {% elsif BLG -%}
+        {{BLG.Value}}
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'Account', false, baseId | generate_uuid }}

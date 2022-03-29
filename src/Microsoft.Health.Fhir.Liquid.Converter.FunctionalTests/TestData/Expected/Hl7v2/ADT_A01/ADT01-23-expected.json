@@ -1,7 +1,7 @@
 {
     "resourceType": "Bundle",
     "type": "batch",
-    "timestamp": "2005-01-10T04:55:04",
+    "timestamp": "2005-01-10T04:55:04+07:00",
     "identifier": {
         "value": "599102"
     },
@@ -52,10 +52,10 @@
                 "id": "4e45fbdc-bab9-f433-dde6-a8adf26acf93",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-02-22T07:10:16.271Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A01.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-25T13:15:41.496Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A01.</span></p></div>"
                 },
-                "occurredDateTime": "2005-01-10T04:55:04",
-                "recorded": "2005-01-10T04:55:04",
+                "occurredDateTime": "2005-01-10T04:55:04+07:00",
+                "recorded": "2005-01-10T04:55:04+07:00",
                 "agent": [
                     {
                         "type": {
@@ -97,7 +97,7 @@
                 "identifier": [
                     {
                         "value": "1",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/1"
                     }
                 ]
             },
@@ -123,7 +123,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/1"
                     },
                     {
                         "value": "123121234",
@@ -273,7 +273,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMgr"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/AccMgr"
                     }
                 ],
                 "status": "active",
@@ -314,7 +314,7 @@
                 "identifier": [
                     {
                         "value": "37",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMgr",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/AccMgr",
                         "type": {
                             "coding": [
                                 {
@@ -522,7 +522,7 @@
                 "identifier": [
                     {
                         "value": "40007716",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMgr",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/AccMgr",
                         "type": {
                             "coding": [
                                 {
@@ -538,7 +538,7 @@
                     }
                 ],
                 "period": {
-                    "start": "2005-01-10T04:52:53"
+                    "start": "2005-01-10T04:55:02+07:00"
                 },
                 "text": {
                     "status": "generated",
@@ -575,11 +575,11 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:397b71e6-32b5-33bc-db1a-b1bf6d3d5783",
+            "fullUrl": "urn:uuid:a7dcdb0c-2be6-8729-ddc6-79a8fdb62bc7",
             "resource": {
                 "resourceType": "Provenance",
-                "id": "397b71e6-32b5-33bc-db1a-b1bf6d3d5783",
-                "recorded": "2005-01-10T04:55:02",
+                "id": "a7dcdb0c-2be6-8729-ddc6-79a8fdb62bc7",
+                "recorded": "2005-01-10T04:55:02+07:00",
                 "activity": {
                     "text": "ADT^A01"
                 },
@@ -591,7 +591,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Provenance/397b71e6-32b5-33bc-db1a-b1bf6d3d5783"
+                "url": "Provenance/a7dcdb0c-2be6-8729-ddc6-79a8fdb62bc7"
             }
         },
         {
@@ -715,7 +715,7 @@
                                 }
                             ]
                         },
-                        "system": "http://www.examplehealthplan.com/fhir/policyidentifier"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/policy-id"
                     }
                 ],
                 "subscriberId": "8291 ",
@@ -944,7 +944,7 @@
                                 }
                             ]
                         },
-                        "system": "http://www.examplehealthplan.com/fhir/policyidentifier"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/policy-id"
                     }
                 ],
                 "subscriberId": "8291 ",

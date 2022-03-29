@@ -3,8 +3,10 @@
         {{RXD.7.Value}},{{RXD.2.Value}},{{RXD.3.Value}}
     {% elsif RXD -%}
         {{RXD.Value}}
-    {% elsif FT1 -%}
-        {{FT1.29.1.Value}},{{FT1.29.3.Value}},{{FT1.42.Value}}
+    {% elsif FT1 and ORC_FT1 -%}
+        {{FT1.Value}},{{ORC_FT1.Value}}
+    {% elsif FT1 %}
+        {{FT1.Value}}
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'MedicationDispense', false, baseId | generate_uuid }}
