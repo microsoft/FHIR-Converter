@@ -1,4 +1,3 @@
-{%- assign patientSB = patient.identifier | get_by_code: 'SB' -%}
 {%- assign patientNames = patient.name | slice: 0, 2 -%}
 {%- assign maidenInfo = patient.extension | get_by_url: 'http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName' -%}
 {%- if maidenInfo -%}
@@ -11,6 +10,8 @@
 {%- assign patientAddress = patient.address | slice: 0, 1 -%}
 {%- assign patientHomePhones = patient.telecom | filter_by_key_with_value: 'use', 'home' -%}
 {%- assign patientWorkPhones = patient.telecom | filter_by_key_with_value: 'use', 'work' -%}
+{%- assign patientSB = patient.identifier | get_by_code: 'SB' -%}
+http://hl7.org/fhir/sid/us-ssn
 PID
 (0)PID|
 {% comment %}  1 Set ID - PID            {% endcomment %}(1)1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
@@ -29,14 +30,12 @@ PID
 {% comment %} 12 Country Code            {% endcomment %}(12)GL|
 {% comment %} 13 Phone Number (Home)     {% endcomment %}(13){% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientHomePhones %}|
 {% comment %} 14 Phone Number (Business) {% endcomment %}(14){% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientWorkPhones %}|
-
-(15)ara^^HL70296^eng^English-us^HL70296^v2^v2.1^TextInEnglish|
-(16)M^Married|
-(17)AME|
-(18)4000776^^^AccMgr&2.4&ISO^VN^1^19241011^19241012|
-(19)PSSN123121234|
-{{ patientSB.value }}|
-(20)DLN-123^US^20010123|
+{% comment %} 15 Primary Language        {% endcomment %}(15)ara^^HL70296^eng^English-us^HL70296^v2^v2.1^TextInEnglish|
+{% comment %} 16 Marital Status          {% endcomment %}(16)M^Married|
+{% comment %} 17 Religion                {% endcomment %}(17)AME|
+{% comment %} 18 Patient Account Number  {% endcomment %}(18)4000776^^^AccMgr&2.4&ISO^VN^1^19241011^19241012|
+{% comment %} 19 SSN Number              {% endcomment %}(19){{ patientSB.value }}|
+{% comment %} 20 Drivers License Number  {% endcomment %}(20)DLN-123^US^20010123|
 (21)1212121^^^NTH&rt23&HCD^AND^^19241011^19241012|
 (22)N^NOT HISPANIC OR LATINO^HL70189|
 (23)St. Francis Community Hospital of Lower South Side|

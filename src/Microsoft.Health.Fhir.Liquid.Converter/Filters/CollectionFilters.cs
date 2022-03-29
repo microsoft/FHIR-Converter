@@ -78,17 +78,54 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         }
 
         public static object FilterByKeyWithValue(object[] input, string key, string value)
+
+        public static object FilterByKeyWithValue(object[] input, string key, string needle)
         {
+            string[] keys;
+            if (key.Contains('.'))
+            {
+                keys = key.Split('.');
+            } else {
+                keys = new string[] { key };
+            }
+
             List<Dictionary<string, object>> ret = new List<Dictionary<string, object>>();
             foreach (Dictionary<string, object> resource in input)
             {
-                if ((string)resource[key] == value)
+                string value;
+
+                var res = resource;
+                for (int k = 0; k < keys.Count() - 1; k++)
+                {
+                    var cKey = keys[k];
+                    Console.WriteLine(cKey);
+                    if (res.ContainsKey(cKey))
+                    {
+                        res = (Dictionary<string, object>)res[cKey];
+                    }
+                    else
+                    {
+                        // TODO: x_x skip resource loop
+                    }
+                }
+
+                key = keys.Last();
+                if (res.ContainsKey(key))
+                {
+                    value = (string)res[key];
+                }
+                else
+                {
+                    continue;
+                }
+
+                if (needle == value)
                 {
                     ret.Add(resource);
                 }
             }
 
-            return ret;
+            return ret.ToArray<object>();
         }
     }
 }
