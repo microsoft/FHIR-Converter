@@ -55,12 +55,12 @@ If these filters do not meet your needs, you can also write your own filters.
 ### DateTime filters
 | Filter | Description | Syntax |
 |-|-|-|
-| add_hyphens_date | Adds hyphens to a date or partial date without hyphens. The input date format is YYYY, YYYYMM, or YYYYMMDD. The output format is valid FHIR date or partial date format: YYYY, YYYY-MM, or YYYY-MM-DD.  | `{{ PID.7.Value \| add_hyphens_date }}` |
-| format_as_date_time | Converts valid HL7v2 and C-CDA datetime  (datetime or partial datetime without hyphens ：YYYY[MM[DD[HH[MM[SS[.S[S[S[S]]]]]]]]][+/-ZZZZ] , e.g. 20040629175400000) to valid [FHIR datetime format](http://hl7.org/fhir/R4/datatypes.html) (e.g. 2004-06-29T17:54:00.000Z). Provides parameters to handle time zone: `preserve`, `utc`, `local`. The default method is `preserve`. | `{{ PID.29.Value \| format_as_date_time: 'utc' }}` |
-| now | Provides current time in a specific format. The default format is "yyyy-MM-ddTHH:mm:ss.FFFZ". | `{{ '' \| now: 'dddd, dd MMMM yyyy HH:mm:ss' }}` |
-| add_seconds | Adds double seconds on valid [FHIR datetime](http://hl7.org/fhir/R4/datatypes.html) as input (e.g.2021-01-01T00:00:00Z ) and output a valid FHIR datetime. Provides parameters of double seconds to add and settings of time zones: `preserve`, `utc`, `local`. The default set of time zone parameter is `preserve`. | `{{ "2021-01-01T00:00:00Z" \| add_seconds:100.1, 'utc' }}` |
+| add_hyphens_date | Adds hyphens to a date or a partial date that does not have hyphens to make it into a valid FHIR format. The input date format is YYYY, YYYYMM, or YYYYMMDD. The output format is a valid FHIR date or a partial date format: YYYY, YYYY-MM, or YYYY-MM-DD.  | `{{ PID.7.Value \| add_hyphens_date }}` |
+| format_as_date_time | Converts valid HL7v2 and C-CDA datetime to a valid FHIR datetime format. The input datetime format is datetime or partial datetime without hyphens: YYYY[MM[DD[HH[MM[SS[.S[S[S[S]]]]]]]]][+/-ZZZZ]. For example, the input 20040629175400000 will have the output 2004-06-29T17:54:00.000Z. Provides parameters to handle different time zones: preserve, utc, local. The default method is preserve. | `{{ PID.29.Value \| format_as_date_time: 'utc' }}` |
+| now | Provides the current time in a specific format. The default format is yyyy-MM-ddTHH:mm:ss.FFFZ. | `{{ '' \| now: 'dddd, dd MMMM yyyy HH:mm:ss' }}` |
+| add_seconds | Adds double seconds on a valid [FHIR datetime](http://hl7.org/fhir/R4/datatypes.html) (e.g.2021-01-01T00:00:00Z). Provides parameters to handle different time zones: preserve, utc, local. The default method is preserve. | `{{ "2021-01-01T00:00:00Z" \| add_seconds:100.1, 'utc' }}` |
 
-Examples:
+DateTime filters usage examples:
 
 - add_hyphens_date
 ```
