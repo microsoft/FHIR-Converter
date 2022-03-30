@@ -15,9 +15,7 @@
 PID|
 {% comment %}  1 Set ID - PID            {% endcomment %}1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
 {% comment %}  2 Patient ID              {% endcomment %}1234567^4^M11^test^MR^University Hospital^19241011^19241012|
-{% comment %} ??                         {% endcomment %}{{ patientMR.value }}^^^^{{ patientMR.type.coding[0].code  }}^^{{ patientMR.period.start }}^{{ patientMR.period.end }}|
 {% comment %}  3 Patient Identifier List {% endcomment %}PATID1234^5^M11^test1&2.16.1&HCD^MR^GOOD HEALTH HOSPITAL~123456789^^^USSSA^SS|
-{% comment %} ??                         {% endcomment %}{{ patientMRalt.value }}^^^^{{ patientMRalt.type.coding[0].code  }}^^{{ patientMRalt.period.start }}^{{ patientMRalt.period.end }}|
 {% comment %}  4 Alternate Patient ID    {% endcomment %}PATID567^^^test2|
 {% comment %}  5 Patient Name            {% endcomment %}{% include 'DataType/XPN-ExpendedPersonName' names: patientNames %}|
 {% comment %}  6 Mother's Maiden Name    {% endcomment %}{% include 'DataType/XPN-ExpendedPersonName' fields: maidenNames %}|
