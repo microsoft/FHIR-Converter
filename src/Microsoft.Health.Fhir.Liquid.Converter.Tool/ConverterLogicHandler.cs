@@ -65,7 +65,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 var fileContent = File.ReadAllText(file);
                 var outputFileDirectory = Path.Join(outputFolder, Path.GetRelativePath(inputFolder, Path.GetDirectoryName(file)));
                 var outputFilePath = Path.Join(outputFileDirectory, Path.GetFileNameWithoutExtension(file) + ".json");
-                ConvertSingleFile(dataProcessor, templateProvider, dataType, rootTemplate, fileContent, outputFilePath, isTraceInfo, disablePostProcessing);
+                ConvertSingleFile(dataProcessor, templateProvider, dataType, rootTemplate, fileContent, outputFilePath, isTraceInfo);
             }
         }
 
