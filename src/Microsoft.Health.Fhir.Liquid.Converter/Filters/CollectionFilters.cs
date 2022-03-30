@@ -77,7 +77,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return null;
         }
 
-        public static object FilterByKeyWithValue(object[] input, string key, string value)
+        //public static object FilterByKeyWithValue(object[] input, string key, string value)
 
         public static object FilterByKeyWithValue(object[] input, string key, string needle)
         {
@@ -98,7 +98,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 for (int k = 0; k < keys.Count() - 1; k++)
                 {
                     var cKey = keys[k];
-                    Console.WriteLine(cKey);
+                    //Console.WriteLine(cKey);
                     if (res.ContainsKey(cKey))
                     {
                         res = (Dictionary<string, object>)res[cKey];
