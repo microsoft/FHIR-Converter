@@ -11,6 +11,8 @@
 {%- assign patientHomePhones = patient.telecom | filter_by_key_with_value: 'use', 'home' -%}
 {%- assign patientWorkPhones = patient.telecom | filter_by_key_with_value: 'use', 'work' -%}
 {%- assign patientSB = patient.identifier | get_by_code: 'SB' -%}
+{%- assign patientMaritalCode = patient.maritalStatus.coding[0].code -%}
+{%- assign patientMaritalDisplay = patient.maritalStatus.coding[0].display -%}
 {%- capture PID -%}
 PID|
 {% comment %}  1 Set ID - PID            {% endcomment %}1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
@@ -28,7 +30,7 @@ PID|
 {% comment %} 13 Phone Number (Home)     {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientHomePhones %}|
 {% comment %} 14 Phone Number (Business) {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientWorkPhones %}|
 {% comment %} 15 Primary Language        {% endcomment %}ara^^HL70296^eng^English-us^HL70296^v2^v2.1^TextInEnglish|
-{% comment %} 16 Marital Status          {% endcomment %}M^Married|
+{% comment %} 16 Marital Status          {% endcomment %}{{ patientMaritalCode }}^{{ patientMaritalDisplay }}|
 {% comment %} 17 Religion                {% endcomment %}AME|
 {% comment %} 18 Patient Account Number  {% endcomment %}4000776^^^AccMgr&2.4&ISO^VN^1^19241011^19241012|
 {% comment %} 19 SSN Number              {% endcomment %}{{ patientSB.value }}|
