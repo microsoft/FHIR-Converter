@@ -11,49 +11,49 @@
 {%- assign patientHomePhones = patient.telecom | filter_by_key_with_value: 'use', 'home' -%}
 {%- assign patientWorkPhones = patient.telecom | filter_by_key_with_value: 'use', 'work' -%}
 {%- assign patientSB = patient.identifier | get_by_code: 'SB' -%}
-http://hl7.org/fhir/sid/us-ssn
-PID
-(0)PID|
-{% comment %}  1 Set ID - PID            {% endcomment %}(1)1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
-{% comment %}  2 Patient ID              {% endcomment %}(2)1234567^4^M11^test^MR^University Hospital^19241011^19241012|
+{%- capture PID -%}
+PID|
+{% comment %}  1 Set ID - PID            {% endcomment %}1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
+{% comment %}  2 Patient ID              {% endcomment %}1234567^4^M11^test^MR^University Hospital^19241011^19241012|
 {% comment %} ??                         {% endcomment %}{{ patientMR.value }}^^^^{{ patientMR.type.coding[0].code  }}^^{{ patientMR.period.start }}^{{ patientMR.period.end }}|
-{% comment %}  3 Patient Identifier List {% endcomment %}(3)PATID1234^5^M11^test1&2.16.1&HCD^MR^GOOD HEALTH HOSPITAL~123456789^^^USSSA^SS|
+{% comment %}  3 Patient Identifier List {% endcomment %}PATID1234^5^M11^test1&2.16.1&HCD^MR^GOOD HEALTH HOSPITAL~123456789^^^USSSA^SS|
 {% comment %} ??                         {% endcomment %}{{ patientMRalt.value }}^^^^{{ patientMRalt.type.coding[0].code  }}^^{{ patientMRalt.period.start }}^{{ patientMRalt.period.end }}|
-{% comment %}  4 Alternate Patient ID    {% endcomment %}(4)PATID567^^^test2|
-{% comment %}  5 Patient Name            {% endcomment %}(5){% include 'DataType/XPN-ExpendedPersonName' names: patientNames %}|
-{% comment %}  6 Mother's Maiden Name    {% endcomment %}(6){% include 'DataType/XPN-ExpendedPersonName' fields: maidenNames %}|
-{% comment %}  7 Date/Time of Birth      {% endcomment %}(7)198808181126+0215|
-{% comment %}  8 Administrative Sex      {% endcomment %}(8){{ patient.gender | first | upcase }}|
-{% comment %}  9 Patient Alias           {% endcomment %}(9)elbert^Son|
-{% comment %} 10 Race                    {% endcomment %}(10)2106-3^White^HL70005~2028-9^Asian^HL70005|
-{% comment %} 11 Patient Address         {% endcomment %}(11){% include 'DataType/XAD-ExtendedAddress' addresses: patientAddress %}|
-{% comment %} 12 Country Code            {% endcomment %}(12)GL|
-{% comment %} 13 Phone Number (Home)     {% endcomment %}(13){% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientHomePhones %}|
-{% comment %} 14 Phone Number (Business) {% endcomment %}(14){% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientWorkPhones %}|
-{% comment %} 15 Primary Language        {% endcomment %}(15)ara^^HL70296^eng^English-us^HL70296^v2^v2.1^TextInEnglish|
-{% comment %} 16 Marital Status          {% endcomment %}(16)M^Married|
-{% comment %} 17 Religion                {% endcomment %}(17)AME|
-{% comment %} 18 Patient Account Number  {% endcomment %}(18)4000776^^^AccMgr&2.4&ISO^VN^1^19241011^19241012|
-{% comment %} 19 SSN Number              {% endcomment %}(19){{ patientSB.value }}|
-{% comment %} 20 Drivers License Number  {% endcomment %}(20)DLN-123^US^20010123|
-(21)1212121^^^NTH&rt23&HCD^AND^^19241011^19241012|
-(22)N^NOT HISPANIC OR LATINO^HL70189|
-(23)St. Francis Community Hospital of Lower South Side|
-(24)N|
-(25)2|
-(26)US^United States of America^ISO3166_1|
-(27)Vet123^retired^ART|
-(28)BT^Bhutan^ISO3166_1|
-(29)20080825111630+0115|
-(30)Y|
-(31)|
-(32)|
-(33)20050110015014+0315|
-(34)|
-(35)125097000^Goat^SCT|
-(36)4880003^Beagle^SCT|
-(37)|
-(38)|
-(39)CA^Canada^ISO3166_1|
-(40)89898989^WPN^Internet
-end
+{% comment %}  4 Alternate Patient ID    {% endcomment %}PATID567^^^test2|
+{% comment %}  5 Patient Name            {% endcomment %}{% include 'DataType/XPN-ExpendedPersonName' names: patientNames %}|
+{% comment %}  6 Mother's Maiden Name    {% endcomment %}{% include 'DataType/XPN-ExpendedPersonName' fields: maidenNames %}|
+{% comment %}  7 Date/Time of Birth      {% endcomment %}198808181126+0215|
+{% comment %}  8 Administrative Sex      {% endcomment %}{{ patient.gender | first | upcase }}|
+{% comment %}  9 Patient Alias           {% endcomment %}elbert^Son|
+{% comment %} 10 Race                    {% endcomment %}2106-3^White^HL70005~2028-9^Asian^HL70005|
+{% comment %} 11 Patient Address         {% endcomment %}{% include 'DataType/XAD-ExtendedAddress' addresses: patientAddress %}|
+{% comment %} 12 Country Code            {% endcomment %}GL|
+{% comment %} 13 Phone Number (Home)     {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientHomePhones %}|
+{% comment %} 14 Phone Number (Business) {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientWorkPhones %}|
+{% comment %} 15 Primary Language        {% endcomment %}ara^^HL70296^eng^English-us^HL70296^v2^v2.1^TextInEnglish|
+{% comment %} 16 Marital Status          {% endcomment %}M^Married|
+{% comment %} 17 Religion                {% endcomment %}AME|
+{% comment %} 18 Patient Account Number  {% endcomment %}4000776^^^AccMgr&2.4&ISO^VN^1^19241011^19241012|
+{% comment %} 19 SSN Number              {% endcomment %}{{ patientSB.value }}|
+{% comment %} 20 Drivers License Number  {% endcomment %}DLN-123^US^20010123|
+1212121^^^NTH&rt23&HCD^AND^^19241011^19241012|
+N^NOT HISPANIC OR LATINO^HL70189|
+St. Francis Community Hospital of Lower South Side|
+N|
+2|
+US^United States of America^ISO3166_1|
+Vet123^retired^ART|
+BT^Bhutan^ISO3166_1|
+20080825111630+0115|
+Y|
+|
+|
+20050110015014+0315|
+|
+125097000^Goat^SCT|
+4880003^Beagle^SCT|
+|
+|
+CA^Canada^ISO3166_1|
+89898989^WPN^Internet
+{% endcapture -%}
+{{ PID | strip_newlines }}
