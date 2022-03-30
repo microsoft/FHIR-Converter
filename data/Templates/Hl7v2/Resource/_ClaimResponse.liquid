@@ -1,0 +1,147 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource": {
+        "resourceType": "ClaimResponse",
+        "id":"{{ ID }}",
+
+        "identifier":
+        [
+            {
+                {% include 'DataType/EIIdentifier' EI: AUT.6 -%}
+            },
+        ],
+        "type": 
+        { 
+            {% if type1 == true %}
+                "coding" : 
+                    [
+                        {
+                            "code": "institutional",
+                            "display": "Institutional",
+                            "system": "http://terminology.hl7.org/CodeSystem/claim-type",
+                        },
+                    ],
+            {% else %}
+                {% if AUT_PV1_2.Value == 'I' or AUT_PV1_2.Value == 'O' %}
+                    "coding" : [
+                        {% include 'DataType/CWECodeableConceptRepeatable' mapping: 'CodeSystem/PV1_ClaimResponseType', CWE: AUT_PV1_2  %}
+                    ],
+                {%- else %}
+                    {% if AUT.21 %} 
+                        "coding" : 
+                            [
+                                {% include 'DataType/CWECodeableConceptRepeatable' CWE: AUT.21  %}
+                            ],
+                    {% endif %}
+                {% endif %}   
+            {% endif %}
+        },
+        {% if status_flag == false %}
+            "status": "active",    
+        {% elsif AUT.29.value == 'D' %}
+            "status": "entered-in-error",   
+        {% endif %}
+        "use": "preauthorization",
+        "created": "{{ AUT.10.Value | format_as_date_time }}",
+        "outcome": "complete",
+        {%- comment -%}
+            {% if AUT.14 %}
+                "outcome": {% include 'DataType/CWECode' mapping: 'CodeSystem/ApprovalStatus', CWE: AUT.14  %},
+            {% else %}
+                "outcome": "complete",
+            {% endif %}
+        {%- endcomment -%}
+        {% if AUT.8 or AUT.9 %}
+        "item": [
+            {
+                "itemSequence": 1,
+                "adjudication": [
+                    {% if AUT.8 %}
+                        {
+                            {% if AUT.8.1 %}
+                                "value": {{AUT.8.1.Value}},
+                            {% endif %}
+                            "category": {
+                                "coding": [
+                                    {
+                                        "code": "RNT",
+                                        "display": "Requested Number of Treatments",
+                                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-adjudication",
+                                    },
+                                ],
+                            },
+                        },
+                    {% endif %}
+                    {% if AUT.9 %}
+                        {
+                            {% if AUT.8.1 %}
+                                "value": {{AUT.9.1.Value}},
+                            {% endif %}
+                            "category": {
+                                "coding": [
+                                    {
+                                        "code": "ANT",
+                                        "display": "Authorized Number of Treatments",
+                                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-adjudication",
+                                    },
+                                ],
+                            },
+                        },
+                    {% endif %}
+                ],
+            }
+        ],
+        {% endif %}
+        {% if AUT.7 %}
+            "total" : 
+            [
+                {
+                    {% if AUT.7.2 %}
+                    "category": { 
+                            {% include 'DataType/CWECodeableConceptInternalValues' mapping: 'CodeSystem/PriceType_AdjudicationCategory', CWE: AUT.7.2  %}
+                        }, 
+                    {% endif %}
+                    {% unless AUT.7.2 -%}
+                        "category": { 
+                            "coding":
+                                [
+                                    {
+                                        "code": "benefit", 
+                                        "display": "Benefit Amount", 
+                                        "system": "http://terminology.hl7.org/CodeSystem/adjudication"
+                                    },
+                                ]
+                            },
+                    {% endunless %}
+                    {% if AUT.7.1 %}
+                        "amount" : { 
+                            {% include 'DataType/MOMoney' MO: AUT.7.1 %} 
+                        },
+                    {% endif %}
+                }
+            ],
+        {% endif %}
+        "preAuthPeriod": {
+            "start": "{{AUT.4.Value | format_as_date_time}}",
+            "end": "{{AUT.5.Value | format_as_date_time}}",
+        },
+        "processNote" : [
+            { 
+                "text" : "{{AUT.28.Value}}",
+            }
+        ],
+        "insurer":
+        {
+            {% if org_IN1 %}
+                "reference": "{{org_IN1}}",
+            {% endif %}
+            {% if org_AUT %}            
+                "reference": "{{org_AUT}}",
+            {% endif %}  
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"ClaimResponse/{{ ID }}",
+    },
+},

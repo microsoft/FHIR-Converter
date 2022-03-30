@@ -1,0 +1,16 @@
+{% capture identifiers -%}
+    {% if RXO.1 -%}
+        {{RXO.1.1.Value}},{{RXO.1.3.Value}},{{RXO.5.1.Value}},{{RXO.5.3.Value}},{{RXO.18.Value}},{{RXO.19.1.Value}},{{RXO.19.3.Value}},{{RXO.25.Value}},{{RXO.26.1.Value}},{{RXO.26.3.Value}}
+    {% elsif RXO.6.2 -%}
+        {{RXO.6.1.Value}},{{RXO.6.3.Value}},{{RXO.5.1.Value}},{{RXO.5.3.Value}},{{RXO.18.Value}},{{RXO.19.1.Value}},{{RXO.19.3.Value}},{{RXO.25.Value}},{{RXO.26.1.Value}},{{RXO.26.3.Value}}
+    {% elsif RXO -%}
+        {{RXO.6.1.Value}},{{RXO.6.3.Value}},{{RXO.5.1.Value}},{{RXO.5.3.Value}},{{RXO.18.Value}},{{RXO.19.1.Value}},{{RXO.19.3.Value}},{{RXO.25.Value}},{{RXO.26.1.Value}},{{RXO.26.3.Value}}
+    {% elsif RXC -%}
+        {{RXC.2.1.Value}},{{RXC.2.3.Value}},{{RXC.3.Value}},{{RXC.4.1.Value}},{{RXC.4.3.Value}},{{RXC.5.Value}},{{RXC.6.1.Value}},{{RXC.6.3.Value}},{{RXC.8.Value}},{{RXC.9.1.Value}},{{RXC.9.3.Value}}
+    {% elsif RXE -%}
+        {{RXE.2.1.Value}},{{RXE.2.3.Value}},{{RXE.6.1.Value}},{{RXE.6.3.Value}},{{RXE.25.Value}},{{RXE.26.1.Value}},{{RXE.26.3.Value}},{{RXE.33.Value}},{{RXE.34.1.Value}},{{RXE.34.3.Value}}
+    {% elsif RXD -%}
+        {{RXD.2.1.Value}},{{RXD.2.3.Value}},{{RXD.6.1.Value}},{{RXD.6.3.Value}},{{RXD.16.Value}},{{RXD.17.1.Value}},{{RXD.17.3.Value}},{{RXD.28.Value}},{{RXD.29.1.Value}},{{RXD.29.3.Value}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'Medication', false | generate_uuid }}

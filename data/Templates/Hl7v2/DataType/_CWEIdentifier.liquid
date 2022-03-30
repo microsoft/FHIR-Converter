@@ -1,44 +1,40 @@
 {% if CWE -%}
-"identifier" : [
     { 
         "value": "{{CWE.1}}",
         {% if CWE.3 %}
-        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.3}}",
+        "system": "http://example.com/v2-to-fhir-converter/Identifier/{{CWE.3}}",
         {% endif %}
     },
     { 
         "value": "{{CWE.4}}",
         {% if CWE.6 %}
-        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.6}}",
+        "system": "http://example.com/v2-to-fhir-converter/Identifier/{{CWE.6}}",
         {% endif %}
     },
     { 
         "value": "{{CWE.10}}",
         {% if CWE.12 %}
-        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.12}}",
+        "system": "http://example.com/v2-to-fhir-converter/Identifier/{{CWE.12}}",
         {% endif %}
     },
-],
 {% endif -%}
 {% if CWE_InternalValue -%}
-"identifier" : [
     { 
         "value": "{{CWE_InternalValue.1.Value}}",
         {% if CWE_InternalValue.3.Value %}
-        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE_InternalValue.3.Value}}",
+        "system": "http://example.com/v2-to-fhir-converter/Identifier/{{CWE_InternalValue.3.Value}}",
         {% endif %}
     },
     { 
         "value": "{{CWE_InternalValue.4.Value}}",
         {% if CWE_InternalValue.6.Value %}
-        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE_InternalValue.6.Value}}",
+        "system": "http://example.com/v2-to-fhir-converter/Identifier/{{CWE_InternalValue.6.Value}}",
         {% endif %}
     },
     { 
         "value": "{{CWE_InternalValue.10.Value}}",
         {% if CWE_InternalValue.12.Value %}
-        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE_InternalValue.12.VAlue}}",
+        "system": "http://example.com/v2-to-fhir-converter/Identifier/{{CWE_InternalValue.12.VAlue}}",
         {% endif %}
     },
-],
 {% endif -%}

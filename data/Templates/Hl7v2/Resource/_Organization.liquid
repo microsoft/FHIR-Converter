@@ -11,6 +11,14 @@
             {% include 'DataType/HDOrganization' HD: MSHHD1 -%}
         {% endif -%}
 
+        {% if PRD.10 %}
+            {% include 'DataType/XONOrganization'  XON: PRD.10 -%}
+        {% endif %}
+
+        {% if RQD -%}
+            {% include 'DataType/CWEOrganization' CWE: RQD -%}
+        {% endif -%}
+
         {% if MSHHD2 -%}
             {% include 'DataType/HDOrganization' HD: MSHHD2 -%}
         {% endif -%}
@@ -63,6 +71,10 @@
             {% include 'DataType/HDOrganization_InternalValue' HD: PID.4 -%}
         {% endif -%}
 
+        {% if MRG -%}  
+            {% include 'DataType/HDOrganization_InternalValue' HD: MRG.4 -%}
+        {% endif -%}
+
         {% if IN1_49 -%}  
             {% include 'DataType/HDOrganization_InternalValue' HD: IN1_49.4 -%}
         {% endif -%}
@@ -91,6 +103,14 @@
             {% include 'DataType/HDOrganization_InternalValue' HD: PV1 -%}
         {% endif -%}
 
+        {% if RXA_10 -%}  
+            {% include 'DataType/HDOrganization_InternalValue' HD: RXA_10 -%}
+        {% endif -%}
+
+        {% if ORC_12 -%}  
+            {% include 'DataType/HDOrganization_InternalValue' HD: ORC_12 -%}
+        {% endif -%}
+
         {% if PV2 -%}  
             {% include 'DataType/HDOrganization_InternalValue' HD: PV2 -%}
         {% endif -%}
@@ -107,6 +127,14 @@
             {% include 'DataType/HDOrganization_InternalValue' HD: PD1_4 -%}
         {% endif -%}
 
+        {% if FT1_20 -%}  
+            {% include 'DataType/HDOrganization_InternalValue' HD: FT1_20 -%}
+        {% endif -%}
+
+        {% if ACC -%}  
+            {% include 'DataType/HDOrganization_InternalValue' HD: ACC -%}
+        {% endif -%}
+
          {% if NK1_12 -%}  
             {% include 'DataType/HDOrganization_InternalValue' HD: NK1_12.4 -%}
         {% endif -%}
@@ -115,15 +143,30 @@
             {% include 'DataType/HDOrganization_InternalValue' HD: NK1_33.4 -%}
         {% endif -%}
 
-        {% include 'DataType/XONOrganization' XON: ROL.14 -%}
+        {% if ROL.14 %}
+            {% include 'DataType/XONOrganization' XON: ROL.14 -%}
+        {% endif %}
+        
         {% if PD1.3 -%}
             {% include 'DataType/XONOrganization' XON: PD1.3.Repeats[0] -%}
         {% endif -%}
+
+        {% if FT1_32.32 -%}
+            {% include 'DataType/XONOrganization' XON: FT1_32.32.Repeats[0] -%}
+        {% endif -%}
+
+        {% if FT1_33.33 -%}
+            {% include 'DataType/XONOrganization' XON: FT1_33.33 -%}
+        {% endif -%}
+
         {% if NK1.13 -%}
             {% include 'DataType/XONOrganization' XON: NK1.13.Repeats[0] -%}
         {% endif -%}
-        {% include 'DataType/XONOrganization' XON: PRT.8.Repeats[0] -%}
 
+        {% if PRT %}
+            {% include 'DataType/XONOrganization' XON: PRT, Org_Name: Org_Name -%}
+        {% endif %}
+       
         {% if RF1 -%}
             {% include 'DataType/XONOrganization' XON: RF1 -%}
         {% endif -%}
@@ -152,7 +195,28 @@
             {% include 'DataType/HDOrganization_InternalValue' HD: OBX -%}
         {% endif %}
 
+        {% if RXO_14 %}
+            {% include 'DataType/HDOrganization_InternalValue' HD: RXO_14 -%}
+        {% endif %}
+
+        {% if ORC_10 %}
+            {% include 'DataType/HDOrganization_InternalValue' HD: ORC_10 -%}
+        {% elsif ORC_19 %}
+            {% include 'DataType/HDOrganization_InternalValue' HD: ORC_19 -%}
+        {% endif %}
+        {% if ORC.21 %}
+            {% include 'DataType/XONOrganization' XON: ORC.21.Repeats[0] -%}
+        {% endif %}
         {% include 'DataType/CWEOrganization' CWE: RXA.17.Repeats[0] -%}
+
+        {% include 'DataType/CWEOrganization' CWE: RXO.32 -%}
+        {% include 'DataType/CWEOrganization' CWE: RXE.40 -%}
+
+        {% include 'DataType/CWEOrganization' CWE: FT1.13 -%}
+
+        {% include 'DataType/CWEOrganization' CWE: RQ1_2.2 -%}
+
+        {% include 'DataType/CWEOrganization' CWE: RQ1_4.4 -%}
 
          {% if IN2_3 -%}  
             {% include 'DataType/HDOrganization_InternalValue' HD: IN2_3 -%}
@@ -163,6 +227,13 @@
         {% endif -%}
 
         {% include 'DataType/HDOrganization_InternalValue' HD: AIP -%}
+
+        {% if PDA_5 -%}
+            {% include 'DataType/HDOrganization_InternalValue' HD: PDA_5.9 -%}
+        {% endif -%}
+        {% if PDA_8 -%}
+            {% include 'DataType/HDOrganization_InternalValue' HD: PDA_8.9 -%}
+        {% endif -%}
 
         {% if MSHHD1 %}
             {% if MSH.22 and organization_ID_MSH_22 -%}
@@ -185,16 +256,40 @@
             {
                 "country":"{{ MSH.17.Value | get_property: 'CodeSystem/Countries', 'code' }}",
             }, 
-            {
-                {% if ORC_SEG_22 %}
-                    {% for orc22 in ORC_SEG_22.Repeats %}
-                        {% include 'DataType/XADAddress' XAD: orc22 -%}
-                    {% endfor -%}    
-                {% endif %}
-            },     
+            {% if ORC_SEG_22 %}
+                {% for orc22 in ORC_SEG_22.Repeats %}
+                {
+                    {% include 'DataType/XADAddress' XAD: orc22 -%}
+                },
+                {% endfor -%}    
+            {% endif %}
+            {% if PRD.11 %}
+                {% for PRD_11 in PRD.11.Repeats %}
+                {
+                    {% include 'DataType/XADAddress' XAD: PRD_11 -%}
+                },
+                {% endfor %}     
+            {% endif %}
+            {% if ORC.21 %}
+                {% for orc22 in ORC.22.Repeats %}
+                    {
+                        {% include 'DataType/XAD' XAD: orc22 -%}
+                    },
+                {% endfor -%}    
+            {% endif %}     
             {
                 {% include 'DataType/XAD' XAD: OBX_ORU.24 -%}
             },
+            {% if RXO.33 %}
+            {
+                {% include 'DataType/XAD' XAD: RXO.33 -%}
+            },
+            {% endif %}
+            {% if RXE.40 %}
+            {
+                {% include 'DataType/XAD' XAD: RXE.41 -%}
+            },
+            {% endif %}
             {
                 {% if OBX_24 -%}
                     {% include 'DataType/XADAddress' XAD: OBX_24 -%}
@@ -205,11 +300,7 @@
                     {% include 'DataType/XAD' XAD: OBX_ORU.24 -%}
                 },
             {% endif -%}
-            {% for gt1_5 in GT1.5.Repeats -%}
-            {
-                {% include 'DataType/XAD' XAD: gt1_5 -%}
-            },
-            {% endfor -%}
+            
             {% for in1_5 in IN1.5.Repeats -%}
             {
                 {% include 'DataType/XAD' XAD: in1_5 -%}
@@ -261,15 +352,6 @@
                     {% include 'DataType/XPN' XPN: IN1.6 -%}
                 },
             },
-            {% for gt1_3 in GT1.3.Repeats -%}
-            { 
-                "name":
-                {
-                    
-                    {% include 'DataType/XPN' XPN: gt1_3 -%}
-                },
-            },
-            {% endfor -%}
             {% for gt1_45 in GT1.45.Repeats -%}
             { 
                 "name":
@@ -293,29 +375,25 @@
                 ],
             },
         ],
+        {%- comment -%}
         "type":
         [
             {
                 {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/OrganizationUnitType', CWE: PRT.7 -%}
             },
         ],
+        {%- endcomment -%}
         "telecom":
         [
-            {% for gt1_6 in GT1.6.Repeats -%}
-                {
-                    {% include 'DataType/XTN' XTN: gt1_6 -%}
-                },
-            {% endfor -%}
-            {% for gt1_7 in GT1.7.Repeats -%}
-                {
-                    {% include 'DataType/XTN' XTN: gt1_7 -%}
-                },
-            {% endfor -%}
-            {% for gt1_18 in GT1_51.18.Repeats -%}
-                {
-                    {% include 'DataType/XTN' XTN: gt1_18 -%}
-                },
-            {% endfor -%}
+            
+            {% if PRD.13 %}
+                {% for PRD_13 in PRD.13.Repeats %}
+                    {
+                        {% include 'DataType/XTN' XTN: PRD_13 -%}
+                    },
+                {% endfor %}
+            {% endif %}
+            
             {% for in1_7 in IN1.7.Repeats -%}
                 {
                     {% include 'DataType/XTN' XTN: in1_7 -%}
@@ -326,19 +404,27 @@
                     {% include 'DataType/XTN' XTN: in2_64 -%}
                 },
             {% endfor -%}
+            {% for rxo_36 in RXO.36.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: rxo_36 -%}
+                },
+            {% endfor -%}
+            {% for rxe_45 in RXE.45.Repeats -%}
+                {
+                    {% include 'DataType/XTN' XTN: rxe_45 -%}
+                },
+            {% endfor -%}
+            {% if ORC.21 %}
+                {% for orc23 in ORC.23.Repeats %}
+                    {
+                        {% include 'DataType/XTN' XTN: orc23 -%}
+                    },
+                {% endfor -%}    
+            {% endif %} 
         ],
         "identifier":
         [
-            {% for gt1_2 in GT1.2.Repeats -%}
-                {
-                    {% include 'DataType/CX' CX: gt1_2 -%}
-                },
-            {% endfor -%}
-            {% for gt1_29 in GT1_51.29.Repeats -%}
-                {
-                    {% include 'DataType/CX' CX: gt1_29 -%}
-                },
-            {% endfor -%}
+            
             {% for in1_3 in IN1.3.Repeats -%}
                 {
                     {% include 'DataType/CX' CX: in1_3 -%}
@@ -352,6 +438,9 @@
         ],
         {% if org_name %}
             "name": "{{org_name}}",
+        {% endif %}
+        {% if aut_org_name %}
+            "name": "{{aut_org_name}}",
         {% endif %}
         {% if IN1.4 -%}
             "name": {% include 'DataType/XONString' XON: IN1.4 -%}

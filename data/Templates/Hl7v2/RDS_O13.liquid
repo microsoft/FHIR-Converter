@@ -1,0 +1,1660 @@
+{% assign firstSegments = hl7v2Data | get_first_segments: 'MSH' -%}
+{% assign pidSegmentLists = hl7v2Data | get_segment_lists: 'PID' -%}
+{% assign sftSegmentLists = hl7v2Data | get_segment_lists: 'SFT' -%}
+{% assign orcSegmentLists = hl7v2Data | get_segment_lists: 'ORC' -%}
+
+
+{% evaluate bundleID using 'ID/Bundle' Data: firstSegments.MSH.10 -%}                  
+        
+{
+    "resourceType": "Bundle",
+    "type": "batch",
+    {% if firstSegments.MSH.7 -%}
+        "timestamp":"{{ firstSegments.MSH.7.Value | format_as_date_time }}",
+    {% endif -%}
+    "identifier":
+    {
+        "value":"{{ firstSegments.MSH.10.Value }}",
+    },
+    "id":"{{ bundleID }}",
+    "entry": [
+
+        {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
+        {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
+        {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
+          
+        {% if firstSegments.MSH -%}   
+
+            {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, ID: messageHeaderId -%}              
+            {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseId: patientId -%}
+            {% include 'Resource/Provenance' Root_Template: 'RDS_O13', MSH: firstSegments.MSH, REF_BUNDLE: bundleID, ID: provenanceId -%}
+            
+            {% if firstSegments.MSH.4 -%}
+                {% if firstSegments.MSH.4.1 != "" and firstSegments.MSH.4.1 != null or firstSegments.MSH.4.2 != "" and firstSegments.MSH.4.2 != null or firstSegments.MSH.4.3 != "" and firstSegments.MSH.4.3 != null -%}
+                    {% evaluate organization_ID_MSH_4 using 'ID/Organization' HD: firstSegments.MSH.4 -%}
+                    {% include 'Resource/Organization' MSHHD1: firstSegments.MSH.4, MSH: firstSegments.MSH, ID: organization_ID_MSH_4 -%}
+                {% endif -%}
+            {% endif -%}  
+
+            {% if firstSegments.MSH.6 %}
+                {% if firstSegments.MSH.6.1 != "" and firstSegments.MSH.6.1 != null or firstSegments.MSH.6.2 != "" and firstSegments.MSH.6.2 != null or firstSegments.MSH.6.3 != "" and firstSegments.MSH.6.3 != null -%}
+                    {% evaluate organization_Id_MSH_6 using 'ID/Organization' HD: firstSegments.MSH.6 -%}
+                    {% include 'Resource/Organization' MSHHD2: firstSegments.MSH.6, MSH: firstSegments.MSH, ID: organization_Id_MSH_6 -%}
+                {% endif -%}
+            {% endif -%}
+            
+            {% if firstSegments.MSH.22 %}
+                {% if firstSegments.MSH.22.1 != "" and firstSegments.MSH.22.1 != null -%}  
+                    {% evaluate organization_Id_MSH_22 using 'ID/Organization' XON: firstSegments.MSH.22 -%}
+                    {% include 'Resource/Organization' MSHXON1: firstSegments.MSH.22, ID: organization_Id_MSH_22 -%}
+                {% endif -%}
+            {% endif -%}
+
+            {% if firstSegments.MSH.23 %}
+                {% if firstSegments.MSH.23.1 != "" and firstSegments.MSH.23.1 != null -%}
+                    {% evaluate organization_Id_MSH_23 using 'ID/Organization' XON: firstSegments.MSH.23 -%}
+                    {% include 'Resource/Organization' MSHXON2: firstSegments.MSH.23, ID: organization_Id_MSH_23 -%}
+                {% endif -%}   
+            {% endif -%}
+            {% if firstSegments.MSH.3 and firstSegments.MSH.24 %}
+                {% evaluate device_Id_MSH_3 using 'ID/Device' HD: firstSegments.MSH.3 -%}
+                {% include 'Resource/Device' MSH: firstSegments.MSH, ID: device_Id_MSH_3 -%}
+            {% endif -%}
+
+        {% endif -%}
+        
+        {% for sftSegment in sftSegmentLists.SFT -%}
+            {% evaluate deviceId_SFT using 'ID/Device' SFT: sftSegment -%}    
+            {% include 'Resource/Device' SFT:sftSegment, ID: deviceId_SFT -%}
+            {% include 'Resource/MessageHeader' MSH: firstSegments.MSH, SFT:sftSegment, ID: messageHeaderID -%}
+        {% endfor -%}
+
+        {% for pidSegment in pidSegmentLists.PID -%}
+        
+            {% evaluate patientId using 'ID/Patient' PID: pidSegment, type: 'First' -%}
+            {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
+
+            {% assign pd1SegmentLists = hl7v2Data | get_related_segment_list: pidSegment, 'PD1' -%}
+            {% assign pd1Segment = pd1SegmentLists.PD1[0] %}
+            {% assign arvSegmentLists1 = hl7v2Data | get_related_segment_list: pidSegment, 'ARV' -%}
+            {% assign al1SegmentLists = hl7v2Data | get_related_segment_list: pidSegment, 'AL1' -%}
+            {% assign pv1SegmentLists = hl7v2Data | get_related_segment_list: pidSegment, 'PV1' -%}
+            {% assign pv1Segment = pv1SegmentLists.PV1[0] %}
+            {% assign pv2SegmentLists = hl7v2Data | get_related_segment_list: pidSegment, 'PV2' -%}
+            {% assign pv2Segment = pv2SegmentLists.PV2[0] %}
+
+            {% include 'Resource/Patient' PID: pidSegment, PD1: pd1Segment, ID: patientId -%}
+            {% include 'Extensions/Patient/PatientExtension' ID: PatientId, PID: pidSegment, PD1: pd1Segment, PV1: pv1Segment -%}
+
+            {% if pidSegment.18 -%}
+                {% evaluate accountId using 'ID/Account' CX: pidSegment.18, baseId: patientId -%}
+                {% include 'Resource/Account' PID: pidSegment, ID: accountId -%}
+                {% include 'Reference/Account/Subject' ID: accountId, REF: fullPatientId -%}
+                {% if pidSegment.18.4.1 != "" and pidSegment.18.4.1 != null and pidSegment.18.4.2 != "" and pidSegment.18.4.2 != null and pidSegment.18.4.3 != "" and pidSegment.18.4.3 != null -%}
+                    {% evaluate Organization_ID_pid_CX_18 using 'ID/Organization' HDORG: pidSegment.18.4 -%}
+                    {% include 'Resource/Organization', PID: pidSegment.18, ID: Organization_ID_pid_CX_18 -%}
+                {% endif -%}
+            {% endif -%}
+
+            {% if pidSegment.2 -%}
+                {% if pidSegment.2.4.1 != "" and pidSegment.2.4.1 != null and pidSegment.2.4.2 != "" and pidSegment.2.4.2 != null and pidSegment.2.4.3 != "" and pidSegment.2.4.3 != null -%}
+                    {% evaluate Organization_ID_pid_CX_2 using 'ID/Organization' HDORG: pidSegment.2.4 -%}
+                    {% include 'Resource/Organization', PID: pidSegment.2, ID: Organization_ID_pid_CX_2 -%}
+                {% endif -%}
+            {% endif -%}
+            {% for pid3 in pidSegment.3.Repeats -%}
+                {% if pid3.4.1 != "" and pid3.4.1 != null and pid3.4.2 != "" and pid3.4.2 != null and pid3.4.3 != "" and pid3.4.3 != null -%}
+                    {% evaluate Organization_ID_pid_CX using 'ID/Organization' HDORG: pid3.4 -%}
+                    {% include 'Resource/Organization', PID: pid3, ID: Organization_ID_pid_CX -%}
+                {% endif -%}
+            {% endfor -%}
+            {% if pidSegment.4 -%}
+                {% if pidSegment.4.4.1 != "" and pidSegment.4.4.1 != null and pidSegment.4.4.2 != "" and pidSegment.4.4.2 != null and pidSegment.4.4.3 != "" and pidSegment.4.4.3 != null -%}
+                    {% evaluate Organization_ID_pid_CX_4 using 'ID/Organization' HDORG: pidSegment.4.4 -%}
+                    {% include 'Resource/Organization', PID: pidSegment.4, ID: Organization_ID_pid_CX_4 -%}
+                {% endif -%}
+            {% endif -%}
+
+            {% unless nk1SegmentLists.NK1 -%}
+                {% if pidSegment.21 -%}
+                    {% if pidSegment.21.4.1 != "" and pidSegment.21.4.1 != null and pidSegment.21.4.2 != "" and pidSegment.21.4.2 != null and pidSegment.21.4.3 != "" and pidSegment.21.4.3 != null -%}
+                        {% evaluate Organization_ID_pid_CX_21 using 'ID/Organization' HDORG: pidSegment.21.4 -%}
+                        {% include 'Resource/Organization', PID: pidSegment.21, ID: Organization_ID_pid_CX_21 -%}
+                    {% endif -%}
+                    {% evaluate pidrelatedPersonId using 'ID/RelatedPerson' PID: pidSegment, baseId: patientId -%}
+                    {% include 'Resource/RelatedPerson' RelatedPerson_Patient_ID: fullPatientId, ID: pidrelatedPersonId, PID: pidSegment -%}
+                {% endif -%}
+            {% endunless -%}
+
+            {%- comment -%} PATIENT-PRT related coding starts {%- endcomment -%}
+            {% assign prtSegmentLists = hl7v2Data | get_related_segment_list: pd1Segment, 'PRT' -%}
+
+            {% for prtSegment in prtSegmentLists.PRT %}
+                {% unless prtSegment.2.Value == "DE" or prtSegment.2.Value == "UN" %}
+                        
+                    {% if prtSegment.5 %}
+                            {% evaluate practitionerRoleId using 'ID/PractitionerRole' PRT: prtSegment.4, XCN: prtSegment.5.Repeats[0] -%}
+                            {% include 'Resource/PractitionerRole' PRT: prtSegment , ID: practitionerRoleId -%} 
+                            {%- assign fullPractitionerRoleId = practitionerRoleId | prepend: 'PractitionerRole/' -%}
+                            {% include 'Reference/Patient/GeneralPractitioner' REF: fullPractitionerRoleId, ID: patientId -%}
+                            {% evaluate practitionerId using 'ID/Practitioner' XCN: prtSegment.5.Repeats[0] -%}
+                            {% assign full_practitionerId = practitionerId | prepend: 'Practitioner/' %}
+                            {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId, ID: practitionerRoleId -%}
+                            {% for prt_5 in prtSegment.5.Repeats %}
+                                {% if prt_5.9.1 != "" and prt_5.9.1 != null and prt_5.9.2 != "" and prt_5.9.2 != null and prt_5.9.3 != "" and prt_5.9.3 != null -%}
+                                    {% evaluate Organization_ID using 'ID/Organization' HDORG: prt_5.9 -%}
+                                    {% include 'Resource/Organization' OBX: prt_5.9, ID: Organization_ID -%}
+                                {% endif -%}
+                                {% include 'Resource/Practitioner' PRT: prt_5, ID: practitionerId-%}
+                            {% endfor %}
+                
+                            {% if prtSegment.9.Repeats[0] -%}
+                                {% include 'Resource/PLLocation' PL: prtSegment.9.Repeats[0]-%}
+                            {% endif -%}
+
+                            {% if prtSegment.8.Repeats[0] %}
+                                {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                {% include 'Resource/Organization' PRT: prtSegment.8.Repeats[0], ID: Organization_ID_PRT_8 -%}
+                            {% endif %}
+                            
+                    {% endif %}
+
+                    {% unless prtSegment.5 %}
+                        {% if prtSegment.8.Repeats[0] %}
+                            {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                            {% assign fullOrganization_ID_PRT_8 = Organization_ID_PRT_8 | prepend: 'Organization/' %}
+                            {% include 'Resource/Patient' Patient_ManagingOrganization_ID: fullOrganization_ID_PRT_8, ID: patientId -%}
+                            {% for prt_8 in prtSegment.8.Repeats %}
+                                {% include 'Resource/Organization' PRT: prt_8, Org_Name: prtSegment.8.Repeats[0].1, ID: Organization_ID_PRT_8 -%}
+                            {% endfor %}
+                        {% endif %}
+                    {% endunless %}
+
+                    {% unless prtSegment.5 %}
+                        {% if prtSegment.8.Repeats[0] %}
+                            {% if prtSegment.9.Repeats[0] %}
+                                {% for prt_9 in prtSegment.9.Repeats %}
+                                    {% include 'Resource/PLLocation' PL: prt_9 -%}
+
+                                    {% if prt_9.5 or prt_9.9 -%}
+                                        {% if prt_9.5 and prt_9.9 -%}
+                                            {% assign PL_Value_Except_PL5_PL9 = prt_9.Value | remove: prt_9.5.Value | remove: prt_9.9.Value %}
+                                        {% endif -%}
+                                        {% if prt_9.5 and prt_9.9 == null or prt_9.9 == "" -%}
+                                            {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.5.Value %}
+                                        {% endif -%}
+                                        {% if prt_9.9 and prt_9.5 == null or prt_9.5 == "" -%}
+                                            {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.9.Value %}
+                                        {% endif -%}
+                                    {% else -%}
+                                        {% assign PL_Value_Except_PL5_PL9 = prt_9.Value %}
+                                    {% endif -%}
+                
+                                    {% if prt_9.1 -%}
+                                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.1, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                    {% elseif prt_9.2 -%}
+                                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.2, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                    {% elseif prt_9.3 -%}
+                                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.3, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                    {% elseif prt_9.4 -%}
+                                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.4, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                    {% elseif prt_9.7 -%}
+                                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.7, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                    {% elseif prt_9.8 -%}
+                                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.8, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                    {% endif -%}
+
+                                    {% if Location_ID_PRT_9 %} 
+                                        {% include 'Reference/Location/ManagingOrganization' REF: fullOrganization_ID_PRT_8, ID: Location_ID_PRT_9 -%}
+                                    {% endif %}
+
+                                {% endfor %}
+                            {% endif -%}
+                        {% endif -%}
+                    {% endunless %}
+
+                    {% unless prtSegment.5 %}
+                        {% if prtSegment.10 %}
+                            {% evaluate deviceId using 'ID/Device' EI: prtSegment.10.Repeats[0] -%}
+                            {% include 'Resource/Device' PRT: prtSegment, Device_Patient_ID: fullPatientId, ID: deviceId -%}
+                            
+                        {% endif %}
+                    {% endunless %}
+                {% endunless %}
+            
+            {% endfor %}
+            {%- comment -%} PATIENT-PRT related coding ends {%- endcomment -%}
+
+            {% if pd1Segment.3 -%}
+                {% evaluate Organization_ID_PD1_3 using 'ID/Organization' XON: pd1Segment.3 -%}
+                {% include 'Resource/Organization' PD1: pd1Segment, ID: Organization_ID_PD1_3 -%}
+            {% endif -%}
+
+            {% if pd1Segment.4 -%}
+                {% if pd1Segment.4.9.1 != "" and pd1Segment.4.9.1 != null and pd1Segment.4.9.2 != "" and pd1Segment.4.9.2 != null and pd1Segment.4.9.3 != "" and pd1Segment.4.9.3 != null -%}
+                    {% evaluate Organization_ID_PD1_4_9 using 'ID/Organization' HDORG: pd1Segment.4.9 -%}
+                    {% include 'Resource/Organization', PD1_4: pd1Segment.4.9, ID: Organization_ID_PD1_4_9 -%}
+                {% endif -%} 
+                {% evaluate Practitioner_ID_PD1_4 using 'ID/Practitioner' XCN: pd1Segment.4 -%}
+                {% include 'Resource/Practitioner' PD1: pd1Segment.4, ID: Practitioner_ID_PD1_4 -%}
+            {% endif -%}
+
+            {% for arvSegment in arvSegmentLists1.ARV %}
+                {% if arvSegment %}
+                    {% include 'Resource/Patient' ARV: arvSegment, ID: patientId %}   
+                {% endif %}
+            {% endfor %}
+
+            {% if pv1Segment -%}
+                {% if pv1Segment.5 -%}
+                {% if pv1Segment.5.4.1 != "" and pv1Segment.5.4.1 != null and pv1Segment.5.4.2 != "" and pv1Segment.5.4.2 != null and pv1Segment.5.4.3 != "" and pv1Segment.5.4.3 != null -%}
+                    {% evaluate Organization_ID_PV1_5_4 using 'ID/Organization' HDORG: pv1Segment.5.4 -%}
+                    {% include 'Resource/Organization', PV1: pv1Segment.5.4, ID: Organization_ID_PV1_5_4 -%}
+                {% endif -%}
+            {% endif -%}
+
+            {% if pv1Segment.19 -%}
+                {% if pv1Segment.19.4.1 != "" and pv1Segment.19.4.1 != null and pv1Segment.19.4.2 != "" and pv1Segment.19.4.2 != null and pv1Segment.19.4.3 != "" and pv1Segment.19.4.3 != null -%}
+                    {% evaluate Organization_ID_PV1_19_4 using 'ID/Organization' HDORG: pv1Segment.19.4 -%}
+                    {% include 'Resource/Organization', PV1: pv1Segment.19.4, ID: Organization_ID_PV1_19_4 -%}
+                {% endif -%}
+            {% endif -%}
+
+            {% if pv1Segment.7 -%}
+                {% if pv1Segment.7.9.1 != "" and pv1Segment.7.9.1 != null and pv1Segment.7.9.2 != "" and pv1Segment.7.9.2 != null and pv1Segment.7.9.3 != "" and pv1Segment.7.9.3 != null -%}
+                    {% evaluate Organization_ID_PV1_7_9 using 'ID/Organization' HDORG: pv1Segment.7.9 -%}
+                    {% include 'Resource/Organization', PV1: pv1Segment.7.9, ID: Organization_ID_PV1_7_9 -%}
+                {% endif -%}
+                {% evaluate practitionerId_PV1_7 using 'ID/Practitioner' XCN: pv1Segment.7 -%}
+                {% include 'Resource/Practitioner' PV1: pv1Segment.7, ID: practitionerId_PV1_7 -%}
+            {% endif -%}
+
+            {% if pv1Segment.8 -%}
+                {% if pv1Segment.8.9.1 != "" and pv1Segment.8.9.1 != null and pv1Segment.8.9.2 != "" and pv1Segment.8.9.2 != null and pv1Segment.8.9.3 != "" and pv1Segment.8.9.3 != null -%}
+                    {% evaluate Organization_ID_PV1_8_9 using 'ID/Organization' HDORG: pv1Segment.8.9 -%}
+                    {% include 'Resource/Organization', PV1: pv1Segment.8.9, ID: Organization_ID_PV1_8_9 -%}
+                {% endif -%}
+                {% evaluate practitionerId_PV1_8 using 'ID/Practitioner' XCN: pv1Segment.8 -%}
+                {% include 'Resource/Practitioner' PV1: pv1Segment.8, ID: practitionerId_PV1_8 -%}
+            {% endif -%}
+
+            {% if pv1Segment.9 -%}
+                {% if pv1Segment.9.9.1 != "" and pv1Segment.9.9.1 != null and pv1Segment.9.9.2 != "" and pv1Segment.9.9.2 != null and pv1Segment.9.9.3 != "" and pv1Segment.9.9.3 != null -%}
+                    {% evaluate Organization_ID_PV1_9_9 using 'ID/Organization' HDORG: pv1Segment.9.9 -%}
+                    {% include 'Resource/Organization', PV1: pv1Segment.9.9, ID: Organization_ID_PV1_9_9 -%}
+                {% endif -%}        
+                {% evaluate practitionerId_PV1_9 using 'ID/Practitioner' XCN: pv1Segment.9 -%}
+                {% include 'Resource/Practitioner' PV1: pv1Segment.9, ID: practitionerId_PV1_9 -%}
+            {% endif -%}
+
+            {% if pv1Segment.17 -%}
+                {% if pv1Segment.17.9.1 != "" and pv1Segment.17.9.1 != null and pv1Segment.17.9.2 != "" and pv1Segment.17.9.2 != null and pv1Segment.17.9.3 != "" and pv1Segment.17.9.3 != null -%}
+                    {% evaluate Organization_ID_PV1_17_9 using 'ID/Organization' HDORG: pv1Segment.17.9 -%}
+                    {% include 'Resource/Organization', PV1: pv1Segment.17.9, ID: Organization_ID_PV1_17_9 -%}
+                {% endif -%}         
+                {% evaluate practitionerId_PV1_17 using 'ID/Practitioner' XCN: pv1Segment.17 -%}
+                {% include 'Resource/Practitioner' PV1: pv1Segment.17, ID: practitionerId_PV1_17 -%}
+            {% endif -%}
+
+            {% if pv1Segment.50 -%}
+                {% for p in pv1Segment.50.Repeats -%}
+                    {% if p.4.1 != "" and p.4.1 != null and p.4.2 != "" and p.4.2 != null and p.4.3 != "" and p.4.3 != null -%}
+                        {% evaluate Organization_ID_PV1_50_4 using 'ID/Organization' HDORG: p.4 -%}
+                        {% include 'Resource/Organization', PV1: p.4, ID: Organization_ID_PV1_50_4 -%}
+                    {% endif -%}
+                {% endfor -%}
+            {% endif -%}
+
+            {% if pv1Segment.52 -%}
+                {% if pv1Segment.52.9.1 != "" and pv1Segment.52.9.1 != null and pv1Segment.52.9.2 != "" and pv1Segment.52.9.2 != null and pv1Segment.52.9.3 != "" and pv1Segment.52.9.3 != null -%}
+                    {% evaluate Organization_ID_PV1_52_9 using 'ID/Organization' HDORG: pv1Segment.52.9 -%}
+                    {% include 'Resource/Organization', PV1: pv1Segment.52.9, ID: Organization_ID_PV1_52_9 -%}
+                {% endif -%} 
+                {% evaluate practitionerId_PV1_52 using 'ID/Practitioner' XCN: pv1Segment.52 -%}
+                {% include 'Resource/Practitioner' PV1: pv1Segment.52, ID: practitionerId_PV1_52 -%}
+            {% endif -%}
+
+            {% if pv2Segment.13 -%}
+                {% if pv2Segment.13.9.1 != "" and pv2Segment.13.9.1 != null and pv2Segment.13.9.2 != "" and pv2Segment.13.9.2 != null and pv2Segment.13.9.3 != "" and pv2Segment.13.9.3 != null -%}
+                    {% evaluate Organization_ID_PV2_13_9 using 'ID/Organization' HDORG: pv2Segment.13.9 -%}
+                    {% include 'Resource/Organization', PV2: pv2Segment.13.9, ID: Organization_ID_PV2_13_9 -%}
+                {% endif -%} 
+                {% evaluate practitionerId_PV2_13 using 'ID/Practitioner' XCN: pv2Segment.13 -%}
+                {% include 'Resource/Practitioner' PV1: pv2Segment.13, ID: practitionerId_PV2_13 -%}
+            {% endif -%}
+
+            {% if pv1Segment.3 -%}
+                {% include 'Resource/PLLocation' PL: pv1Segment.3-%}
+            {% endif -%}
+
+            {% if pv1Segment.6 -%}
+                {% include 'Resource/PLLocation' PL: pv1Segment.6 -%}
+            {% endif -%}
+
+            {% if pv1Segment.11 -%}
+                {% include 'Resource/PLLocation' PL: pv1Segment.11-%}
+            {% endif -%}
+
+            {% if pv1Segment.37 -%}
+                {% evaluate location_ID_PV1_37 using 'ID/Location' DLD: pv1Segment.37 -%}
+                {% include 'Resource/Location' PV1: pv1Segment.37, ID: location_ID_PV1_37-%}
+            {% endif -%}
+
+            {% if pv1Segment.42 -%}
+                {% include 'Resource/PLLocation' PL: pv1Segment.42-%}
+            {% endif -%}
+        
+            {% if pv1Segment.43 -%}
+                {% include 'Resource/PLLocation' PL: pv1Segment.43-%}
+            {% endif -%}
+
+            {% if pv2Segment.1 -%}
+                {% include 'Resource/PLLocation' PL: pv2Segment.1-%}
+            {% endif -%}
+
+            {% if pv1Segment.54 -%}
+                {% if pv1Segment.54.4.1 != "" and pv1Segment.54.4.1 != null and pv1Segment.54.4.2 != "" and pv1Segment.54.4.2 != null and pv1Segment.54.4.3 != "" and pv1Segment.54.4.3 != null -%}
+                    {% evaluate Organization_ID_PV1_54_4 using 'ID/Organization' HDORG: pv1Segment.54.4 -%}
+                {% include 'Resource/Organization', PV1: pv1Segment.54.4, ID: Organization_ID_PV1_54_4 -%}
+                {% endif -%} 
+                {% evaluate EpisodeOfCare_ID using 'ID/EpisodeOfCare' PV1: pv1Segment.54 -%}
+                {% include 'Resource/EpisodeOfCare' PV1: pv1Segment, PV2: pv2Segment, ID: EpisodeOfCare_ID, patientRefrenceID: fullPatientId -%}
+            {% endif -%}
+                {% evaluate encounterId using 'ID/Encounter' PV1: pv1Segment, baseId: patientId -%}
+                {% assign fullEncounterId = encounterId | prepend: 'Encounter/' -%}
+                {% include 'Resource/Encounter' Root_Template: 'ORU_R01', PV1: pv1Segment, PV2: pv2Segment, ID: encounterId, AccountId:accountId -%}
+                {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
+                {% include 'Extensions/Encounter/EncounterExtension' ID: encounterId, PV1: pv1Segment, PV2: pv2Segment -%}
+            {% endif -%}
+
+            {%- comment -%} VISIT - PRT related coding start {%- endcomment -%}
+
+            {% assign prtSegmentLists = hl7v2Data | get_related_segment_list: pv1Segment, 'PRT' -%}
+
+            {% for prtSegment in prtSegmentLists.PRT %}                
+                {% unless prtSegment.2.Value == "DE" or prtSegment.2.Value == "UN" %}
+                            
+                    {% if prtSegment.5 %}
+                            {% evaluate practitionerRoleId using 'ID/PractitionerRole' PRT: prtSegment.4, XCN: prtSegment.5.Repeats[0] -%}
+                            {% include 'Resource/PractitionerRole' PRT: prtSegment , ID: practitionerRoleId -%} 
+                            {%- assign fullPractitionerRoleId = practitionerRoleId | prepend: 'PractitionerRole/' -%}
+                            {% include 'Reference/Encounter/Participant_Individual' REF: fullPractitionerRoleId, ID: encounterId -%}
+                            
+                            {% evaluate practitionerId using 'ID/Practitioner' XCN: prtSegment.5.Repeats[0] -%}
+                            {% assign full_practitionerId = practitionerId | prepend: 'Practitioner/' %}
+                            {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId, ID: practitionerRoleId -%}
+                            {% for prt_5 in prtSegment.5.Repeats %}
+                                {% if prt_5.9.1 != "" and prt_5.9.1 != null and prt_5.9.2 != "" and prt_5.9.2 != null and prt_5.9.3 != "" and prt_5.9.3 != null -%}
+                                    {% evaluate Organization_ID using 'ID/Organization' HDORG: prt_5.9 -%}
+                                    {% include 'Resource/Organization' OBX: prt_5.9, ID: Organization_ID -%}
+                                {% endif -%}
+                                {% include 'Resource/Practitioner' PRT: prt_5, ID: practitionerId-%}
+                            {% endfor %}
+                
+                            {% if prtSegment.9.Repeats[0] -%}
+                                {% include 'Resource/PLLocation' PL: prtSegment.9.Repeats[0]-%}
+                            {% endif -%}
+
+                            {% if prtSegment.8.Repeats[0] %}
+                                {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                {% include 'Resource/Organization' PRT: prtSegment.8.Repeats[0], ID: Organization_ID_PRT_8 -%}
+                            {% endif %}
+                            
+                    {% endif %}
+
+                    {% unless prtSegment.5 %}
+                        {% if prtSegment.8.Repeats[0] %}
+                            {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                            {% assign fullOrganization_ID_PRT_8 = Organization_ID_PRT_8 | prepend: 'Organization/' %}
+                            {% include 'Reference/Encounter/ServiceProvider' REF: fullOrganization_ID_PRT_8, ID: encounterId -%}
+                
+                            {% for prt_8 in prtSegment.8.Repeats %}
+                                {% include 'Resource/Organization' PRT: prt_8, Org_Name: prtSegment.8.Repeats[0].1, ID: Organization_ID_PRT_8 -%}
+                            {% endfor %}
+                        {% endif %}
+                    {% endunless %}
+
+                    {% unless prtSegment.5 %}
+                            {% if prtSegment.9.Repeats[0] %}
+                                {% for prt_9 in prtSegment.9.Repeats %}
+                                    {% include 'Resource/PLLocation' PL: prt_9 -%}
+
+                                    {% if prt_9.5 or prt_9.9 -%}
+                                        {% if prt_9.5 and prt_9.9 -%}
+                                            {% assign PL_Value_Except_PL5_PL9 = prt_9.Value | remove: prt_9.5.Value | remove: prt_9.9.Value %}
+                                        {% endif -%}
+                                        {% if prt_9.5 and prt_9.9 == null or prt_9.9 == "" -%}
+                                            {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.5.Value %}
+                                        {% endif -%}
+                                        {% if prt_9.9 and prt_9.5 == null or prt_9.5 == "" -%}
+                                            {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.9.Value %}
+                                        {% endif -%}
+                                    {% else -%}
+                                        {% assign PL_Value_Except_PL5_PL9 = prt_9.Value %}
+                                    {% endif -%}
+                
+                                    {% if prt_9.1 -%}
+                                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.1, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                    {% elseif prt_9.2 -%}
+                                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.2, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                    {% elseif prt_9.3 -%}
+                                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.3, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                    {% elseif prt_9.4 -%}
+                                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.4, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                    {% elseif prt_9.7 -%}
+                                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.7, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                    {% elseif prt_9.8 -%}
+                                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.8, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                    {% endif -%}
+
+                                    {% if Location_ID_PRT_9 %} 
+                                        {% if prtSegment.8.Repeats[0] %}
+                                            {% include 'Reference/Location/ManagingOrganization' REF: fullOrganization_ID_PRT_8, ID: Location_ID_PRT_9 -%}
+                                        {% endif %}
+
+                                        {% unless prtSegment.8.Repeats[0] %}
+                                            {%- assign FullLocation_ID_PRT_9 = Location_ID_PRT_9 | prepend: 'Location/' -%}
+                                            {% include 'Reference/Encounter/Location_Location' REF: FullLocation_ID_PRT_9, ID: encounterId -%}
+                                        {% endunless %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif -%}
+                        
+                    {% endunless %}
+                {% endunless %}         
+            {% endfor %}
+            {%- comment -%} VISIT - PRT related coding end {%- endcomment -%}
+
+            {% assign arvSegmentLists2 = hl7v2Data | get_related_segment_list: pv1Segment, 'ARV' -%}
+            {% for arvSegment2 in arvSegmentLists2.ARV %}
+                {% if arvSegment2 %}
+                    {% include 'Resource/Encounter' ARV: arvSegment2, ID: encounterId %}   
+                {% endif %}
+            {% endfor %}
+
+            {% for al1Segment in al1SegmentLists.AL1 -%}
+                {% evaluate allergyIntoleranceId using 'ID/AllergyIntolerance' AL1: al1Segment, baseId: patientId -%}
+                {% assign fullEncounterid = encounterId | prepend: 'Encounter/' %}
+                {% include 'Resource/AllergyIntolerance' AL1: al1Segment, ID: allergyIntoleranceId, AllergyIntolerance_Patient_ID: fullPatientId, AllergyIntolerance_Encounter_ID: fullEncounterid -%}
+            {% endfor -%}
+            
+        {% endfor -%}
+
+
+        {% for orcSegment in orcSegmentLists.ORC %}
+
+            {% assign rxoSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'RXO' -%}
+            {% assign tq1SegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'TQ1' -%}
+            {% assign rxoSegment = rxoSegmentLists.RXO[0] %}
+            {% assign rxrSegmentLists = hl7v2Data | get_related_segment_list: rxoSegment, 'RXR' -%}   
+            {% assign tq1Segment = tq1SegmentLists.TQ1[0] %}
+            {% assign rxcSegmentLists = hl7v2Data | get_related_segment_list: rxoSegment, 'RXC' -%}
+            {% assign rxcSegment = rxcSegmentLists.RXC[0] %}
+            {% assign rxeSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'RXE' -%}
+            {% assign rxeSegment = rxeSegmentLists.RXE[0] %}
+
+            {% assign rxdSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'RXD' -%}
+            {% assign obxSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'OBX' -%}
+
+            {% assign rxo_nteSegmentLists = hl7v2Data | get_related_segment_list: rxoSegment, 'NTE' -%}
+
+            {% if rxoSegment -%}
+                {% evaluate medicationRequestId using 'ID/MedicationRequest' ORC: orcSegment, RXO: rxoSegment, intent_value: 'original-order', baseId: patientId -%}
+                {% include 'Resource/MedicationRequest' ORC: orcSegment, RXO: rxoSegment, ID: medicationRequestId %}
+                {% include 'Reference/MedicationRequest/Subject' ID: medicationRequestId, REF: fullPatientId -%}
+                {% assign fullEncounterid = encounterId | prepend: 'Encounter/' %}
+                {% include 'Reference/MedicationRequest/Encounter' ID: medicationRequestId, REF: fullEncounterid -%}
+
+                {% assign full_organizationId_ORC_21 = null -%}
+                {% if orcSegment.21.Repeats[0] %}
+                    {% evaluate organizationId_ORC_21 using 'ID/Organization' XON: orcSegment.21.Repeats[0] -%}
+                    {% assign full_organizationId_ORC_21 = organizationId_ORC_21 | prepend: 'Organization/' -%}
+                    {% include 'Resource/Organization' ORC_SEG: orcSegment, ORC_SEG_22: orcSegment.22, ORC_SEG_23: orcSegment.23, ID: organizationId_ORC_21 -%}
+                {% endif -%}  
+                {% unless orcSegment.12 -%} 
+                    {% if rxoSegment.14.Repeats[0] -%}                    
+                        {% if rxoSegment.14.Repeats[0].9.1 != "" and rxoSegment.14.Repeats[0].9.1 != null and rxoSegment.14.Repeats[0].9.2 != "" and rxoSegment.14.Repeats[0].9.2 != null and rxoSegment.14.Repeats[0].9.3 != "" and rxoSegment.14.Repeats[0].9.3 != null -%}
+                            {% evaluate Organization_ID_RXO_14 using 'ID/Organization' HDORG: rxoSegment.14.Repeats[0].9 -%}
+                            {% include 'Resource/Organization' RXO_14: rxoSegment.14.Repeats[0].9, ID: Organization_ID_RXO_14 -%}
+                        {% endif -%}
+                        {% evaluate practitionerId_RXO_14 using 'ID/Practitioner' XCN: rxoSegment.14.Repeats[0] -%}
+                        {% include 'Resource/Practitioner' RXO: rxoSegment.14.Repeats[0], ID: practitionerId_RXO_14 -%}
+                        {% evaluate practitionerRoleId_RXO_14 using 'ID/PractitionerRole' XCN: rxoSegment.14.Repeats[0] -%}
+                        {% assign full_practitionerId_RXO_14 = practitionerId_RXO_14 | prepend: 'Practitioner/' %}
+                        {% include 'Resource/PractitionerRole' RXO: rxoSegment.14.Repeats[0], ID: practitionerRoleId_RXO_14 -%}   
+                        {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId_RXO_14, ID: practitionerRoleId_RXO_14 -%}
+                        {% if orcSegment.21.Repeats[0] %}
+                                {% include 'Reference/PractitionerRole/Organization' REF: full_organizationId_ORC_21, ID: practitionerRoleId_RXO_14 -%}
+                        {% endif -%}
+                    {% endif -%}
+                {% endunless -%}
+                
+                {% if orcSegment.12.Repeats[0] -%}                    
+                    {% if orcSegment.12.Repeats[0].9.1 != "" and orcSegment.12.Repeats[0].9.1 != null and orcSegment.12.Repeats[0].9.2 != "" and orcSegment.12.Repeats[0].9.2 != null and orcSegment.12.Repeats[0].9.3 != "" and orcSegment.12.Repeats[0].9.3 != null -%}
+                        {% evaluate Organization_ID_ORC_12 using 'ID/Organization' HDORG: orcSegment.12.Repeats[0].9 -%}
+                        {% include 'Resource/Organization' ORC_12: orcSegment.12.Repeats[0].9, ID: Organization_ID_ORC_12 -%}
+                    {% endif -%}
+                    {% evaluate practitionerId_ORC_12 using 'ID/Practitioner' XCN: orcSegment.12.Repeats[0] -%}
+                    {% include 'Resource/Practitioner' ORC_med_prac: orcSegment, ID: practitionerId_ORC_12 -%}
+                    {% evaluate practitionerRoleId_ORC_12 using 'ID/PractitionerRole' XCN: orcSegment.12.Repeats[0] -%}
+                    {% assign full_practitionerId_ORC_12 = practitionerId_ORC_12 | prepend: 'Practitioner/' %}
+                    {% include 'Resource/PractitionerRole' ORC_12: orcSegment.12.Repeats[0], ID: practitionerRoleId_ORC_12 -%}   
+                    {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId_ORC_12, ID: practitionerRoleId_ORC_12 -%}
+                    {% include 'Reference/PractitionerRole/Organization' REF: full_OrganizationId_ORC_21, ID: practitionerRoleId_ORC_12 -%}                   
+                    
+                {% elsif orcSegment.21.Repeats[0] and  rxoSegment.14.Repeats[0] == null or rxoSegment.14.Repeats[0] == "" %}    
+                    {% evaluate practitionerRoleId_ORC_21 using 'ID/PractitionerRole' XCN: orcSegment.21.Repeats[0]-%}
+                    {% include 'Resource/PractitionerRole' requestor_organization: organizationId_ORC_21, ID: practitionerRoleId_ORC_21 -%}
+                    {% assign fullPractitionerRoleId_ORC_21 = practitionerRoleId_ORC_21 | prepend: 'PractitionerRole/' -%}
+                    {% include 'Reference/PractitionerRole/Organization' REF: full_organizationId_ORC_21, ID: practitionerRoleId_ORC_21 -%}
+                {% endif %}  
+
+                {% if orcSegment.10 or orcSegment.19 %}
+                    {% if orcSegment.10 %}    
+                        {% if orcSegment.10.Repeats[0] -%}                    
+                            {% if orcSegment.10.Repeats[0].9.1 != "" and orcSegment.10.Repeats[0].9.1 != null and orcSegment.10.Repeats[0].9.2 != "" and orcSegment.10.Repeats[0].9.2 != null and orcSegment.10.Repeats[0].9.3 != "" and orcSegment.10.Repeats[0].9.3 != null -%}
+                                {% evaluate Organization_ID_ORC_10 using 'ID/Organization' HDORG: orcSegment.10.Repeats[0].9 -%}
+                                {% include 'Resource/Organization' ORC_10: orcSegment.10.Repeats[0].9, ID: Organization_ID_ORC_10 -%}
+                            {% endif -%}
+                            {% evaluate practitionerId_ORC_10 using 'ID/Practitioner' XCN: orcSegment.10.Repeats[0] -%}
+                            {% include 'Resource/Practitioner' ORC_10: orcSegment.10, ID: practitionerId_ORC_10 -%}
+                            {% evaluate practitionerRoleId_ORC_10 using 'ID/PractitionerRole' XCN: orcSegment.10.Repeats[0] -%}
+                            {% assign full_practitionerId_ORC_10 = practitionerId_ORC_10 | prepend: 'Practitioner/' %}
+                            {% include 'Resource/PractitionerRole' ORC_10: orcSegment.10.Repeats[0], ID: practitionerRoleId_ORC_10 -%}   
+                            {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId_ORC_10, ID: practitionerRoleId_ORC_10 -%}
+                        {% endif -%}
+                    {% elsif orcSegment.19 %}    
+                        {% if orcSegment.19.Repeats[0] %}
+                            {% if orcSegment.19.Repeats[0].9.1 != "" and orcSegment.19.Repeats[0].9.1 != null and orcSegment.19.Repeats[0].9.2 != "" and orcSegment.19.Repeats[0].9.2 != null and orcSegment.19.Repeats[0].9.3 != "" and orcSegment.19.Repeats[0].9.3 != null -%}
+                                {% evaluate Organization_ID_ORC_19 using 'ID/Organization' HDORG: orcSegment.19.Repeats[0].9 -%}
+                                {% include 'Resource/Organization' ORC_19: orcSegment.19.Repeats[0].9, ID: Organization_ID_ORC_19 -%}
+                            {% endif -%}
+                            {% evaluate practitionerId_ORC_19 using 'ID/Practitioner' XCN: orcSegment.19.Repeats[0] -%}
+                            {% include 'Resource/Practitioner' ORC_19: orcSegment.19, ID: practitionerId_ORC_19 -%}
+                            {% evaluate practitionerRoleId_ORC_19 using 'ID/PractitionerRole' XCN: orcSegment.19.Repeats[0] -%}
+                            {% assign full_practitionerId_ORC_19 = practitionerId_ORC_19 | prepend: 'Practitioner/' %}
+                            {% include 'Resource/PractitionerRole' ORC_19: orcSegment.19.Repeats[0], ID: practitionerRoleId_ORC_19 -%}   
+                            {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId_ORC_19, ID: practitionerRoleId_ORC_19 -%} 
+                        {% endif -%}
+                    {% endif -%}
+                {% endif %}
+
+                {% if rxoSegment.32 -%}
+                    {% evaluate Organization_ID_RXO_32 using 'ID/Organization' CWE: rxoSegment.32 -%}
+                    {% include 'Resource/Organization' RXO: rxoSegment, ID: Organization_ID_RXO_32 -%}
+                {% endif -%} 
+            
+                {% assign medicationId = null -%}
+                {% if rxoSegment.1 or rxoSegment.6 -%}
+                    {% evaluate medicationId using 'ID/Medication' RXO: rxoSegment -%}
+                    {% include 'Resource/Medication' RXO: rxoSegment, ID: medicationId %}
+                    {% assign fullMedicationId = medicationId | prepend: 'Medication/' %}
+                    {% include 'Reference/MedicationRequest/MedicationReference' ID: medicationRequestId, REF: fullMedicationId -%}
+                {% endif -%}
+
+                {% if rxcSegment %}
+                    {% evaluate medicationId_rxc using 'ID/Medication' RXC: rxcSegment -%}
+                    {% assign fullMedicationId_rxc = medicationId_rxc | prepend: 'Medication/' %}
+                    {% include 'Resource/Medication' RXC: rxcSegment, ID: medicationId_rxc %}
+                    {% if medicationId %}
+                        {% include 'Resource/Medication' RXO_RXC: rxcSegment, ID: medicationId, ingredient_ItemReferenceID: fullMedicationId_rxc %}  
+                    {% endif %}
+                {% endif %}
+
+                {% for rxrSegment in rxrSegmentLists.RXR -%}
+                    {% include 'Resource/MedicationRequest' RXO_RXR: rxoSegment, TQ1_RXR: tq1Segment, RXR: rxrSegment, ID: medicationRequestId %}
+                {% endfor -%}
+
+                {% for nteSegment in rxo_nteSegmentLists.NTE -%}
+                    {% evaluate practitionerId_NTE_5 using 'ID/Practitioner' XCN: nteSegment.5 -%}
+                    {% include 'Resource/Practitioner' NTE: nteSegment.5, ID: practitionerId_NTE_5 -%}
+                    {% if nteSegment.5.9.1 != "" and nteSegment.5.9.1 != null and nteSegment.5.9.2 != "" and nteSegment.5.9.2 != null and nteSegment.5.9.3 != "" and nteSegment.5.9.3 != null -%}
+                        {% evaluate Organization_ID_NTE_5 using 'ID/Organization' HDORG: nteSegment.5.9 -%}
+                        {% include 'Resource/Organization' ORC_19: nteSegment.5.9, ID: Organization_ID_NTE_5 -%}
+                    {% endif -%}
+                    {% include 'Resource/MedicationRequest' NTE: nteSegment, nte_practitioner: practitionerId_NTE_5, ID: medicationRequestId %}
+                {% endfor -%}
+            
+                {% for tq1 in tq1SegmentLists.TQ1 %}
+                    {% unless tq1.Value == tq1Segment.Value %}
+                        {% include 'Resource/MedicationRequest' TQ1_RXR: tq1, ID: medicationRequestId %}
+                    {% endunless -%}
+                {% endfor -%}
+
+                {% unless rxrSegmentLists.RXR -%}
+                    {% for tq1 in tq1SegmentLists.TQ1 %}
+                        {% include 'Resource/MedicationRequest' TQ1_RXR: tq1, RXO_RXR: rxoSegment, ID: medicationRequestId %}
+                    {% endfor -%}
+                {% endunless -%}
+
+                {%- comment -%} ORC - PRT related coding start {%- endcomment -%}
+                {% assign prtSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'PRT' -%}
+
+                {% for prtSegment in prtSegmentLists.PRT %}
+                    
+                    {% unless prtSegment.2.Value == "DE" or prtSegment.2.Value == "UN" %}
+                    
+                        {% if prtSegment.5 %}
+                                {% evaluate practitionerRoleId using 'ID/PractitionerRole' PRT: prtSegment.4, XCN: prtSegment.5.Repeats[0] -%}
+                                {% include 'Resource/PractitionerRole' PRT: prtSegment , ID: practitionerRoleId -%} 
+                                {%- assign fullPractitionerRoleId = practitionerRoleId | prepend: 'PractitionerRole/' -%}
+                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: fullPractitionerRoleId, ID: medicationRequestId -%}
+                                {% evaluate practitionerId using 'ID/Practitioner' XCN: prtSegment.5.Repeats[0] -%}
+                                {% assign full_practitionerId = practitionerId | prepend: 'Practitioner/' %}
+                                {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId, ID: practitionerRoleId -%}
+                                {% for prt_5 in prtSegment.5.Repeats %}
+                                    {% if prt_5.9.1 != "" and prt_5.9.1 != null and prt_5.9.2 != "" and prt_5.9.2 != null and prt_5.9.3 != "" and prt_5.9.3 != null -%}
+                                        {% evaluate Organization_ID using 'ID/Organization' HDORG: prt_5.9 -%}
+                                        {% include 'Resource/Organization' OBX: prt_5.9, ID: Organization_ID -%}
+                                    {% endif -%}
+                                    {% include 'Resource/Practitioner' PRT: prt_5, ID: practitionerId-%}
+                                {% endfor %}
+                    
+                                {% if prtSegment.9.Repeats[0] -%}
+                                    {% include 'Resource/PLLocation' PL: prtSegment.9.Repeats[0]-%}
+                                {% endif -%}
+
+                                {% if prtSegment.8.Repeats[0] %}
+                                    {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                    {% include 'Resource/Organization' PRT: prtSegment.8.Repeats[0], ID: Organization_ID_PRT_8 -%}
+                                {% endif %}
+                                
+                        {% endif %}
+
+                        {% unless prtSegment.5 %}
+                            {% if prtSegment.8.Repeats[0] %}
+                                {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                {% assign fullOrganization_ID_PRT_8 = Organization_ID_PRT_8 | prepend: 'Organization/' %}
+                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: fullOrganization_ID_PRT_8, ID: medicationRequestId -%}
+                                {% for prt_8 in prtSegment.8.Repeats %}
+                                    {% include 'Resource/Organization' PRT: prt_8, Org_Name: prtSegment.8.Repeats[0].1, ID: Organization_ID_PRT_8 -%}
+                                {% endfor %}
+                            {% endif %}
+                        {% endunless %}
+
+                        {% unless prtSegment.5 %}
+                            
+                                {% if prtSegment.9.Repeats[0] %}
+                                    {% for prt_9 in prtSegment.9.Repeats %}
+                                        {% include 'Resource/PLLocation' PL: prt_9 -%}
+
+                                        {% if prt_9.5 or prt_9.9 -%}
+                                            {% if prt_9.5 and prt_9.9 -%}
+                                                {% assign PL_Value_Except_PL5_PL9 = prt_9.Value | remove: prt_9.5.Value | remove: prt_9.9.Value %}
+                                            {% endif -%}
+                                            {% if prt_9.5 and prt_9.9 == null or prt_9.9 == "" -%}
+                                                {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.5.Value %}
+                                            {% endif -%}
+                                            {% if prt_9.9 and prt_9.5 == null or prt_9.5 == "" -%}
+                                                {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.9.Value %}
+                                            {% endif -%}
+                                        {% else -%}
+                                            {% assign PL_Value_Except_PL5_PL9 = prt_9.Value %}
+                                        {% endif -%}
+                    
+                                        {% if prt_9.1 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.1, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.2 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.2, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.3 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.3, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.4 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.4, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.7 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.7, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.8 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.8, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% endif -%}
+
+                                        {% if Location_ID_PRT_9 %} 
+                                            {% if prtSegment.8.Repeats[0] %}
+                                                {% include 'Reference/Location/ManagingOrganization' REF: fullOrganization_ID_PRT_8, ID: Location_ID_PRT_9 -%}
+                                            {% endif %}
+
+                                            {% unless prtSegment.8.Repeats[0] %}
+                                                {%- assign FullLocation_ID_PRT_9 = Location_ID_PRT_9 | prepend: 'Location/' -%}
+                                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: FullLocation_ID_PRT_9, ID: medicationRequestId -%}
+                                            {% endunless %}
+                                        {% endif %}
+
+                                    {% endfor %}
+                                {% endif -%}
+                            
+                        {% endunless %}
+
+                        {% unless prtSegment.5 %}
+                            {% if prtSegment.10 %}
+                                {% evaluate deviceId using 'ID/Device' EI: prtSegment.10.Repeats[0] -%}
+                                {% include 'Resource/Device' PRT: prtSegment, ID: deviceId -%}
+                                {%- assign fullDeviceId = deviceId | prepend: 'Device/' -%}
+                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: fullDeviceId, ID: medicationRequestId -%}
+                            {% endif %}
+                        {% endunless %}
+                    {% endunless %}                 
+                {% endfor %}
+
+                {%- comment -%} ORC - PRT related coding end {%- endcomment -%}
+
+                {%- comment -%} RXO - PRT related coding start {%- endcomment -%}
+                {% assign prtSegmentLists = hl7v2Data | get_related_segment_list: rxoSegment, 'PRT' -%}
+
+                {% for prtSegment in prtSegmentLists.PRT %}
+                    
+                    {% unless prtSegment.2.Value == "DE" or prtSegment.2.Value == "UN" %}
+                    
+                        {% if prtSegment.5 %}
+                                {% evaluate practitionerRoleId using 'ID/PractitionerRole' PRT: prtSegment.4, XCN: prtSegment.5.Repeats[0] -%}
+                                {% include 'Resource/PractitionerRole' PRT: prtSegment , ID: practitionerRoleId -%} 
+                                {%- assign fullPractitionerRoleId = practitionerRoleId | prepend: 'PractitionerRole/' -%}
+                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: fullPractitionerRoleId, ID: medicationRequestId -%}
+                                {% evaluate practitionerId using 'ID/Practitioner' XCN: prtSegment.5.Repeats[0] -%}
+                                {% assign full_practitionerId = practitionerId | prepend: 'Practitioner/' %}
+                                {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId, ID: practitionerRoleId -%}
+                                {% for prt_5 in prtSegment.5.Repeats %}
+                                    {% if prt_5.9.1 != "" and prt_5.9.1 != null and prt_5.9.2 != "" and prt_5.9.2 != null and prt_5.9.3 != "" and prt_5.9.3 != null -%}
+                                        {% evaluate Organization_ID using 'ID/Organization' HDORG: prt_5.9 -%}
+                                        {% include 'Resource/Organization' OBX: prt_5.9, ID: Organization_ID -%}
+                                    {% endif -%}
+                                    {% include 'Resource/Practitioner' PRT: prt_5, ID: practitionerId-%}
+                                {% endfor %}
+                    
+                                {% if prtSegment.9.Repeats[0] -%}
+                                    {% include 'Resource/PLLocation' PL: prtSegment.9.Repeats[0]-%}
+                                {% endif -%}
+
+                                {% if prtSegment.8.Repeats[0] %}
+                                    {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                    {% include 'Resource/Organization' PRT: prtSegment.8.Repeats[0], ID: Organization_ID_PRT_8 -%}
+                                {% endif %}
+                                
+                        {% endif %}
+
+                        {% unless prtSegment.5 %}
+                            {% if prtSegment.8.Repeats[0] %}
+                                {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                {% assign fullOrganization_ID_PRT_8 = Organization_ID_PRT_8 | prepend: 'Organization/' %}
+                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: fullOrganization_ID_PRT_8, ID: medicationRequestId -%}
+                                {% for prt_8 in prtSegment.8.Repeats %}
+                                    {% include 'Resource/Organization' PRT: prt_8, Org_Name: prtSegment.8.Repeats[0].1, ID: Organization_ID_PRT_8 -%}
+                                {% endfor %}
+                            {% endif %}
+                        {% endunless %}
+
+                        {% unless prtSegment.5 %}
+                            
+                                {% if prtSegment.9.Repeats[0] %}
+                                    {% for prt_9 in prtSegment.9.Repeats %}
+                                        {% include 'Resource/PLLocation' PL: prt_9 -%}
+
+                                        {% if prt_9.5 or prt_9.9 -%}
+                                            {% if prt_9.5 and prt_9.9 -%}
+                                                {% assign PL_Value_Except_PL5_PL9 = prt_9.Value | remove: prt_9.5.Value | remove: prt_9.9.Value %}
+                                            {% endif -%}
+                                            {% if prt_9.5 and prt_9.9 == null or prt_9.9 == "" -%}
+                                                {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.5.Value %}
+                                            {% endif -%}
+                                            {% if prt_9.9 and prt_9.5 == null or prt_9.5 == "" -%}
+                                                {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.9.Value %}
+                                            {% endif -%}
+                                        {% else -%}
+                                            {% assign PL_Value_Except_PL5_PL9 = prt_9.Value %}
+                                        {% endif -%}
+                    
+                                        {% if prt_9.1 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.1, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.2 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.2, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.3 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.3, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.4 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.4, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.7 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.7, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.8 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.8, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% endif -%}
+
+                                        {% if Location_ID_PRT_9 %} 
+                                            {% if prtSegment.8.Repeats[0] %}
+                                                {% include 'Reference/Location/ManagingOrganization' REF: fullOrganization_ID_PRT_8, ID: Location_ID_PRT_9 -%}
+                                            {% endif %}
+
+                                            {% unless prtSegment.8.Repeats[0] %}
+                                                {%- assign FullLocation_ID_PRT_9 = Location_ID_PRT_9 | prepend: 'Location/' -%}
+                                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: FullLocation_ID_PRT_9, ID: medicationRequestId -%}
+                                            {% endunless %}
+                                        {% endif %}
+
+                                    {% endfor %}
+                                {% endif -%}
+                            
+                        {% endunless %}
+
+                        {% unless prtSegment.5 %}
+                            {% if prtSegment.10 %}
+                                {% evaluate deviceId using 'ID/Device' EI: prtSegment.10.Repeats[0] -%}
+                                {% include 'Resource/Device' PRT: prtSegment, ID: deviceId -%}
+                                {%- assign fullDeviceId = deviceId | prepend: 'Device/' -%}
+                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: fullDeviceId, ID: medicationRequestId -%}
+                            {% endif %}
+                        {% endunless %}
+                    {% endunless %}                 
+                {% endfor %}
+
+                {%- comment -%} RXO - PRT related coding start {%- endcomment -%}
+
+            {% endif -%}
+ 
+            {% if rxeSegment -%}
+
+                {% assign medicationId_RXE = null -%}
+                {% if rxeSegment.2 -%}
+                    {% evaluate medicationId_RXE using 'ID/Medication' RXE: rxeSegment -%}
+                    {% include 'Resource/Medication' RXE: rxeSegment, ID: medicationId_RXE %}
+                {% endif -%}
+
+                {% if rxeSegment.40 -%}
+                    {% evaluate Id_Organization_ID_RXE_40 using 'ID/Organization' CWE: rxeSegment.40 -%}
+                    {% include 'Resource/Organization' RXE: rxeSegment, ID: Id_Organization_ID_RXE_40 -%}
+                {% endif -%} 
+
+                {% evaluate medicationRequestId_RXE using 'ID/MedicationRequest' RXE: rxeSegment, intent_value: 'filler-order', baseId: patientId -%}
+                {% include 'Resource/MedicationRequest' ORC: orcSegment, RXE: rxeSegment, medication_ref: medicationId_RXE, medicationrequest_ref: medicationRequestId,Organization_ID_RXE_40: Id_Organization_ID_RXE_40, ID: medicationRequestId_RXE %}
+                {% include 'Reference/MedicationRequest/Subject' ID: medicationRequestId_RXE, REF: fullPatientId -%}
+                {% assign fullEncounterid = encounterId | prepend: 'Encounter/' %}
+                {% include 'Reference/MedicationRequest/Encounter' ID: medicationRequestId_RXE, REF: fullEncounterid -%}
+
+                {% assign full_organizationId_ORC_21 = null -%}
+                {% if orcSegment.21.Repeats[0] %}
+                    {% evaluate organizationId_ORC_21 using 'ID/Organization' XON: orcSegment.21.Repeats[0] -%}
+                    {% assign full_organizationId_ORC_21 = organizationId_ORC_21 | prepend: 'Organization/' -%}
+                    {% include 'Resource/Organization' ORC_SEG: orcSegment, ORC_SEG_22: orcSegment.22, ORC_SEG_23: orcSegment.23, ID: organizationId_ORC_21 -%}
+                {% endif -%}
+                {% unless orcSegment.12 -%} 
+                    {% if rxeSegment.13.Repeats[0] -%}                    
+                        {% if rxeSegment.13.Repeats[0].9.1 != "" and rxeSegment.13.Repeats[0].9.1 != null and rxeSegment.13.Repeats[0].9.2 != "" and rxeSegment.13.Repeats[0].9.2 != null and rxeSegment.13.Repeats[0].9.3 != "" and rxeSegment.13.Repeats[0].9.3 != null -%}
+                            {% evaluate Organization_ID_RXE_13 using 'ID/Organization' HDORG: rxeSegment.13.Repeats[0].9 -%}
+                            {% include 'Resource/Organization' RXO_14: rxeSegment.13.Repeats[0].9, ID: Organization_ID_RXE_13 -%}
+                        {% endif -%}
+                        {% evaluate practitionerId_RXE_13 using 'ID/Practitioner' XCN: rxeSegment.13.Repeats[0] -%}
+                        {% include 'Resource/Practitioner' RXE: rxeSegment.13.Repeats[0], ID: practitionerId_RXE_13 -%}
+                        {% evaluate practitionerRoleId_RXE_13 using 'ID/PractitionerRole' XCN: rxeSegment.13.Repeats[0] -%}
+                        {% assign full_practitionerId_RXE_13 = practitionerId_RXE_13 | prepend: 'Practitioner/' %}
+                        {% include 'Resource/PractitionerRole' RXE: rxeSegment.13.Repeats[0], ID: practitionerRoleId_RXE_13 -%}   
+                        {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId_RXE_13, ID: practitionerRoleId_RXE_13 -%}
+                        {% if orcSegment.21.Repeats[0] %}
+                            {% include 'Reference/PractitionerRole/Organization' REF: full_organizationId_ORC_21, ID: practitionerRoleId_RXE_13 -%}
+                        {% endif -%}
+                    {% endif -%}
+                {% endunless -%}
+
+                {% if orcSegment.12.Repeats[0] -%}                    
+                    {% if orcSegment.12.Repeats[0].9.1 != "" and orcSegment.12.Repeats[0].9.1 != null and orcSegment.12.Repeats[0].9.2 != "" and orcSegment.12.Repeats[0].9.2 != null and orcSegment.12.Repeats[0].9.3 != "" and orcSegment.12.Repeats[0].9.3 != null -%}
+                        {% evaluate Organization_ID_ORC_12 using 'ID/Organization' HDORG: orcSegment.12.Repeats[0].9 -%}
+                        {% include 'Resource/Organization' ORC_12: orcSegment.12.Repeats[0].9, ID: Organization_ID_ORC_12 -%}
+                    {% endif -%}
+                    {% evaluate practitionerId_ORC_12 using 'ID/Practitioner' XCN: orcSegment.12.Repeats[0] -%}
+                    {% include 'Resource/Practitioner' ORC_med_prac: orcSegment, ID: practitionerId_ORC_12 -%}
+                    {% evaluate practitionerRoleId_ORC_12 using 'ID/PractitionerRole' XCN: orcSegment.12.Repeats[0] -%}
+                    {% assign full_practitionerId_ORC_12 = practitionerId_ORC_12 | prepend: 'Practitioner/' %}
+                    {% include 'Resource/PractitionerRole' ORC_12: orcSegment.12.Repeats[0], ID: practitionerRoleId_ORC_12 -%}   
+                    {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId_ORC_12, ID: practitionerRoleId_ORC_12 -%}
+                    {% include 'Reference/PractitionerRole/Organization' REF: full_OrganizationId_ORC_21, ID: practitionerRoleId_ORC_12 -%}                   
+                    
+                {% elsif orcSegment.21.Repeats[0] and  rxeSegment.13.Repeats[0] == null or rxeSegment.13.Repeats[0] == "" %}    
+                    {% evaluate practitionerRoleId_ORC_21 using 'ID/PractitionerRole' XCN: orcSegment.21.Repeats[0]-%}
+                    {% include 'Resource/PractitionerRole' requestor_organization: organizationId_ORC_21, ID: practitionerRoleId_ORC_21 -%}
+                    {% assign fullPractitionerRoleId_ORC_21 = practitionerRoleId_ORC_21 | prepend: 'PractitionerRole/' -%}
+                    {% include 'Reference/PractitionerRole/Organization' REF: full_organizationId_ORC_21, ID: practitionerRoleId_ORC_21 -%}
+                {% endif %}
+
+                {% if orcSegment.10 or orcSegment.19 %}
+                    {% if orcSegment.10 %}    
+                        {% if orcSegment.10.Repeats[0] -%}                    
+                            {% if orcSegment.10.Repeats[0].9.1 != "" and orcSegment.10.Repeats[0].9.1 != null and orcSegment.10.Repeats[0].9.2 != "" and orcSegment.10.Repeats[0].9.2 != null and orcSegment.10.Repeats[0].9.3 != "" and orcSegment.10.Repeats[0].9.3 != null -%}
+                                {% evaluate Organization_ID_ORC_10 using 'ID/Organization' HDORG: orcSegment.10.Repeats[0].9 -%}
+                                {% include 'Resource/Organization' ORC_10: orcSegment.10.Repeats[0].9, ID: Organization_ID_ORC_10 -%}
+                            {% endif -%}
+                            {% evaluate practitionerId_ORC_10 using 'ID/Practitioner' XCN: orcSegment.10.Repeats[0] -%}
+                            {% include 'Resource/Practitioner' ORC_10: orcSegment.10, ID: practitionerId_ORC_10 -%}
+                            {% evaluate practitionerRoleId_ORC_10 using 'ID/PractitionerRole' XCN: orcSegment.10.Repeats[0] -%}
+                            {% assign full_practitionerId_ORC_10 = practitionerId_ORC_10 | prepend: 'Practitioner/' %}
+                            {% include 'Resource/PractitionerRole' ORC_10: orcSegment.10.Repeats[0], ID: practitionerRoleId_ORC_10 -%}   
+                            {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId_ORC_10, ID: practitionerRoleId_ORC_10 -%}
+                        {% endif -%}
+                    {% elsif orcSegment.19 %}    
+                        {% if orcSegment.19.Repeats[0] %}
+                            {% if orcSegment.19.Repeats[0].9.1 != "" and orcSegment.19.Repeats[0].9.1 != null and orcSegment.19.Repeats[0].9.2 != "" and orcSegment.19.Repeats[0].9.2 != null and orcSegment.19.Repeats[0].9.3 != "" and orcSegment.19.Repeats[0].9.3 != null -%}
+                                {% evaluate Organization_ID_ORC_19 using 'ID/Organization' HDORG: orcSegment.19.Repeats[0].9 -%}
+                                {% include 'Resource/Organization' ORC_19: orcSegment.19.Repeats[0].9, ID: Organization_ID_ORC_19 -%}
+                            {% endif -%}
+                            {% evaluate practitionerId_ORC_19 using 'ID/Practitioner' XCN: orcSegment.19.Repeats[0] -%}
+                            {% include 'Resource/Practitioner' ORC_19: orcSegment.19, ID: practitionerId_ORC_19 -%}
+                            {% evaluate practitionerRoleId_ORC_19 using 'ID/PractitionerRole' XCN: orcSegment.19.Repeats[0] -%}
+                            {% assign full_practitionerId_ORC_19 = practitionerId_ORC_19 | prepend: 'Practitioner/' %}
+                            {% include 'Resource/PractitionerRole' ORC_19: orcSegment.19.Repeats[0], ID: practitionerRoleId_ORC_19 -%}   
+                            {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId_ORC_19, ID: practitionerRoleId_ORC_19 -%} 
+                        {% endif -%}
+                    {% endif -%}
+                {% endif -%}
+
+                {% assign rxe_rxcSegmentLists = hl7v2Data | get_related_segment_list: rxeSegment, 'RXC' -%}
+                {% assign rxe_rxcSegment = rxe_rxcSegmentLists.RXC[0] %}
+
+                {% if rxe_rxcSegment %}
+                    {% evaluate medicationId_rxc_rxe using 'ID/Medication' RXC: rxe_rxcSegment -%}
+                    {% assign fullMedicationId_rxc = medicationId_rxc_rxe | prepend: 'Medication/' %}
+                    {% include 'Resource/Medication' RXC: rxe_rxcSegment, ID: medicationId_rxc_rxe %}
+                    {% if medicationId_RXE %}
+                        {% include 'Resource/Medication' RXO_RXC: rxe_rxcSegment, ID: medicationId_RXE, ingredient_ItemReferenceID: fullMedicationId_rxc %}  
+                    {% endif %}
+                {% endif %}
+
+                {% assign rxe_tq1SegmentLists = hl7v2Data | get_related_segment_list: rxeSegment, 'TQ1' -%}
+                {% assign rxe_rxrSegmentLists = hl7v2Data | get_related_segment_list: rxeSegment, 'RXR' -%}   
+                {% assign tq1Segment = rxe_tq1SegmentLists.TQ1[0] %}
+
+                {% for rxrSegment in rxe_rxrSegmentLists.RXR -%}
+                    {% include 'Resource/MedicationRequest' RXE_RXR: rxeSegment, TQ1_RXR: tq1Segment, RXR: rxrSegment, ID: medicationRequestId_RXE %}
+                {% endfor -%}
+
+                {% for tq1 in rxe_tq1SegmentLists.TQ1 %}
+                    {% unless tq1.Value == tq1Segment.Value %}
+                        {% include 'Resource/MedicationRequest' TQ1_RXR: tq1, ID: medicationRequestId_RXE %}
+                    {% endunless -%}
+                {% endfor -%}
+
+                {% assign rxe_nteSegmentLists = hl7v2Data | get_related_segment_list: rxeSegment, 'NTE' -%}
+                
+                {% for nteSegment in rxe_nteSegmentLists.NTE -%}
+                    {% evaluate practitionerId_NTE_5 using 'ID/Practitioner' XCN: nteSegment.5 -%}
+                    {% include 'Resource/Practitioner' NTE: nteSegment.5, ID: practitionerId_NTE_5 -%}
+                    {% if nteSegment.5.9.1 != "" and nteSegment.5.9.1 != null and nteSegment.5.9.2 != "" and nteSegment.5.9.2 != null and nteSegment.5.9.3 != "" and nteSegment.5.9.3 != null -%}
+                        {% evaluate Organization_ID_NTE_5 using 'ID/Organization' HDORG: nteSegment.5.9 -%}
+                        {% include 'Resource/Organization' ORC_19: nteSegment.5.9, ID: Organization_ID_NTE_5 -%}
+                    {% endif -%}
+                    {% include 'Resource/MedicationRequest' NTE: nteSegment, nte_practitioner: practitionerId_NTE_5, ID: medicationRequestId_RXE %}
+                {% endfor -%}
+
+                {% unless rxoSegment -%}
+
+                {%- comment -%} ORC - PRT related coding start {%- endcomment -%}
+                {% assign prtSegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'PRT' -%}
+
+                {% for prtSegment in prtSegmentLists.PRT %}
+                    
+                    {% unless prtSegment.2.Value == "DE" or prtSegment.2.Value == "UN" %}
+                    
+                        {% if prtSegment.5 %}
+                                {% evaluate practitionerRoleId using 'ID/PractitionerRole' PRT: prtSegment.4, XCN: prtSegment.5.Repeats[0] -%}
+                                {% include 'Resource/PractitionerRole' PRT: prtSegment , ID: practitionerRoleId -%} 
+                                {%- assign fullPractitionerRoleId = practitionerRoleId | prepend: 'PractitionerRole/' -%}
+                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: fullPractitionerRoleId, ID: medicationRequestId_RXE -%}
+                                {% evaluate practitionerId using 'ID/Practitioner' XCN: prtSegment.5.Repeats[0] -%}
+                                {% assign full_practitionerId = practitionerId | prepend: 'Practitioner/' %}
+                                {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId, ID: practitionerRoleId -%}
+                                {% for prt_5 in prtSegment.5.Repeats %}
+                                    {% if prt_5.9.1 != "" and prt_5.9.1 != null and prt_5.9.2 != "" and prt_5.9.2 != null and prt_5.9.3 != "" and prt_5.9.3 != null -%}
+                                        {% evaluate Organization_ID using 'ID/Organization' HDORG: prt_5.9 -%}
+                                        {% include 'Resource/Organization' OBX: prt_5.9, ID: Organization_ID -%}
+                                    {% endif -%}
+                                    {% include 'Resource/Practitioner' PRT: prt_5, ID: practitionerId-%}
+                                {% endfor %}
+                    
+                                {% if prtSegment.9.Repeats[0] -%}
+                                    {% include 'Resource/PLLocation' PL: prtSegment.9.Repeats[0]-%}
+                                {% endif -%}
+
+                                {% if prtSegment.8.Repeats[0] %}
+                                    {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                    {% include 'Resource/Organization' PRT: prtSegment.8.Repeats[0], ID: Organization_ID_PRT_8 -%}
+                                {% endif %}
+                                
+                        {% endif %}
+
+                        {% unless prtSegment.5 %}
+                            {% if prtSegment.8.Repeats[0] %}
+                                {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                {% assign fullOrganization_ID_PRT_8 = Organization_ID_PRT_8 | prepend: 'Organization/' %}
+                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: fullOrganization_ID_PRT_8, ID: medicationRequestId_RXE -%}
+                                {% for prt_8 in prtSegment.8.Repeats %}
+                                    {% include 'Resource/Organization' PRT: prt_8, Org_Name: prtSegment.8.Repeats[0].1, ID: Organization_ID_PRT_8 -%}
+                                {% endfor %}
+                            {% endif %}
+                        {% endunless %}
+
+                        {% unless prtSegment.5 %}
+                            
+                                {% if prtSegment.9.Repeats[0] %}
+                                    {% for prt_9 in prtSegment.9.Repeats %}
+                                        {% include 'Resource/PLLocation' PL: prt_9 -%}
+
+                                        {% if prt_9.5 or prt_9.9 -%}
+                                            {% if prt_9.5 and prt_9.9 -%}
+                                                {% assign PL_Value_Except_PL5_PL9 = prt_9.Value | remove: prt_9.5.Value | remove: prt_9.9.Value %}
+                                            {% endif -%}
+                                            {% if prt_9.5 and prt_9.9 == null or prt_9.9 == "" -%}
+                                                {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.5.Value %}
+                                            {% endif -%}
+                                            {% if prt_9.9 and prt_9.5 == null or prt_9.5 == "" -%}
+                                                {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.9.Value %}
+                                            {% endif -%}
+                                        {% else -%}
+                                            {% assign PL_Value_Except_PL5_PL9 = prt_9.Value %}
+                                        {% endif -%}
+                    
+                                        {% if prt_9.1 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.1, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.2 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.2, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.3 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.3, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.4 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.4, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.7 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.7, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.8 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.8, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% endif -%}
+
+                                        {% if Location_ID_PRT_9 %} 
+                                            {% if prtSegment.8.Repeats[0] %}
+                                                {% include 'Reference/Location/ManagingOrganization' REF: fullOrganization_ID_PRT_8, ID: Location_ID_PRT_9 -%}
+                                            {% endif %}
+
+                                            {% unless prtSegment.8.Repeats[0] %}
+                                                {%- assign FullLocation_ID_PRT_9 = Location_ID_PRT_9 | prepend: 'Location/' -%}
+                                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: FullLocation_ID_PRT_9, ID: medicationRequestId_RXE -%}
+                                            {% endunless %}
+                                        {% endif %}
+
+                                    {% endfor %}
+                                {% endif -%}
+                            
+                        {% endunless %}
+
+                        {% unless prtSegment.5 %}
+                            {% if prtSegment.10 %}
+                                {% evaluate deviceId using 'ID/Device' EI: prtSegment.10.Repeats[0] -%}
+                                {% include 'Resource/Device' PRT: prtSegment, ID: deviceId -%}
+                                {%- assign fullDeviceId = deviceId | prepend: 'Device/' -%}
+                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: fullDeviceId, ID: medicationRequestId_RXE -%}
+                            {% endif %}
+                        {% endunless %}
+                    {% endunless %}                 
+                {% endfor %}
+
+                {%- comment -%} ORC - PRT related coding end {%- endcomment -%}
+                {% endunless %}
+
+                {%- comment -%} RXE - PRT related coding start {%- endcomment -%}
+                {% assign prtSegmentLists = hl7v2Data | get_related_segment_list: rxeSegment, 'PRT' -%}
+
+                {% for prtSegment in prtSegmentLists.PRT %}
+                    
+                    {% unless prtSegment.2.Value == "DE" or prtSegment.2.Value == "UN" %}
+                    
+                        {% if prtSegment.5 %}
+                                {% evaluate practitionerRoleId using 'ID/PractitionerRole' PRT: prtSegment.4, XCN: prtSegment.5.Repeats[0] -%}
+                                {% include 'Resource/PractitionerRole' PRT: prtSegment , ID: practitionerRoleId -%} 
+                                {%- assign fullPractitionerRoleId = practitionerRoleId | prepend: 'PractitionerRole/' -%}
+                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: fullPractitionerRoleId, ID: medicationRequestId_RXE -%}
+                                {% evaluate practitionerId using 'ID/Practitioner' XCN: prtSegment.5.Repeats[0] -%}
+                                {% assign full_practitionerId = practitionerId | prepend: 'Practitioner/' %}
+                                {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId, ID: practitionerRoleId -%}
+                                {% for prt_5 in prtSegment.5.Repeats %}
+                                    {% if prt_5.9.1 != "" and prt_5.9.1 != null and prt_5.9.2 != "" and prt_5.9.2 != null and prt_5.9.3 != "" and prt_5.9.3 != null -%}
+                                        {% evaluate Organization_ID using 'ID/Organization' HDORG: prt_5.9 -%}
+                                        {% include 'Resource/Organization' OBX: prt_5.9, ID: Organization_ID -%}
+                                    {% endif -%}
+                                    {% include 'Resource/Practitioner' PRT: prt_5, ID: practitionerId-%}
+                                {% endfor %}
+                    
+                                {% if prtSegment.9.Repeats[0] -%}
+                                    {% include 'Resource/PLLocation' PL: prtSegment.9.Repeats[0]-%}
+                                {% endif -%}
+
+                                {% if prtSegment.8.Repeats[0] %}
+                                    {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                    {% include 'Resource/Organization' PRT: prtSegment.8.Repeats[0], ID: Organization_ID_PRT_8 -%}
+                                {% endif %}
+                                
+                        {% endif %}
+
+                        {% unless prtSegment.5 %}
+                            {% if prtSegment.8.Repeats[0] %}
+                                {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                {% assign fullOrganization_ID_PRT_8 = Organization_ID_PRT_8 | prepend: 'Organization/' %}
+                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: fullOrganization_ID_PRT_8, ID: medicationRequestId_RXE -%}
+                                {% for prt_8 in prtSegment.8.Repeats %}
+                                    {% include 'Resource/Organization' PRT: prt_8, Org_Name: prtSegment.8.Repeats[0].1, ID: Organization_ID_PRT_8 -%}
+                                {% endfor %}
+                            {% endif %}
+                        {% endunless %}
+
+                        {% unless prtSegment.5 %}
+                            
+                                {% if prtSegment.9.Repeats[0] %}
+                                    {% for prt_9 in prtSegment.9.Repeats %}
+                                        {% include 'Resource/PLLocation' PL: prt_9 -%}
+
+                                        {% if prt_9.5 or prt_9.9 -%}
+                                            {% if prt_9.5 and prt_9.9 -%}
+                                                {% assign PL_Value_Except_PL5_PL9 = prt_9.Value | remove: prt_9.5.Value | remove: prt_9.9.Value %}
+                                            {% endif -%}
+                                            {% if prt_9.5 and prt_9.9 == null or prt_9.9 == "" -%}
+                                                {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.5.Value %}
+                                            {% endif -%}
+                                            {% if prt_9.9 and prt_9.5 == null or prt_9.5 == "" -%}
+                                                {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.9.Value %}
+                                            {% endif -%}
+                                        {% else -%}
+                                            {% assign PL_Value_Except_PL5_PL9 = prt_9.Value %}
+                                        {% endif -%}
+                    
+                                        {% if prt_9.1 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.1, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.2 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.2, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.3 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.3, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.4 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.4, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.7 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.7, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.8 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.8, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% endif -%}
+
+                                        {% if Location_ID_PRT_9 %} 
+                                            {% if prtSegment.8.Repeats[0] %}
+                                                {% include 'Reference/Location/ManagingOrganization' REF: fullOrganization_ID_PRT_8, ID: Location_ID_PRT_9 -%}
+                                            {% endif %}
+
+                                            {% unless prtSegment.8.Repeats[0] %}
+                                                {%- assign FullLocation_ID_PRT_9 = Location_ID_PRT_9 | prepend: 'Location/' -%}
+                                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: FullLocation_ID_PRT_9, ID: medicationRequestId_RXE -%}
+                                            {% endunless %}
+                                        {% endif %}
+
+                                    {% endfor %}
+                                {% endif -%}
+                            
+                        {% endunless %}
+
+                        {% unless prtSegment.5 %}
+                            {% if prtSegment.10 %}
+                                {% evaluate deviceId using 'ID/Device' EI: prtSegment.10.Repeats[0] -%}
+                                {% include 'Resource/Device' PRT: prtSegment, ID: deviceId -%}
+                                {%- assign fullDeviceId = deviceId | prepend: 'Device/' -%}
+                                {% include 'Reference/MedicationRequest/SupportingInformation' REF: fullDeviceId, ID: medicationRequestId_RXE -%}
+                            {% endif %}
+                        {% endunless %}
+                    {% endunless %}                 
+                {% endfor %}
+
+                {%- comment -%} ORC - PRT related coding end {%- endcomment -%}
+
+            {% endif -%}
+
+            {% for rxdSegment in rxdSegmentLists.RXD -%}
+
+                {% evaluate rxdMedicationId using 'ID/Medication' RXD: rxdSegment -%}
+                {% include 'Resource/Medication' RXD: rxdSegment, ID: rxdMedicationId-%}
+
+                {% evaluate medicationDispenseId using 'ID/MedicationDispense' RXD: rxdSegment, ORC: orcSegment, baseId: patientId -%}
+                {% include 'Resource/MedicationDispense' RXD: rxdSegment, ID: medicationDispenseId, ORC: orcSegment, subjectRefrence: patientId -%}
+                {% assign fullRXDMedicationId = rxdMedicationId | prepend: 'Medication/' %}
+                {% include 'Reference/MedicationDispense/MedicationReference' REF: fullRXDMedicationId, ID: medicationDispenseId -%}
+                {% include 'Reference/MedicationDispense/Context' REF: fullEncounterId, ID: medicationDispenseId -%} 
+
+                {% for rxd_10 in rxdSegment.10.Repeats -%}
+                    {% if rxd_10.9.1 != "" and rxd_10.9.1 != null and rxd_10.9.2 != "" and rxd_10.9.2 != null and rxd_10.9.3 != "" and rxd_10.9.3 != null -%}
+                        {% evaluate Organization_ID_rxd_10 using 'ID/Organization' HDORG: rxd_10.9 -%}
+                        {% include 'Resource/Organization' OBX: rxd_10.9, ID: Organization_ID_rxd_10 -%}
+                    {% endif -%}
+                    {% evaluate practitionerId_rxd_10 using 'ID/Practitioner' XCN: rxd_10 -%}
+                    {% include 'Resource/Practitioner' RXD: rxd_10, ID: practitionerId_rxd_10 -%} 
+                {% endfor %}
+
+                {% if rxdSegment.30 %}
+                    {% evaluate locationId_RXD using 'ID/Location' CWE: rxdSegment.30 -%}
+                    {% include 'Resource/Location' RXD: rxdSegment, ID: locationId_RXD -%}
+                {% elsif rxdSegment.31 %}
+                    {% evaluate locationId_RXD using 'ID/Location' XAD: rxdSegment.31 -%}
+                    {% include 'Resource/Location' RXD: rxdSegment, ID: locationId_RXD -%}
+                {% elsif rxdSegment.34 %}
+                    {% evaluate locationId_RXD using 'ID/Location' XAD: rxdSegment.34 -%}
+                    {% include 'Resource/Location' RXD: rxdSegment, ID: locationId_RXD -%}
+                {% endif %}
+
+                {% assign rxd_nteSegmentLists = hl7v2Data | get_related_segment_list: rxdSegment, 'NTE' -%}
+                {% for nteSegment in rxd_nteSegmentLists.NTE -%}
+                    {% include 'Resource/MedicationDispense' NTE: nteSegment, ID: medicationDispenseId, ORC: orcSegment %}
+                {% endfor -%}
+
+                {% assign rxd_rxrSegmentLists = hl7v2Data | get_related_segment_list: rxdSegment, 'RXR' -%}
+                {% for rxrSegment in rxd_rxrSegmentLists.RXR -%}
+                    {% include 'Resource/MedicationDispense' RXD_RXR: rxdSegment, RXR: rxrSegment, ID: medicationDispenseId, ORC: orcSegment %}
+                {% endfor -%}
+
+                {% assign rxd_rxcSegmentLists = hl7v2Data | get_related_segment_list: rxdSegment, 'RXC' -%}
+                {% assign rxd_rxcSegment = rxd_rxcSegmentLists.RXC[0] %}
+
+                {% if rxd_rxcSegment %}
+                    {% evaluate medicationId_rxc_rxd using 'ID/Medication' RXC: rxd_rxcSegment -%}
+                    {% assign fullMedicationId_rxc = medicationId_rxc_rxd | prepend: 'Medication/' %}
+                    {% include 'Resource/Medication' RXC: rxd_rxcSegment, ID: medicationId_rxc_rxd %}
+                    {% if rxdMedicationId %}
+                        {% include 'Resource/Medication' RXO_RXC: rxd_rxcSegment, ID: rxdMedicationId, ingredient_ItemReferenceID: fullMedicationId_rxc %}  
+                    {% endif %}
+                {% endif %}
+
+                {% assign cdoSegmentLists = hl7v2Data | get_related_segment_list: rxdSegment, 'CDO' -%}
+                {% for cdoSegment in cdoSegmentLists.CDO -%}
+                    {% include 'Resource/MedicationDispense' RXE_CDO:rxeSegment, CDO: cdoSegment, ID: medicationDispenseId, ORC: orcSegment %}
+                {% endfor -%}
+
+                {%- comment -%} RXD - PRT related coding start {%- endcomment -%}
+                {% assign prtSegmentLists = hl7v2Data | get_related_segment_list: rxdSegment, 'PRT' -%}
+
+                {% for prtSegment in prtSegmentLists.PRT %}
+                    
+                    {% unless prtSegment.2.Value == "DE" or prtSegment.2.Value == "UN" %}
+                    
+                        {% if prtSegment.5 %}
+                                {% evaluate practitionerRoleId using 'ID/PractitionerRole' PRT: prtSegment.4, XCN: prtSegment.5.Repeats[0] -%}
+                                {% include 'Resource/PractitionerRole' PRT: prtSegment , ID: practitionerRoleId -%} 
+                                {%- assign fullPractitionerRoleId = practitionerRoleId | prepend: 'PractitionerRole/' -%}
+                                {% include 'Reference/MedicationDispense/SupportingInformation' REF: fullPractitionerRoleId, ID: medicationDispenseId -%}
+                                {% evaluate practitionerId using 'ID/Practitioner' XCN: prtSegment.5.Repeats[0] -%}
+                                {% assign full_practitionerId = practitionerId | prepend: 'Practitioner/' %}
+                                {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId, ID: practitionerRoleId -%}
+                                {% for prt_5 in prtSegment.5.Repeats %}
+                                    {% if prt_5.9.1 != "" and prt_5.9.1 != null and prt_5.9.2 != "" and prt_5.9.2 != null and prt_5.9.3 != "" and prt_5.9.3 != null -%}
+                                        {% evaluate Organization_ID using 'ID/Organization' HDORG: prt_5.9 -%}
+                                        {% include 'Resource/Organization' OBX: prt_5.9, ID: Organization_ID -%}
+                                    {% endif -%}
+                                    {% include 'Resource/Practitioner' PRT: prt_5, ID: practitionerId-%}
+                                {% endfor %}
+                    
+                                {% if prtSegment.9.Repeats[0] -%}
+                                    {% include 'Resource/PLLocation' PL: prtSegment.9.Repeats[0]-%}
+                                {% endif -%}
+
+                                {% if prtSegment.8.Repeats[0] %}
+                                    {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                    {% include 'Resource/Organization' PRT: prtSegment.8.Repeats[0], ID: Organization_ID_PRT_8 -%}
+                                {% endif %}
+                                
+                        {% endif %}
+
+                        {% unless prtSegment.5 %}
+                            {% if prtSegment.8.Repeats[0] %}
+                                {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                {% assign fullOrganization_ID_PRT_8 = Organization_ID_PRT_8 | prepend: 'Organization/' %}
+                                {% include 'Reference/MedicationDispense/SupportingInformation' REF: fullOrganization_ID_PRT_8, ID: medicationDispenseId -%}
+                                {% for prt_8 in prtSegment.8.Repeats %}
+                                    {% include 'Resource/Organization' PRT: prt_8, Org_Name: prtSegment.8.Repeats[0].1, ID: Organization_ID_PRT_8 -%}
+                                {% endfor %}
+                            {% endif %}
+                        {% endunless %}
+
+                        {% unless prtSegment.5 %}
+                            
+                                {% if prtSegment.9.Repeats[0] %}
+                                    {% for prt_9 in prtSegment.9.Repeats %}
+                                        {% include 'Resource/PLLocation' PL: prt_9 -%}
+
+                                        {% if prt_9.5 or prt_9.9 -%}
+                                            {% if prt_9.5 and prt_9.9 -%}
+                                                {% assign PL_Value_Except_PL5_PL9 = prt_9.Value | remove: prt_9.5.Value | remove: prt_9.9.Value %}
+                                            {% endif -%}
+                                            {% if prt_9.5 and prt_9.9 == null or prt_9.9 == "" -%}
+                                                {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.5.Value %}
+                                            {% endif -%}
+                                            {% if prt_9.9 and prt_9.5 == null or prt_9.5 == "" -%}
+                                                {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.9.Value %}
+                                            {% endif -%}
+                                        {% else -%}
+                                            {% assign PL_Value_Except_PL5_PL9 = prt_9.Value %}
+                                        {% endif -%}
+                    
+                                        {% if prt_9.1 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.1, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.2 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.2, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.3 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.3, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.4 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.4, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.7 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.7, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.8 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.8, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% endif -%}
+
+                                        {% if Location_ID_PRT_9 %} 
+                                            {% if prtSegment.8.Repeats[0] %}
+                                                {% include 'Reference/Location/ManagingOrganization' REF: fullOrganization_ID_PRT_8, ID: Location_ID_PRT_9 -%}
+                                            {% endif %}
+
+                                            {% unless prtSegment.8.Repeats[0] %}
+                                                {%- assign FullLocation_ID_PRT_9 = Location_ID_PRT_9 | prepend: 'Location/' -%}
+                                                {% include 'Reference/MedicationDispense/SupportingInformation' REF: FullLocation_ID_PRT_9, ID: medicationDispenseId -%}
+                                            {% endunless %}
+                                        {% endif %}
+
+                                    {% endfor %}
+                                {% endif -%}
+                            
+                        {% endunless %}
+
+                        {% unless prtSegment.5 %}
+                            {% if prtSegment.10 %}
+                                {% evaluate deviceId using 'ID/Device' EI: prtSegment.10.Repeats[0] -%}
+                                {% include 'Resource/Device' PRT: prtSegment, ID: deviceId -%}
+                                {%- assign fullDeviceId = deviceId | prepend: 'Device/' -%}
+                                {% include 'Reference/MedicationDispense/SupportingInformation' REF: fullDeviceId, ID: medicationDispenseId -%}
+                            {% endif %}
+                        {% endunless %}
+                    {% endunless %}                 
+                {% endfor %}
+
+                {%- comment -%} RXD - PRT related coding end {%- endcomment -%}             
+                   
+            {% endfor -%}
+
+            {% for obxSegment in obxSegmentLists.OBX -%}
+                {% if obxSegment.2.Value == 'ED' or obxSegment.2.Value == 'RP' %}
+                    {% for obx_16 in obxSegment.16.Repeats -%}
+                        {% if obx_16.9.1 != "" and obx_16.9.1 != null and obx_16.9.2 != "" and obx_16.9.2 != null and obx_16.9.3 != "" and obx_16.9.3 != null -%}
+                            {% evaluate Organization_ID_OBX_16 using 'ID/Organization' HDORG: obx_16.9 -%}
+                            {% include 'Resource/Organization' OBX: obx_16.9, ID: Organization_ID_OBX_16 -%}
+                        {% endif -%}
+                        {% evaluate practitionerId_OBX_16 using 'ID/Practitioner' XCN: obx_16 -%}
+                        {% include 'Resource/Practitioner' OBX: obxSegment, OBXXCN1: obx_16, ID: practitionerId_OBX_16 -%}
+                        {% evaluate practitionerRoleId_OBX_16 using 'ID/PractitionerRole' XCN: obx_16 -%}
+                        {% assign full_practitionerId_OBX_16 = practitionerId_OBX_16 | prepend: 'Practitioner/' %}
+                        {% include 'Resource/PractitionerRole' OBXXCN1: obx_16, ID: practitionerRoleId_OBX_16 -%}   
+                        {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId_OBX_16, ID: practitionerRoleId_OBX_16 -%}
+                    {% endfor %}
+                    {% if obxSegment.23 or obxSegment.25 %}
+                        {% evaluate practitionerRoleId_OBX_25 using 'ID/PractitionerRole' XCN: obxSegment.25 -%}
+                    {% endif %} 
+                    {% if obxSegment.25 -%}
+                        {% evaluate practitionerId_OBX_25 using 'ID/Practitioner' XCN: obxSegment.25 -%}
+                        {% include 'Resource/Practitioner' OBX: obxSegment, OBXXCN2: obxSegment.25, ID: practitionerId_OBX_25 -%}
+                        {% assign full_practitionerId_OBX_25 = practitionerId_OBX_25 | prepend: 'Practitioner/' %}
+                        {% include 'Resource/PractitionerRole' OBXXCN2: obxSegment.25, ID: practitionerRoleId_OBX_25 -%}  
+                        {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId_OBX_25, ID: practitionerRoleId_OBX_25 -%}
+                    {% endif -%}
+                    {% if obxSegment.23 -%}
+                        {% evaluate organizationId_OBX_23 using 'ID/Organization' XON: obxSegment.23 -%}
+                        {% include 'Resource/Organization' OBX_23: obxSegment.23, OBX_24: obxSegment.24, ID: organizationId_OBX_23 -%}                
+                        {% if obxSegment.25 -%}
+                            {% assign full_organizationId_OBX_23 = organizationId_OBX_23 | prepend: 'Organization/' %} 
+                            {% include 'Reference/PractitionerRole/Organization' REF: full_organizationId_OBX_23, ID: practitionerRoleId_OBX_25 -%}     
+                        {% endif -%}
+                    {% endif -%}
+                    {% evaluate obx_diagnosticReportID2 using 'ID/DiagnosticReport' OBX: obxSegment -%}  
+                    {% include 'Resource/DiagnosticReport' OBX: obxSegment, DiagnosticReport_Subject_ID: fullPatientId, DiagnosticReport_MedicationRequest_ID: medicationRequestId_RXE , ID: obx_diagnosticReportID2 -%} 
+                {% else %}
+                    {% for obx_16 in obxSegment.16.Repeats -%}
+                        {% if obx_16.9.1 != "" and obx_16.9.1 != null and obx_16.9.2 != "" and obx_16.9.2 != null and obx_16.9.3 != "" and obx_16.9.3 != null -%}
+                            {% evaluate Organization_ID_OBX_16 using 'ID/Organization' HDORG: obx_16.9 -%}
+                            {% include 'Resource/Organization' OBX: obx_16.9, ID: Organization_ID_OBX_16 -%}
+                        {% endif -%}
+                        {% evaluate practitionerId_OBX_16 using 'ID/Practitioner' XCN: obx_16 -%}
+                        {% include 'Resource/Practitioner' OBX: obxSegment, OBXXCN1: obx_16, ID: practitionerId_OBX_16 -%}
+                        {% evaluate practitionerRoleId_OBX_16 using 'ID/PractitionerRole' XCN: obx_16 -%}
+                        {% assign full_practitionerId_OBX_16 = practitionerId_OBX_16 | prepend: 'Practitioner/' %}
+                        {% include 'Resource/PractitionerRole' OBXXCN1: obx_16, ID: practitionerRoleId_OBX_16 -%}   
+                        {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId_OBX_16, ID: practitionerRoleId_OBX_16 -%}
+                    {% endfor %}
+                    {% if obxSegment.18 -%}
+                        {% evaluate deviceId_OBX_18 using 'ID/Device' EI: obxSegment.18.Repeats[0] -%}
+                        {% include 'Resource/Device' EI_OBX18: obxSegment.18, ID: deviceId_OBX_18 -%}
+                    {% endif -%}
+                    {% if obxSegment.23 or obxSegment.25 %}
+                        {% evaluate practitionerRoleId_OBX_25 using 'ID/PractitionerRole' XCN: obxSegment.25 -%}
+                    {% endif %}
+                    {% if obxSegment.25 -%}
+                        {% evaluate practitionerId_OBX_25 using 'ID/Practitioner' XCN: obxSegment.25 -%}
+                        {% include 'Resource/Practitioner' OBX: obxSegment, OBXXCN2: obxSegment.25, ID: practitionerId_OBX_25 -%}
+                        {% assign full_practitionerId_OBX_25 = practitionerId_OBX_25 | prepend: 'Practitioner/' %}
+                        {% include 'Resource/PractitionerRole' OBXXCN2: obxSegment.25, ID: practitionerRoleId_OBX_25 -%}  
+                        {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId_OBX_25, ID: practitionerRoleId_OBX_25 -%}
+                    {% endif -%}
+                    {% if obxSegment.23 -%}
+                        {% evaluate organizationId_OBX_23 using 'ID/Organization' XON: obxSegment.23 -%}
+                        {% include 'Resource/Organization' OBX_23: obxSegment.23, OBX_24: obxSegment.24, ID: organizationId_OBX_23 -%}                
+                        {% if obxSegment.25 -%}
+                            {% assign full_organizationId_OBX_23 = organizationId_OBX_23 | prepend: 'Organization/' %} 
+                            {% include 'Reference/PractitionerRole/Organization' REF: full_organizationId_OBX_23, ID: practitionerRoleId_OBX_25 -%}     
+                        {% endif -%}
+                    {% endif -%}
+                    {% evaluate observationId using 'ID/Observation' OBX: obxSegment, baseId: patientId -%}   
+                    {% include 'Resource/Observation' OBX: obxSegment, Observation_Subject_ID: fullPatientId, DiagnosticReport_MedicationRequest_ID: medicationRequestId_RXE, ID: observationId -%}
+                    {% include 'Extensions/Observation/ObservationExtension' OBX: obxSegment, ID: observationId %}
+
+                    {% assign nteSegmentLists2 = hl7v2Data | get_related_segment_list: obxSegment, 'NTE' -%}
+
+                    {% for nteSegment2 in nteSegmentLists2.NTE -%}    
+                        {% if nteSegment2.5 -%}    
+                            {% if nteSegment2.5.9.1 != "" and nteSegment2.5.9.1 != null and nteSegment2.5.9.2 != "" and nteSegment2.5.9.2 != null and nteSegment2.5.9.3 != "" and nteSegment2.5.9.3 != null -%}
+                                {% evaluate Organization_ID_NTE2_5_9 using 'ID/Organization' HDORG: nteSegment2.5.9 -%}
+                                {% include 'Resource/Organization' OBX_NTE: nteSegment2.5.9, ID: Organization_ID_NTE2_5_9 -%}
+                            {% endif -%}     
+                            {% evaluate practitioner_ID_NTE_5 using 'ID/Practitioner' XCN: nteSegment2.5 -%}
+                            {% include 'Resource/Practitioner' NTE: nteSegment2.5, ID: practitioner_ID_NTE_5 -%}
+                        {% endif -%} 
+                        {% include 'Resource/Observation' NTE: nteSegment2, ID: observationId -%}
+                    {% endfor -%}
+                    
+                {% endif -%}
+
+                {% assign prtSegmentLists = hl7v2Data | get_related_segment_list: obxSegment, 'PRT' -%}
+
+                {%- comment -%} OBSERVATION - PRT related coding starts {%- endcomment -%}
+                {% for prtSegment in prtSegmentLists.PRT %}
+                
+                    {% unless prtSegment.2.Value == "DE" or prtSegment.2.Value == "UN" %}
+                    
+                        {% if prtSegment.5 %}
+                                {% evaluate practitionerRoleId using 'ID/PractitionerRole' PRT: prtSegment.4, XCN: prtSegment.5.Repeats[0] -%}
+                                {% include 'Resource/PractitionerRole' PRT: prtSegment , ID: practitionerRoleId -%} 
+                                {%- assign fullPractitionerRoleId = practitionerRoleId | prepend: 'PractitionerRole/' -%}
+                                {% if observationId %}
+                                    {% include 'Reference/Observation/Performer' REF: fullPractitionerRoleId, ID: observationId -%}
+                                {% elsif obx_diagnosticReportID2 %}
+                                    {% include 'Reference/DiagnosticReport/Performer' REF: fullPractitionerRoleId, ID: obx_diagnosticReportID2 -%}
+                                {% endif %}
+                                
+                                {% evaluate practitionerId using 'ID/Practitioner' XCN: prtSegment.5.Repeats[0] -%}
+                                {% assign full_practitionerId = practitionerId | prepend: 'Practitioner/' %}
+                                {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId, ID: practitionerRoleId -%}
+                                {% for prt_5 in prtSegment.5.Repeats %}
+                                    {% if prt_5.9.1 != "" and prt_5.9.1 != null and prt_5.9.2 != "" and prt_5.9.2 != null and prt_5.9.3 != "" and prt_5.9.3 != null -%}
+                                        {% evaluate Organization_ID using 'ID/Organization' HDORG: prt_5.9 -%}
+                                        {% include 'Resource/Organization' OBX: prt_5.9, ID: Organization_ID -%}
+                                    {% endif -%}
+                                    {% include 'Resource/Practitioner' PRT: prt_5, ID: practitionerId-%}
+                                {% endfor %}
+                    
+                                {% if prtSegment.9.Repeats[0] -%}
+                                    {% include 'Resource/PLLocation' PL: prtSegment.9.Repeats[0]-%}
+                                {% endif -%}
+
+                                {% if prtSegment.8.Repeats[0] %}
+                                    {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                    {% include 'Resource/Organization' PRT: prtSegment.8.Repeats[0], ID: Organization_ID_PRT_8 -%}
+                                {% endif %}
+                                
+                        {% endif %}
+
+                        {% unless prtSegment.5 %}
+                            {% if prtSegment.8.Repeats[0] %}
+                                {% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: prtSegment.8.Repeats[0] -%}
+                                {% assign fullOrganization_ID_PRT_8 = Organization_ID_PRT_8 | prepend: 'Organization/' %}
+                                {% if observationId %}
+                                    {% include 'Reference/Observation/Performer' REF: fullOrganization_ID_PRT_8, ID: observationId -%}
+                                {% elsif obx_diagnosticReportID2 %}
+                                    {% include 'Reference/DiagnosticReport/Performer' REF: fullOrganization_ID_PRT_8, ID: obx_diagnosticReportID2 -%}
+                                {% endif %}
+
+                                {% for prt_8 in prtSegment.8.Repeats %}
+                                    {% include 'Resource/Organization' PRT: prt_8, Org_Name: prtSegment.8.Repeats[0].1, ID: Organization_ID_PRT_8 -%}
+                                {% endfor %}
+                            {% endif %}
+                        {% endunless %}
+
+                        {% unless prtSegment.5 %}
+                            {% if prtSegment.8.Repeats[0] %}
+                                {% if prtSegment.9.Repeats[0] %}
+                                    {% for prt_9 in prtSegment.9.Repeats %}
+                                        {% include 'Resource/PLLocation' PL: prt_9 -%}
+
+                                        {% if prt_9.5 or prt_9.9 -%}
+                                            {% if prt_9.5 and prt_9.9 -%}
+                                                {% assign PL_Value_Except_PL5_PL9 = prt_9.Value | remove: prt_9.5.Value | remove: prt_9.9.Value %}
+                                            {% endif -%}
+                                            {% if prt_9.5 and prt_9.9 == null or prt_9.9 == "" -%}
+                                                {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.5.Value %}
+                                            {% endif -%}
+                                            {% if prt_9.9 and prt_9.5 == null or prt_9.5 == "" -%}
+                                                {% assign PL_Value_Except_PL5_PL9= prt_9.Value | remove: prt_9.9.Value %}
+                                            {% endif -%}
+                                        {% else -%}
+                                            {% assign PL_Value_Except_PL5_PL9 = prt_9.Value %}
+                                        {% endif -%}
+                    
+                                        {% if prt_9.1 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.1, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.2 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.2, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.3 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.3, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.4 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.4, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.7 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.7, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% elseif prt_9.8 -%}
+                                            {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: prt_9.8, PL: prt_9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                                        {% endif -%}
+
+                                        {% if Location_ID_PRT_9 %} 
+                                            {% include 'Reference/Location/ManagingOrganization' REF: fullOrganization_ID_PRT_8, ID: Location_ID_PRT_9 -%}
+                                        {% endif %}
+
+
+                                    {% endfor %}
+                                {% endif -%}
+                            {% endif -%}
+                        {% endunless %}
+
+                        {% if observationId %}
+                            {% unless prtSegment.5 %}
+                                {% if prtSegment.10 %}
+                                    {% evaluate deviceId using 'ID/Device' EI: prtSegment.10.Repeats[0] -%}
+                                    {% include 'Resource/Device' PRT: prtSegment, ID: deviceId -%}
+                                    {%- assign fullDeviceId = deviceId | prepend: 'Device/' -%}
+                                    {% include 'Reference/Observation/Device' REF: fullDeviceId , ID: observationId -%}
+                                {% endif %}
+                            {% endunless %}
+                        {% endif %}
+                    {% endunless %}
+                {% endfor %}
+            {%- comment -%} OBSERVATION - PRT related coding ends {%- endcomment -%}
+
+            {% endfor -%}
+
+            {% assign ft1SegmentLists = hl7v2Data | get_related_segment_list: orcSegment, 'FT1' -%}
+
+            {% for ft1Segment in ft1SegmentLists.FT1 -%}
+
+                {% if ft1Segment.6.Value == 'CG' -%}
+                    {% evaluate chargeitem_id using 'ID/ChargeItem' FT1: ft1Segment, baseId: patientId -%}
+                    {% include 'Resource/ChargeItem' FT1: ft1Segment, ID: chargeitem_id %}
+                    {% include 'Reference/ChargeItem/Subject' REF: fullPatientId, ID: chargeitem_id -%}
+                    {% assign fullAccountId = accountId | prepend: 'Account/' -%}
+                    {% include 'Reference/ChargeItem/Account' REF: fullAccountId, ID: chargeitem_id -%}
+                    {% assign firstFullencounterId = encounterId | prepend: 'Encounter/' -%}
+                    {% include 'Reference/ChargeItem/Context' REF: firstFullencounterId, ID: chargeitem_id -%}    
+
+                    {% if medicationDispenseId -%}
+                        {% assign fullMedicationDispenseId = medicationDispenseId | prepend: 'MedicationDispense/' -%}
+                        {% include 'Reference/ChargeItem/SupportingInformation' REF: fullMedicationDispenseId, ID: chargeitem_id -%}
+                    {% endif -%}     
+
+                    {% if ft1Segment.13 -%}
+                        {% evaluate Organization_ID_FT1 using 'ID/Organization' CWE: ft1Segment.13 -%}
+                        {% include 'Resource/Organization' FT1: ft1Segment, ID: Organization_ID_FT1 -%}
+                        {% assign full_organizationId_FT1 = Organization_ID_FT1 | prepend: 'Organization/' %}
+                        {% include 'Reference/ChargeItem/CostCenter' REF: full_organizationId_FT1, ID: chargeitem_id -%}
+                    {% endif -%}
+
+                    {% if ft1Segment.20 -%}
+                        {% if ft1Segment.20.9.1 != "" and ft1Segment.20.9.1 != null and ft1Segment.20.9.2 != "" and ft1Segment.20.9.2 != null and ft1Segment.20.9.3 != "" and ft1Segment.20.9.3 != null -%}
+                            {% evaluate Organization_ID_FT1_20_9 using 'ID/Organization' HDORG: ft1Segment.20.9 -%}
+                            {% include 'Resource/Organization', FT1_20: ft1Segment.20.9, ID: Organization_ID_FT1_20_9 -%}
+                        {% endif -%} 
+                        {% evaluate Practitioner_ID_FT1_20 using 'ID/Practitioner' XCN: ft1Segment.20 -%}
+                        {% include 'Resource/Practitioner' FT1: ft1Segment.20, ID: Practitioner_ID_FT1_20 -%}
+                        {% assign full_Practitioner_ID_FT1_20 = Practitioner_ID_FT1_20 | prepend: 'Practitioner/' %}
+                        {% include 'Reference/ChargeItem/Performer_Actor' REF: full_Practitioner_ID_FT1_20, ID: chargeitem_id -%}
+                    {% endif -%}
+
+                    {% if ft1Segment.24 -%}
+                        {% if ft1Segment.24.9.1 != "" and ft1Segment.24.9.1 != null and ft1Segment.24.9.2 != "" and ft1Segment.24.9.2 != null and ft1Segment.24.9.3 != "" and ft1Segment.24.9.3 != null -%}
+                            {% evaluate Organization_ID_FT1_20_9 using 'ID/Organization' HDORG: ft1Segment.24.9 -%}
+                            {% include 'Resource/Organization', FT1_20: ft1Segment.24.9, ID: Organization_ID_FT1_20_9 -%}
+                        {% endif -%} 
+                        {% evaluate Practitioner_ID_FT1_20 using 'ID/Practitioner' XCN: ft1Segment.24 -%}
+                        {% include 'Resource/Practitioner' FT1: ft1Segment.24, ID: Practitioner_ID_FT1_20 -%}
+                        {% assign full_Practitioner_ID_FT1_20 = Practitioner_ID_FT1_20 | prepend: 'Practitioner/' %}
+                        {% include 'Reference/ChargeItem/Enterer' REF: full_Practitioner_ID_FT1_20, ID: chargeitem_id -%}
+                    {% endif -%}
+
+                    {% if orcSegment.2 -%}
+                    {% if ft1Segment.25 -%}
+                        {% evaluate Procedure_ID_FT1_25 using 'ID/Procedure' FT1: ft1Segment.25, ORC_FT1: orcSegment.2, baseId: patientId -%}
+                        {% include 'Resource/Procedure' FT1: ft1Segment, ID: Procedure_ID_FT1_25, Procedure_Subject_ID: fullPatientId -%}
+                        {% include 'Resource/ChargeItem' procedure_ft1_25: Procedure_ID_FT1_25, ID: chargeitem_id -%}
+                    {% endif -%}
+                    {% endif -%}
+
+                    {% if orcSegment.2 -%}
+                    {% if ft1Segment.29 -%}
+                        {% evaluate Medication_Dispense_ID_FT1_25 using 'ID/MedicationDispense' FT1: ft1Segment.29, ORC_FT1: orcSegment.2, baseId: patientId -%}
+                        {% include 'Resource/MedicationDispense' FT1: ft1Segment, ID: Medication_Dispense_ID_FT1_25, subjectRefrence: patientId -%}
+                        {% include 'Resource/ChargeItem' medicationdispense_ft1_29: Medication_Dispense_ID_FT1_25, ID: chargeitem_id -%}
+                    {% endif -%}
+                    {% endif -%}
+
+                    {% if ft1Segment.32 -%}
+                        {% evaluate Organization_ID_FT1_32 using 'ID/Organization' XON: ft1Segment.32 -%}
+                        {% include 'Resource/Organization' FT1_32: ft1Segment, ID: Organization_ID_FT1_32 -%}
+                        {% assign full_Practitioner_ID_FT1_32 = Organization_ID_FT1_32 | prepend: 'Organization/' %}
+                        {% include 'Reference/ChargeItem/PerformingOrganization' REF: full_Practitioner_ID_FT1_32, ID: chargeitem_id -%}
+                    {% endif -%}
+
+                    {% if ft1Segment.33 -%}
+                        {% evaluate Organization_ID_FT1_33 using 'ID/Organization' XON: ft1Segment.33 -%}
+                        {% include 'Resource/Organization' FT1_33: ft1Segment, ID: Organization_ID_FT1_33 -%}
+                        {% assign full_Practitioner_ID_FT1_33 = Organization_ID_FT1_33 | prepend: 'Organization/' %}
+                        {% include 'Reference/ChargeItem/RequestingOrganization' REF: full_Practitioner_ID_FT1_33, ID: chargeitem_id -%}              
+                    {% endif -%}
+
+                    {% if ft1Segment.34 -%}
+                        {% evaluate deviceId_FT1_34 using 'ID/Device' FT1: ft1Segment -%}
+                        {% include 'Resource/Device' FT1: ft1Segment, ID: deviceId_FT1_34, Device_Patient_ID:fullPatientId -%}
+                        {% assign full_Device_ID_FT1 = deviceId_FT1_34 | prepend: 'Device/' %}
+                        {% include 'Reference/ChargeItem/ProductReference' REF: full_Device_ID_FT1, ID: chargeitem_id -%}
+                    {% endif -%}
+                {% endif -%}
+            {% endfor %}
+        {% endfor %}
+
+    ] 
+}

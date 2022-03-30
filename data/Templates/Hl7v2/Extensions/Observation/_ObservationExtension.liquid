@@ -13,7 +13,11 @@
                     {%- endcomment -%}
                     {% if OBX.11 %}  
                         {% include 'Extensions/ObservationStatus' ID: OBX.11 -%},
-                    {% endif %}  
+                    {% endif %} 
+                    {% if locationId %}  
+                        {% include 'Extensions/Observation-Location' locationId: locationId -%},
+                    {% endif %} 
+
                 ],
     },
 },

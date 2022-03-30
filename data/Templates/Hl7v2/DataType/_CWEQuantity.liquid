@@ -2,7 +2,7 @@
     {% if CWE.1 and CWE.3 -%}
         "code":"{{ CWE.1.Value }}",
     {% endif -%}
-    {% if CWE.2 == null -%}
+    {% if CWE.2 == null and CWE.3 == null -%}
         "unit":"{{ CWE.1.Value }}",
     {% endif -%}
     "unit":"{{ CWE.2.Value }}",

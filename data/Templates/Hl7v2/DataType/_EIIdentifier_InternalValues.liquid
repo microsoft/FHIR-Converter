@@ -1,0 +1,33 @@
+{% comment -%}
+{% if EI -%}
+    "value":"{{ EI.1 }}",
+{% endif -%}
+{% endcomment -%}
+{% if EI -%}
+    "value":"{{ EI.1 }}",
+    {% unless EI.3 and EI.4  -%}
+        {% if EI.2 %}
+            "system": "http://example.com/v2-to-fhir-converter/Identifier/{{EI.2 | replace: ' ', '-'}}",
+        {% endif %}
+    {% endunless -%}
+    {% if EI.4 -%}
+        {% if EI.4 == "URI" -%}
+            "system": "{{ EI.3 }}",
+        {% elsif EI.4 == "ISO" or  EI.4 == "CLIA" or EI.4 == "CLIP" -%}
+            "system": "urn:oid:{{ EI.3 }}",
+        {% elsif EI.4 == "UUID" or  EI.4 == "GUID" -%}
+            "system": "urn:uuid:{{ EI.3 }}",
+        {% else -%}
+            "system": "http://example.com/v2-to-fhir-converter/Identifier/{{EI.4 | replace: ' ', '-' }}",
+        {% endif -%}
+        "type":{
+                    "coding": [
+                        {
+                            "code": "{{ EI.4 | get_property: 'CodeSystem/UniversalIDType', 'code' }}",
+                            "display": "{{ EI.4 | get_property: 'CodeSystem/UniversalIDType', 'display' }}",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0301",
+                        }
+                    ]
+                },
+    {% endif -%}
+{% endif -%}

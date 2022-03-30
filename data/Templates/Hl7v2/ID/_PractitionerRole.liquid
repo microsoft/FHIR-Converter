@@ -1,6 +1,16 @@
 {% capture identifiers -%}
-    {% if NDL -%}
+    {% if PRD -%}
+        {{PRD.1.1.Value}},{{PRD.7.Repeats[0].1.Value}},{{PRD.7.Repeats[0].2.1}},{{PRD.7.Repeats[0].2.3}}
+    {% elsif NDL -%}
         {{NDL.1.Value}},{{NDL.4.Value}},{{NDL.5.Value}},{{NDL.6.Value}},{{NDL.7.Value}},{{NDL.8.Value}},{{NDL.9.Value}},{{NDL.10.Value}},{{NDL.11.Value}}
+    {% elsif XCN.1 and XCN.9 and ROL -%}
+        {{ROL.Value}},{{XCN.1.Value}},{{XCN.9.Value}}
+    {% elsif ROL and XCN -%}
+        {{ROL.Value}},{{XCN.Value}}    
+    {% elsif XCN.1 and XCN.9 and PRT -%}
+        {{PRT.Value}},{{XCN.1.Value}},{{XCN.9.Value}}
+    {% elsif PRT and XCN -%}
+        {{PRT.Value}},{{XCN.Value}}
     {% elsif XCN.1 and XCN.9 -%}
         {{XCN.1.Value}},{{XCN.9.Value}}
     {% elsif XCN -%}

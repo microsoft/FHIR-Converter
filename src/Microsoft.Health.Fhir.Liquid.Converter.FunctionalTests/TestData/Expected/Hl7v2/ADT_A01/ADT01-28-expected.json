@@ -1,7 +1,7 @@
 {
     "resourceType": "Bundle",
     "type": "batch",
-    "timestamp": "1988-10-18T11:26:00",
+    "timestamp": "1988-08-18T11:26:00+07:00",
     "identifier": {
         "value": "MSG00001"
     },
@@ -42,8 +42,7 @@
                 "meta": {
                     "security": [
                         {
-                            "display": "SECURITY",
-                            "system": "http://example.com/v2-to-fhirconverter/security-label"
+                            "display": "SECURITY"
                         }
                     ],
                     "tag": [
@@ -74,10 +73,10 @@
                 "id": "aaf37d11-5d66-af8d-c286-16b46b7f9ada",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T11:20:28.107Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A01.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-25T13:13:45.827Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A01.</span></p></div>"
                 },
-                "occurredDateTime": "1988-10-18T11:26:00",
-                "recorded": "1988-10-18T11:26:00",
+                "occurredDateTime": "1988-08-18T11:26:00+07:00",
+                "recorded": "1988-08-18T11:26:00+07:00",
                 "agent": [
                     {
                         "type": {
@@ -119,7 +118,7 @@
                 "identifier": [
                     {
                         "value": "GOOD HEALTH HOSPITAL",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-GOOD-HEALTH-HOSPITAL"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GOOD-HEALTH-HOSPITAL"
                     }
                 ]
             },
@@ -145,7 +144,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-ADT1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/ADT1"
                     },
                     {
                         "value": "123456789",
@@ -158,7 +157,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-USSSA"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/USSSA"
                     },
                     {
                         "value": "444333333",
@@ -276,10 +275,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:3e9d1ae2-2dbe-bdd9-8da6-6a9fdfc18068",
+            "fullUrl": "urn:uuid:d8c83ef0-2bbc-591b-4de7-6f284ab60d0b",
             "resource": {
                 "resourceType": "Account",
-                "id": "3e9d1ae2-2dbe-bdd9-8da6-6a9fdfc18068",
+                "id": "d8c83ef0-2bbc-591b-4de7-6f284ab60d0b",
                 "identifier": [
                     {
                         "value": "PATID12345001",
@@ -292,7 +291,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-ADT1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/ADT1"
                     }
                 ],
                 "status": "active",
@@ -304,7 +303,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Account/3e9d1ae2-2dbe-bdd9-8da6-6a9fdfc18068"
+                "url": "Account/d8c83ef0-2bbc-591b-4de7-6f284ab60d0b"
             }
         },
         {
@@ -333,10 +332,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:55fb6bcf-59d7-2cc4-2ddc-d38ba31ff1d2",
+            "fullUrl": "urn:uuid:fed49117-7114-cc6d-a564-aa500d035ec6",
             "resource": {
                 "resourceType": "Location",
-                "id": "55fb6bcf-59d7-2cc4-2ddc-d38ba31ff1d2",
+                "id": "fed49117-7114-cc6d-a564-aa500d035ec6",
                 "name": "2000",
                 "mode": "instance",
                 "description": "2000--2012--01",
@@ -351,16 +350,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/55fb6bcf-59d7-2cc4-2ddc-d38ba31ff1d2"
+                "url": "Location/fed49117-7114-cc6d-a564-aa500d035ec6"
             }
         },
         {
-            "fullUrl": "urn:uuid:95fb96ed-bf64-1327-6204-e8e66a472eb6",
+            "fullUrl": "urn:uuid:87cbde24-7a43-2c4d-b0fd-53f7e8617574",
             "resource": {
                 "resourceType": "Location",
-                "id": "95fb96ed-bf64-1327-6204-e8e66a472eb6",
+                "id": "87cbde24-7a43-2c4d-b0fd-53f7e8617574",
                 "partOf": {
-                    "reference": "Location/55fb6bcf-59d7-2cc4-2ddc-d38ba31ff1d2"
+                    "reference": "Location/fed49117-7114-cc6d-a564-aa500d035ec6"
                 },
                 "name": "2012",
                 "mode": "instance",
@@ -376,16 +375,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/95fb96ed-bf64-1327-6204-e8e66a472eb6"
+                "url": "Location/87cbde24-7a43-2c4d-b0fd-53f7e8617574"
             }
         },
         {
-            "fullUrl": "urn:uuid:408220ee-3137-d895-e8a9-8937117bf0c1",
+            "fullUrl": "urn:uuid:7eda07b5-b256-87e5-1e3d-c2f69a17ecd3",
             "resource": {
                 "resourceType": "Location",
-                "id": "408220ee-3137-d895-e8a9-8937117bf0c1",
+                "id": "7eda07b5-b256-87e5-1e3d-c2f69a17ecd3",
                 "partOf": {
-                    "reference": "Location/95fb96ed-bf64-1327-6204-e8e66a472eb6"
+                    "reference": "Location/87cbde24-7a43-2c4d-b0fd-53f7e8617574"
                 },
                 "name": "01",
                 "mode": "instance",
@@ -401,7 +400,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/408220ee-3137-d895-e8a9-8937117bf0c1"
+                "url": "Location/7eda07b5-b256-87e5-1e3d-c2f69a17ecd3"
             }
         },
         {
@@ -419,7 +418,7 @@
                     {
                         "status": "active",
                         "location": {
-                            "reference": "Location/55fb6bcf-59d7-2cc4-2ddc-d38ba31ff1d2"
+                            "reference": "Location/fed49117-7114-cc6d-a564-aa500d035ec6"
                         }
                     }
                 ],
@@ -461,6 +460,11 @@
                     "status": "generated",
                     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Visit Description: </span></p></div>"
                 },
+                "account": [
+                    {
+                        "reference": "Account/d8c83ef0-2bbc-591b-4de7-6f284ab60d0b"
+                    }
+                ],
                 "subject": {
                     "reference": "Patient/d5fe6802-a680-e762-8f43-9659340b00ac"
                 }
@@ -471,11 +475,11 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:c6a03972-34d3-7649-0b8f-004e4d442eca",
+            "fullUrl": "urn:uuid:251e94d0-6200-7d38-1523-3503eea94c53",
             "resource": {
                 "resourceType": "Provenance",
-                "id": "c6a03972-34d3-7649-0b8f-004e4d442eca",
-                "recorded": "2007-08-18T11:23:00",
+                "id": "251e94d0-6200-7d38-1523-3503eea94c53",
+                "recorded": "2007-08-18T11:23:00+07:00",
                 "activity": {
                     "text": "ADT^A01^ADT_A01"
                 },
@@ -487,7 +491,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Provenance/c6a03972-34d3-7649-0b8f-004e4d442eca"
+                "url": "Provenance/251e94d0-6200-7d38-1523-3503eea94c53"
             }
         },
         {

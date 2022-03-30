@@ -6,9 +6,9 @@
 {% if EI -%}
     "value":"{{ EI.1.Value }}",
     {% unless EI.3.Value and EI.4.Value  -%}
-    {% if EI.2 %}
-        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-{{EI.2.Value | replace: ' ', '-'}}",
-    {% endif %}
+        {% if EI.2 %}
+            "system": "http://example.com/v2-to-fhir-converter/Identifier/{{EI.2.Value | replace: ' ', '-'}}",
+        {% endif %}
     {% endunless -%}
     {% if EI.4.Value -%}
         {% if EI.4.Value == "URI" -%}
@@ -18,14 +18,14 @@
         {% elsif EI.4.Value == "UUID" or  EI.4.Value == "GUID" -%}
             "system": "urn:uuid:{{ EI.3.Value }}",
         {% else -%}
-            "system": "http://example.com/v2-to-fhir-converter/universal-entity-identifier-{{EI.4.Value | replace: ' ', '-' }}",
+            "system": "http://example.com/v2-to-fhir-converter/Identifier/{{EI.4.Value | replace: ' ', '-' }}",
         {% endif -%}
         "type":{
                     "coding": [
                         {
-                                "code": "{{ EI.4.Value | get_property: 'CodeSystem/UniversalIDType', 'code' }}",
-                                "display": "{{ EI.4.Value | get_property: 'CodeSystem/UniversalIDType', 'display' }}",
-                                "system": "http://terminology.hl7.org/CodeSystem/v2-0301",
+                            "code": "{{ EI.4.Value | get_property: 'CodeSystem/UniversalIDType', 'code' }}",
+                            "display": "{{ EI.4.Value | get_property: 'CodeSystem/UniversalIDType', 'display' }}",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0301",
                         }
                     ]
                 },

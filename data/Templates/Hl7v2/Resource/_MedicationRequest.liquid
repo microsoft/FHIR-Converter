@@ -1,0 +1,653 @@
+{% evaluate nte_practitioner using 'ID/Practitioner' XCN: NTE.5 -%}
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "MedicationRequest",
+        "id":"{{ ID }}",
+        "identifier":
+        [   
+            {
+                {% if ORC.2 %}
+                    {% include 'DataType/EIIdentifier' EI: ORC.2 -%}
+                    "type":
+                        {
+                            "coding":
+                            [
+                                {
+                                    "code":"PLAC",
+                                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203", 
+                                }
+                            ],
+                        }   
+                {% endif %}
+            },
+            {
+                {% if ORC.3 %}
+                    {% include 'DataType/EIIdentifier' EI: ORC.3 -%}
+                    "type":
+                    {
+                        "coding":
+                        [
+                            {
+                                "code":"FILL",
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203", 
+                            }
+                        ],
+                    }   
+                {% endif %}
+            },
+            {
+                {% if ORC.4 %}
+                    {% include 'DataType/EIIdentifier' EI: ORC.4 -%}
+                    "type":
+                    {
+                        "coding":
+                        [
+                            {
+                                "code":"PGN",
+                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203", 
+                            }
+                        ],
+                    }   
+                {% endif %}
+            },
+            {% if RXE.15 -%}
+            {  
+                "value": "{{RXE.15.Value}}",
+                {% if RXE.40.3 -%}
+                    "system": "http://example.com/v2-to-fhir-converter/Identifier/{{RXE.40.3.Value}}",
+                {% endif %}
+                "type":
+                    {
+                        "coding":
+                        [
+                            {
+                                "code":"PRN",
+                                "system":"http://example.com/v2-to-fhir-converter/CodeSystem/identifier-type-code", 
+                                "display": "Prescription Number"
+                            }
+                        ],
+                    }  
+            },
+            {% endif %}  
+        ],
+        {% if ORC.5 -%}
+            "status":"{{ ORC.5.Value | get_property: 'CodeSystem/MedicationOrderStatus', 'code' }}",  
+        {% else -%}
+            "status":"{{ ORC.1.Value | get_property: 'CodeSystem/OrderControlCode_RequestStatus', 'code' }}",
+        {% endif %} 
+        {% if ORC.1.Value == 'NW' -%}
+            {% if ORC.9 %}
+                "authoredOn": "{{ ORC.9.Value | format_as_date_time }}",
+            {% elsif ORC.15 %}
+                "authoredOn": "{{ ORC.15.Value | format_as_date_time }}",
+            {% endif %}    
+        {% endif -%}
+
+        {% unless ORC.9 -%}
+            "authoredOn": "{{ RXE.32.Value | format_as_date_time }}",
+        {% endunless -%}
+        {% unless ORC.1.Value == 'NW' -%}
+            {% if ORC.9 -%}
+                "authoredOn": "{{ RXE.32.Value | format_as_date_time }}",
+            {% endif %}
+        {% endunless -%}
+
+        {% if RXO %}
+            "intent" : "original-order",
+        {% endif %}
+        
+        {% if RXE %}
+            "intent" : "filler-order",
+        {% endif %}
+
+        "dosageInstruction" : 
+        [
+            {
+                {% if ORM_ORC_7 %}
+                    {% include 'DataType/TQ_MedicationRequest' TQ: ORM_ORC_7 -%}
+                {% endif %} 
+                "doseAndRate" : 
+                [
+                    {
+                        "doseRange" : 
+                        { 
+                            "low" : 
+                            { 
+                                {% if ORM_RXO.3 -%}
+                                    "value" : {{ORM_RXO.2.Value}},
+                                {% endif %}
+                                {% if ORM_RXO.2 and ORM_RXO.3 -%}
+                                    {% include 'DataType/CWEQuantity' CWE: ORM_RXO.4  %}
+                                {% endif %}
+                            },
+                            "high" : 
+                            { 
+                                {% if ORM_RXO.3 %}
+                                    "value" : {{ORM_RXO.3.Value}},
+                                    {% include 'DataType/CWEQuantity' CWE: ORM_RXO.4  %}
+                                {% endif %}
+                            },
+                        },
+                            
+                        "doseQuantity" : 
+                        { 
+                            {% if ORM_RXO.2 and ORM_RXO.3 == null or ORM_RXO.3 == "" %}
+                                "value" : {{ORM_RXO.2.Value}},
+                                {% include 'DataType/CWEQuantity' CWE: ORM_RXO.4  %}
+                            {% endif %}
+                        },
+                        "rateQuantity" :
+                        {
+                            {% if ORM_RXO.21 %}
+                                "value": {{ORM_RXO.21.Value}},
+                            {% endif %}
+                            {% if ORM_RXO.22 %}
+                                {% include 'DataType/CWEQuantity' CWE: ORM_RXO.22  %}
+                            {% endif %}
+                        },
+                    },
+                ],       
+                "additionalInstruction" : 
+                [
+                    {% if ORM_RXO.7 %}
+                        {% for orm_rxo_7 in ORM_RXO.7.Repeats %}
+                            {  
+                                {% if rxo_7.1.Value %}
+                                    "coding":
+                                    [
+                                        {% include 'DataType/CWECodeableConceptRepeatable' CWE: orm_rxo_7 %}
+                                    ],
+                                    "text":"{{ orm_rxo_7.9.Value }}",
+                                {% endif %}
+                            },
+                        {% endfor %}  
+                    {% endif %}
+                ],         
+                {% if ORM_RXO.7 %}
+                    {% for orm_rxo_7 in ORM_RXO.7.Repeats %}
+                        {% if orm_rxo_7.1.Value == null or  orm_rxo_7.1.Value == "" %}
+                            {% capture textString %}{{ orm_rxo_7.Value  | split: "^" | join: "--" }}{% endcapture -%}
+                            {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+                            {% capture textStringValue %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+                            "patientInstruction" : "{{textStringValue}}",
+                        {% endif %}
+                    {% endfor %}   
+                {% endif %}              
+                {% if ORM_RXO.6 or ORM_ORC_7.8 %}
+                    {% capture textString %}{{ ORM_RXO.6.Value  | split: "^" | join: "--" }}{% endcapture -%}
+                    {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+                    {% capture textStringValue %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+                    {% if ORM_ORC_7.8 -%}
+                        {% capture textStringValue %}{{ textStringValue | append: "+" | append : ORM_ORC_7.8.Value }}{% endcapture -%}     
+                    {% endif -%}
+                    "text" : "{{textStringValue}}",
+                {% endif %}                
+                "maxDosePerPeriod" : 
+                { 
+                    "numerator" : { 
+                        {% if ORM_RXO.23 %}
+                            {% include 'DataType/CQ' CQ: ORM_RXO.23  %}
+                        {% endif %} 
+                    },
+                    {% if ORM_RXO.23 -%}
+                        "denominator": {
+                            "value" : 1,
+                            "unit" : "d",
+                            "system" : "http://unitsofmeasure.org",
+                            "code" : "d"
+                        },
+                    {% endif %}
+                },
+            },
+            
+            {
+                "doseAndRate" : 
+                [
+                    {
+                        "doseRange" : 
+                        { 
+                            "low" : 
+                            { 
+                                {% if RXO_RXR.2 and RXO_RXR.3 %}
+                                    "value" : {{RXO_RXR.2.Value}},
+                                    {% include 'DataType/CWEQuantity' CWE: RXO_RXR.4  %}
+                                {% endif %}
+                                {% if RXE_RXR.4 -%}
+                                    "value" : {{RXE_RXR.3.Value}},
+                                {% endif %}
+                                {% if RXE_RXR.3 and RXE_RXR.4 -%}
+                                    {% include 'DataType/CWEQuantity' CWE: RXE_RXR.5  %}
+                                {% endif %}
+                            },
+                            "high" : 
+                            { 
+                                {% if RXO_RXR.3 %}
+                                    "value" : {{RXO_RXR.3.Value}},
+                                    {% include 'DataType/CWEQuantity' CWE: RXO_RXR.4  %}
+                                {% endif %}
+                                {% if RXE_RXR.4 -%}
+                                    "value" : {{RXE_RXR.4.Value}},
+                                {% endif %}
+                                {% if RXE_RXR.4 -%}
+                                    {% include 'DataType/CWEQuantity' CWE: RXE_RXR.5  %}
+                                {% endif %}
+                            },
+                        },
+                            
+                        "doseQuantity" : 
+                        { 
+                            {% if RXO_RXR.2 and RXO_RXR.3 == null or RXO_RXR.3 == "" %}
+                                "value" : {{RXO_RXR.2.Value}},
+                                {% include 'DataType/CWEQuantity' CWE: RXO_RXR.4  %}
+                            {% endif %}
+                            {% if RXE_RXR.3 and RXE_RXR.4 == null or RXE_RXR.4 == "" %}
+                                "value" : {{RXE_RXR.3.Value}},
+                                {% include 'DataType/CWEQuantity' CWE: RXE_RXR.5  %}
+                            {% endif %}
+                        },
+                        "rateQuantity" :
+                        {
+                            {% if RXO_RXR.21 %}
+                                "value": {{RXO_RXR.21.Value}},
+                            {% endif %}
+                            {% if RXO_RXR.22 %}
+                                {% include 'DataType/CWEQuantity' CWE: RXO_RXR.22  %}
+                            {% endif %}
+                            {% if RXE_RXR.23 %}
+                                "value": {{RXE_RXR.23.Value}},
+                            {% endif %}
+                            {% if RXE_RXR.24 %}
+                                {% include 'DataType/CWEQuantity' CWE: RXE_RXR.24  %}
+                            {% endif %}
+                        },
+                    },
+                ],
+                
+                "additionalInstruction" : 
+                [
+                    {% if RXO_RXR.7 %}
+                        {% for rxo_7 in RXO_RXR.7.Repeats %}
+                        {   {% if rxo_7.1.Value %}
+                            "coding":
+                            [
+                                {% include 'DataType/CWECodeableConceptRepeatable' CWE: rxo_7 %}
+                            ],
+                            "text":"{{ rxo_7.9.Value }}",
+                            {% endif %}
+                        },
+                        {% endfor %}  
+                    {% endif %}
+                    {% if RXE_RXR.7 %}
+                        {% for rxe_7 in RXE_RXR.7.Repeats %}
+                        {   {% if rxe_7.1.Value %}
+                            "coding":
+                            [
+                                {% include 'DataType/CWECodeableConceptRepeatable' CWE: rxe_7 %}
+                            ],
+                            "text":"{{ rxe_7.9.Value }}",
+                            {% endif %}
+                        },
+                        {% endfor %}  
+                    {% endif %}
+                ],
+                 
+                {% if RXO_RXR.7 %}
+                    {% for rxo_7 in RXO_RXR.7.Repeats %}
+                        {% if rxo_7.1.Value == null or  rxo_7.1.Value == "" %}
+                            {% capture textString %}{{ rxo_7.Value  | split: "^" | join: "--" }}{% endcapture -%}
+                            {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+                            {% capture textStringValue %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+                            "patientInstruction" : "{{textStringValue}}",
+                        {% endif %}
+                    {% endfor %}   
+                {% endif %}
+                {% if RXE_RXR.7 %}
+                    {% for rxe_7 in RXE_RXR.7.Repeats %}
+                        {% if rxe_7.1.Value == null or  rxe_7.1.Value == "" %}
+                            {% capture textString %}{{ rxe_7.Value  | split: "^" | join: "--" }}{% endcapture -%}
+                            {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+                            {% capture textStringValue %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+                            "patientInstruction" : "{{textStringValue}}",
+                        {% endif %}
+                    {% endfor %}   
+                {% endif %}
+                
+                {% if RXO_RXR.6 or TQ1_RXR.11 %}
+                    {% capture textString %}{{ RXO_RXR.6.Value  | split: "^" | join: "--" }}{% endcapture -%}
+                    {% capture specomp %}{{ textstring  | split: "~" | join: "+" }}{% endcapture -%}
+                    {% capture textStringValue %}{{ specomp  | split: "&" | join: "--" }}{% endcapture -%}
+                    {% if TQ1_RXR.11 -%}
+                        {% capture textStringValue %}{{ textStringValue | append: "+" | append : TQ1_RXR.11.Value }}{% endcapture -%}     
+                    {% endif -%}
+                    "text" : "{{textStringValue}}",
+                {% endif %}
+
+                
+                "maxDosePerPeriod" : 
+                { 
+                    "numerator" : { 
+                        {% if RXO_RXR.23 %}
+                            {% include 'DataType/CQ' CQ: RXO_RXR.23  %}
+                        {% endif %} 
+                        {% if RXE_RXR.19 %}
+                            {% include 'DataType/CQ' CQ: RXE_RXR.19  %}
+                        {% endif %}
+                    },
+                    {% if RXE_RXR.19 or RXO_RXR.23 -%}
+                    "denominator": {
+                        "value" : 1,
+                        "unit" : "d",
+                        "system" : "http://unitsofmeasure.org",
+                        "code" : "d"
+                    },
+                    {% endif %}
+                },
+                {% if CDO -%}
+                    "maxDosePerLifetime" : {
+                         {% if CDO.4.2.Value == 'PL' -%}
+                            "value" : {{CDO.3.1.Value}},
+                            {% include 'DataType/CWEQuantityInternal' CWE: CDO.3.2 -%}
+                        {% endif %}
+                    },
+                    "maxDosePerPeriod" : {
+                        {% unless RXE_CDO.19 -%}
+                            {% if CDO.4.2.Value == 'D' and CDO.3 -%}
+                                "numerator" : { 
+                                    "value" : {{CDO.3.1.Value}},
+                                    {% include 'DataType/CWEQuantityInternal' CWE: CDO.3.2 -%}
+                                },
+                                "denominator": {
+                                    "value" : 1,
+                                    "unit" : "d",
+                                    "system" : "http://unitsofmeasure.org",
+                                    "code" : "d"
+                                },                       
+                            {% endif %}
+                        {% endunless -%}
+
+                        {% unless CDO.4.2.Value == 'D' or CDO.4.2.Value == 'PL' -%}
+                            {% if CDO.3 -%}
+                            "numerator" : { 
+                                "value" : {{CDO.3.1.Value}},
+                                {% include 'DataType/CWEQuantityInternal' CWE: CDO.3.2 -%}
+                            },
+                            {% endif %}
+                        {% endunless -%}
+
+                        {% if CDO.4.2.1 == 'A' or CDO.4.2.1 == 'M' or CDO.4.2.1 == 'WK' -%}
+                            {% if CDO.3 -%}
+                            "denominator": {
+                                {% if CDO.4.1 -%}
+                                    "value": {{CDO.4.1.Value}},
+                                {% else -%}
+                                    "value" : 1,
+                                {% endif %}
+                                {% if CDO.4.2.1 == 'A' -%}
+                                    "unit" : "a",
+                                    "system" : "http://unitsofmeasure.org",
+                                    "code" : "a"
+                                {% endif -%}
+                                {% if CDO.4.2.1 == 'M' -%}
+                                    "unit" : "mo",
+                                    "system" : "http://unitsofmeasure.org",
+                                    "code" : "mo"
+                                {% endif -%}
+                                {% if CDO.4.2.1 == 'WK' -%}
+                                    "unit" : "wk",
+                                    "system" : "http://unitsofmeasure.org",
+                                    "code" : "wk"
+                                {% endif -%}   
+                            },
+                            {% endif %}
+                        {% endif %}
+
+                        {% unless CDO.4.2.1 == 'A' or CDO.4.2.1 == 'M' or CDO.4.2.1 == 'WK' or CDO.4.2.1 == 'D' or CDO.4.2.1 == 'PL' -%}
+                            {% if CDO.3 -%}
+                                "denominator": {
+                                    {% if CDO.4.1 -%}
+                                        "value": {{CDO.4.1.Value}},
+                                    {% else -%}
+                                        "value" : 1,
+                                    {% endif %}
+                                    {% include 'DataType/CWEQuantityInternal' CWE: CDO.4.2 -%}
+                                },
+                            {% endif %}
+                        {% endunless -%}
+                    },
+                {% endif -%}
+                "site": {
+                    {% include 'DataType/CWECodeableConcept' CWE: RXR.2 %}
+                },
+                "route": {
+                    {% include 'DataType/CWECodeableConcept' CWE: RXR.1 %}
+                },
+                "method": {
+                    {% include 'DataType/CWECodeableConcept' CWE: RXR.4 %}
+                },
+                "additionalInstruction": [
+                    {
+                        {% include 'DataType/CWECodeableConcept' CWE: RXR.5 %}
+                    },
+                ],
+                {% if TQ1_RXR.1 -%}
+                    "sequence": {{TQ1_RXR.1.Value}},
+                {% endif -%}
+                "timing" : { 
+                    "code":{
+                        {% include 'DataType/CWECodeableConceptInternalValues' mapping: 'CodeSystem/RepeatPattern', CWE: TQ1_RXR.3.Repeats[0].1 -%}
+                    },
+                    "repeat":{
+                        {% include 'DataType/RPTTiming' RPT: TQ1_RXR.3.Repeats[0] -%}
+                        "timeOfDay": [
+                        {% if TQ1_RXR.3.Repeats[0].5 == null and TQ1_RXR.3.Repeats[0].8 == null -%}
+                            {% for tq1_4 in TQ1_RXR.4.Repeats %}
+                                "{{tq1_4.Value}}",
+                            {% endfor -%}
+                        {% endif -%}
+                        ],
+                        "boundsDuration":
+                        {
+                            {% if TQ1_RXR.7 == null and TQ1_RXR.8 == null -%}
+                                {% include 'DataType/CQ' CQ_duration: TQ1_RXR.6 -%}
+                            {% endif -%}
+                        },
+                        {% if TQ1_RXR.3.Repeats[0].5 == null -%}
+                            {% if TQ1_RXR.5 -%}
+                                "period" : {{ TQ1_RXR.5.Repeats[0].1.Value }},
+                                "periodUnit" : {% include 'DataType/CWECode' mapping: 'CodeSystem/DurationUnit', CWE_internal: TQ1_RXR.5.Repeats[0].2 -%},
+                            {% endif -%}                
+                        {% endif -%}
+                        "boundsPeriod":
+                        {
+                            "start":"{{ TQ1_RXR.7.Value | format_as_date_time }}",
+                            "end":"{{ TQ1_RXR.8.Value | format_as_date_time }}",
+                            
+                        },
+                        {% if TQ1_RXR.14 -%}
+                            "count":{{ TQ1_RXR.14.Value }},
+                        {% endif %}
+                        {% if TQ1_RXR.13 %}
+                            "duration": {{TQ1_RXR.13.1.Value}},
+                        {% endif %}
+                        "durationUnit": "{{ TQ1_RXR.13.2.Value | get_property: 'CodeSystem/DurationUnit', 'code' }}",
+                    },
+                },
+                "asNeededCodeableConcept" : { 
+                    "text": "{{ TQ1_RXR.10.Value }}",
+                 },
+            },
+        ],
+        {% if TQ1_RXR -%}
+            {% if TQ1_RXR.9 -%}
+                "priority":{% include 'DataType/CWECode' mapping: 'CodeSystem/RequestPriority', CWE: TQ1_RXR.9 -%},
+            {% else -%}
+                "priority": "routine",
+            {% endif -%}
+        {% endif -%}
+        "substitution" : 
+        { 
+            "allowedCodeableConcept" : 
+            { 
+                {% if RXO.9 %}
+                    {% include 'DataType/IDCodeableConcept' mapping: 'CodeSystem/AllowSubstitution', ID: RXO.9 %}
+                {% endif %}
+                {% if RXE.9 %}
+                    {% include 'DataType/IDCodeableConcept' mapping: 'CodeSystem/AllowSubstitution', ID: RXE.9 %}
+                {% endif %}
+            },
+        },
+
+        "dispenseRequest" : 
+        { 
+            "quantity" : 
+            {
+                {% if RXO.11 %}
+                    "value": {{RXO.11.Value}}, 
+                {% endif %}   
+                {% if RXO.12 %}
+                    {% include 'DataType/CWEQuantity' CWE: RXO.12  %}
+                {% endif %}
+                {% if RXE.10 %}
+                    "value": {{RXE.10.Value}}, 
+                {% endif %}   
+                {% if RXE.11 %}
+                    {% include 'DataType/CWEQuantity' CWE: RXE.11  %}
+                {% endif %}
+            },
+            "initialFill" : { 
+                {% if RXE.39 -%}
+                "quantity" : { 
+                    {% if RXE.39 %}
+                        "value": {{RXE.39.Value}}, 
+                    {% endif %}
+                    {% include 'DataType/CWEQuantity' CWE: RXE.11  %}
+                }, 
+                {% endif %}
+            },
+            {% if RXO.13 %}
+                "numberOfRepeatsAllowed" : {{RXO.13.Value}},
+            {% endif %}
+            {% if RXE.12 %}
+                "numberOfRepeatsAllowed" : {{RXE.12.Value}},
+            {% endif %}
+            "dispenseInterval" : 
+            { 
+                {% if RXO.28 %}
+                    "value": {{RXO.28.Value}},
+                    "code": "d",
+                    "system": "http://unitsofmeasure.org",
+                    "unit": "days",
+                {% endif %} 
+            },
+            "performer" : 
+            {     
+                {% if RXO.32 -%}
+                    {% evaluate Organization_ID_RXO_32 using 'ID/Organization' CWE: RXO.32 -%}
+                    "reference":"Organization/{{ Organization_ID_RXO_32 }}",
+                {% endif -%}
+                {% if Organization_ID_RXE_40 -%}
+                    "reference":"Organization/{{ Organization_ID_RXE_40 }}",
+                {% endif -%}
+            } 
+        },
+        "reasonCode" : 
+        [
+            {% if RXO.20 %}
+                {% for rxo_20 in RXO.20.Repeats %}
+                {
+                    "coding":
+                    [
+                        {% include 'DataType/CWECodeableConceptRepeatable' CWE: rxo_20 %}
+                       
+                    ],  
+                    "text":"{{ rxo_20.9.Value }}",
+                },
+                {% endfor %}
+            {% endif %}
+            {% if ORC.16 %}
+                {
+                    "coding": [
+                        {% include 'DataType/CWECodeableConceptRepeatable' CWE: ORC.16 %}
+                    ],
+                    "text":"{{ ORC.16.9.Value }}",
+                },
+            {% endif %}
+            {% if RXE.27 %}
+                {% for rxe_27 in RXE.27.Repeats %}
+                {
+                    "coding":
+                    [
+                        {% include 'DataType/CWECodeableConceptRepeatable' CWE: rxe_27 %}
+                       
+                    ],  
+                    "text":"{{ rxe_27.9.Value }}",
+                },
+                {% endfor %}
+            {% endif %}
+        ],
+        "requester": {
+            {% if ORC.12.Repeats[0] == null or ORC.12.Repeats[0] == "" -%}
+                {% if RXO.14.Repeats[0] -%}
+                    {% evaluate practitionerRole_ID_RXO_14 using 'ID/practitionerRole' XCN: RXO.14.Repeats[0] -%}
+                    "reference":"PractitionerRole/{{ practitionerRole_ID_RXO_14 }}",
+                {% elsif RXE.13.Repeats[0] %}
+                    {% evaluate practitionerRole_ID_RXE_13 using 'ID/practitionerRole' XCN: RXE.13.Repeats[0] -%}
+                    "reference":"PractitionerRole/{{ practitionerRole_ID_RXE_13 }}"
+                {% elsif ORC.21.Repeats[0] %}
+                    {% evaluate practitionerRole_ID_ORC_21 using 'ID/practitionerRole' XCN: ORC.21.Repeats[0] -%}
+                    "reference":"PractitionerRole/{{ practitionerRole_ID_ORC_21 }}"
+                {% endif -%}
+            {% endif -%}
+            {% if ORC.12.Repeats[0] %}
+                {% evaluate practitionerRole_ID_ORC_12 using 'ID/practitionerRole' XCN: ORC.12.Repeats[0] -%}
+                "reference":"PractitionerRole/{{ practitionerRole_ID_ORC_12 }}",
+            {% endif %}
+        },
+        "recorder": {
+            {% if ORC.10 -%}
+                {% evaluate practitionerRole_ID_ORC_10 using 'ID/practitionerRole' XCN: ORC.10.Repeats[0] -%}
+                "reference":"PractitionerRole/{{ practitionerRole_ID_ORC_10 }}",
+            {% elsif ORC.19 %}
+                {% evaluate practitionerRole_ID_ORC_19 using 'ID/practitionerRole' XCN: ORC.19.Repeats[0] -%}
+                "reference":"PractitionerRole/{{ practitionerRole_ID_ORC_19 }}",
+            {% endif %}
+        },
+        "note": [
+            {
+                {% if nte_practitioner -%}
+                "authorReference" : { 
+                    "reference":"Practitioner/{{nte_practitioner}}",
+                },
+                {% endif -%}
+                "time" : "{{NTE.6.Value | format_as_date_time }}",
+                "text" : "{{NTE.3.Value}}",
+            },
+        ],
+        "priorPrescription": {
+            {% if ORC.8 %}
+                "type": "MedicationRequest",
+                "identifier": 
+                    {
+                        {% include 'DataType/EIPIdentifier' EIP: ORC.8 %}
+                    }
+            {% endif %}
+        },
+        "medicationReference": {
+            {% if medication_ref -%}
+                "reference":"Medication/{{ medication_ref }}",
+            {% endif -%}
+        },
+        "basedOn": [
+            {
+                {% if medicationrequest_ref -%}
+                    "reference":"MedicationRequest/{{ medicationrequest_ref }}",
+                {% endif -%}
+            },
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"MedicationRequest/{{ ID }}",
+    },
+},
