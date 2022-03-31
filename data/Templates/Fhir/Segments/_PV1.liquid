@@ -1,4 +1,4 @@
-{% comment %}https://hl7-definition.caristix.com/v2/HL7v2.8/Segments/PV1{% endcomment %}
+{%- comment %}https://hl7-definition.caristix.com/v2/HL7v2.8/Segments/PV1{% endcomment -%}
 {%- capture PV1 -%}
 {% comment %} 0 Message Type                 {% endcomment %}PV1|
 {% comment %} 1 Set Id - Pv1                 {% endcomment %}{{ setID }}|
@@ -56,4 +56,4 @@
 {% comment %} 53 Service Episode Description {% endcomment %}|
 {% comment %} 54 Service Episode Indentifier {% endcomment %}
 {%- endcapture -%}
-{{ PV1 | strip_newlines }}
+{{- PV1 | strip_newlines -}}
