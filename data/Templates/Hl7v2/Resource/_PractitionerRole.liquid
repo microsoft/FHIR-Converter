@@ -21,7 +21,9 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
                 {
                     "coding": [
                         {
-                            "code": "TECH",
+                            "code": "TN",
+                            "display": "Technician",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0443",
                         },
                     ],
                 }
@@ -33,7 +35,9 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
                 {
                     "coding": [
                         {
-                            "code": "TRANS",
+                            "code": "TR",
+                            "display": "Transcriptionist",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0443",
                         },
                     ],
                 }
@@ -60,55 +64,69 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
                 }
             ],
         {% endif %}
+        {% if ROL.3 %}
+            "code": [
+                {
+                    "coding": [
+                        {% include 'DataType/CWECodeableConceptRepeatable' mapping: 'CodeSystem/PractitionerRole_Participation', CWE: ROL.3 -%},
+                    ],
+                }
+            ],
+        {% endif %}
         "identifier":
         [
+            {%- comment -%}
             {
                 {% include 'DataType/EIIdentifier' EI: ROL.1 -%}
             },
+            
             {
                 {% include 'DataType/PLN' PLN: PRT.24 -%}
             },
+            {%- endcomment -%}
         ],
         "code": [{    
             "coding" : [
                 {% if RXO or ORC_12 %}
                     {  
-                        "code" : "ordering-provider",
-                        "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/PractitionerRole",
+                        "code" : "OP",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
                         "display" : "Ordering Provider",
                     },
                 {% endif %}
                 {% if RQD_ORC_12 %}
                     {  
-                        "code" : "ordering-provider",
-                        "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/PractitionerRole",
+                        "code" : "OP",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
                         "display" : "Ordering Provider",
                     },
                 {% endif %}
                 {% if ORC_10 %}
                     {  
-                        "code" : "entered-by",
-                        "display" : "Entered by",
-                        "system" : "http://example.com/v2-to-fhir-converter/Codesystem/PractitionerRole",
+                        "code" : "EP",
+                        "display" : "Entering Provider",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
                     },
                 {% endif %}
                 {% if ORC_19 %}
                     {  
-                        "code" : "action-by",
-                        "display" : "Action by",
-                        "system" : "http://example.com/v2-to-fhir-converter/Codesystem/PractitionerRole",
+                        "code" : "IP",
+                        "display" : "Initiating Provider",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
                     },
                 {% endif %}
                 {% if OBXXCN1 %}
                     {  
-                        "code" : "ResponsibleObserver",
-                        "system" : "http://example.com/v2-to-fhir-converter/Codesystem/PractitionerRole",
+                        "code" : "RO",
+                        "display" : "Responsible Observer",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
                     },
                 {% endif %}
                 {% if OBXXCN2 %}
                     {
-                        "code" : "LabMedicalDirector",
-                        "system" : "http://example.com/v2-to-fhir-converter/Codesystem/PractitionerRole",
+                        "code" : "MDIR",
+                        "display": "Medical Director",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
                     },
                 {% endif %}
                 {% if SCH_12.12 %}
@@ -127,66 +145,105 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
                 {% endif %}
                 {% if SCH_20.20 %}
                     {
-                        "code" : "enterer",
-                        "display" : "Enterer",
-                        "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-practitioner-role",
+                        "code" : "EP",
+                        "display" : "Entering Provider",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
                     },
                 {% endif %}
                 {% if ORC_pracrole.12 -%}
                     {
-                        "code" : "ordering-provider",
+                        "code" : "OP",
                         "display" : "Ordering Provider",
-                        "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-practitioner-role",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
                     },
                 {% endif %}
                 {% if OBR_serv.16 %}
                     {
-                        "code" : "ordering-provider",
+                        "code" : "OP",
                         "display" : "Ordering Provider",
-                        "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/PractitionerRole",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
                     },
                 {% endif %}
                 {% if RXE -%}
                     {  
-                        "code" : "ordering-provider",
-                        "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/PractitionerRole",
+                        "code" : "OP",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
                         "display" : "Ordering Provider",
                     },
                 {% endif %}
                 ],
             },       
-            {
-                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Role', CWE: ROL.3 -%}
-                {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: ROL.4 -%}
-            }
         ],
-        
+        {%- comment -%}
         {% include 'DataType/XCNPractitionerRole' XCN: ROL.4 -%}
+        {%- endcomment -%}
         "period":
         {
+            
+            {%- comment -%}
             "start":"{{ ROL.5.Value | format_as_date_time }}",
+            "end":"{{ ROL.6.Value | format_as_date_time }}",
             "start":"{{ PRT.11.Value | format_as_date_time }}",
+            "end":"{{ PRT.12.Value | format_as_date_time }}",
+            {%- endcomment -%}
             "start":"{{ PRD.8.Value | format_as_date_time }}",
             "end":"{{ PRD.9.Repeats[0].Value | format_as_date_time }}",
-            "end":"{{ ROL.6.Value | format_as_date_time }}",
-            "end":"{{ PRT.12.Value | format_as_date_time }}",
+            
+            
         },
         "telecom":
         [
-            {
-                {% include 'DataType/XTN' XTN: ROL.12 -%}
-            },
+            {% for rol_12 in ROL.12.Repeats %}
+                {
+                    {% include 'DataType/XTN' XTN: rol_12 -%}
+                },
+            {% endfor %}
+            {%- comment -%}
             {
                 {% include 'DataType/XTN' XTN: PRT.15.Repeats[0] -%}
             },
+            {%- endcomment -%}
         ],
         "location":
         [
-            {
-                {% if ROL.13 and Location_ID_ROL_13 -%}
-                    "reference":"Location/{{ Location_ID_ROL_13 }}",
+            {% if ROL.13 -%}
+
+                {% if ROL.13.5 or ROL.13.9 -%}
+                    {% if ROL.13.5 and ROL.13.9 -%}
+                        {% assign PL_Value_Except_PL5_PL9 = ROL.13.Value | remove: ROL.13.5.Value | remove: ROL.13.9.Value %}
+                    {% endif -%}
+                    {% if ROL.13.5 and ROL.13.9 == null or ROL.13.9 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= ROL.13.Value | remove: ROL.13.5.Value %}
+                    {% endif -%}
+                    {% if ROL.13.9 and ROL.13.5 == null or ROL.13.5 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= ROL.13.Value | remove: ROL.13.9.Value %}
+                    {% endif -%}
+                {% else -%}
+                    {% assign PL_Value_Except_PL5_PL9 = ROL.13.Value %}
                 {% endif -%}
-            },
+
+                {% if ROL.13.1 -%}               
+                    {% evaluate Location_ID_ROL_13 using 'ID/Location' PL_Field_Value: ROL.13.1, PL: ROL.13, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif ROL.13.2 -%}               
+                    {% evaluate Location_ID_ROL_13 using 'ID/Location' PL_Field_Value: ROL.13.2, PL: ROL.13, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif ROL.13.3 -%}               
+                    {% evaluate Location_ID_ROL_13 using 'ID/Location' PL_Field_Value: ROL.13.3, PL: ROL.13, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}            
+                {% elseif ROL.13.4 -%}              
+                    {% evaluate Location_ID_ROL_13 using 'ID/Location' PL_Field_Value: ROL.13.4, PL: ROL.13, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}                    
+                {% elseif ROL.13.7 -%}               
+                    {% evaluate Location_ID_ROL_13 using 'ID/Location' PL_Field_Value: ROL.13.7, PL: ROL.13, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}                   
+                {% elseif ROL.13.8 -%}               
+                    {% evaluate Location_ID_ROL_13 using 'ID/Location' PL_Field_Value: ROL.13.8, PL: ROL.13, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% endif %}
+                
+                {% if Location_ID_ROL_13 %}
+                    {
+                        "reference":"Location/{{ Location_ID_ROL_13 }}",
+                    },
+                {% endif %}
+
+            {% endif %}
+
             {% if SCH_12.15 -%}
 
                 {% if SCH_12.15.5 or SCH_12.15.9 -%}
@@ -336,34 +393,34 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
                 {% endif -%}
             {% endif -%}
 
-            {% if PRT.9 %}
+            {% if PRT.9.Repeats[0] %}
                 {
-                    {% if PRT.9.5 or PRT.9.9 -%}
-                        {% if PRT.9.5 and PRT.9.9 -%}
-                            {% assign PL_Value_Except_PL5_PL9 = PRT.9.Value | remove: PRT.9.5.Value | remove: PRT.9.9.Value %}
+                    {% if PRT.9.Repeats[0].5 or PRT.9.Repeats[0].9 -%}
+                        {% if PRT.9.Repeats[0].5 and PRT.9.Repeats[0].9 -%}
+                            {% assign PL_Value_Except_PL5_PL9 = PRT.9.Repeats[0].Value | remove: PRT.9.Repeats[0].5.Value | remove: PRT.9.Repeats[0].9.Value %}
                         {% endif -%}
-                        {% if PRT.9.5 and PRT.9.9 == null or PRT.9.9 == "" -%}
-                            {% assign PL_Value_Except_PL5_PL9= PRT.9.Value | remove: PRT.9.5.Value %}
+                        {% if PRT.9.Repeats[0].5 and PRT.9.Repeats[0].9 == null or PRT.9.Repeats[0].9 == "" -%}
+                            {% assign PL_Value_Except_PL5_PL9= PRT.9.Repeats[0].Value | remove: PRT.9.Repeats[0].5.Value %}
                         {% endif -%}
-                        {% if PRT.9.9 and PRT.9.5 == null or PRT.9.5 == "" -%}
-                            {% assign PL_Value_Except_PL5_PL9= PRT.9.Value | remove: PRT.9.9.Value %}
+                        {% if PRT.9.Repeats[0].9 and PRT.9.Repeats[0].5 == null or PRT.9.Repeats[0].5 == "" -%}
+                            {% assign PL_Value_Except_PL5_PL9= PRT.9.Repeats[0].Value | remove: PRT.9.Repeats[0].9.Value %}
                         {% endif -%}
                     {% else -%}
-                        {% assign PL_Value_Except_PL5_PL9 = PRT.9.Value %}
+                        {% assign PL_Value_Except_PL5_PL9 = PRT.9.Repeats[0].Value %}
                     {% endif -%}
 
-                    {% if PRT.9.1 -%}
-                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.1, PL: PRT.9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
-                    {% elseif PRT.9.2 -%}
-                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.2, PL: PRT.9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
-                    {% elseif PRT.9.3 -%}
-                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.3, PL: PRT.9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
-                    {% elseif PRT.9.4 -%}
-                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.4, PL: PRT.9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
-                    {% elseif PRT.9.7 -%}
-                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.7, PL: PRT.9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
-                    {% elseif PRT.9.8 -%}
-                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.8, PL: PRT.9, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% if PRT.9.Repeats[0].1 -%}
+                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.Repeats[0].1, PL: PRT.9.Repeats[0], PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRT.9.Repeats[0].2 -%}
+                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.Repeats[0].2, PL: PRT.9.Repeats[0], PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRT.9.Repeats[0].3 -%}
+                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.Repeats[0].3, PL: PRT.9.Repeats[0], PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRT.9.Repeats[0].4 -%}
+                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.Repeats[0].4, PL: PRT.9.Repeats[0], PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRT.9.Repeats[0].7 -%}
+                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.Repeats[0].7, PL: PRT.9.Repeats[0], PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRT.9.Repeats[0].8 -%}
+                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.Repeats[0].8, PL: PRT.9.Repeats[0], PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     {% endif -%}
             
                     {% if Location_ID_PRT_9 -%}
@@ -408,18 +465,19 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
                 },
             {% endif %}
         ],
-        {% include 'DataType/XCNPractitionerRole' XCN: ROL.4 -%}
         
         "organization":
         { 
-            {% if PRT.8 and Organization_ID_PRT_8 -%}
+            {% if PRT.8.Repeats[0] and Organization_ID_PRT_8 -%}
                 "reference":"Organization/{{ Organization_ID_PRT_8 }}",
             {% endif -%}
             {% if requestor_organization %}
                 "reference":"Organization/{{requestor_organization}}",
             {% endif -%}
         },
+        {%- comment -%}
         {% include 'DataType/XCNPractitionerRole' XCN: PRT.5.Repeats[0] -%}
+        {%- endcomment -%}
         "specialty":
         [
             {% if PRT.5 %}
@@ -427,6 +485,11 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
                     {% include 'DataType/CWECodeableConcept' CWE: PRT.6 -%}
                 },
             {% endif %}
+            {% for rol_9 in ROL.9.Repeats %}
+                {
+                    {% include 'DataType/CWECodeableConcept' CWE: rol_9 -%}
+                },
+            {% endfor %}
         ],
        
         "practitioner" : { 

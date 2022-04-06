@@ -32,9 +32,9 @@ Procedure_Asserter_ID: A resource Id, used to fill "asserter.reference" property
                 "coding": 
                 [
                     {
-                        "code": "death-certification-dummy",
-                        "display": "Death Certification dummy",
-                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/procedureCodes-dummy",
+                        "code": "death-certification",
+                        "display": "Death Certification",
+                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/procedure-code",
                     }
                 ],
             {% endif %}
@@ -42,9 +42,9 @@ Procedure_Asserter_ID: A resource Id, used to fill "asserter.reference" property
                 "coding": 
                 [
                     {
-                        "code": "autopsy-performed-dummy",
-                        "display": "Autopsy Performed dummy",
-                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/procedureCodes-dummy",
+                        "code": "autopsy-performed",
+                        "display": "Autopsy Performed",
+                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/procedure-code",
                     }
                 ],
             {% endif %}
@@ -153,9 +153,9 @@ Procedure_Asserter_ID: A resource Id, used to fill "asserter.reference" property
                 "function" : { 
                     "coding":[
                         {
-                            "code": "anesthesiologist-dummy",
-                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/functionalCodes-dummy",
-                            "display": "Anesthesiologist dummy",
+                            "code": "anesthesiologist",
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/performer-role",
+                            "display": "Anesthesiologist",
                         },
                     ],
                     "text": "Anesthesiologist",
@@ -170,9 +170,9 @@ Procedure_Asserter_ID: A resource Id, used to fill "asserter.reference" property
                 "function" : { 
                     "coding":[
                         {
-                            "code":"surgeon-dummy",
-                            "system":"http://example.com/v2-to-fhir-converter/CodeSystem/functionalCodes-dummy",
-                            "display": "Surgeon dummy",
+                            "code":"surgeon",
+                            "system":"http://example.com/v2-to-fhir-converter/CodeSystem/performer-role",
+                            "display": "Surgeon",
                         },
                     ],
                     "text": "Surgeon",
@@ -187,9 +187,9 @@ Procedure_Asserter_ID: A resource Id, used to fill "asserter.reference" property
                 "function":{
                     "coding":[
                         {
-                            "code":"procedure-practitioner-dummy",
-                            "system":"http://example.com/v2-to-fhir-converter/CodeSystem/functionalCodes-dummy",
-                            "display": "Procedure Practitioner dummy",
+                            "code":"procedure-practitioner",
+                            "system":"http://example.com/v2-to-fhir-converter/CodeSystem/performer-role",
+                            "display": "Procedure Practitioner",
                         },
                     ],
                     "text": "Procedure Practitioner",

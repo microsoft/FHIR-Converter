@@ -1,3 +1,4 @@
+{% evaluate nte_practitioner using 'ID/Practitioner' XCN: NTE.5 -%}
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
@@ -62,7 +63,7 @@
                         [
                             {
                                 "code":"PRN",
-                                "system":"http://example.com/v2-to-fhir-converter/identifier-type-code", 
+                                "system":"http://example.com/v2-to-fhir-converter/CodeSystem/identifier-type-code", 
                                 "display": "Prescription Number"
                             }
                         ],

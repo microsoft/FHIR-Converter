@@ -42,8 +42,7 @@
                 "meta": {
                     "security": [
                         {
-                            "display": "SECURITY",
-                            "system": "http://example.com/v2-to-fhirconverter/security-label"
+                            "display": "SECURITY"
                         }
                     ],
                     "tag": [
@@ -119,7 +118,7 @@
                 "identifier": [
                     {
                         "value": "GOOD HEALTH HOSPITAL",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-GOOD-HEALTH-HOSPITAL"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GOOD-HEALTH-HOSPITAL"
                     }
                 ]
             },
@@ -145,7 +144,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-ADT1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/ADT1"
                     },
                     {
                         "value": "123456789",
@@ -158,7 +157,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-USSSA"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/USSSA"
                     },
                     {
                         "value": "444333333",
@@ -292,7 +291,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-ADT1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/ADT1"
                     }
                 ],
                 "status": "active",

@@ -93,6 +93,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new object[] { "ADT_A40", "ADT-A40-02.hl7" },
                 new object[] { "ADT_A41", "ADT-A41-01.hl7" },
                 new object[] { "ADT_A41", "ADT-A41-02.hl7" },
+                new object[] { "ADT_A45", "ADT-A45-01.hl7" },
+                new object[] { "ADT_A45", "ADT-A45-02.hl7" },
                 new object[] { "ADT_A47", "ADT-A47-01.hl7" },
                 new object[] { "ADT_A47", "ADT-A47-02.hl7" },
                 new object[] { "ADT_A60", "ADT-A60-01.hl7" },
@@ -152,6 +154,26 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
                 new object[] { "VXU_V04", "VXU-V04-01.hl7" },
                 new object[] { "VXU_V04", "VXU-V04-02.hl7" },
+
+                new object[] { "OMG_O19", "OMG-O19-01.hl7" },
+                new object[] { "OMG_O19", "OMG-O19-02.hl7" },
+
+                new object[] { "REF_I12", "REF-I12-01.hl7" },
+                new object[] { "REF_I12", "REF-I12-02.hl7" },
+                new object[] { "REF_I14", "REF-I14-01.hl7" },
+                new object[] { "REF_I14", "REF-I14-02.hl7" },
+
+                new object[] { "DFT_P03", "DFT-P03-01.hl7" },
+                new object[] { "DFT_P03", "DFT-P03-02.hl7" },
+                new object[] { "DFT_P11", "DFT-P11-01.hl7" },
+                new object[] { "DFT_P11", "DFT-P11-02.hl7" },
+
+                new object[] { "BAR_P01", "BAR-P01-01.hl7" },
+                new object[] { "BAR_P01", "BAR-P01-02.hl7" },
+                new object[] { "BAR_P02", "BAR-P02-01.hl7" },
+                new object[] { "BAR_P02", "BAR-P02-02.hl7" },
+                new object[] { "BAR_P12", "BAR-P12-01.hl7" },
+                new object[] { "BAR_P12", "BAR-P12-02.hl7" },
 
                 new object[] { "ADT_A01", "ADT01-23.hl7" },
                 new object[] { "ADT_A01", "ADT01-28.hl7" },
@@ -232,9 +254,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         {
             var result = await ConvertData(templateName, samplePath, dataType);
             var patients = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Patient')].resource.id");
-            if (templateName == "ADT_A40" || templateName == "ADT_A41")
+
+            if (ResourceFilter.NonPatientTemplates.All(func => func(templateName)))
             {
                 Assert.Equal(0, patients?.Count());
+            }
+            else if (ResourceFilter.MultiplePatientTemplates.All(func => func(templateName)))
+            {
+                Assert.Equal(2, patients?.Count());
             }
             else
             {
@@ -501,7 +528,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 "resourceType", "type", "fullUrl", "id", "method", "url", "reference", "system",
                 "code", "display", "gender", "use", "preferred", "status", "mode", "div", "valueString", "valueCode",
                 "text", "endpoint", "value", "category", "type", "criticality", "priority", "severity", "description",
-                "intent", "docStatus", "contentType", "authorString", "unit",
+                "intent", "docStatus", "contentType", "authorString", "unit", "outcome",
             };
 
             private static readonly HashSet<string> _explicitValues = new HashSet<string>
@@ -509,6 +536,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 "order",
                 "unknown",
                 "source",
+            };
+
+            private static readonly List<string> _noPatientTemplate = new List<string>
+            {
+                "ADT_A40", "ADT_A41", "ADT_A45", "ADT_A47",
+            };
+
+            private static readonly List<string> _multiplePatientTemplate = new List<string>
+            {
+                "BAR_P02",
             };
 
             public static readonly List<Func<string, bool>> NonCompareProperties = new List<Func<string, bool>>
@@ -525,6 +562,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 // Exclude datetime and boolean values because the format is transformed differently
                 (string input) => DateTime.TryParse(input, out _),
                 (string input) => bool.TryParse(input, out _),
+            };
+
+            public static readonly List<Func<string, bool>> NonPatientTemplates = new List<Func<string, bool>>
+            {
+                // Templates that don't contain patient resource
+                _noPatientTemplate.Contains,
+            };
+
+            public static readonly List<Func<string, bool>> MultiplePatientTemplates = new List<Func<string, bool>>
+            {
+                // Templates that contain multiple patient resources
+                _multiplePatientTemplate.Contains,
             };
         }
     }
