@@ -1,0 +1,234 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "MedicationDispense",
+        "id":"{{ ID }}",
+        
+        "whenHandedOver" : "{{ RXD.3.Value | format_as_date_time }}",
+
+        "quantity" : { 
+            {% if RXD.4 %}
+                "value" : {{RXD.4.Value}},
+            {% endif %}
+            {% include 'DataType/CWEQuantity' CWE: RXD.5  %}
+            {% if FT1 -%}
+                {% if FT1.43.1 -%}
+                "value" : {{FT1.43.1.Value}},
+                {% endif %}
+                {% unless FT1.43.2.9 -%}
+                    "unit" : "{{FT1.43.2.2}}",
+                {% endunless %}
+                "unit" : "{{FT1.43.2.9}}",
+            {% endif %}
+        }, 
+
+        "authorizingPrescription" : [
+            { 
+                "identifier" : { 
+                    "value" : "{{RXD.7.Value}}",
+                    {% if RXD.7.Value %}
+                    "type" : { 
+                        "coding" : [
+                            { 
+                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/identifier-type-code",
+                                "code": "PRN",
+                                "display": "Prescription Number" 
+                            }
+                        ],
+                    },
+                    {% endif %}
+                    {% if RXD.30.3.Value %}
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/{{RXD.30.3.Value}}",
+                    {% endif %}
+                },
+                {% if RXD.7.Value %} 
+                "type": "MedicationRequest", 
+                {% endif %}
+            },
+            {% if FT1.42 -%}
+            {
+                "identifier" : {
+                    "value" : "{{FT1.42.Value}}",
+                    "type" : { 
+                        "coding" : [
+                            { 
+                                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/identifier-type-code",
+                                "code": "PRN",
+                                "display": "Prescription Number" 
+                            }
+                        ],
+                    },
+                },
+                "type": "MedicationRequest", 
+            },
+            {% endif %}
+        ],
+
+        "note" : [
+            {% for rxd_9 in RXD.9.Repeats %}
+                { 
+                    "text" : "{{rxd_9.Value}}" 
+                },
+            {% endfor %}
+            {
+                "text" : "{{NTE.3.Value}}",
+            },
+        ],
+
+        
+        "performer" : [
+            {% for rxd_10 in RXD.10.Repeats %}
+            {
+                "actor" : {
+                    {% evaluate practitionerId_rxd_10 using 'ID/Practitioner' XCN: rxd_10 -%}
+                    "reference":"Practitioner/{{practitionerId_rxd_10}}",
+                },
+            },
+            {% endfor %}
+        ],
+
+        "location" : { 
+            {% if RXD.30 %}
+                {% evaluate locationId_RXD using 'ID/Location' CWE: RXD.30 -%}
+                "reference":"Location/{{locationId_RXD}}",
+            {% elsif RXD.31 %}
+                {% evaluate locationId_RXD using 'ID/Location' XAD: RXD.31 -%}
+                "reference":"Location/{{locationId_RXD}}",
+            {% elsif RXD.34 %}
+                {% evaluate locationId_RXD using 'ID/Location' XAD: RXD.34 -%}
+                "reference":"Location/{{locationId_RXD}}",
+            {% endif %}
+            
+        },
+
+        {% if ORC.5 %}
+            "status":"{{ ORC.5.Value | get_property: 'CodeSystem/MedicationDispenseStatus', 'code' }}",
+        {% else %}
+            "status" : "unknown",
+        {% endif %}
+
+        "dosageInstruction" : [
+            {  
+                "maxDosePerPeriod" : { 
+                    "numerator" : { 
+                        {% include 'DataType/CQ' CQ: RXD_RXR.12  %}
+                    },
+                    {% if RXD_RXR.12 -%}
+                    "denominator" : { 
+                        "value" : 1,
+                        "unit" : "d",
+                        "system" : "http://unitsofmeasure.org",
+                        "code" : "d",
+                    }
+                    {% endif %}
+                },
+
+                {% if CDO -%}
+                    "maxDosePerLifetime" : {
+                         {% if CDO.4.2.Value == 'PL' -%}
+                            "value" : {{CDO.3.1.Value}},
+                            {% include 'DataType/CWEQuantityInternal' CWE: CDO.3.2 -%}
+                        {% endif %}
+                    },
+                    "maxDosePerPeriod" : {
+                        {% unless RXE_CDO.19 -%}
+                            {% if CDO.4.2.Value == 'D' and CDO.3 -%}
+                                "numerator" : { 
+                                    "value" : {{CDO.3.1.Value}},
+                                    {% include 'DataType/CWEQuantityInternal' CWE: CDO.3.2 -%}
+                                },
+                                "denominator": {
+                                    "value" : 1,
+                                    "unit" : "d",
+                                    "system" : "http://unitsofmeasure.org",
+                                    "code" : "d"
+                                },                       
+                            {% endif %}
+                        {% endunless -%}
+
+                        {% unless CDO.4.2.Value == 'D' or CDO.4.2.Value == 'PL' -%}
+                            {% if CDO.3 -%}
+                            "numerator" : { 
+                                "value" : {{CDO.3.1.Value}},
+                                {% include 'DataType/CWEQuantityInternal' CWE: CDO.3.2 -%}
+                            },
+                            {% endif %}
+                        {% endunless -%}
+
+                        {% if CDO.4.2.1 == 'A' or CDO.4.2.1 == 'M' or CDO.4.2.1 == 'WK' -%}
+                            {% if CDO.3 -%}
+                            "denominator": {
+                                {% if CDO.4.1 -%}
+                                    "value": {{CDO.4.1.Value}},
+                                {% else -%}
+                                    "value" : 1,
+                                {% endif %}
+                                {% if CDO.4.2.1 == 'A' -%}
+                                    "unit" : "a",
+                                    "system" : "http://unitsofmeasure.org",
+                                    "code" : "a"
+                                {% endif -%}
+                                {% if CDO.4.2.1 == 'M' -%}
+                                    "unit" : "mo",
+                                    "system" : "http://unitsofmeasure.org",
+                                    "code" : "mo"
+                                {% endif -%}
+                                {% if CDO.4.2.1 == 'WK' -%}
+                                    "unit" : "wk",
+                                    "system" : "http://unitsofmeasure.org",
+                                    "code" : "wk"
+                                {% endif -%}   
+                            },
+                            {% endif %}
+                        {% endif %}
+
+                        {% unless CDO.4.2.1 == 'A' or CDO.4.2.1 == 'M' or CDO.4.2.1 == 'WK' or CDO.4.2.1 == 'D' or CDO.4.2.1 == 'PL' -%}
+                            {% if CDO.3 -%}
+                                "denominator": {
+                                    {% if CDO.4.1 -%}
+                                        "value": {{CDO.4.1.Value}},
+                                    {% else -%}
+                                        "value" : 1,
+                                    {% endif %}
+                                    {% include 'DataType/CWEQuantityInternal' CWE: CDO.4.2 -%}
+                                },
+                            {% endif %}
+                        {% endunless -%}
+                    },
+                {% endif -%}
+
+                "site": {
+                    {% include 'DataType/CWECodeableConcept' CWE: RXR.2 %}
+                },
+                "route": {
+                    {% include 'DataType/CWECodeableConcept' CWE: RXR.1 %}
+                },
+                "method": {
+                    {% include 'DataType/CWECodeableConcept' CWE: RXR.4 %}
+                },
+                "additionalInstruction": [
+                    {
+                        {% include 'DataType/CWECodeableConcept' CWE: RXR.5 %}
+                    },
+                ],
+            },
+        ],
+
+        "type" : { 
+            {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/DispenseType', CWE: RXD.33 %}
+        },
+
+        {% if subjectRefrence -%}
+        "subject" : { 
+            "reference":"Patient/{{ subjectRefrence }}",
+        },
+        {% endif %}
+        "medicationCodeableConcept" : {
+            {% include 'DataType/CWECodeableConcept' CWE: FT1.29 %}
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"MedicationDispense/{{ ID }}",
+    },
+},

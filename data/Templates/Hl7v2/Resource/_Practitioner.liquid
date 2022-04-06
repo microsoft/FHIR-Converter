@@ -3,42 +3,68 @@
     "resource":{
         "resourceType": "Practitioner",
         "id":"{{ ID }}",
-    
-        {% if OBXXCN2 -%}
+        
         "identifier":
         [
-            {
-                "type":
+            {% if OBXXCN2 -%}
                 {
-                    "coding":
-                    [
-                        {
-                            "code":"{{ OBXXCN2.1.Value }}",
-                        },
-                    ],
+                    "type":
+                    {
+                        "coding":
+                        [
+                            {
+                                "code":"{{ OBXXCN2.1.Value }}",
+                            },
+                        ],
+                    },
                 },
-            },
+            {% endif %}
+            {% if PRD.7 %}
+                {% for PRD_7 in PRD.7.Repeats %}
+                    {
+                        {% include 'DataType/PLN' PLN: PRD_7 %}
+                    },
+                {% endfor %}      
+            {% endif %}
         ],
-        {% endif %}
 
         "address":
         [
+            {% if PRD.3 %}
+                {% for PRD_3 in PRD.3.Repeats %}
+                    {
+                        {% include 'DataType/XAD' XAD: PRD_3 -%}
+                    }, 
+                {% endfor %}
+            {% endif %}
             {% if ORC_SEG_24 %}
                 {% for orc24 in ORC_SEG_24.Repeats %}
-                {
-                    {% include 'DataType/XAD' XAD: orc24 -%}
-                },  
+                    {
+                        {% include 'DataType/XAD' XAD: orc24 -%}
+                    },  
                 {% endfor -%}    
             {% endif %}
             {
                 {% include 'DataType/XAD' XAD: ROL.11 -%}
             },
-            {
+            {%- comment -%}{
                 {% include 'DataType/XAD' XAD: PRT.14.Repeats[0] -%}
             },
-            {
-                {% include 'DataType/XAD' XAD: ORC.24.Repeats[0] -%}
-            },
+            {%- endcomment -%}
+            {% if ORC_24 %}
+                {% for orc24 in ORC_24.Repeats %}
+                    {
+                        {% include 'DataType/XAD' XAD: orc24 -%}
+                    },
+                {% endfor -%}    
+            {% endif %}
+            {% if ORC_med_prac.12 %}
+                {% for orc24 in ORC_med_prac.24.Repeats %}
+                    {
+                        {% include 'DataType/XAD' XAD: orc24 -%}
+                    },
+                {% endfor -%}    
+            {% endif %}
             {% for sch_14 in SCH_12.14.Repeats -%}
                 {
                     {% include 'DataType/XAD' XAD: sch_14 -%}
@@ -52,6 +78,13 @@
         ],
         "telecom":
         [
+            {% if PRD.5 %}
+                {% for PRD_5 in PRD.5.Repeats %}
+                    {
+                        {% include 'DataType/XTN' XTN: PRD_5 -%}
+                    },
+                {% endfor %}
+            {% endif %}
             {% for sch_13 in SCH_12.13.Repeats -%}
                 {
                     {% include 'DataType/XTN' XTN: sch_13 -%}
@@ -68,8 +101,31 @@
                 },
             {% endfor -%}
         ],    
+        {% if PRT %}
+            {% include 'DataType/XCNPractitioner' XCN: PRT -%}       
+        {% endif %}
         {% if OBXXCN1 %}
             {% include 'DataType/XCNPractitioner' XCN: OBXXCN1 -%}       
+        {% endif %}
+        {% if RXD %}
+            {% include 'DataType/XCNPractitioner' XCN: RXD -%}       
+        {% endif %}
+        {% if RXO %}
+            {% include 'DataType/XCNPractitioner' XCN: RXO -%}       
+        {% endif %}
+        {% if RXE %}
+            {% include 'DataType/XCNPractitioner' XCN: RXE -%}       
+        {% endif %}
+        {% if ORC_12 %}
+            {% include 'DataType/XCNPractitioner' XCN: ORC_12 -%}       
+        {% endif %}
+        {% if ORC_med_prac %}
+            {% include 'DataType/XCNPractitioner' XCN: ORC_med_prac.12 -%}       
+        {% endif %}
+        {% if ORC_10 %}
+            {% include 'DataType/XCNPractitioner' XCN: ORC_10.Repeats[0] -%}    
+        {% elsif ORC_19 %}
+            {% include 'DataType/XCNPractitioner' XCN: ORC_19.Repeats[0] -%} 
         {% endif %}
         {% if OBR_SEG %}
             {% include 'DataType/XCNPractitioner' XCN: OBRXCN_10 -%}       
@@ -91,32 +147,55 @@
         {% if CNN_OBR_35_1 %}
             {% include 'DataType/CNN' CNN_val: CNN_OBR_35_1 -%}       
         {% endif %}
+        {% if PDA_5 %}
+            {% include 'DataType/XCNPractitioner' XCN: PDA_5 -%} 
+        {% endif %}
+        {% if PDA_8 %} 
+            {% include 'DataType/XCNPractitioner' XCN: PDA_8 -%}  
+        {% endif %}
         {% include 'DataType/XCNPractitioner' XCN: DG1.16.Repeats[0] -%}
         {% include 'DataType/XCNPractitioner' XCN: PR1 -%}
         {% include 'DataType/XCNPractitioner' XCN: ORC.10 -%}
         {% include 'DataType/XCNPractitioner' XCN: ORC.11 -%}
+        {% include 'DataType/XCNPractitioner' XCN: ORC12.12.Repeats[0] -%}      
         {% include 'DataType/XCNPractitioner' XCN: ORC.12.Repeats[0] -%}
         {% include 'DataType/XCNPractitioner' XCN: NTE.5 -%}
-        {% include 'DataType/XCNPractitioner' XCN: RXA.10 -%}
+        {% include 'DataType/XCNPractitioner' XCN: RXA -%}
         {% include 'DataType/XCNPractitioner' XCN: PV1 -%}
         {% include 'DataType/XCNPractitioner' XCN: EVN -%}
         {% include 'DataType/XCNPractitioner' XCN: PD1 -%}
         {% include 'DataType/XCNPractitioner' XCN: NTE -%}
         {% include 'DataType/XCNPractitioner' XCN: RF1 -%}
         {% include 'DataType/XCNPractitioner' XCN: IAM -%}
+        {% include 'DataType/XCNPractitioner' XCN: ROL -%}
         {% include 'DataType/XCNPractitioner' XCN: AIP -%}
         {% include 'DataType/XCNPractitioner' XCN: SCH_12.12.Repeats[0] -%}
         {% include 'DataType/XCNPractitioner' XCN: SCH_16.16.Repeats[0] -%}
         {% include 'DataType/XCNPractitioner' XCN: SCH_20.20.Repeats[0] -%}
         {% include 'DataType/XCNPractitioner' XCN: TXA -%}
+        {% include 'DataType/XCNPractitioner' XCN: ACC -%}
+        {% include 'DataType/XCNPractitioner' XCN: FT1 -%}
 
-
+        "name": [
+            {
+                {% include 'DataType/XPN' XPN: CON -%}
+            },
+        ],
         {% if IAM_NAME -%}
         "name": [
             {
                 {% include 'DataType/XPN' XPN: IAM_NAME -%}
             },
         ],
+        {% endif -%}
+        {% if PRD.2 -%}
+            "name": [
+                {% for PRD_2 in PRD.2.Repeats %}
+                    {
+                        {% include 'DataType/XPN' XPN: PRD_2 -%}
+                    },
+                {% endfor %}
+            ],
         {% endif -%}
     },
     "request":{

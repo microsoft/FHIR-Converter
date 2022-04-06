@@ -1,26 +1,21 @@
 {% if EIP -%}
-    "value":"{{ EIP.1.1 }}",
-    "value":"{{ EIP.2.1 }}",
-    "type":
-    {
-        "coding":
-        [
-            {
-                {% if EIP.1 -%}
-                    "code":"PLAC",
-                {% endif -%}
-                {% if EIP.2 -%}
-                    "code":"FILL",
-                {% endif -%}
-                {% if EIP.1 -%}
-                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
-                {% endif -%}
-                {% if EIP.2 -%}
-                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
-                {% endif -%}
-            },
-        ],
-    },
+    {% if EIP.1 or EIP.1 and EIP.2 %}
+        {% include 'DataType/EIIdentifier_InternalValues' EI: EIP.1 %}
+        "type": {
+            "coding": {
+                "code": "PGN",
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }
+        },
+    {% elsif EIP.2 %}
+        {% include 'DataType/EIIdentifier_InternalValues' EI: EIP.2 %}
+        "type": {
+            "coding": {
+                "code": "FGN",
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+            }
+        },
+    {% endif %}
 {% endif -%}
 {% if EIP_Specimen_child1 -%}
     "value":"{{ EIP_Specimen_child1.1 }}",

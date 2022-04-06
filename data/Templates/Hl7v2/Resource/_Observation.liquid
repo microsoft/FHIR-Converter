@@ -41,13 +41,115 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                     ],
                 },
             },
+            {% for ACC_13 in ACC.13.Repeats %}
+            {
+                {% include 'DataType/EIIdentifier' EI: ACC_13 -%}
+            },
+            {% endfor %}
         ],
 
         "status": "{{ OBX.11.1.Value | get_property: 'CodeSystem/ObservationStatus', 'code' }}",
+        {% if PDA_3 or PDA_6 or PDA_9 or ACC %}
+            "status": "final",
+        {% endif %}
+
         "code":
         {
             {% include 'DataType/CWECodeableConcept' CWE: OBX.3 -%}
+            {% if ACC %}
+            "coding": [
+                {
+                    "code": "injury-incident",
+                    "display": "Injury Incident Description Narrative",
+                    "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/observation-code",
+                },
+            ],
+            {% endif %}
+            {% if PDA_3 %}
+                "coding":
+                [
+                    {
+                        "code": "death-certificate",
+                        "display": "Death Certificate",
+                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/observation-code",
+                    }
+                ],
+            {% endif %}
+            {% if PDA_6 %}
+                "coding":
+                [
+                    {
+                        "code": "autopsy",
+                        "display": "Autopsy",
+                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/observation-code",
+                    }
+                ],
+            {% endif %}
+            {% if PDA_9 %}
+                "coding":
+                [
+                    {
+                        "code": "coroner",
+                        "display": "Coroner",
+                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/observation-code",
+                    }
+                ],
+            {% endif %}
         },
+
+        "component" : [
+            {% if ACC.5 %}
+            {
+                "code" : { 
+                    "coding": [
+                        {
+                            "code": "AJRI",
+                            "display": "Accident Job Related Indicator",
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/accident-indicator",
+                        },
+                    ],
+                },
+                "valueCodeableConcept": {
+                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/YesNo-Indicator', CWE: ACC.5 -%}
+                },
+            },
+            {% endif %}
+            {% if ACC.6 %}
+            {
+                "code" : { 
+                    "coding": [
+                        {
+                            "code": "ADI",
+                            "display": "Accident Death Indicator",
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/accident-indicator",
+                        },
+                    ],
+                },
+                "valueCodeableConcept": {
+                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/YesNo-Indicator', CWE: ACC.6 -%}
+                },
+            },
+            {% endif %}
+            {% if ACC.10 %}
+            {
+                "code" : { 
+                    "coding": [
+                        {
+                            "code": "PNI",
+                            "display": "Police Notified Indicator",
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/accident-indicator",
+                        },
+                    ],
+                },
+                "valueCodeableConcept": {
+                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/YesNo-Indicator', CWE: ACC.10 -%}
+                },
+            },
+            {% endif %}
+        ],
+
+        "valueString" : "{{ ACC.8.Value }}",
+
         "basedOn":
         [
             {
@@ -55,7 +157,36 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                     "reference":"ServiceRequest/{{ Observation_ServiceRequest_ID }}",
                 {% endif %}
             },
+            {
+                {% if DiagnosticReport_MedicationRequest_ID %}
+                    "reference":"MedicationRequest/{{ DiagnosticReport_MedicationRequest_ID }}",
+                {% endif %}
+            },
         ],
+        {% if PDA_3 or PDA_6 or PDA_9 %}
+            "valueCodeableConcept":
+            {
+                {% if PDA_3.Value == 'Y' or PDA_6.Value == 'Y' or PDA_9.Value == 'Y' %}
+                    "coding":
+                    [
+                        {
+                            "code": "Y",
+                            "display": "Yes",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0136"
+                        }
+                    ],
+                {% elsif PDA_3.Value == 'N' or PDA_6.Value == 'N' or PDA_9.Value == 'N' %}
+                    "coding":
+                    [
+                        {
+                            "code": "N",
+                            "display": "No",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0136"
+                        }
+                    ],
+                {% endif %}
+            },
+        {% endif %}
         {% if OBX.11.1.Value == 'X' or OBX.11.1.Value == 'N' %}
             "dataAbsentReason" : { 
                 "coding" : [
@@ -73,8 +204,7 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                 {% endif %}
                 ], 
             },
-        {% else -%}
-                
+        {% else -%}       
             {% assign obx5_rep = OBX.5.Repeats | size %}
             {% if obx5_rep == 1 %}
             "valueQuantity":
@@ -318,6 +448,7 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
         {% endif %}
         
         "effectiveDateTime":"{{ OBX.14.Value | format_as_date_time }}",
+        "effectiveDateTime":"{{ ACC.1.Value | format_as_date_time }}",
          "method":
         {
             {% include 'DataType/CWECodeableConcept' CWE: OBX.17 -%}
@@ -329,17 +460,17 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
             {% endif -%}
         },
         "note": [
-        {
-            "text": "{{NTE.3.Value}}",
-            "time": "{{ NTE.6.Value | format_as_date_time }}",
-            "authorReference":
             {
-                {% if NTE.5 and Practitioner_ID_NTE_5 -%}
-                    "reference":"Practitioner/{{ Practitioner_ID_NTE_5 }}",
-                {% endif -%}
+                "text": "{{NTE.3.Value}}",
+                "time": "{{ NTE.6.Value | format_as_date_time }}",
+                "authorReference":
+                {
+                    {% if NTE.5 and Practitioner_ID_NTE_5 -%}
+                        "reference":"Practitioner/{{ Practitioner_ID_NTE_5 }}",
+                    {% endif -%}
+                }
             }
-        }
-    ],
+        ],
         "bodySite":
         {
             {% include 'DataType/CWECodeableConcept' CWE: OBX.20 -%}
@@ -378,10 +509,12 @@ Observation_Specimen_ID: A resource Id, used to fill "specimen.reference" proper
                 "reference":"{{ Observation_Specimen_ID }}",
             {% endif %}
         },
-        "subject":
-        {
-            "reference":"{{ Observation_Subject_ID }}",
-        },
+        {% if Observation_Subject_ID %}
+            "subject":
+            {
+                "reference":"{{ Observation_Subject_ID }}",
+            },  
+        {% endif %}          
         {%- comment -%}  
         "encounter":
         {

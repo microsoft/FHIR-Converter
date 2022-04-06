@@ -1,0 +1,27 @@
+{% if TQ -%}
+  "repeat" : { 
+    "boundsPeriod" : {
+        "start": "{{ TQ.4.Value | format_as_date_time }}",
+        "end": "{{ TQ.5.Value | format_as_date_time }}",
+     },
+    {% if TQ.3 %}
+        {% assign durationUnitsValue = TQ.3.Value | slice: 0 -%}
+        {% assign durationUnits =  durationUnitsValue | get_property: 'CodeSystem/DurationUnit_new', 'code' -%}
+        {% if durationUnits == 'd' %}
+            {% assign durationValue = TQ.3.Value | slice: 1,3 -%}
+            "duration": {{durationValue}},
+            "durationUnit": "{{durationUnits}}",
+        {% elsif durationUnits == 's' or durationUnits == 'mo' or durationUnits == 'wk' or durationUnits == 'min' or durationUnits == 'h' %}
+            {% assign durationValue = TQ.3.Value | slice: 1,2 -%}
+            "duration": {{durationValue}},
+            "durationUnit": "{{durationUnits}}",
+        {% elsif durationUnitsValue == 'X' %}
+            {% assign durationValue = TQ.3.Value | slice: 1,2 -%}
+            "frequency": "{{durationValue}}",
+        {% endif %}
+    {% endif %}
+    {% if TQ.12 %}
+        "count": {{ TQ.12.Value }},
+    {% endif %}
+  },
+{% endif -%}

@@ -28,14 +28,12 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
             {% if parentSegment or OBR_child %}
                 {% if parentSegment.5 -%}
                     "status":"{{ parentSegment.5.Value | get_property: 'CodeSystem/OrderStatus', 'code' }}",  
+                {% elsif parentSegment.1 -%}
+                    "status":"{{ parentSegment.1.Value | get_property: 'CodeSystem/OrderControlCode', 'code' }}",
                 {% else -%}
                     "status": "active",
-                {% endif %}   
+                {% endif %}
             {% endif %}
-   
-            {% if RF1.1 -%}
-                "status": {% include 'DataType/CWECode' mapping: 'CodeSystem/RequestStatus', CWE: RF1.1 -%},
-            {% endif -%}
 
             {% if AIS -%}
                 {% if AIS.10 -%}
@@ -48,15 +46,36 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
                 {% endif -%}
                 "intent": "filler-order",
             {% endif -%}
-
-            {% if RF1.25.Value == "D"  -%}
-                "status": "entered-in-error",
-            {% endif -%}
-
+            {% if msg_trigger == 'REF-I12' %}
+                {% if RF1.25.Value == "D" %}
+                    "status": "entered-in-error",
+                {% else %}
+                    {% if RF1.1 %}
+                        "status": {% include 'DataType/CWECode' mapping: 'CodeSystem/RequestStatus', CWE: RF1.1 -%},
+                    {% else %}
+                        "status": "active",
+                    {% endif %} 
+                {% endif %}    
+            {% elsif msg_trigger == 'REF-I14' %}
+                {% if RF1.1.1.Value == "R" %}
+                    "status": "revoked",
+                {% else %}
+                    "status": "entered-in-error",
+                {% endif %}   
+            {% elsif msg_trigger == 'ADT' %}
+                {% if RF1.25.Value == "D"  -%}
+                    "status": "entered-in-error",
+                {% else -%}
+                    {% if RF1.1 %}
+                        "status": {% include 'DataType/CWECode' mapping: 'CodeSystem/RequestStatus', CWE: RF1.1 -%},
+                    {% else %}
+                        "status": "unknown",
+                    {% endif %} 
+                {% endif %}
+            {% endif %}
             {% if RF1 -%}
                 "intent": "order",
             {% endif %}
-
             {% if OBR_child or parentSegment %}
                 {% if OBR_child.11.Value == "G" -%}
                     "intent":"reflex-order",
@@ -66,189 +85,198 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
                     "intent":"order",
                 {% endif -%}
             {% endif -%}
-
             "orderDetail" : [
-            {% for o in OBR_child.46.Repeats -%}
-                {
-                    {% include 'DataType/CWECodeableConcept', CWE: o -%}
-                },
-            {% endfor -%}
-            {% for o in OBR_child.47.Repeats -%}
-                {
-                    {% include 'DataType/CWECodeableConcept', CWE: o -%}
-                },
-            {% endfor -%}
+                {% for o in OBR_child.46.Repeats -%}
+                    {
+                        {% include 'DataType/CWECodeableConcept', CWE: o -%}
+                    },
+                {% endfor -%}
+                {% for o in OBR_child.47.Repeats -%}
+                    {
+                        {% include 'DataType/CWECodeableConcept', CWE: o -%}
+                    },
+                {% endfor -%}
                 {% for a in AIS.11.Repeats -%}
                     {
-                    {% include 'DataType/CWECodeableConcept', CWE: a -%}
+                        {% include 'DataType/CWECodeableConcept', CWE: a -%}
                     },
                 {% endfor -%}
                 {% for a in AIS.12.Repeats -%}
                     {
-                    {% include 'DataType/CWECodeableConcept', CWE: a -%}
+                        {% include 'DataType/CWECodeableConcept', CWE: a -%}
                     },
                 {% endfor -%}
             ],
-
             "identifier":
             [   
-            {
-                {% if OBR_child.2 == null %}
-                    {% if parentSegment.2 -%}
-                        {% include 'DataType/EIIdentifier' EI: parentSegment.2 -%}
-                        "type":
-                        {
-                            "coding":
-                            [
-                                {
-                                    "code":"PLAC",
-                                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
-                                },
-                            ],
-                        },
-                    {% endif %} 
-                {% else %}
-                    {% include 'DataType/EIIdentifier' EI: OBR_child.2 -%} 
-                    "type":
-                    {
-                        "coding":
-                        [
-                            {
-                                {% if OBR_child.2 -%}
-                                    "code":"PLAC",
-                                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
-                                {% endif -%}
-                            },
-                        ],
-                    },
-                {% endif %}
-            },
-            {
-                {% if OBR_child.3 == null %}
-                    {% if parentSegment.3 -%}
-                        {% include 'DataType/EIIdentifier' EI: parentSegment.3 -%}
-                        "type":
-                        {
-                            "coding":
-                            [
-                                {
-                                    "code":"FILL",
-                                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
-                                },
-                            ],
-                        },
-                    {% endif %} 
-                {% else %}
-                    {% include 'DataType/EIIdentifier' EI: OBR_child.3 -%} 
-                    "type":
-                    {
-                        "coding":
-                        [
-                            {
-                                {% if OBR_child.3 -%}
-                                    "code":"FILL",
-                                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
-                                {% endif -%}
-                            },
-                        ],
-                    },
-                {% endif %}
-            },           
-            {
-                {% include 'DataType/EIIdentifier' EI: parentSegment.4 -%}
-                "type":
                 {
-                    "coding":
-                    [
+                    {% if OBR_child.2 == null %}
+                        {% if parentSegment.2 -%}
+                            {% include 'DataType/EIIdentifier' EI: parentSegment.2 -%}
+                            "type":
+                            {
+                                "coding":
+                                [
+                                    {
+                                        "code":"PLAC",
+                                        "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                    },
+                                ],
+                            },
+                        {% endif %} 
+                    {% else %}
+                        {% include 'DataType/EIIdentifier' EI: OBR_child.2 -%} 
+                        "type":
                         {
-                            {% if parentSegment.4 -%}
-                                "code":"PGN",
-                            {% endif -%}
-                            {% if parentSegment.4 -%}
-                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
-                            {% endif -%}
+                            "coding":
+                            [
+                                {
+                                    {% if OBR_child.2 -%}
+                                        "code":"PLAC",
+                                        "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                    {% endif -%}
+                                },
+                            ],
                         },
-                    ],
+                    {% endif %}
                 },
-            },
-            {
-                {% if OBR_child.53 -%}
-                "value" : "{{OBR_child.53.1.Value}}",
-                "type":
+                {
+                    {% if OBR_child.3 == null %}
+                        {% if parentSegment.3 -%}
+                            {% include 'DataType/EIIdentifier' EI: parentSegment.3 -%}
+                            "type":
+                            {
+                                "coding":
+                                [
+                                    {
+                                        "code":"FILL",
+                                        "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                    },
+                                ],
+                            },
+                        {% endif %} 
+                    {% else %}
+                        {% include 'DataType/EIIdentifier' EI: OBR_child.3 -%} 
+                        "type":
+                        {
+                            "coding":
+                            [
+                                {
+                                    {% if OBR_child.3 -%}
+                                        "code":"FILL",
+                                        "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                    {% endif -%}
+                                },
+                            ],
+                        },
+                    {% endif %}
+                },           
+                {
+                    {% include 'DataType/EIIdentifier' EI: parentSegment.4 -%}
+                    "type":
                     {
                         "coding":
                         [
                             {
-                                "code":"PLAC",
-                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                {% if parentSegment.4 -%}
+                                    "code":"PGN",
+                                {% endif -%}
+                                {% if parentSegment.4 -%}
+                                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                {% endif -%}
                             },
                         ],
                     },
-                {% endif -%}
-            },
-            {
-                {% include 'DataType/EIIdentifier' EI: RF1.6 -%}
-            },
+                },
+                {
+                    {% if OBR_child.53 -%}
+                    "value" : "{{OBR_child.53.1.Value}}",
+                    "type":
+                        {
+                            "coding":
+                            [
+                                {
+                                    "code":"PLAC",
+                                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                },
+                            ],
+                        },
+                    {% endif -%}
+                },
+                {
+                    {% include 'DataType/EIIdentifier' EI: RF1.6 -%}
+                },
                 {% for r in RF1.11.Repeats -%}
-                    {% if r.Value != RF1.6.Value -%}
                     {
                         {% include 'DataType/EIIdentifier' EI: r -%}
                     },
-                {% endif -%}
                 {% endfor -%}    
+            ],
+            "category" : [
+                {% if RF1 -%}
+                {
+                    "coding": [
+                        {
+                            "system": "http://example.com/v2-to-fhir-converter/CodeSystem/additional-service-request-category-codes",
+                            "code": "patient-referral-request",
+                            "display": "Patient Referral Request"
+                        }
+                    ]
+                },
+                {% endif -%}
+                {
+                    {% include 'DataType/CWECodeableConcept', CWE: RF1.3 -%}
+                },
             ],
             {% if parentSegment.1.Value == 'NW' -%}
                 "authoredOn":"{{ parentSegment.9.Value | format_as_date_time }}",
-            {% endif -%}
-            "authoredOn":"{{ RF1.7.Value | format_as_date_time }}",
-            {% unless RF1.7.Value -%}
-                "authoredOn":"{{ RF1.9.Value | format_as_date_time }}",
-            {% endunless -%}
+            {% endif -%}            
+            "authoredOn":"{{ RF1.9.Value | format_as_date_time }}",            
             {% if OBR_child.29 %}
-            "basedOn":
-            [
-                {
-                    {% if OBR_child.50 and OBR_child.29 %}
-                        "reference":"ServiceRequest/{{ ServiceRequest_ID_OBR_29 }}",
-                    {% endif %} 
-                    {% unless OBR_child.50 %}   
-                            "type": "ServiceRequest",
-                            "identifier":
-                            { 
-                                {% if OBR_child.29.1 -%}
-                                    {% if OBR_child.29.1.1 %}
-                                        "value" : "{{OBR_child.29.1.1}}",
-                                    {% endif %}     
-                                "type":
-                                {
-                                    "coding":
-                                    [
+                "basedOn":
+                [
+                    {
+                        {% if OBR_child.50 and OBR_child.29 %}
+                            "reference":"ServiceRequest/{{ ServiceRequest_ID_OBR_29 }}",
+                        {% endif %}
+                        {% unless OBR_child.50 %}   
+                                "type": "ServiceRequest",
+                                "identifier":
+                                { 
+                                    {% if OBR_child.29.1 -%}
+                                        {% if OBR_child.29.1.1 %}
+                                            "value" : "{{OBR_child.29.1.1}}",
+                                        {% endif %}     
+                                        "type":
                                         {
-                                            "code":"PLAC",
-                                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                            "coding":
+                                            [
+                                                {
+                                                    "code":"PLAC",
+                                                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                                },
+                                            ],
                                         },
-                                    ],
+                                    {% endif %}   
+                                    {% unless OBR_child.29.1 %}
+                                        {% if OBR_child.29.2.1 %}
+                                            "value" : "{{OBR_child.29.2.1}}",
+                                        {% endif %}     
+                                        "type":
+                                        {
+                                            "coding":
+                                            [
+                                                {
+                                                    "code":"FILL",
+                                                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                                },
+                                            ],
+                                        },
+                                    {% endunless -%}
                                 },
-                                {% endif %}   
-                                {% unless OBR_child.29.1 %}
-                                    {% if OBR_child.29.2.1 %}
-                                        "value" : "{{OBR_child.29.2.1}}",
-                                    {% endif %}     
-                                    "type":
-                                    {
-                                        "coding":
-                                        [
-                                            {
-                                                "code":"FILL",
-                                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
-                                            },
-                                        ],
-                                    },
-                                {% endunless -%}
-                            },
-                    {% endunless %}
-                }
-            ],
+                        {% endunless %}
+                    }
+                ],
             {% endif %}
             {% unless OBR_child.29 %}
                 {% if parentSegment.8 %}
@@ -257,11 +285,11 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
                         {
                             {% if parentSegment.31 and parentSegment.8 %}
                                 "reference":"ServiceRequest/{{ ServiceRequest_ID_ORC_8 }}",
-                            {% endif %} 
+                            {% endif %}
                             {% unless parentSegment.31 %}   
                                 "type": "ServiceRequest",
                                 "identifier":
-                               { 
+                            { 
                                     {% if parentSegment.8.1 and parentSegment.8.2 or parentSegment.8.1 %}
                                     "value" : "{{parentSegment.8.1.1}}",
                                     "type":
@@ -293,21 +321,29 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
                     ],
                 {% endif %}
             {% endunless %}
+            {% if REF_Prac and PRD.1.Repeats[0].1.Value == "RP" %}
+                "requester":
+                    {
+                        "reference":"{{ REF_Prac }}",
+                    },
+            {% endif %}    
             "performer": [
                 {% if RF1.19 and Organization_ID_RF1_19 -%}
-                {
-                    "reference": "Organization/{{Organization_ID_RF1_19}}",
-                },
+                    {
+                        "reference": "Organization/{{Organization_ID_RF1_19}}",
+                    },
                 {% endif -%}
+                {% if REF_Prac and PRD.1.Repeats[0].1.Value == "RT" %}
+                    {
+                        "reference":"{{ REF_Prac }}",
+                    },
+                {% endif %} 
                 {% if RF1.20 and Practitioner_ID_RF1_20-%}
-                {
-                    "reference": "Practitioner/{{Practitioner_ID_RF1_20}}",
-                },
+                    {
+                        "reference": "Practitioner/{{Practitioner_ID_RF1_20}}",
+                    },
                 {% endif -%}
             ],
-            "performerType" : {
-                {% include 'DataType/CWECodeableConcept', CWE: RF1.3 -%}
-            },
     
             {% if type_msg == 'ORM' %}
                 {% if OBR_child.27 == null -%}
@@ -329,14 +365,19 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
             "locationCode":
             [
                 {% if OBR_child.24 %} 
-                {
-                    {% include 'DataType/IDCodeableConcept' mapping: 'CodeSystem/DiagnosticServiceSection', ID: OBR_child.24 -%}
-                },
+                    {
+                        {% include 'DataType/IDCodeableConcept' mapping: 'CodeSystem/DiagnosticServiceSection', ID: OBR_child.24 -%}
+                    },
                 {% endif %}
                 {% if parentSegment.29 %} 
-                {
-                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/OrderType', CWE: parentSegment.29 -%}
-                },
+                    {
+                        {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/OrderType', CWE: parentSegment.29 -%}
+                    },
+                {% endif %}
+                {% if RF1.5 -%}
+                    {
+                        {% include 'DataType/CWECodeableConcept' CWE: RF1.5 -%}
+                    },
                 {% endif %}
             ],
             "note": [
@@ -345,57 +386,57 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
                 "text": "{{NTE.3.Value}}",
                 "time": "{{ NTE.6.Value | format_as_date_time }}",
                 {% if Practitioner_ID_NTE_5 %}
-                "authorReference":
-                {
-                    "reference":"Practitioner/{{ Practitioner_ID_NTE_5 }}",
-                }
-            {% endif %} 
+                    "authorReference":
+                    {
+                        "reference":"Practitioner/{{ Practitioner_ID_NTE_5 }}",
+                    }
+                {% endif %} 
             },
             {% endif %}  
-            {
-                "text": "{{ RF1.24.Value }}",
-            },
+                {
+                    "text": "{{ RF1.24.Value }}",
+                },
             {% if OBR_child.18 %}
-            {
-                "text": "{{ OBR_child.18.Value }}",
-                "authorString": "Placer Field 1",
-            },
+                {
+                    "text": "{{ OBR_child.18.Value }}",
+                    "authorString": "Placer Field 1",
+                },
             {% endif %}
             {% if OBR_child.19 %}
-            {
-                    "text": "{{ OBR_child.19.Value }}",
-                    "authorString": "Placer Field 2",
-            },
+                {
+                        "text": "{{ OBR_child.19.Value }}",
+                        "authorString": "Placer Field 2",
+                },
             {% endif %}
             {% if OBR_child.20 %}
-            {
+                {
                     "text": "{{ OBR_child.20.Value }}",
                     "authorString": "Filler Field 1",
                 },
-                {% endif %}
-                {% if OBR_child.21 %}
+            {% endif %}
+            {% if OBR_child.21 %}
                 {
                     "text": "{{ OBR_child.21.Value }}",
                     "authorString": "Filler Field 2",
                 },
-                {% endif %}
-                {% if OBR_child.27.8 %}
+            {% endif %}
+            {% if OBR_child.27.8 %}
                 {
                     "text": "{{ OBR_child.27.8.Value }}",
                 },
-                {% endif %}
-                {
-                    {% if type_msg == 'ORM' -%}
-                        {% unless OBR_child.27 %} 
-                            {% if parentSegment.7.Repeats[0]  -%}
-                                "text": "{{ parentSegment.7.Repeats[0].8.Value }}",
-                            {% endif %}
-                        {% endunless %}  
-                    {% endif -%}
-                },
-                {
-                    "text": "{{ TQ1.11.Value }}",
-                },   
+            {% endif %}
+            {
+                {% if type_msg == 'ORM' -%}
+                    {% unless OBR_child.27 %} 
+                        {% if parentSegment.7.Repeats[0]  -%}
+                            "text": "{{ parentSegment.7.Repeats[0].8.Value }}",
+                        {% endif %}
+                    {% endunless %}  
+                {% endif -%}
+            },
+            {
+                "text": "{{ TQ1.11.Value }}",
+            },   
             ],
             "asNeededCodeableConcept": {
                 "text": "{{ TQ1.10.Value }}",
@@ -421,12 +462,14 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
             },
             "occurrencePeriod" : { 
                 "start" :  "{{ AIS.4.Value | format_as_date_time }}",
+                "start" :  "{{ RF1.7.Value | format_as_date_time }}",
+                "end" :  "{{ RF1.8.Value | format_as_date_time }}",
             },
             "occurrenceTiming":
             {    
     
                 "code": {
-                    {% include 'DataType/CWECodeableConceptInternalValues' CWE: TQ1.3.Repeats[0].1 -%}
+                    {% include 'DataType/CWECodeableConceptInternalValues' CWE: TQ1.3.Repeats[0].1, TQ1: TQ1.3.Repeats[0].1 -%}
                 },
                 {% if TQ1.3 == null -%}
                     {% include 'DataType/RITiming' RI_val: OBR_timeday.27.2 -%}
@@ -444,51 +487,35 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
                 {
                     {% include 'DataType/RPTTiming' RPT: TQ1.3.Repeats[0] -%}
                     "boundsDuration":
-                    {
-                        {% if TQ1.7 == null and TQ1.8 == null -%}
-                            {% include 'DataType/CQ' CQ_duration: TQ1.6 -%}
-                        {% endif -%}
-                    },
+                        {
+                            {% if TQ1.7 == null and TQ1.8 == null -%}
+                                {% include 'DataType/CQ' CQ_duration: TQ1.6 -%}
+                            {% endif -%}
+                        },
                     {% if type_msg == 'ORM' -%}
                         {% unless OBR_child.27 %} 
-                        {% unless OBR_child.6 %} 
-                            {% if parentSegment.7.Repeats[0]  -%}
-                                {% if parentSegment.7.Repeats[0].3 %}
-                                    {% assign durationUnitsValue = parentSegment.7.Repeats[0].3.Value | slice: 0 -%}
-                                    {% if durationUnitsValue == "S" %}
-                                        "durationUnit": "s",
-                                        {% assign durationValue = parentSegment.7.Repeats[0].3.Value | slice: 1,2 -%}
-                                        "duration": {{durationValue}},
-                                    {% elsif durationUnitsValue == "M" %}
-                                        "durationUnit": "min",
-                                        {% assign durationValue = parentSegment.7.Repeats[0].3.Value | slice: 1,2 -%}
-                                        "duration": {{durationValue}},
-                                    {% elsif durationUnitsValue == "H" %}
-                                        "durationUnit": "h",
-                                        {% assign durationValue = parentSegment.7.Repeats[0].3.Value | slice: 1,2 -%}
-                                        "duration": {{durationValue}},
-                                    {% elsif durationUnitsValue == "D" %}
-                                        "durationUnit": "d",
-                                        {% assign durationValue = parentSegment.7.Repeats[0].3.Value | slice: 1,3 -%}
-                                        "duration": {{durationValue}},
-                                    {% elsif durationUnitsValue == "W" %}
-                                        "durationUnit": "wk",
-                                        {% assign durationValue = parentSegment.7.Repeats[0].3.Value | slice: 1,2 -%}
-                                        "duration": {{durationValue}},
-                                    {% elsif durationUnitsValue == "L" %}
-                                        "durationUnit": "mo",
-                                        {% assign durationValue = parentSegment.7.Repeats[0].3.Value | slice: 1,2 -%}
-                                        "duration": {{durationValue}},
-                                    {% elsif durationUnitsValue == "X" %}
-                                        {% assign durationValue = parentSegment.7.Repeats[0].3.Value | slice: 1,2 -%}
-                                        "frequency": "{{durationValue}}",            
+                            {% unless OBR_child.6 %} 
+                                {% if parentSegment.7.Repeats[0]  -%}
+                                    {% if parentSegment.7.Repeats[0].3 %}
+                                        {% assign durationUnitsValue = parentSegment.7.Repeats[0].3.Value | slice: 0 -%}
+                                        {% assign durationUnits =  durationUnitsValue | get_property: 'CodeSystem/TQ_DurationUnits', 'code' %}
+                                        {% if durationUnits == 'd' %}
+                                            {% assign durationValue = parentSegment.7.Repeats[0].3.Value | slice: 1,3 -%}
+                                            "duration": {{durationValue}},
+                                            "durationUnit": "{{durationUnits}}",
+                                        {% elsif durationUnits == 's' or durationUnits == 'mo' or durationUnits == 'wk' or durationUnits == 'min' or durationUnits == 'h' %}
+                                            {% assign durationValue = parentSegment.7.Repeats[0].3.Value | slice: 1,2 -%}
+                                            "duration": {{durationValue}},
+                                            "durationUnit": "{{durationUnits}}",
+                                        {% elsif durationUnitsValue == 'X' %}
+                                            {% assign durationValue = parentSegment.7.Repeats[0].3.Value | slice: 1,2 -%}
+                                            "frequency": "{{durationValue}}",
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if parentSegment.7.Repeats[0].12 %}
+                                        "count": {{ parentSegment.7.Repeats[0].12.Value }},
                                     {% endif %}
                                 {% endif %}
-                                {% if parentSegment.7.Repeats[0].12 %}
-                                    "count": {{ parentSegment.7.Repeats[0].12.Value }},
-                                {% endif %}
-                                
-                            {% endif %}
                             {% endunless %}  
                         {% endunless %}  
                     {% endif -%}      
@@ -507,11 +534,11 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
                         {% endif -%}
                         {% if type_msg == 'ORM' -%}
                             {% unless OBR_child.27 %} 
-                            {% unless OBR_child.6 %} 
-                                {% if parentSegment.7.Repeats[0]  -%}
-                                    "{{ parentSegment.7.Repeats[0].2.2 }}",
-                                {% endif %}
-                            {% endunless %}
+                                {% unless OBR_child.6 %} 
+                                    {% if parentSegment.7.Repeats[0]  -%}
+                                        "{{ parentSegment.7.Repeats[0].2.2 }}",
+                                    {% endif %}
+                                {% endunless %}
                             {% endunless %}  
                         {% endif -%} 
                     ],
@@ -523,33 +550,18 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
                     {% endif -%}
                     {% if OBR_child.27.3 %}
                         {% assign durationUnitsValue = OBR_child.27.3.Value | slice: 0 -%}
-                        {% if durationUnitsValue == "S" %}
-                            "durationUnit": "s",
-                            {% assign durationValue = OBR_child.27.3.Value | slice: 1,2 -%}
-                            "duration": {{durationValue}},
-                        {% elsif durationUnitsValue == "M" %}
-                            "durationUnit": "min",
-                            {% assign durationValue = OBR_child.27.3.Value | slice: 1,2 -%}
-                            "duration": {{durationValue}},
-                        {% elsif durationUnitsValue == "H" %}
-                            "durationUnit": "h",
-                            {% assign durationValue = OBR_child.27.3.Value | slice: 1,2 -%}
-                            "duration": {{durationValue}},
-                        {% elsif durationUnitsValue == "D" %}
-                            "durationUnit": "d",
+                        {% assign durationUnits =  durationUnitsValue | get_property: 'CodeSystem/TQ_DurationUnits', 'code' %}
+                        {% if durationUnits == 'd' %}
                             {% assign durationValue = OBR_child.27.3.Value | slice: 1,3 -%}
                             "duration": {{durationValue}},
-                        {% elsif durationUnitsValue == "W" %}
-                            "durationUnit": "wk",
+                            "durationUnit": "{{durationUnits}}",
+                        {% elsif durationUnits == 's' or durationUnits == 'mo' or durationUnits == 'wk' or durationUnits == 'min' or durationUnits == 'h' %}
                             {% assign durationValue = OBR_child.27.3.Value | slice: 1,2 -%}
                             "duration": {{durationValue}},
-                        {% elsif durationUnitsValue == "L" %}
-                            "durationUnit": "mo",
+                            "durationUnit": "{{durationUnits}}",
+                        {% elsif durationUnitsValue == 'X' %}
                             {% assign durationValue = OBR_child.27.3.Value | slice: 1,2 -%}
-                            "duration": {{durationValue}},
-                        {% elsif durationUnitsValue == "X" %}
-                            {% assign durationValue = OBR_child.27.3.Value | slice: 1,2 -%}
-                            "frequency": "{{durationValue}}",            
+                            "frequency": "{{durationValue}}",
                         {% endif %}
                     {% endif %}
                     
@@ -632,21 +644,21 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
             "identifier":
             [   
                 {% if OBR_parent.29.1  %}
-                {     
-                    {% if OBR_parent.29.1.1 %}
-                        "value" : "{{OBR_parent.29.1.1}}",
-                    {% endif %}
-                    "type":
-                    {
-                        "coding":
-                        [
-                            {
-                                "code":"PLAC",
-                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
-                            },
-                        ],
-                    }, 
-                },
+                    {     
+                        {% if OBR_parent.29.1.1 %}
+                            "value" : "{{OBR_parent.29.1.1}}",
+                        {% endif %}
+                        "type":
+                        {
+                            "coding":
+                            [
+                                {
+                                    "code":"PLAC",
+                                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                },
+                            ],
+                        }, 
+                    },
                 {% endif -%}
                 {% if OBR_parent.29.2 %}
                     {     
@@ -674,49 +686,48 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
         {% endif %}
         {% unless OBR_parent.29 -%}
             {% if parentSegment.8 %}
-            "identifier":
-            [   
-                { 
-                    {% if parentSegment.8.1  %}
-                        "value" : "{{parentSegment.8.1.1}}",
-                        "type":
-                        {
-                            "coding":
-                        [
+                "identifier":
+                [   
+                    { 
+                        {% if parentSegment.8.1  %}
+                            "value" : "{{parentSegment.8.1.1}}",
+                            "type":
                             {
-                                "code":"PLAC",
-                                "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                "coding":
+                                    [
+                                        {
+                                            "code":"PLAC",
+                                            "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                        },
+                                    ],
                             },
-                        ],
-                    {% endif -%}
+                        {% endif -%}
                     },
-                },
-                {     
-                    {% if parentSegment.8.2 %}
-                        "value" : "{{parentSegment.8.2.1}}",
-                        "type":
-                        {
-                            "coding":
-                            [
-                                {
-                                    "code":"FILL",
-                                    "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
-                                },
-                            ],
-                        },
-                    {% endif %} 
+                    {     
+                        {% if parentSegment.8.2 %}
+                            "value" : "{{parentSegment.8.2.1}}",
+                            "type":
+                            {
+                                "coding":
+                                [
+                                    {
+                                        "code":"FILL",
+                                        "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                    },
+                                ],
+                            },
+                        {% endif %} 
                     },          
                 ],
             {% endif %}
         {% endunless -%}
-
-
         {% if parentSegment.5 -%}
             "status":"{{ parentSegment.5.Value | get_property: 'CodeSystem/OrderStatus', 'code' }}",  
+        {% elsif parentSegment.1 -%}
+            "status":"{{ parentSegment.1.Value | get_property: 'CodeSystem/OrderControlCode', 'code' }}",
         {% else -%}
             "status": "active",
         {% endif %}
-
         {% if OBR_parent.11.Value == "G" -%}
             "intent":"reflex-order",
         {% elsif OBR_parent and type_msg == 'ORU' -%}
@@ -780,6 +791,8 @@ ServiceRequest_Encounter_ID: A resource Id, used to fill "encounter.reference" p
 
         {% if ORC.5 -%}
             "status":"{{ ORC.5.Value | get_property: 'CodeSystem/OrderStatus', 'code' }}",  
+        {% elsif ORC.1 -%}
+            "status":"{{ ORC.1.Value | get_property: 'CodeSystem/OrderControlCode', 'code' }}",
         {% else -%}
             "status": "active",
         {% endif %}

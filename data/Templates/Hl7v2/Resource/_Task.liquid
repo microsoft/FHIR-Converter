@@ -41,6 +41,25 @@ Task_ReasonReference_ID: A resource Id, used to fill "reasonReference.reference"
         {% include 'DataType/TQTask' TQ: ORC.7 -%}
         "authoredOn":"{{ ORC.9.Value | format_as_date_time }}",
         "lastModified":"{{ ORC.9.Value | format_as_date_time }}",
+
+        {% if RDE -%}
+            "intent":"order",
+            "status":"requested",
+            "description": "Task resource is created for RDE^O25 message to capture the intent that it is Refill Authorization Request message. Since this intent is not listed in MedicationRequest resource",
+            "code":
+                {
+                    "coding":
+                    [
+                        {
+                            "system": "http://example.com/v2-to-fhir-converter/additional-task-code",
+                            "code": "refill-authorization-request",
+                            "display": "Pharmacy/Treatment Refill Authorization Request"
+                        },
+                    ],
+                    "text": "Pharmacy/treatment refill authorization request",
+                },
+        {% endif -%}
+
         "requester":
         {
             {% if ORC.12 and Practitioner_ID_ORC_12 -%}
