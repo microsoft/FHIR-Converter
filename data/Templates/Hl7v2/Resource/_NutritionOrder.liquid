@@ -1,3 +1,4 @@
+{% evaluate Practitioner_ID_NTE_5 using 'ID/Practitioner' XCN: NTE.5 -%}
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
@@ -126,6 +127,18 @@
                     "text" : "{{ orc7.8.Value }}"
                 },
             {% endfor -%}
+            {% if NTE %}
+            {
+                "text": "{{NTE.3.Value}}",
+                "time": "{{ NTE.6.Value | format_as_date_time }}",
+                {% if Practitioner_ID_NTE_5 %}
+                    "authorReference":
+                    {
+                        "reference":"Practitioner/{{ Practitioner_ID_NTE_5 }}",
+                    }
+                {% endif %} 
+            },
+            {% endif %} 
         ],
         "patient":
         {

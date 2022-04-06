@@ -2,7 +2,6 @@
 {% assign sftSegmentLists = hl7v2Data | get_segment_lists: 'SFT' -%}
 {% assign uacSegmentLists = hl7v2Data | get_segment_lists: 'UAC' -%}
 {% assign obxSegmentLists = hl7v2Data | get_segment_lists: 'OBX' -%}
-{% assign rolSegmentLists = hl7v2Data | get_segment_lists: 'ROL' -%}
 {% assign db1SegmentLists = hl7v2Data | get_segment_lists: 'DB1' -%}
 {% evaluate bundleID using 'ID/Bundle' Data: firstSegments.MSH.10 -%}
 
@@ -282,6 +281,68 @@
                 {% endif -%}
             {% endif -%}
         {% endif -%}
+
+        {% assign rolSegmentPositionIndex_PID = 0 %}
+        {% assign rolSegmentLists_PID = hl7v2Data | get_related_segment_list: firstSegments.PID, 'ROL' -%}
+        {% for rolSegment_PID in rolSegmentLists_PID.ROL %}
+            {% unless rolSegment_PID.2.Value == "DE" or rolSegment_PID.2.Value == "UN" %}
+                {% evaluate practitionerRoleId using 'ID/PractitionerRole' ROL: rolSegment_PID.3, XCN: rolSegment_PID.4.Repeats[0] -%}
+                {% include 'Resource/PractitionerRole' ROL: rolSegment_PID , ID: practitionerRoleId -%} 
+                {%- assign fullPractitionerRoleId = practitionerRoleId | prepend: 'PractitionerRole/' -%}
+                {% include 'Reference/Patient/GeneralPractitioner' REF: fullPractitionerRoleId, ID: patientId -%}
+                {% evaluate practitionerId using 'ID/Practitioner' XCN: rolSegment_PID.4.Repeats[0] -%}
+                {% assign full_practitionerId = practitionerId | prepend: 'Practitioner/' %}
+                {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId, ID: practitionerRoleId -%}
+                {% for rol_4 in rolSegment_PID.4.Repeats %}
+                    {% if rol_4.9.1 != "" and rol_4.9.1 != null and rol_4.9.2 != "" and rol_4.9.2 != null and rol_4.9.3 != "" and rol_4.9.3 != null -%}
+                        {% evaluate Organization_ID using 'ID/Organization' HDORG: rol_4.9 -%}
+                        {% include 'Resource/Organization' OBX: rol_4.9, ID: Organization_ID -%}
+                    {% endif -%}
+                    {% include 'Resource/Practitioner' ROL: rol_4, ID: practitionerId-%}
+                {% endfor %}
+                {% if rolSegment_PID.13 -%}
+                    {% include 'Resource/PLLocation' PL: rolSegment_PID.13-%}
+                {% endif -%}
+                {% if rolSegment_PID.14 %}
+                    {% evaluate organization_ID_ROL_14 using 'ID/Organization' XON: rolSegment_PID.14.Repeats[0] -%}
+                    {% assign full_organizationId = organization_ID_ROL_14 | prepend: 'Organization/' %}
+                    {% include 'Resource/Organization' ROL: rolSegment_PID , ID: organization_ID_ROL_14 -%}
+                    {% include 'Reference/PractitionerRole/Organization' REF: full_organizationId, ID: practitionerRoleId %}
+                {% endif %} 
+            {% endunless -%}
+            {% assign rolSegmentPositionIndex_PID = rolSegmentPositionIndex_PID | plus: 1 %}  
+        {% endfor %}
+
+        {% assign rolSegmentPositionIndex_PV1 = 0 %}
+        {% assign rolSegmentLists_PV1 = hl7v2Data | get_related_segment_list: firstSegments.PV1, 'ROL' -%}
+        {% for rolSegment_PV1 in rolSegmentLists_PV1.ROL %}
+            {% unless rolSegment_PV1.2.Value == "DE" or rolSegment_PV1.2.Value == "UN" %}
+                {% evaluate practitionerRoleId using 'ID/PractitionerRole' ROL: rolSegment_PV1.3, XCN: rolSegment_PV1.4.Repeats[0] -%}
+                {% include 'Resource/PractitionerRole' ROL: rolSegment_PV1 , ID: practitionerRoleId -%} 
+                {%- assign fullPractitionerRoleId = practitionerRoleId | prepend: 'PractitionerRole/' -%}
+                {% include 'Reference/Encounter/Participant_Individual' REF: fullPractitionerRoleId, ID: encounterId -%}
+                {% evaluate practitionerId using 'ID/Practitioner' XCN: rolSegment_PV1.4.Repeats[0] -%}
+                {% assign full_practitionerId = practitionerId | prepend: 'Practitioner/' %}
+                {% include 'Reference/PractitionerRole/Practitioner' REF: full_practitionerId, ID: practitionerRoleId -%}
+                {% for rol_4 in rolSegment_PV1.4.Repeats %}
+                    {% if rol_4.9.1 != "" and rol_4.9.1 != null and rol_4.9.2 != "" and rol_4.9.2 != null and rol_4.9.3 != "" and rol_4.9.3 != null -%}
+                        {% evaluate Organization_ID using 'ID/Organization' HDORG: rol_4.9 -%}
+                        {% include 'Resource/Organization' OBX: rol_4.9, ID: Organization_ID -%}
+                    {% endif -%}
+                    {% include 'Resource/Practitioner' ROL: rol_4, ID: practitionerId-%}
+                {% endfor %}
+                {% if rolSegment_PV1.13 -%}
+                    {% include 'Resource/PLLocation' PL: rolSegment_PV1.13-%}
+                {% endif -%}
+                {% if rolSegment_PV1.14 %}
+                    {% evaluate organization_ID_ROL_14 using 'ID/Organization' XON: rolSegment_PV1.14.Repeats[0] -%}
+                    {% assign full_organizationId = organization_ID_ROL_14 | prepend: 'Organization/' %}
+                    {% include 'Resource/Organization' ROL: rolSegment_PV1 , ID: organization_ID_ROL_14 -%}
+                    {% include 'Reference/PractitionerRole/Organization' REF: full_organizationId, ID: practitionerRoleId %}
+                {% endif %} 
+            {% endunless -%}
+            {% assign rolSegmentPositionIndex_PV1 = rolSegmentPositionIndex_PV1 | plus: 1 %}  
+        {% endfor %}
 
         {% for db1Segment in db1SegmentLists.DB1 -%}
             {% if db1Segment.2.1.Value == "PT" %}
