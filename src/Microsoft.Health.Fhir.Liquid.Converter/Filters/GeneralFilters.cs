@@ -19,6 +19,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     /// </summary>
     public partial class Filters
     {
+        public static string Debug(Context context, string property)
+        {
+            // Console.WriteLine(test);
+            foreach (var x in context.Environments) {
+                foreach (KeyValuePair<string, object> e in x) {
+                    Console.WriteLine("Key: " + e.Key);
+                    Console.WriteLine("Type: " + e.Value.GetType());
+                    Console.WriteLine("Value: " + JObject.FromObject(e.Value));
+                }
+            }
+            return "done";
+        }
+
         public static string GetProperty(Context context, string originalCode, string mapping, string property = "code")
         {
             if (string.IsNullOrEmpty(originalCode) || string.IsNullOrEmpty(mapping) || string.IsNullOrEmpty(property))

@@ -1,0 +1,62 @@
+{% comment -%}
+Example of Input:
+name = {
+    "family": "EVERYMAN",
+    "given": [
+        "ADAM",
+        "A",
+        "Addsm"
+    ],
+    "suffix": [
+        "III",
+        "MD",
+        "PF"
+    ],
+    "prefix": [
+        "Dr."
+    ],
+    "use": "usual",
+    "period": {
+        "start": "1924-10-12",
+        "end": "1924-10-12"
+    }
+}
+or
+names = [name, name]
+or
+fields = []
+{% endcomment -%}
+{%- if fields -%}
+{{ fields | join: '^' -}}
+{%- else -%}
+{%- if name -%}
+    {%- assign names = name | compact -%}
+{%- endif -%}
+{% capture repeats -%}
+{%- for name in names -%}
+{%- assign given = name.given | get_index: 0 -%}
+{%- assign further = name.given | get_index: 1 -%}
+{%- assign unknownExtraName = name.given | get_index: 2 -%}
+{%- assign suffix = name.suffix | get_index: 0 -%}
+{%- assign degree = name.suffix | get_index: 1 -%}
+{%- assign proSuffix = name.suffix | get_index: 2 -%}
+{% comment %}  1 Family Name         {% endcomment %}{% include 'DataType/FN-FamilyName' surname: name.family -%}^
+{% comment %}  2 Given Name          {% endcomment %}{{ given | default: "" }}^
+{% comment %}  3 Further Name        {% endcomment %}{{ further | default: "" }}^
+{% comment %}  4 Suffix              {% endcomment %}{{ suffix | default: "" }}^
+{% comment %}  5 Prefix              {% endcomment %}{{ name.prefix | join: " " }}^
+{% comment %}  6 Degree              {% endcomment %}{{ degree }}^
+{% comment %}  7 Name Type Code      {% endcomment %}{{ "D" }}^
+{% comment %}  8 Name Representation {% endcomment %}^
+{% comment %}  9 Name Context        {% endcomment %}^
+{% comment %} 10 Name Validity Range {% endcomment %}^
+{% comment %} 11 Name Assembly       {% endcomment %}^
+{% comment %} 12 Effective Date      {% endcomment %}{{ name.period.start | default: "" | remove: "-" }}^
+{% comment %} 13 Expiration Date     {% endcomment %}{{ name.period.end | default: "" | remove: "-" }}^
+{% comment %} 14 Professional Suffix {% endcomment %}{{ proSuffix | default: "" }}^
+{% comment %} 15 Unknown Extra?????  {% endcomment %}{{ unknownExtraName | default: "" }}
+~
+{%- endfor -%}
+{% endcapture -%}
+{{ repeats | strip_newlines | remove_char_from_end: '~' -}}
+{%- endif -%}

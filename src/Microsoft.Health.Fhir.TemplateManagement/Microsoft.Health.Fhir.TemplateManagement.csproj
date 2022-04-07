@@ -72,23 +72,37 @@
     </None>
   </ItemGroup>
     
-  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="mkdir $(BinFolder) &amp; tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
+  <Target Name="CreateBinFolder" BeforeTargets="ExtractHL7v2DefaultTemplates">
+    <Exec Command="mkdir -p $(BinFolder)" />
+  </Target>
+  <Target Name="ExtractHL7v2DefaultTemplates" BeforeTargets="ExtractCCDADefaultTemplates">
+    <Exec Command="tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
+  </Target>
+  <Target Name="ExtractCCDADefaultTemplates" BeforeTargets="JsonDefaultTemplates">
     <Exec Command="tar -zcvf $(BinFolder)CcdaDefaultTemplates.tar.gz -C $(DataFolder)Templates/Ccda ." />
+  </Target>
+  <Target Name="JsonDefaultTemplates" BeforeTargets="PreBuildEvent">
     <Exec Command="tar -zcvf $(BinFolder)JsonDefaultTemplates.tar.gz -C $(DataFolder)Templates/Json ." />
   </Target>
 
-  <Target Name="DownloadWinOrasFile" BeforeTargets="Build">
+
+  <Target Condition="'$(OS)' == 'Windows_NT'" Name="CopyWinOrasFile" BeforeTargets="Build">
+    <Exec Command="tar -xvf $(BinFolder)$(OrasWinTarGzFile) -C $(BinFolder) &amp; $(CopyExecutable) $(BinFolder)oras.exe ." />
+  </Target>
+  
+  <Target Condition="'$(OS)' == 'Windows_NT'" Name="DownloadWinOrasFile" BeforeTargets="CopyWinOrasFile">
     <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="$(BinFolder)" DestinationFileName="$(OrasWinTarGzFile)">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
-    <Exec Command="tar -xvf $(BinFolder)$(OrasWinTarGzFile) -C $(BinFolder) &amp; $(CopyExecutable) $(BinFolder)oras.exe ." />
   </Target>
 
-  <Target Name="DownloadOSXOrasFile" BeforeTargets="Build">
+  <Target Condition="'$(OS)' != 'Windows_NT'" Name="CopyOSXOrasFile" BeforeTargets="Build">
+    <Exec Command="tar -xvf $(BinFolder)$(OrasOSXTarGzFile) -C $(BinFolder) &amp;&amp; $(CopyExecutable) $(BinFolder)oras oras-osx" />
+  </Target>
+
+  <Target Condition="'$(OS)' != 'Windows_NT'" Name="DownloadOSXOrasFile" BeforeTargets="CopyOSXOrasFile">
     <DownloadFile SourceUrl="$(OrasOSXUrl)" DestinationFolder="$(BinFolder)" DestinationFileName="$(OrasOSXTarGzFile)">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
-    <Exec Command="tar -xvf $(BinFolder)$(OrasOSXTarGzFile) -C $(BinFolder) &amp;&amp; $(CopyExecutable) $(BinFolder)oras oras-osx" />
   </Target>
 </Project>

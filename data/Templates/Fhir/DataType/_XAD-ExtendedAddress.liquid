@@ -1,0 +1,49 @@
+{% comment -%}
+Example of Input:
+address = {
+    "line": [
+        "1000",
+        "Hospital Lane",
+        "Ste. 123",
+        "Near Highway"
+    ],
+    "city": "Ann Arbor ",
+    "state": "MI",
+    "postalCode": "99999",
+    "country": "USA",
+    "type": "postal",
+    "district": "W",
+    "period": {
+        "start": "2000-01-10",
+        "end": "2000-01-20"
+    }
+}
+or
+addresses = [address, address]
+{% endcomment -%}
+{%- if address -%}
+    {%- assign addresses = address | compact -%}
+{%- endif -%}
+{% capture repeats -%}
+{%- for address in addresses -%}
+{% capture XAD -%}
+{% comment %}  1 Street Address        {% endcomment %}{{ address.line | slice: 0, 2 | join: ' ' }}^
+{% comment %}  2 Other Designation     {% endcomment %}{{ address.line | slice: 2, 1 | join: ' ' }}^
+{% comment %}  3 City                  {% endcomment %}{{ address.city }}^
+{% comment %}  4 State Or Province     {% endcomment %}{{ address.state }}^
+{% comment %}  5 Zip or Postal Code    {% endcomment %}{{ address.postalCode }}^
+{% comment %}  6 Country               {% endcomment %}{{ address.country }}^
+{% comment %}  7 Address Type          {% endcomment %}^
+{% comment %}  8 Other Geo Designation {% endcomment %}^
+{% comment %}  9 County/Parish Code    {% endcomment %}^
+{% comment %} 10 Census Tract          {% endcomment %}^
+{% comment %} 11 Address Represen Code {% endcomment %}^
+{% comment %} 12 Address Valid Range   {% endcomment %}^
+{% comment %} 13 Effective Date        {% endcomment %}{{ address.period.start | remove: '-' }}^
+{% comment %} 14 Expiration Date       {% endcomment %}{{ address.period.end | remove: '-' }}
+{% endcapture -%}
+{{ XAD | strip_newlines }}
+~
+{%- endfor -%}
+{% endcapture -%}
+{{ repeats | strip_newlines | remove_char_from_end: '~' -}}

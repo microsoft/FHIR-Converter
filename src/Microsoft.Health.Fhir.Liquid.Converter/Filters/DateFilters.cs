@@ -66,7 +66,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return dateTimeObject.ToFhirString(outputTimeZoneHandling);
         }
 
-        public static string FormatAsDateTime(string input, string timeZoneHandling = "local")
+        public static string FormatAsDateTime(string input, string timeZoneHandling = "preserve")
         {
             if (string.IsNullOrEmpty(input))
             {
@@ -89,6 +89,26 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
 
             return dateTimeObject.ToFhirString(outputTimeZoneHandling);
+        }
+
+        public static string FormatAsHl7DateTime(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return input;
+            }
+
+            PartialDateTime dateTimeObject;
+            try
+            {
+                dateTimeObject = new PartialDateTime(input, DateTimeType.Fhir);
+            }
+            catch (Exception)
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
+            }
+
+            return dateTimeObject.ToString();
         }
 
         public static string Now(string input, string format = "yyyy-MM-ddTHH:mm:ss.FFFZ")

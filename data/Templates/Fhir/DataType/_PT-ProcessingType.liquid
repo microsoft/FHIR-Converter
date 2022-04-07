@@ -1,0 +1,6 @@
+{% comment %} https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/PT {% endcomment %}
+{% capture PT %}
+{% comment %} 1 Processing Id   {% endcomment %}{% if id %}{{ id }}{% endif %}^
+{% comment %} 2 Processing Mode {% endcomment %}{% if code %}{{ mode }}{% endif %}^
+{% endcapture %}
+{{ PT | strip_newlines }}

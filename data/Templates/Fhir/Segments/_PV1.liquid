@@ -1,0 +1,59 @@
+{%- comment %}https://hl7-definition.caristix.com/v2/HL7v2.8/Segments/PV1{% endcomment -%}
+{%- capture PV1 -%}
+{% comment %} 0 Message Type                 {% endcomment %}PV1|
+{% comment %} 1 Set Id - Pv1                 {% endcomment %}{{ setID }}|
+{% comment %} 2 Patient Class                {% endcomment %}{{ patientClass }}|
+{% comment %} 3 Assigned Patient Location    {% endcomment %}|
+{% comment %} 4 Admission Type               {% endcomment %}|
+{% comment %} 5 Preadmit Number              {% endcomment %}|
+{% comment %} 6 Prior Patient Location       {% endcomment %}|
+{% comment %} 7 Attending Doctor             {% endcomment %}|
+{% comment %} 8 Referring Doctor             {% endcomment %}|
+{% comment %} 9 Consulting Doctor            {% endcomment %}|
+{% comment %} 10 Hospital Service            {% endcomment %}|
+{% comment %} 11 Temporary Location          {% endcomment %}|
+{% comment %} 12 Preadmit Test Indicator     {% endcomment %}|
+{% comment %} 13 Re-admission Indicator      {% endcomment %}|
+{% comment %} 14 Admit Source                {% endcomment %}|
+{% comment %} 15 Ambulatory Status           {% endcomment %}|
+{% comment %} 16 Vip Indicator               {% endcomment %}|
+{% comment %} 17 Admitting Doctor            {% endcomment %}|
+{% comment %} 18 Patient Type                {% endcomment %}|
+{% comment %} 19 Visit Number                {% endcomment %}|
+{% comment %} 20 Financial Class             {% endcomment %}|
+{% comment %} 21 Charge Price Indicator      {% endcomment %}|
+{% comment %} 22 Courtesy Code               {% endcomment %}|
+{% comment %} 23 Credit Rating               {% endcomment %}|
+{% comment %} 24 Contract Code               {% endcomment %}|
+{% comment %} 25 Contract Effective Date     {% endcomment %}|
+{% comment %} 26 Contract Amount             {% endcomment %}|
+{% comment %} 27 Contract Period             {% endcomment %}|
+{% comment %} 28 Interest Code               {% endcomment %}|
+{% comment %} 29 Transfer To Bad Debt Code   {% endcomment %}|
+{% comment %} 30 Transfer To Bad Debt Date   {% endcomment %}|
+{% comment %} 31 Bad Debt Agency Code        {% endcomment %}|
+{% comment %} 32 Bad Debt Transfer Amount    {% endcomment %}|
+{% comment %} 33 Bad Debt Recovery Amount    {% endcomment %}|
+{% comment %} 34 Delete Account Indicator    {% endcomment %}|
+{% comment %} 35 Delete Account Date         {% endcomment %}|
+{% comment %} 36 Discharge Disposition       {% endcomment %}|
+{% comment %} 37 Discharged To Location      {% endcomment %}|
+{% comment %} 38 Diet Type                   {% endcomment %}|
+{% comment %} 39 Servicing Facility          {% endcomment %}|
+{% comment %} 40 Bed Status                  {% endcomment %}|
+{% comment %} 41 Account Status              {% endcomment %}|
+{% comment %} 42 Pending Location            {% endcomment %}|
+{% comment %} 43 Prior Temporary Location    {% endcomment %}|
+{% comment %} 44 Admit Date/Time             {% endcomment %}|
+{% comment %} 45 Discharge Date/Time         {% endcomment %}|
+{% comment %} 46 Current Patient Balance     {% endcomment %}|
+{% comment %} 47 Total Charges               {% endcomment %}|
+{% comment %} 48 Total Adjustments           {% endcomment %}|
+{% comment %} 49 Total Payments              {% endcomment %}|
+{% comment %} 50 Alternate Visit ID          {% endcomment %}|
+{% comment %} 51 Visit Indicator             {% endcomment %}|
+{% comment %} 52 Other Healthcare Provider   {% endcomment %}|
+{% comment %} 53 Service Episode Description {% endcomment %}|
+{% comment %} 54 Service Episode Indentifier {% endcomment %}
+{%- endcapture -%}
+{{- PV1 | strip_newlines | regex_replace: '\|(\|+)$', '' -}}

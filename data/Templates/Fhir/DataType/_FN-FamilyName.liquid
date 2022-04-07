@@ -1,0 +1,14 @@
+{% comment -%}
+Example of Input:
+{
+    "surname": "EVERYMAN",
+}
+{% endcomment -%}
+{% capture FN -%}
+{% comment %} 1 Surname        {% endcomment %}{{ surname }}&
+{% comment %} 2 Own Prefix     {% endcomment %}&
+{% comment %} 3 Own Surname    {% endcomment %}&
+{% comment %} 4 Spouse Prefix  {% endcomment %}&
+{% comment %} 5 Spouse Surname {% endcomment %}
+{% endcapture -%}
+{{ FN | strip_newlines }}

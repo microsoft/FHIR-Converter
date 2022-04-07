@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
@@ -77,11 +78,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
             var dictionary = new Dictionary<string, object> { { DataKey, data } };
             var context = CreateContext(templateProvider, dictionary);
-            var rawResult = RenderTemplates(template, context);
-            var result = PostProcessor.Process(rawResult);
+            var result = RenderTemplates(template, context);
+
+
             CreateTraceInfo(data, traceInfo);
 
-            return result.ToString(Formatting.Indented);
+            if (_settings?.PostProcess ?? true)
+            {
+                var processedResult = PostProcessor.Process(result);
+                return processedResult.ToString(Formatting.Indented);
+            }
+            else
+            {
+                return result;
+            }
         }
 
         protected string RenderTemplates(Template template, Context context)
