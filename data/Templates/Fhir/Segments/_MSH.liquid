@@ -26,4 +26,4 @@
 {% comment %} 24 Sending Network Address                 {% endcomment %}|
 {% comment %} 25 Receiving Network Address               {% endcomment %}
 {%- endcapture -%}
-{{- MSH | strip_newlines -}}
+{{- MSH | strip_newlines | regex_replace: '\|(\|+)$', '' -}}

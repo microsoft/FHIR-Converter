@@ -9,4 +9,4 @@
 {% comment %} 6 Event Occurred          {% endcomment %}|
 {% comment %} 7 Event Facility          {% endcomment %}
 {%- endcapture -%}
-{{- EVN | strip_newlines -}}
+{{- EVN | strip_newlines | regex_replace: '\|(\|+)$', '' -}}

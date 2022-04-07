@@ -56,4 +56,4 @@
 {% comment %} 53 Service Episode Description {% endcomment %}|
 {% comment %} 54 Service Episode Indentifier {% endcomment %}
 {%- endcapture -%}
-{{- PV1 | strip_newlines -}}
+{{- PV1 | strip_newlines | regex_replace: '\|(\|+)$', '' -}}
