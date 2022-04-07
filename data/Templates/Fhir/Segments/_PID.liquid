@@ -66,4 +66,4 @@
 {% comment %} 39 Tribal Citizenship                    {% endcomment %}{% comment %}CA^Canada^ISO3166_1{% endcomment %}|
 {% comment %} 40 Patient Telecommunication Information {% endcomment %}{% comment %}89898989^WPN^Internet{% endcomment %}
 {% endcapture -%}
-{{ PID | strip_newlines }}
+{{ PID | strip_newlines | regex_replace: '\|(\|+)$', '' }}

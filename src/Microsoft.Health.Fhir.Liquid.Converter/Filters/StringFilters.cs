@@ -110,5 +110,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             return data.TrimEnd(c);
         }
+
+        public static string RegexReplace(string data, string pattern, string replacement)
+        {
+            return Regex.Replace(data, pattern, replacement);
+        }
     }
 }
