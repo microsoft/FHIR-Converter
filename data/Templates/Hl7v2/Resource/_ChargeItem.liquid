@@ -1,0 +1,99 @@
+{% evaluate Practitioner_ID_NTE_5 using 'ID/Practitioner' XCN: NTE.5 -%}
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "ChargeItem",
+        "id":"{{ ID }}",
+        "status": "unknown",
+        "identifier" : [
+            {% if FT1.2 -%}
+            { 
+                "value": "{{FT1.2.Value}}",
+                {% if FT1.13.3 -%}
+                    "system": "http://example.com/v2-to-fhir-converter/Identifier/{{FT1.13.3.Value}}",
+                {% endif -%}
+                "type": {
+                    "coding": [
+                        {
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/identifier-type-code",                           
+                            "code" : "TID",
+                            "display" : "ChargeItem Transaction ID",
+                        }
+                    ],
+                }
+            },
+            {% endif -%}
+        ],
+        {% unless FT1.4.2 -%}
+            "occurrenceDateTime" : "{{ FT1.4.1.Value | format_as_date_time }}",
+        {% endunless -%}
+        {% if FT1.4.2 -%}
+            "occurrencePeriod" : { 
+                "start" :  "{{ FT1.4.1.Value | format_as_date_time }}",
+                "end" :  "{{ FT1.4.2.Value | format_as_date_time }}",
+             },
+        {% endif -%}
+        "enteredDate" : "{{ FT1.5.Value | format_as_date_time }}",
+        "code" : {
+            {% include 'DataType/CWECodeableConcept' CWE: FT1.7 -%}
+        },
+        {% if FT1.10 -%}
+        "quantity" : {
+            "value": {{FT1.10.Value}},
+        },
+        {% endif -%}
+        {% if FT1.11.1 -%}
+        "priceOverride" : { 
+            "value" : {{FT1.11.1.1}},
+            "currency" : "{{FT1.11.1.2}}", 
+        },
+        {% endif -%}
+        {% unless FT1.11.1 -%}
+            {% if FT1.12.1 -%}
+            "priceOverride" : { 
+                "value" : {{FT1.12.1.1}},
+                "currency" : "{{FT1.12.1.2}}", 
+            },
+            {% endif -%}
+        {% endunless %}    
+        "reason" : [
+            {% for ft1_19 in FT1.19.Repeats  %}
+            { 
+                {% include 'DataType/CWECodeableConcept' CWE: ft1_19 -%}
+            },
+            {% endfor -%}
+        ],
+        "service" : [
+            {% if procedure_ft1_25 -%}
+            {
+                "reference":"Procedure/{{procedure_ft1_25}}",
+                "type": "Procedure",
+            },
+            {% endif -%}
+            {% if medicationdispense_ft1_29 -%}
+            {
+                "reference":"MedicationDispense/{{ medicationdispense_ft1_29 }}",
+                "type": "MedicationDispense",
+            },
+            {% endif -%}
+        ],
+        "note": [
+            {% if NTE %}
+            {
+                "text": "{{NTE.3.Value}}",
+                "time": "{{ NTE.6.Value | format_as_date_time }}",
+                {% if Practitioner_ID_NTE_5 %}
+                    "authorReference":
+                    {
+                        "reference":"Practitioner/{{ Practitioner_ID_NTE_5 }}",
+                    }
+                {% endif %} 
+            },
+            {% endif %}  
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"ChargeItem/{{ ID }}",
+    },
+},

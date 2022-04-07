@@ -2,41 +2,94 @@
     "coding":
     [
         {
-                "code":"{{ CWE.1 }}",
-                "display":"{{ CWE.2 }}",
-
+            {% if mapping -%}
+                "code":"{{ CWE.1 | get_property: mapping, 'code' }}",
+                {% capture displayURL %}{{ CWE.1 | get_property: mapping, 'display' }}{% endcapture %}
+                    "display":"{{ displayURL }}",
+                {% if displayURL ==  CWE.1 %}
+                    "display":"{{ CWE.2 }}",
+                {% endif %}
                 {% if CWE.3 %}
                     "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.3 | replace: ' ', '-'}}",
+                {% endif %}
+                "system":"{{ CWE.1 | get_property: mapping, 'system' }}",
+                "version":"{{ CWE.1 | get_property: mapping, 'version' }}",
+                "version":"{{ CWE.7 }}",
+            {% else %}
+                "code":"{{ CWE.1 }}",
+                "display":"{{ CWE.2 }}",
+                {% if CWE.3 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.3 | replace: ' ', '-'}}",
+                {% endif %}
+                {% if CWE.3 and TQ1 %}
+                    "system":"http://terminology.hl7.org/CodeSystem/v2-0335",
                 {% endif %}
                 {% capture temp %}{{ CWE.3 | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
                 {% if temp%}
                     "system":"{{temp}}",              
                 {% endif %}
                 "version":"{{ CWE.7 }}",
+            {% endif -%}
         },
         {
+            {% if mapping -%}
+                "code":"{{ CWE.4 | get_property: mapping, 'code' }}",
+                {% capture displayURL %}{{ CWE.4 | get_property: mapping, 'display' }}{% endcapture %}
+                    "display":"{{ displayURL }}",
+                {% if displayURL ==  CWE.4 %}
+                    "display":"{{ CWE.5 }}",
+                {% endif %}
+                {% if CWE.6 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.6 | replace: ' ', '-'}}",
+                {% endif %}
+                "system":"{{ CWE.4 | get_property: mapping, 'system' }}",
+                "version":"{{ CWE.4 | get_property: mapping, 'version' }}",
+                "version":"{{ CWE.8 }}",
+            {% else -%}
                 "code":"{{ CWE.4 }}",
                 "display":"{{ CWE.5 }}",
                 {% if CWE.6 %}
                     "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.6 | replace: ' ', '-'}}",
+                {% endif %}
+                {% if CWE.6 and TQ1 %}
+                    "system":"http://terminology.hl7.org/CodeSystem/v2-0335",
                 {% endif %}
                 {% capture temp %}{{ CWE.6 | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
                 {% if temp%}
                     "system":"{{temp}}",              
                 {% endif %}
                 "version":"{{ CWE.8 }}",
+            {% endif -%}
         },
         {
+            {% if mapping -%}
+                "code":"{{ CWE.10 | get_property: mapping, 'code' }}",
+                {% capture displayURL %}{{ CWE.10 | get_property: mapping, 'display' }}{% endcapture %}
+                    "display":"{{ displayURL }}",
+                {% if displayURL ==  CWE.10 %}
+                    "display":"{{ CWE.11 }}",
+                {% endif %}
+                {% if CWE.12 %}
+                    "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.12 | replace: ' ', '-'}}",
+                {% endif %}
+                "system":"{{ CWE.10 | get_property: mapping, 'system' }}",
+                "version":"{{ CWE.10 | get_property: mapping, 'version' }}",
+                "version":"{{ CWE.13 }}",
+            {% else -%}
                 "code":"{{ CWE.10 }}",
                 "display":"{{ CWE.11 }}",
                 {% if CWE.12 %}
                     "system":"http://example.com/v2-to-fhir-converter/CodeSystem/{{CWE.12 | replace: ' ', '-'}}",
+                {% endif %}
+                {% if CWE.12 and TQ1 %}
+                    "system":"http://terminology.hl7.org/CodeSystem/v2-0335",
                 {% endif %}
                 {% capture temp %}{{ CWE.12 | get_property: 'CodeSystem/CodeSystemUrl', 'system' }}{% endcapture %}
                 {% if temp%}
                     "system":"{{temp}}",              
                 {% endif %}
                 "version":"{{ CWE.13 }}",
+            {% endif -%}
         },
     ],
     "text":"{{ CWE.9 }}",

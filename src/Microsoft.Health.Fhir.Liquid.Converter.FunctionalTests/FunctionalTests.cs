@@ -34,8 +34,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new[] { @"ADT_A04", @"ADT-A04-02.hl7", @"ADT-A04-02-expected.json" },
                 new[] { @"ADT_A05", @"ADT-A05-01.hl7", @"ADT-A05-01-expected.json" },
                 new[] { @"ADT_A05", @"ADT-A05-02.hl7", @"ADT-A05-02-expected.json" },
+                new[] { @"ADT_A06", @"ADT-A06-01.hl7", @"ADT-A06-01-expected.json" },
+                new[] { @"ADT_A06", @"ADT-A06-02.hl7", @"ADT-A06-02-expected.json" },
+                new[] { @"ADT_A07", @"ADT-A07-01.hl7", @"ADT-A07-01-expected.json" },
+                new[] { @"ADT_A07", @"ADT-A07-02.hl7", @"ADT-A07-02-expected.json" },
                 new[] { @"ADT_A08", @"ADT-A08-01.hl7", @"ADT-A08-01-expected.json" },
                 new[] { @"ADT_A08", @"ADT-A08-02.hl7", @"ADT-A08-02-expected.json" },
+                new[] { @"ADT_A09", @"ADT-A09-01.hl7", @"ADT-A09-01-expected.json" },
+                new[] { @"ADT_A09", @"ADT-A09-02.hl7", @"ADT-A09-02-expected.json" },
+                new[] { @"ADT_A10", @"ADT-A10-01.hl7", @"ADT-A10-01-expected.json" },
+                new[] { @"ADT_A10", @"ADT-A10-02.hl7", @"ADT-A10-02-expected.json" },
                 new[] { @"ADT_A11", @"ADT-A11-01.hl7", @"ADT-A11-01-expected.json" },
                 new[] { @"ADT_A11", @"ADT-A11-02.hl7", @"ADT-A11-02-expected.json" },
                 new[] { @"ADT_A13", @"ADT-A13-01.hl7", @"ADT-A13-01-expected.json" },
@@ -58,6 +66,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new[] { @"ADT_A29", @"ADT-A29-02.hl7", @"ADT-A29-02-expected.json" },
                 new[] { @"ADT_A31", @"ADT-A31-01.hl7", @"ADT-A31-01-expected.json" },
                 new[] { @"ADT_A31", @"ADT-A31-02.hl7", @"ADT-A31-02-expected.json" },
+                new[] { @"ADT_A40", @"ADT-A40-01.hl7", @"ADT-A40-01-expected.json" },
+                new[] { @"ADT_A40", @"ADT-A40-02.hl7", @"ADT-A40-02-expected.json" },
+                new[] { @"ADT_A41", @"ADT-A41-01.hl7", @"ADT-A41-01-expected.json" },
+                new[] { @"ADT_A41", @"ADT-A41-02.hl7", @"ADT-A41-02-expected.json" },
+                new[] { @"ADT_A45", @"ADT-A45-01.hl7", @"ADT-A45-01-expected.json" },
+                new[] { @"ADT_A45", @"ADT-A45-02.hl7", @"ADT-A45-02-expected.json" },
                 new[] { @"ADT_A47", @"ADT-A47-01.hl7", @"ADT-A47-01-expected.json" },
                 new[] { @"ADT_A47", @"ADT-A47-02.hl7", @"ADT-A47-02-expected.json" },
                 new[] { @"ADT_A60", @"ADT-A60-01.hl7", @"ADT-A60-01-expected.json" },
@@ -78,20 +92,70 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new[] { @"SIU_S26", @"SIU-S26-01.hl7", @"SIU-S26-01-expected.json" },
                 new[] { @"SIU_S26", @"SIU-S26-02.hl7", @"SIU-S26-02-expected.json" },
 
-                new[] { "ORU_R01", "ORU-R01-01.hl7",  @"ORU-R01-01-expected.json"},
+                new[] { @"ORU_R01", @"ORU-R01-01.hl7",  @"ORU-R01-01-expected.json" },
 
                 new[] { @"ORM_O01", @"ORM-O01-01.hl7", @"ORM-O01-01-expected.json" },
                 new[] { @"ORM_O01", @"ORM-O01-02.hl7", @"ORM-O01-02-expected.json" },
                 new[] { @"ORM_O01", @"ORM-O01-03.hl7", @"ORM-O01-03-expected.json" },
+                new[] { @"ORM_O01", @"ORM-O01-04.hl7", @"ORM-O01-04-expected.json" },
+                new[] { @"ORM_O01", @"ORM-O01-05.hl7", @"ORM-O01-05-expected.json" },
+                new[] { @"ORM_O01", @"ORM-O01-06.hl7", @"ORM-O01-06-expected.json" },
 
-                new[] { "MDM_T01", "MDM-T01-01.hl7",  @"MDM-T01-01-expected.json"},
-                new[] { "MDM_T01", "MDM-T01-02.hl7",  @"MDM-T01-02-expected.json"},
-                new[] { "MDM_T02", "MDM-T02-01.hl7",  @"MDM-T02-01-expected.json"},
-                new[] { "MDM_T02", "MDM-T02-02.hl7",  @"MDM-T02-02-expected.json"},
-                new[] { "MDM_T02", "MDM-T02-03.hl7",  @"MDM-T02-03-expected.json"},
+                new[] { @"MDM_T01", @"MDM-T01-01.hl7",  @"MDM-T01-01-expected.json" },
+                new[] { @"MDM_T01", @"MDM-T01-02.hl7",  @"MDM-T01-02-expected.json" },
+                new[] { @"MDM_T02", @"MDM-T02-01.hl7",  @"MDM-T02-01-expected.json" },
+                new[] { @"MDM_T02", @"MDM-T02-02.hl7",  @"MDM-T02-02-expected.json" },
+                new[] { @"MDM_T02", @"MDM-T02-03.hl7",  @"MDM-T02-03-expected.json" },
+                new[] { @"MDM_T05", @"MDM-T05-01.hl7",  @"MDM-T05-01-expected.json" },
+                new[] { @"MDM_T05", @"MDM-T05-02.hl7",  @"MDM-T05-02-expected.json" },
+                new[] { @"MDM_T06", @"MDM-T06-01.hl7",  @"MDM-T06-01-expected.json" },
+                new[] { @"MDM_T06", @"MDM-T06-02.hl7",  @"MDM-T06-02-expected.json" },
+                new[] { @"MDM_T09", @"MDM-T09-01.hl7",  @"MDM-T09-01-expected.json" },
+                new[] { @"MDM_T09", @"MDM-T09-02.hl7",  @"MDM-T09-02-expected.json" },
+                new[] { @"MDM_T10", @"MDM-T10-01.hl7",  @"MDM-T10-01-expected.json" },
+                new[] { @"MDM_T10", @"MDM-T10-02.hl7",  @"MDM-T10-02-expected.json" },
 
-                new[] { "OML_O21", "OML-O21-01.hl7",  @"OML-O21-01-expected.json"},
-                new[] { "OML_O21", "OML-O21-02.hl7",  @"OML-O21-02-expected.json"},
+                new[] { @"RDE_O11", @"RDE-O11-01.hl7", @"RDE-O11-01-expected.json" },
+                new[] { @"RDE_O11", @"RDE-O11-02.hl7", @"RDE-O11-02-expected.json" },
+                new[] { @"RDE_O25", @"RDE-O25-01.hl7", @"RDE-O25-01-expected.json" },
+                new[] { @"RDE_O25", @"RDE-O25-02.hl7", @"RDE-O25-02-expected.json" },
+
+                new[] { @"RDS_O13", @"RDS-O13-01.hl7", @"RDS-O13-01-expected.json" },
+                new[] { @"RDS_O13", @"RDS-O13-02.hl7", @"RDS-O13-02-expected.json" },
+
+                new[] { @"OML_O21", @"OML-O21-01.hl7",  @"OML-O21-01-expected.json" },
+                new[] { @"OML_O21", @"OML-O21-02.hl7",  @"OML-O21-02-expected.json" },
+                new[] { @"OML_O21", @"OML-O21-03.hl7",  @"OML-O21-03-expected.json" },
+
+                new[] { @"OUL_R22", @"OUL-R22-01.hl7",  @"OUL-R22-01-expected.json" },
+                new[] { @"OUL_R22", @"OUL-R22-02.hl7",  @"OUL-R22-02-expected.json" },
+                new[] { @"OUL_R23", @"OUL-R23-01.hl7",  @"OUL-R23-01-expected.json" },
+                new[] { @"OUL_R23", @"OUL-R23-02.hl7",  @"OUL-R23-02-expected.json" },
+                new[] { @"OUL_R24", @"OUL-R24-01.hl7",  @"OUL-R24-01-expected.json" },
+                new[] { @"OUL_R24", @"OUL-R24-02.hl7",  @"OUL-R24-02-expected.json" },
+
+                new[] { @"VXU_V04", @"VXU-V04-01.hl7",  @"VXU-V04-01-expected.json" },
+                new[] { @"VXU_V04", @"VXU-V04-02.hl7",  @"VXU-V04-02-expected.json" },
+
+                new[] { @"BAR_P01", @"BAR-P01-01.hl7", @"BAR-P01-01-expected.json" },
+                new[] { @"BAR_P01", @"BAR-P01-02.hl7", @"BAR-P01-02-expected.json" },
+                new[] { @"BAR_P02", @"BAR-P02-01.hl7", @"BAR-P02-01-expected.json" },
+                new[] { @"BAR_P02", @"BAR-P02-02.hl7", @"BAR-P02-02-expected.json" },
+                new[] { @"BAR_P12", @"BAR-P12-01.hl7", @"BAR-P12-01-expected.json" },
+                new[] { @"BAR_P12", @"BAR-P12-02.hl7", @"BAR-P12-02-expected.json" },
+
+                new[] { @"DFT_P03", @"DFT-P03-01.hl7", @"DFT-P03-01-expected.json" },
+                new[] { @"DFT_P03", @"DFT-P03-02.hl7", @"DFT-P03-02-expected.json" },
+                new[] { @"DFT_P11", @"DFT-P11-01.hl7", @"DFT-P11-01-expected.json" },
+                new[] { @"DFT_P11", @"DFT-P11-02.hl7", @"DFT-P11-02-expected.json" },
+
+                new[] { @"OMG_O19", @"OMG-O19-01.hl7", @"OMG-O19-01-expected.json" },
+                new[] { @"OMG_O19", @"OMG-O19-02.hl7", @"OMG-O19-02-expected.json" },
+
+                new[] { @"REF_I12", @"REF-I12-01.hl7", @"REF-I12-01-expected.json" },
+                new[] { @"REF_I12", @"REF-I12-02.hl7", @"REF-I12-02-expected.json" },
+                new[] { @"REF_I14", @"REF-I14-01.hl7", @"REF-I14-01-expected.json" },
+                new[] { @"REF_I14", @"REF-I14-02.hl7", @"REF-I14-02-expected.json" },
 
                 new[] { @"ADT_A01", @"ADT01-23.hl7", @"ADT01-23-expected.json" },
                 new[] { @"ADT_A01", @"ADT01-28.hl7", @"ADT01-28-expected.json" },
@@ -163,6 +227,47 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 Path.Join(Constants.SampleDataDirectory, "Json", item[1]),
                 Path.Join(Constants.ExpectedDataFolder, "Json", item[0], item[2]),
             });
+        }
+
+        [Fact]
+        public void GivenCcdaMessageForTimezoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
+        {
+            var inputFile = Path.Combine("TestData", "TimezoneHandling", "Input", "CcdaTestTimezoneInput.ccda");
+            var ccdaProcessor = new CcdaProcessor();
+            var templateDirectory = Path.Join("TestData", "TimezoneHandling", "Template");
+
+            var inputContent = File.ReadAllText(inputFile);
+            var actualContent = ccdaProcessor.Convert(inputContent, "CcdaTestTimezoneTemplate", new TemplateProvider(templateDirectory, DataType.Ccda));
+
+            var actualObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(actualContent);
+
+            Assert.Equal("2001-01", actualObject["datetime1"]);
+            Assert.Equal("2001-01-01", actualObject["datetime2"]);
+            Assert.Equal("2001-01-01", actualObject["datetime3"]);
+            Assert.Contains("2001-11-11T12:00:00", actualObject["datetime4"].ToString());
+            Assert.Contains("2001-11-11T12:23:00", actualObject["datetime5"].ToString());
+            Assert.Equal("2020-01-01T01:01:01+08:00", actualObject["datetime6"]);
+        }
+
+        [Fact]
+        public void GivenHl7v2MessageForTimeZoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
+        {
+            var inputFile = Path.Combine("TestData", "TimezoneHandling", "Input", "Hl7v2TestTimezoneInput.hl7v2");
+            var hl7v2Processor = new Hl7v2Processor();
+            var templateDirectory = Path.Join("TestData", "TimezoneHandling", "Template");
+
+            var inputContent = File.ReadAllText(inputFile);
+            var traceInfo = new Hl7v2TraceInfo();
+            var actualContent = hl7v2Processor.Convert(inputContent, "Hl7v2TestTimezoneTemplate", new TemplateProvider(templateDirectory, DataType.Hl7v2), traceInfo);
+
+            var actualObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(actualContent);
+
+            Assert.Equal("2001-01", actualObject["datetime1"]);
+            Assert.Equal("2001-01-01", actualObject["datetime2"]);
+            Assert.Equal("2001-01-01", actualObject["datetime3"]);
+            Assert.Contains("2001-11-11T12:00:00", actualObject["datetime4"].ToString());
+            Assert.Contains("2001-11-11T12:23:00", actualObject["datetime5"].ToString());
+            Assert.Equal("2020-01-01T01:01:01+08:00", actualObject["datetime6"]);
         }
 
         [Theory]

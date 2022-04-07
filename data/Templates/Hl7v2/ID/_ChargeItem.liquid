@@ -1,0 +1,8 @@
+{% capture identifiers -%}
+    {% if FT1.2 and FT1.4 and FT1.7 -%}
+        {{FT1.2.Value}},{{FT1.4.Value}},{{FT1.7.Value}}
+    {% elsif FT1 -%}
+        {{FT1.Value}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'ChargeItem', true, baseId | generate_uuid }}

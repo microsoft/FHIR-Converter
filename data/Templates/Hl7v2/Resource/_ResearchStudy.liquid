@@ -1,0 +1,25 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "ResearchStudy",
+        "id":"{{ ID }}",
+
+        {% if CTI -%}
+            "status":"active",
+        {% endif -%}
+      
+       "identifier" : [
+        { 
+            {% include 'DataType/EIIdentifier' EI: CTI.1 -%} 
+        },
+       ], 
+
+       "phase" : { 
+            {% include 'DataType/CWECodeableConcept' CWE: CTI.2 -%} 
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"ResearchStudy/{{ ID }}",
+    },
+},

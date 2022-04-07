@@ -1,7 +1,7 @@
 {
     "resourceType": "Bundle",
     "type": "batch",
-    "timestamp": "2019-05-04T18:12:05",
+    "timestamp": "2019-05-04T18:12:05+07:00",
     "identifier": {
         "value": "1270326314"
     },
@@ -52,10 +52,10 @@
                 "id": "312fba25-b9c6-151e-8c0c-45a36f66ed03",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T11:31:38.533Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-25T13:05:45.368Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
                 },
-                "occurredDateTime": "2019-05-04T18:12:05",
-                "recorded": "2019-05-04T18:12:05",
+                "occurredDateTime": "2019-05-04T18:12:05+07:00",
+                "recorded": "2019-05-04T18:12:05+07:00",
                 "agent": [
                     {
                         "type": {
@@ -97,7 +97,7 @@
                 "identifier": [
                     {
                         "value": "RDX",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-RDX"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/RDX"
                     }
                 ]
             },
@@ -114,15 +114,15 @@
                 "identifier": [
                     {
                         "value": "0000000001",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-MR"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/MR"
                     },
                     {
                         "value": "e167267c-16c9-4fe3-96ae-9cff5703e90a",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-EHRID"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/EHRID"
                     },
                     {
                         "value": "a1d4ee8aba494ca",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NIST"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NIST"
                     },
                     {
                         "value": "101-01-0001",
@@ -223,10 +223,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:256cf56f-8ec4-5af5-cf3f-4f9a833482be",
+            "fullUrl": "urn:uuid:2a662119-8a55-ffb1-ea18-93b55c4cd267",
             "resource": {
                 "resourceType": "Account",
-                "id": "256cf56f-8ec4-5af5-cf3f-4f9a833482be",
+                "id": "2a662119-8a55-ffb1-ea18-93b55c4cd267",
                 "identifier": [
                     {
                         "value": "1234"
@@ -248,7 +248,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Account/256cf56f-8ec4-5af5-cf3f-4f9a833482be"
+                "url": "Account/2a662119-8a55-ffb1-ea18-93b55c4cd267"
             }
         },
         {
@@ -302,7 +302,7 @@
                 "identifier": [
                     {
                         "value": "4356789876",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NPI"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NPI"
                     }
                 ],
                 "name": [
@@ -340,10 +340,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:1d17bd3e-c217-b488-dd0a-b87c0652a3f1",
+            "fullUrl": "urn:uuid:71ad901d-fc5c-765d-7012-c198085d47ff",
             "resource": {
                 "resourceType": "Location",
-                "id": "1d17bd3e-c217-b488-dd0a-b87c0652a3f1",
+                "id": "71ad901d-fc5c-765d-7012-c198085d47ff",
                 "name": "3N",
                 "mode": "instance",
                 "description": "3N--136--B--RES General Hospital--Inpatient",
@@ -358,16 +358,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/1d17bd3e-c217-b488-dd0a-b87c0652a3f1"
+                "url": "Location/71ad901d-fc5c-765d-7012-c198085d47ff"
             }
         },
         {
-            "fullUrl": "urn:uuid:d5dd2e32-efbc-854a-cf3c-2bd6a7ff075e",
+            "fullUrl": "urn:uuid:5a47ce8d-141e-3193-a24e-81a537800fe9",
             "resource": {
                 "resourceType": "Location",
-                "id": "d5dd2e32-efbc-854a-cf3c-2bd6a7ff075e",
+                "id": "5a47ce8d-141e-3193-a24e-81a537800fe9",
                 "partOf": {
-                    "reference": "Location/1d17bd3e-c217-b488-dd0a-b87c0652a3f1"
+                    "reference": "Location/71ad901d-fc5c-765d-7012-c198085d47ff"
                 },
                 "name": "136",
                 "mode": "instance",
@@ -383,16 +383,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/d5dd2e32-efbc-854a-cf3c-2bd6a7ff075e"
+                "url": "Location/5a47ce8d-141e-3193-a24e-81a537800fe9"
             }
         },
         {
-            "fullUrl": "urn:uuid:5783dafa-c6c0-e673-cca4-42087ee1831b",
+            "fullUrl": "urn:uuid:eac2c6fe-5b4b-3e08-7b42-617fa5cf049a",
             "resource": {
                 "resourceType": "Location",
-                "id": "5783dafa-c6c0-e673-cca4-42087ee1831b",
+                "id": "eac2c6fe-5b4b-3e08-7b42-617fa5cf049a",
                 "partOf": {
-                    "reference": "Location/d5dd2e32-efbc-854a-cf3c-2bd6a7ff075e"
+                    "reference": "Location/5a47ce8d-141e-3193-a24e-81a537800fe9"
                 },
                 "name": "B",
                 "mode": "instance",
@@ -408,14 +408,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/5783dafa-c6c0-e673-cca4-42087ee1831b"
+                "url": "Location/eac2c6fe-5b4b-3e08-7b42-617fa5cf049a"
             }
         },
         {
-            "fullUrl": "urn:uuid:9e9deb57-14b7-3c6a-e9da-3874ac02bb5f",
+            "fullUrl": "urn:uuid:35981c0d-45b4-8d99-14cc-38e527208fc5",
             "resource": {
                 "resourceType": "Location",
-                "id": "9e9deb57-14b7-3c6a-e9da-3874ac02bb5f",
+                "id": "35981c0d-45b4-8d99-14cc-38e527208fc5",
                 "name": "RES General Hospital",
                 "mode": "instance",
                 "description": "3N--136--B--RES General Hospital--Inpatient",
@@ -430,14 +430,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/9e9deb57-14b7-3c6a-e9da-3874ac02bb5f"
+                "url": "Location/35981c0d-45b4-8d99-14cc-38e527208fc5"
             }
         },
         {
-            "fullUrl": "urn:uuid:99425718-6c7d-d427-2df3-db51299fdb0b",
+            "fullUrl": "urn:uuid:e0b0703e-430a-eb3e-2d5e-d8c44fce7a63",
             "resource": {
                 "resourceType": "Encounter",
-                "id": "99425718-6c7d-d427-2df3-db51299fdb0b",
+                "id": "e0b0703e-430a-eb3e-2d5e-d8c44fce7a63",
                 "class": {
                     "code": "IMP",
                     "display": "inpatient encounter",
@@ -448,7 +448,7 @@
                     {
                         "status": "active",
                         "location": {
-                            "reference": "Location/1d17bd3e-c217-b488-dd0a-b87c0652a3f1"
+                            "reference": "Location/71ad901d-fc5c-765d-7012-c198085d47ff"
                         }
                     }
                 ],
@@ -501,27 +501,32 @@
                     }
                 ],
                 "period": {
-                    "start": "2018-10-17T22:28:05"
+                    "start": "2018-10-17T22:28:05+07:00"
                 },
                 "text": {
                     "status": "generated",
                     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Visit Description: </span></p></div>"
                 },
+                "account": [
+                    {
+                        "reference": "Account/2a662119-8a55-ffb1-ea18-93b55c4cd267"
+                    }
+                ],
                 "subject": {
                     "reference": "Patient/f7a9494a-3fac-e0e1-78d8-d7c20410ca33"
                 }
             },
             "request": {
                 "method": "PUT",
-                "url": "Encounter/99425718-6c7d-d427-2df3-db51299fdb0b"
+                "url": "Encounter/e0b0703e-430a-eb3e-2d5e-d8c44fce7a63"
             }
         },
         {
-            "fullUrl": "urn:uuid:ef22db25-97a7-24b4-938f-da30c377b020",
+            "fullUrl": "urn:uuid:fc0198ec-0818-11a6-316a-de954df347ab",
             "resource": {
                 "resourceType": "Provenance",
-                "id": "ef22db25-97a7-24b4-938f-da30c377b020",
-                "recorded": "2018-10-17T02:55:43",
+                "id": "fc0198ec-0818-11a6-316a-de954df347ab",
+                "recorded": "2018-10-17T02:55:43+07:00",
                 "activity": {
                     "text": "ADT^A04"
                 },
@@ -533,7 +538,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Provenance/ef22db25-97a7-24b4-938f-da30c377b020"
+                "url": "Provenance/fc0198ec-0818-11a6-316a-de954df347ab"
             }
         },
         {
@@ -642,7 +647,7 @@
                                 }
                             ]
                         },
-                        "system": "http://www.examplehealthplan.com/fhir/policyidentifier"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/policy-id"
                     }
                 ],
                 "status": "active",

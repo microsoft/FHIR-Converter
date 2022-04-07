@@ -13,6 +13,10 @@
         {{AIG.3.Value}}
     {% elsif AIG.4 -%}
         {{AIG.4.Value}}
+    {% elsif FT1.34 -%}
+        {{FT1.34.1.Value}},{{FT1.34.3.Value}},{{FT1.35.Value}}
+    {% elsif FT1 -%}
+        {{FT1.Value}}    
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'Device', false | generate_uuid }}

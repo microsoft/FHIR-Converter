@@ -39,7 +39,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
             int second = groups["second"].Success ? int.Parse(groups["second"].Value) : 0;
             int millisecond = groups["millisecond"].Success ? int.Parse(groups["millisecond"].Value) : 0;
 
-            var timeSpan = TimeSpan.FromHours(TimeZoneInfo.Local.GetUtcOffset(DateTime.Now).Hours);
+            var timeSpan = TimeZoneInfo.Local.GetUtcOffset(new DateTime(year, month, day, hour, minute, second, millisecond));
             if (groups["timeZone"].Success)
             {
                 if (groups["timeZone"].Value == "Z")
@@ -111,17 +111,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
                 };
             }
 
-            var timeZoneSuffix = string.Empty;
-            if (HasTimeZone)
-            {
-                // Using "Z" to represent zero timezone.
-                timeZoneSuffix = resultDateTime.Offset == TimeSpan.Zero ? "Z" : "%K";
-            }
-
-            if (timeZoneHandling == TimeZoneHandlingMethod.Utc)
-            {
-                timeZoneSuffix = "Z";
-            }
+            var timeZoneSuffix = resultDateTime.Offset == TimeSpan.Zero ? "Z" : "%K";
 
             var dateTimeFormat = Precision < DateTimePrecision.Milliseconds ? "yyyy-MM-ddTHH:mm:ss" + timeZoneSuffix : "yyyy-MM-ddTHH:mm:ss.fff" + timeZoneSuffix;
             return resultDateTime.ToString(dateTimeFormat);

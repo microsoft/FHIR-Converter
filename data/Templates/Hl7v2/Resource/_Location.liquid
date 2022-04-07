@@ -3,6 +3,7 @@
     "resource":{
         "resourceType": "Location",
         "id":"{{ ID }}",
+        {% include 'DataType/CWELocation' CWE: RXD.30 -%}
         {% include 'DataType/PL' PL: ROL.13 -%}
         {% include 'DataType/PL' PL: PL -%}
         {% include 'DataType/HDLocation' HD: EVN -%}
@@ -10,16 +11,24 @@
         {% include 'DataType/PL' PL: PRT.9.Repeats[0] -%}
         {% include 'DataType/DLDLocation' DLD: PV1 -%}
         {% include 'DataType/XONLocation' XON: ORC.21.Repeats[0] -%}
+        "name" : "{{ ACC.3.Value }}",
         "address":
         {
             {% include 'DataType/XAD' XAD: ORC.22.Repeats[0] -%}
             {% include 'DataType/XAD' XAD: RXA.28 -%}
+            {% include 'DataType/XAD' XAD: ACC.11 -%}
+            {% include 'DataType/XAD' XAD: RXD.31 -%}
         },
         "telecom":
         [
             {
                 {% include 'DataType/XTN' XTN: ORC.23.Repeats[0] -%}
             },
+            {% for RXD_34 in RXD.34.Repeats -%}
+            {
+                {% include 'DataType/XTN' XTN: RXD_34 -%}
+            },
+            {% endfor %}
         ],
         {% include 'DataType/PL' PL: RXA.27 -%}
     },

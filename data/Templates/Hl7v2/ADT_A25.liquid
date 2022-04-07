@@ -24,13 +24,6 @@
             {% evaluate provenanceId using 'ID/Provenance' MSH: firstSegments.MSH, baseId: patientId -%}
             {% include 'Resource/Provenance' Root_Template: 'ADT_A25', MSH: firstSegments.MSH, REF_BUNDLE: bundleID, ID: provenanceId -%}
             
-             {%- comment -%}
-        {% assign transformation_val = 'provenance_transformation' %}
-              {% evaluate provenanceOrganizationId using 'ID/Organization', prov_id: firstSegments.MSH -%}
-            {% evaluate provenanceTransformationId using 'ID/Provenance_transformation' prov_id: transformation_val -%}
-            {% include 'Resource/Organization' org_name: 'Microsoft Corporation', ID: provenanceOrganizationId -%}
-            {% include 'Resource/Provenance_transformation' Root_Template: 'ADT_A25', Provenance_Organization_ID: provenanceOrganizationId, REF_MSH: messageHeaderId, provenanceOrganizationId, ID: provenanceTransformationId -%}
-            {%- endcomment -%}    
             {% if firstSegments.MSH.4 -%}
                 {% if firstSegments.MSH.4.1 != "" and firstSegments.MSH.4.1 != null or firstSegments.MSH.4.2 != "" and firstSegments.MSH.4.2 != null or firstSegments.MSH.4.3 != "" and firstSegments.MSH.4.3 != null -%}
                     {% evaluate organization_ID_MSH_4 using 'ID/Organization' HD: firstSegments.MSH.4 -%}
@@ -71,7 +64,7 @@
         {% include 'Extensions/Patient/PatientExtension' ID: PatientId, PID: firstSegments.PID, PD1: firstSegments.PD1, PV1: firstSegments.PV1 -%}
         
         {% if firstSegments.PID.18 -%}
-            {% evaluate accountId using 'ID/Account' CX: firstSegments.PID.3 -%}
+            {% evaluate accountId using 'ID/Account' CX: firstSegments.PID.18, baseId: patientId -%}
             {% include 'Resource/Account' PID: firstSegments.PID, ID: accountId -%}
             {% include 'Reference/Account/Subject' ID: accountId, REF: fullPatientId -%}
             {% if firstSegments.PID.18.4.1 != "" and firstSegments.PID.18.4.1 != null and firstSegments.PID.18.4.2 != "" and firstSegments.PID.18.4.2 != null and firstSegments.PID.18.4.3 != "" and firstSegments.PID.18.4.3 != null -%}
@@ -209,6 +202,10 @@
                 {% include 'Resource/PLLocation' PL: firstSegments.PV1.6 -%}
             {% endif -%}
 
+            {% if firstSegments.PV1.11 -%}
+                {% include 'Resource/PLLocation' PL: firstSegments.PV1.11-%}
+            {% endif -%}
+
             {% if firstSegments.PV1.37 -%}
                 {% evaluate location_ID_PV1_37 using 'ID/Location' DLD: firstSegments.PV1.37 -%}
                 {% include 'Resource/Location' PV1: firstSegments.PV1.37, ID: location_ID_PV1_37-%}
@@ -232,11 +229,11 @@
                 {% include 'Resource/Organization', PV1: firstSegments.PV1.54.4, ID: Organization_ID_PV1_54_4 -%}
                 {% endif -%} 
                 {% evaluate EpisodeOfCare_ID using 'ID/EpisodeOfCare' PV1: firstSegments.PV1.54 -%}
-                {% include 'Resource/EpisodeOfCare' PV1: firstSegments.PV1, ID: EpisodeOfCare_ID, patientRefrenceID: fullPatientId, Root_Template: 'ADT_A25' -%}
+                {% include 'Resource/EpisodeOfCare' PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: EpisodeOfCare_ID, patientRefrenceID: fullPatientId, Root_Template: 'ADT_A25' -%}
             {% endif -%}
 
             {% evaluate encounterId using 'ID/Encounter' PV1: firstSegments.PV1, baseId: patientId -%}
-            {% include 'Resource/Encounter' Root_Template: 'ADT_A25', PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId -%}
+            {% include 'Resource/Encounter' Root_Template: 'ADT_A25', PV1: firstSegments.PV1, PV2: firstSegments.PV2, ID: encounterId, AccountId:accountId -%}
             {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
             {% include 'Extensions/Encounter/EncounterExtension' ID: encounterId, PV1: firstSegments.PV1, PV2: firstSegments.PV2, -%}
         {% endif -%}

@@ -73,9 +73,9 @@
                 "type" : { 
                    "coding": [
                         {
-                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-identifertype",
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/identifier-type-code",
                             "code" : "DOCI",
-                            "display" : "Document unique identifier"
+                            "display" : "Document Unique Identifier"
                         }
                     ],
                     "text" : "Document unique file name",
@@ -84,10 +84,17 @@
             {% endif -%}
         ],
          "relatesTo" : [
-            {% if TXA.13 -%}
+            {% if TXA.13 and type_msg != "MDM_T01" and type_msg != "MDM_T02" -%}
             {
                 "code" : "appends",
+                {% if type_msg == "MDM_T05" or type_msg == "MDM_T06" -%}
+                    "code" : "appends",
+                {% endif -%}
+                {% if type_msg == "MDM_T09" or type_msg == "MDM_T10" -%}
+                    "code" : "replaces",
+                {% endif -%}
                 "target" : { 
+                    "type": "DocumentReference",
                     "identifier":
                         {
                             {% include 'DataType/EIIdentifier' EI: TXA.13 -%}

@@ -8,6 +8,7 @@ Organization_ID_PRT_8: A resource Id, used to fill "organization.reference" prop
 Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" property. The resource is of "Organization" type and generated based on "ORC.21" HL7 V2 identifier.
 {% endcomment -%}
 
+{% evaluate Organization_ID_PRT_8 using 'ID/Organization' XON: PRT.8.Repeats[0] -%}
 {
     "fullUrl":"urn:uuid:{{ ID }}",
     "resource":{
@@ -19,9 +20,11 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
             "code": [
                 {
                     "coding": [
-                    {
-                        "code": "TECH",
-                    },
+                        {
+                            "code": "TN",
+                            "display": "Technician",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0443",
+                        },
                     ],
                 }
             ],
@@ -31,214 +34,464 @@ Organization_ID_ORC_21: A resource Id, used to fill "organization.reference" pro
             "code": [
                 {
                     "coding": [
-                    {
-                        "code": "TRANS",
-                    },
+                        {
+                            "code": "TR",
+                            "display": "Transcriptionist",
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0443",
+                        },
                     ],
                 }
             ],
             {% include 'DataType/NDLPractitionerRole' NDL: OBR_35 -%}
         {% endif %}
-        
+        {% if PRD %}
+            "code": [
+                {
+                    "coding": [
+                        {% for prd_1 in PRD.1.Repeats %}
+                            {% include 'DataType/CWECodeableConceptRepeatable' mapping: 'CodeSystem/ProviderRole_PractitionerRole', CWE: prd_1 -%},
+                        {% endfor %}
+                    ],
+                }
+            ],
+        {% endif %}
+        {% if PRT.4 %}
+            "code": [
+                {
+                    "coding": [
+                        {% include 'DataType/CWECodeableConceptRepeatable' mapping: 'CodeSystem/PractitionerRole_Participation', CWE: PRT.4 -%},
+                    ],
+                }
+            ],
+        {% endif %}
+        {% if ROL.3 %}
+            "code": [
+                {
+                    "coding": [
+                        {% include 'DataType/CWECodeableConceptRepeatable' mapping: 'CodeSystem/PractitionerRole_Participation', CWE: ROL.3 -%},
+                    ],
+                }
+            ],
+        {% endif %}
         "identifier":
         [
+            {%- comment -%}
             {
                 {% include 'DataType/EIIdentifier' EI: ROL.1 -%}
             },
+            
             {
                 {% include 'DataType/PLN' PLN: PRT.24 -%}
             },
+            {%- endcomment -%}
         ],
-        "code": [
-            {    
-                "coding" : [
+        "code": [{    
+            "coding" : [
+                {% if RXO or ORC_12 %}
+                    {  
+                        "code" : "OP",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
+                        "display" : "Ordering Provider",
+                    },
+                {% endif %}
+                {% if RQD_ORC_12 %}
+                    {  
+                        "code" : "OP",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
+                        "display" : "Ordering Provider",
+                    },
+                {% endif %}
+                {% if ORC_10 %}
+                    {  
+                        "code" : "EP",
+                        "display" : "Entering Provider",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
+                    },
+                {% endif %}
+                {% if ORC_19 %}
+                    {  
+                        "code" : "IP",
+                        "display" : "Initiating Provider",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
+                    },
+                {% endif %}
                 {% if OBXXCN1 %}
                     {  
-                        "code" : "ResponsibleObserver",
-                        "system" : "http://example.com/v2-to-fhir-converter/PractitionerRole",
+                        "code" : "RO",
+                        "display" : "Responsible Observer",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
                     },
                 {% endif %}
                 {% if OBXXCN2 %}
                     {
-                    "code" : "LabMedicalDirector",
-                    "system" : "http://example.com/v2-to-fhir-converter/PractitionerRole",
-                    }
+                        "code" : "MDIR",
+                        "display": "Medical Director",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
+                    },
                 {% endif %}
                 {% if SCH_12.12 %}
                     {
-                    "code" : "placer-contact",
-                    "display" : "Placer Contact",
-                    "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-practitioner-role",
-                    }
+                        "code" : "placer-contact",
+                        "display" : "Placer Contact",
+                        "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-practitioner-role",
+                    },
                 {% endif %}
                 {% if SCH_16.16 %}
                     {
-                    "code" : "filler-contact",
-                    "display" : "Filler Contact",
-                    "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-practitioner-role",
-                    }
+                        "code" : "filler-contact",
+                        "display" : "Filler Contact",
+                        "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-practitioner-role",
+                    },
                 {% endif %}
                 {% if SCH_20.20 %}
                     {
-                    "code" : "enterer",
-                    "display" : "Enterer",
-                    "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-practitioner-role",
-                    }
+                        "code" : "EP",
+                        "display" : "Entering Provider",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
+                    },
+                {% endif %}
+                {% if ORC_pracrole.12 -%}
+                    {
+                        "code" : "OP",
+                        "display" : "Ordering Provider",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
+                    },
+                {% endif %}
+                {% if OBR_serv.16 %}
+                    {
+                        "code" : "OP",
+                        "display" : "Ordering Provider",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
+                    },
+                {% endif %}
+                {% if RXE -%}
+                    {  
+                        "code" : "OP",
+                        "system" : "http://terminology.hl7.org/CodeSystem/v2-0443",
+                        "display" : "Ordering Provider",
+                    },
                 {% endif %}
                 ],
             },       
-                {
-                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Role', CWE: ROL.3 -%}
-                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: ROL.4 -%}
-                    {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/Participation', CWE: PRT.4 -%}
-                }
         ],
-        
+        {%- comment -%}
         {% include 'DataType/XCNPractitionerRole' XCN: ROL.4 -%}
+        {%- endcomment -%}
         "period":
         {
+            
+            {%- comment -%}
             "start":"{{ ROL.5.Value | format_as_date_time }}",
-            "start":"{{ PRT.11.Value | format_as_date_time }}",
             "end":"{{ ROL.6.Value | format_as_date_time }}",
+            "start":"{{ PRT.11.Value | format_as_date_time }}",
             "end":"{{ PRT.12.Value | format_as_date_time }}",
+            {%- endcomment -%}
+            "start":"{{ PRD.8.Value | format_as_date_time }}",
+            "end":"{{ PRD.9.Repeats[0].Value | format_as_date_time }}",
+            
+            
         },
         "telecom":
         [
-            {
-                {% include 'DataType/XTN' XTN: ROL.12 -%}
-            },
+            {% for rol_12 in ROL.12.Repeats %}
+                {
+                    {% include 'DataType/XTN' XTN: rol_12 -%}
+                },
+            {% endfor %}
+            {%- comment -%}
             {
                 {% include 'DataType/XTN' XTN: PRT.15.Repeats[0] -%}
             },
+            {%- endcomment -%}
         ],
         "location":
         [
-            {
-                {% if ROL.13 and Location_ID_ROL_13 -%}
-                    "reference":"Location/{{ Location_ID_ROL_13 }}",
+            {% if ROL.13 -%}
+
+                {% if ROL.13.5 or ROL.13.9 -%}
+                    {% if ROL.13.5 and ROL.13.9 -%}
+                        {% assign PL_Value_Except_PL5_PL9 = ROL.13.Value | remove: ROL.13.5.Value | remove: ROL.13.9.Value %}
+                    {% endif -%}
+                    {% if ROL.13.5 and ROL.13.9 == null or ROL.13.9 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= ROL.13.Value | remove: ROL.13.5.Value %}
+                    {% endif -%}
+                    {% if ROL.13.9 and ROL.13.5 == null or ROL.13.5 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= ROL.13.Value | remove: ROL.13.9.Value %}
+                    {% endif -%}
+                {% else -%}
+                    {% assign PL_Value_Except_PL5_PL9 = ROL.13.Value %}
                 {% endif -%}
-            },
+
+                {% if ROL.13.1 -%}               
+                    {% evaluate Location_ID_ROL_13 using 'ID/Location' PL_Field_Value: ROL.13.1, PL: ROL.13, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif ROL.13.2 -%}               
+                    {% evaluate Location_ID_ROL_13 using 'ID/Location' PL_Field_Value: ROL.13.2, PL: ROL.13, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif ROL.13.3 -%}               
+                    {% evaluate Location_ID_ROL_13 using 'ID/Location' PL_Field_Value: ROL.13.3, PL: ROL.13, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}            
+                {% elseif ROL.13.4 -%}              
+                    {% evaluate Location_ID_ROL_13 using 'ID/Location' PL_Field_Value: ROL.13.4, PL: ROL.13, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}                    
+                {% elseif ROL.13.7 -%}               
+                    {% evaluate Location_ID_ROL_13 using 'ID/Location' PL_Field_Value: ROL.13.7, PL: ROL.13, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}                   
+                {% elseif ROL.13.8 -%}               
+                    {% evaluate Location_ID_ROL_13 using 'ID/Location' PL_Field_Value: ROL.13.8, PL: ROL.13, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% endif %}
+                
+                {% if Location_ID_ROL_13 %}
+                    {
+                        "reference":"Location/{{ Location_ID_ROL_13 }}",
+                    },
+                {% endif %}
+
+            {% endif %}
+
             {% if SCH_12.15 -%}
+
+                {% if SCH_12.15.5 or SCH_12.15.9 -%}
+                    {% if SCH_12.15.5 and SCH_12.15.9 -%}
+                        {% assign PL_Value_Except_PL5_PL9 = SCH_12.15.Value | remove: SCH_12.15.5.Value | remove: SCH_12.15.9.Value %}
+                    {% endif -%}
+                    {% if SCH_12.15.5 and SCH_12.15.9 == null or SCH_12.15.9 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= SCH_12.15.Value | remove: SCH_12.15.5.Value %}
+                    {% endif -%}
+                    {% if SCH_12.15.9 and SCH_12.15.5 == null or SCH_12.15.5 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= SCH_12.15.Value | remove: SCH_12.15.9.Value %}
+                    {% endif -%}
+                {% else -%}
+                    {% assign PL_Value_Except_PL5_PL9 = SCH_12.15.Value %}
+                {% endif -%}
+
                 {% if SCH_12.15.1 -%}
                 {
-                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL: SCH_12.15.1 -%}
+                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL_Field_Value: SCH_12.15.1, PL: SCH_12.15, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     "reference":"Location/{{ Location_ID_SCH_12 }}",
                 },
                 {% elseif SCH_12.15.2 -%}
                 {
-                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL: SCH_12.15.2 -%}
+                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL_Field_Value: SCH_12.15.2, PL: SCH_12.15, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     "reference":"Location/{{ Location_ID_SCH_12 }}",
                 },
                 {% elseif SCH_12.15.3 -%}
                 {
-                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL: SCH_12.15.3 -%}
-                    "reference":"Location/{{ Location_ID_SCH_12 }}",
-                },
+                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL_Field_Value: SCH_12.15.3, PL: SCH_12.15, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    "reference":"Location/{{ Location_ID_SCH_12 }}", 
+                },   
                 {% elseif SCH_12.15.4 -%}
                 {
-                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL: SCH_12.15.4 -%}
-                    "reference":"Location/{{ Location_ID_SCH_12 }}",
+                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL_Field_Value: SCH_12.15.4, PL: SCH_12.15, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    "reference":"Location/{{ Location_ID_SCH_12 }}",    
                 },
                 {% elseif SCH_12.15.7 -%}
                 {
-                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL: SCH_12.15.7 -%}
+                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL_Field_Value: SCH_12.15.7, PL: SCH_12.15, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     "reference":"Location/{{ Location_ID_SCH_12 }}",
                 },
                 {% elseif SCH_12.15.8 -%}
                 {
-                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL: SCH_12.15.8 -%}
-                    "reference":"Location/{{ Location_ID_SCH_12 }}",
-                },
-                {% endif %}
+                    {% evaluate Location_ID_SCH_12 using 'ID/Location' PL_Field_Value: SCH_12.15.8, PL: SCH_12.15, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    "reference":"Location/{{ Location_ID_SCH_12 }}",  
+                },  
+                {% endif -%}
+
             {% endif %}
+
             {% if SCH_16.19 -%}
-               {% if SCH_16.19.1 -%}
-               {
-                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL: SCH_16.19.1 -%}
-                    "reference":"Location/{{ Location_ID_SCH_16 }}",
-               },
-                {% elseif SCH_16.19.2 -%}
+
+                {% if  SCH_16.19.5 or  SCH_16.19.9 -%}
+                    {% if  SCH_16.19.5 and  SCH_16.19.9 -%}
+                        {% assign PL_Value_Except_PL5_PL9 =  SCH_16.19.Value | remove:  SCH_16.19.5.Value | remove:  SCH_16.19.9.Value %}
+                    {% endif -%}
+                    {% if  SCH_16.19.5 and  SCH_16.19.9 == null or  SCH_16.19.9 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9=  SCH_16.19.Value | remove:  SCH_16.19.5.Value %}
+                    {% endif -%}
+                    {% if  SCH_16.19.9 and  SCH_16.19.5 == null or  SCH_16.19.5 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9=  SCH_16.19.Value | remove:  SCH_16.19.9.Value %}
+                    {% endif -%}
+                {% else -%}
+                    {% assign PL_Value_Except_PL5_PL9 =  SCH_16.19.Value %}
+                {% endif -%}
+
+                {% if  SCH_16.19.1 -%}
                 {
-                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL: SCH_16.19.2 -%}
+                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL_Field_Value:  SCH_16.19.1, PL:  SCH_16.19, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     "reference":"Location/{{ Location_ID_SCH_16 }}",
                 },
-                {% elseif SCH_16.19.3 -%}
+                {% elseif  SCH_16.19.2 -%}
                 {
-                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL: SCH_16.19.3 -%}
+                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL_Field_Value:  SCH_16.19.2, PL:  SCH_16.19, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     "reference":"Location/{{ Location_ID_SCH_16 }}",
                 },
-                {% elseif SCH_16.19.4 -%}
+                {% elseif  SCH_16.19.3 -%}
                 {
-                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL: SCH_16.19.4 -%}
+                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL_Field_Value:  SCH_16.19.3, PL:  SCH_16.19, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    "reference":"Location/{{ Location_ID_SCH_16 }}", 
+                },   
+                {% elseif  SCH_16.19.4 -%}
+                {
+                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL_Field_Value:  SCH_16.19.4, PL:  SCH_16.19, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    "reference":"Location/{{ Location_ID_SCH_16 }}",    
+                },
+                {% elseif  SCH_16.19.7 -%}
+                {
+                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL_Field_Value:  SCH_16.19.7, PL:  SCH_16.19, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     "reference":"Location/{{ Location_ID_SCH_16 }}",
                 },
-                {% elseif SCH_16.19.7 -%}
+                {% elseif  SCH_16.19.8 -%}
                 {
-                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL: SCH_16.19.7 -%}
-                    "reference":"Location/{{ Location_ID_SCH_16 }}",
-                },
-                {% elseif SCH_16.19.8 -%}
-                {
-                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL: SCH_16.19.8 -%}
-                    "reference":"Location/{{ Location_ID_SCH_16 }}",
-                },
-                {% endif %}
+                    {% evaluate Location_ID_SCH_16 using 'ID/Location' PL_Field_Value:  SCH_16.19.8, PL:  SCH_16.19, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    "reference":"Location/{{ Location_ID_SCH_16 }}",  
+                },  
+                {% endif -%}
+
             {% endif -%}
+
             {% if SCH_20.22 -%}
-                {% if SCH_20.22.1 -%}
+
+                {% if  SCH_20.22.5 or  SCH_20.22.9 -%}
+                    {% if  SCH_20.22.5 and  SCH_20.22.9 -%}
+                        {% assign PL_Value_Except_PL5_PL9 =  SCH_20.22.Value | remove:  SCH_20.22.5.Value | remove:  SCH_20.22.9.Value %}
+                    {% endif -%}
+                    {% if  SCH_20.22.5 and  SCH_20.22.9 == null or  SCH_20.22.9 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9=  SCH_20.22.Value | remove:  SCH_20.22.5.Value %}
+                    {% endif -%}
+                    {% if  SCH_20.22.9 and  SCH_20.22.5 == null or  SCH_20.22.5 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9=  SCH_20.22.Value | remove:  SCH_20.22.9.Value %}
+                    {% endif -%}
+                {% else -%}
+                    {% assign PL_Value_Except_PL5_PL9 =  SCH_20.22.Value %}
+                {% endif -%}
+
+                {% if  SCH_20.22.1 -%}
                 {
-                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL: SCH_20.22.1 -%}
+                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL_Field_Value:  SCH_20.22.1, PL:  SCH_20.22, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     "reference":"Location/{{ Location_ID_SCH_20 }}",
                 },
-                {% elseif SCH_20.22.2 -%}
+                {% elseif  SCH_20.22.2 -%}
                 {
-                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL: SCH_20.22.2 -%}
+                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL_Field_Value:  SCH_20.22.2, PL:  SCH_20.22, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     "reference":"Location/{{ Location_ID_SCH_20 }}",
                 },
-                {% elseif SCH_20.22.3 -%}
+                {% elseif  SCH_20.22.3 -%}
                 {
-                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL: SCH_20.22.3 -%}
+                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL_Field_Value:  SCH_20.22.3, PL:  SCH_20.22, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    "reference":"Location/{{ Location_ID_SCH_20 }}", 
+                },   
+                {% elseif  SCH_20.22.4 -%}
+                {
+                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL_Field_Value:  SCH_20.22.4, PL:  SCH_20.22, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    "reference":"Location/{{ Location_ID_SCH_20 }}",    
+                },
+                {% elseif  SCH_20.22.7 -%}
+                {
+                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL_Field_Value:  SCH_20.22.7, PL:  SCH_20.22, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     "reference":"Location/{{ Location_ID_SCH_20 }}",
                 },
-                {% elseif SCH_20.22.4 -%}
+                {% elseif  SCH_20.22.8 -%}
                 {
-                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL: SCH_20.22.4 -%}
-                    "reference":"Location/{{ Location_ID_SCH_20 }}",
-                },
-                {% elseif SCH_20.22.7 -%}
-                {
-                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL: SCH_20.22.7 -%}
-                    "reference":"Location/{{ Location_ID_SCH_20 }}",
-                },
-                {% elseif SCH_20.22.8 -%}
-                {
-                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL: SCH_20.22.8 -%}
-                    "reference":"Location/{{ Location_ID_SCH_20 }}",
-                },
-                {% endif %}
+                    {% evaluate Location_ID_SCH_20 using 'ID/Location' PL_Field_Value:  SCH_20.22.8, PL:  SCH_20.22, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    "reference":"Location/{{ Location_ID_SCH_20 }}",  
+                },  
+                {% endif -%}
             {% endif -%}
+
+            {% if PRT.9.Repeats[0] %}
+                {
+                    {% if PRT.9.Repeats[0].5 or PRT.9.Repeats[0].9 -%}
+                        {% if PRT.9.Repeats[0].5 and PRT.9.Repeats[0].9 -%}
+                            {% assign PL_Value_Except_PL5_PL9 = PRT.9.Repeats[0].Value | remove: PRT.9.Repeats[0].5.Value | remove: PRT.9.Repeats[0].9.Value %}
+                        {% endif -%}
+                        {% if PRT.9.Repeats[0].5 and PRT.9.Repeats[0].9 == null or PRT.9.Repeats[0].9 == "" -%}
+                            {% assign PL_Value_Except_PL5_PL9= PRT.9.Repeats[0].Value | remove: PRT.9.Repeats[0].5.Value %}
+                        {% endif -%}
+                        {% if PRT.9.Repeats[0].9 and PRT.9.Repeats[0].5 == null or PRT.9.Repeats[0].5 == "" -%}
+                            {% assign PL_Value_Except_PL5_PL9= PRT.9.Repeats[0].Value | remove: PRT.9.Repeats[0].9.Value %}
+                        {% endif -%}
+                    {% else -%}
+                        {% assign PL_Value_Except_PL5_PL9 = PRT.9.Repeats[0].Value %}
+                    {% endif -%}
+
+                    {% if PRT.9.Repeats[0].1 -%}
+                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.Repeats[0].1, PL: PRT.9.Repeats[0], PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRT.9.Repeats[0].2 -%}
+                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.Repeats[0].2, PL: PRT.9.Repeats[0], PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRT.9.Repeats[0].3 -%}
+                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.Repeats[0].3, PL: PRT.9.Repeats[0], PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRT.9.Repeats[0].4 -%}
+                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.Repeats[0].4, PL: PRT.9.Repeats[0], PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRT.9.Repeats[0].7 -%}
+                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.Repeats[0].7, PL: PRT.9.Repeats[0], PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRT.9.Repeats[0].8 -%}
+                        {% evaluate Location_ID_PRT_9 using 'ID/Location' PL_Field_Value: PRT.9.Repeats[0].8, PL: PRT.9.Repeats[0], PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% endif -%}
+            
+                    {% if Location_ID_PRT_9 -%}
+                        "reference":"Location/{{ Location_ID_PRT_9 }}",
+                    {% endif -%}
+                },
+            {% endif %}
+
+            {% if PRD.4 %}
+                {
+                    {% if PRD.4.5 or PRD.4.9 -%}
+                        {% if PRD.4.5 and PRD.4.9 -%}
+                            {% assign PL_Value_Except_PL5_PL9 = PRD.4.Value | remove: PRD.4.5.Value | remove: PRD.4.9.Value %}
+                        {% endif -%}
+                        {% if PRD.4.5 and PRD.4.9 == null or PRD.4.9 == "" -%}
+                            {% assign PL_Value_Except_PL5_PL9= PRD.4.Value | remove: PRD.4.5.Value %}
+                        {% endif -%}
+                        {% if PRD.4.9 and PRD.4.5 == null or PRD.4.5 == "" -%}
+                            {% assign PL_Value_Except_PL5_PL9= PRD.4.Value | remove: PRD.4.9.Value %}
+                        {% endif -%}
+                    {% else -%}
+                        {% assign PL_Value_Except_PL5_PL9 = PRD.4.Value %}
+                    {% endif -%}
+
+                    {% if PRD.4.1 -%}
+                        {% evaluate Location_ID_PRD_4 using 'ID/Location' PL_Field_Value: PRD.4.1, PL: PRD.4, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRD.4.2 -%}
+                        {% evaluate Location_ID_PRD_4 using 'ID/Location' PL_Field_Value: PRD.4.2, PL: PRD.4, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRD.4.3 -%}
+                        {% evaluate Location_ID_PRD_4 using 'ID/Location' PL_Field_Value: PRD.4.3, PL: PRD.4, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRD.4.4 -%}
+                        {% evaluate Location_ID_PRD_4 using 'ID/Location' PL_Field_Value: PRD.4.4, PL: PRD.4, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRD.4.7 -%}
+                        {% evaluate Location_ID_PRD_4 using 'ID/Location' PL_Field_Value: PRD.4.7, PL: PRD.4, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% elseif PRD.4.8 -%}
+                        {% evaluate Location_ID_PRD_4 using 'ID/Location' PL_Field_Value: PRD.4.8, PL: PRD.4, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% endif -%}
+                
+                    {% if Location_ID_PRD_4 -%}
+                        "reference":"Location/{{ Location_ID_PRD_4 }}",
+                    {% endif -%}
+                },
+            {% endif %}
         ],
-        {% include 'DataType/XCNPractitionerRole' XCN: ROL.4 -%}
         
         "organization":
         { 
-            {% if PRT.8 and Organization_ID_PRT_8 -%}
+            {% if PRT.8.Repeats[0] and Organization_ID_PRT_8 -%}
                 "reference":"Organization/{{ Organization_ID_PRT_8 }}",
             {% endif -%}
             {% if requestor_organization %}
                 "reference":"Organization/{{requestor_organization}}",
             {% endif -%}
         },
+        {%- comment -%}
         {% include 'DataType/XCNPractitionerRole' XCN: PRT.5.Repeats[0] -%}
+        {%- endcomment -%}
         "specialty":
         [
-            {
-                {% include 'DataType/CWECodeableConcept' CWE: PRT.6 -%}
-            },
+            {% if PRT.5 %}
+                {
+                    {% include 'DataType/CWECodeableConcept' CWE: PRT.6 -%}
+                },
+            {% endif %}
+            {% for rol_9 in ROL.9.Repeats %}
+                {
+                    {% include 'DataType/CWECodeableConcept' CWE: rol_9 -%}
+                },
+            {% endfor %}
         ],
-        {%- comment -%}
-        {% include 'DataType/XCNPractitionerRole' XCN: ORC.12.Repeats[0] -%}
-      {%- endcomment -%}
+       
         "practitioner" : { 
             {% if requestor_practitioner1 %}
                 "reference":"Practitioner/{{requestor_practitioner1}}",

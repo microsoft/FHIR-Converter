@@ -16,6 +16,7 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
     "resource":{
         "resourceType": "Patient",
         "id":"{{ ID }}",
+      
         "identifier":
         [
             {
@@ -49,7 +50,7 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                     "system":"http://hl7.org/fhir/sid/us-ssn",
                 {% endif -%}
             },
-            {% unless PID.19 -%}
+            
             {
                 "value":"{{ GT1.12.Value }}",
                 "type":
@@ -59,9 +60,8 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                         {
                             {% if GT1.12 -%}
                                 "code":"SB",
-                            {% endif -%}
-                            {% if GT1.12 -%}
                                 "system":"http://terminology.hl7.org/CodeSystem/v2-0203",
+                                "display": "Social Beneficiary Identifier",
                             {% endif -%}
                         },
                     ],
@@ -70,7 +70,7 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                     "system":"http://hl7.org/fhir/sid/us-ssn",
                 {% endif -%}
             },
-            {% endunless -%}
+            
             {
                 {% include 'DataType/DLN' DLN: PID.20 -%}
             },
@@ -81,6 +81,7 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                 },
                 {% endfor %}
             {% endif -%}
+            
             {% for gt1 in GT1.2.Repeats -%}
                 {
                     {% include 'DataType/CX' CX: gt1 -%}
@@ -154,7 +155,7 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                     ],
                 },
                 {% if IN2_6.8 -%}
-                    "system":"http://example.com/v2-to-fhir-converter/identifier-medicaid",
+                    "system":"http://example.com/v2-to-fhir-converter/sid/us-medicaid",
                 {% endif -%}
             },
             {% endif -%}
@@ -173,7 +174,7 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                     ],
                 },
                 {% if IN2_6.10 -%}
-                    "system":"http://example.com/v2-to-fhir-converter/identifier-military",
+                    "system":"http://example.com/v2-to-fhir-converter/sid/us-military",
                 {% endif -%}
             },
             {% endif -%}
@@ -181,6 +182,72 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                 {% include 'DataType/CX' CX: IN2_6.61 -%}
             },
         ],
+        "link" : [
+            {% if MRG.1 -%}
+            { 
+                "other" : 
+                { 
+                    "identifier":
+                    {
+                        {% include 'DataType/CX' CX: MRG.1.Repeats[0] -%}
+                    },
+                },
+                "type" : "replaces",
+            },
+            {% endif -%}
+        ],
+        "meta":
+        {
+            "security":
+            [
+                {% if ARV.2 %}
+                    {
+                        {% if ARV.2.1.Value == 'A' or ARV.2.1.Value == 'U' %}
+                            "code" : "LABEL",
+                            "display" : "assign security label",
+                            "system" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                        {% elsif ARV.2.1.Value == 'X' %}
+                            "code" : "PERSISTLABEL",
+                            "display" : "persist security label",
+                            "system" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                        {% elsif ARV.2.1.Value == 'D' %}
+                            "code" : "DELETELABEL",
+                            "display" : "Delete Security Label",
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-security-label",
+                        {% endif %}  
+                    },
+                {% endif %}
+                {% if ARV.3 %}
+                    {% include 'DataType/CWECodeableConceptRepeatable' mapping: 'CodeSystem/AccessRestrictionValue', CWE: ARV.3  %}
+                {% endif %}
+                {% if ARV.4 %}
+                    {% for arv_4 in ARV.4.Repeats %}
+                        {% include 'DataType/CWECodeableConceptRepeatable' mapping: 'CodeSystem/AccessRestrictionReason', CWE: arv_4 %}
+                    {% endfor %}   
+                {% endif %}
+                {% if ARV.5 %}
+                    {% for arv_5 in ARV.5.Repeats %}
+                        { 
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-security-label",
+                            "code" : "special-access-restriction-instructions",
+                            "display" : "{{arv_5.Value}}",
+                        },
+                    {% endfor %}   
+                {% endif %}
+                {% if ARV.6 %}
+                    {
+                        "extension": [
+                            {
+                                "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/access-restriction-range",    
+                                "valuePeriod": {
+                                    {% include 'DataType/DRPeriod' DR: ARV.6 %}
+                                },
+                            }
+                        ],
+                    },
+                {% endif %}
+            ],
+        },
         "name":
         [
             {% for p in PID.5.Repeats -%}
@@ -206,6 +273,9 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                     {% include 'DataType/XPN' XPN: in2_6 -%}
                 },
             {% endfor -%}
+            {
+                {% include 'DataType/XPN' XPN: CON -%}
+            },
         ],
         {% if PID.7 -%}
             "birthDate":"{{ PID.7.Value | add_hyphens_date }}",
@@ -304,6 +374,15 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                 },
             {% endfor -%}
         ],
+        {% if PID.29 == null and PID.30 == null %}
+            {% unless  GT1.24 %}
+                {% unless  GT1.25 %}
+                    {% if pda_seg %}
+                        "deceasedBoolean": true,
+                    {% endif %}
+                {% endunless %}
+            {% endunless %}
+        {% endif %}
         "communication":
         [
             {
@@ -356,25 +435,31 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
         {% endif -%}
         "deceasedDateTime":"{{ PID.29.Value | format_as_date_time }}",
         {% unless PID.29 -%}
-            "deceasedDateTime":"{{ GT1.24.Value | format_as_date_time }}",
+            {% unless PID.30 -%}
+                "deceasedDateTime":"{{ GT1.24.Value | format_as_date_time }}",
+            {% endunless -%}
         {% endunless -%}
         {% if PID.29 == null -%}
             {% if PID.30 -%}
             "deceasedBoolean":{{ PID.30.Value | get_property: 'CodeSystem/Yes_No', 'code' }},
             {% endif -%}
         {% endif -%}
-        {% unless PID.30 -%}
-            {% if GT1.24 == null -%}
-            {% if GT1.25 -%}
-            "deceasedBoolean":{{ GT1.25.Value | get_property: 'CodeSystem/Yes_No', 'code' }},
-            {% endif -%}
-            {% endif -%}
+        {% unless PID.29 -%}
+            {% unless PID.30 -%}
+                {% if GT1.24 == null -%}
+                {% if GT1.25 -%}
+                "deceasedBoolean":{{ GT1.25.Value | get_property: 'CodeSystem/Yes_No', 'code' }},
+                {% endif -%}
+                {% endif -%}
+            {% endunless -%}
         {% endunless -%}
         "meta":
         {
             "lastUpdated":"{{ PID.33.Value | format_as_date_time }}",
         },
-        "active":"{{ PD1.16.1.Value | get_property: 'CodeSystem/RegistryStatus', 'code' }}",
+        {% if PD1.16.1 -%}
+            "active":{{ PD1.16.1.Value | get_property: 'CodeSystem/RegistryStatus', 'code' }},
+        {% endif -%}
         "generalPractitioner":
         [
             {
@@ -399,17 +484,13 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                 "name":
                 {
                     {% include 'DataType/XPN' XPN: NK1.2.Repeats[0] -%}
-                    {% if NK1_PER.7.1.Value == "E" -%}
-                        {% include 'DataType/XPN' XPN: GT1.16.Repeats[0] -%}
-                    {% endif -%}
+                    {% include 'DataType/XPN' XPN: GT1.16.Repeats[0] -%}
                     {% include 'DataType/XPN' XPN: CTD.2.Repeats[0] -%}
                 },
                 "address":
                 {
                     {% include 'DataType/XAD' XAD: NK1.4.Repeats[0] -%}
-                    {% if NK1_PER.7.1.Value == "E" -%}
-                        {% include 'DataType/XAD' XAD: GT1.17.Repeats[0] -%}
-                    {% endif -%}
+                    {% include 'DataType/XAD' XAD: GT1.17.Repeats[0] -%}
                     {% include 'DataType/XAD' XAD: CTD.3.Repeats[0] -%}
                 },
                 "telecom":
@@ -436,6 +517,11 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                     {
                         {% include 'DataType/XTN' XTN: NK1.41 -%}
                     },
+                    {% for gt1_18 in GT1.18.Repeats -%}
+                        {
+                            {% include 'DataType/XTN' XTN: gt1_18 -%}
+                        },
+                    {% endfor -%}
                     {% for ctd5 in CTD.5.Repeats -%}
                         {
                             {% include 'DataType/XTN' XTN: ctd5 -%}
@@ -452,15 +538,27 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                         {% include 'DataType/CWECodeableConcept' mapping: 'CodeSystem/ContactRole', CWE: ctd1 -%}
                     },
                     {% endfor -%}
+                    {% if GT1.16 -%}
+                    {
+                        "coding": 
+                        [
+                            {
+                                "code": "E",
+                                "display": "Employer",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+                            }
+                        ]
+                    },
+                    {% endif -%}
                 ],
                 "period":
                 {
                     "start":"{{ NK1.8.Value | format_as_date_time }}",
                     "end":"{{ NK1.9.Value | format_as_date_time }}",
-                    {% unless NK1_PER.8 and NK1_PER.9 -%}
-                        "start":"{{ GT1.31.Value | format_as_date_time }}",
-                        "end":"{{ GT1.32.Value | format_as_date_time }}",
-                    {% endunless -%}
+                    
+                    "start":"{{ GT1.31.Value | format_as_date_time }}",
+                    "end":"{{ GT1.32.Value | format_as_date_time }}",
+                    
                 },
                 {% if NK1.15.1 -%}
                     "gender":"{{ NK1.15.1.Value | get_property: 'CodeSystem/Gender', 'code' }}",
@@ -468,14 +566,58 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                     "gender":"{{ NK1.15.4.Value | get_property: 'CodeSystem/Gender', 'code' }}",
                 {% endif -%}
                 "organization":
-                [
                     {
                         {% if NK1.13 and Organization_ID_NK1_13 -%}
                             "reference":"Organization/{{ Organization_ID_NK1_13 }}",
                         {% endif -%}
+                        {% if GT1.51 -%}
+                            {% evaluate Organization_ID_gt1_XON_51 using 'ID/Organization' XON: GT1.51 -%}
+                            {% if Organization_ID_gt1_XON_51 -%}
+                                "reference":"Organization/{{ Organization_ID_gt1_XON_51 }}",
+                            {% endif -%}
+                        {% endif -%}
+                    },
+            },
+            {% if GT1.4 -%}
+            {
+                "name":
+                {
+                    {% include 'DataType/XPN' XPN: GT1.4.Repeats[0] -%}
+                },
+                "relationship":
+                [
+                    {
+                        "coding": 
+                        [
+                            {
+                                "code": "N",
+                                "display": "Next of Kin",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
+                            }
+                        ]
                     },
                 ],
             },
+            {% endif -%}
+            {
+                {% if GT1.45 -%}
+                "name":
+                {
+                    {% include 'DataType/XPN' XPN: GT1.45.Repeats[0] -%}
+                },
+                {% endif -%}
+                {% if GT1.46 -%}
+                "telecom":
+                [
+                    {% for gt1_46 in GT1.46.Repeats -%}
+                        {
+                            {% include 'DataType/XTN' XTN: gt1_46 -%}
+                        },
+                    {% endfor -%}
+                ],
+                {% endif -%}
+            },
+            
         ],
         "managingOrganization":
         {
@@ -494,6 +636,40 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                             },
                         {% endif -%}
                     {% endunless -%}
+                    {% unless PID.22 -%}
+                        {% if GT1.44 -%}
+                            {% assign ombCategorylimit = '' -%}
+                            {% assign textstring = "" -%}
+                            {
+                            "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
+                            "extension": [
+                            {% for p in GT1.44.Repeats -%}
+                                {
+                                    {% if p.1.Value -%}
+                                    {% if ombCategorylimit.size < 1 -%}
+                                    "url": "ombCategory",
+                                    "valueCoding": {
+                                        {% include 'DataType/CWECoding' mapping: 'CodeSystem/Ethnicity', CWE: p -%}
+                                    }
+                                    {% assign ombCategorylimit = ombCategorylimit | append: 'x' -%}
+                                    {% endif -%}
+                                    {% endif -%}
+                                    {% if p.1 %}
+                                        {% assign displayvalue = p.1.Value | get_property: 'CodeSystem/Ethnicity', 'display' -%}
+                                        {% capture textstring %}{{ textstring | append: displayvalue | append: ":" }}{% endcapture -%}
+                                    {% else -%}
+                                        {% capture textstring %}{{ textstring | append: p.2.Value | append: ":" }}{% endcapture -%}
+                                    {% endif -%}
+                                },
+                            {% endfor -%}
+                            {        
+                                "url": "text",
+                                "valueString": "{{ textstring | split: ":" | join: "+"}}"
+                            }
+                        ],
+                        },
+                        {% endif -%}
+                    {% endunless -%}
                     {% unless PID.23 -%}
                         {% if GT1.56-%}
                         {
@@ -501,6 +677,41 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                             "valueAddress": {
                                 "text": "{{ GT1.56.Value }}"
                                 }
+                        },
+                        {% endif -%}
+                    {% endunless -%}
+                    {% unless PID.28 -%}
+                        {% if GT1.43-%}
+                        {
+                        "url": "http://hl7.org/fhir/StructureDefinition/patient-nationality",
+                        "extension": 
+                            [
+                                {"url": "code",
+                                "valueCodeableConcept": 
+                                {
+                                    "coding":
+                                        [   
+                                            {% assign CWE_2 = GT1.43.2.Value %}
+                                            {% assign CWE_5 = GT1.43.5.Value %}
+                                            {% assign CWE_11 = GT1.43.11.Value %}
+                                            {% assign CWE_2_doubleDash = GT1.43.2.Value |append: '--' %} 
+                                            {% assign CWE_5_doubleDash = GT1.43.5.Value |append: '--' %} 
+                                            {% include 'DataType/CWECodeableConceptRepeatable' CWE:GT1.43 %}    
+                                        ],
+                                        {% if CWE_2_doubleDash and CWE_5_doubleDash == null and CWE_11 == null %}
+                                        "text":"{{ CWE_2 }}",
+                                    {% elsif CWE_2_doubleDash and CWE_5 and CWE_11 == null %}
+                                        "text":"{{ CWE_2_doubleDash }}{{ CWE_5 }}",
+                                    {% elsif CWE_2_doubleDash and CWE_11 and CWE_5_doubleDash == null %}
+                                        "text":"{{ CWE_2_doubleDash }}{{ CWE_11 }}",
+                                    {% elsif CWE_5_doubleDash and CWE_11 and CWE_2_doubleDash == null %}
+                                        "text":"{{ CWE_5_doubleDash }}{{ CWE_11 }}",
+                                    {% elsif CWE_2_doubleDash and CWE_5_doubleDash and CWE_11%}
+                                        "text":"{{ CWE_2_doubleDash }}{{ CWE_5_doubleDash }}{{ CWE_11 }}",
+                                    {% endif %}  
+                                }
+                            },
+                            ],
                         },
                         {% endif -%}
                     {% endunless -%}
@@ -515,6 +726,7 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                         {% endif -%}
                     {% endunless -%}
             ],
+            
     },
     "request":{
         "method":"PUT",

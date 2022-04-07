@@ -1,7 +1,7 @@
 {
     "resourceType": "Bundle",
     "type": "batch",
-    "timestamp": "2001-01-01T00:00:00",
+    "timestamp": "2001-01-01T00:00:00+07:00",
     "identifier": {
         "value": "Q123456789T123456789X123456"
     },
@@ -68,10 +68,10 @@
                 "id": "b8bf5f81-bc6a-5fda-5fb2-fd273ac267a8",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T11:30:59.573Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-25T13:10:26.547Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
                 },
-                "occurredDateTime": "2001-01-01T00:00:00",
-                "recorded": "2001-01-01T00:00:00",
+                "occurredDateTime": "2001-01-01T00:00:00+07:00",
+                "recorded": "2001-01-01T00:00:00+07:00",
                 "agent": [
                     {
                         "type": {
@@ -113,7 +113,7 @@
                 "identifier": [
                     {
                         "value": "NINTENDO",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NINTENDO"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NINTENDO"
                     }
                 ]
             },
@@ -130,7 +130,7 @@
                 "identifier": [
                     {
                         "value": "TESTFACILITY",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-TESTFACILITY"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/TESTFACILITY"
                     }
                 ]
             },
@@ -171,7 +171,7 @@
                     "extension": [
                         {
                             "url": "http://hl7.org/fhir/StructureDefinition/patient-birthTime",
-                            "valueDateTime": "1985-01-01T00:00:00"
+                            "valueDateTime": "1985-01-01T00:00:00+07:00"
                         }
                     ]
                 },
@@ -304,10 +304,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:0b931b2e-4814-b7ed-7159-4cf2805ef38f",
+            "fullUrl": "urn:uuid:62250a3a-7731-9329-ba14-5ab5f01a2678",
             "resource": {
                 "resourceType": "Account",
-                "id": "0b931b2e-4814-b7ed-7159-4cf2805ef38f",
+                "id": "62250a3a-7731-9329-ba14-5ab5f01a2678",
                 "identifier": [
                     {
                         "value": "12345678"
@@ -322,7 +322,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Account/0b931b2e-4814-b7ed-7159-4cf2805ef38f"
+                "url": "Account/62250a3a-7731-9329-ba14-5ab5f01a2678"
             }
         },
         {
@@ -333,7 +333,7 @@
                 "identifier": [
                     {
                         "value": "123456",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-MSRM",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/MSRM",
                         "type": {
                             "coding": [
                                 {
@@ -380,10 +380,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:a0f6171b-0f81-c7fd-61da-2c2db32aafc9",
+            "fullUrl": "urn:uuid:ab3e8ed7-2fe5-64c4-272b-4a3223c131d5",
             "resource": {
                 "resourceType": "Location",
-                "id": "a0f6171b-0f81-c7fd-61da-2c2db32aafc9",
+                "id": "ab3e8ed7-2fe5-64c4-272b-4a3223c131d5",
                 "name": "ABCD",
                 "mode": "instance",
                 "description": "ABCD--EFGH",
@@ -398,16 +398,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/a0f6171b-0f81-c7fd-61da-2c2db32aafc9"
+                "url": "Location/ab3e8ed7-2fe5-64c4-272b-4a3223c131d5"
             }
         },
         {
-            "fullUrl": "urn:uuid:e37fe030-54c7-96d3-51ff-70a87db46be6",
+            "fullUrl": "urn:uuid:72c3d398-8c14-4326-8838-d787f8c4c714",
             "resource": {
                 "resourceType": "Location",
-                "id": "e37fe030-54c7-96d3-51ff-70a87db46be6",
+                "id": "72c3d398-8c14-4326-8838-d787f8c4c714",
                 "partOf": {
-                    "reference": "Location/a0f6171b-0f81-c7fd-61da-2c2db32aafc9"
+                    "reference": "Location/ab3e8ed7-2fe5-64c4-272b-4a3223c131d5"
                 },
                 "name": "EFGH",
                 "mode": "instance",
@@ -423,14 +423,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/e37fe030-54c7-96d3-51ff-70a87db46be6"
+                "url": "Location/72c3d398-8c14-4326-8838-d787f8c4c714"
             }
         },
         {
-            "fullUrl": "urn:uuid:1ffe7bbb-44ca-d195-1456-40d94950090b",
+            "fullUrl": "urn:uuid:3af9566b-b135-fe5b-ebf0-3120f8ca2c9e",
             "resource": {
                 "resourceType": "Encounter",
-                "id": "1ffe7bbb-44ca-d195-1456-40d94950090b",
+                "id": "3af9566b-b135-fe5b-ebf0-3120f8ca2c9e",
                 "class": {
                     "code": "AMB",
                     "display": "ambulatory",
@@ -441,7 +441,7 @@
                     {
                         "status": "active",
                         "location": {
-                            "reference": "Location/a0f6171b-0f81-c7fd-61da-2c2db32aafc9"
+                            "reference": "Location/ab3e8ed7-2fe5-64c4-272b-4a3223c131d5"
                         }
                     }
                 ],
@@ -517,27 +517,32 @@
                     }
                 ],
                 "period": {
-                    "start": "2001-01-01T00:00:00"
+                    "start": "2001-01-01T00:00:00+07:00"
                 },
                 "text": {
                     "status": "generated",
                     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Visit Description: </span></p></div>"
                 },
+                "account": [
+                    {
+                        "reference": "Account/62250a3a-7731-9329-ba14-5ab5f01a2678"
+                    }
+                ],
                 "subject": {
                     "reference": "Patient/5002eb07-c460-7112-6574-50303ae3b4a6"
                 }
             },
             "request": {
                 "method": "PUT",
-                "url": "Encounter/1ffe7bbb-44ca-d195-1456-40d94950090b"
+                "url": "Encounter/3af9566b-b135-fe5b-ebf0-3120f8ca2c9e"
             }
         },
         {
-            "fullUrl": "urn:uuid:8d07e317-166f-8efc-0671-cb07cf7aeb96",
+            "fullUrl": "urn:uuid:b845c420-ff05-32b9-3639-cec21b18aaf1",
             "resource": {
                 "resourceType": "Provenance",
-                "id": "8d07e317-166f-8efc-0671-cb07cf7aeb96",
-                "recorded": "2001-01-01T00:00:00",
+                "id": "b845c420-ff05-32b9-3639-cec21b18aaf1",
+                "recorded": "2001-01-01T00:00:00+07:00",
                 "agent": [
                     {
                         "who": {
@@ -556,7 +561,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Provenance/8d07e317-166f-8efc-0671-cb07cf7aeb96"
+                "url": "Provenance/b845c420-ff05-32b9-3639-cec21b18aaf1"
             }
         },
         {

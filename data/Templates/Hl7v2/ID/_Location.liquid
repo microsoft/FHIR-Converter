@@ -1,5 +1,9 @@
 {% capture identifiers -%}
-    {% if PL.10 -%}
+    {% if PL_Field_Value and PL.10 -%}
+        {{PL_Field_Value.Value}},{{PL.10.Value}}
+    {% elsif PL_Field_Value and PL_Value_Except_PL5_PL9 -%}
+        {{PL_Field_Value.Value}},{{PL_Value_Except_PL5_PL9 }}
+    {% elsif PL.10 -%}
         {{PL.10.Value}}
     {% elsif PL -%}
         {{PL.Value}}
@@ -15,6 +19,14 @@
         {{HD.Value}}
     {% elsif DLD -%}
         {{DLD.Value}}
+    {% elsif ACC.11 -%}
+        {{ACC.11.Value}}
+    {% elsif ACC.3 -%}
+        {{ACC.3.Value}}
+    {% elsif CWE -%}
+        {{CWE.Value}}
+    {% elsif XAD -%}
+        {{XAD.Value}}
     {% endif -%}
 
 {% endcapture -%}
