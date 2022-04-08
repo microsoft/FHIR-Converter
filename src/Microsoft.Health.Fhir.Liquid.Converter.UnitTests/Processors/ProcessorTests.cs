@@ -101,6 +101,28 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             };
         }
 
+        public static IEnumerable<object[]> GetValidInputsWithNestingTooDeep()
+        {
+            yield return new object[]
+            {
+                new Hl7v2Processor(),
+                new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Hl7v2),
+                _hl7v2TestData,
+            };
+            yield return new object[]
+            {
+                new CcdaProcessor(),
+                new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Ccda),
+                _ccdaTestData,
+            };
+            yield return new object[]
+            {
+                new JsonProcessor(),
+                new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json),
+                _jsonTestData,
+            };
+        }
+
         [Theory]
         [MemberData(nameof(GetValidInputsWithTemplateDirectory))]
         public void GivenAValidTemplateDirectory_WhenConvert_CorrectResultShouldBeReturned(IFhirConverter processor, ITemplateProvider templateProvider, string data, string rootTemplate)
@@ -190,6 +212,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         {
             var result = processor.Convert(data, "NestedForLoopTemplate", templateProvider);
             Assert.True(result.Length > 0);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidInputsWithNestingTooDeep))]
+        public void GivenTemplateWithNestingTooDeep_WhenConvert_ExceptionShouldBeThrown(IFhirConverter processor, ITemplateProvider templateProvider, string data)
+        {
+            var exception = Assert.Throws<RenderException>(() => processor.Convert(data, "NestingTooDeepTemplate", templateProvider));
+            Assert.Contains("Nesting too deep", exception.Message);
+
+            exception = Assert.Throws<RenderException>(() => processor.Convert(data, "NestingTooDeepDiffTemplate", templateProvider));
+            Assert.Contains("Nesting too deep", exception.Message);
         }
     }
 }
