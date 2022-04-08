@@ -1,0 +1,53 @@
+on: [push]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Checkout Github Action' 
+      uses: actions/checkout@master
+    
+    - name: 'Login via Azure CLI'
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - uses: azure/docker-login@v1
+      with:
+        login-server: armtemplateregistry.azurecr.io
+        username: ${{ secrets.acr_armtemplateregistry_username }}
+        password: ${{ secrets.acr_armtemplateregistry_password }}
+    
+    - name: Build and push image to ACR
+      id: build-image
+      run: |
+        docker build "$GITHUB_WORKSPACE/" -f  "Dockerfile" -t armtemplateregistry.azurecr.io/fhirconverternew-img:${{ github.sha }}
+        docker push armtemplateregistry.azurecr.io/fhirconverternew-img:${{ github.sha }}
+
+    - name: Set Web App ACR authentication
+      uses: Azure/appservice-settings@v1
+      with: 
+        app-name: fhirconverternew
+        app-settings-json: | 
+          [
+            {
+              "name": "DOCKER_REGISTRY_SERVER_URL",
+              "value": "armtemplateregistry.azurecr.io",
+              "slotSetting": false
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_USERNAME",
+              "value": "${{ secrets.acr_armtemplateregistry_username }}",
+              "slotSetting": false
+            },
+            {
+              "name": "DOCKER_REGISTRY_SERVER_PASSWORD",
+              "value": "${{ secrets.acr_armtemplateregistry_password }}",
+              "slotSetting": false
+            }            
+          ]
+      
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: fhirconverternew
+        images: armtemplateregistry.azurecr.io/fhirconverternew-img:${{ github.sha }}
