@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - name: 'Checkout Github Action'
-      uses: actions/checkout@master
+      uses: actions/checkout@Handlebars
 
     - uses: azure/docker-login@v1
       with:
