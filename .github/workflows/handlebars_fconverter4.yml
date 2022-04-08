@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: 'Checkout Github Action' 
-      uses: actions/checkout@handlebars
+      uses: actions/checkout@Handlebars
     
     - name: 'Login via Azure CLI'
       uses: azure/login@v1
