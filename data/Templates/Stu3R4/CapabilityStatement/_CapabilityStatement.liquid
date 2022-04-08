@@ -12,6 +12,7 @@
     },
     {% endif -%}
   ],
+  "fhirVersion": "4.0.1",
   "profile" : "",
   "rest" : [ {{ msg.rest | to_array | batch_render: 'CapabilityStatement/Rest', 'msg' }} ],
   "messaging" : [ {{ msg.messaging | to_array | batch_render: 'CapabilityStatement/Messaging', 'msg' }} ],
