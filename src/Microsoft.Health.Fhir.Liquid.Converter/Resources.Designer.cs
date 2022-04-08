@@ -77,7 +77,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("EvaluateTagSyntaxError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The input data could not be parsed correctly: {0}.
         /// </summary>
@@ -104,18 +104,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("InvalidDateTimeFormat", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The type of Date or DateTime is invalid: {0}..
         /// </summary>
-        internal static string InvalidDateTimeType
-        {
-            get
-            {
+        internal static string InvalidDateTimeType {
+            get {
                 return ResourceManager.GetString("InvalidDateTimeType", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The hexadecimal number is invalid: {0}..
         /// </summary>
@@ -153,6 +151,33 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The input message of &apos;MergeDiff&apos; tag should be a json object..
+        /// </summary>
+        internal static string InvalidInputOfMergeDiffBlock {
+            get {
+                return ResourceManager.GetString("InvalidInputOfMergeDiffBlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content in &apos;MergeDiff&apos; block should be a json object..
+        /// </summary>
+        internal static string InvalidMergeDiffBlockContent {
+            get {
+                return ResourceManager.GetString("InvalidMergeDiffBlockContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;[x]&apos; is an invalid key in &apos;MergeDiff&apos; block..
+        /// </summary>
+        internal static string InvalidMergeDiffBlockContentForChoiceType {
+            get {
+                return ResourceManager.GetString("InvalidMergeDiffBlockContentForChoiceType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to TimeZoneHandling only supports &apos;local&apos;, &apos;utc&apos; and &apos;preserve&apos;..
         /// </summary>
         internal static string InvalidTimeZoneHandling {
@@ -178,18 +203,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("JsonParsingError", resourceCulture);
             }
         }
-
+        
         /// <summary>
-        ///   Looks up a localized string similar to Syntax Error in &apos;mergeDiff&apos; tag - Valid syntax: mergeDiff [input].
+        ///   Looks up a localized string similar to Syntax Error in &apos;mergeDiff&apos; tag - Valid syntax: mergeDiff [input]..
         /// </summary>
-        internal static string MergeDiffTagSyntaxError
-        {
-            get
-            {
+        internal static string MergeDiffTagSyntaxError {
+            get {
                 return ResourceManager.GetString("MergeDiffTagSyntaxError", resourceCulture);
             }
         }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to MSH segment misses separators..
         /// </summary>

@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "valueSetReference" : {% include 'Shared/ReferenceToCanonical' msg: msg.valueSetReference -%},
+  "valueSet[x]" : ""
+}
+{% endmergeDiff -%}

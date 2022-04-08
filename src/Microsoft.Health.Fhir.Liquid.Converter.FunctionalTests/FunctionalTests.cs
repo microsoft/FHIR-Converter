@@ -246,8 +246,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             return data.Select(item => new[]
             {
                 item,
-                Path.Join(Constants.SampleDataDirectory, "STU3", item + ".json"),
-                Path.Join(Constants.ExpectedDataFolder, "R3ToR4", item + ".json"),
+                Path.Join(Constants.SampleDataDirectory, "Stu3", item + ".json"),
+                Path.Join(Constants.ExpectedDataFolder, "Stu3ToR4", item + ".json"),
             });
         }
 
@@ -347,7 +347,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         public void GivenStu3FhirData_WhenConverting_ExpectedR4FhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
         {
             var jsonProcessor = new JsonProcessor();
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "STU3R4");
+            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Stu3ToR4");
 
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);

@@ -22,11 +22,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
 
         public static IEnumerable<object[]> GetValidMergeDiffTemplateContents()
         {
-            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates/ValidTemplate1.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"MergeDiffResults/result1.json")) };
-            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates/ValidTemplate2.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"MergeDiffResults/result2.json")) };
-            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates/ValidTemplate3.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"MergeDiffResults/result3.json")) };
-            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates/EmptyDiffContent.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"MergeDiffResults/result4.json")) };
-            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates/EmptyDiffContent2.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"MergeDiffResults/result4.json")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates/ValidExample1.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"MergeDiffResults/ValidExample1.json")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates/ValidExample2.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"MergeDiffResults/ValidExample2.json")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates/ValidExample3.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"MergeDiffResults/ValidExample3.json")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates/EmptyDiffContent.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"MergeDiffResults/EmptyDiffContent.json")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates/EmptyDiffContent2.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"MergeDiffResults/EmptyDiffContent.json")) };
         }
 
         public static IEnumerable<object[]> GetInvalidMergeDiffBlockContentTypes()
@@ -131,7 +131,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [Fact]
         public void GivenValidDiffBlockContent_WhenInputIsInvalidJson_WhenParseAndRender_ExceptionsShouldBeThrown()
         {
-            var templateContent = File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates/ValidTemplate2.liquid"));
+            var templateContent = File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates/ValidExample2.liquid"));
             var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
 
             var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates");

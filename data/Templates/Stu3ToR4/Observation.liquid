@@ -3,7 +3,7 @@
   "encounter" : {{msg.context | to_json_string | default : '""'}},
   "related" : "",
   "note" : [
-    {% include 'Shared/String2Annotation' msg: msg.comment -%}
+    {% include 'Shared/StringToAnnotation' msg: msg.comment -%}
   ],
   "comment" : "",
   "hasMember" : [

@@ -21,6 +21,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
     {
         private static readonly Regex Syntax = R.B(@"^({0}+)\s$", DotLiquid.Liquid.VariableSignature);
         private string _variableName;
+        private const string _choiceTypeSuffix = "[x]";
 
         private List<object> _diffBlock;
 
@@ -77,7 +78,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
             catch (Exception ex)
             {
-                throw new RenderException(FhirConverterErrorCode.InvalidMergeDiffBlockContent, "Content in 'MergeDiff' block should be a json object.", ex);
+                throw new RenderException(FhirConverterErrorCode.InvalidMergeDiffBlockContent, Resources.InvalidMergeDiffBlockContent, ex);
             }
 
             var mergedResult = inputContent;
@@ -96,7 +97,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             Dictionary<string, object> result;
 
             // Input message should be a valid json object.
-
             if (source is Hash hashSource)
             {
                 result = new Dictionary<string, object>(hashSource);
@@ -107,19 +107,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
             else
             {
-                throw new RenderException(FhirConverterErrorCode.InvalidInputOfMergeDiffBlock, "The input message of 'MergeDiff' tag should be a json object.");
+                throw new RenderException(FhirConverterErrorCode.InvalidInputOfMergeDiffBlock, Resources.InvalidInputOfMergeDiffBlock);
             }
 
             foreach (var item in diffDict)
             {
                 // [x] represent choice type elements.
                 // Only handle choice type element for the first match.
-                if (item.Key.EndsWith("[x]"))
+                if (item.Key.EndsWith(_choiceTypeSuffix))
                 {
-                    var choiceTypeName = item.Key.Remove(item.Key.Length - 3);
+                    var choiceTypeName = item.Key.Remove(item.Key.Length - _choiceTypeSuffix.Length);
                     if (string.IsNullOrEmpty(choiceTypeName))
                     {
-                        throw new RenderException(FhirConverterErrorCode.InvalidMergeDiffBlockContent, "'[x]' is an invalid key in 'MergeDiff' block.");
+                        throw new RenderException(FhirConverterErrorCode.InvalidMergeDiffBlockContent, Resources.InvalidMergeDiffBlockContentForChoiceType);
                     }
 
                     var choiceElement = result.Where(x => x.Key.StartsWith(choiceTypeName)).First().Key;
