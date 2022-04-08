@@ -1,0 +1,5 @@
+{% mergeDiff msg -%}
+{
+  "definition" : {% include 'Shared/ReferenceToCanonical' msg: msg.definition -%}
+}
+{% endmergeDiff -%}

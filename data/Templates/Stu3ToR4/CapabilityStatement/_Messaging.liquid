@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "supportedMessage" : [ {{ msg.supportedMessage | to_array | batch_render: 'CapabilityStatement/SupportedMessage', 'msg' }} ],
+  "event" : ""
+}
+{% endmergeDiff -%}
