@@ -30,13 +30,13 @@ jobs:
     - name: Build and push image to ACR
       id: build-image
       run: |
-        docker build "$GITHUB_WORKSPACE/" -f  "Dockerfile" -t armtemplateregistry.azurecr.io/fhirconvertertest2-img:${{ github.sha }}
-        docker push armtemplateregistry.azurecr.io/fhirconvertertest2-img:${{ github.sha }}
+        docker build "$GITHUB_WORKSPACE/" -f  "Dockerfile" -t armtemplateregistry.azurecr.io/fconverter4dd4f:${{ github.sha }}
+        docker push armtemplateregistry.azurecr.io/fconverter4dd4f:${{ github.sha }}
       
     - name: Set Web App ACR authentication
       uses: Azure/appservice-settings@v1
       with: 
-        app-name: fhirconverternew
+        app-name: fconverter4
         app-settings-json: | 
           [
             {
@@ -59,4 +59,4 @@ jobs:
     - uses: azure/webapps-deploy@v2
       with:
         app-name: fhirconverternew
-        images: armtemplateregistry.azurecr.io/fhirconvertertest2-img:${{ github.sha }}
+        images: armtemplateregistry.azurecr.io/fconverter4dd4f:${{ github.sha }}
