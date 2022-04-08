@@ -1,0 +1,8 @@
+{% mergeDiff msg -%}
+{
+  "affectsState" : "{{msg.idempotent}}",
+  "idempotent" : "",
+  "base" : {% include 'Shared/ReferenceToCanonical' msg: msg.base -%},
+  "parameter" : [ {{ msg.parameter | to_array | batch_render: 'OperationDefinition/Parameter', 'msg' }} ]
+}
+{% endmergeDiff -%}
