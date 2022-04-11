@@ -1,5 +1,0 @@
-{% mergeDiff msg -%}
-{
-  "documentation" : [ {{ msg.documentation | to_array | batch_render: 'Shared/RelatedArtifact', 'msg' }} ]
-}
-{% endmergeDiff -%}

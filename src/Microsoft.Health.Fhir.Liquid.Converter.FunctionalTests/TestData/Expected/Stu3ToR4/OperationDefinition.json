@@ -41,7 +41,10 @@
             "min": 0,
             "max": "1",
             "documentation": "The code that is to be located. If a code is provided, a system must be provided",
-            "type": "code"
+            "type": "code",
+            "binding": {
+                "valueSet": "test"
+            }
         },
         {
             "name": "system",

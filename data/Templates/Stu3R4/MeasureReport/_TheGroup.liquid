@@ -1,9 +1,0 @@
-{% mergeDiff msg -%}
-{
-  "code" : {% include 'Shared/Identifier2CodeableConcept' msg: msg.identifier -%},
-  "population" : [ {{ msg.population | to_array | batch_render: 'MeasureReport/Population', 'msg' }} ],
-  "measureScore" : {% include 'Shared/Decimal2Quantity' msg: msg.measureScore -%},
-  "stratifier" : [ {{ msg.stratifier | to_array | batch_render: 'MeasureReport/Stratifier', 'msg' }} ],
-  "identifier" : ""
-}
-{% endmergeDiff -%}

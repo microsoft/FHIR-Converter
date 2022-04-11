@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "adjustment" : {% include 'DataType/Money' msg: msg.adjustment -%},
+  "amount" : {% include 'DataType/Money' msg: msg.amount -%}
+}
+{% endmergeDiff -%}

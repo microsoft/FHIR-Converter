@@ -1,9 +1,0 @@
-{% mergeDiff msg -%}
-{
-  "code" : [
-    {% include 'Shared/Identifier2CodeableConcept' msg: msg.identifier -%}
-  ],
-  "stratum" : [ {{ msg.stratum | to_array | batch_render: 'MeasureReport/Stratum', 'msg' }} ],
-  "identifier" : ""
-}
-{% endmergeDiff -%}

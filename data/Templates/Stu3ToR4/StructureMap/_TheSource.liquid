@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "defaultValueMoney" : {% include 'DataType/Money' msg: msg.defaultValueMoney -%},
+  "defaultValueSignature" : {% include 'DataType/Signature' msg: msg.defaultValueSignature -%}
+}
+{% endmergeDiff -%}

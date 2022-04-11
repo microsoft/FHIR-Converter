@@ -1,0 +1,5 @@
+{% mergeDiff msg -%}
+{
+  "amount" : {% include 'DataType/Money' msg: msg.amount -%}
+}
+{% endmergeDiff -%}

@@ -127,7 +127,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 }
                 else
                 {
-                    result[item.Key] = item.Value;
+                    result[item.Key] = item.Value ?? string.Empty;
                 }
             }
 

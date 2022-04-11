@@ -1,9 +1,0 @@
-{% mergeDiff msg -%}
-{
-  "what" : {% include 'Shared/Identifier2Reference' msg: msg.identifier -%},
-  "what" : {{msg.reference | to_json_string | default : '""'}},
-  "detail" : [ {{ msg.detail | to_array | batch_render: 'AuditEvent/AuditEventEntityDetail', 'msg' }} ],
-  "reference" : "",
-  "identifier" : ""
-}
-{% endmergeDiff -%}

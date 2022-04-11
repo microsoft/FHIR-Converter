@@ -1,5 +1,0 @@
-{% mergeDiff msg -%}
-{
-  "codeFilter" : [ {{ msg.codeFilter | to_array | batch_render: 'Shared/DataRequirement/CodeFiter', 'msg' }} ]
-}
-{% endmergeDiff -%}
