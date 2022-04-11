@@ -1,0 +1,12 @@
+{
+    "resourceType": "Patient",
+    "id": "{{ msg.id | crypto_hash }}",
+    "text": {% include 'DataType/Narrative' text: msg.text -%}
+    "identifier": {% include 'DataType/Identifier' identifier: msg.identifier -%}
+    "active": {{ msg.active }},
+    "name": {% include 'DataType/HumanName' name: msg.name -%}
+    "telecom": {% include 'DataType/ContactPoint' contact: msg.telecom -%}
+    "gender": "{{ msg.gender }}",
+    "birthDate": "{{ msg.birthDate | redact: 'date', true }}",
+    "address": {% include 'DataType/Address' address: msg.address -%}
+}

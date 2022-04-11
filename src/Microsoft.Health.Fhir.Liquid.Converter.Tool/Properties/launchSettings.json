@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Microsoft.Health.Fhir.Liquid.Converter.Tool": {
+      "commandName": "Project",
+      "commandLineArgs": "convert -n \"E:\\converter\\FHIR-Converter\\data\\SampleData\\Transformation\\ExamplePatient.json\" -f \"E:\\converter\\test.json\" -d \"E:\\converter\\FHIR-Converter\\data\\Templates\\Transformation\" -r ExamplePatient"
+    }
+  }
+}

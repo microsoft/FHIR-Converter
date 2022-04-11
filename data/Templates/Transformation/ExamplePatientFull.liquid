@@ -1,0 +1,102 @@
+{
+    "resourceType": "Patient",
+    "id": "{{ msg.id | crypto_hash }}",
+    "text":
+    {
+        "status": "{{ msg.text.status}}",
+        "div": "{{ msg.text.div | redact }}"
+    },
+    "identifier":
+    [
+        {% for i in msg.identifier -%}
+        {
+            "use": "{{ i.use }}",
+            "type":
+            {
+                "coding":
+                [
+                    {% for c in i.type.coding -%}
+                    {
+                        "system": "{{ c.system }}",
+                        "version": "{{ c.version }}",
+                        "code": "{{ c.code }}",
+                        "display": "{{ c.display }}",
+                        {% if c.userSelected -%}
+                        "userSelected": {{ c.userSelected }},
+                        {% endif -%}
+                    },
+                    {% endfor -%}
+                ],
+                "text": "{{ i.type.text | redact }}"
+            },
+            "system": "{{ i.system }}",
+            "value": "{{ i.value | redact }}",
+            "period":
+            {
+                "start": "{{ i.period.start | date_shift }}",
+                "end": "{{ i.period.end | date_shift }}",
+            },
+            "assigner":
+            {
+                "reference": "{{ i.reference }}",
+                "type": "{{ i.uri }}",
+                "display": "{{ i.display | redact }}"
+            }
+        },
+        {% endfor -%}
+    ],
+    "active": {{ msg.active }},
+    "name":
+    [
+        {% for n in msg.name -%}
+        {
+            "use": "{{ n.use }}",
+            "text": "{{ n.text | redact }}",
+            "family": "{{ n.family | redact }}",
+            "given":
+            [
+                {% for g in n.given -%}
+                    "{{ g | redact }}",
+                {% endfor -%}
+            ],
+            "prefix":
+            [
+                {% for p in n.prefix -%}
+                    "{{ p | redact }}",
+                {% endfor -%}
+            ],
+            "suffix":
+            [
+                {% for s in n.suffix -%}
+                    "{{ s | redact }}",
+                {% endfor -%}
+            ],
+            "period":
+            {
+                "start": "{{ n.period.start | date_shift }}",
+                "end": "{{ n.period.end | date_shift }}"
+            }
+        },
+        {% endfor -%}
+    ],
+    "telecom":
+    [
+        {% for t in msg.telecom -%}
+        {
+            "system": "{{ t.system }}",
+            "value": "{{ t.value | encrypt: '704ab12c8e3e46d4bea600ef62a6bec7' }}",
+            "use": "{{ t.use }}",
+            {% if t.rank -%}
+            "rank": {{ t.rank | perturb: 1, 'fixed', 1 }},
+            {% endif -%}
+            "period":
+            {
+                "start": "{{ t.period.start | date_shift }}",
+                "end": "{{ t.period.end | date_shift }}"
+            }
+        },
+        {% endfor -%}
+    ],
+    "gender": "{{ msg.gender }}",
+    "birthDate": "{{ msg.birthDate | redact: 'date', true }}",
+}

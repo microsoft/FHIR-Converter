@@ -1,0 +1,26 @@
+[
+    {% assign restrictedZipCodes = '399' | to_array -%}
+    {% for a in address -%}
+    {
+        "use": "{{ a.use }}",
+        "type": "{{ a.type }}",
+        "text": "{{ a.text | redact }}",
+        "line":
+        [
+            {% for l in a.line -%}
+                "{{ l | redact }}",
+            {% endfor -%}
+        ],
+        "city": "{{ a.city | redact }}",
+        "district": "{{ a.district | redact }}",
+        "state": "{{ a.state }}",
+        "postalCode": "{{ a.postalCode | redact: 'postalCode', true, true, true, restrictedZipCodes }}",
+        "country": "{{ a.country }}",
+        "period":
+        {
+            "start": "{{ a.period.start | date_shift }}",
+            "end": "{{ a.period.end | date_shift }}"
+        }
+    },
+    {% endfor -%}
+],

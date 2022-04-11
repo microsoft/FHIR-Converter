@@ -1,0 +1,32 @@
+[
+    {% for n in name -%}
+    {
+        "use": "{{ n.use }}",
+        "text": "{{ n.text | redact }}",
+        "family": "{{ n.family | redact }}",
+        "given":
+        [
+            {% for g in n.given -%}
+                "{{ g | redact }}",
+            {% endfor -%}
+        ],
+        "prefix":
+        [
+            {% for p in n.prefix -%}
+                "{{ p | redact }}",
+            {% endfor -%}
+        ],
+        "suffix":
+        [
+            {% for s in n.suffix -%}
+                "{{ s | redact }}",
+            {% endfor -%}
+        ],
+        "period":
+        {
+            "start": "{{ n.period.start | date_shift }}",
+            "end": "{{ n.period.end | date_shift }}"
+        }
+    },
+    {% endfor -%}
+],

@@ -26,4 +26,10 @@
     <ProjectReference Include="..\Microsoft.Health.Fhir.TemplateManagement\Microsoft.Health.Fhir.TemplateManagement.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.Health.Anonymizer.Common">
+      <HintPath>..\..\..\Tools-for-Health-Data-Anonymization\DICOM\src\Microsoft.Health.Anonymizer.Common\bin\Debug\netcoreapp3.1\Microsoft.Health.Anonymizer.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

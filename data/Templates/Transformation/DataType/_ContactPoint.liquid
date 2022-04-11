@@ -1,0 +1,17 @@
+[
+    {% for t in contact -%}
+    {
+        "system": "{{ t.system }}",
+        "value": "{{ t.value | encrypt: '704ab12c8e3e46d4bea600ef62a6bec7' }}",
+        "use": "{{ t.use }}",
+        {% if t.rank -%}
+        "rank": {{ t.rank | perturb: 1, 'fixed', 1 }},
+        {% endif -%}
+        "period":
+        {
+            "start": "{{ t.period.start | date_shift }}",
+            "end": "{{ t.period.end | date_shift }}"
+        }
+    },
+    {% endfor -%}
+],
