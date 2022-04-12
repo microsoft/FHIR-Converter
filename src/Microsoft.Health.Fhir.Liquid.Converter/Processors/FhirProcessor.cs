@@ -3,16 +3,16 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Models
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
+
+namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
-    /// <summary>
-    /// The input data types supported by FHIR Converter
-    /// </summary>
-    public enum DataType
+    public class FhirProcessor : JsonProcessor
     {
-        Hl7v2,
-        Ccda,
-        Json,
-        Fhir,
+        public FhirProcessor(ProcessorSettings processorSettings = null)
+            : base(processorSettings)
+        {
+        }
     }
 }

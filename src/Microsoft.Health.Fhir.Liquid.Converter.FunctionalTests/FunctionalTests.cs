@@ -346,12 +346,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         [MemberData(nameof(GetDataForStu3ToR4))]
         public void GivenStu3FhirData_WhenConverting_ExpectedR4FhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
         {
-            var jsonProcessor = new JsonProcessor();
+            var fhirProcessor = new FhirProcessor();
             var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Stu3ToR4");
 
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
-            var actualContent = jsonProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Json));
+            var actualContent = fhirProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Fhir));
 
             var expectedObject = JObject.Parse(expectedContent);
             var actualObject = JObject.Parse(actualContent);
