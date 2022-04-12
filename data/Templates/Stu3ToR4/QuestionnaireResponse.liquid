@@ -2,7 +2,7 @@
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "partOf" : {{msg.parent | to_json_string | default : '""'}},
-  "questionnaire" : {% include 'DataType/Reference2Canonical' msg: msg.questionnaire -%},
+  "questionnaire" : {% include 'DataType/ReferenceToCanonical' msg: msg.questionnaire -%},
   "encounter" : {{msg.context | to_json_string | default : '""'}},
   "item" : [ {{ msg.item | to_array | batch_render: 'QuestionnaireResponse/Item', 'msg' }} ],
   "context" : "",

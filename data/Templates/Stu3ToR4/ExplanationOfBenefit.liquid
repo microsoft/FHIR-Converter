@@ -15,7 +15,7 @@
     {% include 'ExplanationOfBenefit/ExplanationOfBenefitTotalBenefit' msg: msg.totalBenefit -%}
   ],
   "payment" : {% include 'ExplanationOfBenefit/ExplanationOfBenefitPayment' msg: msg.payment -%},
-  "form" : {% include 'DataType/CodeableConcept2Attachment' msg: msg.form -%},
+  "form" : {% include 'DataType/CodeableConceptToAttachment' msg: msg.form -%},
   "processNote" : [ {{ msg.processNote | to_array | batch_render: 'ExplanationOfBenefit/ExplanationOfBenefitProcessNote', 'msg' }} ],
   "benefitBalance" : [ {{ msg.benefitBalance | to_array | batch_render: 'ExplanationOfBenefit/ExplanationOfBenefitBenefitBalance', 'msg' }} ],
   "totalBenefit" : "",

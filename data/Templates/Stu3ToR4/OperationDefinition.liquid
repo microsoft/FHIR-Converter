@@ -3,7 +3,7 @@
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "affectsState" : "{{msg.idempotent}}",
   "idempotent" : "",
-  "base" : {% include 'DataType/Reference2Canonical' msg: msg.base -%},
+  "base" : {% include 'DataType/ReferenceToCanonical' msg: msg.base -%},
   "parameter" : [ {{ msg.parameter | to_array | batch_render: 'OperationDefinition/Parameter', 'msg' }} ]
 }
 {% endmergeDiff -%}

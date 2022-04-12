@@ -5,7 +5,7 @@
   "requestIdentifier" : {
     "value" : "{{msg.requestId}}"
   },
-  "moduleCanonical" : {% include 'DataType/Reference2Canonical' msg: msg.module -%},
+  "moduleCanonical" : {% include 'DataType/ReferenceToCanonical' msg: msg.module -%},
   "encounter" : {{msg.context | to_json_string | default : '""'}},
   "reasonCode" : [{{msg.reasonCodeableConcept | to_json_string | default : '""'}}],
   "reasonReference" : [{{msg.reasonReference | to_json_string | default : '""'}}],

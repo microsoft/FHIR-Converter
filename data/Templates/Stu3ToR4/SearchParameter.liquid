@@ -4,7 +4,7 @@
   "component" : [
     {%for item in msg.component -%}
     {
-      "definition" : {% include 'DataType/Reference2Canonical' msg: item.definition -%},
+      "definition" : {% include 'DataType/ReferenceToCanonical' msg: item.definition -%},
       "expression" : "{{item.expression}}"
     },
     {% endfor -%}

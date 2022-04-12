@@ -19,7 +19,7 @@
   "fundsReserve" : {
     "coding" : {{msg.reserved | to_json_string | default : '""' }}
   },
-  "form" : {% include 'DataType/CodeableConcept2Attachment' msg: msg.form -%},
+  "form" : {% include 'DataType/CodeableConceptToAttachment' msg: msg.form -%},
   "processNote" : [ {{ msg.processNote | to_array | batch_render: 'ClaimResponse/ClaimResponseProcessNote', 'msg' }} ],
   "insurance" : [ {{ msg.insurance | to_array | batch_render: 'ClaimResponse/ClaimResponseInsurance', 'msg' }} ],
   "totalBenefit" : "",

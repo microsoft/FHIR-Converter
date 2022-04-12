@@ -4,7 +4,7 @@
   "encounter" : {{msg.context | to_json_string | default : '""'}},
   "related" : "",
   "note" : [
-    {% include 'DataType/String2Annotation' msg: msg.comment -%}
+    {% include 'DataType/StringToAnnotation' msg: msg.comment -%}
   ],
   "comment" : "",
   "hasMember" : [

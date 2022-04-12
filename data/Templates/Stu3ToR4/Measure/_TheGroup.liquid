@@ -1,6 +1,6 @@
 {% mergeDiff msg -%}
 {
-  "code" : {% include 'DataType/Identifier2CodeableConcept' msg: msg.identifier -%},
+  "code" : {% include 'DataType/IdentifierToCodeableConcept' msg: msg.identifier -%},
   "extension" : [
     {% for e in msg.extension -%}
     {{ e | to_json_string | default : '""'}},

@@ -4,6 +4,6 @@
     "text" : "{{msg.value}}"
   },
   "population" : [ {{ msg.population | to_array | batch_render: 'MeasureReport/Population2', 'msg' }} ],
-  "measureScore" : {% include 'DataType/Decimal2Quantity' msg: msg.measureScore -%}
+  "measureScore" : {% include 'DataType/DecimalToQuantity' msg: msg.measureScore -%}
 }
 {% endmergeDiff -%}

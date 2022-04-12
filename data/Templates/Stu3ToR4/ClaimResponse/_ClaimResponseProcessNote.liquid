@@ -1,5 +1,5 @@
 {% mergeDiff msg -%}
 {
-  "type" : {% include 'DataType/CodeableConcept2Code' msg: msg.type -%}
+  "type" : {% include 'DataType/CodeableConceptToCode' msg: msg.type -%}
 }
 {% endmergeDiff -%}

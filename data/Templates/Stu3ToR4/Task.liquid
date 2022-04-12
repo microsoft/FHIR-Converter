@@ -2,7 +2,7 @@
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "instantiatesUri" : "{{msg.definitionUri}}",
-  "instantiatesCanonical" : {% include 'DataType/Reference2Canonical' msg : msg.definitionReference -%},
+  "instantiatesCanonical" : {% include 'DataType/ReferenceToCanonical' msg : msg.definitionReference -%},
   "encounter" : {{msg.context | to_json_string | default : '""'}},
   "requester" : {{msg.requester.agent | to_json_string | default : '""'}},
   "reasonCode" : {{msg.reason | to_json_string | default : '""'}},

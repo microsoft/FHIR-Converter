@@ -3,7 +3,7 @@
   {% if msg.exampleFor == null -%}
   "exampleBoolean" : {{msg.example}},
   {% else -%}
-  "exampleCanonical" : {% include 'DataType/Reference2Canonical' msg: msg.exampleFor -%},
+  "exampleCanonical" : {% include 'DataType/ReferenceToCanonical' msg: msg.exampleFor -%},
   {% endif -%}
   "extension" : [
     {% for e in msg.extension -%}

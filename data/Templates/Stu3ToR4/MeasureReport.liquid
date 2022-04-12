@@ -3,7 +3,7 @@
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "type" : {% include 'MeasureReport/TranslateTypeCode' msg : msg.type -%},
   "identifier" : [{{msg.identifier | to_json_string | default : '""' }}],
-  "measure" : {% include 'DataType/Reference2Canonical' msg: msg.measure -%},
+  "measure" : {% include 'DataType/ReferenceToCanonical' msg: msg.measure -%},
   "subject" : {{msg.patient | to_json_string | default : '""'}},
   "reporter" : {{msg.reportingOrganization | to_json_string | default : '""'}},
   "group" : [ {{ msg.group | to_array | batch_render: 'MeasureReport/TheGroup', 'msg' }} ],

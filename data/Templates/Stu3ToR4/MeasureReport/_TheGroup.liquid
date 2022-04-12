@@ -1,8 +1,8 @@
 {% mergeDiff msg -%}
 {
-  "code" : {% include 'DataType/Identifier2CodeableConcept' msg: msg.identifier -%},
+  "code" : {% include 'DataType/IdentifierToCodeableConcept' msg: msg.identifier -%},
   "population" : [ {{ msg.population | to_array | batch_render: 'MeasureReport/Population', 'msg' }} ],
-  "measureScore" : {% include 'DataType/Decimal2Quantity' msg: msg.measureScore -%},
+  "measureScore" : {% include 'DataType/DecimalToQuantity' msg: msg.measureScore -%},
   "stratifier" : [ {{ msg.stratifier | to_array | batch_render: 'MeasureReport/Stratifier', 'msg' }} ],
   "identifier" : ""
 }

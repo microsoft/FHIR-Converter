@@ -1,6 +1,6 @@
 {% mergeDiff msg -%}
 {
-  "uid" : {% include 'DataType/Oid2Id' msg: msg.uid -%},
+  "uid" : {% include 'DataType/OidToId' msg: msg.uid -%},
   "extension" : [
     {% for e in msg.extension -%}
     {{ e | to_json_string | default : '""'}},
