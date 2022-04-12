@@ -5,6 +5,6 @@
   ],
   "profile" : "",
   "binding" : {% include 'OperationDefinition/Binding' msg: msg.binding -%},
-  "part" : [ {{ msg.part | to_array | batch_render: 'OperationDefinition/parameter', 'msg' }} ]
+  "part" : [ {{ msg.part | to_array | batch_render: 'OperationDefinition/Parameter', 'msg' }} ]
 }
 {% endmergeDiff -%}

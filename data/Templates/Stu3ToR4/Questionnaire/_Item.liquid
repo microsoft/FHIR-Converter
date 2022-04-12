@@ -6,7 +6,7 @@
   "initial" : [
     {% include 'Questionnaire/Initial' msg: msg -%}
   ],
-  "item" : [ {{ msg.item | to_array | batch_render: 'Questionnaire/item', 'msg' }} ],
+  "item" : [ {{ msg.item | to_array | batch_render: 'Questionnaire/Item', 'msg' }} ],
   "initial[x]" : "",
   "option" : "",
   "options" : ""

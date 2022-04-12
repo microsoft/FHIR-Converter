@@ -9,7 +9,7 @@
   "type" : {% include 'DataType/CodingToCodeableConcept' msg: msg.type -%},
   "transform" : {% include 'DataType/ReferenceToCanonical' msg: msg.transform -%},
   "dynamicValue" : [ {{ msg.dynamicValue | to_array | batch_render: 'PlanDefinition/DynamicValue', 'msg' }} ],
-  "action" : [ {{ msg.action | to_array | batch_render: 'PlanDefinition/action', 'msg' }} ],
+  "action" : [ {{ msg.action | to_array | batch_render: 'PlanDefinition/Action', 'msg' }} ],
   "definition" : "",
   "triggerDefinition" : "",
   "label" : ""

@@ -12,7 +12,7 @@
     {% endif -%}
   ],
   "answer" : [ {{ msg.answer | to_array | batch_render: 'QuestionnaireResponse/Answer', 'msg' }} ],
-  "item" : [ {{ msg.item | to_array | batch_render: 'QuestionnaireResponse/item', 'msg' }} ],
+  "item" : [ {{ msg.item | to_array | batch_render: 'QuestionnaireResponse/Item', 'msg' }} ],
   "subject" : ""
 }
 {% endmergeDiff -%}
