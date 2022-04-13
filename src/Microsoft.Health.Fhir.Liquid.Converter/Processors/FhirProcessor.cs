@@ -4,7 +4,6 @@
 // -------------------------------------------------------------------------------------------------
 
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
-using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
