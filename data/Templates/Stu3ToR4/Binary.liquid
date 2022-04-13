@@ -1,0 +1,7 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "data" : "{{msg.content}}",
+  "content" : ""
+}
+{% endmergeDiff -%}

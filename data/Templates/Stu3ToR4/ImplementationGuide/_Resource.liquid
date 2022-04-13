@@ -1,0 +1,37 @@
+{% mergeDiff msg -%}
+{
+  {% if msg.exampleFor == null -%}
+  "exampleBoolean" : {{msg.example}},
+  {% else -%}
+  "exampleCanonical" : {% include 'DataType/ReferenceToCanonical' msg: msg.exampleFor -%},
+  {% endif -%}
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.acronym -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-ImplementationGuide.package.resource.acronym",
+      "valueString" : "{{msg.acronym}}"
+    },
+    {% endif -%}
+  ],
+  {%if msg.sourceUri -%}
+  "reference" : {
+    "reference" : "{{msg.sourceUri}}",
+    "extension" : {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/BaseType",
+      "valueUri" : "uri"
+    }
+  },
+  {% endif -%}
+  {%if msg.sourceReference -%}
+  "reference" : {{msg.sourceReference | to_json_string | default : '""'}},
+  {% endif -%}
+  "exampleFor" : "",
+  "example" : "",
+  "acronym" : "",
+  "sourceUri" : "",
+  "sourceReference" :""
+}
+{% endmergeDiff -%}

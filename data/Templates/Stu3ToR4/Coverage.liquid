@@ -1,0 +1,27 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "class" : [
+    {% if msg.grouping.group -%}
+    {% include 'Coverage/CoverageGroupingGroup' msg: msg.grouping -%},
+    {% endif -%}
+    {% if msg.grouping.subGroup -%}
+    {% include 'Coverage/CoverageGroupingSubGroup' msg: msg.grouping -%},
+    {% endif -%}
+    {% if msg.grouping.plan -%}
+    {% include 'Coverage/CoverageGroupingPlan' msg: msg.grouping -%},
+    {% endif -%}
+    {% if msg.grouping.subPlan -%}
+    {% include 'Coverage/CoverageGroupingSubPlan' msg: msg.grouping -%},
+    {% endif -%}
+    {% if msg.grouping.class -%}
+    {% include 'Coverage/CoverageGroupingClass' msg: msg.grouping -%},
+    {% endif -%}
+    {% if msg.grouping.subClass -%}
+    {% include 'Coverage/CoverageGroupingSubClass' msg: msg.grouping -%},
+    {% endif -%}
+  ],
+  "sequence" : "",
+  "grouping" : ""
+}
+{% endmergeDiff -%}

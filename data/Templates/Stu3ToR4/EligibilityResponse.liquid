@@ -1,0 +1,18 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "resourceType" : "CoverageEligibilityResponse",
+  "requestor" : {{msg.requestProvider | to_json_string | default : '""'}},
+  "inforce" : "",
+  {% assign value = msg.outcome.coding[0].code -%}
+  {% if value == 'complete' or value == 'error' or value == 'partial' -%}
+  "outcome" : "{{value}}",
+  {% else %}
+  "outcome":"",
+  {% endif -%}
+  "requestOrganization" : "",
+  "insurance" : [ {{ msg.insurance | to_array | batch_render: 'EligibilityResponse/EligibilityResponseInsurance', 'insurance' }} ],
+  "requestProvider" : ""
+}
+{% endmergeDiff -%}
+

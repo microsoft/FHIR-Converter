@@ -1,0 +1,8 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "recommendation" : [{{msg.recommendation | to_array | batch_render : 'ImmunizationRecommendation/Recommendation', 'msg' }}],
+  "date" : "{{msg.recommendation[0].date | date: "yyyy-MM-ddTHH:mm:ss.fff%K" }}",
+  "authority" : {{msg.recommendation[0].protocol.authority | to_json_string | default : '""'}},
+}
+{% endmergeDiff -%}

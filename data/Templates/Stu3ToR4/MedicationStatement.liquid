@@ -1,0 +1,33 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.status -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MedicationStatement.status",
+      "valueCode" : "{{msg.status}}"
+    },
+    {% endif -%}
+    {%if msg.taken -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MedicationStatement.taken",
+      "valueCode" : "{{msg.taken}}"
+    },
+    {% endif -%}
+  ],
+  {% if msg.taken == 'n' -%}
+  "status" : "not-taken",
+  {% else if msg.taken == 'unk' -%}
+  "status" : "unknown",
+  {% endif -%}
+  {% if msg.reasonNotTaken -%}
+  "reasonCode" : {{msg.reasonNotTaken | to_json_string | default : '""'}},
+  {% endif -%}
+  "dosage" : [ {{ msg.dosage | to_array | batch_render: 'DataType/Dosage', 'msg' }} ],
+  "reasonNotTaken" : "",
+  "taken" : ""
+}
+{% endmergeDiff -%}

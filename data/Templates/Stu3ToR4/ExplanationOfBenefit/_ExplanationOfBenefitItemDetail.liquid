@@ -1,0 +1,10 @@
+{% mergeDiff msg -%}
+{
+  "unitPrice" : {% include 'DataType/Money' msg: msg.unitPrice -%},
+  "net" : {% include 'DataType/Money' msg: msg.net -%},
+  "adjudication" : [ {{ msg.adjudication | to_array | batch_render: '_ExplanationOfBenefitItemAdjudication', 'msg' }} ],
+  "subDetail" : [ {{ msg.subDetail | to_array | batch_render: 'ExplanationOfBenefit/ExplanationOfBenefitItemDetailSubDetail', 'msg' }} ],
+  "service" : "",
+  "type" : ""
+}
+{% endmergeDiff -%}

@@ -1,0 +1,18 @@
+{% mergeDiff msg -%}
+{
+  {%if msg.identifier -%}
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MeasureReport.group.stratifier.stratum.population.identifier",
+      "valueIdentifier" : {{msg.identifier | to_json_string | default : '""' }}
+    },
+  ],
+  {% endif -%}
+  "subjectResults" : {{msg.patients | to_json_string | default : '""'}},
+  "patients" : "",
+  "identifier" : ""
+}
+{% endmergeDiff -%}

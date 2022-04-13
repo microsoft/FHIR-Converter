@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "observer" : {% include 'DataType/IdentifierToReference' msg: msg.identifier -%},
+  "identifier" : ""
+}
+{% endmergeDiff -%}

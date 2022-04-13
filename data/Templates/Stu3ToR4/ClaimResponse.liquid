@@ -1,0 +1,32 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "requestor" : {{msg.requestProvider | to_json_string | default : '""'}},
+  {% assign value = msg.outcome.coding[0].code %}
+  {% if value == 'queued' or value =='complete' or value =='error' or value == 'partial' -%}
+  "outcome" : "{{value}}",
+  {% else %}
+  "outcome" : "",
+  {% endif -%}
+  "item" : [ {{ msg.item | to_array | batch_render: 'ClaimResponse/ClaimResponseItem', 'msg' }} ],
+  "addItem" : [ {{ msg.addItem | to_array | batch_render: 'ClaimResponse/ClaimResponseAddItem', 'msg' }} ],
+  "error" : [ {{ msg.error | to_array | batch_render: 'ClaimResponse/ClaimResponseError', 'msg' }} ],
+  "total" : [
+    {% include 'ClaimResponse/ClaimResponseTotalCost' msg: msg.totalCost -%},
+    {% include 'ClaimResponse/ClaimResponseTotalBenefit' msg: msg.totalBenefit -%}
+  ],
+  "payment" : {% include 'ClaimResponse/ClaimResponsePayment' msg: msg.payment -%},
+  "fundsReserve" : {
+    "coding" : {{msg.reserved | to_json_string | default : '""' }}
+  },
+  "form" : {% include 'DataType/CodeableConceptToAttachment' msg: msg.form -%},
+  "processNote" : [ {{ msg.processNote | to_array | batch_render: 'ClaimResponse/ClaimResponseProcessNote', 'msg' }} ],
+  "insurance" : [ {{ msg.insurance | to_array | batch_render: 'ClaimResponse/ClaimResponseInsurance', 'msg' }} ],
+  "totalBenefit" : "",
+  "unallocDeductable" : "",
+  "totalCost" : "",
+  "requestOrganization" : "",
+  "requestProvider" : "",
+  "reserved" : ""
+}
+{% endmergeDiff -%}

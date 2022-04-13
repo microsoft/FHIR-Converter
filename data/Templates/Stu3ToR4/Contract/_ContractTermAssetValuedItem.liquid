@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+    "unitPrice" : {% include 'DataType/Money' msg: msg.unitPrice -%},
+    "net" : {% include 'DataType/Money' msg: msg.net -%}
+}
+{% endmergeDiff -%}

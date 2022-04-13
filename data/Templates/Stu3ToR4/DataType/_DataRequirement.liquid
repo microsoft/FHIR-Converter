@@ -1,0 +1,5 @@
+{% mergeDiff msg -%}
+{
+  "codeFilter" : [ {{ msg.codeFilter | to_array | batch_render: 'DataType/DataRequirement/CodeFilter', 'msg' }} ]
+}
+{% endmergeDiff -%}

@@ -1,0 +1,53 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "author" :[
+    {% for c in msg.contributor %}
+    {% if c.type == 'author' -%}
+    {% include 'DataType/ContributorToContactDetail' msg : c -%},
+    {% endif %}
+    {% endfor %}
+  ],
+  "editor" :[
+    {% for c in msg.contributor %}
+    {% if c.type == "editor" -%}
+    {% include 'DataType/ContributorToContactDetail' msg : c -%},
+    {% endif %}
+    {% endfor %}
+  ],
+  "reviewer" :[
+    {% for c in msg.contributor %}
+    {% if c.type == "reviewer" -%}
+    {% include 'DataType/ContributorToContactDetail' msg : c -%},
+    {% endif %}
+    {% endfor %}
+  ],
+  "endorser" :[
+    {% for c in msg.contributor %}
+    {% if c.type == "endorser" -%}
+    {% include 'DataType/ContributorToContactDetail' msg : c -%},
+    {% endif %}
+    {% endfor %}
+  ],
+  "relatedArtifact" : [ {{ msg.relatedArtifact | to_array | batch_render: 'DataType/RelatedArtifact', 'msg' }} ],
+  "library" : [ {{ msg.library | to_array | batch_render: 'DataType/ReferenceToCanonical', 'msg' }} ],
+  "improvementNotation" : {
+    "text" : "{{msg.improvementNotation}}"
+  },
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.set -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-Measure.set",
+      "valueString" : "{{msg.set}}"
+    },
+    {% endif -%}
+  ],
+  "group" : [ {{ msg.group | to_array | batch_render: 'Measure/TheGroup', 'msg' }} ],
+  "supplementalData" : [ {{ msg.supplementalData | to_array | batch_render: 'Measure/SupplementalData', 'msg' }} ],
+  "contributor" : "",
+  "set" : ""
+}
+{% endmergeDiff -%}

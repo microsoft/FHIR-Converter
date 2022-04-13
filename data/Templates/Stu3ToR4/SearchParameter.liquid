@@ -1,0 +1,13 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "component" : [
+    {%for item in msg.component -%}
+    {
+      "definition" : {% include 'DataType/ReferenceToCanonical' msg: item.definition -%},
+      "expression" : "{{item.expression}}"
+    },
+    {% endfor -%}
+  ]
+}
+{% endmergeDiff -%}

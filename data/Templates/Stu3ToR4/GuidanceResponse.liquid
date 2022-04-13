@@ -1,0 +1,19 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "identifier" : [{{msg.identifier | to_json_string | default : '""'}}],
+  "requestIdentifier" : {
+    "value" : "{{msg.requestId}}"
+  },
+  "moduleCanonical" : {% include 'DataType/ReferenceToCanonical' msg: msg.module -%},
+  "encounter" : {{msg.context | to_json_string | default : '""'}},
+  "reasonCode" : [{{msg.reasonCodeableConcept | to_json_string | default : '""'}}],
+  "reasonReference" : [{{msg.reasonReference | to_json_string | default : '""'}}],
+  "dataRequirement" : [ {{ msg.dataRequirement | to_array | batch_render: 'DataType/DataRequirement', 'msg' }} ],
+  "context" : "",
+  "requestId" : "",
+  "module" : "",
+  "reasonCodeableConcept": ""
+}
+{% endmergeDiff -%}
+

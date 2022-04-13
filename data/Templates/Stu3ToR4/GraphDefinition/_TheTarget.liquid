@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "compartment" : [ {{ msg.compartment | to_array | batch_render: 'GraphDefinition/Compartment', 'msg' }} ],
+  "link" : [ {{ msg.link | to_array | batch_render: 'GraphDefinition/Link', 'msg' }} ]
+}
+{% endmergeDiff -%}

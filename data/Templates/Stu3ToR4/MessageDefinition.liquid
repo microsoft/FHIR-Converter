@@ -1,0 +1,19 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "identifier" : [{{msg.identifier | to_json_string | default : '""' }}],
+  "eventCoding" : {{msg.event | to_json_string | default : '""'}},
+  "base" : {% include 'DataType/ReferenceToCanonical' msg : msg.parent -%},
+  "parent" : {% include 'DataType/ReferenceToCanonical' msg : msg.parent -%},
+  "replaces" : [{{msg.replaces | to_array | batch_render : 'DataType/ReferenceToCanonical', 'msg' }}],
+  "focus" : [{{msg.focus | to_array | batch_render : 'MessageDefinition/Focus', 'msg' }}],
+  "category" : {% include 'MessageDefinition/TranslateCategoryCode' msg : msg.category -%},
+  "allowedResponse" : [{{msg.allowedResponse | to_array | batch_render : 'MessageDefinition/AllowedResponse', 'msg' }}],
+  {% if msg.responseRequired == true -%}
+  "responseRequired" : "always",
+  {% else -%}
+  "responseRequired" : "never",
+  {% endif -%}
+  "event" : ""
+}
+{% endmergeDiff -%}

@@ -1,0 +1,26 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "category" : [
+    {%if msg.category -%}
+    {
+      "coding" : {
+        "system" : "http://terminology.hl7.org/CodeSystem/adverse-event-category",
+        "code" : "{{msg.category}}"
+      }
+    },
+    {% endif -%}
+  ],
+  "event" : {{msg.type | to_json_string | default : '""'}},
+  {% if msg.type == null -%}
+  "event" : {
+    "text" : "{{msg.description}}"
+  },
+  {% endif -%}
+  "suspectEntity" : [ {{ msg.suspectEntity | to_array | batch_render: 'AdverseEvent/AdverseEventSuspectEntity', 'msg' }} ],
+  "eventParticipant" : "",
+  "reaction" : "",
+  "type" : "",
+  "description" : ""
+}
+{% endmergeDiff -%}

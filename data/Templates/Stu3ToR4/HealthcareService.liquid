@@ -1,0 +1,19 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+    "category" : [{{ msg.category | to_json_string | default : '""' }}],
+    "eligibility" :[
+        {
+            "code" : {{msg.eligibility | to_json_string | default : '""' }},
+            "comment" : "{{msg.eligibilityNote}}"
+        }
+    ],
+    "program" : [
+        {
+            "text": "{{msg.programName}}"
+        }
+    ],
+    "eligibilityNote" : "",
+    "programName" : ""
+}
+{% endmergeDiff -%}
