@@ -1,0 +1,5 @@
+{% mergeDiff msg -%}
+{
+  "resource" : {% include 'DataType/ReferenceToCanonical' msg: msg.resource -%}
+}
+{% endmergeDiff -%}

@@ -1,0 +1,31 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "udiCarrier" : [
+    {
+      "deviceIdentifier" : "{{msg.udi.deviceIdentifier}}",
+      "deviceName" : [
+        {%if msg.udi.name -%}
+        {
+          "name" : "{{msg.udi.name}}",
+          "type" : "udi-label-name"
+        },
+        {% endif -%}
+      ],
+      "jurisdiction" : "{{msg.udi.jurisdiction}}",
+      "carrierHRF" : "{{msg.udi.carrierHRF}}",
+      "carrierAIDC" : "{{msg.udi.carrierAIDC}}",
+      "issuer" : "{{msg.udi.issuer}}",
+      "entryType" : "{{msg.udi.entryType}}"
+    }
+  ],
+  "modelNumber" : "{{msg.model}}",
+  "version" : [
+    {
+      "value" : "{{msg.version}}"
+    }
+  ],
+  "model" : "",
+  "udi" : ""
+}
+{% endmergeDiff -%}

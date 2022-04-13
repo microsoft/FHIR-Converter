@@ -1,9 +1,10 @@
 {% mergeDiff msg -%}
 {
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "encounter" : {{msg.context | to_json_string | default : '""'}},
   "related" : "",
   "note" : [
-    {% include 'Shared/StringToAnnotation' msg: msg.comment -%}
+    {% include 'DataType/StringToAnnotation' msg: msg.comment -%}
   ],
   "comment" : "",
   "hasMember" : [

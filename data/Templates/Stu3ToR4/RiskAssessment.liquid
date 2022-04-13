@@ -1,0 +1,16 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "encounter" : {{msg.context | to_json_string | default : '""'}},
+  "reasonCode" : [{{msg.reasonCodeableConcept | to_json_string | default : '""'}}],
+  "reasonReference" : [{{msg.reasonReference | to_json_string | default : '""'}}],
+  "note" : [
+    {
+      "text" : "{{msg.comment}}"
+    }
+  ],
+  "reasonCodeableConcept" : "",
+  "context" : "",
+  "comment" : ""
+}
+{% endmergeDiff -%}

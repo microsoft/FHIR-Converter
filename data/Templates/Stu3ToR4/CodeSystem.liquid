@@ -1,5 +1,8 @@
 {% mergeDiff msg -%}
 {
-  "concept" : [ {{ msg.concept | to_array | batch_render: 'CodeSystem/Concept', 'msg' }} ]
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "identifier" : [
+    {{msg.identifier | to_json_string | default : '""'}}
+  ]
 }
 {% endmergeDiff -%}
