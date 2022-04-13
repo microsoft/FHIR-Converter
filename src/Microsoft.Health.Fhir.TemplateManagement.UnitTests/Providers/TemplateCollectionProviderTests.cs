@@ -91,7 +91,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             yield return new object[] { "microsofthealth/hl7v2templates:default", 915 };
             yield return new object[] { "microsofthealth/ccdatemplates:default", 821 };
             yield return new object[] { "microsofthealth/jsontemplates:default", 2 };
-            yield return new object[] { "microsofthealth/stu3tor4templates:default", 25 };
+            yield return new object[] { "microsofthealth/stu3tor4templates:default", 261 };
         }
 
         [Theory]
