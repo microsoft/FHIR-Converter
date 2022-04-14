@@ -114,3 +114,71 @@ By default, Liquid provides a set of standard [tags](https://github.com/Shopify/
 | Tag | Description | Syntax |
 |-|-|-|
 | evaluate | Evaluates an ID with an ID generation template and input data | `{% evaluate patientId using 'Utils/GenerateId' obj:msg.ClinicalDocument.recordTarget.patientRole -%}` |
+|mergeDiff|Merge diff json on input json data. The input data and diff content should be a valid json format.| `{% mergeDiff msg -%}` <br> `<diff json>` <br> `{% endmergeDiff -%}`   |
+
+**Examples to use mergeDiff**
+
+**Add or update an item:**
+```
+{% mergeDiff msg -%}
+{
+    "added": "value"
+}
+{% endmergeDiff %}
+```
+
+**Remove an item:**
+```
+{% mergeDiff msg -%}
+{
+    "removed": ""
+}
+{% endmergeDiff %}
+```
+**Choice type item:**
+
+Using `[x]` to represent item with choice type. ( e.g. value[x] includes
+valueString, valueReference, valueInteger, etc. )
+The key in diff json can use `[x]` to simplfy the template.
+
+Here is a sample to remove choice type element for "value": 
+
+
+```
+{% mergeDiff msg -%}
+{
+    "value[x]" : ""
+}
+{% endmergeDiff %}
+```
+
+**Examples for STU3 input**
+
+Since FHIR resources are json format and resources of STU3 and R4 versions have same structures and share most datetypes, mergeDiff tag can be widely used in FHIR STU3 to R4 conversion.
+
+Here is an example to convert ChargeItem resource from STU3 to R4 :
+
+
+ChargeItem.liquid：
+```
+{% mergeDiff msg -%}
+{
+  "definitionUri" : {{msg.definition | to_json_string | default : '""'}},
+  "performer" : [ {{ msg.participant | to_array | batch_render: 'ChargeItem/ChargeItemPerformer', 'msg' }} ],
+  "participant" : "",
+  "definition" : ""
+}
+{% endmergeDiff -%}
+```
+_ChargeItemPerformer.liquid:
+```
+{% mergeDiff msg -%}
+{
+  "function" : {{msg.role | to_json_string | default : '""'}},
+  "role" : ""
+}
+{% endmergeDiff -%}
+```
+In this sample, field definition will be renamed to definitionUri and participant will be renamed to performer. Other fields keep unchanged. 
+
+
