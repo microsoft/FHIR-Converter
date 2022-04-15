@@ -18,7 +18,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     {
         private static readonly Regex NormalizeSectionNameRegex = new Regex("[^A-Za-z0-9]");
 
-        public static IDictionary<string, object> GetFirstCcdaSections(Hash data, string sectionNameContent)
+        public static IDictionary<string, object> GetFirstCcdaSections(IDictionary<string, object> data, string sectionNameContent)
         {
             var sectionLists = Filters.GetCcdaSectionLists(data, sectionNameContent);
             var result = new Dictionary<string, object>();
@@ -30,7 +30,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return result;
         }
 
-        public static IDictionary<string, object> GetCcdaSectionLists(Hash data, string sectionNameContent)
+        public static IDictionary<string, object> GetCcdaSectionLists(IDictionary<string, object> data, string sectionNameContent)
         {
             var result = new Dictionary<string, object>();
             var sectionNames = sectionNameContent.Split("|", StringSplitOptions.RemoveEmptyEntries);
@@ -67,7 +67,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return result;
         }
 
-        public static IDictionary<string, object> GetFirstCcdaSectionsByTemplateId(Hash data, string templateIdContent)
+        public static IDictionary<string, object> GetFirstCcdaSectionsByTemplateId(IDictionary<string, object> data, string templateIdContent)
         {
             var result = new Dictionary<string, object>();
             var templateIds = templateIdContent.Split("|", StringSplitOptions.RemoveEmptyEntries);
@@ -96,12 +96,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return result;
         }
 
-        private static List<object> GetComponents(Hash data)
+        private static List<object> GetComponents(IDictionary<string, object> data)
         {
-            var dataComponents = (((data["ClinicalDocument"] as Hash)?
-                ["component"] as Hash)?
-                ["structuredBody"] as Hash)?
-                ["component"];
+            // Seek for more beautiful codes here
+            var clinicalDocument = data["ClinicalDocument"] as IDictionary<string, object>;
+            var component = clinicalDocument?.ContainsKey("component") is true ? clinicalDocument["component"] as IDictionary<string, object> : null;
+            var structuredBody = component?.ContainsKey("structuredBody") is true ? component["structuredBody"] as IDictionary<string, object> : null;
+            var dataComponents = structuredBody?.ContainsKey("component") is true ? structuredBody["component"] : null;
 
             if (dataComponents == null)
             {
