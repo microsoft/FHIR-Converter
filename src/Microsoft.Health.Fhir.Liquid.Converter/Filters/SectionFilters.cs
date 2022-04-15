@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using DotLiquid;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
 {
@@ -98,7 +97,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         private static List<object> GetComponents(IDictionary<string, object> data)
         {
-            // Seek for more beautiful codes here
             var clinicalDocument = data["ClinicalDocument"] as IDictionary<string, object>;
             var component = clinicalDocument?.ContainsKey("component") is true ? clinicalDocument["component"] as IDictionary<string, object> : null;
             var structuredBody = component?.ContainsKey("structuredBody") is true ? component["structuredBody"] as IDictionary<string, object> : null;
