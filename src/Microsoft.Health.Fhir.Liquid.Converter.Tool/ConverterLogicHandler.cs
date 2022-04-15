@@ -106,14 +106,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
 
         private static ITemplateProvider CreateTemplateProvider(DataType dataType, string templateDirectory)
         {
-            return dataType switch
-            {
-                DataType.Hl7v2 => new TemplateProvider(templateDirectory, DataType.Hl7v2),
-                DataType.Ccda => new TemplateProvider(templateDirectory, DataType.Ccda),
-                DataType.Json => new TemplateProvider(templateDirectory, DataType.Json),
-                DataType.Fhir => new TemplateProvider(templateDirectory, DataType.Fhir),
-                _ => throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported")
-            };
+            return new TemplateProvider(templateDirectory, dataType);
         }
 
         private static TraceInfo CreateTraceInfo(DataType dataType, bool isTraceInfo)
