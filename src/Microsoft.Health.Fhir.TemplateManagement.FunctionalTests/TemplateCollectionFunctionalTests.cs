@@ -446,10 +446,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var imageResult = fhirProcessor.Convert(inputContent, rootTemplate, imageTemplateProvider);
             var folderResult = fhirProcessor.Convert(inputContent, rootTemplate, folderTemplateProvider);
 
-            //var imageResultObject = JObject.Parse(imageResult);
+            var imageResultObject = JObject.Parse(imageResult);
             var folderResultObject = JObject.Parse(folderResult);
 
-            //Assert.True(JToken.DeepEquals(imageResultObject, folderResultObject));
+            Assert.True(JToken.DeepEquals(imageResultObject, folderResultObject));
         }
 
         private void TestByTemplate(string inputFile, string entryTemplate, List<Dictionary<string, Template>> templateProvider)
