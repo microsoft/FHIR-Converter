@@ -53,22 +53,80 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
         {% endif -%}
 
         "location":
-        [   
+        [  
+        
+            {% if PDA.2 %}
+            {
+                {% if PDA.2.5 or PDA.2.9 -%}
+                    {% if PDA.2.5 and PDA.2.9 -%}
+                        {% assign PL_Value_Except_PL5_PL9 = PDA.2.Value | remove: PDA.2.5.Value | remove: PDA.2.9.Value %}
+                    {% endif -%}
+                    {% if PDA.2.5 and PDA.2.9 == null or PDA.2.9 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= PDA.2.Value | remove: PDA.2.5.Value %}
+                    {% endif -%}
+                    {% if PDA.2.9 and PDA.2.5 == null or PDA.2.5 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= PDA.2.Value | remove: PDA.2.9.Value %}
+                    {% endif -%}
+                {% else -%}
+                    {% assign PL_Value_Except_PL5_PL9 = PDA.2.Value %}
+                {% endif -%}
+
+                {% if PDA.2.1 -%}
+                    {% evaluate Location_ID_PDA_2 using 'ID/Location' PL_Field_Value: PDA.2.1, PL: PDA.2, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif PDA.2.2 -%}
+                    {% evaluate Location_ID_PDA_2 using 'ID/Location' PL_Field_Value: PDA.2.2, PL: PDA.2, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif PDA.2.3 -%}
+                    {% evaluate Location_ID_PDA_2 using 'ID/Location' PL_Field_Value: PDA.2.3, PL: PDA.2, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif PDA.2.4 -%}
+                    {% evaluate Location_ID_PDA_2 using 'ID/Location' PL_Field_Value: PDA.2.4, PL: PDA.2, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif PDA.2.7 -%}
+                    {% evaluate Location_ID_PDA_2 using 'ID/Location' PL_Field_Value: PDA.2.7, PL: PDA.2, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif PDA.2.8 -%}
+                    {% evaluate Location_ID_PDA_2 using 'ID/Location' PL_Field_Value: PDA.2.8, PL: PDA.2, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% endif -%}
+
+                {% if PDA.2 %}
+                    "status":"completed",
+                {% endif %}
+
+                "location":
+                {
+                    {% if PDA.2 and Location_ID_PDA_2 -%}
+                        "reference":"Location/{{ Location_ID_PDA_2 }}",
+                    {% endif -%}
+                },
+            },
+            {% endif %}
+
             {% if PV1.3 -%}
             {
+                {% if PV1.3.5 or PV1.3.9 -%}
+                    {% if PV1.3.5 and PV1.3.9 -%}
+                        {% assign PL_Value_Except_PL5_PL9 = PV1.3.Value | remove: PV1.3.5.Value | remove: PV1.3.9.Value %}
+                    {% endif -%}
+                    {% if PV1.3.5 and PV1.3.9 == null or PV1.3.9 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= PV1.3.Value | remove: PV1.3.5.Value %}
+                    {% endif -%}
+                    {% if PV1.3.9 and PV1.3.5 == null or PV1.3.5 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= PV1.3.Value | remove: PV1.3.9.Value %}
+                    {% endif -%}
+                {% else -%}
+                    {% assign PL_Value_Except_PL5_PL9 = PV1.3.Value %}
+                {% endif -%}
+
                 {% if PV1.3.1 -%}
-                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL: PV1.3.1 -%}
+                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL_Field_Value: PV1.3.1, PL: PV1.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.3.2 -%}
-                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL: PV1.3.2 -%}
+                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL_Field_Value: PV1.3.2, PL: PV1.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.3.3 -%}
-                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL: PV1.3.3 -%}
+                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL_Field_Value: PV1.3.3, PL: PV1.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.3.4 -%}
-                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL: PV1.3.4 -%}
+                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL_Field_Value: PV1.3.4, PL: PV1.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.3.7 -%}
-                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL: PV1.3.7 -%}
+                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL_Field_Value: PV1.3.7, PL: PV1.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.3.8 -%}
-                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL: PV1.3.8 -%}
-                {% endif %}
+                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL_Field_Value: PV1.3.8, PL: PV1.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% endif -%}
 
                 {% unless Root_Template == "ADT_A11" or Root_Template == "ADT_A27" -%}
                     {% if PV1.2.1.Value != "P" and Location_ID_PV1_3 -%}
@@ -79,13 +137,13 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                     {% endif -%}
                 {% endunless -%}
 
-                {% if Root_Template == "ADT_A01" or Root_Template == "ADT_A02" or Root_Template == "ADT_A04" or Root_Template == "ADT_A13" or Root_Template == "ADT_A15" or Root_Template == "ADT_A16" or  Root_Template == "ADT_A25" or  Root_Template == "ADT_A26" -%}
+                {% if Root_Template == "ADT_A01" or Root_Template == "ADT_A02" or Root_Template == "ADT_A04"  or Root_Template == "ADT_A09"  or Root_Template == "ADT_A10" or Root_Template == "ADT_A13" or Root_Template == "ADT_A15" or Root_Template == "ADT_A16" or  Root_Template == "ADT_A25" or  Root_Template == "ADT_A26" -%}
                     "status":"active",
                 {% endif -%}
                 {% if Root_Template == "ADT_A03" -%}
                     "status":"completed",
                 {% endif -%}
-                {% if Root_Template == "ADT_A14" -%}
+                {% if Root_Template == "ADT_A14" or Root_Template == "ADT_A05"-%}
                     "status":"planned",
                 {% endif -%}
 
@@ -100,19 +158,33 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
 
             {% if PV1.6 -%}
             {
+                {% if PV1.6.5 or PV1.6.9 -%}
+                    {% if PV1.6.5 and PV1.6.9 -%}
+                        {% assign PL_Value_Except_PL5_PL9 = PV1.6.Value | remove: PV1.6.5.Value | remove: PV1.6.9.Value %}
+                    {% endif -%}
+                    {% if PV1.6.5 and PV1.6.9 == null or PV1.6.9 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= PV1.6.Value | remove: PV1.6.5.Value %}
+                    {% endif -%}
+                    {% if PV1.6.9 and PV1.6.5 == null or PV1.6.5 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= PV1.6.Value | remove: PV1.6.9.Value %}
+                    {% endif -%}
+                {% else -%}
+                    {% assign PL_Value_Except_PL5_PL9 = PV1.6.Value %}
+                {% endif -%}
+
                 {% if PV1.6.1 -%}
-                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL: PV1.6.1 -%}
+                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL_Field_Value: PV1.6.1, PL: PV1.6, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.6.2 -%}
-                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL: PV1.6.2 -%}
+                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL_Field_Value: PV1.6.2, PL: PV1.6, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.6.3 -%}
-                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL: PV1.6.3 -%}
+                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL_Field_Value: PV1.6.3, PL: PV1.6, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.6.4 -%}
-                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL: PV1.6.4 -%}
+                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL_Field_Value: PV1.6.4, PL: PV1.6, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.6.7 -%}
-                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL: PV1.6.7 -%}
+                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL_Field_Value: PV1.6.7, PL: PV1.6, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.6.8 -%}
-                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL: PV1.6.8 -%}
-                {% endif %}
+                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL_Field_Value: PV1.6.8, PL: PV1.6, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% endif -%}
 
                 {% if PV1.6 and Location_ID_PV1_6 -%}
                     {% unless Root_Template == "ADT_A11" or Root_Template == "ADT_A27" -%}
@@ -122,28 +194,94 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                     {
                         "reference":"Location/{{ Location_ID_PV1_6 }}",
                     },
-                    {% include 'Extensions/TemporaryLocation' , status: 'false' -%}
                 {% endif -%}
 
+            },
+            {% endif %}
+
+            {% if PV1.11 -%}
+            {
+                {% if PV1.11.5 or PV1.11.9 -%}
+                    {% if PV1.11.5 and PV1.11.9 -%}
+                        {% assign PL_Value_Except_PL5_PL9 = PV1.11.Value | remove: PV1.11.5.Value | remove: PV1.11.9.Value %}
+                    {% endif -%}
+                    {% if PV1.11.5 and PV1.11.9 == null or PV1.11.9 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= PV1.11.Value | remove: PV1.11.5.Value %}
+                    {% endif -%}
+                    {% if PV1.11.9 and PV1.11.5 == null or PV1.11.5 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= PV1.11.Value | remove: PV1.11.9.Value %}
+                    {% endif -%}
+                {% else -%}
+                    {% assign PL_Value_Except_PL5_PL9 = PV1.11.Value %}
+                {% endif -%}
+
+                {% if PV1.11.1 -%}
+                    {% evaluate Location_ID_PV1_11 using 'ID/Location' PL_Field_Value: PV1.11.1, PL: PV1.11, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif PV1.11.2 -%}
+                    {% evaluate Location_ID_PV1_11 using 'ID/Location' PL_Field_Value: PV1.11.2, PL: PV1.11, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif PV1.11.3 -%}
+                    {% evaluate Location_ID_PV1_11 using 'ID/Location' PL_Field_Value: PV1.11.3, PL: PV1.11, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif PV1.11.4 -%}
+                    {% evaluate Location_ID_PV1_11 using 'ID/Location' PL_Field_Value: PV1.11.4, PL: PV1.11, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif PV1.11.7 -%}
+                    {% evaluate Location_ID_PV1_11 using 'ID/Location' PL_Field_Value: PV1.11.7, PL: PV1.11, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif PV1.11.8 -%}
+                    {% evaluate Location_ID_PV1_11 using 'ID/Location' PL_Field_Value: PV1.11.8, PL: PV1.11, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% endif -%}
+
+                {% unless Root_Template == "ADT_A27" -%}
+                    {% if PV1.2.1.Value != "P" and Location_ID_PV1_11 -%}
+                        "status":"active",
+                    {% endif -%}
+                    {% if PV1.2.1.Value == "P" and Location_ID_PV1_11 -%}
+                        "status":"planned",
+                    {% endif -%}
+
+                    {% if Root_Template == "ADT_A01" or Root_Template == "ADT_A02" or Root_Template == "ADT_A03" or Root_Template == "ADT_A04" or Root_Template == "ADT_A05" or Root_Template == "ADT_A09"  or Root_Template == "ADT_A10" or Root_Template == "ADT_A11" or Root_Template == "ADT_A13" or Root_Template == "ADT_A14" or Root_Template == "ADT_A15" or Root_Template == "ADT_A16" or  Root_Template == "ADT_A25" or  Root_Template == "ADT_A26" -%}
+                        "status":"planned",
+                    {% endif -%}
+                {% endunless -%}
+
+                {% if PV1.11 and Location_ID_PV1_11 -%}
+                "location":
+                {
+                        "reference":"Location/{{ Location_ID_PV1_11 }}",
+                },
+                {% include 'Extensions/TemporaryLocation' , status: 'true' -%}
+                {% endif -%}
             },
             {% endif %}
 
             {% unless Root_Template == "ADT_A26" -%}
                 {% if PV1.42 -%}
                 {
+                    {% if PV1.42.5 or PV1.42.9 -%}
+                        {% if PV1.42.5 and PV1.42.9 -%}
+                            {% assign PL_Value_Except_PL5_PL9 = PV1.42.Value | remove: PV1.42.5.Value | remove: PV1.42.9.Value %}
+                        {% endif -%}
+                        {% if PV1.42.5 and PV1.42.9 == null or PV1.42.9 == "" -%}
+                            {% assign PL_Value_Except_PL5_PL9= PV1.42.Value | remove: PV1.42.5.Value %}
+                        {% endif -%}
+                        {% if PV1.42.9 and PV1.42.5 == null or PV1.42.5 == "" -%}
+                            {% assign PL_Value_Except_PL5_PL9= PV1.42.Value | remove: PV1.42.9.Value %}
+                        {% endif -%}    
+                    {% else -%}
+                        {% assign PL_Value_Except_PL5_PL9 = PV1.42.Value %}
+                    {% endif -%}
+
                     {% if PV1.42.1 -%}
-                        {% evaluate Location_ID_PV1_42 using 'ID/Location' PL: PV1.42.1 -%}
+                        {% evaluate Location_ID_PV1_42 using 'ID/Location' PL_Field_Value: PV1.42.1, PL: PV1.42, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     {% elseif PV1.42.2 -%}
-                        {% evaluate Location_ID_PV1_42 using 'ID/Location' PL: PV1.42.2 -%}
+                        {% evaluate Location_ID_PV1_42 using 'ID/Location' PL_Field_Value: PV1.42.2, PL: PV1.42, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     {% elseif PV1.42.3 -%}
-                        {% evaluate Location_ID_PV1_42 using 'ID/Location' PL: PV1.42.3 -%}
+                        {% evaluate Location_ID_PV1_42 using 'ID/Location' PL_Field_Value: PV1.42.3, PL: PV1.42, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     {% elseif PV1.42.4 -%}
-                        {% evaluate Location_ID_PV1_42 using 'ID/Location' PL: PV1.42.4 -%}
+                        {% evaluate Location_ID_PV1_42 using 'ID/Location' PL_Field_Value: PV1.42.4, PL: PV1.42, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     {% elseif PV1.42.7 -%}
-                        {% evaluate Location_ID_PV1_42 using 'ID/Location' PL: PV1.42.7 -%}
+                        {% evaluate Location_ID_PV1_42 using 'ID/Location' PL_Field_Value: PV1.42.7, PL: PV1.42, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     {% elseif PV1.42.8 -%}
-                        {% evaluate Location_ID_PV1_42 using 'ID/Location' PL: PV1.42.8 -%}
-                    {% endif %}
+                        {% evaluate Location_ID_PV1_42 using 'ID/Location' PL_Field_Value: PV1.42.8, PL: PV1.42, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% endif -%}
 
                     {% if PV1.42 and Location_ID_PV1_42 -%}
                         {% unless Root_Template == "ADT_A11" or Root_Template == "ADT_A27" -%}
@@ -153,7 +291,6 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                         {
                                 "reference":"Location/{{ Location_ID_PV1_42 }}",
                         },
-                        {% include 'Extensions/TemporaryLocation' , status: 'false' -%}
                     {% endif -%}
 
                 },
@@ -162,19 +299,33 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
             
             {% if PV1.43 -%}
             {
+                {% if PV1.43.5 or PV1.43.9 -%}
+                    {% if PV1.43.5 and PV1.43.9 -%}
+                        {% assign PL_Value_Except_PL5_PL9 = PV1.43.Value | remove: PV1.43.5.Value | remove: PV1.43.9.Value %}
+                    {% endif -%}
+                    {% if PV1.43.5 and PV1.43.9 == null or PV1.43.9 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= PV1.43.Value | remove: PV1.43.5.Value %}
+                    {% endif -%}
+                    {% if PV1.43.9 and PV1.43.5 == null or PV1.43.5 == "" -%}
+                        {% assign PL_Value_Except_PL5_PL9= PV1.43.Value | remove: PV1.43.9.Value %}
+                    {% endif -%}    
+                {% else -%}
+                    {% assign PL_Value_Except_PL5_PL9 = PV1.43.Value %}
+                {% endif -%}
+
                 {% if PV1.43.1 -%}
-                    {% evaluate Location_ID_PV1_43 using 'ID/Location' PL: PV1.43.1 -%}
+                    {% evaluate Location_ID_PV1_43 using 'ID/Location' PL_Field_Value: PV1.43.1, PL: PV1.43, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.43.2 -%}
-                    {% evaluate Location_ID_PV1_43 using 'ID/Location' PL: PV1.43.2 -%}
+                    {% evaluate Location_ID_PV1_43 using 'ID/Location' PL_Field_Value: PV1.43.2, PL: PV1.43, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.43.3 -%}
-                    {% evaluate Location_ID_PV1_43 using 'ID/Location' PL: PV1.43.3 -%}
+                    {% evaluate Location_ID_PV1_43 using 'ID/Location' PL_Field_Value: PV1.43.3, PL: PV1.43, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.43.4 -%}
-                    {% evaluate Location_ID_PV1_43 using 'ID/Location' PL: PV1.43.4 -%}
+                    {% evaluate Location_ID_PV1_43 using 'ID/Location' PL_Field_Value: PV1.43.4, PL: PV1.43, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.43.7 -%}
-                    {% evaluate Location_ID_PV1_43 using 'ID/Location' PL: PV1.43.7 -%}
+                    {% evaluate Location_ID_PV1_43 using 'ID/Location' PL_Field_Value: PV1.43.7, PL: PV1.43, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.43.8 -%}
-                    {% evaluate Location_ID_PV1_43 using 'ID/Location' PL: PV1.43.8 -%}
-                {% endif %}
+                    {% evaluate Location_ID_PV1_43 using 'ID/Location' PL_Field_Value: PV1.43.8, PL: PV1.43, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% endif -%}    
 
                 {% if PV1.43 and Location_ID_PV1_43 -%}
                     {% unless Root_Template == "ADT_A11" or Root_Template == "ADT_A27" -%}
@@ -193,19 +344,33 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
             {% unless Root_Template == "ADT_A26" -%}
                 {% if PV2.1 -%}
                 {
+                    {% if PV2.1.5 or PV2.1.9 -%}
+                        {% if PV2.1.5 and PV2.1.9 -%}
+                            {% assign PL_Value_Except_PL5_PL9 = PV2.1.Value | remove: PV2.1.5.Value | remove: PV2.1.9.Value %}
+                        {% endif -%}
+                        {% if PV2.1.5 and PV2.1.9 == null or PV2.1.9 == "" -%}
+                            {% assign PL_Value_Except_PL5_PL9= PV2.1.Value | remove: PV2.1.5.Value %}
+                        {% endif -%}
+                        {% if PV2.1.9 and PV2.1.5 == null or PV2.1.5 == "" -%}
+                            {% assign PL_Value_Except_PL5_PL9= PV2.1.Value | remove: PV2.1.9.Value %}
+                        {% endif -%}    
+                    {% else -%}
+                        {% assign PL_Value_Except_PL5_PL9 = PV2.1.Value %}
+                    {% endif -%}
+
                     {% if PV2.1.1 -%}
-                        {% evaluate Location_ID_PV2_1 using 'ID/Location' PL: PV2.1.1 -%}
+                        {% evaluate Location_ID_PV2_1 using 'ID/Location' PL_Field_Value: PV2.1.1, PL: PV2.1, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     {% elseif PV2.1.2 -%}
-                        {% evaluate Location_ID_PV2_1 using 'ID/Location' PL: PV2.1.2 -%}
+                        {% evaluate Location_ID_PV2_1 using 'ID/Location' PL_Field_Value: PV2.1.2, PL: PV2.1, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     {% elseif PV2.1.3 -%}
-                        {% evaluate Location_ID_PV2_1 using 'ID/Location' PL: PV2.1.3 -%}
+                        {% evaluate Location_ID_PV2_1 using 'ID/Location' PL_Field_Value: PV2.1.3, PL: PV2.1, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     {% elseif PV2.1.4 -%}
-                        {% evaluate Location_ID_PV2_1 using 'ID/Location' PL: PV2.1.4 -%}
+                        {% evaluate Location_ID_PV2_1 using 'ID/Location' PL_Field_Value: PV2.1.4, PL: PV2.1, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     {% elseif PV2.1.7 -%}
-                        {% evaluate Location_ID_PV2_1 using 'ID/Location' PL: PV2.1.7 -%}
+                        {% evaluate Location_ID_PV2_1 using 'ID/Location' PL_Field_Value: PV2.1.7, PL: PV2.1, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                     {% elseif PV2.1.8 -%}
-                        {% evaluate Location_ID_PV2_1 using 'ID/Location' PL: PV2.1.8 -%}
-                    {% endif %}
+                        {% evaluate Location_ID_PV2_1 using 'ID/Location' PL_Field_Value: PV2.1.8, PL: PV2.1, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                    {% endif -%} 
 
                     {% if PV2.1 and Location_ID_PV2_1 -%}
                         {% unless Root_Template == "ADT_A11" or Root_Template == "ADT_A27" -%}
@@ -215,7 +380,6 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                         {
                             "reference":"Location/{{ Location_ID_PV2_1 }}",
                         },
-                        {% include 'Extensions/TemporaryLocation' , status: 'false' -%}
                     {% endif -%}
                 },
                 {% endif %}
@@ -428,6 +592,7 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
             {
                 {% if PV1.19 -%}
                     {% include 'DataType/CX' CX: PV1.19 -%}
+                   
                 "type":
                 {
                     "coding":
@@ -483,10 +648,58 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
             {% endif -%}
         },
         "meta":{
-            "security":[{
-                {% include 'DataType/IDCoding' mapping: 'CodeSystem/EncounterSecurity', ID: PV2.22 -%}
-            },
-            ],
+            "security":[
+                {
+                    {% include 'DataType/IDCoding' mapping: 'CodeSystem/EncounterSecurity', ID: PV2.22 -%}
+                },   
+                {% if ARV.2 %}
+                    {
+                        {% if ARV.2.1.Value == 'A' or ARV.2.1.Value == 'U' %}
+                            "code" : "LABEL",
+                            "display" : "assign security label",
+                            "system" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                        {% elsif ARV.2.1.Value == 'X' %}
+                            "code" : "PERSISTLABEL",
+                            "display" : "persist security label",
+                            "system" : "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                        {% elsif ARV.2.1.Value == 'D' %}
+                            "code" : "DELETELABEL",
+                            "display" : "Delete Security Label",
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-security-label",
+                        {% endif %}  
+                    },
+                {% endif %}
+                {% if ARV.3 %}
+                    {% include 'DataType/CWECodeableConceptRepeatable' mapping: 'CodeSystem/AccessRestrictionValue', CWE: ARV.3  %}
+                {% endif %}
+                {% if ARV.4 %}
+                    {% for arv_4 in ARV.4.Repeats %}
+                        {% include 'DataType/CWECodeableConceptRepeatable' mapping: 'CodeSystem/AccessRestrictionReason', CWE: arv_4 %}
+                    {% endfor %}   
+                {% endif %}
+                {% if ARV.5 %}
+                    {% for arv_5 in ARV.5.Repeats %}
+                        { 
+                            "system" : "http://example.com/v2-to-fhir-converter/CodeSystem/additional-security-label",
+                            "code" : "special-access-restriction-instructions",
+                            "display" : "{{arv_5.Value}}",
+                        },
+                    {% endfor %}   
+                {% endif %}
+                {% if ARV.6 %}
+                    {
+                        "extension":
+                        [
+                            {
+                                "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/access-restriction-range",    
+                                "valuePeriod": {
+                                    {% include 'DataType/DRPeriod' DR: ARV.6 %}
+                                },
+                            }
+                        ],
+                    },
+                {% endif %}
+            ],      
         },
         {% if Root_Template -%}
         {% assign generationInstant = "{{ "" | now }}" -%}
@@ -525,6 +738,13 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                 {% endif %}
             },
             {% endif %}
+        ],
+        "account": [
+            {% if AccountId -%}
+                {
+                    "reference":"Account/{{ AccountId }}", 
+                },
+            {%  endif -%}
         ],
     },
     "request":{

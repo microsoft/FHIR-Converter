@@ -15,7 +15,7 @@
             {% if HD.3.Value == "ISO" or HD.3.Value == "CLIA" or HD.3.Value == "CLIP" or HD.3.Value == "UUID" or HD.3.Value == "GUID"-%}
                 "system": "urn:ietf:rfc:3986",
             {% else %}
-                "system": "http://example.com/v2-to-fhir-converter/location-universal-system-{{HD.3.Value}}",
+                "system": "http://example.com/v2-to-fhir-converter/Identifier/{{HD.3.Value}}",
             {% endif -%}
         },
     ],

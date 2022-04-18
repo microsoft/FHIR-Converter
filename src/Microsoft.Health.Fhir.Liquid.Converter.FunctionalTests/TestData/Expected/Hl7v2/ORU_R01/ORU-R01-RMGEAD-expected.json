@@ -1,7 +1,7 @@
 {
     "resourceType": "Bundle",
     "type": "batch",
-    "timestamp": "2002-02-15T09:30:00",
+    "timestamp": "2002-02-15T09:30:00+06:00",
     "identifier": {
         "value": "CNTRL-3456"
     },
@@ -68,10 +68,10 @@
                 "id": "1af3c547-cdab-c300-08bf-cc3836b6381a",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T08:50:13.765Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ORU_R01.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-25T12:34:29.872Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ORU_R01.</span></p></div>"
                 },
-                "occurredDateTime": "2002-02-15T09:30:00",
-                "recorded": "2002-02-15T09:30:00",
+                "occurredDateTime": "2002-02-15T09:30:00+06:00",
+                "recorded": "2002-02-15T09:30:00+06:00",
                 "agent": [
                     {
                         "type": {
@@ -113,7 +113,7 @@
                 "identifier": [
                     {
                         "value": "ELAB-3",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-ELAB-3"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/ELAB-3"
                     }
                 ]
             },
@@ -130,7 +130,7 @@
                 "identifier": [
                     {
                         "value": "BLDG4",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-BLDG4"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/BLDG4"
                     }
                 ]
             },
@@ -208,10 +208,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:4af7a7fb-e594-e5b3-43b9-969188e0c692",
+            "fullUrl": "urn:uuid:8ce7c059-b284-2c5e-bc0f-c30b93fdaa8e",
             "resource": {
                 "resourceType": "Account",
-                "id": "4af7a7fb-e594-e5b3-43b9-969188e0c692",
+                "id": "8ce7c059-b284-2c5e-bc0f-c30b93fdaa8e",
                 "identifier": [
                     {
                         "value": "AC555444444"
@@ -226,7 +226,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Account/4af7a7fb-e594-e5b3-43b9-969188e0c692"
+                "url": "Account/8ce7c059-b284-2c5e-bc0f-c30b93fdaa8e"
             }
         },
         {
@@ -284,7 +284,7 @@
                 ],
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/0cb8d4a6-2451-4d5c-b48f-1f7ca62b5369"
+                        "reference": "ServiceRequest/10ffaaff-1f45-e217-a589-672caec1153e"
                     }
                 ]
             },
@@ -294,16 +294,16 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:0cb8d4a6-2451-4d5c-b48f-1f7ca62b5369",
+            "fullUrl": "urn:uuid:10ffaaff-1f45-e217-a589-672caec1153e",
             "resource": {
                 "resourceType": "ServiceRequest",
-                "id": "0cb8d4a6-2451-4d5c-b48f-1f7ca62b5369",
+                "id": "10ffaaff-1f45-e217-a589-672caec1153e",
                 "status": "active",
                 "intent": "filler-order",
                 "identifier": [
                     {
                         "value": "845439",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-GHH-OE",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHH-OE",
                         "type": {
                             "coding": [
                                 {
@@ -315,7 +315,7 @@
                     },
                     {
                         "value": "1045813",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-GHH-LAB",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHH-LAB",
                         "type": {
                             "coding": [
                                 {
@@ -354,13 +354,13 @@
                 },
                 "specimen": [
                     {
-                        "reference": "Specimen/03cf7725-1dd2-d3e3-65da-f7aa7b36e632"
+                        "reference": "Specimen/c965d3ae-f07a-1943-b184-9471ce1c3b44"
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "ServiceRequest/0cb8d4a6-2451-4d5c-b48f-1f7ca62b5369"
+                "url": "ServiceRequest/10ffaaff-1f45-e217-a589-672caec1153e"
             }
         },
         {
@@ -395,6 +395,17 @@
             "resource": {
                 "resourceType": "PractitionerRole",
                 "id": "4fe9acb3-89ca-75f6-471d-59fdad148a9d",
+                "code": [
+                    {
+                        "coding": [
+                            {
+                                "code": "OP",
+                                "display": "Ordering Provider",
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0443"
+                            }
+                        ]
+                    }
+                ],
                 "practitioner": {
                     "reference": "Practitioner/cb12815d-2663-5dcf-5f10-0f9e57083be1"
                 }
@@ -412,7 +423,7 @@
                 "identifier": [
                     {
                         "value": "845439",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-GHH-OE",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHH-OE",
                         "type": {
                             "coding": [
                                 {
@@ -424,7 +435,7 @@
                     },
                     {
                         "value": "1045813",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-GHH-LAB",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHH-LAB",
                         "type": {
                             "coding": [
                                 {
@@ -435,7 +446,7 @@
                         }
                     }
                 ],
-                "effectiveDateTime": "2002-02-15T07:30:00",
+                "effectiveDateTime": "2002-02-15T07:30:00+06:00",
                 "code": {
                     "coding": [
                         {
@@ -450,12 +461,12 @@
                 },
                 "basedOn": [
                     {
-                        "reference": "ServiceRequest/0cb8d4a6-2451-4d5c-b48f-1f7ca62b5369"
+                        "reference": "ServiceRequest/10ffaaff-1f45-e217-a589-672caec1153e"
                     }
                 ],
                 "specimen": [
                     {
-                        "reference": "Specimen/03cf7725-1dd2-d3e3-65da-f7aa7b36e632"
+                        "reference": "Specimen/c965d3ae-f07a-1943-b184-9471ce1c3b44"
                     }
                 ],
                 "result": [
@@ -470,17 +481,14 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:03cf7725-1dd2-d3e3-65da-f7aa7b36e632",
+            "fullUrl": "urn:uuid:c965d3ae-f07a-1943-b184-9471ce1c3b44",
             "resource": {
                 "resourceType": "Specimen",
-                "id": "03cf7725-1dd2-d3e3-65da-f7aa7b36e632",
-                "collection": {
-                    "collectedDateTime": "2002-02-15T07:30:00"
-                },
+                "id": "c965d3ae-f07a-1943-b184-9471ce1c3b44",
                 "identifier": [
                     {
                         "value": "845439",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-GHH-OE",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHH-OE",
                         "type": {
                             "coding": [
                                 {
@@ -492,7 +500,7 @@
                     },
                     {
                         "value": "1045813",
-                        "system": "http://example.com/v2-to-fhir-converter/local-entity-identifier-GHH-LAB",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHH-LAB",
                         "type": {
                             "coding": [
                                 {
@@ -502,11 +510,14 @@
                             ]
                         }
                     }
-                ]
+                ],
+                "collection": {
+                    "collectedDateTime": "2002-02-15T07:30:00+06:00"
+                }
             },
             "request": {
                 "method": "PUT",
-                "url": "Specimen/03cf7725-1dd2-d3e3-65da-f7aa7b36e632"
+                "url": "Specimen/c965d3ae-f07a-1943-b184-9471ce1c3b44"
             }
         }
     ]

@@ -1,0 +1,12 @@
+{% mergeDiff msg -%}
+{
+    "vaccineCode" : [{{msg.vaccineCode | to_json_string | default : '""'}}],
+    "doseNumberPositiveInt" : {{msg.doseNumber}},
+    "doseNumber" : "",
+    "description" : "{{msg.protocol.description}}",
+    "series" : "{{msg.protocol.series}}",
+    "protocol" : "",
+    "seriesDosesPositiveInt" : {{msg.protocol.doseSequence}},
+    "date" : ""
+}
+{% endmergeDiff -%}

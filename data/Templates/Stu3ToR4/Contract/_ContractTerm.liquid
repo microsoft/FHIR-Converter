@@ -1,0 +1,21 @@
+{% mergeDiff msg -%}
+{
+  "asset" : [
+    {
+      "valuedItem" : [ {{ msg.valuedItem | to_array | batch_render: 'Contract/ContractTermAssetValuedItem', 'msg' }} ]
+    }
+  ],
+  "securityLable":[
+    {% for s in msg.securityLabel -%}
+    {
+      "classification" : {{ s | to_json_string | default : '""'}},
+    },
+    {% endfor -%}
+  ],
+  "group" :  [ {{ msg.group | to_array | batch_render: 'Contract/ContractTerm', 'msg' }} ],
+  "actionReason" : "",
+  "topic" : "",
+  "action" : "",
+  "agent" : ""
+}
+{% endmergeDiff -%}

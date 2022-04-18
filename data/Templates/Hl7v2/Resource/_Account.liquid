@@ -8,8 +8,25 @@
             {
                 {% include 'DataType/CX' CX: PID.18 -%}
             },
+			{% if BLG.3 -%}
+				{
+					{% include 'DataType/CX' CX: BLG.3 -%}
+				},
+			{% endif %}
         ],
         "status": "active",
+		{% if BLG -%}
+			"status": "active",
+		{% endif %}
+		
+        {% if Root_Template == "BAR_P02" %}
+            "status": "entered-in-error",    
+        {% endif %}
+        
+        "servicePeriod" : { 
+            "start":"{{ EVN.2.Value | format_as_date_time }}",
+        },
+
         "subject":
         [
             {% comment -%} Placeholder provided for customization by users. If left empty, it will be removed in post-processing. {% endcomment -%}
@@ -19,7 +36,7 @@
         {% if GT1 -%}
         "guarantor" : 
         [
-            
+            {% unless GT1.21 %}
             {  
                 {% if GT1.11 -%}
                     {% if GT1.11.1.Value == "SEL" -%}
@@ -48,7 +65,8 @@
                         },
                     {% endif -%} 
                 {% endif -%}              
-            },    
+            },
+            {% endunless -%}  
             {  
                 {% if GT1.21 -%}
                     "party" : {

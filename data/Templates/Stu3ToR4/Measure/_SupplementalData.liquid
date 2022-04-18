@@ -1,0 +1,21 @@
+{% mergeDiff msg -%}
+{
+  "code" : {% include 'DataType/IdentifierToCodeableConcept' msg: msg.identifier -%},
+  "criteria" : {
+    "expression" : "{{msg.criteria}}"
+  },
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.path -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-Measure.supplementalData.path",
+      "valueString" : "{{msg.path}}"
+    },
+    {% endif -%}
+  ],
+  "identifier" : "",
+  "path" : ""
+}
+{% endmergeDiff -%}

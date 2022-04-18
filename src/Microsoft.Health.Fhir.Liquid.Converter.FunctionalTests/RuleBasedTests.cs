@@ -57,8 +57,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new object[] { "ADT_A04", "ADT-A04-02.hl7" },
                 new object[] { "ADT_A05", "ADT-A05-01.hl7" },
                 new object[] { "ADT_A05", "ADT-A05-02.hl7" },
+                new object[] { "ADT_A06", "ADT-A06-01.hl7" },
+                new object[] { "ADT_A06", "ADT-A06-02.hl7" },
+                new object[] { "ADT_A07", "ADT-A07-01.hl7" },
+                new object[] { "ADT_A07", "ADT-A07-02.hl7" },
                 new object[] { "ADT_A08", "ADT-A08-01.hl7" },
                 new object[] { "ADT_A08", "ADT-A08-02.hl7" },
+                new object[] { "ADT_A09", "ADT-A09-01.hl7" },
+                new object[] { "ADT_A09", "ADT-A09-02.hl7" },
+                new object[] { "ADT_A10", "ADT-A10-01.hl7" },
+                new object[] { "ADT_A10", "ADT-A10-02.hl7" },
                 new object[] { "ADT_A11", "ADT-A11-01.hl7" },
                 new object[] { "ADT_A11", "ADT-A11-02.hl7" },
                 new object[] { "ADT_A13", "ADT-A13-01.hl7" },
@@ -81,6 +89,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new object[] { "ADT_A29", "ADT-A29-02.hl7" },
                 new object[] { "ADT_A31", "ADT-A31-01.hl7" },
                 new object[] { "ADT_A31", "ADT-A31-02.hl7" },
+                new object[] { "ADT_A40", "ADT-A40-01.hl7" },
+                new object[] { "ADT_A40", "ADT-A40-02.hl7" },
+                new object[] { "ADT_A41", "ADT-A41-01.hl7" },
+                new object[] { "ADT_A41", "ADT-A41-02.hl7" },
+                new object[] { "ADT_A45", "ADT-A45-01.hl7" },
+                new object[] { "ADT_A45", "ADT-A45-02.hl7" },
                 new object[] { "ADT_A47", "ADT-A47-01.hl7" },
                 new object[] { "ADT_A47", "ADT-A47-02.hl7" },
                 new object[] { "ADT_A60", "ADT-A60-01.hl7" },
@@ -103,15 +117,63 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 new object[] { "ORM_O01", "ORM-O01-01.hl7" },
                 new object[] { "ORM_O01", "ORM-O01-02.hl7" },
                 new object[] { "ORM_O01", "ORM-O01-03.hl7" },
+                new object[] { "ORM_O01", "ORM-O01-04.hl7" },
+                new object[] { "ORM_O01", "ORM-O01-05.hl7" },
 
                 new object[] { "MDM_T01", "MDM-T01-01.hl7" },
                 new object[] { "MDM_T01", "MDM-T01-02.hl7" },
                 new object[] { "MDM_T02", "MDM-T02-01.hl7" },
                 new object[] { "MDM_T02", "MDM-T02-02.hl7" },
                 new object[] { "MDM_T02", "MDM-T02-03.hl7" },
+                new object[] { "MDM_T05", "MDM-T05-01.hl7" },
+                new object[] { "MDM_T05", "MDM-T05-02.hl7" },
+                new object[] { "MDM_T06", "MDM-T06-01.hl7" },
+                new object[] { "MDM_T06", "MDM-T06-02.hl7" },
+                new object[] { "MDM_T09", "MDM-T09-01.hl7" },
+                new object[] { "MDM_T09", "MDM-T09-02.hl7" },
+                new object[] { "MDM_T10", "MDM-T10-01.hl7" },
+                new object[] { "MDM_T10", "MDM-T10-02.hl7" },
 
                 new object[] { "OML_O21", "OML-O21-01.hl7" },
                 new object[] { "OML_O21", "OML-O21-02.hl7" },
+                new object[] { "OML_O21", "OML-O21-03.hl7" },
+
+                new object[] { "OUL_R22", "OUL-R22-01.hl7" },
+                new object[] { "OUL_R22", "OUL-R22-02.hl7" },
+                new object[] { "OUL_R23", "OUL-R23-01.hl7" },
+                new object[] { "OUL_R23", "OUL-R23-02.hl7" },
+                new object[] { "OUL_R24", "OUL-R24-01.hl7" },
+                new object[] { "OUL_R24", "OUL-R24-02.hl7" },
+
+                new object[] { "RDE_O11", "RDE-O11-01.hl7" },
+                new object[] { "RDE_O11", "RDE-O11-02.hl7" },
+                new object[] { "RDE_O25", "RDE-O25-01.hl7" },
+                new object[] { "RDE_O25", "RDE-O25-02.hl7" },
+                new object[] { "RDS_O13", "RDS-O13-01.hl7" },
+                new object[] { "RDS_O13", "RDS-O13-02.hl7" },
+
+                new object[] { "VXU_V04", "VXU-V04-01.hl7" },
+                new object[] { "VXU_V04", "VXU-V04-02.hl7" },
+
+                new object[] { "OMG_O19", "OMG-O19-01.hl7" },
+                new object[] { "OMG_O19", "OMG-O19-02.hl7" },
+
+                new object[] { "REF_I12", "REF-I12-01.hl7" },
+                new object[] { "REF_I12", "REF-I12-02.hl7" },
+                new object[] { "REF_I14", "REF-I14-01.hl7" },
+                new object[] { "REF_I14", "REF-I14-02.hl7" },
+
+                new object[] { "DFT_P03", "DFT-P03-01.hl7" },
+                new object[] { "DFT_P03", "DFT-P03-02.hl7" },
+                new object[] { "DFT_P11", "DFT-P11-01.hl7" },
+                new object[] { "DFT_P11", "DFT-P11-02.hl7" },
+
+                new object[] { "BAR_P01", "BAR-P01-01.hl7" },
+                new object[] { "BAR_P01", "BAR-P01-02.hl7" },
+                new object[] { "BAR_P02", "BAR-P02-01.hl7" },
+                new object[] { "BAR_P02", "BAR-P02-02.hl7" },
+                new object[] { "BAR_P12", "BAR-P12-01.hl7" },
+                new object[] { "BAR_P12", "BAR-P12-02.hl7" },
 
                 new object[] { "ADT_A01", "ADT01-23.hl7" },
                 new object[] { "ADT_A01", "ADT01-28.hl7" },
@@ -192,7 +254,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         {
             var result = await ConvertData(templateName, samplePath, dataType);
             var patients = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Patient')].resource.id");
-            Assert.Equal(1, patients?.Count());
+
+            if (ResourceFilter.NonPatientTemplates.All(func => func(templateName)))
+            {
+                Assert.Equal(0, patients?.Count());
+            }
+            else if (ResourceFilter.MultiplePatientTemplates.All(func => func(templateName)))
+            {
+                Assert.Equal(2, patients?.Count());
+            }
+            else
+            {
+                Assert.Equal(1, patients?.Count());
+            }
         }
 
         [Theory]
@@ -454,7 +528,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 "resourceType", "type", "fullUrl", "id", "method", "url", "reference", "system",
                 "code", "display", "gender", "use", "preferred", "status", "mode", "div", "valueString", "valueCode",
                 "text", "endpoint", "value", "category", "type", "criticality", "priority", "severity", "description",
-                "intent", "docStatus", "contentType", "authorString"
+                "intent", "docStatus", "contentType", "authorString", "unit", "outcome",
             };
 
             private static readonly HashSet<string> _explicitValues = new HashSet<string>
@@ -462,6 +536,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 "order",
                 "unknown",
                 "source",
+            };
+
+            private static readonly List<string> _noPatientTemplate = new List<string>
+            {
+                "ADT_A40", "ADT_A41", "ADT_A45", "ADT_A47",
+            };
+
+            private static readonly List<string> _multiplePatientTemplate = new List<string>
+            {
+                "BAR_P02",
             };
 
             public static readonly List<Func<string, bool>> NonCompareProperties = new List<Func<string, bool>>
@@ -478,6 +562,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 // Exclude datetime and boolean values because the format is transformed differently
                 (string input) => DateTime.TryParse(input, out _),
                 (string input) => bool.TryParse(input, out _),
+            };
+
+            public static readonly List<Func<string, bool>> NonPatientTemplates = new List<Func<string, bool>>
+            {
+                // Templates that don't contain patient resource
+                _noPatientTemplate.Contains,
+            };
+
+            public static readonly List<Func<string, bool>> MultiplePatientTemplates = new List<Func<string, bool>>
+            {
+                // Templates that contain multiple patient resources
+                _multiplePatientTemplate.Contains,
             };
         }
     }

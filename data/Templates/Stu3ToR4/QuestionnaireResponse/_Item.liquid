@@ -1,0 +1,18 @@
+{% mergeDiff msg -%}
+{
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.subject -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-QuestionnaireResponse.item.subject",
+      "valueReference" : {{msg.subject | to_json_string | default : '""' }}
+    },
+    {% endif -%}
+  ],
+  "answer" : [ {{ msg.answer | to_array | batch_render: 'QuestionnaireResponse/Answer', 'msg' }} ],
+  "item" : [ {{ msg.item | to_array | batch_render: 'QuestionnaireResponse/Item', 'msg' }} ],
+  "subject" : ""
+}
+{% endmergeDiff -%}

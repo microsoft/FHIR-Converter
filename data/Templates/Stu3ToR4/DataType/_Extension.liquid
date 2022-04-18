@@ -1,0 +1,10 @@
+{% mergeDiff msg -%}
+{
+    "valueMoney" : {% include 'DataType/Money' msg : msg.valueMoney -%},
+    "valueSignature" : {% include 'DataType/Money' msg : msg.valueSignature -%},
+    "valueDataRequirement" : {% include 'DataType/DataRequirement' msg : msg.valueDataRequirement -%},
+    "valueDosage" : {% include 'DataType/Dosage' msg : msg.valueDosage -%},
+    "valueRelatedArtifact" : {% include 'DataType/RelatedArtifact' msg : msg.valueRelatedArtifact -%},
+    "valueTriggerDefinition" : {% include 'DataType/TriggerDefinition' msg : msg.valueTriggerDefinition -%}
+}
+{% endmergeDiff -%}

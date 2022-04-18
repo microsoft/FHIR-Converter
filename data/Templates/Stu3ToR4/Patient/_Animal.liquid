@@ -1,0 +1,31 @@
+{% mergeDiff msg -%}
+{
+  "url" : "http://hl7.org/fhir/r4/StructureDefinition/patient-animal",
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.species -%}
+    {
+      "url" : "species",
+      "valueCodeableConcept" : {{msg.species | to_json_string | default : '""' }}
+    },
+    {% endif -%}
+    {%if msg.breed -%}
+    {
+      "url" : "breed",
+      "valueCodeableConcept" : {{msg.breed | to_json_string | default : '""' }}
+    },
+    {% endif -%}
+    {%if msg.genderStatus -%}
+    {
+      "url" : "genderStatus",
+      "valueCodeableConcept" : {{msg.genderStatus | to_json_string | default : '""' }}
+    },
+    {% endif -%}
+  ],
+  "genderStatus" : "",
+  "breed" : "",
+  "species" : ""
+}
+{% endmergeDiff -%}

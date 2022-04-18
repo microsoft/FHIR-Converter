@@ -17,7 +17,7 @@ variables:
   functionalTests: "**/*FunctionalTests/*.csproj"
   buildConfiguration: 'Release'
   major: 4
-  minor: 5
+  minor: 6
   patch: 0
   buildnum: $[counter(format('{0}.{1}.{2}',variables['major'],variables['minor'], variables['patch']), 1)]
   version: $(major).$(minor).$(patch).$(buildnum)
@@ -25,7 +25,7 @@ variables:
 stages:
 - stage: Build
   pool:
-      vmImage: 'windows-latest'
+      vmImage: 'windows-2019'
   jobs:
   - job: Build
     steps:
@@ -169,7 +169,7 @@ stages:
   jobs:
   - job: Windows_Functional_Test
     pool:
-        vmImage: 'windows-latest'
+        vmImage: 'windows-2019'
     continueOnError: false
     steps:
     - checkout: none #skip checking out the default repository resource
@@ -195,7 +195,7 @@ stages:
   
   - job: OSX_Functional_Test
     pool: CompassMacHosted
-    continueOnError: true
+    continueOnError: false
     steps:
     - checkout: none #skip checking out the default repository resource
     - task: DownloadBuildArtifacts@0
@@ -227,7 +227,7 @@ stages:
   jobs:
   - job: publish
     pool:
-        vmImage: 'windows-latest'
+        vmImage: 'windows-2019'
     steps:
     - checkout: none #skip checking out the default repository resource
     - task: DownloadBuildArtifacts@0

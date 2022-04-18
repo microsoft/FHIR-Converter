@@ -1,0 +1,3 @@
+{% for c in msg.contact -%}
+    {{ c |to_json_string | default : '""'}},
+{% endfor -%}

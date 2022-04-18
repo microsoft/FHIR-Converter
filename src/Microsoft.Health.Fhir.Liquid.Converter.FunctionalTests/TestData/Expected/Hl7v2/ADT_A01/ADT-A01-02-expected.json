@@ -28,8 +28,7 @@
                 "meta": {
                     "security": [
                         {
-                            "display": "SECURITY",
-                            "system": "http://example.com/v2-to-fhirconverter/security-label"
+                            "display": "SECURITY"
                         }
                     ],
                     "tag": [
@@ -64,7 +63,7 @@
                 "id": "0a7545d7-202f-96e5-31e9-bb7d27ade3c2",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T11:13:16.987Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A01.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-28T06:34:45.022Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A01.</span></p></div>"
                 },
                 "occurredDateTime": "1989-08-18T14:41:00+05:30",
                 "recorded": "1989-08-18T14:41:00+05:30",
@@ -117,7 +116,7 @@
                 "identifier": [
                     {
                         "value": "GHHSFacility",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-GHHSFacility"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHHSFacility"
                     },
                     {
                         "value": "urn:oid:2.16.840.1.122848.1.30",
@@ -155,7 +154,7 @@
                 "identifier": [
                     {
                         "value": "GHHRFacility",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-GHHRFacility"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/GHHRFacility"
                     },
                     {
                         "value": "urn:oid:2.16.840.1.1122848.1.32",
@@ -242,7 +241,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-test",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/test",
                         "period": {
                             "start": "1924-10-11",
                             "end": "1924-10-12"
@@ -259,7 +258,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/b3ad3a9f-d4f6-4638-0a09-2da771733488"
                         }
@@ -275,11 +274,11 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-USSSA"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/USSSA"
                     },
                     {
                         "value": "PATID567",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-test2"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/test2"
                     },
                     {
                         "value": "PSSN123121234",
@@ -635,10 +634,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:78295402-9b84-4829-b945-502ab3402de5",
+            "fullUrl": "urn:uuid:4ad7c7d0-b69a-0653-9ea9-0979b8a66b39",
             "resource": {
                 "resourceType": "Account",
-                "id": "78295402-9b84-4829-b945-502ab3402de5",
+                "id": "4ad7c7d0-b69a-0653-9ea9-0979b8a66b39",
                 "identifier": [
                     {
                         "value": "4000776",
@@ -651,9 +650,9 @@
                                 }
                             ]
                         },
-                        "system": "urn:oid:2.4",
+                        "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "assigner": {
-                            "reference": "Organization/9d4c8327-8a28-8152-1898-8251baa707b7"
+                            "reference": "Organization/816e4ec3-f5a6-5969-08c8-a71ef576263e"
                         },
                         "period": {
                             "start": "1924-10-11",
@@ -670,21 +669,21 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Account/78295402-9b84-4829-b945-502ab3402de5"
+                "url": "Account/4ad7c7d0-b69a-0653-9ea9-0979b8a66b39"
             }
         },
         {
-            "fullUrl": "urn:uuid:9d4c8327-8a28-8152-1898-8251baa707b7",
+            "fullUrl": "urn:uuid:816e4ec3-f5a6-5969-08c8-a71ef576263e",
             "resource": {
                 "resourceType": "Organization",
-                "id": "9d4c8327-8a28-8152-1898-8251baa707b7",
+                "id": "816e4ec3-f5a6-5969-08c8-a71ef576263e",
                 "identifier": [
                     {
                         "value": "AccMgr",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMgr"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/AccMgr"
                     },
                     {
-                        "value": "urn:oid:2.4",
+                        "value": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "system": "urn:ietf:rfc:3986",
                         "type": {
                             "coding": [
@@ -700,7 +699,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Organization/9d4c8327-8a28-8152-1898-8251baa707b7"
+                "url": "Organization/816e4ec3-f5a6-5969-08c8-a71ef576263e"
             }
         },
         {
@@ -711,11 +710,11 @@
                 "identifier": [
                     {
                         "value": "test1",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-test1"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/test1"
                     },
                     {
                         "value": "2.16.1",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -741,11 +740,11 @@
                 "identifier": [
                     {
                         "value": "NTH",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-NTH"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/NTH"
                     },
                     {
                         "value": "rt23",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -780,7 +779,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/f3954ae4-dec6-f114-1b9e-3a8a85d93f99"
                         },
@@ -817,11 +816,11 @@
                 "identifier": [
                     {
                         "value": "t",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-t"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/t"
                     },
                     {
                         "value": "2.16.840.1.113883.19",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -847,11 +846,11 @@
                 "identifier": [
                     {
                         "value": "AccMng",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMng"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/AccMng"
                     },
                     {
                         "value": "1.2",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -877,11 +876,11 @@
                 "identifier": [
                     {
                         "value": "PERSONNELt",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-PERSONNELt"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/PERSONNELt"
                     },
                     {
                         "value": "1.23",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -907,7 +906,7 @@
                 "identifier": [
                     {
                         "value": "1122334",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/0ccb76ca-b97e-1c86-4617-912a6d65c1f9"
                         },
@@ -957,11 +956,11 @@
                 "identifier": [
                     {
                         "value": "TEST",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-TEST"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/TEST"
                     },
                     {
                         "value": "23.2",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -987,7 +986,7 @@
                 "identifier": [
                     {
                         "value": "C006",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/c613d7b2-525f-8c08-a7ac-b2b91486e257"
                         },
@@ -1021,14 +1020,14 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:99edcabd-fbeb-7e25-f823-11da8d8ed342",
+            "fullUrl": "urn:uuid:94d0558e-593c-7585-5525-68541f8b1064",
             "resource": {
                 "resourceType": "Practitioner",
-                "id": "99edcabd-fbeb-7e25-f823-11da8d8ed342",
+                "id": "94d0558e-593c-7585-5525-68541f8b1064",
                 "identifier": [
                     {
                         "value": "C008",
-                        "system": "urn:oid:2.8",
+                        "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "type": {
                             "coding": [
                                 {
@@ -1055,7 +1054,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Practitioner/99edcabd-fbeb-7e25-f823-11da8d8ed342"
+                "url": "Practitioner/94d0558e-593c-7585-5525-68541f8b1064"
             }
         },
         {
@@ -1066,7 +1065,7 @@
                 "identifier": [
                     {
                         "value": "37",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-AccMgr",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/AccMgr",
                         "type": {
                             "coding": [
                                 {
@@ -1093,17 +1092,17 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:9f974d4f-47e8-21a6-e549-4de4599c3764",
+            "fullUrl": "urn:uuid:a6c4db5e-d3be-c9a5-8f86-a1d3341211b6",
             "resource": {
                 "resourceType": "Organization",
-                "id": "9f974d4f-47e8-21a6-e549-4de4599c3764",
+                "id": "a6c4db5e-d3be-c9a5-8f86-a1d3341211b6",
                 "identifier": [
                     {
                         "value": "T123",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-T123"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/T123"
                     },
                     {
-                        "value": "urn:oid:r2.3",
+                        "value": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "system": "urn:ietf:rfc:3986",
                         "type": {
                             "coding": [
@@ -1119,7 +1118,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Organization/9f974d4f-47e8-21a6-e549-4de4599c3764"
+                "url": "Organization/a6c4db5e-d3be-c9a5-8f86-a1d3341211b6"
             }
         },
         {
@@ -1130,7 +1129,7 @@
                 "identifier": [
                     {
                         "value": "Othhel",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD"
                     }
                 ]
             },
@@ -1140,12 +1139,12 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:9172e4a0-1ca5-646d-2183-b179f4daa737",
+            "fullUrl": "urn:uuid:7e8c8f5b-e366-6646-d2c0-e943bd9d1145",
             "resource": {
                 "resourceType": "Location",
-                "id": "9172e4a0-1ca5-646d-2183-b179f4daa737",
+                "id": "7e8c8f5b-e366-6646-d2c0-e943bd9d1145",
                 "partOf": {
-                    "reference": "Location/7e38808c-44a8-cb0c-4709-9d6092abc32c"
+                    "reference": "Location/ff93044f-a48c-31c6-e7bd-f400aff947e3"
                 },
                 "name": "HUH AE OMU",
                 "identifier": [
@@ -1167,16 +1166,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/9172e4a0-1ca5-646d-2183-b179f4daa737"
+                "url": "Location/7e8c8f5b-e366-6646-d2c0-e943bd9d1145"
             }
         },
         {
-            "fullUrl": "urn:uuid:3913ec4d-6576-5e1a-ac31-e8280583371c",
+            "fullUrl": "urn:uuid:21db7463-3dcf-df06-09f7-657d2a3149da",
             "resource": {
                 "resourceType": "Location",
-                "id": "3913ec4d-6576-5e1a-ac31-e8280583371c",
+                "id": "21db7463-3dcf-df06-09f7-657d2a3149da",
                 "partOf": {
-                    "reference": "Location/9172e4a0-1ca5-646d-2183-b179f4daa737"
+                    "reference": "Location/7e8c8f5b-e366-6646-d2c0-e943bd9d1145"
                 },
                 "name": "OMU B",
                 "mode": "instance",
@@ -1192,16 +1191,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/3913ec4d-6576-5e1a-ac31-e8280583371c"
+                "url": "Location/21db7463-3dcf-df06-09f7-657d2a3149da"
             }
         },
         {
-            "fullUrl": "urn:uuid:804a03f1-4eb5-d01d-82f9-0d4b52a9ea3b",
+            "fullUrl": "urn:uuid:8c9f471c-25cf-4f9d-a67a-da6dccc64c88",
             "resource": {
                 "resourceType": "Location",
-                "id": "804a03f1-4eb5-d01d-82f9-0d4b52a9ea3b",
+                "id": "8c9f471c-25cf-4f9d-a67a-da6dccc64c88",
                 "partOf": {
-                    "reference": "Location/3913ec4d-6576-5e1a-ac31-e8280583371c"
+                    "reference": "Location/21db7463-3dcf-df06-09f7-657d2a3149da"
                 },
                 "name": "Bed 03",
                 "mode": "instance",
@@ -1217,14 +1216,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/804a03f1-4eb5-d01d-82f9-0d4b52a9ea3b"
+                "url": "Location/8c9f471c-25cf-4f9d-a67a-da6dccc64c88"
             }
         },
         {
-            "fullUrl": "urn:uuid:c043880b-0fab-1cb8-14f7-0475282c4d0e",
+            "fullUrl": "urn:uuid:35c140b2-668e-8d32-7516-6ec7d7edecc7",
             "resource": {
                 "resourceType": "Location",
-                "id": "c043880b-0fab-1cb8-14f7-0475282c4d0e",
+                "id": "35c140b2-668e-8d32-7516-6ec7d7edecc7",
                 "name": "HOMERTON UNIVER",
                 "mode": "instance",
                 "description": "HUH AE OMU--9.8--ISO--OMU B--Bed 03--HOMERTON UNIVER--C--Homerton UH--Floor5",
@@ -1239,16 +1238,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/c043880b-0fab-1cb8-14f7-0475282c4d0e"
+                "url": "Location/35c140b2-668e-8d32-7516-6ec7d7edecc7"
             }
         },
         {
-            "fullUrl": "urn:uuid:f7ef3d02-a5d5-a361-e9d9-b316ba1ff78c",
+            "fullUrl": "urn:uuid:7fce0afa-27f7-3408-86ef-838840491ff0",
             "resource": {
                 "resourceType": "Location",
-                "id": "f7ef3d02-a5d5-a361-e9d9-b316ba1ff78c",
+                "id": "7fce0afa-27f7-3408-86ef-838840491ff0",
                 "partOf": {
-                    "reference": "Location/c043880b-0fab-1cb8-14f7-0475282c4d0e"
+                    "reference": "Location/35c140b2-668e-8d32-7516-6ec7d7edecc7"
                 },
                 "name": "Homerton UH",
                 "mode": "instance",
@@ -1264,16 +1263,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/f7ef3d02-a5d5-a361-e9d9-b316ba1ff78c"
+                "url": "Location/7fce0afa-27f7-3408-86ef-838840491ff0"
             }
         },
         {
-            "fullUrl": "urn:uuid:7e38808c-44a8-cb0c-4709-9d6092abc32c",
+            "fullUrl": "urn:uuid:ff93044f-a48c-31c6-e7bd-f400aff947e3",
             "resource": {
                 "resourceType": "Location",
-                "id": "7e38808c-44a8-cb0c-4709-9d6092abc32c",
+                "id": "ff93044f-a48c-31c6-e7bd-f400aff947e3",
                 "partOf": {
-                    "reference": "Location/f7ef3d02-a5d5-a361-e9d9-b316ba1ff78c"
+                    "reference": "Location/7fce0afa-27f7-3408-86ef-838840491ff0"
                 },
                 "name": "Floor5",
                 "mode": "instance",
@@ -1289,14 +1288,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/7e38808c-44a8-cb0c-4709-9d6092abc32c"
+                "url": "Location/ff93044f-a48c-31c6-e7bd-f400aff947e3"
             }
         },
         {
-            "fullUrl": "urn:uuid:59de4aa7-44c6-860a-88ad-53ae51ef49e8",
+            "fullUrl": "urn:uuid:76bb5678-ca71-a235-147f-5385b651dcd3",
             "resource": {
                 "resourceType": "Location",
-                "id": "59de4aa7-44c6-860a-88ad-53ae51ef49e8",
+                "id": "76bb5678-ca71-a235-147f-5385b651dcd3",
                 "name": "4 East, room 136, bed B 4E",
                 "mode": "instance",
                 "description": "4 East, room 136, bed B 4E--136--B--CommunityHospital--N",
@@ -1311,16 +1310,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/59de4aa7-44c6-860a-88ad-53ae51ef49e8"
+                "url": "Location/76bb5678-ca71-a235-147f-5385b651dcd3"
             }
         },
         {
-            "fullUrl": "urn:uuid:d5dd2e32-efbc-854a-cf3c-2bd6a7ff075e",
+            "fullUrl": "urn:uuid:a81cf64e-818a-d05c-e288-6eca8ec91ab4",
             "resource": {
                 "resourceType": "Location",
-                "id": "d5dd2e32-efbc-854a-cf3c-2bd6a7ff075e",
+                "id": "a81cf64e-818a-d05c-e288-6eca8ec91ab4",
                 "partOf": {
-                    "reference": "Location/59de4aa7-44c6-860a-88ad-53ae51ef49e8"
+                    "reference": "Location/76bb5678-ca71-a235-147f-5385b651dcd3"
                 },
                 "name": "136",
                 "mode": "instance",
@@ -1336,16 +1335,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/d5dd2e32-efbc-854a-cf3c-2bd6a7ff075e"
+                "url": "Location/a81cf64e-818a-d05c-e288-6eca8ec91ab4"
             }
         },
         {
-            "fullUrl": "urn:uuid:5783dafa-c6c0-e673-cca4-42087ee1831b",
+            "fullUrl": "urn:uuid:7b9cc9f8-b3c0-b0c4-b1eb-d52b6c0ccab0",
             "resource": {
                 "resourceType": "Location",
-                "id": "5783dafa-c6c0-e673-cca4-42087ee1831b",
+                "id": "7b9cc9f8-b3c0-b0c4-b1eb-d52b6c0ccab0",
                 "partOf": {
-                    "reference": "Location/d5dd2e32-efbc-854a-cf3c-2bd6a7ff075e"
+                    "reference": "Location/a81cf64e-818a-d05c-e288-6eca8ec91ab4"
                 },
                 "name": "B",
                 "mode": "instance",
@@ -1361,14 +1360,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/5783dafa-c6c0-e673-cca4-42087ee1831b"
+                "url": "Location/7b9cc9f8-b3c0-b0c4-b1eb-d52b6c0ccab0"
             }
         },
         {
-            "fullUrl": "urn:uuid:8b39e6e5-78cd-63ab-2441-f43ca5554096",
+            "fullUrl": "urn:uuid:3cb09fa6-cc83-83f0-a8e4-2e09ec138b20",
             "resource": {
                 "resourceType": "Location",
-                "id": "8b39e6e5-78cd-63ab-2441-f43ca5554096",
+                "id": "3cb09fa6-cc83-83f0-a8e4-2e09ec138b20",
                 "name": "CommunityHospital",
                 "mode": "instance",
                 "description": "4 East, room 136, bed B 4E--136--B--CommunityHospital--N",
@@ -1383,7 +1382,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/8b39e6e5-78cd-63ab-2441-f43ca5554096"
+                "url": "Location/3cb09fa6-cc83-83f0-a8e4-2e09ec138b20"
             }
         },
         {
@@ -1395,7 +1394,7 @@
                 "identifier": [
                     {
                         "value": "22",
-                        "system": "http://example.com/v2-to-fhir-converter/CodeSystem/FDK"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/FDK"
                     }
                 ],
                 "physicalType": {
@@ -1413,10 +1412,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:84634858-74aa-5cdb-4547-60ec27339ac6",
+            "fullUrl": "urn:uuid:9be961d3-d02a-b454-1991-fa701628c823",
             "resource": {
                 "resourceType": "Location",
-                "id": "84634858-74aa-5cdb-4547-60ec27339ac6",
+                "id": "9be961d3-d02a-b454-1991-fa701628c823",
                 "name": "POC",
                 "mode": "instance",
                 "description": "POC--Room-2--Bed-103--C--Greenland",
@@ -1431,16 +1430,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/84634858-74aa-5cdb-4547-60ec27339ac6"
+                "url": "Location/9be961d3-d02a-b454-1991-fa701628c823"
             }
         },
         {
-            "fullUrl": "urn:uuid:9bbd3aa6-8cb1-1abe-2b2a-9f320c263b42",
+            "fullUrl": "urn:uuid:1399b4cb-a4d1-3331-1d1a-6936cec4347a",
             "resource": {
                 "resourceType": "Location",
-                "id": "9bbd3aa6-8cb1-1abe-2b2a-9f320c263b42",
+                "id": "1399b4cb-a4d1-3331-1d1a-6936cec4347a",
                 "partOf": {
-                    "reference": "Location/84634858-74aa-5cdb-4547-60ec27339ac6"
+                    "reference": "Location/9be961d3-d02a-b454-1991-fa701628c823"
                 },
                 "name": "Room-2",
                 "mode": "instance",
@@ -1456,16 +1455,16 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/9bbd3aa6-8cb1-1abe-2b2a-9f320c263b42"
+                "url": "Location/1399b4cb-a4d1-3331-1d1a-6936cec4347a"
             }
         },
         {
-            "fullUrl": "urn:uuid:35353f20-6254-e794-98ed-8007490447e3",
+            "fullUrl": "urn:uuid:8d9d8b7c-8443-1b9c-6317-3837aef34f9f",
             "resource": {
                 "resourceType": "Location",
-                "id": "35353f20-6254-e794-98ed-8007490447e3",
+                "id": "8d9d8b7c-8443-1b9c-6317-3837aef34f9f",
                 "partOf": {
-                    "reference": "Location/9bbd3aa6-8cb1-1abe-2b2a-9f320c263b42"
+                    "reference": "Location/1399b4cb-a4d1-3331-1d1a-6936cec4347a"
                 },
                 "name": "Bed-103",
                 "mode": "instance",
@@ -1481,14 +1480,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/35353f20-6254-e794-98ed-8007490447e3"
+                "url": "Location/8d9d8b7c-8443-1b9c-6317-3837aef34f9f"
             }
         },
         {
-            "fullUrl": "urn:uuid:055e10f1-222e-df73-2325-0e4396db1a55",
+            "fullUrl": "urn:uuid:ec64ffd3-99e4-b7b0-d99d-78e3fc39e5b4",
             "resource": {
                 "resourceType": "Location",
-                "id": "055e10f1-222e-df73-2325-0e4396db1a55",
+                "id": "ec64ffd3-99e4-b7b0-d99d-78e3fc39e5b4",
                 "name": "Greenland",
                 "mode": "instance",
                 "description": "POC--Room-2--Bed-103--C--Greenland",
@@ -1503,14 +1502,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/055e10f1-222e-df73-2325-0e4396db1a55"
+                "url": "Location/ec64ffd3-99e4-b7b0-d99d-78e3fc39e5b4"
             }
         },
         {
-            "fullUrl": "urn:uuid:1154e6b2-b022-b3be-7dce-2b940ab5376d",
+            "fullUrl": "urn:uuid:91ba2e87-a4f9-aa57-068a-4f18e2b520a3",
             "resource": {
                 "resourceType": "Location",
-                "id": "1154e6b2-b022-b3be-7dce-2b940ab5376d",
+                "id": "91ba2e87-a4f9-aa57-068a-4f18e2b520a3",
                 "name": "Nursing home",
                 "mode": "instance",
                 "description": "Nursing home--Rosewood",
@@ -1525,14 +1524,14 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/1154e6b2-b022-b3be-7dce-2b940ab5376d"
+                "url": "Location/91ba2e87-a4f9-aa57-068a-4f18e2b520a3"
             }
         },
         {
-            "fullUrl": "urn:uuid:08b7f694-ec03-e35a-d0b0-2fae5940fe37",
+            "fullUrl": "urn:uuid:033948d7-f808-69f7-e150-e34433d7e74e",
             "resource": {
                 "resourceType": "Location",
-                "id": "08b7f694-ec03-e35a-d0b0-2fae5940fe37",
+                "id": "033948d7-f808-69f7-e150-e34433d7e74e",
                 "name": "Rosewood",
                 "mode": "instance",
                 "description": "Nursing home--Rosewood",
@@ -1547,7 +1546,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Location/08b7f694-ec03-e35a-d0b0-2fae5940fe37"
+                "url": "Location/033948d7-f808-69f7-e150-e34433d7e74e"
             }
         },
         {
@@ -1558,11 +1557,11 @@
                 "identifier": [
                     {
                         "value": "Etest",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-Etest"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/Etest"
                     },
                     {
                         "value": "2.16.1",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "type": {
                             "coding": [
                                 {
@@ -1598,7 +1597,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/08314073-410a-3dc7-512c-0f2d206fb59d"
                         }
@@ -1628,37 +1627,25 @@
                     {
                         "status": "active",
                         "location": {
-                            "reference": "Location/9172e4a0-1ca5-646d-2183-b179f4daa737"
+                            "reference": "Location/7e8c8f5b-e366-6646-d2c0-e943bd9d1145"
                         }
                     },
                     {
                         "status": "completed",
                         "location": {
-                            "reference": "Location/59de4aa7-44c6-860a-88ad-53ae51ef49e8"
-                        },
-                        "extension": [
-                            {
-                                "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/temporary-location",
-                                "valueBoolean": false
-                            }
-                        ]
+                            "reference": "Location/76bb5678-ca71-a235-147f-5385b651dcd3"
+                        }
                     },
                     {
                         "status": "planned",
                         "location": {
-                            "reference": "Location/84634858-74aa-5cdb-4547-60ec27339ac6"
-                        },
-                        "extension": [
-                            {
-                                "url": "http://hl7.org/fhir/uv/v2mappings/StructureDefinition/temporary-location",
-                                "valueBoolean": false
-                            }
-                        ]
+                            "reference": "Location/9be961d3-d02a-b454-1991-fa701628c823"
+                        }
                     },
                     {
                         "status": "completed",
                         "location": {
-                            "reference": "Location/1154e6b2-b022-b3be-7dce-2b940ab5376d"
+                            "reference": "Location/91ba2e87-a4f9-aa57-068a-4f18e2b520a3"
                         },
                         "extension": [
                             {
@@ -1691,7 +1678,7 @@
                                 }
                             ]
                         },
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/11967e28-8dd4-a112-0fdc-377866bf12a0"
                         },
@@ -1790,7 +1777,7 @@
                             }
                         ],
                         "individual": {
-                            "reference": "Practitioner/99edcabd-fbeb-7e25-f823-11da8d8ed342"
+                            "reference": "Practitioner/94d0558e-593c-7585-5525-68541f8b1064"
                         }
                     },
                     {
@@ -1836,7 +1823,7 @@
                 "identifier": [
                     {
                         "value": "40007716",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD",
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/HCD",
                         "assigner": {
                             "reference": "Organization/7452d91f-ae92-d8ce-5b4a-148be5b6538e"
                         },
@@ -1861,9 +1848,9 @@
                                 }
                             ]
                         },
-                        "system": "urn:oid:r2.3",
+                        "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "assigner": {
-                            "reference": "Organization/9f974d4f-47e8-21a6-e549-4de4599c3764"
+                            "reference": "Organization/a6c4db5e-d3be-c9a5-8f86-a1d3341211b6"
                         }
                     }
                 ],
@@ -1874,6 +1861,11 @@
                     "status": "generated",
                     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Visit Description: </span></p></div>"
                 },
+                "account": [
+                    {
+                        "reference": "Account/4ad7c7d0-b69a-0653-9ea9-0979b8a66b39"
+                    }
+                ],
                 "subject": {
                     "reference": "Patient/9e909e52-61a1-be50-1878-a12ef8c36346"
                 }
@@ -1884,10 +1876,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:9f6be243-c2fa-f8c8-0a7a-d168e98bdd4c",
+            "fullUrl": "urn:uuid:07eea8d4-d9d1-105e-9d76-23efad1ef94d",
             "resource": {
                 "resourceType": "Provenance",
-                "id": "9f6be243-c2fa-f8c8-0a7a-d168e98bdd4c",
+                "id": "07eea8d4-d9d1-105e-9d76-23efad1ef94d",
                 "occurredDateTime": "2021-08-17T18:49:43.004+05:30",
                 "recorded": "2029-08-01T11:21:24+05:30",
                 "reason": [
@@ -1904,7 +1896,7 @@
                 "agent": [
                     {
                         "who": {
-                            "reference": "Practitioner/95aea53b-8d49-d57f-d16f-4d14b914f992"
+                            "reference": "Practitioner/96931008-2247-6199-b3c0-0ee12e528d72"
                         }
                     }
                 ],
@@ -1922,21 +1914,21 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Provenance/9f6be243-c2fa-f8c8-0a7a-d168e98bdd4c"
+                "url": "Provenance/07eea8d4-d9d1-105e-9d76-23efad1ef94d"
             }
         },
         {
-            "fullUrl": "urn:uuid:ef39f581-5e8f-3917-35a9-3443303d9eee",
+            "fullUrl": "urn:uuid:3cd92576-75fd-2465-a15f-b469be921588",
             "resource": {
                 "resourceType": "Organization",
-                "id": "ef39f581-5e8f-3917-35a9-3443303d9eee",
+                "id": "3cd92576-75fd-2465-a15f-b469be921588",
                 "identifier": [
                     {
                         "value": "DRNBR",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-DRNBR"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/DRNBR"
                     },
                     {
-                        "value": "urn:oid:W1.2",
+                        "value": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "system": "urn:ietf:rfc:3986",
                         "type": {
                             "coding": [
@@ -1952,20 +1944,20 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Organization/ef39f581-5e8f-3917-35a9-3443303d9eee"
+                "url": "Organization/3cd92576-75fd-2465-a15f-b469be921588"
             }
         },
         {
-            "fullUrl": "urn:uuid:95aea53b-8d49-d57f-d16f-4d14b914f992",
+            "fullUrl": "urn:uuid:96931008-2247-6199-b3c0-0ee12e528d72",
             "resource": {
                 "resourceType": "Practitioner",
-                "id": "95aea53b-8d49-d57f-d16f-4d14b914f992",
+                "id": "96931008-2247-6199-b3c0-0ee12e528d72",
                 "identifier": [
                     {
                         "value": "C08",
-                        "system": "urn:oid:W1.2",
+                        "system": "urn:oid:1.3.6.1.4.1.44750.1.2.2",
                         "assigner": {
-                            "reference": "Organization/ef39f581-5e8f-3917-35a9-3443303d9eee"
+                            "reference": "Organization/3cd92576-75fd-2465-a15f-b469be921588"
                         },
                         "type": {
                             "coding": [
@@ -1998,7 +1990,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Practitioner/95aea53b-8d49-d57f-d16f-4d14b914f992"
+                "url": "Practitioner/96931008-2247-6199-b3c0-0ee12e528d72"
             }
         },
         {

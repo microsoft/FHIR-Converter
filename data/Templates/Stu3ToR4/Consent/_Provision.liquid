@@ -1,0 +1,5 @@
+{% mergeDiff msg %}
+{
+    "code" : {% include 'DataType/CodingToCodeableConcept' msg:msg.code %}
+}
+{% endmergeDiff %}

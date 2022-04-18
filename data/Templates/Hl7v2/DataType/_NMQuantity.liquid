@@ -1,0 +1,6 @@
+{% if NM_val %}
+    "value": {{ NM_val.Value }},
+{% endif %}
+{% if NM_unit %}
+    {% include 'DataType/CWEQuantityUnits' CWE: NM_unit -%}
+{% endif %}

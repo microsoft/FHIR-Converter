@@ -141,6 +141,11 @@ DiagnosticReport_Encounter_ID: A resource Id, used to fill "encounter.reference"
                     "reference":"ServiceRequest/{{ DiagnosticReport_ServiceRequest_ID }}",
                 {% endif %}
             },
+            {
+                {% if DiagnosticReport_MedicationRequest_ID %}
+                    "reference":"MedicationRequest/{{ DiagnosticReport_MedicationRequest_ID }}",
+                {% endif %}
+            },
         ],
         "code":
         {
@@ -177,12 +182,12 @@ DiagnosticReport_Encounter_ID: A resource Id, used to fill "encounter.reference"
         "performer":
         [
             {% for obx_Segment_16 in OBX.16.Repeats %}
-            {  
-                {% evaluate PractitionerRole_ID_OBX_16 using 'ID/PractitionerRole' XCN: obx_Segment_16 -%}
-                {% if obx_Segment_16 and PractitionerRole_ID_OBX_16 -%}
-                    "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_16 }}",
-                {% endif -%}  
-            },
+                {  
+                    {% evaluate PractitionerRole_ID_OBX_16 using 'ID/PractitionerRole' XCN: obx_Segment_16 -%}
+                    {% if obx_Segment_16 and PractitionerRole_ID_OBX_16 -%}
+                        "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_16 }}",
+                    {% endif -%}  
+                },
             {% endfor %}
             {
                 {% if OBX.25 == null and OBX.23 and Organization_ID_OBX_23 -%}
@@ -192,33 +197,33 @@ DiagnosticReport_Encounter_ID: A resource Id, used to fill "encounter.reference"
                     "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_25 }}",
                 {% endif -%}           
             },
-                {% for obx_Segment_34 in OBR.34.Repeats %}
-            {  
-                {% evaluate PractitionerRole_ID_OBX_34 using 'ID/PractitionerRole' NDL: obx_Segment_34 -%}
-                {% if obx_Segment_34 and PractitionerRole_ID_OBX_34 -%}
-                    "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_34 }}",
-                {% endif -%}  
-            },
-        {% endfor %}
-        {% for obx_Segment_35 in OBR.35.Repeats %}
-        {  
-            {% evaluate PractitionerRole_ID_OBX_35 using 'ID/PractitionerRole' NDL: obx_Segment_35 -%}
-            {% if obx_Segment_35 and PractitionerRole_ID_OBX_35 -%}
-                "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_35 }}",
-            {% endif -%}  
-        },
-        {% endfor %}
+            {% for obx_Segment_34 in OBR.34.Repeats %}
+                {  
+                    {% evaluate PractitionerRole_ID_OBX_34 using 'ID/PractitionerRole' NDL: obx_Segment_34 -%}
+                    {% if obx_Segment_34 and PractitionerRole_ID_OBX_34 -%}
+                        "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_34 }}",
+                    {% endif -%}  
+                },
+            {% endfor %}
+            {% for obx_Segment_35 in OBR.35.Repeats %}
+                {  
+                    {% evaluate PractitionerRole_ID_OBX_35 using 'ID/PractitionerRole' NDL: obx_Segment_35 -%}
+                    {% if obx_Segment_35 and PractitionerRole_ID_OBX_35 -%}
+                        "reference":"PractitionerRole/{{ PractitionerRole_ID_OBX_35 }}",
+                    {% endif -%}  
+                },
+            {% endfor %}
         ],
         "presentedForm" : [
-        {% if OBX.2.Value == "ED" and OBX.5.4.Value == "Base64" %}
-            { 
-                {% include 'DataType/EDAttachment1' ED: OBX.5 %}
-            },
-        {% elsif OBX.2.Value == "RP" %}
-            { 
-                {% include 'DataType/RPAttachment' RP: OBX.5 %}
-            },
-        {% endif %}    
+            {% if OBX.2.Value == "ED" and OBX.5.4.Value == "Base64" %}
+                { 
+                    {% include 'DataType/EDAttachment1' ED: OBX.5 %}
+                },
+            {% elsif OBX.2.Value == "RP" %}
+                { 
+                    {% include 'DataType/RPAttachment' RP: OBX.5 %}
+                },
+            {% endif %}    
         ],
         {%- comment -%}
             {% for nte_3 in NTE.3.Repeats %}
@@ -230,11 +235,11 @@ DiagnosticReport_Encounter_ID: A resource Id, used to fill "encounter.reference"
         {%- endcomment -%}
         "specimen":
         [
-        {
-            {% if DiagnosticReport_Specimen_ID %}
-                "reference":"{{ DiagnosticReport_Specimen_ID }}",
-            {% endif %}
-        },
+            {
+                {% if DiagnosticReport_Specimen_ID %}
+                    "reference":"{{ DiagnosticReport_Specimen_ID }}",
+                {% endif %}
+            },
         ],
         "subject":
         {

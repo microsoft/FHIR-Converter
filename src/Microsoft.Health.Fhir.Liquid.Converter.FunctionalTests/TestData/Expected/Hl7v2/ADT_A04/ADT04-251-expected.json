@@ -1,7 +1,7 @@
 {
     "resourceType": "Bundle",
     "type": "batch",
-    "timestamp": "2019-05-04T18:12:05",
+    "timestamp": "2019-05-04T18:12:05+07:00",
     "identifier": {
         "value": "1270326314"
     },
@@ -52,10 +52,10 @@
                 "id": "73105c01-0c83-840e-6dbb-9ef4928175f8",
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2021-10-29T11:32:25.221Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Resource bundle generated on 2022-03-25T13:08:28.268Z using Microsoft FHIR Converter.</span><span>Template Version: TEMPLATE_VERSION_PLACEHOLDER.</span><span>Template URL: https://github.com/microsoft/FHIR-Converter/releases/download/vTEMPLATE_VERSION_PLACEHOLDER/Hl7v2DefaultTemplates.tar.gz.</span><span>Root template: ADT_A04.</span></p></div>"
                 },
-                "occurredDateTime": "2019-05-04T18:12:05",
-                "recorded": "2019-05-04T18:12:05",
+                "occurredDateTime": "2019-05-04T18:12:05+07:00",
+                "recorded": "2019-05-04T18:12:05+07:00",
                 "agent": [
                     {
                         "type": {
@@ -97,7 +97,7 @@
                 "identifier": [
                     {
                         "value": "RDX",
-                        "system": "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-RDX"
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/RDX"
                     }
                 ]
             },
@@ -191,10 +191,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:1791139d-4b3d-30a1-a790-ecff6e63a1fd",
+            "fullUrl": "urn:uuid:7b989e2a-3e77-edde-7857-598322ea862b",
             "resource": {
                 "resourceType": "Account",
-                "id": "1791139d-4b3d-30a1-a790-ecff6e63a1fd",
+                "id": "7b989e2a-3e77-edde-7857-598322ea862b",
                 "identifier": [
                     {
                         "value": "123456789"
@@ -209,7 +209,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "Account/1791139d-4b3d-30a1-a790-ecff6e63a1fd"
+                "url": "Account/7b989e2a-3e77-edde-7857-598322ea862b"
             }
         },
         {
@@ -237,10 +237,10 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:bd2f287c-f7df-4b1b-7fbf-987cdf51ee4e",
+            "fullUrl": "urn:uuid:02867f99-5e52-bb72-cc91-86995a7c41e0",
             "resource": {
                 "resourceType": "Encounter",
-                "id": "bd2f287c-f7df-4b1b-7fbf-987cdf51ee4e",
+                "id": "02867f99-5e52-bb72-cc91-86995a7c41e0",
                 "class": {
                     "code": "EMER",
                     "display": "emergency",
@@ -266,19 +266,24 @@
                     }
                 ],
                 "period": {
-                    "start": "2019-05-02T07:00:00"
+                    "start": "2019-05-04T18:12:05+07:00"
                 },
                 "text": {
                     "status": "generated",
                     "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><p><span>Visit Description: </span></p></div>"
                 },
+                "account": [
+                    {
+                        "reference": "Account/7b989e2a-3e77-edde-7857-598322ea862b"
+                    }
+                ],
                 "subject": {
                     "reference": "Patient/106decd4-a7b0-34eb-afe9-94e54bdff26f"
                 }
             },
             "request": {
                 "method": "PUT",
-                "url": "Encounter/bd2f287c-f7df-4b1b-7fbf-987cdf51ee4e"
+                "url": "Encounter/02867f99-5e52-bb72-cc91-86995a7c41e0"
             }
         },
         {

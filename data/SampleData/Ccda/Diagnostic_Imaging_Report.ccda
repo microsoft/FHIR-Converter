@@ -244,7 +244,7 @@
 			<!-- {root}.26 of requested procedure ID added based on organizational policy (not present in SR sample document because root is not specified by DICOM)-->
 			<code code="70544" displayName="Magnetic resonance angiography, head; without contrast material(s)" codeSystem="2.16.840.1.113883.6.12" codeSystemName="CPT4"/>
 			<effectiveTime>
-				<low value="20060823222400"/>
+				<low value="20060823222400-0500"/>
 			</effectiveTime>
 			<performer typeCode="PRF">
 				<templateId root="2.16.840.1.113883.10.20.6.2.1"/>
@@ -562,7 +562,7 @@ End of Reason for study Section
 							<!-- Procedure Context template -->
 							<code code="70548" displayName="Magnetic resonance angiography, head; with contrast material(s)" codeSystem="2.16.840.1.113883.6.12" codeSystemName="CPT4"/>
 							<!-- Note: This code is slightly different than the code used in the header documentationOf and overrides it, which is what this entry is for. -->
-							<effectiveTime value="20060823222400"/>
+							<effectiveTime value="20060823222400-0500"/>
 						</act>
 					</entry>
 				</section>

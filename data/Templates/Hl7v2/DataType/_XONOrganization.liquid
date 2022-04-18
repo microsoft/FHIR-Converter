@@ -1,5 +1,8 @@
 {% if XON -%}
     "name":"{{ XON.1.Value }}",
+    {% if Org_Name %}
+        "name": "{{ Org_Name.Value }}",
+    {% endif %}
     "identifier":
     [
         {

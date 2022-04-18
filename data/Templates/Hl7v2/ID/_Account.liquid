@@ -3,6 +3,16 @@
         {{CX.1.Value}},{{CX.4.Value}}
     {% elsif CX -%}
         {{CX.Value}}
+    {% elsif PID and GT1 -%}
+        {{PID.1.Value}},{{PID.4.Value}},{{GT1.1.Value}},{{GT1.4.Value}}
+    {% elsif PID and IN1 -%}
+        {{PID.1.Value}},{{PID.4.Value}},{{IN1.Value}}
+    {% elsif GT1_Account.2 -%}
+        {{GT1_Account.2.Value}}
+    {% elsif GT1_Account -%}
+        {{GT1_Account.3.Value}}
+    {% elsif BLG -%}
+        {{BLG.Value}}
     {% endif -%}
 {% endcapture -%}
-{{ identifiers | generate_id_input: 'Account', false | generate_uuid }}
+{{ identifiers | generate_id_input: 'Account', false, baseId | generate_uuid }}

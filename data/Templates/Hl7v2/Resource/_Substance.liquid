@@ -1,0 +1,67 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Substance",
+        "id":"{{ ID }}",
+
+        "code" : { 
+            {% include 'DataType/CWECodeableConcept' CWE: INV.1 -%}  
+        },
+
+        {% if INV.2.Repeats[0] %}
+            "status" : {% include 'DataType/CWECode' mapping: 'CodeSystem/SubstanceStatus', CWE: INV.2.Repeats[0] -%}, 
+        {% endif %}
+
+        "category" : [
+            { 
+                {% include 'DataType/CWECodeableConcept' CWE: INV.3 -%} 
+            },
+        ],
+
+        "instance" : [
+            { 
+                "identifier" :
+                { 
+                    "value": "{{INV.4.1.Value}}",
+                    {% if INV.4.3 %}
+                        "system": "http://example.com/v2-to-fhir-converter/Identifier/{{INV.4.3.Value}}",
+                    {% endif %}
+                },
+                
+                "quantity" : { 
+                    {% if INV.7 %}
+                        "value" : {{ INV.7.Value }},
+                    {% elsif INV.8 %}
+                        "value": {{ INV.8.Value }},
+                    {% elsif INV.9 %}
+                        "value": {{ INV.9.Value }},
+                    {% endif %}
+
+                    {% if INV.11 %}
+                        {% include 'DataType/CWEQuantityUnits' CWE: INV.11 -%} 
+                    {% endif %}
+                    
+                },
+                "expiry" : "{{ INV.12.Value | format_as_date_time }}",
+            }
+        ],
+
+        "identifier" : [
+            { 
+                {% if INV.16 %}
+                    "value" : "{{INV.16.Value}}",
+                {% endif %}
+            },
+            
+                {% include 'DataType/CWEIdentifier' CWE_InternalValue: INV.17 -%}
+            
+            
+                {% include 'DataType/CWEIdentifier' CWE_InternalValue: INV.18 -%}
+            
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Substance/{{ ID }}",
+    },
+},

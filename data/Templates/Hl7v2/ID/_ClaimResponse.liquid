@@ -1,0 +1,6 @@
+{% capture identifiers -%}
+    {% if AUT_6 -%}
+        {{AUT_6.Value}}
+    {% endif -%}
+{% endcapture -%}
+{{ identifiers | generate_id_input: 'ClaimResponse', false | generate_uuid }}

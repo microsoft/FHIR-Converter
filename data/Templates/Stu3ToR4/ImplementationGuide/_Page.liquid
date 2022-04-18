@@ -1,0 +1,40 @@
+{% mergeDiff msg -%}
+{
+  "nameUrl" : "{{msg.source}}",
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.kind -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-ImplementationGuide.page.kind",
+      "valueCode" : "{{msg.kind}}"
+    },
+    {% endif -%}
+    {% for t in mag.type -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-ImplementationGuide.page.type",
+      "valueCode" : "{{t}}"
+    },
+    {% endfor -%}
+    {% for p in mag.package -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-ImplementationGuide.page.package",
+      "valueString" : "{{p}}"
+    },
+    {% endfor -%}
+    {%if msg.format -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-ImplementationGuide.page.format",
+      "valueCode" : "{{msg.format}}"
+    },
+    {% endif -%}
+  ],
+  "page" : [ {{ msg.page | to_array | batch_render: 'ImplementationGuide/Page', 'msg' }} ],
+  "kind" : "",
+  "type" : "",
+  "package" : "",
+  "format" : "",
+  "source" : ""
+}
+{% endmergeDiff -%}

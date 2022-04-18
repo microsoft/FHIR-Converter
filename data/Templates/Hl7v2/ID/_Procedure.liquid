@@ -1,8 +1,18 @@
 {% capture identifiers -%}
     {% if PR1.19 -%}
         {{ PR1.19.Value }}
+    {% elsif PR1.3 and PR1.5 %}
+        {{PR1.3.1.Value}},{{PR1.3.3.Value}},{{PR1.5.Value}}
     {% elsif PR1 %}
         {{PR1.Value}}
+    {% elsif PID_3 and PDA_death.4 and PDA_death.5.1%}
+        {{PID_3.Value}},{{PDA_death.4.Value}},{{PDA_death.5.1.Value}}
+    {% elsif PID_3 and PDA_autopsy.7 and PDA_autopsy.8.1 %}
+        {{PID_3.Value}},{{PDA_autopsy.7.Value}},{{PDA_autopsy.8.1.Value}}
+    {% elsif FT1 and ORC_FT1 -%}
+        {{FT1.Value}},{{ORC_FT1.Value}}
+    {% elsif FT1 %}
+        {{FT1.Value}}
     {% endif -%}
 {% endcapture -%}
 {{ identifiers | generate_id_input: 'Procedure', true, baseId | generate_uuid }}
