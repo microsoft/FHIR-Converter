@@ -27,6 +27,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
             { "microsofthealth/hl7v2templates:default", new DefaultTemplateInfo(DataType.Hl7v2, "microsofthealth/hl7v2templates:default", "Hl7v2DefaultTemplates.tar.gz") },
             { "microsofthealth/ccdatemplates:default", new DefaultTemplateInfo(DataType.Ccda, "microsofthealth/ccdatemplates:default", "CcdaDefaultTemplates.tar.gz") },
             { "microsofthealth/jsontemplates:default", new DefaultTemplateInfo(DataType.Json, "microsofthealth/jsontemplates:default", "JsonDefaultTemplates.tar.gz") },
+            { "microsofthealth/stu3tor4templates:default", new DefaultTemplateInfo(DataType.Fhir, "microsofthealth/stu3tor4templates:default", "Stu3ToR4DefaultTemplates.tar.gz") },
         };
 
         public DataType DataType { get; set; }
