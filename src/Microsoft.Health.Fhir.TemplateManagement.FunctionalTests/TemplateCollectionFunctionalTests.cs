@@ -171,13 +171,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
                 Path.Join(_templateDirectory, "Stu3ToR4"),
                 item,
             });
-
-            return data.Select(item => new object[]
-            {
-                Path.Join(_sampleDataDirectory, "Json", Convert.ToString(item[0])),
-                Path.Join(_templateDirectory, "Json"),
-                Convert.ToString(item[1]),
-            });
         }
 
         public static IEnumerable<object[]> GetNotExistImageInfo()

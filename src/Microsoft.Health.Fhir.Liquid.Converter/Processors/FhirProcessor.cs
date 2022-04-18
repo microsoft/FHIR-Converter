@@ -17,7 +17,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             // TO DO For FHIR Specific Logic
-            // 1. Add FHIR related checks for pre-processor and post-procesor.
+            // 1. Add FHIR related checks for pre-processor and post-processor.
             // 2. Add log for version conversion.
             // 3. Add logic to process "extension" and "contained" fields.
 
