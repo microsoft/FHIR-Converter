@@ -26,6 +26,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         private static readonly string _defaultHl7v2TemplateImageReference = "microsofthealth/hl7v2templates:default";
         private static readonly string _defaultCcdaTemplateImageReference = "microsofthealth/ccdatemplates:default";
         private static readonly string _defaultJsonTemplateImageReference = "microsofthealth/jsontemplates:default";
+        private static readonly string _defaultStu3ToR4TemplateImageReference = "microsofthealth/stu3tor4templates:default";
 
         public static IEnumerable<object[]> GetValidImageInfoWithTag()
         {
@@ -45,6 +46,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "Hl7v2NewDefaultTemplates.tar.gz", _defaultHl7v2TemplateImageReference, Path.Join(_testTemplatesPath, "Hl7v2") };
             yield return new object[] { "CcdaNewDefaultTemplates.tar.gz", _defaultCcdaTemplateImageReference, Path.Join(_testTemplatesPath, "Ccda") };
             yield return new object[] { "JsonNewDefaultTemplates.tar.gz", _defaultJsonTemplateImageReference, Path.Join(_testTemplatesPath, "Json") };
+            yield return new object[] { "Stu3ToR4NewDefaultTemplates.tar.gz", _defaultStu3ToR4TemplateImageReference, Path.Join(_testTemplatesPath, "Stu3ToR4") };
         }
 
         public static IEnumerable<object[]> GetDefaultImageReference()
@@ -53,6 +55,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { _defaultHl7v2TemplateImageReference };
             yield return new object[] { _defaultCcdaTemplateImageReference };
             yield return new object[] { _defaultJsonTemplateImageReference };
+            yield return new object[] { _defaultStu3ToR4TemplateImageReference };
         }
 
         [Theory]

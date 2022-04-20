@@ -19,6 +19,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { DataType.Hl7v2, "microsofthealth/hl7v2templates:default", "Hl7v2DefaultTemplates.tar.gz" };
             yield return new object[] { DataType.Ccda, "microsofthealth/ccdatemplates:default", "CcdaDefaultTemplates.tar.gz" };
             yield return new object[] { DataType.Json, "microsofthealth/jsontemplates:default", "JsonDefaultTemplates.tar.gz" };
+            yield return new object[] { DataType.Fhir, "microsofthealth/stu3tor4templates:default", "Stu3ToR4DefaultTemplates.tar.gz" };
         }
 
         public static IEnumerable<object[]> GetSupportedImageReference()
@@ -27,6 +28,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "microsofthealth/hl7v2templates:default" };
             yield return new object[] { "microsofthealth/ccdatemplates:default" };
             yield return new object[] { "microsofthealth/jsontemplates:default" };
+            yield return new object[] { "microsofthealth/stu3tor4templates:default" };
         }
 
         public static IEnumerable<object[]> GetSupportedImageReferenceWithCaseInsensitive()
@@ -37,6 +39,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             yield return new object[] { "MICROSOFTHEALTH/hl7v2templates:default" };
             yield return new object[] { "microsofthealth/ccdatemplates:DEFAULT" };
             yield return new object[] { "microsofthealth/JSONtemplates:DEFAULT" };
+            yield return new object[] { "microsofthealth/STU3ToR4templates:DEFAULT" };
         }
 
         public static IEnumerable<object[]> GetUnSupportedImageReference()
