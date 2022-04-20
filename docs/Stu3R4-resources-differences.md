@@ -18,6 +18,12 @@
 - ReferralRequest
 - ServiceDefinition
 
+## Constraints with STU3 to R4 templates
+Note the following constraints in the default templates: 
+- Code System and Terminology URLs are copied as is 
+- Extension fields are copied as is
+- Cannot guarantee FHIR R4 cardinality constraints
+
 ## New Resources Added to R4
 - BiologicallyDerivedProduct
 - CatalogEntry
