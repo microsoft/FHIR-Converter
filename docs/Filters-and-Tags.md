@@ -109,12 +109,12 @@ DateTime filters usage examples:
 
 ## Tags
 
-By default, Liquid provides a set of standard [tags](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers#tags) to assist template creation. Besides these tags, FHIR Converter also provides some other tags that are useful in conversion, which are listed below. If these tags do not meet your needs, you can also write your own tags.
+By default, Liquid provides a set of standard [tags](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers#tags) to assist in template creation. Besides these tags, FHIR Converter also provides some other tags useful in conversion, which are listed below. If these tags do not meet your needs, you can write your own tags.
 
 | Tag | Description | Syntax |
 |-|-|-|
 | evaluate | Evaluates an ID with an ID generation template and input data | `{% evaluate patientId using 'Utils/GenerateId' obj:msg.ClinicalDocument.recordTarget.patientRole -%}` |
-|mergeDiff|Merge diff json on input json data. The input data and diff content should be a valid json format.| `{% mergeDiff msg -%}` <br> `<diff json>` <br> `{% endmergeDiff -%}`   |
+|mergeDiff|Merge diff JSON on input JSON data. The input data and difference in content should be a valid JSON format.| `{% mergeDiff msg -%}` <br> `<diff json>` <br> `{% endmergeDiff -%}`   |
 
 **Examples to use mergeDiff**
 
@@ -154,7 +154,7 @@ Here is a sample to remove choice type element for "value":
 
 **Examples for STU3 input**
 
-Since FHIR resources are json format and resources of STU3 and R4 versions have same structures and share most datetypes, mergeDiff tag can be widely used in FHIR STU3 to R4 conversion.
+Since FHIR resources are in JSON format and since the FHIR STU3 and R4 versions of resources have the same structure and share most datetypes, the mergeDiff tag can be widely used in FHIR STU3 to R4 conversion.
 
 Here is an example to convert ChargeItem resource from STU3 to R4 :
 
@@ -179,6 +179,6 @@ _ChargeItemPerformer.liquid:
 }
 {% endmergeDiff -%}
 ```
-In this sample, field definition will be renamed to definitionUri and participant will be renamed to performer. Other fields keep unchanged. 
+In this sample, the field "definition" will be renamed to "definitionUri" and field "participant" will be renamed to "performer". All other other fields in the ChargeItem resource are copied as is from STU3 to R4. 
 
 
