@@ -7,7 +7,7 @@
 |EligibilityResponse|CoverageEligibilityResponse|
 |Sequence|MolecularSequence|
 
-## Removed Resources
+## STU3 Resources Removed from R4
 - DataElement 
 - DeviceComponent 
 - ExpansionProfile
@@ -18,7 +18,7 @@
 - ReferralRequest
 - ServiceDefinition
 
-## Added Resources
+## New Resources Added to R4
 - BiologicallyDerivedProduct
 - CatalogEntry
 - ChargeItemDefinition
