@@ -97,10 +97,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         private static List<object> GetComponents(IDictionary<string, object> data)
         {
-            var clinicalDocument = data["ClinicalDocument"] as IDictionary<string, object>;
-            var component = clinicalDocument?.ContainsKey("component") is true ? clinicalDocument["component"] as IDictionary<string, object> : null;
-            var structuredBody = component?.ContainsKey("structuredBody") is true ? component["structuredBody"] as IDictionary<string, object> : null;
-            var dataComponents = structuredBody?.ContainsKey("component") is true ? structuredBody["component"] : null;
+            var dataComponents = (((data["ClinicalDocument"] as Dictionary<string, object>)?
+                .GetValueOrDefault("component") as Dictionary<string, object>)?
+                .GetValueOrDefault("structuredBody") as Dictionary<string, object>)?
+                .GetValueOrDefault("component");
 
             if (dataComponents == null)
             {
