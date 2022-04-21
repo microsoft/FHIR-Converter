@@ -30,7 +30,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             return data.Select(item => new[]
             {
                 item[0],
-                Path.Join(Constants.ExpectedDataFolder, "Fhir", item[0], item[1]),
+                Path.Join(Constants.ExpectedDataFolder, "FhirToHL7v2", item[0], item[1]),
                 Path.Join(Constants.ExpectedDataFolder, "Hl7v2", item[0], item[2]),
             });
         }
@@ -40,7 +40,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         public void GivenFhirMessage_WhenConverting_ExpectedHl7v2ResourceShouldBeReturned(string rootTemplate, string expectedFile, string inputFile)
         {
             var fhirProcessor = new FhirProcessor();
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Fhir");
+            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "FhirToHL7v2");
 
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
