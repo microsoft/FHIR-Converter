@@ -1,0 +1,34 @@
+{% mergeDiff msg -%}
+{
+  "onBehalfOf[x]" : "",
+  "who[x]" : "",
+  {%if msg.whoUri -%}
+  "who" : {
+    "reference" : "{{msg.whoUri}}",
+    "extension" : [
+      {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/BaseType",
+      "valueString" : "uri"
+      }
+      ]
+  },
+  {% else if msg.whoReference -%}
+  "who" : {{msg.whoReference |to_json_string | default : '""'}},
+  {% endif -%}
+  {%if msg.onBehalfOfUri -%}
+  "onBehalfOf" : {
+    "reference" : "{{msg.onBehalfOfUri}}",
+    "extension" : [
+      {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/BaseType",
+      "valueString" : "uri"
+      }
+    ]
+  },
+  {% else if msg.onBehalfOfReference -%}
+  "onBehalfOf" : {{msg.onBehalfOfReference |to_json_string | default : '""'}},
+  {% endif -%}
+  "type" : {{msg.relatedAgentType | to_json_string | default : '""'}},
+  "relatedAgentType" : ""
+}
+{% endmergeDiff -%}

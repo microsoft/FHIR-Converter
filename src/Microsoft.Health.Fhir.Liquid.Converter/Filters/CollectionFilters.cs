@@ -45,10 +45,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
 
             var sb = new StringBuilder();
-            collection?.ForEach(entry =>
+            context.Stack(() =>
             {
-                context[variableName] = entry;
-                sb.Append(template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
+                collection?.ForEach(entry =>
+                {
+                    context[variableName] = entry;
+                    sb.Append(template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
+                    sb.Append(',');
+                });
             });
 
             return sb.ToString();

@@ -52,7 +52,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
                 0,
                 CultureInfo.InvariantCulture);
             var collection = new List<object> { 1, 2, 3 };
-            Assert.Equal("1 2 3 ", Filters.BatchRender(context, collection, "foo", "i"));
+            Assert.Equal("1 ,2 ,3 ,", Filters.BatchRender(context, collection, "foo", "i"));
 
             // Valid template file system but null collection
             Assert.Equal(string.Empty, Filters.BatchRender(context, null, "foo", "i"));

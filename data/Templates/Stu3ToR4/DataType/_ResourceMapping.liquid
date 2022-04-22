@@ -1,0 +1,24 @@
+{% case msg -%}
+    {% when "BodySite" %}
+        "BodyStructure"
+    {% when "DataElement" %}
+        "StructureDefinition"
+    {% when "EligibilityRequest" %}
+        "CoverageEligibilityRequest"
+    {% when "EligibilityResponse" %}
+        "CoverageEligibilityResponse"
+    {% when "ExpansionProfile" %}
+        "Parameters"
+    {% when "Sequence" %}
+        "MolecularSequence"
+    {% when "ProcessRequest" %}
+        "Task"
+    {% when "ProcessResponse" %}
+        "Task"
+    {% when "ReferralRequest" %}
+        "ServiceRequest"
+    {% when "ProcedureRequest" %}
+        "ServiceRequest"
+    {% else -%}
+        "{{msg}}"
+{% endcase -%}

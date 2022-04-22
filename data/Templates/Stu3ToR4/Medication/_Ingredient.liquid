@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "strength" : {{msg.amount | to_json_string | default : '""'}},
+  "amount" : ""
+}
+{% endmergeDiff -%}

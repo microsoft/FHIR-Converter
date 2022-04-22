@@ -1,0 +1,20 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "status" : {% include 'ResearchStudy/TranslateStatusCode' msg : msg.status -%},
+  "relatedArtifact" : [ {{ msg.relatedArtifact | to_array | batch_render: 'DataType/RelatedArtifact', 'msg' }} ],
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {% for j in msg.jurisdiction -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-ResearchStudy.jurisdiction",
+      "valueCodeableConcept" : {{msg.j | to_json_string | default : '""' }}
+    },
+    {% endfor -%}
+  ],
+  "arm" : [ {{ msg.arm | to_array | batch_render: 'ResearchStudy/Arm', 'msg' }} ],
+  "jurisdiction" : ""
+}
+{% endmergeDiff -%}

@@ -1,0 +1,19 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.whenUsed -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-DeviceUseStatement.whenUsed",
+      "valuePeriod" : {{msg.whenUsed | to_json_string | default : '""' }}
+    },
+    {% endif -%}
+  ],
+  "reasonCode" : {{msg.indication | to_json_string | default : '""'}},
+  "indication" : "",
+  "whenUsed" : ""
+}
+{% endmergeDiff -%}

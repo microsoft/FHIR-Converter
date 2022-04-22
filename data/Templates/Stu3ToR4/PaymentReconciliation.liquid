@@ -1,0 +1,20 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "paymentIssuer" : {{msg.organization | to_json_string | default : '""'}},
+  {% assign value = msg.outcome.coding[0].code -%}
+  {% if value == 'complete' or value == 'error' or value == 'partial' -%}
+  "outcome" : "{{value}}",
+  {% endif -%}
+  "requestor" : {{msg.requestProvider | to_json_string | default : '""'}},
+  "detail" : [ {{ msg.detail | to_array | batch_render: 'PaymentReconciliation/PaymentReconciliationDetail', 'msg' }} ],
+  "formCode" : {{msg.form | to_json_string | default : '""'}},
+  "paymentAmount" : {% include 'DataType/Money' msg: msg.total -%},
+  "processNote" : [ {{ msg.processNote | to_array | batch_render: 'PaymentReconciliation/PaymentReconciliationProcessNote', 'msg' }} ],
+  "total" : "",
+  "form" : "",
+  "requestOrganization" : "",
+  "requestProvider" : "",
+  "organization" : ""
+}
+{% endmergeDiff -%}

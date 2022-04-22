@@ -1,0 +1,15 @@
+{% case msg -%}
+    {% when "unknown" -%}
+        "unknown"
+    {% when "in-progress" -%}
+        "in-progress"
+    {% when "suspended" -%}
+        "suspended"
+    {% when "aborted" -%}
+        "stopped"
+    {% when "completed" -%}
+        "completed"
+    {% when "entered-in-error" -%}
+        "entered-in-error"
+{% endcase -%}
+

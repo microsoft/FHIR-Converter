@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "item" : [ {{ msg.item | to_array | batch_render: 'Questionnaire/Item', 'msg' }} ]
+}
+{% endmergeDiff -%}

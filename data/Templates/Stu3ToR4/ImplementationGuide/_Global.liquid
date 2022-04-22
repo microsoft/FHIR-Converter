@@ -1,0 +1,5 @@
+{% mergeDiff msg -%}
+{
+  "profile" : {% include 'DataType/ReferenceToCanonical' msg: msg.profile -%}
+}
+{% endmergeDiff -%}

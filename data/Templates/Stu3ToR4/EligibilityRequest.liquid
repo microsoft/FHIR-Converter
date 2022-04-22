@@ -1,0 +1,23 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "resourceType" : "CoverageEligibilityRequest",
+  "insurance" : [
+    {
+      "focal" : true,
+      "coverage" : {{msg.coverage | to_json_string | default : '""' }},
+      "businessArrangement" : "{{msg.businessArrangement}}"
+    }
+  ],
+  "item" : [
+    {
+      "category" : {{msg.benefitCategory | to_json_string | default : '""' }}
+    }
+  ],
+  "benefitSubCategory" : "",
+  "benefitCategory" : "",
+  "businessArrangement" : "",
+  "coverage" : "",
+  "organization" : ""
+}
+{% endmergeDiff -%}

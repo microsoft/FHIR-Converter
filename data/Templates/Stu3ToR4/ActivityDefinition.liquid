@@ -1,0 +1,40 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "author" :[
+    {% for c in msg.contributor %}
+    {% if c.type == 'author' -%}
+    {% include 'DataType/ContributorToContactDetail' msg : c -%},
+    {% endif %}
+    {% endfor %}
+  ],
+  "editor" :[
+    {% for c in msg.contributor %}
+    {% if c.type == "editor" -%}
+    {% include 'DataType/ContributorToContactDetail' msg : c -%},
+    {% endif %}
+    {% endfor %}
+  ],
+  "reviewer" :[
+    {% for c in msg.contributor %}
+    {% if c.type == "reviewer" -%}
+    {% include 'DataType/ContributorToContactDetail' msg : c -%},
+    {% endif %}
+    {% endfor %}
+  ],
+  "endorser" :[
+    {% for c in msg.contributor %}
+    {% if c.type == "endorser" -%}
+    {% include 'DataType/ContributorToContactDetail' msg : c -%},
+    {% endif %}
+    {% endfor %}
+  ],
+  "kind" : {% include 'ActivityDefinition/TranslateKindCode' msg : msg.kind -%},
+  "relatedArtifact" : [ {{ msg.relatedArtifact | to_array | batch_render: 'DataType/RelatedArtifact', 'msg' }} ],
+  "dosage" : [ {{ msg.dosage | to_array | batch_render: 'DataType/Dosage', 'msg' }} ],
+  "library" : [ {{ msg.library | to_array | batch_render: 'DataType/ReferenceToCanonical', 'msg' }} ],
+  "transform" : {% include 'DataType/ReferenceToCanonical' msg: msg.transform -%},
+  "dynamicValue" : [ {{ msg.dynamicValue | to_array | batch_render: 'ActivityDefinition/ActivityDefinitionDynamicValue', 'msg' }} ],
+  "contributor" : ""
+}
+{% endmergeDiff -%}

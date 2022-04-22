@@ -1,0 +1,30 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  {% if msg.notGiven == true -%}
+  "status" : "not-done",
+  {% endif -%}
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.notGiven -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-Immunization.notGiven",
+      "valueBoolean" : "{{msg.notGiven}}"
+    },
+    {% endif -%}
+  ],
+  "occurrenceDateTime" : "{{msg.date}}",
+  "performer" : [ {{ msg.practitioner | to_array | batch_render: 'Immunization/Practitioner', 'msg' }} ],
+  "reasonCode" : {{msg.explanation.reason | to_json_string | default : '""'}},
+  "reasonCode" : {{msg.explanation.reasonNotGiven | to_json_string | default : '""'}},
+  "protocolApplied" : [ {{ msg.vaccinationProtocol | to_array | batch_render: 'Immunization/Protocol', 'msg' }} ],
+  "vaccinationProtocol" : "",
+  "explanation" : "",
+  "practitioner" : "",
+  "date" : "",
+  "notGiven" : ""
+}
+{% endmergeDiff -%}
+

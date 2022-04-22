@@ -41,6 +41,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             _cache.Set("microsofthealth/ccdatemplates:default", ccdaDefaultTemplateLayer, memoryOption);
             TemplateLayer jsonDefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource("JsonDefaultTemplates.tar.gz");
             _cache.Set("microsofthealth/jsontemplates:default", jsonDefaultTemplateLayer, memoryOption);
+            TemplateLayer stu3ToR4DefaultTemplateLayer = TemplateLayer.ReadFromEmbeddedResource("Stu3ToR4DefaultTemplates.tar.gz");
+            _cache.Set("microsofthealth/stu3tor4templates:default", stu3ToR4DefaultTemplateLayer, memoryOption);
 
             PushLargeSizeManifest();
         }
@@ -85,10 +87,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         public static IEnumerable<object[]> GetDefaultTemplatesInfo()
         {
-            yield return new object[] { "microsofthealth/fhirconverter:default", 852 };
-            yield return new object[] { "microsofthealth/hl7v2templates:default", 852 };
+            yield return new object[] { "microsofthealth/fhirconverter:default", 915 };
+            yield return new object[] { "microsofthealth/hl7v2templates:default", 915 };
             yield return new object[] { "microsofthealth/ccdatemplates:default", 821 };
             yield return new object[] { "microsofthealth/jsontemplates:default", 2 };
+            yield return new object[] { "microsofthealth/stu3tor4templates:default", 261 };
         }
 
         [Theory]
