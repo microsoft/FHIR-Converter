@@ -1,0 +1,119 @@
+{
+    {% if msg.address -%}
+        {% assign location_id = msg.address.first | to_json_string | numeric_sha1_hash -%}
+        "location": [
+            {% for address in msg.address -%}
+            {
+                "location_id": {{ address | to_json_string | numeric_sha1_hash }},
+            
+                {% if address.line.size > 0 -%}
+                "address_1": "{{ address.line | join: ', ' }}",
+                {% endif -%}
+
+                "city": "{{ address.city }}",
+                "state": "{{ address.state }}",
+                "zip": "{{ address.postalCode }}",
+                "country": "{{ address.country }}",
+                "location_source_value": "{{ address.text }}",
+            },
+            {% endfor -%}
+        ],
+    {% else -%}
+        {% assign location_id = -1 -%}
+    {% endif -%}
+
+    {% if msg.generalPractitioner -%}
+        {% assign provider_id = msg.generalPractitioner.first.reference | numeric_sha1_hash -%}
+        "provider": [
+            {% for practitioner in msg.generalPractitioner -%}
+            {
+                "provider_id": {{ practitioner.reference | numeric_sha1_hash }},
+                "provider_source_value": "{{ practitioner.reference }}"
+            },
+            {% endfor -%}
+        ],
+    {% else -%}
+        {% assign provider_id = -1 -%}
+    {% endif -%}
+
+    {% if msg.managingOrganization -%}
+        {% assign care_site_id = msg.managingOrganization.reference | numeric_sha1_hash -%}
+        "care_site": [
+            {
+                "care_site_id": {{ care_site_id }},
+                "care_site_source_value": "{{ msg.managingOrganization.reference }}"
+            }
+        ],
+    {% else -%}
+        {% assign care_site_id = -1 -%}
+    {% endif -%}
+
+    "person": [
+        {
+            {% assign person_id = msg.id | prepend: 'Patient/' | numeric_sha1_hash -%}
+            "person_id": {{ person_id }},
+            
+            {% if msg.gender == 'male' -%}
+            "gender_concept_id": 8507,
+            {% elsif msg.gender == 'female' -%}
+            "gender_concept_id": 8532,
+            {% endif -%}
+            
+            {% assign year = msg.birthDate | get_fhir_date_component: 'year' -%}
+            {% if year > 0 -%}
+            "year_of_birth": {{ year }},
+            {% endif -%}
+
+            {% assign month = msg.birthDate | get_fhir_date_component: 'month' -%}
+            {% if month > 0 -%}
+            "month_of_birth": {{ month }},
+            {% endif -%}
+
+            {% assign day = msg.birthDate | get_fhir_date_component: 'day' -%}
+            {% if day > 0 -%}
+            "day_of_birth": {{ day }},
+            {% endif -%}
+            
+            {% if location_id >= 0 -%}
+            "location_id": {{ location_id }},
+            {% endif -%}
+
+            {% if provider_id >= 0 -%}
+            "provider_id": {{ provider_id }},
+            {% endif -%}
+
+            {% if care_site_id >= 0 -%}
+            "care_site_id": {{ care_site_id }},
+            {% endif -%}
+
+            "person_source_value": "{{ msg.id | prepend: 'Patient/' | append: '_' | append: msg.meta.versionId }}",
+            "gender_source_value": "{{ msg.gender }}",
+        },
+    ],
+
+    {% if msg.text -%}
+        {% assign text_content = msg.text | to_json_string -%}
+        "note": [
+            {
+                "note_id": {{ text_content | numeric_sha1_hash }},
+                "person_id": {{ person_id }},
+                "note_datetime": "{{ msg.meta.lastUpdated | date: 'yyyy-MM-ddTHH:mm:ss.fff%K' }}",
+                "note_text": "{{ text_content | escape_special_chars}}",
+                "encoding_concept_id": 32678,
+
+                {% if provider_id >= 0 -%}
+                "provider_id": {{ provider_id }},
+                {% endif -%}
+            },
+        ],
+    {% endif -%}
+
+    {% if msg.deceasedDateTime -%}
+        "death": [
+            {
+                "person_id": {{ person_id }},
+                "death_datetime": "{{ msg.deceasedDateTime | date: 'yyyy-MM-ddTHH:mm:ss.fff%K' }}",
+            },
+        ],
+    {% endif -%}
+}

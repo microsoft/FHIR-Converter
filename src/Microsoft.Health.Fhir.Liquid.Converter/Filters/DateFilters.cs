@@ -95,5 +95,31 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             return DateTime.UtcNow.ToString(format);
         }
+
+        public static int GetFhirDateComponent(string input, string componentName)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return 0;
+            }
+
+            PartialDateTime dateTimeObject;
+            try
+            {
+                dateTimeObject = new PartialDateTime(input);
+            }
+            catch (Exception)
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
+            }
+
+            return componentName.ToLower() switch
+            {
+                "year" => dateTimeObject.DateTimeValue.Year,
+                "month" => dateTimeObject.DateTimeValue.Month,
+                "day" => dateTimeObject.DateTimeValue.Day,
+                _ => 0
+            };
+        }
     }
 }

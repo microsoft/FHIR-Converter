@@ -160,6 +160,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The input of numeric SHA1 hash is invalid..
+        /// </summary>
+        internal static string InvalidInputOfNumericSha1Hash {
+            get {
+                return ResourceManager.GetString("InvalidInputOfNumericSha1Hash", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Content in &apos;MergeDiff&apos; block should be a json object..
         /// </summary>
         internal static string InvalidMergeDiffBlockContent {

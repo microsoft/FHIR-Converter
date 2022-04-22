@@ -11,7 +11,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.InputProcessors;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
@@ -93,6 +95,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 #pragma warning restore CA5350
             var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(data));
             return string.Concat(hash.Select(b => b.ToString("x2")));
+        }
+
+        public static int NumericSha1Hash(string data)
+        {
+            if (string.IsNullOrEmpty(data))
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidInputOfNumericSha1Hash, Resources.InvalidInputOfNumericSha1Hash);
+            }
+
+            using var sha1 = new SHA1Managed();
+            var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(data));
+            return BitConverter.ToInt32(hash);
         }
 
         public static string Base64Encode(string data)
