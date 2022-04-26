@@ -64,19 +64,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return null;
         }
 
-        public static object Slice(object[] collection, int s, int n)
-        {
-            if (collection != null)
-            {
-                if (collection.Count() > s + n)
-                {
-                    return collection.Skip(s).Take(n);
-                }
-            }
-
-            return null;
-        }
-
         //public static object FilterByKeyWithValue(object[] input, string key, string value)
 
         public static object FilterByKeyWithValue(object[] input, string key, string needle)
