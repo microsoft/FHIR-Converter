@@ -1,6 +1,7 @@
 {% mergeDiff msg -%}
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "identifier" : [{{msg.identifier | to_json_string | default : '""'}}],
   "performer" : {{msg.consentingParty | to_json_string | default : '""'}},
   {%if msg.policyRule -%}
   "policyRule" : {
@@ -13,6 +14,7 @@
   {% if msg.securityLabel or msg.period or msg.actor or msg.action or msg.purpose or msg.dataPeriod or msg.data or msg.except -%}
   "provision" : {% include 'Consent/Base' msg: msg %},
   {% endif -%}
+  "sourceIdentifier" : "",
   "except" : "",
   "data" : "",
   "dataPeriod" : "",

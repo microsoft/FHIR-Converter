@@ -3,6 +3,7 @@
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "encounter" : {{msg.context | to_json_string | default : '""'}},
   "related" : "",
+  "interpretation" : [ {{msg.interpretation | to_json_string | default : '""'}}],
   "note" : [
     {% include 'DataType/StringToAnnotation' msg: msg.comment -%}
   ],

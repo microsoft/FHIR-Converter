@@ -1,5 +1,6 @@
 {% mergeDiff msg -%}
 {
+  "encounter" : [{{msg.encounter | to_json_string | default : '""'}}],
   "related" : [ 
     {% for r in msg.related %}
       {% if r.ref %}

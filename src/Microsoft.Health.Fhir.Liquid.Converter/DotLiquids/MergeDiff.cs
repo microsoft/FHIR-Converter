@@ -122,8 +122,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                         throw new RenderException(FhirConverterErrorCode.InvalidMergeDiffBlockContent, Resources.InvalidMergeDiffBlockContentForChoiceType);
                     }
 
-                    var choiceElement = result.Where(x => x.Key.StartsWith(choiceTypeName)).First().Key;
-                    result[choiceElement] = item.Value;
+                    var choiceElement = result.Where(x => x.Key.StartsWith(choiceTypeName));
+                    if (choiceElement.Any())
+                    {
+                        result[choiceElement.First().Key] = item.Value;
+                    }
                 }
                 else
                 {

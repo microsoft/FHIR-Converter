@@ -1,7 +1,7 @@
 {% mergeDiff msg -%}
 {
   "doseNumberPositiveInt" : {{msg.doseSequence}},
-  "doseNumberPositiveInt" : {{msg.seriesDoses}},
+  "seriesDosesPositiveInt" : {{msg.seriesDoses}},
   "extension" : [
     {% for e in msg.extension -%}
     {{ e | to_json_string | default : '""'}},
