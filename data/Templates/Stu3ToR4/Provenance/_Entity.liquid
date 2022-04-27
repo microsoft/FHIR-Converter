@@ -14,7 +14,7 @@
   {% else if msg.whatReference -%}
   "what" : {{msg.whatReference |to_json_string | default : '""'}},
   {% else if msg.whatIdentifier -%}
-  "what" : {{msg.whatIdentifier |to_json_string | default : '""'}},
+  "what" : {% include 'DataType/IdentifierToReference' msg : msg.whatIdentifier -%},
   {% endif -%}
   "agent" : [ {{ msg.agent | to_array | batch_render: 'Provenance/Agent', 'msg' }} ]
 }

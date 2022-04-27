@@ -4,6 +4,7 @@
   "category" : [
     {{msg.class | to_json_string | default : '""'}}
   ],
-  "class" : ""
+  "class" : "",
+  "attester": [{{msg.attester | to_array | batch_render : 'Composition/Attester'}}]
 }
 {% endmergeDiff -%}

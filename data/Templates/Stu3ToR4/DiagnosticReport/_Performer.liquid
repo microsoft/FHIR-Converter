@@ -12,6 +12,9 @@
     {% endif -%}
   ],
   "actor" : "",
-  "role" : ""
+  "role" : "",
+  "reference" : "{{msg.actor.reference}}",
+  "identifier" : {{msg.actor.identifier | to_json_string | default:'""'}},
+  "display" : "{{msg.actor.display}}"
 }
 {% endmergeDiff -%}

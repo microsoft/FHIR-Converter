@@ -233,15 +233,44 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         {
             var data = new List<string>
             {
-                @"CapabilityStatement",
-                @"CodeSystem",
-                @"Observation",
-                @"OperationDefinition",
-                @"OperationOutcome",
-                @"Parameters",
-                @"Patient",
-                @"StructureDefinition",
-                @"ValueSet",
+                // Maturity Level in R4 : N
+                "CapabilityStatement",
+                "CodeSystem",
+                "Observation",
+                "OperationDefinition",
+                "OperationOutcome",
+                "Parameters",
+                "Patient",
+                "StructureDefinition",
+                "ValueSet",
+
+                // Maturity Level in R4 : 3 & 4
+                "SearchParameter",
+                "ConceptMap",
+                "Provenance",
+                "AuditEvent",
+                "DocumentReference",
+                "MessageHeader",
+                "Subscription",
+                "Practitioner",
+                "Organization",
+                "Location",
+                "Appointment",
+                "AppointmentResponse",
+                "Schedule",
+                "Slot",
+                "AllergyIntolerance",
+                "Condition",
+                "Procedure",
+                "DiagnosticReport",
+                "ImagingStudy",
+                "QuestionnaireResponse",
+                "MedicationRequest",
+                "MedicationStatement",
+                "Medication",
+                "Immunization",
+                "Questionnaire",
+
             };
             return data.Select(item => new[]
             {
