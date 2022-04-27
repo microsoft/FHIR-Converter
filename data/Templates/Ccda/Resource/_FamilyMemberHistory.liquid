@@ -27,10 +27,11 @@
                     "code":{ {% include 'DataType/CodeableConcept' CodeableConcept: component.observation.value -%} },
                     {% assign entryRelationships = component.observation.entryRelationship | to_array -%}
                     {% for entryRelationship in entryRelationships -%}
-                        {% if entryRelationship.observation.templateId | to_json_string | contains: '"2.16.840.1.113883.10.20.22.4.47"' -%}
+                        {% assign templateIdString = entryRelationship.observation.templateId | to_json_string -%}
+                        {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.47"' -%}
                             "contributedToDeath":true,
                         {% endif -%}
-                        {% if entryRelationship.observation.templateId | to_json_string | contains: '"2.16.840.1.113883.10.20.22.4.31"' -%}
+                        {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.31"' -%}
                             {% if entryRelationship.observation.value.value -%}
                                 "onsetAge":{
                                         "value": {{entryRelationship.observation.value.value}},
