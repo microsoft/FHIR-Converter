@@ -123,7 +123,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                     }
 
                     var choiceElement = result.Where(x => x.Key.StartsWith(choiceTypeName));
-                    if (choiceElement.Count() >= 1)
+                    if (choiceElement.Any())
                     {
                         result[choiceElement.First().Key] = item.Value;
                     }
