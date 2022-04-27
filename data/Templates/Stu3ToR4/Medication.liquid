@@ -1,0 +1,60 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.status -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-Medication.status",
+      "valueCode" : "{{msg.status}}"
+    },
+    {% endif -%}
+    {%if msg.isBrand -%}
+    {
+      "url" : "hhttp://hl7.org/fhir/r3/StructureDefinition/extension-Medication.isBrand",
+      "valueBoolean" : "{{msg.isBrand}}"
+    },
+    {% endif -%}
+    {%if msg.isOverTheCounter -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MedicationOTC",
+      "valueBoolean" : "{{msg.isOverTheCounter}}"
+    },
+    {% endif -%}
+    {%if msg.package.container -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-Medication.package.container",
+      "valueCodeableConcept" : {{msg.package.container | to_json_string | default : '""' }}
+    },
+    {% endif -%}
+    {% for c in msg.package.content -%}
+    {% if c.itemCodableConcept -%}
+    {
+      "url" : "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.content",
+      "valueCodableConcept": {{c.itemCodableConcept |to_json_string | default : '""'}}
+    },
+    {% endif -%}
+    {% if c.itemReference -%}
+    {
+      "url" : "http://hl7.org/fhir/3.0/StructureDefinition/extension-Medication.package.content",
+      "valueReference": {{c.itemReference |to_json_string | default : '""'}}
+    },
+    {% endif -%}
+    {% endfor -%}
+    {% for i in msg.image -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MedicationImage",
+      "valueAttachment" : {{i | to_json_string | default : '""' }}
+    },
+    {% endfor -%}
+  ],
+  "ingredient" : [ {{ msg.ingredient | to_array | batch_render: 'Medication/Ingredient', 'msg' }} ],
+  "batch" : {{msg.package.batch | to_json_string | default : '""' }},
+  "image" : "",
+  "isOverTheCounter" : "",
+  "isBrand" : "",
+  "package" : ""
+}
+{% endmergeDiff -%}

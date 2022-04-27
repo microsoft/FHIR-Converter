@@ -1,0 +1,14 @@
+{% case msg -%}
+    {% when "draft" -%}
+        "in-review"
+    {% when "in-progress" -%}
+        "active"
+    {% when "suspended" -%}
+        "disapproved"
+    {% when "stopped" -%}
+        "withdrawn"
+    {% when "completed" -%}
+        "administratively-completed"
+    {% when "entered-in-error" -%}
+        "withdrawn"
+{% endcase -%}

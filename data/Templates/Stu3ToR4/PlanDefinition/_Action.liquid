@@ -1,0 +1,17 @@
+{% mergeDiff msg -%}
+{
+  "prefix" : "{{msg.label}}",
+  "documentation" : [ {{ msg.documentation | to_array | batch_render: 'DataType/RelatedArtifact', 'msg' }} ],
+  "trigger" : {{msg.triggerDefinition | to_json_string | default : '""'}},
+  "condition" : [ {{ msg.condition | to_array | batch_render: 'PlanDefinition/Condition', 'msg' }} ],
+  "input" : [ {{ msg.input | to_array | batch_render: 'DataType/DataRequirement', 'msg' }} ],
+  "output" : [ {{ msg.output | to_array | batch_render: 'DataType/DataRequirement', 'msg' }} ],
+  "type" : {% include 'DataType/CodingToCodeableConcept' msg: msg.type -%},
+  "transform" : {% include 'DataType/ReferenceToCanonical' msg: msg.transform -%},
+  "dynamicValue" : [ {{ msg.dynamicValue | to_array | batch_render: 'PlanDefinition/DynamicValue', 'msg' }} ],
+  "action" : [ {{ msg.action | to_array | batch_render: 'PlanDefinition/Action', 'msg' }} ],
+  "definition" : "",
+  "triggerDefinition" : "",
+  "label" : ""
+}
+{% endmergeDiff -%}

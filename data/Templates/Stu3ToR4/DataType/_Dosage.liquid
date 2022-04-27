@@ -1,0 +1,18 @@
+{% mergeDiff msg -%}
+{
+  "doseAndRate" : [
+      {
+          "doseRange":{{msg.doseRange | to_json_string | default : '""'}},
+          "doseQuantity":{{msg.doseQuantity | to_json_string | default : '""'}},
+          "rateRatio":{{msg.rateRatio | to_json_string | default : '""'}},
+          "rateRange":{{msg.rateRange | to_json_string | default : '""'}},
+          "rateQuantity":{{msg.rateQuantity | to_json_string | default : '""'}},
+      }
+  ],
+  "doseRange" : "",
+  "doseQuantity" : "",
+  "rateRatio" : "",
+  "rateRange" : "",
+  "rateQuantity" : ""
+}
+{% endmergeDiff -%}

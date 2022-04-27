@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "dependsOn" : [ {{ msg.dependsOn | to_array | batch_render: 'ConceptMap/Qualifier', 'msg' }} ],
+  "product" : [ {{ msg.product | to_array | batch_render: 'ConceptMap/Qualifier', 'msg' }} ]
+}
+{% endmergeDiff -%}

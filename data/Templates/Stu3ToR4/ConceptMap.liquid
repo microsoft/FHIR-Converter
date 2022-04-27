@@ -1,0 +1,8 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "sourceCanonical" : {% include 'DataType/ReferenceToCanonical' msg: msg.sourceReference -%},
+  "targetCanonical" : {% include 'DataType/ReferenceToCanonical' msg: msg.targetReference -%},
+  "group" : [ {{ msg.group | to_array | batch_render: 'ConceptMap/TheGroup', 'msg' }} ]
+}
+{% endmergeDiff -%}

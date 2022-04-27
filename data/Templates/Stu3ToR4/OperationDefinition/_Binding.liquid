@@ -1,0 +1,11 @@
+{% mergeDiff msg -%}
+{
+  {% if msg.valueSetReference -%}
+  "valueSet" : {% include 'DataType/ReferenceToCanonical' msg: msg.valueSetReference -%},
+  {% else if msg.valueSetUri -%}
+  "valueSet" : "{{msg.valueSetUri}}",
+  {% endif -%}
+  "valueSetUri" : "",
+  "valueSetReference" : ""
+}
+{% endmergeDiff -%}

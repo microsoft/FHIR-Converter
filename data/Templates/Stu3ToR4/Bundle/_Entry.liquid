@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "resource": {% include 'Resource' msg : msg.resource -%},
+  "response": {% include 'Bundle/Response' msg: msg.response -%}
+}
+{% endmergeDiff -%}

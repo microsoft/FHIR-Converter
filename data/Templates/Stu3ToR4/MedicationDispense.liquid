@@ -1,0 +1,32 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "performer" : [ {{ msg.performer | to_array | batch_render: 'MedicationDispense/Actor', 'msg' }} ],
+  "dosageInstruction" : [ {{ msg.dosageInstruction | to_array | batch_render: 'DataType/Dosage', 'msg' }} ],
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.notDone -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MedicationDispense.notDone",
+      "valueBoolean" : "{{msg.notDone}}"
+    },
+    {% endif -%}
+    {%if msg.notDoneReasonCodeableConcept -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MedicationDispense.notDoneReason",
+      "valueCodeableConcept" : {{msg.notDoneReasonCodeableConcept | to_json_string | default : '""' }}
+    },
+    {% endif -%}
+    {%if msg.notDoneReasonReference -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-MedicationDispense.notDoneReason",
+      "valueReference" : {{msg.notDoneReasonReference | to_json_string | default : '""' }}
+    },
+    {% endif -%}
+  ],
+  "notDone" : "",
+  "notDoneReason[x]" : ""
+}
+{% endmergeDiff -%}

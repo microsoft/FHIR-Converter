@@ -649,15 +649,6 @@
             "value": "urn:uuid:ab1791b0-5c71-11db-b0de-0800200c9a66"
           }
         ],
-        "clinicalStatus": {
-          "coding": [
-            {
-              "code": "55561003",
-              "display": "Active",
-              "system": "http://snomed.info/sct"
-            }
-          ]
-        },
         "code": {
           "coding": [
             {
@@ -822,28 +813,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:023fffb6-ab9c-78cf-4631-e45bbd101825",
-      "resource": {
-        "resourceType": "AllergyIntolerance",
-        "id": "023fffb6-ab9c-78cf-4631-e45bbd101825",
-        "clinicalStatus": {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
-              "code": "active"
-            }
-          ]
-        },
-        "patient": {
-          "reference": "Patient/aca97b95-3c1c-ce73-ac65-f520242997a9"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "AllergyIntolerance/023fffb6-ab9c-78cf-4631-e45bbd101825"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:f32ccb2b-f725-a1af-71b0-f1510491f0ed",
       "resource": {
         "resourceType": "AllergyIntolerance",
@@ -895,17 +864,7 @@
                 }
               ]
             },
-            "manifestation": [
-              {
-                "coding": [
-                  {
-                    "code": "255604002",
-                    "display": "Mild",
-                    "system": "http://snomed.info/sct"
-                  }
-                ]
-              }
-            ]
+            "severity": "mild"
           }
         ],
         "patient": {
@@ -1162,7 +1121,6 @@
                 }
               ]
             },
-            "contributedToDeath": true,
             "onsetAge": {
               "value": 40,
               "system": "http://unitsofmeasure.org",
@@ -3068,7 +3026,7 @@
             }
           ]
         },
-        "date": "2022-03-25T08:35:31.818Z",
+        "date": "2022-04-22T05:37:15.998Z",
         "status": "current",
         "content": [
           {

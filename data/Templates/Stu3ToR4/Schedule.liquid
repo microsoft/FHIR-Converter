@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "serviceCategory" : [{{ msg.serviceCategory | to_json_string | default : '""'}}]
+}
+{% endmergeDiff -%}

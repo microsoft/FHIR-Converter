@@ -1,0 +1,31 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "subtype" : {{msg.subtype[0] | to_json_string | default:'""'}},
+  "outcome" : "",
+  {% assign value = msg.outcome.coding[0].code %}
+  {% if value == 'complete' or value == 'error' or value == 'partial' -%}
+  "outcome" : "{{value}}",
+  {% endif -%}
+  "payee" : {% include 'ExplanationOfBenefit/ExplanationOfBenefitPayee' msg: msg.payee -%},
+  "supportingInfo" : {{msg.information | to_json_string | default : '""' }},
+  "insurance" : [{{msg.insurance | to_json_string | default:'""'}}],
+  "item" : [ {{ msg.item | to_array | batch_render: 'ExplanationOfBenefit/ExplanationOfBenefitItem', 'msg' }} ],
+  "addItem" : [ {{ msg.addItem | to_array | batch_render: 'ExplanationOfBenefit/ExplanationOfBenefitAddItem', 'msg' }} ],
+  "total" : [
+    {% include 'ExplanationOfBenefit/ExplanationOfBenefitTotalCost' msg: msg.totalCost -%},
+    {% include 'ExplanationOfBenefit/ExplanationOfBenefitTotalBenefit' msg: msg.totalBenefit -%}
+  ],
+  "payment" : {% include 'ExplanationOfBenefit/ExplanationOfBenefitPayment' msg: msg.payment -%},
+  "form" : {% include 'DataType/CodeableConceptToAttachment' msg: msg.form -%},
+  "processNote" : [ {{ msg.processNote | to_array | batch_render: 'ExplanationOfBenefit/ExplanationOfBenefitProcessNote', 'msg' }} ],
+  "benefitBalance" : [ {{ msg.benefitBalance | to_array | batch_render: 'ExplanationOfBenefit/ExplanationOfBenefitBenefitBalance', 'msg' }} ],
+  "totalBenefit" : "",
+  "unallocDeductable" : "",
+  "totalCost" : "",
+  "hospitalization" : "",
+  "employmentImpacted" : "",
+  "information" : "",
+  "organization" : ""
+}
+{% endmergeDiff -%}

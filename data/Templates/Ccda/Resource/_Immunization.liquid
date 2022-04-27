@@ -13,7 +13,8 @@
 
         {% assign entryRelationships = immunization.entryRelationship | to_array -%}
         {% for entryRelationship in entryRelationships -%}
-            {% if entryRelationship.observation.templateId | to_json_string | contains: '"2.16.840.1.113883.10.20.22.4.53"' -%}
+            {% assign templateIdString = entryRelationship.observation.templateId | to_json_string -%}
+            {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.53"' -%}
                 "statusReason": { {% include 'DataType/CodeableConcept' CodeableConcept: entryRelationship.observation.code -%} },
             {% endif -%}
         {% endfor -%}
@@ -28,7 +29,8 @@
         {% for consumable in consumables -%}
             {% assign manufacturedProducts = consumable.manufacturedProduct | to_array -%}
             {% for manufacturedProduct in manufacturedProducts -%}
-                {% if manufacturedProduct.templateId | to_json_string | contains '"2.16.840.1.113883.10.20.22.4.54"' -%}
+                {% assign templateIdString = manufacturedProduct.templateId | to_json_string -%}
+                {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.54"' -%}
                     {% if manufacturedProduct.manufacturedMaterial.code.translation -%}
                         "vaccineCode":{ {% include 'DataType/CodeableConcept' CodeableConcept: manufacturedProduct.manufacturedMaterial.code.translation -%} },
                     {% else -%}

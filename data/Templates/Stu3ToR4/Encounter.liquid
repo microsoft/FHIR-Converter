@@ -1,0 +1,11 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "basedOn" : {{msg.incomingReferral | to_json_string | default : '""'}},
+  "reasonCode" : {{msg.reason | to_json_string | default : '""'}},
+  "appointment" : [{{msg.appointment | to_json_string | default : '""'}}],
+  "diagnosis" : [ {{ msg.diagnosis | to_array | batch_render: 'Encounter/Diagnosis', 'msg' }} ],
+  "reason" : "",
+  "incomingReferral" : ""
+}
+{% endmergeDiff -%}

@@ -1,0 +1,11 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "instantiatesCanonical" : {% include 'DataType/ReferenceToCanonical' msg: msg.definition -%},
+  "encounter" : {{msg.context | to_json_string | default : '""'}},
+  "author" : {{msg.author[0] | to_json_string | default : '""'}},
+  "activity" : [ {{ msg.activity | to_array | batch_render: 'CarePlan/Activity', 'msg' }} ],
+  "context" : "",
+  "definition" : ""
+}
+{% endmergeDiff -%}

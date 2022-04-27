@@ -1,0 +1,11 @@
+{% mergeDiff msg -%}
+{
+  "adjudication" : [ {{ msg.adjudication | to_array | batch_render: '_ExplanationOfBenefitItemAdjudication', 'msg' }} ],
+  "detail" : [ {{ msg.detail | to_array | batch_render: 'ExplanationOfBenefit/ExplanationOfBenefitAddItemDetail', 'msg' }} ],
+  "fee" : "",
+  "service" : "",
+  "category" : "",
+  "revenue" : "",
+  "sequenceLinkId" : ""
+}
+{% endmergeDiff -%}

@@ -1,0 +1,22 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.acceptUnknown -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-CapabilityStatement.acceptUnknown",
+      "valueCode" : "{{msg.acceptUnknown}}"
+    },
+    {% endif -%}
+  ],
+  "fhirVersion": "4.0.1",
+  "profile" : "",
+  "rest" : [ {{ msg.rest | to_array | batch_render: 'CapabilityStatement/Rest', 'msg' }} ],
+  "messaging" : [ {{ msg.messaging | to_array | batch_render: 'CapabilityStatement/Messaging', 'msg' }} ],
+  "document" : [ {{ msg.document | to_array | batch_render: 'CapabilityStatement/Document', 'msg' }} ],
+  "acceptUnknown" : ""
+}
+{% endmergeDiff -%}

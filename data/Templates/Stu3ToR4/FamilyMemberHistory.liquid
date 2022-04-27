@@ -1,0 +1,32 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "instantiatesCanonical" : [ {{ msg.definition | to_array | batch_render: 'DataType/ReferenceToCanonical', 'msg' }} ],
+  {%if msg.notDone -%}
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-FamilyMemberHistory.notDone",
+      "valueBoolean" : "{{msg.notDone}}"
+    },
+  ],
+  {% endif -%}
+  "dataAbsentReason" : {{msg.notDoneReason | to_json_string | default : '""'}},
+  {%if msg.gender -%}
+  "sex" : {
+    "coding" : [
+      {
+      "system" : "http://hl7.org/fhir/administrative-gender",
+      "code" : "{{msg.gender}}"
+      }
+    ]
+  },
+  {% endif -%}
+  "definition" : "",
+  "gender" : "",
+  "notDone" : "",
+  "notDoneReason" : "",
+}
+{% endmergeDiff -%}

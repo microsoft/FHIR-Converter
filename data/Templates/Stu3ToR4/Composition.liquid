@@ -1,0 +1,10 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "category" : [
+    {{msg.class | to_json_string | default : '""'}}
+  ],
+  "class" : "",
+  "attester": [{{msg.attester | to_array | batch_render : 'Composition/Attester', 'msg'}}]
+}
+{% endmergeDiff -%}

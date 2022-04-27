@@ -1,0 +1,25 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "category" : [
+    {{msg.class | to_json_string | default : '""'}}
+  ],
+  "date" : "{{msg.indexed | date: "yyyy-MM-ddTHH:mm:ss.fff%K" }}",
+  "created" : "",
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.created -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-DocumentReference.created",
+      "valuedateTime" : "{{msg.created | date: "yyyy-MM-ddTHH:mm:ss.fff%K" }}"
+    },
+    {% endif -%}
+  ],
+  "indexed" : "",
+  "class" : "",
+  "context" : {% include 'DocumentReference/Context' msg: msg.context -%}
+}
+{% endmergeDiff -%}
+

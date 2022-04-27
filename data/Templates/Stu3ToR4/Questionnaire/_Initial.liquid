@@ -1,0 +1,16 @@
+{
+  "valueBoolean" : {{msg.initialBoolean}},
+  "valueDecimal" : {{msg.initialDecimal}},
+  "valueInteger" : {{msg.initialInteger}},
+  "valueDate" : "{{msg.initialDate}}",
+  "valueDateTime" : "{{msg.initialDateTime}}",
+  "valueTime" : "{{msg.initialTime}}",
+  "valueString" : "{{msg.initialString}}",
+  "valueUri" : "{{msg.initialUri}}",
+  "valueAttachment" : {{msg.initialAttachment | to_json_string | default : '""'}},
+  "valueCoding" : {{msg.initialCoding | to_json_string | default : '""'}},
+  "valueQuantity" : {{msg.initialQuantity | to_json_string | default : '""'}},
+  "valueReference" : {{msg.initialReference | to_json_string | default : '""'}},
+  "initial[x]" : "",
+}
+

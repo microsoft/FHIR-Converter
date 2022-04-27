@@ -1,0 +1,9 @@
+{
+  "grouping" : [ {{ msg.package | to_array | batch_render: 'ImplementationGuide/Grouping', 'msg' }} ],
+  "page" : {% include 'ImplementationGuide/Page' msg: msg.page -%},
+  "resource": [
+    {% for p in msg.package -%}
+    {{ p.resource | to_array | batch_render : 'ImplementationGuide/Resource', 'msg'}}
+    {% endfor -%}
+  ]
+}

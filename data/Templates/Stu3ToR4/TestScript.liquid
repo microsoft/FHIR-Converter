@@ -1,0 +1,10 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "metadata" : {% include 'TestScript/Metadata' msg: msg.metadata -%},
+  "setup" : {% include 'TestScript/Setup' msg: msg.setup -%},
+  "test" : [ {{ msg.test | to_array | batch_render: 'TestScript/Test', 'msg' }} ],
+  "rule" : "",
+  "ruleset" : "",
+}
+{% endmergeDiff -%}

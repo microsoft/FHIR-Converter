@@ -1,0 +1,21 @@
+{% mergeDiff msg -%}
+{
+  "what[x]" : "",
+  {%if msg.whatUri -%}
+  "what" : {
+    "reference" : "{{msg.whatUri}}",
+    "extension" : [
+      {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/BaseType",
+      "valueString" : "uri"
+      }
+      ]
+  },
+  {% else if msg.whatReference -%}
+  "what" : {{msg.whatReference |to_json_string | default : '""'}},
+  {% else if msg.whatIdentifier -%}
+  "what" : {% include 'DataType/IdentifierToReference' msg : msg.whatIdentifier -%},
+  {% endif -%}
+  "agent" : [ {{ msg.agent | to_array | batch_render: 'Provenance/Agent', 'msg' }} ]
+}
+{% endmergeDiff -%}

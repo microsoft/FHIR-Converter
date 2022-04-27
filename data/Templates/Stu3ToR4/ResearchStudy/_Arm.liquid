@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "type" : {{msg.code | to_json_string | default : '""'}},
+  "code" : ""
+}
+{% endmergeDiff -%}

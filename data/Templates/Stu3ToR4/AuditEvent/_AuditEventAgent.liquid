@@ -1,0 +1,8 @@
+{% mergeDiff msg -%}
+{
+  "who" : {{msg.reference | to_json_string | default : '""'}},
+  "who" : {% include 'DataType/IdentifierToReference' msg: msg.userId -%},
+  "userId" : "",
+  "reference" : ""
+}
+{% endmergeDiff -%}

@@ -1,0 +1,10 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "servicePeriod" : {{msg.period | to_json_string | default : '""'}},
+  "subject" : [{{msg.subject | to_json_string | default : '""'}}],
+  "balance" : "",
+  "active" : "",
+  "period" : ""
+}
+{% endmergeDiff -%}

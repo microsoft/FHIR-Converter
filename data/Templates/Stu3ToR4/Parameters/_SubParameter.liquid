@@ -1,0 +1,7 @@
+{% mergeDiff msg -%}
+{ 
+  "valueMoney" : {% include 'DataType/Money' msg: msg.valueMoney -%},
+  "resource" : {% include 'Resource' msg: msg.resource -%},
+  "part" : [{{msg.part | to_array | batch_render : 'Parameters/SubParameter', 'msg' }}]
+}
+{% endmergeDiff -%}

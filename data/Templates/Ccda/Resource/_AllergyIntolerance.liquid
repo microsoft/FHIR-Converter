@@ -31,7 +31,8 @@
                     "substance":{ {% include 'DataType/CodeableConcept' CodeableConcept: allergyEntry.participant.participantRole.playingEntity.code -%} },
                 {% endif -%}
 
-                {% if r.observation.templateId | to_json_string | contains: '"2.16.840.1.113883.10.20.22.4.9"' -%}
+                {% assign templateIdString = r.observation.templateId | to_json_string -%}
+                {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.9"' -%}
                     "manifestation":
                     [
                         {% if r.observation.value.translation -%}
@@ -42,15 +43,13 @@
                     ],
                     "onset": "{{ r.observation.effectiveTime.low.value | format_as_date_time }}", 
                 {% endif -%}
-                {% for templateId in r.observation.templateId -%}
-                    {% if templateId.root == "2.16.840.1.113883.10.20.22.4.8" -%}
-                        {% if r.observation.value.translation -%}
-                            "severity":"{{ r.observation.value.translation.displayName | downcase | get_property: 'ValueSet/AllergySeverity' }}",
-                        {% else -%}
-                            "severity":"{{ r.observation.value.displayName | downcase | get_property: 'ValueSet/AllergySeverity' }}",
-                        {% endif -%}
+                {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.8"' -%}
+                    {% if r.observation.value.translation -%}
+                        "severity":"{{ r.observation.value.translation.displayName | downcase | get_property: 'ValueSet/AllergySeverity' }}",
+                    {% else -%}
+                        "severity":"{{ r.observation.value.displayName | downcase | get_property: 'ValueSet/AllergySeverity' }}",
                     {% endif -%}
-                {% endfor -%}
+                {% endif -%}
             },
             {% endfor -%}
 

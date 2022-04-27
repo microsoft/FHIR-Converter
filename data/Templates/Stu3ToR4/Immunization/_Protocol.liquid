@@ -1,0 +1,34 @@
+{% mergeDiff msg -%}
+{
+  "doseNumberPositiveInt" : {{msg.doseSequence}},
+  "seriesDosesPositiveInt" : {{msg.seriesDoses}},
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.description -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-Immunization.vaccinationProtocol.description",
+      "valueString" : "{{msg.description}}"
+    },
+    {% endif -%}
+    {%if msg.doseStatus -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-Immunization.vaccinationProtocol.doseStatus",
+      "valueCodeableConcept" : {{msg.doseStatus | to_json_string | default : '""' }}
+    },
+    {% endif -%}
+    {%if msg.doseStatusReason -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-Immunization.vaccinationProtocol.doseStatusReason",
+      "valueCodeableConcept" : {{msg.doseStatusReason | to_json_string | default : '""' }}
+    },
+    {% endif -%}
+  ],
+  "description" : "",
+  "doseStatus" : "",
+  "doseStatusReason" : "",
+  "doseSequence" : "",
+  "seriesDoses" : ""
+}
+{% endmergeDiff -%}

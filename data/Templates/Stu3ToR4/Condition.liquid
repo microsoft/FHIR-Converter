@@ -1,0 +1,27 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  {%if msg.clinicalStatus -%}
+  "clinicalStatus" : {
+    "coding" : {
+      "system" : "http://terminology.hl7.org/CodeSystem/condition-clinical",
+      "code" : "{{msg.clinicalStatus}}"
+    }
+  },
+  {% endif -%}
+  {%if msg.verificationStatus -%}
+  "verificationStatus" : {
+    "coding" : {
+      "system" : "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+      "code" : "{{msg.verificationStatus}}"
+    }
+  },
+  {% endif -%}
+  "abatementBoolean" : "",
+  "stage" : [{{msg.stage | to_json_string | default : '""'}}],
+  "encounter" : {{msg.context | to_json_string | default : '""'}},
+  "recordedDate" : "{{msg.assertedDate | date: "yyyy-MM-dd"}}",
+  "assertedDate" : "",
+  "context" : ""
+}
+{% endmergeDiff -%}

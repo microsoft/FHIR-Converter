@@ -1,0 +1,18 @@
+{% mergeDiff msg -%}
+{
+  "careTeamSequence" : {{msg.careTeamLinkId | to_json_string | default : '""'}},
+  "diagnosisSequence" : {{msg.diagnosisLinkId | to_json_string | default : '""'}},
+  "procedureSequence" : {{msg.procedureLinkId | to_json_string | default : '""'}},
+  "informationSequence" : {{msg.informationLinkId | to_json_string | default : '""'}},
+  "productOrService" : {{msg.service | to_json_string | default : '""'}},
+  "unitPrice" : {% include 'DataType/Money' msg: msg.unitPrice -%},
+  "net" : {% include 'DataType/Money' msg: msg.net -%},
+  "adjudication" : [ {{ msg.adjudication | to_array | batch_render: 'ExplanationOfBenefit/ExplanationOfBenefitItemAdjudication', 'msg' }} ],
+  "detail" : [ {{ msg.detail | to_array | batch_render: 'ExplanationOfBenefit/ExplanationOfBenefitItemDetail', 'msg' }} ],
+  "service" : "",
+  "informationLinkId" : "",
+  "procedureLinkId" : "",
+  "diagnosisLinkId" : "",
+  "careTeamLinkId" : ""
+}
+{% endmergeDiff -%}

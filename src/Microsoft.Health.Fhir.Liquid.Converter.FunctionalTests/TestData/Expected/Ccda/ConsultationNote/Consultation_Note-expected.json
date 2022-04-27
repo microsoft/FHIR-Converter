@@ -643,28 +643,6 @@
       }
     },
     {
-      "fullUrl": "urn:uuid:023fffb6-ab9c-78cf-4631-e45bbd101825",
-      "resource": {
-        "resourceType": "AllergyIntolerance",
-        "id": "023fffb6-ab9c-78cf-4631-e45bbd101825",
-        "clinicalStatus": {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
-              "code": "active"
-            }
-          ]
-        },
-        "patient": {
-          "reference": "Patient/b6d7e193-338c-f580-36eb-156f27ed3541"
-        }
-      },
-      "request": {
-        "method": "PUT",
-        "url": "AllergyIntolerance/023fffb6-ab9c-78cf-4631-e45bbd101825"
-      }
-    },
-    {
       "fullUrl": "urn:uuid:80b41489-d434-1d18-476b-c6c08eaf45b3",
       "resource": {
         "resourceType": "AllergyIntolerance",
@@ -716,17 +694,7 @@
                 }
               ]
             },
-            "manifestation": [
-              {
-                "coding": [
-                  {
-                    "code": "255604002",
-                    "display": "Mild",
-                    "system": "http://snomed.info/sct"
-                  }
-                ]
-              }
-            ]
+            "severity": "mild"
           }
         ],
         "patient": {
@@ -749,15 +717,6 @@
             "value": "urn:uuid:ab1791b0-5c71-11db-b0de-0800200c9a66"
           }
         ],
-        "clinicalStatus": {
-          "coding": [
-            {
-              "code": "55561003",
-              "display": "Active",
-              "system": "http://snomed.info/sct"
-            }
-          ]
-        },
         "code": {
           "coding": [
             {
@@ -2416,7 +2375,7 @@
             }
           ]
         },
-        "date": "2022-03-25T08:35:31.086Z",
+        "date": "2022-04-22T05:36:39.437Z",
         "status": "current",
         "content": [
           {

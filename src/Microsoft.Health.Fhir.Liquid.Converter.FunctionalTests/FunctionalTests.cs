@@ -229,6 +229,57 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
+        public static IEnumerable<object[]> GetDataForStu3ToR4()
+        {
+            var data = new List<string>
+            {
+                // Maturity Level in R4 : N
+                "CapabilityStatement",
+                "CodeSystem",
+                "Observation",
+                "OperationDefinition",
+                "OperationOutcome",
+                "Parameters",
+                "Patient",
+                "StructureDefinition",
+                "ValueSet",
+
+                // Maturity Level in R4 : 3 & 4
+                "SearchParameter",
+                "ConceptMap",
+                "Provenance",
+                "AuditEvent",
+                "DocumentReference",
+                "MessageHeader",
+                "Subscription",
+                "Practitioner",
+                "Organization",
+                "Location",
+                "Appointment",
+                "AppointmentResponse",
+                "Schedule",
+                "Slot",
+                "AllergyIntolerance",
+                "Condition",
+                "Procedure",
+                "DiagnosticReport",
+                "ImagingStudy",
+                "QuestionnaireResponse",
+                "MedicationRequest",
+                "MedicationStatement",
+                "Medication",
+                "Immunization",
+                "Questionnaire",
+
+            };
+            return data.Select(item => new[]
+            {
+                item,
+                Path.Join(Constants.SampleDataDirectory, "Stu3", item + ".json"),
+                Path.Join(Constants.ExpectedDataFolder, "Stu3ToR4", item + ".json"),
+            });
+        }
+
         [Fact]
         public void GivenCcdaMessageForTimezoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
         {
@@ -316,6 +367,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             // Remove DocumentReference, where date is different every time conversion is run and gzip result is OS dependent
             expectedObject["entry"]?.Last()?.Remove();
             actualObject["entry"]?.Last()?.Remove();
+
+            Assert.True(JToken.DeepEquals(expectedObject, actualObject));
+        }
+
+        [Theory]
+        [MemberData(nameof(GetDataForStu3ToR4))]
+        public void GivenStu3FhirData_WhenConverting_ExpectedR4FhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
+        {
+            var fhirProcessor = new FhirProcessor();
+            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Stu3ToR4");
+
+            var inputContent = File.ReadAllText(inputFile);
+            var expectedContent = File.ReadAllText(expectedFile);
+            var actualContent = fhirProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Fhir));
+
+            var expectedObject = JObject.Parse(expectedContent);
+            var actualObject = JObject.Parse(actualContent);
 
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
         }

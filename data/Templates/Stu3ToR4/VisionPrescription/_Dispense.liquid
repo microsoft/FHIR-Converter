@@ -1,0 +1,13 @@
+{% mergeDiff msg -%}
+{
+  "prism" : [
+    {% if msg.prism or msg.base -%}
+    {
+      "amount" : "{{msg.prism}}",
+      "base" : "{{msg.base}}"
+    },
+    {% endif -%}
+  ],
+  "base" : ""
+}
+{% endmergeDiff -%}

@@ -1,0 +1,25 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "identifier" : [ {{msg.identifier | to_json_string | default : '""'}} ],
+  "itemCodeableConcept" : {{msg.orderedItem.itemCodeableConcept | to_json_string | default : '""'}},
+  "itemReference" : {{msg.orderedItem.itemReference | to_json_string | default : '""'}},
+  "quantity" : {{msg.orderedItem.quantity | to_json_string | default : '""'}},
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {%if msg.requester.onBehalfOf -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-SupplyRequest.requester.onBehalfOf",
+      "valueReference" : {{msg.requester.onBehalfOf | to_json_string | default : '""' }}
+    },
+    {% endif -%}
+  ],
+  "requester" : {{msg.requester.agent | to_json_string | default : '""'}},
+  "reasonCode" : [{{msg.reasonCodeableConcept | to_json_string | default : '""' }}],
+  "reasonReference" : [{{msg.reasonReference | to_json_string | default : '""' }}],
+  "reasonCodeableConcept" : "",
+  "orderedItem" : ""
+}
+{% endmergeDiff -%}

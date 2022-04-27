@@ -1,0 +1,30 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "instantiatesCanonical" : {{msg.definition | to_json_string | default : '""'}},
+  {% if msg.notDone -%}
+  "status" : "not-done",
+  {% else %}
+  "status" : "{{msg.status}}",
+  {% endif -%}
+  "statusReason" : {{msg.notDoneReason | to_json_string | default : '""'}},
+  "extension" : [
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {% for t in msg.topic -%}
+    {
+      "url" : "http://hl7.org/fhir/r3/StructureDefinition/extension-Communication.topic",
+      "valueReference" : {{ t | to_json_string | default : '""' }}
+    },
+    {% endfor -%}
+  ],
+  "notDoneReason" : "",
+  "encounter" : {{msg.context | to_json_string | default : '""'}},
+  "notDone" : "",
+  "definition" : "",
+  "topic" : "",
+  "context" : ""
+}
+{% endmergeDiff -%}
+

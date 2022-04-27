@@ -1,0 +1,16 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "identifier" : [{{msg.identifier | to_json_string | default : '""'}}],
+  "term" : [ {{ msg.term | to_array | batch_render: 'Contract/ContractTerm', 'msg' }} ],
+  "signer" : [ {{ msg.signer | to_array | batch_render: 'Contract/ContractSigner', 'msg' }} ],
+  "binding[x]" : "",
+  "valuedItem" : "",
+  "agent" : "",
+  "securityLabel" : "",
+  "decisionType" : "",
+  "action" : "",
+  "actionReason" : "",
+  "topic" : ""
+}
+{% endmergeDiff -%}

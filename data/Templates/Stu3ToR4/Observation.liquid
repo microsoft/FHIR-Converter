@@ -1,0 +1,57 @@
+{% mergeDiff msg -%}
+{
+  "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
+  "encounter" : {{msg.context | to_json_string | default : '""'}},
+  "related" : "",
+  "interpretation" : [ {{msg.interpretation | to_json_string | default : '""'}}],
+  "note" : [
+    {% include 'DataType/StringToAnnotation' msg: msg.comment -%}
+  ],
+  "comment" : "",
+  "hasMember" : [
+    {% for r in msg.related %}
+      {% if r.type == "has-member" -%}
+        {{r.target | to_json_string | default : '""' }},
+      {% endif -%}
+    {% endfor -%}
+  ],
+  "derivedFrom" : [
+    {% for r in msg.related %}
+      {% if r.type == "derived-from" -%}
+        {{r.target | to_json_string | default : '""' }},
+      {% endif -%}
+    {% endfor -%}
+  ],
+  "extension":[
+    {% for e in msg.extension -%}
+    {{ e | to_json_string | default : '""'}},
+    {% endfor -%}
+    {% for r in msg.related %}
+    {% case r.type %}
+      {% when "sequel-to" %}
+        {
+            "url":"http://hl7.org/fhir/3.0/StructureDefinition/Observation.sequelTo",
+            "valueReference": {{r.target | to_json_string | default : '""' }}
+        },
+      {% when "replaces" %}
+        {
+            "url":"http://hl7.org/fhir/3.0/StructureDefinition/Observation.replaces",
+            "valueReference": {{r.target | to_json_string | default : '""' }}
+        },
+      {% when "qualified-by" %}
+        {
+            "url":"http://hl7.org/fhir/3.0/StructureDefinition/Observation.qualifiedBy",
+            "valueReference": {{r.target | to_json_string | default : '""' }}
+        },
+      {% when "interfered-by" %}
+        {
+            "url":"http://hl7.org/fhir/3.0/StructureDefinition/Observation.interferedBy",
+            "valueReference": {{r.target | to_json_string | default : '""' }}
+        },
+    {% endcase %}
+  {% endfor %}
+  ],
+  "context" : ""
+}
+{% endmergeDiff -%}
+
