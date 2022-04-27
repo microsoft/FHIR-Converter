@@ -5,6 +5,6 @@
     {{msg.class | to_json_string | default : '""'}}
   ],
   "class" : "",
-  "attester": [{{msg.attester | to_array | batch_render : 'Composition/Attester'}}]
+  "attester": [{{msg.attester | to_array | batch_render : 'Composition/Attester', 'msg'}}]
 }
 {% endmergeDiff -%}

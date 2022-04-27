@@ -47,6 +47,7 @@
     ]
   },
   {% endif -%}
+  "target" : [{{msg.target | to_json_string | default : '""'}}],
   "status" : ""
 }
 {% endmergeDiff -%}

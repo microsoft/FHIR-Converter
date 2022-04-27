@@ -1,0 +1,5 @@
+{% mergeDiff msg -%}
+{
+    "role" : [{{msg.role | to_json_string | default:'""' }}]
+}
+{% endmergeDiff -%}
