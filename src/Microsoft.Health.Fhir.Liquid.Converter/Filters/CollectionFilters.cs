@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -59,6 +60,29 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             if (collection != null && collection.Count() > index)
             {
                 return collection[index];
+            }
+
+            return null;
+        }
+
+        public static object Slice(object input, int s, int n = 1)
+        {
+            if (input != null)
+            {
+                if (input is string inputString)
+                {
+                    if (inputString.Length > s + n)
+                    {
+                        return inputString.Skip(s).Take(n);
+                    }
+                }
+                else if (input is object[] collection)
+                {
+                    if (collection.Count() > s + n)
+                    {
+                        return collection.Skip(s).Take(n);
+                    }
+                }
             }
 
             return null;
