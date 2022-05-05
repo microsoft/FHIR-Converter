@@ -27,8 +27,8 @@ addresses = [address, address]
 {% capture repeats -%}
 {%- for address in addresses -%}
 {% capture XAD -%}
-{% comment %}  1 Street Address        {% endcomment %}{{ address.line | slice: 0, 2 | join: ' ' }}^
-{% comment %}  2 Other Designation     {% endcomment %}{{ address.line | slice: 2, 1 | join: ' ' }}^
+{% comment %}  1 Street Address        {% endcomment %}{{ address.line | slice_array: 0, 2 | join: ' ' }}^
+{% comment %}  2 Other Designation     {% endcomment %}{{ address.line | slice_array: 2, 1 | join: ' ' }}^
 {% comment %}  3 City                  {% endcomment %}{{ address.city }}^
 {% comment %}  4 State Or Province     {% endcomment %}{{ address.state }}^
 {% comment %}  5 Zip or Postal Code    {% endcomment %}{{ address.postalCode }}^
