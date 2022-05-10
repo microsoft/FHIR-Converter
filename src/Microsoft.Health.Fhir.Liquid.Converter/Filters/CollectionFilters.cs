@@ -3,6 +3,8 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -11,6 +13,7 @@ using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
 {
@@ -64,7 +67,33 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return null;
         }
 
-        //public static object FilterByKeyWithValue(object[] input, string key, string value)
+        public static object Slice(object input, int s, int n = 1)
+        {
+            if (input != null)
+            {
+                if (input is string inputString)
+                {
+                    if (inputString.Length > s + n)
+                    {
+                        return inputString.Skip(s).Take(n);
+                    }
+                }
+                else if (input is object[] collection)
+                {
+                    if (collection.Count() > s + n)
+                    {
+                        return collection.Skip(s).Take(n);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static object[] Select(object[] input, string path, string value = null)
+        {
+            return ComplexObjectFilterUtility.Select(input, path, value);
+        }
 
         public static object FilterByKeyWithValue(object[] input, string key, string needle)
         {
@@ -85,7 +114,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
                 for (int k = 0; k < keys.Count() - 1; k++)
                 {
                     var cKey = keys[k];
-                    //Console.WriteLine(cKey);
                     if (res.ContainsKey(cKey))
                     {
                         res = (Dictionary<string, object>)res[cKey];
