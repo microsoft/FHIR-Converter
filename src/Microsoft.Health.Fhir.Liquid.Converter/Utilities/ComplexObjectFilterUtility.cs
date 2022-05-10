@@ -60,8 +60,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                     {
                         if (path.Count == 0)
                         {
-                            // TODO: Can value matter when path ends in indiscriminite array?
-                            return true;
+                            return (value == null) || inputArray.Contains(value);
                         }
 
                         foreach (object obj in inputArray)
