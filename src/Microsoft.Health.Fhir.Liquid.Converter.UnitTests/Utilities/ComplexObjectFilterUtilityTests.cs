@@ -26,7 +26,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
                 new TestCase(testData, "age", "27", new object[] { testData[0] }),
                 new TestCase(testData, "upgrades.vision.system", "http://infrared.org/other", new object[] { testData[6] }),
                 new TestCase(testData, "friends[0].name", "Holland Ochoa", new object[] { testData[3] }),
-                new TestCase(testData, "friends[0].name", "Holland Ochoa", new object[] { testData[3] }),
+                new TestCase(testData, "friends[0].parents[1].tags[].nothere", null, new object[] { }),
                 new TestCase(testData, "friends[].parents[].tags[2]", "ex", new object[] { testData[3] }),
                 new TestCase(testData, "friends[].parents[].tags[2]", "hex", new object[] { }),
                 new TestCase(testData, "upgrades.bonemarrow.system", "http://illuminated.party", testData),
