@@ -128,9 +128,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
 
             static void PerformSplit(Queue<string> parts, StringBuilder part)
             {
-                parts.Enqueue(part.ToString());
-                part.Clear();
-            };
+                // This protects against a begining of path string edge case.
+                if (part.Length > 0)
+                {
+                    parts.Enqueue(part.ToString());
+                    part.Clear();
+                }
+            }
 
             for (int i = 0; i < path.Length; i++)
             {
@@ -143,10 +147,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                 switch (path[i])
                 {
                     case '[':
-                        if (part.Length > 0)
-                        {
-                            PerformSplit(parts, part);
-                        }
+                        PerformSplit(parts, part);
 
                         // Brackets do not get stripped
                         part.Append(path[i]);
