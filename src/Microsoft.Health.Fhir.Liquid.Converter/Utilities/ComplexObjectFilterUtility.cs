@@ -126,6 +126,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             var part = new StringBuilder();
             var bracket = false;
 
+            static void PerformSplit(Queue<string> parts, StringBuilder part)
+            {
+                parts.Enqueue(part.ToString());
+                part.Clear();
+            };
+
             for (int i = 0; i < path.Length; i++)
             {
                 if (Delimeters.Contains(path[i]) == false)
@@ -134,35 +140,42 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                     part.Append(path[i]);
                 }
 
-                if (path[i] == '[')
+                switch (path[i])
                 {
-                    if (part.Length > 0)
-                    {
-                        // Perform a split
-                        parts.Enqueue(part.ToString());
-                        part.Clear();
-                    }
+                    case '[':
+                        if (part.Length > 0)
+                        {
+                            PerformSplit(parts, part);
+                        }
 
-                    // Brackets do not get stripped
-                    part.Append(path[i]);
+                        // Brackets do not get stripped
+                        part.Append(path[i]);
 
-                    // Begin a bracket split
-                    bracket = true;
+                        // Begin a bracket split
+                        bracket = true;
+                        break;
+
+                    case ']':
+                        // Brackets do not get stripped
+                        part.Append(path[i]);
+
+                        // Break out of the bracket split
+                        bracket = false;
+                        break;
+
+                    case '.':
+                        if (!bracket)
+                        {
+                            PerformSplit(parts, part);
+                        }
+
+                        break;
                 }
-                else if (path[i] == ']')
-                {
-                    // Brackets do not get stripped
-                    part.Append(path[i]);
 
-                    // Break out of the bracket split
-                    bracket = false;
-                }
-
-                // Split on . if we're not in a bracket or if we're at the end of string
-                if ((path[i] == '.' && !bracket) || i == path.Length - 1)
+                // Cover our end of string edgecase
+                if (i == path.Length - 1)
                 {
-                    parts.Enqueue(part.ToString());
-                    part.Clear();
+                    PerformSplit(parts, part);
                 }
             }
 
