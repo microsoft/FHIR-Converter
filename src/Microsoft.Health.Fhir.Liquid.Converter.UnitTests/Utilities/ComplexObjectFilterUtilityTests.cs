@@ -32,6 +32,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
                 new TestCase(testData, "upgrades.bonemarrow.system", "http://illuminated.party", testData),
                 new TestCase(testData, "friends[0].parents[1].tags[]", "magna", new object[] { testData[6] }),
                 new TestCase(testData, "friends[0].parents[1].name", "Harry Potter", new object[] { }),
+                new TestCase(testData, "friends[0].parents[1].tags[]", null, testData),
             };
 
             foreach (TestCase testCase in tests)
