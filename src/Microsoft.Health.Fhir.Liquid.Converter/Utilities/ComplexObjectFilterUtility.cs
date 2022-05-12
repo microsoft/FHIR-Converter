@@ -149,8 +149,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                     // Begin a bracket split
                     bracket = true;
                 }
-
-                if (path[i] == ']')
+                else if (path[i] == ']')
                 {
                     // Brackets do not get stripped
                     part.Append(path[i]);
