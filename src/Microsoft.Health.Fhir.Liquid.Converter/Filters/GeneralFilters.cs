@@ -21,7 +21,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     {
         public static string Debug(Context context, string property)
         {
-            // Console.WriteLine(test);
             foreach (var x in context.Environments) {
                 foreach (KeyValuePair<string, object> e in x) {
                     Console.WriteLine("Key: " + e.Key);

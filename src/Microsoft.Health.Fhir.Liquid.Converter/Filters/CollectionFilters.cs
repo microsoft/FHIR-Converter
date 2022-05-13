@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -62,6 +63,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
 
             return null;
+        }
+
+        public static object SliceArray(object[] input, int s, int n = 1)
+        {
+            return input?.Skip(s).Take(n).ToArray() ?? new object[0];
         }
 
         //public static object FilterByKeyWithValue(object[] input, string key, string value)
