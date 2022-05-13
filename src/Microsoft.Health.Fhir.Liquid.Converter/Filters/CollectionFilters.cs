@@ -67,15 +67,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static object SliceArray(object[] input, int s, int n = 1)
         {
-            if (input != null)
-            {
-                if (input.Count() > s + n)
-                {
-                    return input.Skip(s).Take(n);
-                }
-            }
-
-            return null;
+            return input?.Skip(s).Take(n).ToArray() ?? new object[0];
         }
 
         //public static object FilterByKeyWithValue(object[] input, string key, string value)
