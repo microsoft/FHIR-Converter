@@ -105,16 +105,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             // Our key is referencing an object property
             else
             {
-                if (input is Dictionary<string, object> inputObject)
-                {
-                    if (inputObject.ContainsKey(key))
-                    {
-                        // Recurse
-                        return ObjHasValueAtPath(inputObject[key], path, value);
-                    }
-                }
-
-                return false;
+                return input is Dictionary<string, object> inputObject &&
+                    inputObject.ContainsKey(key) &&
+                    ObjHasValueAtPath(inputObject[key], path, value);
             }
         }
 
