@@ -43,28 +43,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
             }
         }
 
-        [Fact]
-        public void GivenPath_WhenSplitToParts_CorrectPartsShouldBeReturned()
+        [Theory]
+        [InlineData("test.path[].to[5].value", new string[] { "test", "path", "[]", "to", "[5]", "value" })]
+        [InlineData("test",                    new string[] { "test" })]
+        [InlineData("test.path",               new string[] { "test", "path" })]
+        [InlineData("[].[5].test.path[5]",     new string[] { "[]", "[5]", "test", "path", "[5]" })]
+        [InlineData("[5]",                     new string[] { "[5]" })]
+        [InlineData("[]",                      new string[] { "[]" })]
+        [InlineData("[559]",                   new string[] { "[559]" })]
+        public void GivenPath_WhenSplitToParts_CorrectPartsShouldBeReturned(string path, string[] expected)
         {
-            var testData = new Dictionary<string, string[]>
-            {
-                // Path                      Expected parts
-                { "test.path[].to[5].value", new string[] { "test", "path", "[]", "to", "[5]", "value" } },
-                { "test",                    new string[] { "test" } },
-                { "test.path",               new string[] { "test", "path" } },
-                { "[].[5].test.path[5]",     new string[] { "[]", "[5]", "test", "path", "[5]" } },
-                { "[5]",                     new string[] { "[5]" } },
-                { "[]",                      new string[] { "[]" } },
-                { "[559]",                   new string[] { "[559]" } },
-            };
-
-            foreach (KeyValuePair<string, string[]> data in testData)
-            {
-                var path = data.Key;
-                var expected = new Queue<string>(data.Value);
-                var actual = ComplexObjectFilterUtility.SplitObjectPath(path);
-                Assert.Equal(expected, actual);
-            }
+            var expectedQueue = new Queue<string>(expected);
+            var actual = ComplexObjectFilterUtility.SplitObjectPath(path);
+            Assert.Equal(expectedQueue, actual);
         }
     }
 }
