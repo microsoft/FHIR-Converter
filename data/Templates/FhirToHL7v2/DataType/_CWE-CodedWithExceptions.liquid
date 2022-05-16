@@ -1,0 +1,38 @@
+{% comment -%}
+https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CWE
+2106-3^White^HL70005~2028-9^Asian^HL70005
+{% endcomment -%}
+{%- if code -%}
+    {%- assign codes = code | compact -%}
+{%- endif -%}
+{% capture repeats -%}
+{%- for code in codes -%}
+{% capture CWE -%}
+{% comment %} 1  Identifier                                {% endcomment %}{{ code.valueCoding.code }}^
+{% comment %} 2  Text                                      {% endcomment %}{{ code.valueCoding.display }}^
+{% comment %} 3  Name Of Coding System                     {% endcomment %}{% if codingSystem %}{{ codingSystem }}{% endif %}^
+{% comment %} 4  Alternate Identifier                      {% endcomment %}
+{% comment %} 5  Alternate Text                            {% endcomment %}
+{% comment %} 6  Name Of Alternate Coding System           {% endcomment %}
+{% comment %} 7  Coding System Version Id                  {% endcomment %}
+{% comment %} 8  Alternate Coding System Version Id        {% endcomment %}
+{% comment %} 9  Original Text                             {% endcomment %}
+{% comment %} 10 Second Alternate Identifier               {% endcomment %}
+{% comment %} 11 Second Alternate Text                     {% endcomment %}
+{% comment %} 12 Name Of Second Alternate Coding System    {% endcomment %}
+{% comment %} 13 Second Alternate Coding System Version Id {% endcomment %}
+{% comment %} 14 Coding System Oid                         {% endcomment %}
+{% comment %} 15 Value Set Oid                             {% endcomment %}
+{% comment %} 16 Value Set Version Id                      {% endcomment %}
+{% comment %} 17 Alternate Coding System Oid               {% endcomment %}
+{% comment %} 18 Alternate Value Set Oid                   {% endcomment %}
+{% comment %} 19 Alternate Value Set Version Id            {% endcomment %}
+{% comment %} 20 Second Alternate Coding System Oid        {% endcomment %}
+{% comment %} 21 Second Alternate Value Set Oid            {% endcomment %}
+{% comment %} 22 Second Alternate Value Set Version Id     {% endcomment %}
+{% endcapture -%}
+{{ CWE | strip_newlines | remove_char_from_end: '^' }}
+~
+{%- endfor -%}
+{% endcapture -%}
+{{ repeats | strip_newlines | remove_char_from_end: '~' -}}

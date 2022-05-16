@@ -67,6 +67,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return null;
         }
 
+        public static object SliceArray(object[] input, int s, int n = 1)
+        {
+            return input?.Skip(s).Take(n).ToArray() ?? new object[0];
+        }
+
         public static object[] Select(object[] input, string path, string value = null)
         {
             return ComplexObjectFilterUtility.Select(input, path, value);
