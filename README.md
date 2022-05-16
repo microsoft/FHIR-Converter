@@ -12,16 +12,18 @@ The following table shows the differences between two converter engines:
 | ----- | ----- | ----- |
 | **Template language** | [Handlebars](https://handlebarsjs.com/) | [Liquid](https://shopify.github.io/liquid/) |
 | **Template authoring tool** | Self-hosted web-app | [VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-health-fhir-converter)|
-| **Supported conversions** | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR <br> 3. JSON to FHIR <br> 4. FHIR STU3 to FHIR R4 **(new Command Line Tool!)** |
+| **Supported conversions** | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR <br> 3. JSON to FHIR <br> 4. FHIR STU3 to FHIR R4 **(new!)** |
 | **Available as** | 1. Self-deployed web service <br> (on-prem or on Azure)| 1. Command line tool <br> 2. $convert-data operation in  [FHIR Server for Azure (OSS)](https://github.com/microsoft/fhir-server/blob/main/docs/ConvertDataOperation.md) <br> 3. $convert-data operation in both [Azure Health Data Services](https://docs.microsoft.com/en-us/azure/healthcare-apis/fhir/convert-data) and [Azure API for FHIR](https://docs.microsoft.com/azure/healthcare-apis/azure-api-for-fhir/convert-data)|
 
 ⚠ Rest of this document is about the Liquid converter. For the Handlebars converter, please refer to the [Handlebars branch](https://github.com/microsoft/FHIR-Converter/tree/handlebars).
 
-Currently, FHIR Converter supports four types of conversions, **HL7v2 to FHIR**, **C-CDA to FHIR**, **JSON to FHIR** and **FHIR STU3 to FHIR R4**. The converter uses templates that define mappings between these different data formats. The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/Filters-and-Tags.md).
+Currently, FHIR Converter supports four types of conversions, **HL7v2 to FHIR**, **C-CDA to FHIR**, **JSON to FHIR** and **FHIR STU3 to R4**. The converter uses templates that define mappings between these different data formats. The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/Filters-and-Tags.md).
 
 The converter comes with a few ready-to-use templates. If needed, you can create a new template, or modify existing templates to meet your specific conversion requirements.
 
-FHIR Converter with DotLiquid engine transforms the input data into FHIR bundles that are persisted to a FHIR server. The converter is integrated into both [Azure Health Data Services](https://azure.microsoft.com/en-us/services/health-data-services/#overview) and [Azure API for FHIR](https://docs.microsoft.com/azure/healthcare-apis/azure-api-for-fhir/), as well as in the open-source [FHIR Server](https://github.com/microsoft/fhir-server) as a [`$convert-data` operation](#using-convert-data-in-fhir-server). It is also available as a [command line tool](#using-command-line-tool).
+FHIR Converter with DotLiquid engine transforms the input data into FHIR bundles that are persisted to a FHIR server. The converter is integrated into both [Azure Health Data Services](https://azure.microsoft.com/en-us/services/health-data-services/#overview) and [Azure API for FHIR](https://docs.microsoft.com/azure/healthcare-apis/azure-api-for-fhir/), as well as in the open-source [FHIR Server](https://github.com/microsoft/fhir-server) as a [`$convert-data`] #using-convert-data-in-fhir-server) operation. It is also available as a [command line tool](#using-command-line-tool).
+
+NOTE: **FHIR STU3 to R4** conversion is only available in the open-source [FHIR Server](https://github.com/microsoft/fhir-server) as a [`$convert-data`](#using-convert-data-in-fhir-server) operation. It is also available as a [command line tool](#using-command-line-tool).
 
 ## Using $convert-data in FHIR server
 
@@ -123,6 +125,8 @@ For **HL7v2 to FHIR conversion**, [HL7v2 DotLiquid templates](data/Templates/Hl7
 For **C-CDA to FHIR conversion**, [C-CDA DotLiquid templates](data/Templates/Ccda/Utils) generate FHIR resource IDs in two ways: 1) [ID generation template](data/Templates/Ccda/Utils/_GenerateId.liquid) helps generate Patient ID and Practitioner ID; 2) the resource IDs for other resources are generated from the resource object directly.
 
 For **JSON to FHIR conversion**, there is no standardized JSON input message types unlike HL7v2 messages or C-CDA documents. Therefore, instead of default templates we provide you with some sample JSON DotLiquid templates that you can use as a starting guide for your custom JSON conversion templates. You can decide how to generate the resource IDs according to your own inputs, and use our sample templates as a reference.
+
+For **FHIR STU3 to R4 conversion**, the Resource ID from STU3 resource is copied over to corresponding R4 resource.
 
 The Converter introduces a concept of "base resource/base ID". Base resources are independent entities, like Patient, Organization, Device, etc, whose IDs are defined as base ID. Base IDs could be used to generate IDs for other resources that relate to them. It helps enrich the input for hash and thus reduce ID collision.
 For example, a Patient ID is used as part of hash input for an AllergyIntolerance ID, as this resource is closely related with a specific patient.
