@@ -14,7 +14,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
     {
         private static readonly char[] Delimeters = new[] { '.', '[', ']' };
 
-        public static object[] Select(object[] input, string path, string value = null)
+        public static object[] Select(object[] input, string path, string[] values)
         {
             // Split path on . and [], [5]
             Queue<string> pathKeys = SplitObjectPath(path);
@@ -25,7 +25,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             {
                 // Clone the queue to scope the path at this level for each loop
                 var localPath = new Queue<string>(pathKeys);
-                if (ObjHasValueAtPath(obj, localPath, value))
+                if (ObjHasValueAtPath(obj, localPath, values))
                 {
                     // This object has our value at the path so add it to our return
                     ret.Add(obj);
@@ -35,13 +35,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             return ret.ToArray<object>();
         }
 
-        public static bool ObjHasValueAtPath(object input, Queue<string> path, string value)
+        public static bool ObjHasValueAtPath(object input, Queue<string> path, string[] values)
         {
             // If we're at the end of the path then check the value
             if (path.Count == 0)
             {
-                // Return true if value is null and an equality check otherwise
-                return value == null || input.ToString().Equals(value);
+                // Return true if value is empty and check if input is in values otherwise
+                return values.Count() == 0 || values.Contains(input.ToString());
             }
 
             // Get our key name
@@ -60,14 +60,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                     {
                         if (path.Count == 0)
                         {
-                            return (value == null) || inputArray.Contains(value);
+                            var test = values.Intersect(inputArray);
+                            return values.Count() == 0 || values.Intersect(inputArray).Any();
                         }
 
                         foreach (object obj in inputArray)
                         {
                             // Clone the queue to scope the path at this level for each loop
                             var localPath = new Queue<string>(path);
-                            if (ObjHasValueAtPath(obj, localPath, value))
+                            if (ObjHasValueAtPath(obj, localPath, values))
                             {
                                 return true;
                             }
@@ -86,7 +87,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                         if (index >= 0 && inputArray.Count() > index)
                         {
                             // Recurse
-                            return ObjHasValueAtPath(inputArray[index], path, value);
+                            return ObjHasValueAtPath(inputArray[index], path, values);
                         }
                         else
                         {
@@ -107,7 +108,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             {
                 return input is Dictionary<string, object> inputObject &&
                     inputObject.ContainsKey(key) &&
-                    ObjHasValueAtPath(inputObject[key], path, value);
+                    ObjHasValueAtPath(inputObject[key], path, values);
             }
         }
 

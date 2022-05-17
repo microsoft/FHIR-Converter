@@ -72,57 +72,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return input?.Skip(s).Take(n).ToArray() ?? new object[0];
         }
 
-        public static object[] Select(object[] input, string path, string value = null)
+        public static object[] SelectOr(object[] input, string path, string[] values)
         {
-            return ComplexObjectFilterUtility.Select(input, path, value);
+            return ComplexObjectFilterUtility.Select(input, path, values);
+        }
+
+        public static object[] Select(object[] input, string path, string values)
+        {
+            return ComplexObjectFilterUtility.Select(input, path, new string[] { values });
         }
 
         public static object FilterByKeyWithValue(object[] input, string key, string needle)
         {
-            string[] keys;
-            if (key.Contains('.'))
-            {
-                keys = key.Split('.');
-            } else {
-                keys = new string[] { key };
-            }
-
-            List<Dictionary<string, object>> ret = new List<Dictionary<string, object>>();
-            foreach (Dictionary<string, object> resource in input)
-            {
-                string value;
-
-                var res = resource;
-                for (int k = 0; k < keys.Count() - 1; k++)
-                {
-                    var cKey = keys[k];
-                    if (res.ContainsKey(cKey))
-                    {
-                        res = (Dictionary<string, object>)res[cKey];
-                    }
-                    else
-                    {
-                        // TODO: x_x skip resource loop
-                    }
-                }
-
-                key = keys.Last();
-                if (res.ContainsKey(key))
-                {
-                    value = (string)res[key];
-                }
-                else
-                {
-                    continue;
-                }
-
-                if (needle == value)
-                {
-                    ret.Add(resource);
-                }
-            }
-
-            return ret.ToArray<object>();
+            return "np";
         }
     }
 }

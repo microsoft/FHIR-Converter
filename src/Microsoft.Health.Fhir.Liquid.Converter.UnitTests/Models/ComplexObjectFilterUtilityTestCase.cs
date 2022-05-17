@@ -9,14 +9,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Models
     {
         public object[] Input;
         public string Path;
-        public string Value;
+        public string[] Values;
         public object[] Expected;
 
-        public ComplexObjectFilterUtilityTestCase(object[] input, string path, string value, object[] expected)
+        public ComplexObjectFilterUtilityTestCase(object[] input, string path, string[] values, object[] expected)
         {
             Input = input;
             Path = path;
-            Value = value;
+            Values = values;
             Expected = expected;
         }
     }

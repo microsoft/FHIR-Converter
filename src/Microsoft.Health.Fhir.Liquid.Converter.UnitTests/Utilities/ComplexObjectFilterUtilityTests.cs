@@ -23,22 +23,25 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
             var testData = (object[])JToken.Parse(testContent).ToObject();
             var tests = new TestCase[]
             {
-                new TestCase(testData, "age", "27", new object[] { testData[0] }),
-                new TestCase(testData, "upgrades.vision.system", "http://infrared.org/other", new object[] { testData[6] }),
-                new TestCase(testData, "friends[0].name", "Holland Ochoa", new object[] { testData[3] }),
-                new TestCase(testData, "friends[0].parents[1].tags[].nothere", null, new object[] { }),
-                new TestCase(testData, "friends[].parents[].tags[2]", "ex", new object[] { testData[3] }),
-                new TestCase(testData, "friends[].parents[].tags[2]", "hex", new object[] { }),
-                new TestCase(testData, "upgrades.bonemarrow.system", "http://illuminated.party", testData),
-                new TestCase(testData, "friends[0].parents[1].tags[]", "magna", new object[] { testData[6] }),
-                new TestCase(testData, "friends[0].parents[1].name", "Harry Potter", new object[] { }),
-                new TestCase(testData, "friends[0].parents[1].tags[]", null, testData),
+                new TestCase(testData, "age", new string[] { "27" }, new object[] { testData[0] }),
+                new TestCase(testData, "upgrades.vision.system", new string[] { "http://infrared.org/other" }, new object[] { testData[6] }),
+                new TestCase(testData, "friends[0].name", new string[] { "Holland Ochoa" }, new object[] { testData[3] }),
+                new TestCase(testData, "friends[0].parents[1].tags[].nothere", new string[] { }, new object[] { }),
+                new TestCase(testData, "friends[].parents[].tags[2]", new string[] { "ex" }, new object[] { testData[3] }),
+                new TestCase(testData, "friends[].parents[].tags[2]", new string[] { "hex" }, new object[] { }),
+                new TestCase(testData, "upgrades.bonemarrow.system", new string[] { "http://illuminated.party" }, testData),
+                new TestCase(testData, "friends[0].parents[1].tags[]", new string[] { "magna" }, new object[] { testData[6] }),
+                new TestCase(testData, "friends[0].parents[1].name", new string[] { "Harry Potter" }, new object[] { }),
+                new TestCase(testData, "friends[0].parents[1].tags[]", new string[] { }, testData),
+                new TestCase(testData, "age", new string[] { "27" }, new object[] { testData[0] }),
+                new TestCase(testData, "age", new string[] { "27", "40" }, new object[] { testData[0], testData[1] }),
+                new TestCase(testData, "friends[0].parents[0].tags[]", new string[] { "enim", "quis" }, new object[] { testData[0], testData[1], testData[3], testData[6] }),
             };
 
             foreach (TestCase testCase in tests)
             {
                 var expected = testCase.Expected;
-                var actualData = ComplexObjectFilterUtility.Select(testCase.Input, testCase.Path, testCase.Value);
+                var actualData = ComplexObjectFilterUtility.Select(testCase.Input, testCase.Path, testCase.Values);
                 Assert.Equal(expected, actualData);
             }
         }
