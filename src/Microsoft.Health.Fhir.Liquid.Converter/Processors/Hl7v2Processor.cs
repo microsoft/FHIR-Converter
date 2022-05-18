@@ -42,7 +42,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             return context;
         }
 
-        protected override void CreateTraceInfo(object data, TraceInfo traceInfo)
+        protected override void CreateTraceInfo(object data, Context context, TraceInfo traceInfo)
         {
             if (traceInfo is Hl7v2TraceInfo hl7v2TraceInfo)
             {

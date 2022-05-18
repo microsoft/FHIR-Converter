@@ -54,7 +54,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             return context;
         }
 
-        protected virtual void CreateTraceInfo(object data, TraceInfo traceInfo)
+        protected virtual void CreateTraceInfo(object data, Context context, TraceInfo traceInfo)
         {
         }
 
@@ -80,7 +80,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             var context = CreateContext(templateProvider, dictionary);
             var rawResult = RenderTemplates(template, context);
             var result = PostProcessor.Process(rawResult);
-            CreateTraceInfo(data, traceInfo);
+            CreateTraceInfo(data, context, traceInfo);
 
             return result.ToString(Formatting.Indented);
         }

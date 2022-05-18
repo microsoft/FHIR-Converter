@@ -33,7 +33,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
         public string ReadTemplateFile(Context context, string templateName)
         {
-            throw new NotImplementedException();
+            var templatePath = Path.Join(_templateDirectory, templateName);
+            return File.Exists(templatePath) ? File.ReadAllText(templatePath) : null;
         }
 
         public Template GetTemplate(Context context, string templateName)
