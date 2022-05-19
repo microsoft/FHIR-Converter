@@ -97,13 +97,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to The json schema file is invalid..
+        ///   Looks up a localized string similar to The JSON content file is invalid..
         /// </summary>
-        internal static string InvalidJsonSchema
+        internal static string InvalidJsonContent
         {
             get
             {
-                return ResourceManager.GetString("InvalidJsonSchema", resourceCulture);
+                return ResourceManager.GetString("InvalidJsonContent", resourceCulture);
             }
         }
 

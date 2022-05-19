@@ -14,6 +14,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
@@ -23,7 +24,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
         private static readonly Regex FormatRegex = new Regex(@"(\\|/)_?");
         private const string TemplateFileExtension = ".liquid";
         private const string JsonFileExtension = ".json";
-        private const string MetadataPath = "metadata.json";
 
         // Register "evaluate" tag in before Template.Parse
         static TemplateUtility()
@@ -45,12 +45,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             {
                 var formattedEntryKey = FormatRegex.Replace(entry.Key, "/");
 
-                // Ignore metadata.json
-                if (string.Equals(formattedEntryKey, MetadataPath, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    continue;
-                }
-
                 if (string.Equals(formattedEntryKey, "CodeSystem/CodeSystem.json", StringComparison.InvariantCultureIgnoreCase))
                 {
                     parsedTemplates["CodeSystem/CodeSystem"] = ParseCodeMapping(entry.Value);
@@ -66,7 +60,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                 }
                 else if (string.Equals(Path.GetExtension(formattedEntryKey), JsonFileExtension, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    parsedTemplates[formattedEntryKey] = ParseJSchemaTemplate(entry.Value);
+                    parsedTemplates[formattedEntryKey] = ParseJsonContentTemplate(entry.Value);
                 }
             }
 
@@ -115,7 +109,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             }
         }
 
-        public static Template ParseJSchemaTemplate(string content)
+        public static Template ParseJsonContentTemplate(string content)
         {
             if (content == null)
             {
@@ -125,12 +119,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             try
             {
                 var template = Template.Parse(string.Empty);
-                template.Root = new JSchemaDocument(new List<JSchema>() { JSchema.Parse(content) });
+                template.Root = new JsonContentDocument(new List<JObject>() { JObject.Parse(content) });
                 return template;
             }
             catch (JsonException ex)
             {
-                throw new TemplateLoadException(FhirConverterErrorCode.InvalidJsonSchema, Resources.InvalidJsonSchema, ex);
+                throw new TemplateLoadException(FhirConverterErrorCode.InvalidJsonContent, Resources.InvalidJsonContent, ex);
             }
         }
     }

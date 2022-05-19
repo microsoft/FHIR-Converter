@@ -70,9 +70,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 template = TemplateUtility.ParseCodeMapping(templateContent);
                 key = $"{templateName}/{templateName}";
             }
-            else if (IsJSchemaTemplate(templateName))
+            else if (IsJsonContentTemplate(templateName))
             {
-                template = TemplateUtility.ParseJSchemaTemplate(templateContent);
+                template = TemplateUtility.ParseJsonContentTemplate(templateContent);
                 key = templateName;
             }
             else
@@ -108,7 +108,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             var pathSegments = templateName.Split(Path.AltDirectorySeparatorChar);
 
             // JSchema templates
-            if (IsJSchemaTemplate(templateName))
+            if (IsJsonContentTemplate(templateName))
             {
                 return pathSegments.Aggregate(result, Path.Join);
             }
@@ -131,7 +131,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                    string.Equals("ValueSet/ValueSet", templateName, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        private static bool IsJSchemaTemplate(string templateName)
+        private static bool IsJsonContentTemplate(string templateName)
         {
             return string.Equals(Path.GetExtension(templateName), ".json", StringComparison.InvariantCultureIgnoreCase);
         }

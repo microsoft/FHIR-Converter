@@ -82,8 +82,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public static IEnumerable<object[]> GetValidImageInfoWithTag()
         {
-            yield return new object[] { new List<int> { 838 }, "templatetest", "onelayer" };
-            yield return new object[] { new List<int> { 767, 838 }, "templatetest", "multilayers" };
+            yield return new object[] { new List<int> { 839 }, "templatetest", "onelayer" };
+            yield return new object[] { new List<int> { 768, 839 }, "templatetest", "multilayers" };
         }
 
         public static IEnumerable<object[]> GetHl7v2DataAndEntryTemplate()
@@ -347,8 +347,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
             Assert.Single(templateCollection);
 
-            // metadata.json will not be returned as templates.
-            Assert.Equal(Directory.GetFiles(Path.Join(_templateDirectory, expectedTemplatesFolder), "*", SearchOption.AllDirectories).Length - 1, templateCollection.First().Count());
+            Assert.Equal(Directory.GetFiles(Path.Join(_templateDirectory, expectedTemplatesFolder), "*", SearchOption.AllDirectories).Length, templateCollection.First().Count());
         }
 
         // Conversion results of DefaultTemplates.tar.gz and default template folder should be the same.

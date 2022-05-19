@@ -87,13 +87,21 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
             }
 
-            JSchemaDocument jSchemaDocument = fileSystem.GetTemplate(_schemaFileName)?.Root as JSchemaDocument;
-            if (jSchemaDocument == null || jSchemaDocument.NodeList.Count < 1)
+            JsonContentDocument jSchemaDocument = fileSystem.GetTemplate(_schemaFileName)?.Root as JsonContentDocument;
+            if (jSchemaDocument == null || jSchemaDocument.NodeList.Count == 0)
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, _schemaFileName));
             }
 
-            return jSchemaDocument.NodeList[0] as JSchema;
+            JObject schemaObject = jSchemaDocument.NodeList[0] as JObject;
+            try
+            {
+                return JSchema.Parse(schemaObject.ToString());
+            }
+            catch (JsonException ex)
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidValidateSchema, Resources.TemplateRenderingError, ex);
+            }
         }
     }
 }
