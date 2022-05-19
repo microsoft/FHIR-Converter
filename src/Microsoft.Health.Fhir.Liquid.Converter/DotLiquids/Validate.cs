@@ -78,10 +78,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
         private JSchema LoadValidateSchema(Context context)
         {
-            IFileSystem fileSystem = context.Registers["file_system"] as IFileSystem ?? Template.FileSystem;
-            string schemaContent = fileSystem.ReadTemplateFile(context, _schemaFileName);
+            var fileSystem = context.Registers["file_system"] as IFhirConverterTemplateFileSystem;
 
-            return JSchema.Parse(schemaContent);
+            if (fileSystem == null)
+            {
+                throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
+            }
+
+            JSchemaDocument jSchemaDocument = fileSystem.GetTemplate(_schemaFileName)?.Root as JSchemaDocument;
+            if (jSchemaDocument == null || jSchemaDocument.NodeList.Count < 1)
+            {
+                throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, _schemaFileName));
+            }
+
+            return jSchemaDocument.NodeList[0] as JSchema;
         }
     }
 }

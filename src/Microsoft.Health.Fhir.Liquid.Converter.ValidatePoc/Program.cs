@@ -18,46 +18,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.ValidatePoc
     {
         static void Main(string[] args)
         {
-            ExecuteWithMemorySystem();
-        }
-
-        private static void ExecuteWithLocalSystem()
-        {
             string templateDirectory = @".\data\Templates";
-            string rootTemplate = "ExamplePatient";
-            // Template:
-            /*
-              {% validate "ExamplePatientSchema.json" -%}
-              {
-                  "resourceType": "{{ msg.resourceType }}",
-                  "id": "{{ msg.id }}"
-              }
-              {% endvalidate -%}
-             */
-
-            // Schema:
-            /*
-             {
-              "title": "Patient customized schema",
-              "type": "object",
-              "properties": {
-                "resourceType": { "type": "string" },
-                "id": { "type": "string" }
-              },
-              "required": [ "id" ]
-            }
-             */
+            string rootTemplate = @"ExamplePatient";
 
             string sampleDataPath = @".\data\SampleData\ExamplePatient.json";
             var inputData = File.ReadAllText(sampleDataPath);
-            // Input data:
-            /*
-            {
-              "resourceType": "Patient",
-              "id": "Patient-example"
-            }
-             */
 
+            ExecuteWithLocalSystem(rootTemplate, templateDirectory, inputData);
+            // ExecuteWithMemorySystem(rootTemplate, inputData);
+        }
+
+        private static void ExecuteWithLocalSystem(string rootTemplate, string templateDirectory, string inputData)
+        {
             var processor = new JsonProcessor();
             var templateProvider = new TemplateProvider(templateDirectory, DataType.Json);
 
@@ -73,7 +45,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.ValidatePoc
             Console.WriteLine(result);
         }
 
-        private static void ExecuteWithMemorySystem()
+        private static void ExecuteWithMemorySystem(string rootTemplate, string inputData)
         {
             var pocConfig = JsonConvert.DeserializeObject<PocConfiguration>(File.ReadAllText("config.json"));
 
@@ -85,7 +57,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.ValidatePoc
             string imageReference = string.Format("{0}/{1}:{2}", registry, templateName, tag);
 
             TemplateCollectionConfiguration collectionConfig = new TemplateCollectionConfiguration();
-            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(collectionConfig));
             
             string registryUsername = pocConfig.RegistryUsername;
             string registryPassword = pocConfig.RegistryPassword;
@@ -99,10 +70,21 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.ValidatePoc
 
             foreach (var item in templateCollection)
             {
-                Console.WriteLine(string.Join(",", item.Keys));
+                Console.WriteLine("templateCollection: " + string.Join(",", item.Keys));
             }
 
-            Console.WriteLine("aaa");
+            // Convert the input data with validate tag template
+            var processor = new JsonProcessor();
+            var traceInfo = new JsonTraceInfo();
+            var templateProvider = new TemplateProvider(templateCollection);
+            var result = processor.Convert(inputData, rootTemplate, templateProvider, traceInfo);
+
+            foreach (var validateSchema in traceInfo.ValidateSchemas)
+            {
+                Console.WriteLine(validateSchema.ToString());
+            }
+
+            Console.WriteLine(result);
         }
     }
 }

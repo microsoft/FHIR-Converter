@@ -66,7 +66,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                 }
                 else if (string.Equals(Path.GetExtension(formattedEntryKey), JsonFileExtension, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    parsedTemplates[formattedEntryKey] = ParseStringTemplate(entry.Value);
+                    parsedTemplates[formattedEntryKey] = ParseJSchemaTemplate(entry.Value);
                 }
             }
 
@@ -115,7 +115,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             }
         }
 
-        public static Template ParseStringTemplate(string content)
+        public static Template ParseJSchemaTemplate(string content)
         {
             if (content == null)
             {
@@ -125,7 +125,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             try
             {
                 var template = Template.Parse(string.Empty);
-                template.Root = new StringDocument(new List<string>() { content });
+                template.Root = new JSchemaDocument(new List<JSchema>() { JSchema.Parse(content) });
                 return template;
             }
             catch (JsonException ex)

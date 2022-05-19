@@ -33,8 +33,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
         public string ReadTemplateFile(Context context, string templateName)
         {
-            var templatePath = Path.Join(_templateDirectory, templateName);
-            return File.Exists(templatePath) ? File.ReadAllText(templatePath) : null;
+            throw new NotImplementedException();
         }
 
         public Template GetTemplate(Context context, string templateName)
@@ -63,8 +62,24 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
             // If not cached, search local file system
             var templateContent = ReadTemplateFile(templateName);
-            var template = IsCodeMappingTemplate(templateName) ? TemplateUtility.ParseCodeMapping(templateContent) : TemplateUtility.ParseTemplate(templateName, templateContent);
-            var key = IsCodeMappingTemplate(templateName) ? $"{templateName}/{templateName}" : templateName;
+
+            string key;
+            Template template;
+            if (IsCodeMappingTemplate(templateName))
+            {
+                template = TemplateUtility.ParseCodeMapping(templateContent);
+                key = $"{templateName}/{templateName}";
+            }
+            else if (IsJSchemaTemplate(templateName))
+            {
+                template = TemplateUtility.ParseJSchemaTemplate(templateContent);
+                key = templateName;
+            }
+            else
+            {
+                template = TemplateUtility.ParseTemplate(templateName, templateContent);
+                key = templateName;
+            }
 
             if (template != null)
             {
@@ -92,6 +107,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             var result = _templateDirectory;
             var pathSegments = templateName.Split(Path.AltDirectorySeparatorChar);
 
+            // JSchema templates
+            if (IsJSchemaTemplate(templateName))
+            {
+                return pathSegments.Aggregate(result, Path.Join);
+            }
+
             // Root templates
             if (pathSegments.Length == 1)
             {
@@ -108,6 +129,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
         {
             return string.Equals("CodeSystem/CodeSystem", templateName, StringComparison.InvariantCultureIgnoreCase) ||
                    string.Equals("ValueSet/ValueSet", templateName, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static bool IsJSchemaTemplate(string templateName)
+        {
+            return string.Equals(Path.GetExtension(templateName), ".json", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
