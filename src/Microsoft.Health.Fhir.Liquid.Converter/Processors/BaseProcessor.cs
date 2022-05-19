@@ -17,13 +17,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public abstract class BaseProcessor : IFhirConverter
     {
-        private readonly ProcessorSettings _settings;
-        private const int _maxIterations = 100000;
-
         protected BaseProcessor(ProcessorSettings processorSettings = null)
         {
-            _settings = processorSettings;
+            Settings = processorSettings ?? new ProcessorSettings();
         }
+
+        public ProcessorSettings Settings { get; }
 
         protected virtual string DataKey { get; set; } = "msg";
 
@@ -38,13 +37,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load data and templates
-            var timeout = _settings?.TimeOut ?? 0;
+            var timeout = Settings?.TimeOut ?? 0;
             var context = new Context(
                 environments: new List<Hash> { Hash.FromDictionary(data) },
                 outerScope: new Hash(),
                 registers: Hash.FromDictionary(new Dictionary<string, object> { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
-                maxIterations: _maxIterations,
+                maxIterations: Settings.MaxIterations,
                 timeout: timeout,
                 formatProvider: CultureInfo.InvariantCulture);
 

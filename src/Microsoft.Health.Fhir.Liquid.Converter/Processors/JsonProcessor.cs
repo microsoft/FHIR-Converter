@@ -15,15 +15,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public class JsonProcessor : BaseProcessor
     {
-        private readonly ProcessorSettings _settings;
-        private const int _maxIterations = 100000;
-
         private readonly IDataParser _parser = new JsonDataParser();
 
         public JsonProcessor(ProcessorSettings processorSettings = null)
             : base(processorSettings)
         {
-            _settings = processorSettings;
         }
 
         public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
@@ -35,13 +31,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load data and templates
-            var timeout = _settings?.TimeOut ?? 0;
+            var timeout = Settings?.TimeOut ?? 0;
             var context = new JsonContext(
                 environments: new List<Hash> { Hash.FromDictionary(data) },
                 outerScope: new Hash(),
                 registers: Hash.FromDictionary(new Dictionary<string, object> { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
-                maxIterations: _maxIterations,
+                maxIterations: Settings.MaxIterations,
                 timeout: timeout,
                 formatProvider: CultureInfo.InvariantCulture)
             {

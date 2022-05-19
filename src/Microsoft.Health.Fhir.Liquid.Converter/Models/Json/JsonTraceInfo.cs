@@ -11,7 +11,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Json
     public class JsonTraceInfo : TraceInfo
     {
         public JsonTraceInfo()
-        { 
+        {
         }
 
         public JsonTraceInfo(List<JSchema> validateSchemas)

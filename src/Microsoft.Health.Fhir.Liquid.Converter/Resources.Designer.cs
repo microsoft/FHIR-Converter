@@ -223,7 +223,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("MergeDiffTagSyntaxError", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax Error in &apos;validate&apos; tag - Valid syntax: validate [schema]..
+        /// </summary>
+        internal static string ValidateTagSyntaxError
+        {
+            get
+            {
+                return ResourceManager.GetString("ValidateTagSyntaxError", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to MSH segment misses separators..
         /// </summary>

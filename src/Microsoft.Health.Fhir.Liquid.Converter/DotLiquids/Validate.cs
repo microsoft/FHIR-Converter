@@ -8,7 +8,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using DotLiquid;
 using DotLiquid.Exceptions;
-using DotLiquid.FileSystems;
 using DotLiquid.Util;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
@@ -37,11 +36,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
             else
             {
-                throw new SyntaxException(Resources.MergeDiffTagSyntaxError);
+                throw new SyntaxException(Resources.ValidateTagSyntaxError);
             }
 
-            // Initialize block content into variable 'Nodelist'
-            // Variable '_diffBlock' will also be initialized since they refer to the same object.
             base.Initialize(tagName, markup, tokens);
         }
 
@@ -61,24 +58,29 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 RenderAll(_validateBlock, context, writer);
             });
 
-            var validateObject = JObject.Parse(writer.ToString());
+            // Enclose content in validate tag must be a valid JSON format
+            var validateContent = writer.ToString();
+            JObject validateObject;
+            try
+            {
+                validateObject = JObject.Parse(validateContent);
+            }
+            catch (JsonException ex)
+            {
+                throw new RenderException(FhirConverterErrorCode.TemplateRenderingError, "Validate content should be JSON format: " + ex.Message);
+            }
 
-            // JsonConvert.DeserializeObject<Dictionary<string, object>>(writer.ToString());
-
-            IList<string> messages;
-            bool isValid = validateObject.IsValid(validateSchema, out messages);
-
-            if (!isValid)
+            if (!validateObject.IsValid(validateSchema, out IList<string> messages))
             {
                 throw new RenderException(FhirConverterErrorCode.InvalidValidateBlockContent, string.Join(";", messages));
             }
 
-            result.Write(JsonConvert.SerializeObject(validateObject));
+            result.Write(validateContent);
         }
 
         private JSchema LoadValidateSchema(Context context)
         {
-            var fileSystem = context.Registers["file_system"] as IFhirConverterTemplateFileSystem;
+            IFhirConverterTemplateFileSystem fileSystem = context.Registers["file_system"] as IFhirConverterTemplateFileSystem;
 
             if (fileSystem == null)
             {
