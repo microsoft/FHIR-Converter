@@ -95,7 +95,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("InvalidCodeMapping", resourceCulture);
             }
         }
-        
+
+        /// <summary>
+        ///   Looks up a localized string similar to The json schema file is invalid..
+        /// </summary>
+        internal static string InvalidJsonSchema
+        {
+            get
+            {
+                return ResourceManager.GetString("InvalidJsonSchema", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to The format of Date or DateTime is invalid: {0}..
         /// </summary>

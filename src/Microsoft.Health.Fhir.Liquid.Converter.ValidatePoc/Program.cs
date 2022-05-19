@@ -1,14 +1,27 @@
 ﻿using System;
 using System.IO;
+using System.Text;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
+using Microsoft.Health.Fhir.TemplateManagement;
+using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
+using Microsoft.Health.Fhir.TemplateManagement.Client;
+using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.ValidatePoc
 {
     class Program
     {
         static void Main(string[] args)
+        {
+            ExecuteWithMemorySystem();
+        }
+
+        private static void ExecuteWithLocalSystem()
         {
             string templateDirectory = @".\data\Templates";
             string rootTemplate = "ExamplePatient";
@@ -58,6 +71,38 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.ValidatePoc
             }
 
             Console.WriteLine(result);
+        }
+
+        private static void ExecuteWithMemorySystem()
+        {
+            var pocConfig = JsonConvert.DeserializeObject<PocConfiguration>(File.ReadAllText("config.json"));
+
+            IMemoryCache cache = new MemoryCache(new MemoryCacheOptions());
+            string registry = pocConfig.Registry;
+            string templateName = pocConfig.Template;
+            string tag = pocConfig.Tag;
+
+            string imageReference = string.Format("{0}/{1}:{2}", registry, templateName, tag);
+
+            TemplateCollectionConfiguration collectionConfig = new TemplateCollectionConfiguration();
+            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(collectionConfig));
+            
+            string registryUsername = pocConfig.RegistryUsername;
+            string registryPassword = pocConfig.RegistryPassword;
+            string token = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{registryUsername}:{registryPassword}"));
+
+            ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+
+            var client = new AcrClient(imageInfo.Registry, token);
+            var templateCollectionProvider = new TemplateCollectionProvider(imageInfo, client, cache, collectionConfig);
+            var templateCollection = templateCollectionProvider.GetTemplateCollectionAsync().Result;
+
+            foreach (var item in templateCollection)
+            {
+                Console.WriteLine(string.Join(",", item.Keys));
+            }
+
+            Console.WriteLine("aaa");
         }
     }
 }

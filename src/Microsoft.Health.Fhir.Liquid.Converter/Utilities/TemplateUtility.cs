@@ -12,7 +12,9 @@ using DotLiquid.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Schema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
 {
@@ -20,6 +22,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
     {
         private static readonly Regex FormatRegex = new Regex(@"(\\|/)_?");
         private const string TemplateFileExtension = ".liquid";
+        private const string JsonFileExtension = ".json";
+        private const string MetadataPath = "metadata.json";
 
         // Register "evaluate" tag in before Template.Parse
         static TemplateUtility()
@@ -40,6 +44,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             foreach (var entry in templates)
             {
                 var formattedEntryKey = FormatRegex.Replace(entry.Key, "/");
+
+                // Ignore metadata.json
+                if (string.Equals(formattedEntryKey, MetadataPath, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    continue;
+                }
+
                 if (string.Equals(formattedEntryKey, "CodeSystem/CodeSystem.json", StringComparison.InvariantCultureIgnoreCase))
                 {
                     parsedTemplates["CodeSystem/CodeSystem"] = ParseCodeMapping(entry.Value);
@@ -52,6 +63,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                 {
                     var templateName = formattedEntryKey.Substring(0, formattedEntryKey.LastIndexOf(TemplateFileExtension));
                     parsedTemplates[templateName] = ParseTemplate(templateName, entry.Value);
+                }
+                else if (string.Equals(Path.GetExtension(formattedEntryKey), JsonFileExtension, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    parsedTemplates[formattedEntryKey] = ParseStringTemplate(entry.Value);
                 }
             }
 
@@ -97,6 +112,25 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             catch (SyntaxException ex)
             {
                 throw new TemplateLoadException(FhirConverterErrorCode.TemplateSyntaxError, string.Format(Resources.TemplateSyntaxError, templateName, ex.Message), ex);
+            }
+        }
+
+        public static Template ParseStringTemplate(string content)
+        {
+            if (content == null)
+            {
+                return null;
+            }
+
+            try
+            {
+                var template = Template.Parse(string.Empty);
+                template.Root = new StringDocument(new List<string>() { content });
+                return template;
+            }
+            catch (JsonException ex)
+            {
+                throw new TemplateLoadException(FhirConverterErrorCode.InvalidJsonSchema, Resources.InvalidJsonSchema, ex);
             }
         }
     }

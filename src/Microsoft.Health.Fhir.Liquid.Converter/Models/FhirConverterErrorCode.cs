@@ -17,6 +17,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
         TemplateLoadingError = 1102,
         InvalidCodeMapping = 1103,
         TemplateSyntaxError = 1104,
+        InvalidJsonSchema = 1105,
 
         // DataParseException
         InputParsingError = 1201,
