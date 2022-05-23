@@ -95,18 +95,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("InvalidCodeMapping", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to The JSON content file is invalid..
-        /// </summary>
-        internal static string InvalidJsonContent
-        {
-            get
-            {
-                return ResourceManager.GetString("InvalidJsonContent", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to The format of Date or DateTime is invalid: {0}..
         /// </summary>
@@ -171,6 +160,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid JSON content : {0}..
+        /// </summary>
+        internal static string InvalidJsonContent {
+            get {
+                return ResourceManager.GetString("InvalidJsonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Content in &apos;MergeDiff&apos; block should be a json object..
         /// </summary>
         internal static string InvalidMergeDiffBlockContent {
@@ -223,18 +221,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("MergeDiffTagSyntaxError", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Syntax Error in &apos;validate&apos; tag - Valid syntax: validate [schema]..
-        /// </summary>
-        internal static string ValidateTagSyntaxError
-        {
-            get
-            {
-                return ResourceManager.GetString("ValidateTagSyntaxError", resourceCulture);
-            }
-        }
-
+        
         /// <summary>
         ///   Looks up a localized string similar to MSH segment misses separators..
         /// </summary>
@@ -367,6 +354,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         internal static string UnexpectedJsonConvertToken {
             get {
                 return ResourceManager.GetString("UnexpectedJsonConvertToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax Error in &apos;validate&apos; tag - Valid syntax: validate [schema file]..
+        /// </summary>
+        internal static string ValidateTagSyntaxError {
+            get {
+                return ResourceManager.GetString("ValidateTagSyntaxError", resourceCulture);
             }
         }
     }

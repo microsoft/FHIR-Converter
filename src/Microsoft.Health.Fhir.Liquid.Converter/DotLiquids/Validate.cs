@@ -20,7 +20,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 {
     public class Validate : Block
     {
-        private static readonly Regex Syntax = R.B(@"({0}+)\s$", DotLiquid.Liquid.QuotedFragment);
+        private static readonly Regex Syntax = R.B(@"^({0}+)\s$", DotLiquid.Liquid.QuotedFragment);
 
         private string _schemaFileName;
         private List<object> _validateBlock;

@@ -1,0 +1,7 @@
+{% validate "TestSchema.json" -%}
+// Invalid comment in validate enclose block
+{
+    "resourceType": "{{ msg.resourceType }}",
+    "id": "{{ msg.id }}"
+}
+{% endvalidate -%}

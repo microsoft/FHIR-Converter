@@ -1,0 +1,7 @@
+{% validate "TestSchema2.json" -%}
+{
+    "resourceType": "{{ msg.resourceType }}",
+    "id": "{{ msg.id }}",
+    "additionalProperty": "additionalProperty"
+}
+{% endvalidate -%}
