@@ -107,7 +107,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             var result = _templateDirectory;
             var pathSegments = templateName.Split(Path.AltDirectorySeparatorChar);
 
-            // JSchema templates
+            // JsonContent templates
             if (IsJsonContentTemplate(templateName))
             {
                 return pathSegments.Aggregate(result, Path.Join);
