@@ -22,8 +22,6 @@
 {%- endif -%}
 {%- if patient.identifier -%}
     {%- assign patientSB = patient.identifier | get_by_code: 'SB' -%}
-    {%- assign selector = 'MR|SS' | split: '|'  -%}
-    {%- assign patientIDs = patient.identifier | select_or: 'type.coding[].code', selector -%}
 {%- endif -%}
 {%- if patient.maritalStatus -%}
     {%- assign patientMaritalCode = patient.maritalStatus.coding[0].code -%}
