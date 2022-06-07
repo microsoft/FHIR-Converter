@@ -60,7 +60,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                     {
                         if (path.Count == 0)
                         {
-                            var test = values.Intersect(inputArray);
                             return values.Count() == 0 || values.Intersect(inputArray).Any();
                         }
 
@@ -106,9 +105,33 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             // Our key is referencing an object property
             else
             {
-                return input is Dictionary<string, object> inputObject &&
-                    inputObject.ContainsKey(key) &&
-                    ObjHasValueAtPath(inputObject[key], path, values);
+                if (input is Dictionary<string, object> inputObject)
+                {
+                    if (key == "*")
+                    {
+                        // This key is a wildcard so we search all keys at this level
+                        if (path.Count == 0)
+                        {
+                            return values.Count() == 0 || values.Intersect(inputObject.Values).Any();
+                        }
+
+                        foreach (object obj in inputObject.Values)
+                        {
+                            // Clone the queue to scope the path at this level for each loop
+                            var localPath = new Queue<string>(path);
+                            if (ObjHasValueAtPath(obj, localPath, values))
+                            {
+                                return true;
+                            }
+                        }
+                    } else {
+                        return inputObject.ContainsKey(key) &&
+                            ObjHasValueAtPath(inputObject[key], path, values);
+                    }
+                }
+
+                // Object is not a dictionary or wildcard search was exhausted unsuccessfully
+                return false;
             }
         }
 

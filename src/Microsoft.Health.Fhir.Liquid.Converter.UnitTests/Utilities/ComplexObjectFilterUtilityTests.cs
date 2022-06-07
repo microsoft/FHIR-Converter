@@ -34,8 +34,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
                 new TestCase(testData, "friends[0].parents[1].name", new string[] { "Harry Potter" }, new object[] { }),
                 new TestCase(testData, "friends[0].parents[1].tags[]", new string[] { }, testData),
                 new TestCase(testData, "age", new string[] { "27" }, new object[] { testData[0] }),
-                new TestCase(testData, "age", new string[] { "27", "40" }, new object[] { testData[0], testData[1] }),
-                new TestCase(testData, "friends[0].parents[0].tags[]", new string[] { "enim", "quis" }, new object[] { testData[0], testData[1], testData[3], testData[6] }),
+                new TestCase(testData, "age", new string[] { "27", "40" }, new object[] { testData[0], testData[1], testData[5] }),
+                new TestCase(testData, "upgrades.*.augmentCode", new string[] { "chameleon" }, new object[] { testData[0], testData[1], testData[4], testData[5] }),
+                new TestCase(testData, "upgrades.vision.*", new string[] { "strawberry" }, new object[] { testData[1], testData[2], testData[3], testData[5] }),
             };
 
             foreach (TestCase testCase in tests)
@@ -54,6 +55,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
         [InlineData("[5]",                     new string[] { "[5]" })]
         [InlineData("[]",                      new string[] { "[]" })]
         [InlineData("[559]",                   new string[] { "[559]" })]
+        [InlineData("data.*.hello",            new string[] { "data", "*", "hello" })]
         public void GivenPath_WhenSplitToParts_CorrectPartsShouldBeReturned(string path, string[] expected)
         {
             var expectedQueue = new Queue<string>(expected);
