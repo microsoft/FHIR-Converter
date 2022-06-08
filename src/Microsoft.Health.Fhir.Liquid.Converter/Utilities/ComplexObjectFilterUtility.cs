@@ -38,16 +38,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
 
         public static Dictionary<string, object> Filter(object input, string path, string[] values)
         {
+            // Split path on . and [], [5]
             Queue<string> pathKeys = SplitObjectPath(path);
 
             var ret = new Dictionary<string, object>();
 
-            var inputDict = (Dictionary<string, object>)input;
-
-            foreach (var obj in inputDict)
+            foreach (var obj in input as Dictionary<string, object>)
             {
-                var dict = new Dictionary<string, object>();
+                // Create a dictionary placeholder so we can reuse ObjHasValueAtPath
+                var dict = new Dictionary<string, object> { };
                 dict[obj.Key] = (object)obj.Value;
+
+                // Clone the queue to scope the path at this level for each loop
                 var localPath = new Queue<string>(pathKeys);
                 if (ObjHasValueAtPath(dict, localPath, values))
                 {
@@ -147,7 +149,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                                 return true;
                             }
                         }
-                    } else {
+                    }
+                    else
+                    {
                         return inputObject.ContainsKey(key) &&
                             ObjHasValueAtPath(inputObject[key], path, values);
                     }
