@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,6 +34,28 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             }
 
             return ret.ToArray<object>();
+        }
+
+        public static Dictionary<string, object> Filter(object input, string path, string[] values)
+        {
+            Queue<string> pathKeys = SplitObjectPath(path);
+
+            var ret = new Dictionary<string, object>();
+
+            var inputDict = (Dictionary<string, object>)input;
+
+            foreach (var obj in inputDict)
+            {
+                var dict = new Dictionary<string, object>();
+                dict[obj.Key] = (object)obj.Value;
+                var localPath = new Queue<string>(pathKeys);
+                if (ObjHasValueAtPath(dict, localPath, values))
+                {
+                    ret[obj.Key] = obj.Value;
+                }
+            }
+
+            return ret;
         }
 
         public static bool ObjHasValueAtPath(object input, Queue<string> path, string[] values)

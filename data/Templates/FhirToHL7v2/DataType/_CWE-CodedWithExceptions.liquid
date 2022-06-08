@@ -32,9 +32,10 @@ https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CWE
 {% comment %} 20 Second Alternate Coding System Oid        {% endcomment %}
 {% comment %} 21 Second Alternate Value Set Oid            {% endcomment %}
 {% comment %} 22 Second Alternate Value Set Version Id     {% endcomment %}
+{% comment %} {{ CodeMapping.Mapping['CodeSystem/Language'] | select: "*.code", code.code | keys | get_index: 0 }} {% endcomment %}
 {%- when 'HL70296' -%}
-{% comment %} Primary Language {% endcomment %}
-{% comment %} 1  Identifier                      {% endcomment %}{{ code.code }}^
+{% comment %} - Primary Language -               {% endcomment %}
+{% comment %} 1  Identifier                      {% endcomment %}{{ CodeMapping.Mapping['CodeSystem/Language'] | filter: '*.code', code.code | keys | first }}^
 {% comment %} 2  Text                            {% endcomment %}{{ code.display }}^
 {% comment %} 3  Name Of Coding System           {% endcomment %}HL70296^
 {% comment %} 4  Alternate Identifier            {% endcomment %}^

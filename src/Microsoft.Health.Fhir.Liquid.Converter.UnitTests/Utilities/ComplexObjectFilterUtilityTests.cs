@@ -37,6 +37,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
                 new TestCase(testData, "age", new string[] { "27", "40" }, new object[] { testData[0], testData[1], testData[5] }),
                 new TestCase(testData, "upgrades.*.augmentCode", new string[] { "chameleon" }, new object[] { testData[0], testData[1], testData[4], testData[5] }),
                 new TestCase(testData, "upgrades.vision.*", new string[] { "strawberry" }, new object[] { testData[1], testData[2], testData[3], testData[5] }),
+                new TestCase(testData, "*", new string[] { "+1 (935) 530-2761" }, new object[] { testData[3] }),
+                new TestCase(testData, "*.vision.augmentCode", new string[] { "strawberry" }, new object[] { testData[1], testData[2], testData[3], testData[5] }),
             };
 
             foreach (TestCase testCase in tests)

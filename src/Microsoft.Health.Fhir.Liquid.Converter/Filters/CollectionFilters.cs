@@ -72,6 +72,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return input?.Skip(s).Take(n).ToArray() ?? new object[0];
         }
 
+        public static object Keys(object input)
+        {
+            var inputObj = input as Dictionary<string, object>;
+            return inputObj.Keys;
+        }
+
         public static object[] SelectOr(object[] input, string path, string[] values)
         {
             return ComplexObjectFilterUtility.Select(input, path, values);
@@ -82,9 +88,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return ComplexObjectFilterUtility.Select(input, path, new string[] { values });
         }
 
-        public static object FilterByKeyWithValue(object[] input, string key, string needle)
+        public static Dictionary<string, object> Filter(object input, string path, string values)
         {
-            return "np";
+            return ComplexObjectFilterUtility.Filter(input, path, new string[] { values });
         }
     }
 }
