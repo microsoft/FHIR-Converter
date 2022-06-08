@@ -47,7 +47,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             {
                 // Create a dictionary placeholder so we can reuse ObjHasValueAtPath
                 var dict = new Dictionary<string, object> { };
-                dict[obj.Key] = (object)obj.Value;
+                dict[obj.Key] = obj.Value;
 
                 // Clone the queue to scope the path at this level for each loop
                 var localPath = new Queue<string>(pathKeys);

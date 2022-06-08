@@ -34,14 +34,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
-            // Load code system mapping
-            /*var context = base.CreateContext(templateProvider, data);
-            var codeMapping = templateProvider.GetTemplate("CodeSystem/CodeSystem");
-            if (codeMapping?.Root?.NodeList?.First() != null)
-            {
-                context["CodeMapping"] = codeMapping.Root.NodeList.First();
-            }*/
-
             var context = base.CreateContext(templateProvider, data);
             var codeMapping = JToken.Parse(templateProvider.GetTemplateFileSystem().ReadTemplateFile(context, "CodeSystem/CodeSystem"));
             context["CodeMapping"] = codeMapping.ToObject();
