@@ -35,7 +35,7 @@ https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CWE
 {% comment %} {{ CodeMapping.Mapping['CodeSystem/Language'] | select: "*.code", code.code | keys | get_index: 0 }} {% endcomment %}
 {%- when 'HL70296' -%}
 {% comment %} - Primary Language -               {% endcomment %}
-{% comment %} 1  Identifier                      {% endcomment %}{{ CodeMapping.Mapping['CodeSystem/Language'] | filter: '*.code', code.code | keys | first }}^
+{% comment %} 1  Identifier                      {% endcomment %}{{ CodeMapping.Mapping['CodeSystem/Language'][code.code] }}^
 {% comment %} 2  Text                            {% endcomment %}{{ code.display }}^
 {% comment %} 3  Name Of Coding System           {% endcomment %}HL70296^
 {% comment %} 4  Alternate Identifier            {% endcomment %}^
