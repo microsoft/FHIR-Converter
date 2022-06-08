@@ -74,8 +74,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static object Keys(object input)
         {
-            var inputObj = input as Dictionary<string, object>;
-            return inputObj.Keys;
+            if (input is Dictionary<string, object> inputObj)
+            {
+                return inputObj.Keys;
+            }
+
+            return new string[] { };
         }
 
         public static object[] SelectOr(object[] input, string path, string[] values)
