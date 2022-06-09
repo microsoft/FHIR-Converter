@@ -33,7 +33,7 @@ https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CX
 PATID1234^5^M11^test1&2.16.1&HCD^MR^GOOD HEALTH HOSPITAL~123456789^^^USSSA^SS
 {% endcomment -%}
 {%- if id -%}
-    {%- assign ids = id | compact -%}
+    {%- assign ids = id | to_array -%}
 {%- endif -%}
 {% capture repeats -%}
 {%- for id in ids -%}

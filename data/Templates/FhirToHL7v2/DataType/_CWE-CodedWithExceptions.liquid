@@ -3,7 +3,7 @@ https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CWE
 2106-3^White^HL70005~2028-9^Asian^HL70005
 {% endcomment -%}
 {%- if code -%}
-    {%- assign codes = code | compact -%}
+    {%- assign codes = code | to_array -%}
 {%- endif -%}
 {% capture repeats -%}
 {%- for code in codes -%}
