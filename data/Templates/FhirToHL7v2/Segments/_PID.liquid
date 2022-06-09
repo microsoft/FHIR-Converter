@@ -24,8 +24,7 @@
     {%- assign patientSB = patient.identifier | get_by_code: 'SB' -%}
 {%- endif -%}
 {%- if patient.maritalStatus -%}
-    {%- assign patientMaritalCode = patient.maritalStatus.coding[0].code -%}
-    {%- assign patientMaritalDisplay = patient.maritalStatus.coding[0].display -%}
+    {%- assign patientMaritalStatus = patient.maritalStatus.coding -%}
 {%- endif -%}
 {%- if patient.communication -%}
     {%- assign languageCodes = patient.communication[0].language.coding -%}
@@ -47,7 +46,7 @@
 {% comment %} 13 Phone Number (Home)                   {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientHomePhones %}|
 {% comment %} 14 Phone Number (Business)               {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientWorkPhones %}|
 {% comment %} 15 Primary Language                      {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: languageCodes, codingSystem: 'HL70296' %}|
-{% comment %} 16 Marital Status                        {% endcomment %}{{ patientMaritalCode }}^{{ patientMaritalDisplay }}|
+{% comment %} 16 Marital Status                        {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: patientMaritalStatus %}|
 {% comment %} 17 Religion                              {% endcomment %}{% comment %}AME{% endcomment %}|
 {% comment %} 18 Patient Account Number                {% endcomment %}{% comment %}4000776^^^AccMgr&2.4&ISO^VN^1^19241011^19241012{% endcomment %}|
 {% comment %} 19 SSN Number                            {% endcomment %}{% comment %}{{ patientSB.value }}{% endcomment %}|
