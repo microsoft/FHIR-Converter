@@ -67,6 +67,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return null;
         }
 
+        public static object Slice(string input, int offset, int length)
+        {
+            if (length == -1)
+            {
+                length = input.ToString().Length;
+            }
+
+            return DotLiquid.StandardFilters.Slice(input, offset, length);
+        }
+
         public static object SliceArray(object[] input, int s, int n = 1)
         {
             return input?.Skip(s).Take(n).ToArray() ?? new object[0];

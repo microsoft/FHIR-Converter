@@ -1,0 +1,26 @@
+{
+    "id": "{{ account.value }}",
+    "check": {
+        "digit": "",
+        "scheme": "",
+    },
+    "assigning": {
+        "authority": {
+            "namespace": "{{ org.resource.identifier[0].value }}",
+            "universal": {
+                "id": "{{ account.system | slice: 8, -1  }}",
+                "type": "{{ org.resource.identifier[1].type.coding[0].code }}"
+            }
+        },
+        "facility": "",
+        "jurisdiction": "",
+        "agency": ""
+    },
+    "type": "{{ account.type.coding[0].code }}",
+    "effective": "",
+    "expiration": "",
+    "security": {
+        "check": "",
+        "digit": ""
+    }
+}
