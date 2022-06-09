@@ -66,7 +66,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static object FromJsonString(object data)
         {
-            return JToken.Parse((string)data).ToObject();
+            return data == null ? null : JToken.Parse(data.ToString()).ToObject();
         }
 
         public static string Gzip(string data)
