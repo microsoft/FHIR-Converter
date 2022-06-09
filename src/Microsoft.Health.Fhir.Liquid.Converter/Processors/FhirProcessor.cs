@@ -7,9 +7,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DotLiquid;
+using Microsoft.Health.Fhir.Liquid.Converter.Extensions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
@@ -29,6 +31,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         }
 
         protected override string DataKey { get; set; } = "fhirData";
+
+        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
+        {
+            var context = base.CreateContext(templateProvider, data);
+            var codeMapping = JToken.Parse(templateProvider.GetTemplateFileSystem().ReadTemplateFile(context, "CodeSystem/CodeSystem"));
+            context["CodeMapping"] = codeMapping.ToObject();
+
+            return context;
+        }
 
         public static ProcessorSettings DisablePostProcessor(ProcessorSettings processorSettings)
         {

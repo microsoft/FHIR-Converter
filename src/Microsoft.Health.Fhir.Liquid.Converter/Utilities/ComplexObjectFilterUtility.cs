@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,30 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             return ret.ToArray<object>();
         }
 
+        public static Dictionary<string, object> Filter(object input, string path, string[] values)
+        {
+            // Split path on . and [], [5]
+            Queue<string> pathKeys = SplitObjectPath(path);
+
+            var ret = new Dictionary<string, object>();
+
+            foreach (var obj in input as Dictionary<string, object>)
+            {
+                // Create a dictionary placeholder so we can reuse ObjHasValueAtPath
+                var dict = new Dictionary<string, object> { };
+                dict[obj.Key] = obj.Value;
+
+                // Clone the queue to scope the path at this level for each loop
+                var localPath = new Queue<string>(pathKeys);
+                if (ObjHasValueAtPath(dict, localPath, values))
+                {
+                    ret[obj.Key] = obj.Value;
+                }
+            }
+
+            return ret;
+        }
+
         public static bool ObjHasValueAtPath(object input, Queue<string> path, string[] values)
         {
             // If we're at the end of the path then check the value
@@ -60,7 +85,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                     {
                         if (path.Count == 0)
                         {
-                            var test = values.Intersect(inputArray);
                             return values.Count() == 0 || values.Intersect(inputArray).Any();
                         }
 
@@ -104,11 +128,40 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             }
 
             // Our key is referencing an object property
+            else if (input is Dictionary<string, object> inputObject)
+            {
+                if (key == "*")
+                {
+                    // This key is a wildcard so we search all keys at this level
+                    if (path.Count == 0)
+                    {
+                        return values.Count() == 0 || values.Intersect(inputObject.Values).Any();
+                    }
+
+                    foreach (object obj in inputObject.Values)
+                    {
+                        // Clone the queue to scope the path at this level for each loop
+                        var localPath = new Queue<string>(path);
+                        if (ObjHasValueAtPath(obj, localPath, values))
+                        {
+                            return true;
+                        }
+                    }
+
+                    // wildcard search was exhausted unsuccessfully
+                    return false;
+                }
+                else
+                {
+                    return inputObject.ContainsKey(key) &&
+                        ObjHasValueAtPath(inputObject[key], path, values);
+                }
+            }
+            
+            // Object is not a dictionary
             else
             {
-                return input is Dictionary<string, object> inputObject &&
-                    inputObject.ContainsKey(key) &&
-                    ObjHasValueAtPath(inputObject[key], path, values);
+                return false;
             }
         }
 

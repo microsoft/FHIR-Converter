@@ -33,7 +33,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
         public string ReadTemplateFile(Context context, string templateName)
         {
-            throw new NotImplementedException();
+            return ReadTemplateFile(templateName);
         }
 
         public Template GetTemplate(Context context, string templateName)
