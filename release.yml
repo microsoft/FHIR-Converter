@@ -36,20 +36,24 @@ stages:
       inputs:
         dockerVersion: 17.09.0-ce
         releaseType: stable
+    - task: DotNetCoreCLI@2
+      displayName: 'publish functional tests'
+      inputs:
+        command: 'publish'
+        projects: '$(functionalTests)'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/functionalTests'
+        nobuild: false
+        publishWebProjects: false
+        zipAfterPublish: false
     - script: |
-        docker login
-        docker run --rm -d -p 5000:5000 --name registryOSX registry:2
-      displayName: start registryOSX
+        cd FhirConverterBuild/functionalTests/Microsoft.Health.Fhir.TemplateManagement.FunctionalTests/RegistryEnv/Linux
+        docker run --rm -it $(docker build -q .)
+      displayName: start registry
     - script: |
+        cd ../../../../
         chmod +x FhirConverterBuild/**/**/oras*
         dotnet test FhirConverterBuild/**/*FunctionalTests.dll
       displayName: Functional Tests
-    - task: Docker@2
-      displayName: stop registryOSX
-      condition: succeededOrFailed()
-      inputs:
-        command: stop
-        container: registryOSX
     
     #need delete files for self-hosted agent
     - task: DeleteFiles@1
