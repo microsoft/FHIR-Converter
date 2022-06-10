@@ -104,10 +104,11 @@ stages:
     
     - script: |
         cd FhirConverterBuild/functionalTests/Microsoft.Health.Fhir.TemplateManagement.FunctionalTests/RegistryEnv/Linux
+        ls
         docker run --rm -it $(docker build -q .)
       displayName: start registry
     - script: |
-        cd ../../../../
+        cd ../../../../../
         chmod +x FhirConverterBuild/**/**/oras*
         dotnet test FhirConverterBuild/**/*FunctionalTests.dll
       displayName: Functional Tests
