@@ -37,6 +37,7 @@ stages:
         dockerVersion: 17.09.0-ce
         releaseType: stable
     - script: |
+        docker login
         docker run --rm -d -p 5000:5000 --name registryOSX registry:2
       displayName: start registryOSX
     - script: |
