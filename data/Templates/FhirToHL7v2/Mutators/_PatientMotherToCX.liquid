@@ -1,0 +1,26 @@
+{
+    "id": "{{ mother.value }}",
+    "check": {
+        "digit": "",
+        "scheme": "",
+    },
+    "assigning": {
+        "authority": {
+            "namespace": "{{ org.resource.identifier[0].value }}",
+            "universal": {
+                "id": "{{ org.resource.identifier[1].value }}",
+                "type": "{{ org.resource.identifier[1].type.coding[0].code }}"
+            }
+        },
+        "facility": "",
+        "jurisdiction": "",
+        "agency": ""
+    },
+    "type": "{{ mother.type.coding[0].code }}",
+    "effective": "{{ mother.period.start }}",
+    "expiration": "{{ mother.period.end }}",
+    "security": {
+        "check": "",
+        "digit": ""
+    }
+}

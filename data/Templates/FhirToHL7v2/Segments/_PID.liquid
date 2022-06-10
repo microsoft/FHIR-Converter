@@ -15,7 +15,13 @@
         {%- assign birthDate = birthInfo.valueDateTime -%}
     {%- endif -%}
 {%- endif -%}
-{%- assign patientAddress = patient.address | slice_array: 0, 1 -%}
+{%- assign patientMother = patientRelatedPersons | select: 'resource.relationship[].coding[].code', 'MTH' | get_index: 0 -%}
+{%- assign patientMotherIdentifierCode = patientMother.resource.identifier | select: 'type.coding[].system', 'http://terminology.hl7.org/CodeSystem/v2-0203' | get_index: 0 -%}
+{%- assign patientMotherIdentifierCodeRef = patientMotherIdentifierCode.assigner.reference | slice: 13, -1 -%}
+{%- assign patientMotherOrg = patientOrganizations | select: 'resource.id', patientMotherIdentifierCodeRef | get_index: 0 -%}
+{%- evaluate patientMotherCXJson using 'Mutators/PatientMotherToCX' mother: patientMotherIdentifierCode, org: patientMotherOrg -%}
+{%- assign patientMotherCX = patientMotherCXJson | from_json_string -%}
+{%- assign patientAddress = patient.address | slice_array: 0 -%}
 {%- if patient.telecom -%}
     {%- assign patientHomePhones = patient.telecom | where: 'use', 'home' -%}
     {%- assign patientWorkPhones = patient.telecom | where: 'use', 'work' -%}
@@ -52,7 +58,7 @@
 {% comment %} 18 Patient Account Number                {% endcomment %}{% comment %}4000776^^^AccMgr&2.4&ISO^VN^1^19241011^19241012{% endcomment %}|
 {% comment %} 19 SSN Number                            {% endcomment %}{% comment %}{{ patientSB.value }}{% endcomment %}|
 {% comment %} 20 Drivers License Number                {% endcomment %}{% comment %}DLN-123^US^20010123{% endcomment %}|
-{% comment %} 21 Mother's Identifier                   {% endcomment %}{% comment %}1212121^^^NTH&rt23&HCD^AND^^19241011^19241012{% endcomment %}|
+{% comment %} 21 Mother's Identifier                   {% endcomment %}{% include 'DataType/CX-ExtendedID' id: patientMotherCX %}|
 {% comment %} 22 Ethnic Group                          {% endcomment %}{% comment %}N^NOT HISPANIC OR LATINO^HL70189{% endcomment %}|
 {% comment %} 23 Birth Place                           {% endcomment %}{% comment %}St. Francis Community Hospital of Lower South Side{% endcomment %}|
 {% comment %} 24 Multiple Birth Indicator              {% endcomment %}{% comment %}N{% endcomment %}|
