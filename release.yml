@@ -203,7 +203,7 @@ stages:
   
   - job: OSX_Functional_Test
     pool: CompassMacHosted
-    continueOnError: false
+    continueOnError: true
     steps:
     - checkout: none #skip checking out the default repository resource
     - task: DownloadBuildArtifacts@0
