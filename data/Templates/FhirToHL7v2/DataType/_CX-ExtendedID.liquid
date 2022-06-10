@@ -52,4 +52,4 @@ PATID1234^5^M11^test1&2.16.1&HCD^MR^GOOD HEALTH HOSPITAL~123456789^^^USSSA^SS
 ~
 {%- endfor -%}
 {% endcapture -%}
-
+{{ repeats | strip_newlines | remove_char_from_end: '~' | remove_char_from_end: '^' -}}

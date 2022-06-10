@@ -61,7 +61,7 @@
 {% comment %} 15 Primary Language                      {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: languageCodes, codingSystem: 'HL70296' %}|
 {% comment %} 16 Marital Status                        {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: patientMaritalStatus %}|
 {% comment %} 17 Religion                              {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: religionCodes, codingSystem: 'HL70006' %}|
-{% comment %} 18 Patient Account Number                {% endcomment %}{% comment %}4000776^^^AccMgr&2.4&ISO^VN^1^19241011^19241012{% endcomment %}|
+{% comment %} 18 Patient Account Number                {% endcomment %}{% include 'DataType/CX-ExtendedID' id: patientAccountCX %}|
 {% comment %} 19 SSN Number                            {% endcomment %}{% comment %}{{ patientSB.value }}{% endcomment %}|
 {% comment %} 20 Drivers License Number                {% endcomment %}{% comment %}DLN-123^US^20010123{% endcomment %}|
 {% comment %} 21 Mother's Identifier                   {% endcomment %}{% include 'DataType/CX-ExtendedID' id: patientMotherCX %}|
