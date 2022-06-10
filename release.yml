@@ -202,7 +202,8 @@ stages:
         container: registry
   
   - job: OSX_Functional_Test
-    pool: CompassMacHosted
+    pool:
+        vmImage: 'macOS-10.15'
     continueOnError: false
     steps:
     - checkout: none #skip checking out the default repository resource
