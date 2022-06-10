@@ -30,7 +30,7 @@ fields = []
 {{ fields | join: '^' -}}
 {%- else -%}
 {%- if name -%}
-    {%- assign names = name | compact -%}
+    {%- assign names = name | to_array -%}
 {%- endif -%}
 {% capture repeats -%}
 {%- for name in names -%}

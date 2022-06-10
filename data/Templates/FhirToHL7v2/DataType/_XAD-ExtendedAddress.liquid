@@ -22,7 +22,7 @@ or
 addresses = [address, address]
 {% endcomment -%}
 {%- if address -%}
-    {%- assign addresses = address | compact -%}
+    {%- assign addresses = address | to_array -%}
 {%- endif -%}
 {% capture repeats -%}
 {%- for address in addresses -%}

@@ -31,6 +31,11 @@
 {%- if patient.communication -%}
     {%- assign languageCodes = patient.communication[0].language.coding -%}
 {%- endif -%}
+{%- assign patientAccountId = patientAccount.identifier[0] -%}
+{%- assign patientAccountOrgReference = patientAccountId.assigner.reference | slice: 13, -1  -%}
+{%- assign patientAccountOrg = patientOrganizations | select: 'resource.id', patientAccountOrgReference | get_index: 0 -%}
+{%- evaluate patientAccountCXJson using 'Mutators/PatientAccountToCX' account: patientAccountId, org: patientAccountOrg -%}
+{%- assign patientAccountCX = patientAccountCXJson | from_json_string -%}
 {%- capture PID -%}
 {% comment %}  0 Message Type                          {% endcomment %}PID|
 {% comment %}  1 Set ID - PID                          {% endcomment %}1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
