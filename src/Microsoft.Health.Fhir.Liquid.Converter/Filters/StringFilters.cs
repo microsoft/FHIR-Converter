@@ -11,8 +11,10 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
+using Microsoft.Health.Fhir.Liquid.Converter.Extensions;
 using Microsoft.Health.Fhir.Liquid.Converter.InputProcessors;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
 {
@@ -60,6 +62,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         public static string ToJsonString(object data)
         {
             return data == null ? null : JsonConvert.SerializeObject(data, Formatting.None);
+        }
+
+        public static object FromJsonString(object data)
+        {
+            return data == null ? null : JToken.Parse(data.ToString()).ToObject();
         }
 
         public static string Gzip(string data)

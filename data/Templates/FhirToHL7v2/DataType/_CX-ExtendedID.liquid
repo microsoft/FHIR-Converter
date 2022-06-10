@@ -7,11 +7,17 @@ id = {
         "scheme": "",
     },
     "assigning": {
-        "authority": "",
+        "authority": {
+            "namespace": "",
+            "universal": {
+                "id": "",
+                "type": ""
+            }
+        },
         "facility": ""
         "jurisdiction": ""
         "agency": ""
-    }
+    },
     "type": "",
     "effective": "",
     "expiration": "",
@@ -27,18 +33,18 @@ https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CX
 PATID1234^5^M11^test1&2.16.1&HCD^MR^GOOD HEALTH HOSPITAL~123456789^^^USSSA^SS
 {% endcomment -%}
 {%- if id -%}
-    {%- assign ids = id | compact -%}
+    {%- assign ids = id | to_array -%}
 {%- endif -%}
 {% capture repeats -%}
 {%- for id in ids -%}
 {% comment %} 1  Id Number                {% endcomment %}{{ id.id }}^
 {% comment %} 2  Identifier Check Digit   {% endcomment %}{{ id.check.digit }}^
 {% comment %} 3  Check Digit Scheme       {% endcomment %}{{ id.check.scheme }}^
-{% comment %} 4  Assigning Authority      {% endcomment %}{{ id.assigning.authority }}^
+{% comment %} 4  Assigning Authority      {% endcomment %}{% include 'DataType/HD-HierarchicDesignator' input: id.assigning.authority -%}^
 {% comment %} 5  Identifier Type Code     {% endcomment %}{{ id.type }}^
 {% comment %} 6  Assigning Facility       {% endcomment %}{{ id.assigning.facility }}^
-{% comment %} 7  Effective Date           {% endcomment %}{{ id.effective }}^
-{% comment %} 8  Expiration Date          {% endcomment %}{{ id.expiration }}^
+{% comment %} 7  Effective Date           {% endcomment %}{{ id.effective | remove: "-" }}^
+{% comment %} 8  Expiration Date          {% endcomment %}{{ id.expiration | remove: "-" }}^
 {% comment %} 9  Assigning Jurisdiction   {% endcomment %}{{ id.assigning.jurisdiction }}^
 {% comment %} 10 Assigning Agency or Dept {% endcomment %}{{ id.assigning.agency }}^
 {% comment %} 11 Security Check           {% endcomment %}{{ id.security.check }}^
@@ -46,5 +52,4 @@ PATID1234^5^M11^test1&2.16.1&HCD^MR^GOOD HEALTH HOSPITAL~123456789^^^USSSA^SS
 ~
 {%- endfor -%}
 {% endcapture -%}
-{{ repeats | strip_newlines | remove_char_from_end: '~' -}}
-{%- endif -%}
+{{ repeats | strip_newlines | remove_char_from_end: '~' | remove_char_from_end: '^' -}}

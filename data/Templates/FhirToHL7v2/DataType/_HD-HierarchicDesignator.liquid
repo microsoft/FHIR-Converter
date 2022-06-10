@@ -1,0 +1,16 @@
+{% comment -%}
+Example of Input:
+input = {
+    "namespace": "",
+    "universal": {
+        "id": "",
+        "type": ""
+    }
+}
+{% endcomment -%}
+{% capture HD -%}
+{% comment %} 1 Namespace ID      {% endcomment %}{{ input.namespace }}&
+{% comment %} 2 Universal ID      {% endcomment %}{{ input.universal.id }}&
+{% comment %} 3 Universal ID Type {% endcomment %}{{ input.universal.type }}
+{% endcapture -%}
+{{ HD | strip_newlines }}
