@@ -41,6 +41,9 @@ https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CWE
 {% comment %} 4  Alternate Identifier            {% endcomment %}^
 {% comment %} 5  Alternate Text                  {% endcomment %}^
 {% comment %} 6  Name Of Alternate Coding System {% endcomment %}{{ code.version }}^
+{%- when 'HL70006' -%}
+{% comment %} - Religion -  {% endcomment %}
+{% comment %} 1  Identifier {% endcomment %}{{ CodeMapping.Mapping['CodeSystem/Religion'][code.code] }}^
 {%- else -%}
 {% comment %} 1  Identifier                                {% endcomment %}{{ code.code }}^
 {% comment %} 2  Text                                      {% endcomment %}{{ code.display }}^

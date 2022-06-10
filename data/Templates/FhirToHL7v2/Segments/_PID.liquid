@@ -8,6 +8,8 @@
     {%- if maidenInfo -%}
         {%- assign maidenNames = maidenInfo.valueString | split: '--' -%}
     {%- endif -%}
+    {%- assign patientReligions = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-religion' | get_index: 0 -%}
+    {%- assign religionCodes = patientReligions.valueCodeableConcept.coding -%}
 {%- endif -%}
 {%- if patient._birthDate -%}
 {%- assign birthInfo = patient._birthDate.extension | get_by_url: 'http://hl7.org/fhir/StructureDefinition/patient-birthTime' -%}
@@ -47,7 +49,7 @@
 {% comment %} 14 Phone Number (Business)               {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientWorkPhones %}|
 {% comment %} 15 Primary Language                      {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: languageCodes, codingSystem: 'HL70296' %}|
 {% comment %} 16 Marital Status                        {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: patientMaritalStatus %}|
-{% comment %} 17 Religion                              {% endcomment %}{% comment %}AME{% endcomment %}|
+{% comment %} 17 Religion                              {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: religionCodes, codingSystem: 'HL70006' %}|
 {% comment %} 18 Patient Account Number                {% endcomment %}{% comment %}4000776^^^AccMgr&2.4&ISO^VN^1^19241011^19241012{% endcomment %}|
 {% comment %} 19 SSN Number                            {% endcomment %}{% comment %}{{ patientSB.value }}{% endcomment %}|
 {% comment %} 20 Drivers License Number                {% endcomment %}{% comment %}DLN-123^US^20010123{% endcomment %}|
