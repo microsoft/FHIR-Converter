@@ -47,7 +47,31 @@ stages:
         projects: '$(solution)'
         arguments: '--configuration $(buildConfiguration) -p:Version=$(version)'
 
-    
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet test'
+      inputs:
+        command: test
+        projects: '$(unitTestProjects)'
+        arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+        nobuild: true
+
+    - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+      condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
+      displayName: 'component detection'
+      
+    - task: notice@0
+      condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
+      displayName: 'generate NOTICE file'
+      inputs:
+        outputformat: 'text'
+
+    - task: DownloadBuildArtifacts@0
+      condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'NOTICE.txt'
+        downloadPath: '$(Build.SourcesDirectory)/bin/notice'
 
     - task: DotNetCoreCLI@2
       displayName: 'publish bin'
@@ -86,6 +110,61 @@ stages:
         script: |
           $targetPath = '$(Build.SourcesDirectory)/data/Templates/Hl7v2/Resource/_Provenance.liquid'
           (Get-Content $targetPath).replace('TEMPLATE_VERSION_PLACEHOLDER', '$(major).$(minor).$(patch)') | Set-Content $targetPath
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2'
+        includeRootFolder: false
+        archiveType: 'tar'
+        tarCompression: 'gz'
+        archiveFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2DefaultTemplates.tar.gz'
+
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Ccda'
+        includeRootFolder: false
+        archiveType: 'tar'
+        tarCompression: 'gz'
+        archiveFile: '$(Build.SourcesDirectory)/data/Templates/CcdaDefaultTemplates.tar.gz'
+
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Json'
+        includeRootFolder: false
+        archiveType: 'tar'
+        tarCompression: 'gz'
+        archiveFile: '$(Build.SourcesDirectory)/data/Templates/JsonDefaultTemplates.tar.gz'
+
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Stu3ToR4'
+        includeRootFolder: false
+        archiveType: 'tar'
+        tarCompression: 'gz'
+        archiveFile: '$(Build.SourcesDirectory)/data/Templates/Stu3ToR4DefaultTemplates.tar.gz'
+
+    - task: CopyFiles@2
+      displayName: 'copy DefaultTemplates to artifacts'
+      inputs:
+        sourceFolder: '$(Build.SourcesDirectory)/data'
+        targetFolder: '$(Build.ArtifactStagingDirectory)/data'
+
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet pack nugets'
+      inputs:
+        command: custom
+        custom: pack
+        arguments: >
+          --configuration $(buildConfiguration)
+          --output $(Build.BinariesDirectory)/nupkgs
+          --no-build
+          -p:NuspecProperties="version=$(version)"
+    
+    - task: PublishBuildArtifacts@1
+      displayName: 'publish nuget artifacts'
+      inputs:
+        pathToPublish: '$(Build.BinariesDirectory)/nupkgs'
+        artifactName: 'nuget'
+        publishLocation: 'container'     
     
     - task: PublishBuildArtifacts@1
       displayName: 'publish artifacts'
