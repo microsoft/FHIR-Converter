@@ -69,11 +69,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static object Slice(string input, int offset, int length = 1)
         {
-            if (length == -1)
-            {
-                length = input.ToString().Length;
-            }
-
+            length = (length == -1) ? input.Length : length;
             return DotLiquid.StandardFilters.Slice(input, offset, length);
         }
 

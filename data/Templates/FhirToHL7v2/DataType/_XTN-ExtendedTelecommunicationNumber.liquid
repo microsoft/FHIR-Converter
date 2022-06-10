@@ -12,7 +12,7 @@ Example of Input:
 }
 {% endcomment -%}
 {%- if phoneNumber -%}
-    {%- assign phoneNumbers = phoneNumber | compact -%}
+    {%- assign phoneNumbers = phoneNumber | to_array -%}
 {%- endif -%}
 {% capture repeats -%}
 {%- for phoneNumber in phoneNumbers -%}

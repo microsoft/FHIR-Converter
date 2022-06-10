@@ -157,7 +157,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                         ObjHasValueAtPath(inputObject[key], path, values);
                 }
             }
-            
+
             // Object is not a dictionary
             else
             {

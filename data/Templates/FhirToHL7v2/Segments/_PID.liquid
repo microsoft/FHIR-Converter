@@ -8,6 +8,8 @@
     {%- if maidenInfo -%}
         {%- assign maidenNames = maidenInfo.valueString | split: '--' -%}
     {%- endif -%}
+    {%- assign patientReligions = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-religion' | get_index: 0 -%}
+    {%- assign religionCodes = patientReligions.valueCodeableConcept.coding -%}
 {%- endif -%}
 {%- if patient._birthDate -%}
 {%- assign birthInfo = patient._birthDate.extension | get_by_url: 'http://hl7.org/fhir/StructureDefinition/patient-birthTime' -%}
@@ -30,12 +32,16 @@
     {%- assign patientSB = patient.identifier | get_by_code: 'SB' -%}
 {%- endif -%}
 {%- if patient.maritalStatus -%}
-    {%- assign patientMaritalCode = patient.maritalStatus.coding[0].code -%}
-    {%- assign patientMaritalDisplay = patient.maritalStatus.coding[0].display -%}
+    {%- assign patientMaritalStatus = patient.maritalStatus.coding -%}
 {%- endif -%}
 {%- if patient.communication -%}
     {%- assign languageCodes = patient.communication[0].language.coding -%}
 {%- endif -%}
+{%- assign patientAccountId = patientAccount.identifier[0] -%}
+{%- assign patientAccountOrgReference = patientAccountId.assigner.reference | slice: 13, -1  -%}
+{%- assign patientAccountOrg = patientOrganizations | select: 'resource.id', patientAccountOrgReference | get_index: 0 -%}
+{%- evaluate patientAccountCXJson using 'Mutators/PatientAccountToCX' account: patientAccountId, org: patientAccountOrg -%}
+{%- assign patientAccountCX = patientAccountCXJson | from_json_string -%}
 {%- capture PID -%}
 {% comment %}  0 Message Type                          {% endcomment %}PID|
 {% comment %}  1 Set ID - PID                          {% endcomment %}1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
@@ -53,8 +59,8 @@
 {% comment %} 13 Phone Number (Home)                   {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientHomePhones %}|
 {% comment %} 14 Phone Number (Business)               {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientWorkPhones %}|
 {% comment %} 15 Primary Language                      {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: languageCodes, codingSystem: 'HL70296' %}|
-{% comment %} 16 Marital Status                        {% endcomment %}{{ patientMaritalCode }}^{{ patientMaritalDisplay }}|
-{% comment %} 17 Religion                              {% endcomment %}{% comment %}AME{% endcomment %}|
+{% comment %} 16 Marital Status                        {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: patientMaritalStatus %}|
+{% comment %} 17 Religion                              {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: religionCodes, codingSystem: 'HL70006' %}|
 {% comment %} 18 Patient Account Number                {% endcomment %}{% comment %}4000776^^^AccMgr&2.4&ISO^VN^1^19241011^19241012{% endcomment %}|
 {% comment %} 19 SSN Number                            {% endcomment %}{% comment %}{{ patientSB.value }}{% endcomment %}|
 {% comment %} 20 Drivers License Number                {% endcomment %}{% comment %}DLN-123^US^20010123{% endcomment %}|
