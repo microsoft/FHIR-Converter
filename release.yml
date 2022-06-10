@@ -147,6 +147,11 @@ stages:
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)/data'
         targetFolder: '$(Build.ArtifactStagingDirectory)/data'
+    - task: CopyFiles@2
+      displayName: 'copy Registry to artifacts'
+      inputs:
+        sourceFolder: '$(Build.SourcesDirectory)/RegistryEnv'
+        targetFolder: '$(Build.ArtifactStagingDirectory)/RegistryEnv'
 
     - task: DotNetCoreCLI@2
       displayName: 'dotnet pack nugets'
@@ -188,8 +193,8 @@ stages:
     
     - script: |
         ls
-        cd FhirConverterBuild/functionalTests/Microsoft.Health.Fhir.TemplateManagement.FunctionalTests/RegistryEnv/Linux
-        ls
+        cd FhirConverterBuild/RegistryEnv
+        cd Linux
         docker run --rm -it $(docker build -q .)
       displayName: start registry
     - script: |
