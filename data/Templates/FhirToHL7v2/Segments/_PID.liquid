@@ -42,6 +42,9 @@
 {%- assign patientAccountOrg = patientOrganizations | select: 'resource.id', patientAccountOrgReference | get_index: 0 -%}
 {%- evaluate patientAccountCXJson using 'Mutators/PatientAccountToCX' account: patientAccountId, org: patientAccountOrg -%}
 {%- assign patientAccountCX = patientAccountCXJson | from_json_string -%}
+{%- assign patientEthnicity = patient.extension | select: 'url', 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity' | get_index: 0 -%}
+{%- evaluate patientEthnicityCWEJson using 'Mutators/patientEthnicityToCWE' ethnicity: patientEthnicity -%}
+{%- assign patientEthnicityCWE = patientEthnicityCWEJson | from_json_string -%}
 {%- capture PID -%}
 {% comment %}  0 Message Type                          {% endcomment %}PID|
 {% comment %}  1 Set ID - PID                          {% endcomment %}1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
@@ -65,7 +68,7 @@
 {% comment %} 19 SSN Number                            {% endcomment %}{% comment %}{{ patientSB.value }}{% endcomment %}|
 {% comment %} 20 Drivers License Number                {% endcomment %}{% comment %}DLN-123^US^20010123{% endcomment %}|
 {% comment %} 21 Mother's Identifier                   {% endcomment %}{% include 'DataType/CX-ExtendedID' id: patientMotherCX %}|
-{% comment %} 22 Ethnic Group                          {% endcomment %}{% comment %}N^NOT HISPANIC OR LATINO^HL70189{% endcomment %}|
+{% comment %} 22 Ethnic Group                          {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' code: patientEthnicityCWE %}|
 {% comment %} 23 Birth Place                           {% endcomment %}{% comment %}St. Francis Community Hospital of Lower South Side{% endcomment %}|
 {% comment %} 24 Multiple Birth Indicator              {% endcomment %}{% comment %}N{% endcomment %}|
 {% comment %} 25 Birth Order                           {% endcomment %}{% comment %}2{% endcomment %}|

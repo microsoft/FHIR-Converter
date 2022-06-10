@@ -1,0 +1,30 @@
+{% comment %}
+Example of input:
+ethnicity = {
+    "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
+    "extension": [
+        {
+            "url": "ombCategory",
+            "valueCoding": {
+                "code": "2186-5",
+                "display": "Non Hispanic or Latino",
+                "system": "urn:oid:2.16.840.1.113883.6.238"
+            }
+        },
+        {
+            "url": "text",
+            "valueString": "Non Hispanic or Latino"
+        }
+    ]
+}
+{% endcomment %}
+{%- assign ethnicityCode = ethnicity.extension | select: 'url', 'ombCategory' | get_index: 0 -%}
+{
+    "code": "{{ CodeMapping.Mapping['CodeSystem/Ethnicity'][ethnicityCode.valueCoding.code] }}",
+    "display": "{{ ethnicityCode.valueCoding.display | upcase }}",
+    "name": "HL70189",
+    "alternate": {
+        "id": "",
+        "text": "",  
+    }
+}

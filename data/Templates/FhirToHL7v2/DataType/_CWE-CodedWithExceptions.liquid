@@ -1,4 +1,17 @@
 {% comment -%}
+Example of Input:
+code = {
+    "code": "",
+    "display": "",
+    "name": "",
+    "alternate": {
+        "id": "",
+        "text": "",  
+    }
+}
+or
+codes = [code, code]
+
 https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CWE
 2106-3^White^HL70005~2028-9^Asian^HL70005
 {% endcomment -%}
@@ -47,7 +60,7 @@ https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CWE
 {%- else -%}
 {% comment %} 1  Identifier                                {% endcomment %}{{ code.code }}^
 {% comment %} 2  Text                                      {% endcomment %}{{ code.display }}^
-{% comment %} 3  Name Of Coding System                     {% endcomment %}
+{% comment %} 3  Name Of Coding System                     {% endcomment %}{{ code.name }}
 {% comment %} 4  Alternate Identifier                      {% endcomment %}{{ code.alternateIdentifier }}^
 {% comment %} 5  Alternate Text                            {% endcomment %}{{ code.alternateText }}^
 {%- endcase -%}
