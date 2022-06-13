@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -121,6 +122,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         public static string RegexReplace(string data, string pattern, string replacement)
         {
             return Regex.Replace(data, pattern, replacement);
+        }
+
+        public static bool StartsWith(string data, string delimiter)
+        {
+            return data.StartsWith(data, ignoreCase: true, culture: CultureInfo.InvariantCulture);
         }
     }
 }

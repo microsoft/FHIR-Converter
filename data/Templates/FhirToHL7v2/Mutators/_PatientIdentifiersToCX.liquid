@@ -1,0 +1,59 @@
+{%comment%}
+TODO:
+  - map identifier.system to assigning authority
+  - map identifier.assigner.reference to assigning authority
+  - loop over each to repeat and capture?
+{%endcomment%}
+[
+{%- for id in identifiers -%}
+{%-comment-%}Reconstruct the assigning system or organization for this identifier{%-endcomment-%}
+{%- if id.assigner.reference and id.assigner.reference starts_with: "Organization/" -%}
+  {%- assign authorityNamespace = "" -%}
+  {%- assign authorityId = id.assigner.reference | split: "/" | last -%}
+  {%- assign authorityType = "GUID" -%}
+{%- elsif id.system and id.system starts_with: "urn:oid:" -%}
+  {%- assign authorityNamespace = "" -%}
+  {%- assign authorityId = id.system | remove: "urn:oid:" -%}
+  {%- assign authorityType = "ISO" -%}
+{%- elsif id.system and id.system starts_with: "urn:uuid:" -%}
+  {%- assign authorityNamespace = "" -%}
+  {%- assign authorityId = id.system | remove: "urn:uuid:" -%}
+  {%- assign authorityType = "UUID" -%}
+{%- elsif id.system and id.system starts_with: "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-" -%}
+  {%- assign authorityNamespace = "" -%}
+  {%- assign authorityId = "example" -%}
+  {%- assign authorityType = id.system | remove: "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-" -%}
+{%- elsif id.system and id.system starts_with: "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-" -%}
+  {%- assign authorityNamespace = id.system | remove: "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-" -%}
+  {%- assign authorityId = "" -%}
+  {%- assign authorityType = "" -%}
+{%- endif -%}
+
+  {
+      "id": "{{ id.value }}",
+      "check": {
+          "digit": "",
+          "scheme": "",
+      },
+      "assigning": {
+          "authority": {
+              "namespace": "{{ authorityNamespace }}",
+              "universal": {
+                  "id": "{{ authorityId }}",
+                  "type": "{{ authorityType }}"
+              }
+          },
+          "facility": "",
+          "jurisdiction": "",
+          "agency": ""
+      },
+      "type": "{{ id.type.coding[0].code }}",
+      "effective": "{{ id.period.start | strip "-" }}",
+      "expiration": "{{ id.period.end | strip "-" }}",
+      "security": {
+          "check": "",
+          "digit": ""
+      }
+  }{%- unless forloop.Last == true -%},{% endunless %}
+{%- endfor -%}
+]
