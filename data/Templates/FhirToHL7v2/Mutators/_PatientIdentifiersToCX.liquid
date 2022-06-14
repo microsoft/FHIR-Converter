@@ -1,11 +1,17 @@
 {%comment%}
-TODO:
-  - map identifier.system to assigning authority
-  - map identifier.assigner.reference to assigning authority
-  - loop over each to repeat and capture?
 {%endcomment%}
+{%- assign acceptedCodes = "MR, SS" | split: ", " -%}
+{%- capture acceptedSystemsStr -%}
+http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD,
+http://example.com/v2-to-fhir-converter/assigning-authority-local-system-USSSA,
+{%- endcapture -%}
+{%- assign acceptedSystems = acceptedSystemsStr | strip_newlines | split: "," -%}
+{%-comment-%} skip the first item that is sourced from PID-2 {%-endcomment-%}
+{%- assign filteredIds = identifiers | slice_array: 1 -%}
+{%- assign filteredIds = filteredIds | select_or: "type.coding[0].code", acceptedCodes -%}
+{%- assign filteredIds = filteredIds | select_or: "system", acceptedSystems -%}
 [
-{%- for id in identifiers -%}
+{%- for id in filteredIds -%}
 {%-comment-%}Reconstruct the assigning system or organization for this identifier{%-endcomment-%}
 {%- if id.assigner and id.assigner.reference and id.assigner.reference starts_with "Organization" -%}
   {%- assign authorityNamespace = "" -%}
