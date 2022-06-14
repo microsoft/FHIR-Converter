@@ -24,7 +24,8 @@
 {%- endif -%}
 {%- if patient.identifier -%}
     {%- assign patientSB = patient.identifier | get_by_code: 'SB' -%}
-    {%- evaluate patientIdentifiers using 'Mutators/PatientIdentifiersToCX' identifiers: patient.identifier -%}
+    {%- evaluate patientIdentifiersJson using 'Mutators/PatientIdentifiersToCX' identifiers: patient.identifier -%}
+    {%- assign patientIdentifiers = patientIdentifiersJson | from_json_string -%}
 {%- endif -%}
 {%- if patient.maritalStatus -%}
     {%- assign patientMaritalStatus = patient.maritalStatus.coding -%}

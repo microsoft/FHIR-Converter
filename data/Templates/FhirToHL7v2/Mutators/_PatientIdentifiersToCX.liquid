@@ -7,28 +7,33 @@ TODO:
 [
 {%- for id in identifiers -%}
 {%-comment-%}Reconstruct the assigning system or organization for this identifier{%-endcomment-%}
-{%- if id.assigner.reference and id.assigner.reference starts_with: "Organization/" -%}
+{%- if id.assigner and id.assigner.reference and id.assigner.reference starts_with "Organization" -%}
   {%- assign authorityNamespace = "" -%}
   {%- assign authorityId = id.assigner.reference | split: "/" | last -%}
   {%- assign authorityType = "GUID" -%}
-{%- elsif id.system and id.system starts_with: "urn:oid:" -%}
+{%- elsif id.system and id.system != "" -%}
+    {%- if id.system starts_with "urn:oid:" -%}
+        {%- assign authorityNamespace = "" -%}
+        {%- assign authorityId = id.system | remove: "urn:oid:" -%}
+        {%- assign authorityType = "ISO" -%}
+    {%- elsif id.system starts_with "urn:uuid:" -%}
+        {%- assign authorityNamespace = "" -%}
+        {%- assign authorityId = id.system | remove: "urn:uuid:" -%}
+        {%- assign authorityType = "UUID" -%}
+    {%- elsif id.system starts_with "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-" -%}
+        {%- assign authorityNamespace = "" -%}
+        {%- assign authorityId = "example" -%}
+        {%- assign authorityType = id.system | remove: "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-" -%}
+    {%- elsif id.system starts_with "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-" -%}
+        {%- assign authorityNamespace = id.system | remove: "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-" -%}
+        {%- assign authorityId = "" -%}
+        {%- assign authorityType = "" -%}
+    {%- endif -%}
+{%- else -%}
   {%- assign authorityNamespace = "" -%}
-  {%- assign authorityId = id.system | remove: "urn:oid:" -%}
-  {%- assign authorityType = "ISO" -%}
-{%- elsif id.system and id.system starts_with: "urn:uuid:" -%}
-  {%- assign authorityNamespace = "" -%}
-  {%- assign authorityId = id.system | remove: "urn:uuid:" -%}
-  {%- assign authorityType = "UUID" -%}
-{%- elsif id.system and id.system starts_with: "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-" -%}
-  {%- assign authorityNamespace = "" -%}
-  {%- assign authorityId = "example" -%}
-  {%- assign authorityType = id.system | remove: "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-" -%}
-{%- elsif id.system and id.system starts_with: "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-" -%}
-  {%- assign authorityNamespace = id.system | remove: "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-" -%}
   {%- assign authorityId = "" -%}
   {%- assign authorityType = "" -%}
 {%- endif -%}
-
   {
       "id": "{{ id.value }}",
       "check": {
@@ -48,8 +53,8 @@ TODO:
           "agency": ""
       },
       "type": "{{ id.type.coding[0].code }}",
-      "effective": "{{ id.period.start | strip "-" }}",
-      "expiration": "{{ id.period.end | strip "-" }}",
+      "effective": "{{ id.period.start | remove: "-" }}",
+      "expiration": "{{ id.period.end | remove: "-" }}",
       "security": {
           "check": "",
           "digit": ""
