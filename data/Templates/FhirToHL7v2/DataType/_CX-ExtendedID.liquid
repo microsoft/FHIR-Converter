@@ -13,11 +13,11 @@ id = {
                 "id": "",
                 "type": ""
             }
-        }
+        },
         "facility": ""
         "jurisdiction": ""
         "agency": ""
-    }
+    },
     "type": "",
     "effective": "",
     "expiration": "",
@@ -43,8 +43,8 @@ PATID1234^5^M11^test1&2.16.1&HCD^MR^GOOD HEALTH HOSPITAL~123456789^^^USSSA^SS
 {% comment %} 4  Assigning Authority      {% endcomment %}{% include 'DataType/HD-HierarchicDesignator' input: id.assigning.authority -%}^
 {% comment %} 5  Identifier Type Code     {% endcomment %}{{ id.type }}^
 {% comment %} 6  Assigning Facility       {% endcomment %}{{ id.assigning.facility }}^
-{% comment %} 7  Effective Date           {% endcomment %}{{ id.effective }}^
-{% comment %} 8  Expiration Date          {% endcomment %}{{ id.expiration }}^
+{% comment %} 7  Effective Date           {% endcomment %}{{ id.effective | remove: "-" }}^
+{% comment %} 8  Expiration Date          {% endcomment %}{{ id.expiration | remove: "-" }}^
 {% comment %} 9  Assigning Jurisdiction   {% endcomment %}{{ id.assigning.jurisdiction }}^
 {% comment %} 10 Assigning Agency or Dept {% endcomment %}{{ id.assigning.agency }}^
 {% comment %} 11 Security Check           {% endcomment %}{{ id.security.check }}^
@@ -52,4 +52,4 @@ PATID1234^5^M11^test1&2.16.1&HCD^MR^GOOD HEALTH HOSPITAL~123456789^^^USSSA^SS
 ~
 {%- endfor -%}
 {% endcapture -%}
-{{ repeats | strip_newlines | remove_char_from_end: '~' -}}
+{{ repeats | strip_newlines | remove_char_from_end: '~' | remove_char_from_end: '^' -}}
