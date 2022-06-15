@@ -124,9 +124,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return Regex.Replace(data, pattern, replacement);
         }
 
-        public static bool StartsWith(string data, string delimiter)
+        public static bool StartsWith(string data, string prefix)
         {
-            return data.StartsWith(data, ignoreCase: true, culture: CultureInfo.InvariantCulture);
+            return data.StartsWith(prefix, StringComparison.OrdinalIgnoreCase);
         }
     }
 }
