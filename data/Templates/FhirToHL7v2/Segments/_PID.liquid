@@ -48,7 +48,7 @@
 {% comment %}  0 Message Type                          {% endcomment %}PID|
 {% comment %}  1 Set ID - PID                          {% endcomment %}1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
 {% comment %}  2 Patient ID                            {% endcomment %}{% comment %}1234567^4^M11^test^MR^University Hospital^19241011^19241012{% endcomment %}|
-{% comment %}  3 Patient Identifier List               {% endcomment %}{% include 'DataType/CX-ExtendedID' ids: patientIdentifiers %}|
+{% comment %}  3 Patient Identifier List               {% endcomment %}{% include 'DataType/CX-ExtendedID' ids: patientIdentifiers, orgs: patientOrganizations %}|
 {% comment %}  4 Alternate Patient ID                  {% endcomment %}{% comment %}PATID567^^^test2{% endcomment %}|
 {% comment %}  5 Patient Name                          {% endcomment %}{% include 'DataType/XPN-ExpendedPersonName' names: patientNames %}|
 {% comment %}  6 Mother's Maiden Name                  {% endcomment %}{% include 'DataType/XPN-ExpendedPersonName' fields: maidenNames %}|
