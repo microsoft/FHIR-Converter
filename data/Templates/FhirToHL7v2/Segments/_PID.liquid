@@ -18,8 +18,12 @@
     {%- endif -%}
 {%- endif -%}
 {%- assign patientMother = patientRelatedPersons | select: 'resource.relationship[].coding[].code', 'MTH' | get_index: 0 -%}
-{%- assign patientMotherIdentifierCode = patientMother.resource.identifier | select: 'type.coding[].system', 'http://terminology.hl7.org/CodeSystem/v2-0203' | get_index: 0 -%}
-{%- assign patientMotherIdentifierCodeRef = patientMotherIdentifierCode.assigner.reference | slice: 13, -1 -%}
+{%- if patientMother and patientMother.resource and patientMother.resource.identifier -%}
+    {%- assign patientMotherIdentifierCode = patientMother.resource.identifier | select: 'type.coding[].system', 'http://terminology.hl7.org/CodeSystem/v2-0203' | get_index: 0 -%}
+{%- endif -%}
+{%- if patientMotherIdentifierCode and patientMotherIdentifierCode.assigner and patientMotherIdentifierCode.assigner.reference -%}
+    {%- assign patientMotherIdentifierCodeRef = patientMotherIdentifierCode.assigner.reference | slice: 13, -1 -%}
+{%- endif -%}
 {%- assign patientMotherOrg = patientOrganizations | select: 'resource.id', patientMotherIdentifierCodeRef | get_index: 0 -%}
 {%- evaluate patientMotherCXJson using 'Mutators/PatientMotherToCX' mother: patientMotherIdentifierCode, org: patientMotherOrg -%}
 {%- assign patientMotherCX = patientMotherCXJson | from_json_string -%}
@@ -38,9 +42,13 @@
     {%- assign languageCodes = patient.communication[0].language.coding -%}
 {%- endif -%}
 {%- assign patientAccountId = patientAccount.identifier[0] -%}
-{%- assign patientAccountOrgReference = patientAccountId.assigner.reference | slice: 13, -1  -%}
+{%- if patientAccountId and patientAccountId.assigner and patientAccountId.assigner.reference -%}
+    {%- assign patientAccountOrgReference = patientAccountId.assigner.reference | slice: 13, -1  -%}
+{%- endif -%}
 {%- assign patientAccountOrg = patientOrganizations | select: 'resource.id', patientAccountOrgReference | get_index: 0 -%}
-{%- evaluate patientAccountCXJson using 'Mutators/PatientAccountToCX' account: patientAccountId, org: patientAccountOrg -%}
+{%- if patientAccountId and patientAccountOrg -%}
+    {%- evaluate patientAccountCXJson using 'Mutators/PatientAccountToCX' account: patientAccountId, org: patientAccountOrg -%}
+{%- endif -%}
 {%- assign patientAccountCX = patientAccountCXJson | from_json_string -%}
 {%- capture PID -%}
 {% comment %}  0 Message Type                          {% endcomment %}PID|
