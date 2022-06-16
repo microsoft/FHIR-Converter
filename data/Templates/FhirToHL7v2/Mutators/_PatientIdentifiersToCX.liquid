@@ -1,0 +1,83 @@
+{%comment%}
+{%endcomment%}
+{%- assign acceptedCodes = "MR, SS" | split: ", " -%}
+{%- capture acceptedSystemsStr -%}
+http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-HCD,
+http://example.com/v2-to-fhir-converter/assigning-authority-local-system-USSSA,
+{%- endcapture -%}
+{%- assign acceptedSystems = acceptedSystemsStr | strip_newlines | split: "," -%}
+{%-comment-%} skip the first item that is sourced from PID-2 {%-endcomment-%}
+{%- assign filteredIds = identifiers | slice_array: 1 -%}
+{%- assign filteredIds = filteredIds | select_or: "type.coding[0].code", acceptedCodes -%}
+{%- assign filteredIds = filteredIds | select_or: "system", acceptedSystems -%}
+[
+{%- for id in filteredIds -%}
+{%-comment-%}Reconstruct the assigning system or organization for this identifier{%-endcomment-%}
+{%- if id.assigner and id.assigner.reference and id.assigner.reference starts_with "Organization" -%}
+    {%- assign orgId = id.assigner.reference | split: "/" | last -%}
+    {%- assign org = patientOrganizations | select: 'resource.id', orgId | first -%}
+    {%- if org and org.resource.identifier -%}
+        {%- assign authorityNamespace = org.resource.identifier[0].value -%}
+        {%- if org.resource.identifier.size > 1 -%}
+            {%- assign authorityId = org.resource.identifier[1].value -%}
+            {%- assign authorityType = org.resource.identifier[1].type.coding[0].code -%}
+        {%- else -%}
+            {%- assign authorityId = "" -%}
+            {%- assign authorityType = "" -%}
+        {%- endif -%}
+    {%- else -%}
+        {%- assign authorityNamespace = "" -%}
+        {%- assign authorityId = orgId -%}
+        {%- assign authorityType = "GUID" -%}
+    {%- endif -%}
+{%- elsif id.system and id.system != "" -%}
+    {%- if id.system starts_with "urn:oid:" -%}
+        {%- assign authorityNamespace = "" -%}
+        {%- assign authorityId = id.system | remove: "urn:oid:" -%}
+        {%- assign authorityType = "ISO" -%}
+    {%- elsif id.system starts_with "urn:uuid:" -%}
+        {%- assign authorityNamespace = "" -%}
+        {%- assign authorityId = id.system | remove: "urn:uuid:" -%}
+        {%- assign authorityType = "UUID" -%}
+    {%- elsif id.system starts_with "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-" -%}
+        {%- assign authorityNamespace = "" -%}
+        {%- assign authorityId = "example" -%}
+        {%- assign authorityType = id.system | remove: "http://example.com/v2-to-fhir-converter/assigning-authority-universal-system-" -%}
+    {%- elsif id.system starts_with "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-" -%}
+        {%- assign authorityNamespace = id.system | remove: "http://example.com/v2-to-fhir-converter/assigning-authority-local-system-" -%}
+        {%- assign authorityId = "" -%}
+        {%- assign authorityType = "" -%}
+    {%- endif -%}
+{%- else -%}
+    {%- assign authorityNamespace = "" -%}
+    {%- assign authorityId = "" -%}
+    {%- assign authorityType = "" -%}
+{%- endif -%}
+  {
+      "id": "{{ id.value }}",
+      "check": {
+          "digit": "",
+          "scheme": "",
+      },
+      "assigning": {
+          "authority": {
+              "namespace": "{{ authorityNamespace }}",
+              "universal": {
+                  "id": "{{ authorityId }}",
+                  "type": "{{ authorityType }}"
+              }
+          },
+          "facility": "",
+          "jurisdiction": "",
+          "agency": ""
+      },
+      "type": "{{ id.type.coding[0].code }}",
+      "effective": "{{ id.period.start | remove: "-" }}",
+      "expiration": "{{ id.period.end | remove: "-" }}",
+      "security": {
+          "check": "",
+          "digit": ""
+      }
+  }{%- unless forloop.Last == true -%},{% endunless %}
+{%- endfor -%}
+]
