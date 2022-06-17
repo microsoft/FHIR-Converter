@@ -20,7 +20,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 {
     public class Validate : Block
     {
-        private static readonly Regex Syntax = R.B(@"^({0}+)\s$", DotLiquid.Liquid.QuotedFragment);
+        private static readonly Regex Syntax = R.B(@"^({0}+)\s$", DotLiquid.Liquid.QuotedString);
+
+        // Ignore comments in validate block content, like "// comments... " or "/* comments... */"
+        private static readonly JsonLoadSettings ContentLoadSettings = new JsonLoadSettings()
+        {
+            CommentHandling = CommentHandling.Ignore,
+        };
 
         private string _schemaFileName;
         private List<object> _validateBlock;
@@ -63,7 +69,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             JObject validateObject;
             try
             {
-                validateObject = JObject.Parse(validateContent);
+                validateObject = JObject.Parse(validateContent, ContentLoadSettings);
             }
             catch (JsonException ex)
             {
@@ -80,9 +86,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
         private JSchema LoadValidateSchema(Context context)
         {
-            IFhirConverterTemplateFileSystem fileSystem = context.Registers["file_system"] as IFhirConverterTemplateFileSystem;
-
-            if (fileSystem == null)
+            if (!(context.Registers["file_system"] is IFhirConverterTemplateFileSystem fileSystem))
             {
                 throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
             }
@@ -98,7 +102,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             {
                 return JSchema.Parse(schemaObject.ToString());
             }
-            catch (JsonException ex)
+            catch (JSchemaReaderException ex)
             {
                 throw new RenderException(FhirConverterErrorCode.InvalidValidateSchema, Resources.TemplateRenderingError, ex);
             }

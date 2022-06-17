@@ -26,25 +26,25 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/EmptyJsonContent.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"ValidateResults/EmptyValidateResult.json")) };
         }
 
-        public static IEnumerable<object[]> GetValidValidateInmatchedTemplateContents()
+        public static IEnumerable<object[]> GetValidValidateUnmatchedTemplateContents()
         {
-            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/ValidInmatchedTemplate1.liquid")) };
-            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/ValidInmatchedTemplate2.liquid")) };
-            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/ValidInmatchedTemplate3.liquid")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/ValidUnmatchedTemplate1.liquid")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/ValidUnmatchedTemplate2.liquid")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/ValidUnmatchedTemplate3.liquid")) };
         }
 
         public static IEnumerable<object[]> GetInvalidValidateBlockContentTypes()
         {
             yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/InvalidEmptyContent.liquid")) };
-            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/InvalidComment.liquid")) };
             yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/InvalidNoneJsonContent.liquid")) };
             yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/InvalidRefSchema.liquid")) };
         }
 
         public static IEnumerable<object[]> GetInvalidValidateTemplateWithErrorSyntax()
         {
-            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/ErrorSyntax.liquid")) };
-            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/ErrorSyntax2.liquid")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/ErrorNoSchemaInSyntax.liquid")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/ErrorQuotedSchemaInSyntax.liquid")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/ErrorVariableInSyntax.liquid")) };
         }
 
         [Theory]
@@ -79,14 +79,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         }
 
         [Theory]
-        [MemberData(nameof(GetValidValidateInmatchedTemplateContents))]
-        public void GivenValidValidateInmatchedContent_WhenParseAndRender_ExceptionsShouldBeThrown(string templateContent)
+        [MemberData(nameof(GetValidValidateUnmatchedTemplateContents))]
+        public void GivenValidValidateUnmatchedContent_WhenParseAndRender_ExceptionsShouldBeThrown(string templateContent)
         {
             var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
 
             var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates");
             var templateProvider = new TemplateProvider(templateFolder, DataType.Json);
-            var inputContent = "{\"id\": \"\\\"0\",\"resourceType\" : \"oldType\",\"extension\":{\"test\" : \"test\"}}";
+            var inputContent = "{\"id\": \"0\",\"resourceType\" : \"testType\",\"extension\":{\"test\" : \"test\"}}";
             var parser = new JsonDataParser();
             var jsonData = parser.Parse(inputContent);
             var dictionary = new Dictionary<string, object> { { "msg", jsonData } };
@@ -110,7 +110,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
 
             var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates");
             var templateProvider = new TemplateProvider(templateFolder, DataType.Json);
-            var inputContent = "{\"id\": \"\\\"0\",\"resourceType\" : \"oldType\",\"extension\":{\"test\" : \"test\"}}";
+            var inputContent = "{\"id\": \"0\",\"resourceType\" : \"testType\",\"extension\":{\"test\" : \"test\"}}";
             var parser = new JsonDataParser();
             var jsonData = parser.Parse(inputContent);
             var dictionary = new Dictionary<string, object> { { "msg", jsonData } };
