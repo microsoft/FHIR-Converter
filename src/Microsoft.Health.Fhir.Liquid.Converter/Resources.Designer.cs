@@ -196,6 +196,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Content in &apos;validate&apos; block should be a json object: {0}.
+        /// </summary>
+        internal static string InvalidValidateContentBlock {
+            get {
+                return ResourceManager.GetString("InvalidValidateContentBlock", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error happened when merging JSON: {0}.
         /// </summary>
         internal static string JsonMergingError {
@@ -354,6 +363,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         internal static string UnexpectedJsonConvertToken {
             get {
                 return ResourceManager.GetString("UnexpectedJsonConvertToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The validate block content is not match with schema: {0}. Reasons: {1}.
+        /// </summary>
+        internal static string UnMatchedValidateBlockContent {
+            get {
+                return ResourceManager.GetString("UnMatchedValidateBlockContent", resourceCulture);
             }
         }
         

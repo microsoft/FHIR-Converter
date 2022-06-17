@@ -15,6 +15,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Json
         public JsonContext(List<Hash> environments, Hash outerScope, Hash registers, ErrorsOutputMode errorsOutputMode, int maxIterations, int timeout, IFormatProvider formatProvider)
              : base(environments, outerScope, registers, errorsOutputMode, maxIterations, timeout, formatProvider)
         {
+            ValidateSchemas = new List<JSchema>();
         }
 
         public List<JSchema> ValidateSchemas { get; set; }

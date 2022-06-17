@@ -9,6 +9,7 @@ using System.IO;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
 using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 using Newtonsoft.Json.Linq;
@@ -22,8 +23,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
 
         public static IEnumerable<object[]> GetValidValidateMatchedTemplateContents()
         {
-            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/ValidMatchedTemplate.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"ValidateResults/ValidateResult.json")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/MatchedTemplate.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"ValidateResults/ValidateResult.json")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/NestedSchemaTemplate.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"ValidateResults/NestedSchemaResult.json")) };
             yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/EmptyJsonContent.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"ValidateResults/EmptyValidateResult.json")) };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/SubPropertySchemaTemplate.liquid")), File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, @"ValidateResults/NestedSchemaResult.json")) };
+        }
+
+        public static IEnumerable<object[]> GetValidValidateMatchedTemplateWithSchemaContents()
+        {
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/MatchedTemplate.liquid")), new List<string> { "ValidValidateTemplates/Schemas/TestSchema.schema.json" } };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/NestedSchemaTemplate.liquid")), new List<string> { "ValidValidateTemplates/Schemas/TestSchema.schema.json", "ValidValidateTemplates/Schemas/TestSubPropertySchema.schema.json" } };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/EmptyJsonContent.liquid")), new List<string> { "ValidValidateTemplates/Schemas/TestSchema.schema.json" } };
+            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates/SubPropertySchemaTemplate.liquid")), new List<string> { "ValidValidateTemplates/Schemas/TestSubPropertySchema.schema.json" } };
         }
 
         public static IEnumerable<object[]> GetValidValidateUnmatchedTemplateContents()
@@ -58,7 +69,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             // Template should be rendered correctly
             var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates");
             var parser = new JsonDataParser();
-            var inputContent = "{\"id\": \"0\",\"valueReference\" : \"testReference\",\"resourceType\" : \"Patient\",\"extension\":{\"valueString\" : \"valueString\"}}";
+            var inputContent = "{\"id\": \"0\",\"valueReference\" : \"testReference\",\"resourceType\" : \"Patient\",\"name\":{\"valueString\" : \"valueString\"}}";
 
             var templateProvider = new TemplateProvider(templateFolder, DataType.Json);
             var jsonData = parser.Parse(inputContent);
@@ -76,6 +87,43 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             var expectedObject = JObject.Parse(expectedResult);
             var actualObject = JObject.Parse(result);
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidValidateMatchedTemplateWithSchemaContents))]
+        public void GivenValidValidateMatchedTemplateContent_WithJsonContext_WhenParseAndRender_InvolvedSchemaShouldBeReturned(string templateContent, List<string> expectSchemaFiles)
+        {
+            // Template should be parsed correctly
+            var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
+            Assert.True(template.Root.NodeList.Count > 0);
+
+            // Template should be rendered correctly
+            var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates");
+            var parser = new JsonDataParser();
+            var inputContent = "{\"id\": \"0\",\"valueReference\" : \"testReference\",\"resourceType\" : \"Patient\",\"name\":{\"valueString\" : \"valueString\"}}";
+
+            var templateProvider = new TemplateProvider(templateFolder, DataType.Json);
+            var jsonData = parser.Parse(inputContent);
+            var dictionary = new Dictionary<string, object> { { "msg", jsonData } };
+            var context = new JsonContext(
+                environments: new List<Hash> { Hash.FromDictionary(dictionary) },
+                outerScope: new Hash(),
+                registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
+                errorsOutputMode: ErrorsOutputMode.Rethrow,
+                maxIterations: 0,
+                timeout: 0,
+                formatProvider: CultureInfo.InvariantCulture);
+            context.AddFilters(typeof(Filters));
+            var result = template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture));
+
+            Assert.Equal(expectSchemaFiles.Count, context.ValidateSchemas.Count);
+
+            for (int i = 0; i < expectSchemaFiles.Count; i++)
+            {
+                var expectedSchemaObject = JObject.Parse(File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, expectSchemaFiles[i])));
+                var actualSchemaObject = JObject.Parse(context.ValidateSchemas[i].ToString());
+                Assert.True(JToken.DeepEquals(expectedSchemaObject, actualSchemaObject));
+            }
         }
 
         [Theory]

@@ -73,12 +73,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
             catch (JsonException ex)
             {
-                throw new RenderException(FhirConverterErrorCode.TemplateRenderingError, "Validate content should be JSON format: " + ex.Message);
+                throw new RenderException(FhirConverterErrorCode.InvalidValidateBlockContent, string.Format(Resources.InvalidValidateContentBlock, ex.Message));
             }
 
             if (!validateObject.IsValid(validateSchema, out IList<string> messages))
             {
-                throw new RenderException(FhirConverterErrorCode.InvalidValidateBlockContent, string.Join(";", messages));
+                throw new RenderException(FhirConverterErrorCode.UnmatchedValidateBlockContent, string.Format(Resources.UnMatchedValidateBlockContent, _schemaFileName, string.Join(";", messages)));
             }
 
             result.Write(validateContent);
