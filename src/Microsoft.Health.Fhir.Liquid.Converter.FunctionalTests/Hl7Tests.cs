@@ -26,6 +26,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             {
                 // rootTemplate, expected, input
                 new[] { @"ADT_A08", @"ADT-A08-01-expected.hl7", @"ADT-A08-01-expected.json" },
+                new[] { @"ADT_A08", @"ADT-A08-01-empty.hl7", @"ADT-A08-01-empty.json"},
             };
             return data.Select(item => new[]
             {
@@ -47,7 +48,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
             var actualContent = fhirProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Fhir));
 
-            Assert.Equal(actualContent, expectedContent);
+            Assert.Equal(expectedContent, actualContent);
 
             Console.WriteLine(actualContent);
         }
