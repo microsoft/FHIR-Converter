@@ -43,14 +43,5 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             Assert.Throws<RenderException>(() => templateLocalFileSystem.GetTemplate(context, "Foo"));
             Assert.Throws<RenderException>(() => templateLocalFileSystem.GetTemplate(context, "Bar"));
         }
-
-        [Fact]
-        public void GivenAValidTemplateDirectory_WhenReadTemplateWithContext_ExceptionShouldBeThrown()
-        {
-            var templateLocalFileSystem = new TemplateLocalFileSystem(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2);
-            var context = new Context(CultureInfo.InvariantCulture);
-            context["ADT_A01"] = "ADT_A01";
-            Assert.Throws<NotImplementedException>(() => templateLocalFileSystem.ReadTemplateFile(context, "hello"));
-        }
     }
 }
