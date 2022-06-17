@@ -1,5 +1,3 @@
-{%- comment %} {{ fhirData.timestamp }} timezone and format {% endcomment -%}
-{%- comment %} {{ fhirData.timestamp | format_as_hl7_date_time }} {% endcomment -%}
 {% comment %} {{ '' | debug }} {% endcomment %}
 {%- assign patient = fhirData.entry | get_resource: 'Patient' -%}
 {%- assign patientAccount = fhirData.entry | get_resource: 'Account' -%}
