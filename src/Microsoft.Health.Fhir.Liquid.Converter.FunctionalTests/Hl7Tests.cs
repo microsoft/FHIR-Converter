@@ -48,9 +48,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
             var actualContent = fhirProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Fhir));
 
-            Assert.Equal(expectedContent, actualContent);
-
             Console.WriteLine(actualContent);
+
+            Assert.Equal(expectedContent, actualContent);
         }
     }
 }

@@ -1,0 +1,25 @@
+{% comment %}
+Example of input:
+veteranStatus = {
+    "url": "http://example.com/v2-to-fhir-converter/StructureDefinition/VeteranMilitaryStatus",
+    "valueCodeableConcept": {
+        "coding": [
+            {
+                "code": "Vet123",
+                "display": "retired",
+                "system": "http://example.com/v2-to-fhir-converter/CodeSystem/ART"
+            }
+        ],
+        "text": "retired"
+    }
+}
+{% endcomment %}
+{
+    "code": "{{ veteranStatus.valueCodeableConcept.coding[0].code }}",
+    "display": "{{ veteranStatus.valueCodeableConcept.coding[0].display }}",
+    "name": "ART",
+    "alternate": {
+        "id": "",
+        "text": "",
+    }
+}
