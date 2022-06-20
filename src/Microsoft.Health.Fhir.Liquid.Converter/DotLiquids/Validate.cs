@@ -52,7 +52,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
         {
             JSchema validateSchema = LoadValidateSchema(context);
 
-            if (context is JsonContext jsonContext)
+            if (context is JSchemaContext jsonContext)
             {
                 jsonContext.ValidateSchemas.Add(validateSchema);
             }
@@ -97,15 +97,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, _schemaFileName));
             }
 
-            JObject schemaObject = jSchemaDocument.NodeList[0] as JObject;
-            try
-            {
-                return JSchema.Parse(schemaObject.ToString());
-            }
-            catch (JSchemaReaderException ex)
-            {
-                throw new RenderException(FhirConverterErrorCode.InvalidValidateSchema, Resources.TemplateRenderingError, ex);
-            }
+            return jSchemaDocument.NodeList[0] as JSchema;
         }
     }
 }

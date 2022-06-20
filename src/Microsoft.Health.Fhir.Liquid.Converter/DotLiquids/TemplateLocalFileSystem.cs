@@ -77,7 +77,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
             else
             {
-                template = TemplateUtility.ParseTemplate(templateName, templateContent);
+                template = TemplateUtility.ParseLiquidTemplate(templateName, templateContent);
                 key = templateName;
             }
 

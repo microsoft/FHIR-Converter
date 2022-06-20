@@ -10,9 +10,9 @@ using Newtonsoft.Json.Schema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Json
 {
-    public class JsonContext : Context
+    public class JSchemaContext : Context
     {
-        public JsonContext(List<Hash> environments, Hash outerScope, Hash registers, ErrorsOutputMode errorsOutputMode, int maxIterations, int timeout, IFormatProvider formatProvider)
+        public JSchemaContext(List<Hash> environments, Hash outerScope, Hash registers, ErrorsOutputMode errorsOutputMode, int maxIterations, int timeout, IFormatProvider formatProvider)
              : base(environments, outerScope, registers, errorsOutputMode, maxIterations, timeout, formatProvider)
         {
             ValidateSchemas = new List<JSchema>();

@@ -48,7 +48,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         {
             yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/InvalidEmptyContent.liquid")) };
             yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/InvalidNoneJsonContent.liquid")) };
-            yield return new object[] { File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/InvalidRefSchema.liquid")) };
         }
 
         public static IEnumerable<object[]> GetInvalidValidateTemplateWithErrorSyntax()
@@ -63,7 +62,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         public void GivenValidValidateMatchedTemplateContent_WhenParseAndRender_CorrectResultShouldBeReturned(string templateContent, string expectedResult)
         {
             // Template should be parsed correctly
-            var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
+            var template = TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent);
             Assert.True(template.Root.NodeList.Count > 0);
 
             // Template should be rendered correctly
@@ -94,7 +93,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         public void GivenValidValidateMatchedTemplateContent_WithJsonContext_WhenParseAndRender_InvolvedSchemaShouldBeReturned(string templateContent, List<string> expectSchemaFiles)
         {
             // Template should be parsed correctly
-            var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
+            var template = TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent);
             Assert.True(template.Root.NodeList.Count > 0);
 
             // Template should be rendered correctly
@@ -105,7 +104,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             var templateProvider = new TemplateProvider(templateFolder, DataType.Json);
             var jsonData = parser.Parse(inputContent);
             var dictionary = new Dictionary<string, object> { { "msg", jsonData } };
-            var context = new JsonContext(
+            var context = new JSchemaContext(
                 environments: new List<Hash> { Hash.FromDictionary(dictionary) },
                 outerScope: new Hash(),
                 registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
@@ -130,7 +129,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [MemberData(nameof(GetValidValidateUnmatchedTemplateContents))]
         public void GivenValidValidateUnmatchedContent_WhenParseAndRender_ExceptionsShouldBeThrown(string templateContent)
         {
-            var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
+            var template = TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent);
 
             var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates");
             var templateProvider = new TemplateProvider(templateFolder, DataType.Json);
@@ -154,7 +153,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [MemberData(nameof(GetInvalidValidateBlockContentTypes))]
         public void GivenInvalidValidateContent_WhenParseAndRender_ExceptionsShouldBeThrown(string templateContent)
         {
-            var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
+            var template = TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent);
 
             var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates");
             var templateProvider = new TemplateProvider(templateFolder, DataType.Json);
@@ -174,11 +173,35 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             Assert.Throws<RenderException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
         }
 
+        [Fact]
+        public void GivenInvalidValidateSchema_WhenParseAndRender_ExceptionsShouldBeThrown()
+        {
+            var templateContent = File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/InvalidRefSchema.liquid")); 
+            var template = TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent);
+
+            var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates");
+            var templateProvider = new TemplateProvider(templateFolder, DataType.Json);
+            var inputContent = "{\"id\": \"0\",\"resourceType\" : \"testType\",\"extension\":{\"test\" : \"test\"}}";
+            var parser = new JsonDataParser();
+            var jsonData = parser.Parse(inputContent);
+            var dictionary = new Dictionary<string, object> { { "msg", jsonData } };
+            var context = new Context(
+                environments: new List<Hash> { Hash.FromDictionary(dictionary) },
+                outerScope: new Hash(),
+                registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
+                errorsOutputMode: ErrorsOutputMode.Rethrow,
+                maxIterations: 0,
+                timeout: 0,
+                formatProvider: CultureInfo.InvariantCulture);
+            context.AddFilters(typeof(Filters));
+            Assert.Throws<TemplateLoadException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
+        }
+
         [Theory]
         [MemberData(nameof(GetInvalidValidateTemplateWithErrorSyntax))]
         public void GivenInvalidValidateTemplateWithErrorSyntax_WhenParse_ExceptionsShouldBeThrown(string templateContent)
         {
-            Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplate(TemplateName, templateContent));
+            Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent));
         }
 
     }

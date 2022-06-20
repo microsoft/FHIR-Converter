@@ -8,13 +8,13 @@ using Newtonsoft.Json.Schema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Json
 {
-    public class JsonTraceInfo : TraceInfo
+    public class JSchemaTraceInfo : TraceInfo
     {
-        public JsonTraceInfo()
+        public JSchemaTraceInfo()
         {
         }
 
-        public JsonTraceInfo(List<JSchema> validateSchemas)
+        public JSchemaTraceInfo(List<JSchema> validateSchemas)
         {
             ValidateSchemas = validateSchemas;
         }

@@ -10,6 +10,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
         // Time out for rendering templates in milliseconds. By default no time out is set, which is zero in DotLiquid.
         public int TimeOut { get; set; } = 0;
 
+        // Max iterations for rendering templates.
         public int MaxIterations { get; set; } = 100000;
     }
 }

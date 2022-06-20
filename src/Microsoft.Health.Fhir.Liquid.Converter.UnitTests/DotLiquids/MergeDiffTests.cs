@@ -47,7 +47,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         public void GivenValidMergeDiffTemplateContent_WhenParseAndRender_CorrectResultShouldBeReturned(string templateContent, string expectedResult)
         {
             // Template should be parsed correctly
-            var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
+            var template = TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent);
             Assert.True(template.Root.NodeList.Count > 0);
 
             // Template should be rendered correctly
@@ -77,7 +77,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [MemberData(nameof(GetInvalidMergeDiffBlockContentTypes))]
         public void GivenInvalidDiffBlockContent_WhenParseAndRender_ExceptionsShouldBeThrown(string templateContent)
         {
-            var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
+            var template = TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent);
 
             var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"InvalidMergeDiffTemplates");
             var templateProvider = new TemplateProvider(templateFolder, DataType.Json);
@@ -101,7 +101,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         public void GivenInvalidDiffBlockContentWithTooMuchRecursive_WhenParseAndRender_ExceptionsShouldBeThrown()
         {
             var templateContent = File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidMergeDiffTemplates/RecursiveTooMuchTemplate.liquid"));
-            var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
+            var template = TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent);
 
             var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"InvalidMergeDiffTemplates");
             var templateProvider = new TemplateProvider(templateFolder, DataType.Json);
@@ -125,14 +125,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [MemberData(nameof(GetInvalidMergeDiffTemplateWithErrorSyntax))]
         public void GivenInvalidMergeDiffTemplateWithErrorSyntax_WhenParse_ExceptionsShouldBeThrown(string templateContent)
         {
-            Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplate(TemplateName, templateContent));
+            Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent));
         }
 
         [Fact]
         public void GivenValidDiffBlockContent_WhenInputIsInvalidJson_WhenParseAndRender_ExceptionsShouldBeThrown()
         {
             var templateContent = File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates/ValidExample2.liquid"));
-            var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
+            var template = TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent);
 
             var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"ValidMergeDiffTemplates");
             var templateProvider = new TemplateProvider(templateFolder, DataType.Json);

@@ -56,7 +56,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                 else if (string.Equals(Path.GetExtension(formattedEntryKey), TemplateFileExtension, StringComparison.InvariantCultureIgnoreCase))
                 {
                     var templateName = formattedEntryKey.Substring(0, formattedEntryKey.LastIndexOf(TemplateFileExtension));
-                    parsedTemplates[templateName] = ParseTemplate(templateName, entry.Value);
+                    parsedTemplates[templateName] = ParseLiquidTemplate(templateName, entry.Value);
                 }
                 else if (string.Equals(Path.GetExtension(formattedEntryKey), JsonFileExtension, StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -92,7 +92,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             }
         }
 
-        public static Template ParseTemplate(string templateName, string content)
+        public static Template ParseLiquidTemplate(string templateName, string content)
         {
             if (content == null)
             {
@@ -119,12 +119,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             try
             {
                 var template = Template.Parse(string.Empty);
-                template.Root = new JsonContentDocument(new List<JObject>() { JObject.Parse(content) });
+                template.Root = new JsonContentDocument(new List<JSchema>() { JSchema.Parse(content) });
                 return template;
             }
-            catch (JsonException ex)
+            catch (JSchemaReaderException ex)
             {
-                throw new TemplateLoadException(FhirConverterErrorCode.InvalidJsonContent, Resources.InvalidJsonContent, ex);
+                throw new TemplateLoadException(FhirConverterErrorCode.InvalidJsonSchema, Resources.InvalidJsonContent, ex);
             }
         }
     }

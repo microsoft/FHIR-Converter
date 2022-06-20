@@ -32,7 +32,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
             // Load data and templates
             var timeout = Settings?.TimeOut ?? 0;
-            var context = new JsonContext(
+            var context = new JSchemaContext(
                 environments: new List<Hash> { Hash.FromDictionary(data) },
                 outerScope: new Hash(),
                 registers: Hash.FromDictionary(new Dictionary<string, object> { { "file_system", templateProvider.GetTemplateFileSystem() } }),
@@ -52,7 +52,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         protected override void CreateTraceInfo(object data, Context context, TraceInfo traceInfo)
         {
-            if ((traceInfo is JsonTraceInfo jsonTraceInfo) && (context is JsonContext jsonContext))
+            if ((traceInfo is JSchemaTraceInfo jsonTraceInfo) && (context is JSchemaContext jsonContext))
             {
                 jsonTraceInfo.ValidateSchemas = jsonContext.ValidateSchemas;
             }

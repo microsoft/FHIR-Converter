@@ -6,13 +6,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using DotLiquid;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Json
 {
     public class JsonContentDocument : Document
     {
-        public JsonContentDocument(List<JObject> contents)
+        public JsonContentDocument(List<JSchema> contents)
         {
             NodeList = contents.Cast<object>().ToList();
         }
