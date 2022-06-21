@@ -91,13 +91,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
             }
 
-            JsonContentDocument jSchemaDocument = fileSystem.GetTemplate(_schemaFileName)?.Root as JsonContentDocument;
-            if (jSchemaDocument == null || jSchemaDocument.NodeList.Count == 0)
+            if (!(fileSystem.GetTemplate(_schemaFileName)?.Root is JSchemaDocument jSchemaDocument))
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, _schemaFileName));
             }
 
-            return jSchemaDocument.NodeList[0] as JSchema;
+            return jSchemaDocument.Schema;
         }
     }
 }

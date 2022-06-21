@@ -10,6 +10,7 @@ using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using Xunit;
@@ -59,14 +60,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             // Template exists
             Assert.NotNull(schemaTemplate);
 
-            // Schema exists in first element of NodeList
-            Assert.Single(schemaTemplate.Root.NodeList);
-
-            JSchema actualJSchema = schemaTemplate.Root.NodeList[0] as JSchema;
-            Assert.NotNull(actualJSchema);
+            var jSchemaDocument = schemaTemplate.Root as JSchemaDocument;
+            Assert.NotNull(jSchemaDocument);
+            Assert.NotNull(jSchemaDocument.Schema);
 
             JSchema expectedJSchema = JSchema.Parse(File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates", testSchemaPath)));
-            Assert.True(JToken.DeepEquals(JToken.Parse(actualJSchema.ToString()), JToken.Parse(expectedJSchema.ToString())));
+            Assert.True(JToken.DeepEquals(JToken.Parse(jSchemaDocument.Schema.ToString()), JToken.Parse(expectedJSchema.ToString())));
         }
 
         [Fact]

@@ -145,16 +145,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                 return null;
             }
 
+            JSchema schema;
             try
             {
-                var template = Template.Parse(string.Empty);
-                template.Root = new JsonContentDocument(new List<JSchema>() { JSchema.Parse(content) });
-                return template;
+                schema = JSchema.Parse(content);
             }
             catch (JSchemaReaderException ex)
             {
                 throw new TemplateLoadException(FhirConverterErrorCode.InvalidJsonSchema, string.Format(Resources.InvalidJsonSchemaContent, ex.Message), ex);
             }
+
+            var template = Template.Parse(string.Empty);
+            template.Root = new JSchemaDocument(schema);
+            return template;
         }
 
         public static bool IsCodeMappingTemplate(string templateKey)

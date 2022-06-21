@@ -3,18 +3,24 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
+using System;
 using DotLiquid;
 using Newtonsoft.Json.Schema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Json
 {
-    public class JsonContentDocument : Document
+    public class JSchemaDocument : Document
     {
-        public JsonContentDocument(List<JSchema> contents)
+        public JSchemaDocument(JSchema schema)
         {
-            NodeList = contents.Cast<object>().ToList();
+            if (schema == null)
+            {
+                throw new ArgumentException(string.Format(Resources.InvalidJsonSchemaContent, "Schema cannot be null"));
+            }
+
+            Schema = schema;
         }
+
+        public JSchema Schema { get; set; }
     }
 }
