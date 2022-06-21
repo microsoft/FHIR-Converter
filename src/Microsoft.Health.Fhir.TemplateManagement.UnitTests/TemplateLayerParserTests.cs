@@ -53,7 +53,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         {
             var content = File.ReadAllBytes(filePath);
             var artifacts = StreamUtility.DecompressFromTarGz(new MemoryStream(content));
-            Assert.Equal(expectedArtifactCounts, artifacts.Count());
+            Assert.Equal(expectedArtifactCounts + 1, artifacts.Count());
         }
 
         [Fact]
