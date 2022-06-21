@@ -72,17 +72,9 @@
     </None>
   </ItemGroup>
 
-  <Target Name="CreateBinFolder" BeforeTargets="ExtractHL7v2DefaultTemplates">
-    <Exec Command="mkdir $(BinFolder)" />
-  </Target>
-
-  <Target Name="ExtractHL7v2DefaultTemplates" BeforeTargets="ExtractCCDADefaultTemplates">
-    <Exec Command="tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
-  </Target>
-  <Target Name="ExtractCCDADefaultTemplates" BeforeTargets="JsonDefaultTemplates">
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="mkdir $(BinFolder) &amp; tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
     <Exec Command="tar -zcvf $(BinFolder)CcdaDefaultTemplates.tar.gz -C $(DataFolder)Templates/Ccda ." />
-  </Target>
-  <Target Name="JsonDefaultTemplates" BeforeTargets="PreBuildEvent">
     <Exec Command="tar -zcvf $(BinFolder)JsonDefaultTemplates.tar.gz -C $(DataFolder)Templates/Json ." />
   </Target>
 
