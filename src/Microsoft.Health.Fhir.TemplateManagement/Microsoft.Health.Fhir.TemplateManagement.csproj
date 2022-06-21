@@ -88,4 +88,14 @@
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
   </Target>
+
+  <Target Condition="'$(OS)' != 'Windows_NT'" Name="CopyOSXOrasFile" BeforeTargets="Build">
+    <Exec Command="tar -xvf $(BinFolder)$(OrasOSXTarGzFile) -C $(BinFolder) &amp;&amp; $(CopyExecutable) $(BinFolder)oras oras-osx" />
+  </Target>
+
+  <Target Condition="'$(OS)' != 'Windows_NT'" Name="DownloadOSXOrasFile" BeforeTargets="CopyOSXOrasFile">
+    <DownloadFile SourceUrl="$(OrasOSXUrl)" DestinationFolder="$(BinFolder)" DestinationFileName="$(OrasOSXTarGzFile)">
+      <Output TaskParameter="DownloadedFile" ItemName="Content" />
+    </DownloadFile>
+  </Target>
 </Project>
