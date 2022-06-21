@@ -66,6 +66,16 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="$(BinFolder)$(OrasOSXTarGzFile)">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="CreateBinFolder" BeforeTargets="ExtractHL7v2DefaultTemplates">
+    <Exec Command="mkdir -p $(BinFolder)" />
+  </Target>
+
   <Target Name="ExtractHL7v2DefaultTemplates" BeforeTargets="ExtractCCDADefaultTemplates">
     <Exec Command="tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
   </Target>
