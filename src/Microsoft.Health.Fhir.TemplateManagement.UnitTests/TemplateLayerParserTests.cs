@@ -18,16 +18,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
     {
         public static IEnumerable<object[]> GetFilePathForOciArifactWithFileCounts()
         {
-            yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 814 };
-            yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 768 };
-            yield return new object[] { "TestData/TarGzFiles/baseLayer.tar.gz", 819 };
+            yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 813 };
+            yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 767 };
+            yield return new object[] { "TestData/TarGzFiles/baseLayer.tar.gz", 818 };
         }
 
         public static IEnumerable<object[]> GetFilePathForOciArifactWithTemplateCounts()
         {
-            yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 814 };
-            yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 768 };
-            yield return new object[] { "TestData/TarGzFiles/baseLayer.tar.gz", 819 };
+            yield return new object[] { "TestData/TarGzFiles/userV1.tar.gz", 813 };
+            yield return new object[] { "TestData/TarGzFiles/userV2.tar.gz", 767 };
+            yield return new object[] { "TestData/TarGzFiles/baseLayer.tar.gz", 817 };
         }
 
         public static IEnumerable<object[]> GetDecompressFailedFilePath()

@@ -14,7 +14,6 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
@@ -65,8 +64,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
         /// <returns>A template key</returns>
         public static string GetTemplateKey(string templatePath)
         {
-            if (string.Equals("CodeSystem/CodeSystem.json", templatePath, StringComparison.InvariantCultureIgnoreCase)
-                || string.Equals("ValueSet/ValueSet.json", templatePath, StringComparison.InvariantCultureIgnoreCase)
+            if (string.Equals(templatePath, "CodeSystem/CodeSystem.json", StringComparison.InvariantCultureIgnoreCase)
+                || string.Equals(templatePath, "ValueSet/ValueSet.json", StringComparison.InvariantCultureIgnoreCase)
                 || string.Equals(Path.GetExtension(templatePath), LiquidTemplateFileExtension, StringComparison.InvariantCultureIgnoreCase))
             {
                 return Path.ChangeExtension(templatePath, null);
@@ -83,7 +82,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
 
         public static Template ParseTemplate(string templateKey, string content)
         {
-            if (IsCodeMappingTemplatePath(templateKey))
+            if (IsCodeMappingTemplate(templateKey))
             {
                 return ParseCodeMapping(content);
             }
@@ -158,7 +157,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             }
         }
 
-        public static bool IsCodeMappingTemplatePath(string templateKey)
+        public static bool IsCodeMappingTemplate(string templateKey)
         {
             return string.Equals("CodeSystem/CodeSystem", templateKey, StringComparison.InvariantCultureIgnoreCase) ||
                    string.Equals("ValueSet/ValueSet", templateKey, StringComparison.InvariantCultureIgnoreCase);

@@ -38,62 +38,45 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
         public Template GetTemplate(Context context, string templateName)
         {
-            var templatePath = (string)context[templateName];
-            if (templatePath == null)
+            var templateKey = (string)context[templateName];
+            if (templateKey == null)
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, templateName));
             }
 
-            return GetTemplate(templatePath) ?? throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, templatePath));
+            return GetTemplate(templateKey) ?? throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, templateKey));
         }
 
-        public Template GetTemplate(string templateName)
+        public Template GetTemplate(string templateKey)
         {
-            if (string.IsNullOrEmpty(templateName))
+            if (string.IsNullOrEmpty(templateKey))
             {
                 return null;
             }
 
             // Get template from cache first
-            if (_templateCache.ContainsKey(templateName))
+            if (_templateCache.ContainsKey(templateKey))
             {
-                return _templateCache[templateName];
+                return _templateCache[templateKey];
             }
 
             // If not cached, search local file system
-            var templateContent = ReadTemplateFile(templateName);
+            var templateContent = ReadTemplateFile(templateKey);
 
-            string key;
-            Template template;
-            if (IsCodeMappingTemplate(templateName))
-            {
-                template = TemplateUtility.ParseCodeMapping(templateContent);
-                key = $"{templateName}/{templateName}";
-            }
-            else if (IsJsonContentTemplate(templateName))
-            {
-                template = TemplateUtility.ParseJsonSchemaTemplate(templateContent);
-                key = templateName;
-            }
-            else
-            {
-                template = TemplateUtility.ParseLiquidTemplate(templateName, templateContent);
-                key = templateName;
-            }
-
+            Template template = TemplateUtility.ParseTemplate(templateKey, templateContent);
             if (template != null)
             {
-                _templateCache[key] = template;
+                _templateCache[templateKey] = template;
             }
 
             return template;
         }
 
-        private string ReadTemplateFile(string templateName)
+        private string ReadTemplateFile(string templateKey)
         {
             try
             {
-                var templatePath = GetAbsoluteTemplatePath(templateName);
+                var templatePath = GetAbsoluteTemplatePath(templateKey);
                 return File.Exists(templatePath) ? File.ReadAllText(templatePath) : null;
             }
             catch (Exception ex)
@@ -108,7 +91,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             var pathSegments = templateName.Split(Path.AltDirectorySeparatorChar);
 
             // JsonContent templates
-            if (IsJsonContentTemplate(templateName))
+            if (TemplateUtility.IsJsonSchemaTemplate(templateName))
             {
                 return pathSegments.Aggregate(result, Path.Join);
             }
@@ -120,20 +103,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
 
             // Snippets
-            pathSegments[^1] = IsCodeMappingTemplate(templateName) ? $"{pathSegments[^1]}.json" : $"_{pathSegments[^1]}.liquid";
+            pathSegments[^1] = TemplateUtility.IsCodeMappingTemplate(templateName) ? $"{pathSegments[^1]}.json" : $"_{pathSegments[^1]}.liquid";
 
             return pathSegments.Aggregate(result, Path.Join);
-        }
-
-        private static bool IsCodeMappingTemplate(string templateName)
-        {
-            return string.Equals("CodeSystem/CodeSystem", templateName, StringComparison.InvariantCultureIgnoreCase) ||
-                   string.Equals("ValueSet/ValueSet", templateName, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        private static bool IsJsonContentTemplate(string templateName)
-        {
-            return string.Equals(Path.GetExtension(templateName), ".json", StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }
