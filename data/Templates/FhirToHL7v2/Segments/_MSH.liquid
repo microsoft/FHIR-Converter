@@ -6,7 +6,7 @@
 {% comment %} 4 Sending Facility                         {% endcomment %}|
 {% comment %} 5 Receiving Application                    {% endcomment %}|
 {% comment %} 6 Receiving Facility                       {% endcomment %}|
-{% comment %} 7 Date/Time of Message                     {% endcomment %}{{ messageTime }}|
+{% comment %} 7 Date/Time of Message                     {% endcomment %}{{ messageTime | date_time_format: "yyyyMMddhhmmss" }}|
 {% comment %} 8 Security                                 {% endcomment %}|
 {% comment %} 9 Message Type                             {% endcomment %}|
 {% comment %} 10 Message Control ID                      {% endcomment %}{{ messageID }}|

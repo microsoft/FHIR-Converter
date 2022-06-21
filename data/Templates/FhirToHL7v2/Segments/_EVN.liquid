@@ -2,7 +2,7 @@
 {%- capture EVN -%}
 {% comment %} 0 Message Type            {% endcomment %}EVN|
 {% comment %} 1 Event Type Code         {% endcomment %}|
-{% comment %} 2 Recorded Date/Time      {% endcomment %}{{ recordedTime }}|
+{% comment %} 2 Recorded Date/Time      {% endcomment %}{{ recordedTime | date_time_format: "yyyyMMddhhmmss" }}|
 {% comment %} 3 Date/Time Planned Event {% endcomment %}|
 {% comment %} 4 Event Reason Code       {% endcomment %}|
 {% comment %} 5 Operator ID             {% endcomment %}|

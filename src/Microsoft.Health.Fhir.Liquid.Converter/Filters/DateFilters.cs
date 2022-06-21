@@ -91,24 +91,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return dateTimeObject.ToFhirString(outputTimeZoneHandling);
         }
 
-        public static string FormatAsHl7DateTime(string input)
+        public static string DateTimeFormat(DateTime dateTime, string format)
         {
-            if (string.IsNullOrEmpty(input))
-            {
-                return input;
-            }
-
-            PartialDateTime dateTimeObject;
-            try
-            {
-                dateTimeObject = new PartialDateTime(input, DateTimeType.Fhir);
-            }
-            catch (Exception)
-            {
-                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
-            }
-
-            return dateTimeObject.ToString();
+            return dateTime.ToUniversalTime().ToString(format);
         }
 
         public static string Now(string input, string format = "yyyy-MM-ddTHH:mm:ss.FFFZ")

@@ -66,15 +66,6 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="$(BinFolder)$(OrasOSXTarGzFile)">
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </None>
-  </ItemGroup>
-    
-  <Target Name="CreateBinFolder" BeforeTargets="ExtractHL7v2DefaultTemplates">
-    <Exec Command="mkdir -p $(BinFolder)" />
-  </Target>
   <Target Name="ExtractHL7v2DefaultTemplates" BeforeTargets="ExtractCCDADefaultTemplates">
     <Exec Command="tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
   </Target>
@@ -92,16 +83,6 @@
   
   <Target Condition="'$(OS)' == 'Windows_NT'" Name="DownloadWinOrasFile" BeforeTargets="CopyWinOrasFile">
     <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="$(BinFolder)" DestinationFileName="$(OrasWinTarGzFile)">
-      <Output TaskParameter="DownloadedFile" ItemName="Content" />
-    </DownloadFile>
-  </Target>
-
-  <Target Condition="'$(OS)' != 'Windows_NT'" Name="CopyOSXOrasFile" BeforeTargets="Build">
-    <Exec Command="tar -xvf $(BinFolder)$(OrasOSXTarGzFile) -C $(BinFolder) &amp;&amp; $(CopyExecutable) $(BinFolder)oras oras-osx" />
-  </Target>
-
-  <Target Condition="'$(OS)' != 'Windows_NT'" Name="DownloadOSXOrasFile" BeforeTargets="CopyOSXOrasFile">
-    <DownloadFile SourceUrl="$(OrasOSXUrl)" DestinationFolder="$(BinFolder)" DestinationFileName="$(OrasOSXTarGzFile)">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
   </Target>
