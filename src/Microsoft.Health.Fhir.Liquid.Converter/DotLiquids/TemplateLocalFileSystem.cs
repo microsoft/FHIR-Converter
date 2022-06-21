@@ -72,7 +72,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
             else if (IsJsonContentTemplate(templateName))
             {
-                template = TemplateUtility.ParseJsonContentTemplate(templateContent);
+                template = TemplateUtility.ParseJsonSchemaTemplate(templateContent);
                 key = templateName;
             }
             else
