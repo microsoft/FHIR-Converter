@@ -1,0 +1,31 @@
+{% comment %}
+Example of input:
+citizenship = {
+    "url": "http://hl7.org/fhir/StructureDefinition/patient-citizenship",
+    "extension": [
+        {
+            "url": "code",
+            "valueCodeableConcept": {
+                "coding": [
+                    {
+                        "code": "US",
+                        "display": "United States of America",
+                        "system": "urn:iso:std:iso:3166"
+                    }
+                ],
+                "text": "United States of America"
+            }
+        }
+    ]
+}
+{% endcomment %}
+{%- assign citizenCode = citizenship.extension[0].valueCodeableConcept.coding[0] -%}
+{
+    "code": "{{ citizenCode.code }}",
+    "display": "{{ citizenCode.display }}",
+    "name": "{{ citizenCode.system | remove: 'urn:iso:std:' | remove: ':' | upcase }}_1",
+    "alternate": {
+        "id": "",
+        "text": "",
+    }
+}
