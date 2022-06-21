@@ -78,17 +78,6 @@
     <Exec Command="tar -zcvf $(BinFolder)JsonDefaultTemplates.tar.gz -C $(DataFolder)Templates/Json ." />
   </Target>
 
-
-  <Target Condition="'$(OS)' == 'Windows_NT'" Name="CopyWinOrasFile" BeforeTargets="Build">
-    <Exec Command="tar -xvf $(BinFolder)$(OrasWinTarGzFile) -C $(BinFolder) &amp; $(CopyExecutable) $(BinFolder)oras.exe ." />
-  </Target>
-  
-  <Target Condition="'$(OS)' == 'Windows_NT'" Name="DownloadWinOrasFile" BeforeTargets="CopyWinOrasFile">
-    <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="$(BinFolder)" DestinationFileName="$(OrasWinTarGzFile)">
-      <Output TaskParameter="DownloadedFile" ItemName="Content" />
-    </DownloadFile>
-  </Target>
-
   <Target Name="DownloadWinOrasFile" BeforeTargets="Build">
     <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="$(BinFolder)" DestinationFileName="$(OrasWinTarGzFile)">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
