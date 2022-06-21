@@ -10,6 +10,9 @@
     {%- endif -%}
     {%- assign patientReligions = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-religion' | get_index: 0 -%}
     {%- assign religionCodes = patientReligions.valueCodeableConcept.coding -%}
+    {%- assign patientEthnicity = patient.extension | select: 'url', 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity' | get_index: 0 -%}
+    {%- evaluate patientEthnicityCWEJson using 'Mutators/patientEthnicityToCWE' ethnicity: patientEthnicity -%}
+    {%- assign patientEthnicityCWE = patientEthnicityCWEJson | from_json_string -%}
 {%- endif -%}
 {%- if patient._birthDate -%}
 {%- assign birthInfo = patient._birthDate.extension | get_by_url: 'http://hl7.org/fhir/StructureDefinition/patient-birthTime' -%}
@@ -52,11 +55,6 @@
     {%- evaluate patientAccountCXJson using 'Mutators/PatientAccountToCX' account: patientAccountId, org: patientAccountOrg -%}
 {%- endif -%}
 {%- assign patientAccountCX = patientAccountCXJson | from_json_string -%}
-{%- if patient.extension -%}
-    {%- assign patientEthnicity = patient.extension | select: 'url', 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity' | get_index: 0 -%}
-    {%- evaluate patientEthnicityCWEJson using 'Mutators/patientEthnicityToCWE' ethnicity: patientEthnicity -%}
-    {%- assign patientEthnicityCWE = patientEthnicityCWEJson | from_json_string -%}
-{%- endif -%}
 {%- capture PID -%}
 {% comment %}  0 Message Type                          {% endcomment %}PID|
 {% comment %}  1 Set ID - PID                          {% endcomment %}1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
