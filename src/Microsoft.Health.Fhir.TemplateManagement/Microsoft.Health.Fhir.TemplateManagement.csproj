@@ -73,7 +73,7 @@
   </ItemGroup>
 
   <Target Name="CreateBinFolder" BeforeTargets="ExtractHL7v2DefaultTemplates">
-    <Exec Command="mkdir -p $(BinFolder)" />
+    <Exec Command="mkdir $(BinFolder)" />
   </Target>
 
   <Target Name="ExtractHL7v2DefaultTemplates" BeforeTargets="ExtractCCDADefaultTemplates">
