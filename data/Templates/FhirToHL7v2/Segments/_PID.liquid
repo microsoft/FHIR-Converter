@@ -10,6 +10,9 @@
     {%- endif -%}
     {%- assign patientReligions = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-religion' | get_index: 0 -%}
     {%- assign religionCodes = patientReligions.valueCodeableConcept.coding -%}
+    {%- assign patientAnimal = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-animal' | get_index: 0 -%}
+    {%- evaluate patientAnimalCWEJson using 'Mutators/PatientAnimalToCWE' animal: patientAnimal -%}
+    {%- assign patientAnimalCWE = patientAnimalCWEJson | from_json_string -%}
 {%- endif -%}
 {%- if patient._birthDate -%}
 {%- assign birthInfo = patient._birthDate.extension | get_by_url: 'http://hl7.org/fhir/StructureDefinition/patient-birthTime' -%}
@@ -93,7 +96,7 @@
 {% comment %} 32 Identity Reliability Code             {% endcomment %}|
 {% comment %} 33 Last Update Date/Time                 {% endcomment %}{% comment %}20050110015014+0315{% endcomment %}|
 {% comment %} 34 Last Update Facility                  {% endcomment %}|
-{% comment %} 35 Taxonomic Classification Code         {% endcomment %}{% comment %}125097000^Goat^SCT{% endcomment %}|
+{% comment %} 35 Taxonomic Classification Code         {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' code: patientAnimalCWE %}|
 {% comment %} 36 Breed Code                            {% endcomment %}{% comment %}4880003^Beagle^SCT{% endcomment %}|
 {% comment %} 37 Strain                                {% endcomment %}|
 {% comment %} 38 Production Class Code                 {% endcomment %}|
