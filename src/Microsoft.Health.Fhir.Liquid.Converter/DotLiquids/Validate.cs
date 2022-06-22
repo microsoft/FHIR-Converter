@@ -52,9 +52,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
         {
             JSchema validateSchema = LoadValidateSchema(context);
 
-            if (context is JSchemaContext jsonContext)
+            if (context is JSchemaContext jSchemaContext)
             {
-                jsonContext.ValidateSchemas.Add(validateSchema);
+                jSchemaContext.ValidateSchemas.Add(validateSchema);
             }
 
             using StringWriter writer = new StringWriter();

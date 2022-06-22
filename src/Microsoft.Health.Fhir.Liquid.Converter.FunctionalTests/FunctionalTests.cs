@@ -20,6 +20,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 {
     public class FunctionalTests
     {
+        private static readonly ProcessorSettings _processorSettings = new ProcessorSettings();
+
         public static IEnumerable<object[]> GetDataForHl7v2()
         {
             var data = new List<string[]>
@@ -284,7 +286,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         public void GivenCcdaMessageForTimezoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
         {
             var inputFile = Path.Combine("TestData", "TimezoneHandling", "Input", "CcdaTestTimezoneInput.ccda");
-            var ccdaProcessor = new CcdaProcessor();
+            var ccdaProcessor = new CcdaProcessor(_processorSettings);
             var templateDirectory = Path.Join("TestData", "TimezoneHandling", "Template");
 
             var inputContent = File.ReadAllText(inputFile);
@@ -304,7 +306,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         public void GivenHl7v2MessageForTimeZoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
         {
             var inputFile = Path.Combine("TestData", "TimezoneHandling", "Input", "Hl7v2TestTimezoneInput.hl7v2");
-            var hl7v2Processor = new Hl7v2Processor();
+            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
             var templateDirectory = Path.Join("TestData", "TimezoneHandling", "Template");
 
             var inputContent = File.ReadAllText(inputFile);
@@ -325,7 +327,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         [MemberData(nameof(GetDataForHl7v2))]
         public void GivenHl7v2Message_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
         {
-            var hl7v2Processor = new Hl7v2Processor();
+            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
             var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Hl7v2");
 
             var inputContent = File.ReadAllText(inputFile);
@@ -354,7 +356,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         [MemberData(nameof(GetDataForCcda))]
         public void GivenCcdaDocument_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
         {
-            var ccdaProcessor = new CcdaProcessor();
+            var ccdaProcessor = new CcdaProcessor(_processorSettings);
             var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Ccda");
 
             var inputContent = File.ReadAllText(inputFile);
@@ -375,7 +377,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         [MemberData(nameof(GetDataForStu3ToR4))]
         public void GivenStu3FhirData_WhenConverting_ExpectedR4FhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
         {
-            var fhirProcessor = new FhirProcessor();
+            var fhirProcessor = new FhirProcessor(_processorSettings);
             var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Stu3ToR4");
 
             var inputContent = File.ReadAllText(inputFile);
@@ -392,7 +394,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         [MemberData(nameof(GetDataForJson))]
         public void GivenJsonData_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
         {
-            var jsonProcessor = new JsonProcessor();
+            var jsonProcessor = new JsonProcessor(_processorSettings);
             var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Json");
 
             var inputContent = File.ReadAllText(inputFile);
@@ -408,7 +410,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         [Fact]
         public void GivenAnInvalidTemplate_WhenConverting_ExceptionsShouldBeThrown()
         {
-            var hl7v2Processor = new Hl7v2Processor();
+            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
             var templateCollection = new List<Dictionary<string, Template>>
             {
                 new Dictionary<string, Template>

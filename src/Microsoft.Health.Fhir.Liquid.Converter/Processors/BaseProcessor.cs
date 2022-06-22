@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using DotLiquid;
+using EnsureThat;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors;
@@ -17,9 +18,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public abstract class BaseProcessor : IFhirConverter
     {
-        protected BaseProcessor(ProcessorSettings processorSettings = null)
+        protected BaseProcessor(ProcessorSettings processorSettings)
         {
-            Settings = processorSettings ?? new ProcessorSettings();
+            EnsureArg.IsNotNull(processorSettings, nameof(processorSettings));
+
+            Settings = processorSettings;
         }
 
         public ProcessorSettings Settings { get; }
@@ -37,7 +40,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load data and templates
-            var timeout = Settings?.TimeOut ?? 0;
+            var timeout = Settings.TimeOut;
             var context = new Context(
                 environments: new List<Hash> { Hash.FromDictionary(data) },
                 outerScope: new Hash(),

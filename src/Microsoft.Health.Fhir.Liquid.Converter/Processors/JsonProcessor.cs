@@ -17,7 +17,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
     {
         private readonly IDataParser _parser = new JsonDataParser();
 
-        public JsonProcessor(ProcessorSettings processorSettings = null)
+        public JsonProcessor(ProcessorSettings processorSettings)
             : base(processorSettings)
         {
         }
@@ -31,7 +31,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load data and templates
-            var timeout = Settings?.TimeOut ?? 0;
+            var timeout = Settings.TimeOut;
             var context = new JSchemaContext(
                 environments: new List<Hash> { Hash.FromDictionary(data) },
                 outerScope: new Hash(),
