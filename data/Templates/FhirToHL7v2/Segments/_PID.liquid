@@ -42,7 +42,9 @@
     {%- assign patientMaritalStatus = patient.maritalStatus.coding -%}
 {%- endif -%}
 {%- if patient.communication -%}
-    {%- assign languageCodes = patient.communication[0].language.coding -%}
+    {%- assign patientLanguages = patient.communication[0].language.coding -%}
+    {%- evaluate patientLanguagesCWEJson using 'Mutators/PatientLanguagesToCWE' languages: patientLanguages -%}
+    {%- assign patientLanguagesCWE = patientLanguagesCWEJson | from_json_string -%}
 {%- endif -%}
 {%- assign patientAccountId = patientAccount.identifier[0] -%}
 {%- if patientAccountId and patientAccountId.assigner and patientAccountId.assigner.reference -%}
@@ -77,7 +79,7 @@
 {% comment %} 12 Country Code                          {% endcomment %}{% comment %}GL{% endcomment %}|
 {% comment %} 13 Phone Number (Home)                   {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientHomePhones %}|
 {% comment %} 14 Phone Number (Business)               {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientWorkPhones %}|
-{% comment %} 15 Primary Language                      {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: languageCodes, codingSystem: 'HL70296' %}|
+{% comment %} 15 Primary Language                      {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: patientLanguagesCWE %}|
 {% comment %} 16 Marital Status                        {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: patientMaritalStatus %}|
 {% comment %} 17 Religion                              {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: religionCodes, codingSystem: 'HL70006' %}|
 {% comment %} 18 Patient Account Number                {% endcomment %}{% include 'DataType/CX-ExtendedID' id: patientAccountCX %}|
