@@ -1,8 +1,9 @@
 {%- assign patientNames = patient.name | slice_array: 0, 2 -%}
 {%- if patient.extension -%}
-    {%- assign race = patient.extension | get_by_url:'http://hl7.org/fhir/us/core/StructureDefinition/us-core-race' -%}
+    {%- assign race = patient.extension | select: 'url', 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-race' | get_index: 0 -%}
     {%- if race.extension -%}
-        {%- assign raceCodes = race.extension | where: "url", "ombCategory" -%}
+        {%- evaluate patientRaceCWEJson using 'Mutators/PatientRaceToCWE' race: race -%}
+        {%- assign patientRaceCWE = patientRaceCWEJson | from_json_string -%}
     {%- endif -%}
     {%- assign maidenInfo = patient.extension | get_by_url: 'http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName' -%}
     {%- if maidenInfo -%}
@@ -71,7 +72,7 @@
 {% comment %}  7 Date/Time of Birth                    {% endcomment %}{% comment %}198808181126+0215{% endcomment %}|
 {% comment %}  8 Administrative Sex                    {% endcomment %}{{ patient.gender | first | upcase }}|
 {% comment %}  9 Patient Alias                         {% endcomment %}{% comment %}elbert^Son{% endcomment %}|
-{% comment %} 10 Race                                  {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: raceCodes, codingSystem: 'HL70005' %}|
+{% comment %} 10 Race                                  {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: patientRaceCWE %}|
 {% comment %} 11 Patient Address                       {% endcomment %}{% include 'DataType/XAD-ExtendedAddress' addresses: patientAddress %}|
 {% comment %} 12 Country Code                          {% endcomment %}{% comment %}GL{% endcomment %}|
 {% comment %} 13 Phone Number (Home)                   {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientHomePhones %}|
