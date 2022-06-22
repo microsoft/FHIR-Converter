@@ -14,7 +14,6 @@ or
 codes = [code, code]
 
 https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CWE
-2106-3^White^HL70005~2028-9^Asian^HL70005
 {% endcomment -%}
 {%- if code -%}
     {%- assign codes = code | to_array -%}
@@ -22,11 +21,6 @@ https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CWE
 {% capture repeats -%}
 {%- for code in codes -%}
 {% capture CWE -%}
-{%- case codingSystem -%}
-{%- when 'HL70006' -%}
-{% comment %} - Religion -  {% endcomment %}
-{% comment %} 1  Identifier {% endcomment %}{{ CodeMapping.Mapping['CodeSystem/Religion'][code.code] }}^
-{%- else -%}
 {% comment %} 1  Identifier                                {% endcomment %}{{ code.code }}^
 {% comment %} 2  Text                                      {% endcomment %}{{ code.display }}^
 {% comment %} 3  Name Of Coding System                     {% endcomment %}{{ code.name }}^
@@ -49,7 +43,6 @@ https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CWE
 {% comment %} 20 Second Alternate Coding System Oid        {% endcomment %}
 {% comment %} 21 Second Alternate Value Set Oid            {% endcomment %}
 {% comment %} 22 Second Alternate Value Set Version Id     {% endcomment %}
-{%- endcase -%}
 {% endcapture -%}
 {{ CWE | strip_newlines | remove_char_from_end: '^' }}
 ~
