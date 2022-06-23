@@ -20,6 +20,9 @@
     {%- assign patientVeteranStatus = patient.extension | select: 'url', 'http://example.com/v2-to-fhir-converter/StructureDefinition/VeteranMilitaryStatus' | get_index: 0 -%}
     {%- evaluate patientVeteranStatusCWEJson using 'Mutators/patientVeteranMilitaryStatusToCWE' veteranStatus: patientVeteranStatus -%}
     {%- assign patientVeteranStatusCWE = patientVeteranStatusCWEJson | from_json_string -%}
+    {%- assign patientTribalCitizenship = patientCitizenships | get_index: 1 -%}
+    {%- evaluate patientTribalCitizenshipCWEJson using 'Mutators/PatientCitizenshipToCWE' citizenship: patientTribalCitizenship -%}
+    {%- assign patientTribalCitizenshipCWE = patientTribalCitizenshipCWEJson | from_json_string -%}
 {%- endif -%}
 {%- if patient._birthDate -%}
 {%- assign birthInfo = patient._birthDate.extension | get_by_url: 'http://hl7.org/fhir/StructureDefinition/patient-birthTime' -%}
@@ -102,7 +105,7 @@
 {% comment %} 36 Breed Code                            {% endcomment %}{% comment %}4880003^Beagle^SCT{% endcomment %}|
 {% comment %} 37 Strain                                {% endcomment %}|
 {% comment %} 38 Production Class Code                 {% endcomment %}|
-{% comment %} 39 Tribal Citizenship                    {% endcomment %}{% comment %}CA^Canada^ISO3166_1{% endcomment %}|
+{% comment %} 39 Tribal Citizenship                    {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' code: patientTribalCitizenshipCWE %}|
 {% comment %} 40 Patient Telecommunication Information {% endcomment %}{% comment %}89898989^WPN^Internet{% endcomment %}
 {% endcapture -%}
 {{ PID | strip_newlines | regex_replace: '\|(\|+)$', '' }}
