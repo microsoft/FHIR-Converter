@@ -20,9 +20,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
     {
         protected BaseProcessor(ProcessorSettings processorSettings)
         {
-            EnsureArg.IsNotNull(processorSettings, nameof(processorSettings));
-
-            Settings = processorSettings;
+            Settings = EnsureArg.IsNotNull(processorSettings, nameof(processorSettings));
         }
 
         public ProcessorSettings Settings { get; }
