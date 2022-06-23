@@ -10,6 +10,16 @@
     {%- endif -%}
     {%- assign patientReligions = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-religion' | get_index: 0 -%}
     {%- assign religionCodes = patientReligions.valueCodeableConcept.coding -%}
+    {%- assign patientEthnicity = patient.extension | select: 'url', 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity' | get_index: 0 -%}
+    {%- evaluate patientEthnicityCWEJson using 'Mutators/PatientEthnicityToCWE' ethnicity: patientEthnicity -%}
+    {%- assign patientEthnicityCWE = patientEthnicityCWEJson | from_json_string -%}
+    {%- assign patientCitizenships = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-citizenship' -%}
+    {%- assign patientFirstCitizenship = patientCitizenships | get_index: 0 -%}
+    {%- evaluate patientCitizenshipCWEJson using 'Mutators/PatientCitizenshipToCWE' citizenship: patientFirstCitizenship -%}
+    {%- assign patientCitizenshipCWE = patientCitizenshipCWEJson | from_json_string -%}
+    {%- assign patientVeteranStatus = patient.extension | select: 'url', 'http://example.com/v2-to-fhir-converter/StructureDefinition/VeteranMilitaryStatus' | get_index: 0 -%}
+    {%- evaluate patientVeteranStatusCWEJson using 'Mutators/patientVeteranMilitaryStatusToCWE' veteranStatus: patientVeteranStatus -%}
+    {%- assign patientVeteranStatusCWE = patientVeteranStatusCWEJson | from_json_string -%}
 {%- endif -%}
 {%- if patient._birthDate -%}
 {%- assign birthInfo = patient._birthDate.extension | get_by_url: 'http://hl7.org/fhir/StructureDefinition/patient-birthTime' -%}
@@ -52,14 +62,6 @@
     {%- evaluate patientAccountCXJson using 'Mutators/PatientAccountToCX' account: patientAccountId, org: patientAccountOrg -%}
 {%- endif -%}
 {%- assign patientAccountCX = patientAccountCXJson | from_json_string -%}
-{%- if patient.extension -%}
-    {%- assign patientEthnicity = patient.extension | select: 'url', 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity' | get_index: 0 -%}
-    {%- evaluate patientEthnicityCWEJson using 'Mutators/patientEthnicityToCWE' ethnicity: patientEthnicity -%}
-    {%- assign patientEthnicityCWE = patientEthnicityCWEJson | from_json_string -%}
-    {%- assign patientVeteranStatus = patient.extension | select: 'url', 'http://example.com/v2-to-fhir-converter/StructureDefinition/VeteranMilitaryStatus' | get_index: 0 -%}
-    {%- evaluate patientVeteranStatusCWEJson using 'Mutators/patientVeteranMilitaryStatusToCWE' veteranStatus: patientVeteranStatus -%}
-    {%- assign patientVeteranStatusCWE = patientVeteranStatusCWEJson | from_json_string -%}
-{%- endif -%}
 {%- capture PID -%}
 {% comment %}  0 Message Type                          {% endcomment %}PID|
 {% comment %}  1 Set ID - PID                          {% endcomment %}1|{% comment %} PID.1 does not get sent to Fhir {% endcomment %}
@@ -87,7 +89,7 @@
 {% comment %} 23 Birth Place                           {% endcomment %}{% comment %}St. Francis Community Hospital of Lower South Side{% endcomment %}|
 {% comment %} 24 Multiple Birth Indicator              {% endcomment %}{% comment %}N{% endcomment %}|
 {% comment %} 25 Birth Order                           {% endcomment %}{% comment %}2{% endcomment %}|
-{% comment %} 26 Citizenship                           {% endcomment %}{% comment %}US^United States of America^ISO3166_1{% endcomment %}|
+{% comment %} 26 Citizenship                           {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' code: patientCitizenshipCWE, codingSystem: 'HL70171' %}|
 {% comment %} 27 Verterans Military Status             {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' code: patientVeteranStatusCWE %}|
 {% comment %} 28 Nationality                           {% endcomment %}{% comment %}BT^Bhutan^ISO3166_1{% endcomment %}|
 {% comment %} 29 Patient Death Date And Time           {% endcomment %}{% comment %}20080825111630+0115{% endcomment %}|
