@@ -1,15 +1,22 @@
 {%- assign patientNames = patient.name | slice_array: 0, 2 -%}
 {%- if patient.extension -%}
-    {%- assign race = patient.extension | get_by_url:'http://hl7.org/fhir/us/core/StructureDefinition/us-core-race' -%}
+    {%- assign race = patient.extension | select: 'url', 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-race' | get_index: 0 -%}
     {%- if race.extension -%}
-        {%- assign raceCodes = race.extension | where: "url", "ombCategory" -%}
+        {%- evaluate patientRaceCWEJson using 'Mutators/PatientRaceToCWE' race: race -%}
+        {%- assign patientRaceCWE = patientRaceCWEJson | from_json_string -%}
     {%- endif -%}
     {%- assign maidenInfo = patient.extension | get_by_url: 'http://hl7.org/fhir/StructureDefinition/patient-mothersMaidenName' -%}
     {%- if maidenInfo -%}
         {%- assign maidenNames = maidenInfo.valueString | split: '--' -%}
     {%- endif -%}
+    {%- assign patientReligion = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-religion' | get_index: 0 -%}
+    {%- evaluate patientReligionCWEJson using 'Mutators/PatientReligionToCWE' religion: patientReligion -%}
+    {%- assign patientReligionCWE = patientReligionCWEJson | from_json_string -%}
     {%- assign patientReligions = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-religion' | get_index: 0 -%}
     {%- assign religionCodes = patientReligions.valueCodeableConcept.coding -%}
+    {%- assign patientAnimal = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-animal' | get_index: 0 -%}
+    {%- evaluate patientAnimalCWEJson using 'Mutators/PatientAnimalToCWE' animal: patientAnimal -%}
+    {%- assign patientAnimalCWE = patientAnimalCWEJson | from_json_string -%}
     {%- assign patientEthnicity = patient.extension | select: 'url', 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity' | get_index: 0 -%}
     {%- evaluate patientEthnicityCWEJson using 'Mutators/PatientEthnicityToCWE' ethnicity: patientEthnicity -%}
     {%- assign patientEthnicityCWE = patientEthnicityCWEJson | from_json_string -%}
@@ -54,7 +61,9 @@
     {%- assign patientMaritalStatus = patient.maritalStatus.coding -%}
 {%- endif -%}
 {%- if patient.communication -%}
-    {%- assign languageCodes = patient.communication[0].language.coding -%}
+    {%- assign patientLanguages = patient.communication[0].language.coding -%}
+    {%- evaluate patientLanguagesCWEJson using 'Mutators/PatientLanguagesToCWE' languages: patientLanguages -%}
+    {%- assign patientLanguagesCWE = patientLanguagesCWEJson | from_json_string -%}
 {%- endif -%}
 {%- assign patientAccountId = patientAccount.identifier[0] -%}
 {%- if patientAccountId and patientAccountId.assigner and patientAccountId.assigner.reference -%}
@@ -76,14 +85,14 @@
 {% comment %}  7 Date/Time of Birth                    {% endcomment %}{% comment %}198808181126+0215{% endcomment %}|
 {% comment %}  8 Administrative Sex                    {% endcomment %}{{ patient.gender | first | upcase }}|
 {% comment %}  9 Patient Alias                         {% endcomment %}{% comment %}elbert^Son{% endcomment %}|
-{% comment %} 10 Race                                  {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: raceCodes, codingSystem: 'HL70005' %}|
+{% comment %} 10 Race                                  {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: patientRaceCWE %}|
 {% comment %} 11 Patient Address                       {% endcomment %}{% include 'DataType/XAD-ExtendedAddress' addresses: patientAddress %}|
 {% comment %} 12 Country Code                          {% endcomment %}{% comment %}GL{% endcomment %}|
 {% comment %} 13 Phone Number (Home)                   {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientHomePhones %}|
 {% comment %} 14 Phone Number (Business)               {% endcomment %}{% include 'DataType/XTN-ExtendedTelecommunicationNumber' phoneNumbers: patientWorkPhones %}|
-{% comment %} 15 Primary Language                      {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: languageCodes, codingSystem: 'HL70296' %}|
+{% comment %} 15 Primary Language                      {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: patientLanguagesCWE %}|
 {% comment %} 16 Marital Status                        {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: patientMaritalStatus %}|
-{% comment %} 17 Religion                              {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' codes: religionCodes, codingSystem: 'HL70006' %}|
+{% comment %} 17 Religion                              {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' code: patientReligionCWE %}|
 {% comment %} 18 Patient Account Number                {% endcomment %}{% include 'DataType/CX-ExtendedID' id: patientAccountCX %}|
 {% comment %} 19 SSN Number                            {% endcomment %}{% comment %}{{ patientSB.value }}{% endcomment %}|
 {% comment %} 20 Drivers License Number                {% endcomment %}{% comment %}DLN-123^US^20010123{% endcomment %}|
@@ -101,7 +110,7 @@
 {% comment %} 32 Identity Reliability Code             {% endcomment %}|
 {% comment %} 33 Last Update Date/Time                 {% endcomment %}{% comment %}20050110015014+0315{% endcomment %}|
 {% comment %} 34 Last Update Facility                  {% endcomment %}|
-{% comment %} 35 Taxonomic Classification Code         {% endcomment %}{% comment %}125097000^Goat^SCT{% endcomment %}|
+{% comment %} 35 Taxonomic Classification Code         {% endcomment %}{% include 'DataType/CWE-CodedWithExceptions' code: patientAnimalCWE %}|
 {% comment %} 36 Breed Code                            {% endcomment %}{% comment %}4880003^Beagle^SCT{% endcomment %}|
 {% comment %} 37 Strain                                {% endcomment %}|
 {% comment %} 38 Production Class Code                 {% endcomment %}|

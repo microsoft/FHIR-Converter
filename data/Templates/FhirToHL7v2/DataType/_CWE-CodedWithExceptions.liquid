@@ -6,14 +6,14 @@ code = {
     "name": "",
     "alternate": {
         "id": "",
-        "text": "",  
-    }
+        "text": "",
+        "name": ""
+    },
 }
 or
 codes = [code, code]
 
 https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CWE
-2106-3^White^HL70005~2028-9^Asian^HL70005
 {% endcomment -%}
 {%- if code -%}
     {%- assign codes = code | to_array -%}
@@ -21,14 +21,12 @@ https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CWE
 {% capture repeats -%}
 {%- for code in codes -%}
 {% capture CWE -%}
-{%- case codingSystem -%}
-{%- when 'HL70005' -%}
-{% comment %} 1  Identifier                                {% endcomment %}{{ code.valueCoding.code }}^
-{% comment %} 2  Text                                      {% endcomment %}{{ code.valueCoding.display }}^
-{% comment %} 3  Name Of Coding System                     {% endcomment %}HL70005^
-{% comment %} 4  Alternate Identifier                      {% endcomment %}{{ code.valueCoding.alternateIdentifier }}^
-{% comment %} 5  Alternate Text                            {% endcomment %}{{ code.valueCoding.alternateText }}^
-{% comment %} 6  Name Of Alternate Coding System           {% endcomment %}
+{% comment %} 1  Identifier                                {% endcomment %}{{ code.code }}^
+{% comment %} 2  Text                                      {% endcomment %}{{ code.display }}^
+{% comment %} 3  Name Of Coding System                     {% endcomment %}{{ code.name }}^
+{% comment %} 4  Alternate Identifier                      {% endcomment %}{{ code.alternate.id }}^
+{% comment %} 5  Alternate Text                            {% endcomment %}{{ code.alternate.text }}^
+{% comment %} 6  Name Of Alternate Coding System           {% endcomment %}{{ code.alternate.name }}^
 {% comment %} 7  Coding System Version Id                  {% endcomment %}
 {% comment %} 8  Alternate Coding System Version Id        {% endcomment %}
 {% comment %} 9  Original Text                             {% endcomment %}
@@ -45,25 +43,6 @@ https://hl7-definition.caristix.com/v2/HL7v2.8/DataTypes/CWE
 {% comment %} 20 Second Alternate Coding System Oid        {% endcomment %}
 {% comment %} 21 Second Alternate Value Set Oid            {% endcomment %}
 {% comment %} 22 Second Alternate Value Set Version Id     {% endcomment %}
-{% comment %} {{ CodeMapping.Mapping['CodeSystem/Language'] | select: "*.code", code.code | keys | get_index: 0 }} {% endcomment %}
-{%- when 'HL70296' -%}
-{% comment %} - Primary Language -               {% endcomment %}
-{% comment %} 1  Identifier                      {% endcomment %}{{ CodeMapping.Mapping['CodeSystem/Language'][code.code] }}^
-{% comment %} 2  Text                            {% endcomment %}{{ code.display }}^
-{% comment %} 3  Name Of Coding System           {% endcomment %}HL70296^
-{% comment %} 4  Alternate Identifier            {% endcomment %}^
-{% comment %} 5  Alternate Text                  {% endcomment %}^
-{% comment %} 6  Name Of Alternate Coding System {% endcomment %}{{ code.version }}^
-{%- when 'HL70006' -%}
-{% comment %} - Religion -  {% endcomment %}
-{% comment %} 1  Identifier {% endcomment %}{{ CodeMapping.Mapping['CodeSystem/Religion'][code.code] }}^
-{%- else -%}
-{% comment %} 1  Identifier                                {% endcomment %}{{ code.code }}^
-{% comment %} 2  Text                                      {% endcomment %}{{ code.display }}^
-{% comment %} 3  Name Of Coding System                     {% endcomment %}{{ code.name }}^
-{% comment %} 4  Alternate Identifier                      {% endcomment %}{{ code.alternateIdentifier }}^
-{% comment %} 5  Alternate Text                            {% endcomment %}{{ code.alternateText }}^
-{%- endcase -%}
 {% endcapture -%}
 {{ CWE | strip_newlines | remove_char_from_end: '^' }}
 ~
