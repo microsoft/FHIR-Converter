@@ -1,0 +1,44 @@
+{% comment %}
+Example of input:
+animal = {
+    "url": "http://hl7.org/fhir/StructureDefinition/patient-animal",
+    "extension": [
+        {
+            "url": "species",
+            "valueCodeableConcept": {
+                "coding": [
+                    {
+                        "code": "125097000",
+                        "display": "Goat",
+                        "system": "http://snomed.info/sct"
+                    }
+                ],
+                "text": "Goat"
+            }
+        },
+        {
+            "url": "breed",
+            "valueCodeableConcept": {
+                "coding": [
+                    {
+                        "code": "4880003",
+                        "display": "Beagle",
+                        "system": "http://snomed.info/sct"
+                    }
+                ],
+                "text": "Beagle"
+            }
+        }
+    ]
+}
+{% endcomment %}
+{%- assign animalCode = animal.extension[0].valueCodeableConcept.coding[0] -%}
+{
+    "code": "{{ animalCode.code }}",
+    "display": "{{ animalCode.display }}",
+    "name": "{{ animalCode.system | replace: 'http://snomed.info/'  | upcase }}",
+    "alternate": {
+        "id": "",
+        "text": "",  
+    }
+}
