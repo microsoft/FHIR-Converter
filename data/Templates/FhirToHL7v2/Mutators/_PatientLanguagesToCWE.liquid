@@ -1,0 +1,32 @@
+{% comment %}
+Example of input:
+languages = [
+    {
+        "code":"ar",
+        "display":"Arabic",
+        "system":"urn:ietf:bcp:47",
+        "version":"v2"
+    },
+    {
+        "code":"en",
+        "display":"English",
+        "system":"urn:ietf:bcp:47",
+        "version":"v2.1"
+    }
+]
+{% endcomment %}
+{% capture repeats -%}
+{%- for language in languages -%}
+    {
+        "code": "{{ CodeMapping.Mapping['CodeSystem/Language'][language.code] }}",
+        "display": "{{ language.display }}",
+        "name": "HL70296",
+        "alternate": {
+            "id": "",
+            "text": "",
+            "name": "{{ language.version }}"
+        }
+    },
+{%- endfor -%}
+{% endcapture -%}
+[{{ repeats | strip_newlines | remove_char_from_end: ',' -}}]

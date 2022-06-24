@@ -1,0 +1,43 @@
+{% comment %}
+Example of input:
+race = {
+    "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+    "extension": [
+        {
+            "url": "ombCategory",
+            "valueCoding": {
+                "code": "2106-3",
+                "display": "White",
+                "system": "urn:oid:2.16.840.1.113883.6.238"
+            }
+        },
+        {
+            "url": "ombCategory",
+            "valueCoding": {
+                "code": "2028-9",
+                "display": "Asian",
+                "system": "urn:oid:2.16.840.1.113883.6.238"
+            }
+        },
+        {
+            "url": "text",
+            "valueString": "White+Asian"
+        }
+    ]
+}
+{% endcomment %}
+{%- assign raceCodes = race.extension | select: 'url', 'ombCategory' -%}
+{% capture repeats -%}
+{%- for raceCode in raceCodes -%}
+    {
+        "code": "{{ raceCode.valueCoding.code }}",
+        "display": "{{ raceCode.valueCoding.display }}",
+        "name": "HL70005",
+        "alternate": {
+            "id": "",
+            "text": "",  
+        }
+    },
+{%- endfor -%}
+{% endcapture -%}
+[{{ repeats | remove_char_from_end: ',' -}}]
