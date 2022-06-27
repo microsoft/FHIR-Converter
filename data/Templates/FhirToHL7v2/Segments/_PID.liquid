@@ -9,27 +9,32 @@
     {%- if maidenInfo -%}
         {%- assign maidenNames = maidenInfo.valueString | split: '--' -%}
     {%- endif -%}
+    {%- comment -%} Religion {%- endcomment -%}
     {%- assign patientReligion = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-religion' | get_index: 0 -%}
     {%- evaluate patientReligionCWEJson using 'Mutators/PatientReligionToCWE' religion: patientReligion -%}
     {%- assign patientReligionCWE = patientReligionCWEJson | from_json_string -%}
     {%- assign patientReligions = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-religion' | get_index: 0 -%}
     {%- assign religionCodes = patientReligions.valueCodeableConcept.coding -%}
+    {%- comment -%} Animal {%- endcomment -%}
     {%- assign patientAnimal = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-animal' | get_index: 0 -%}
     {%- evaluate patientAnimalCWEJson using 'Mutators/PatientAnimalToCWE' animal: patientAnimal -%}
     {%- assign patientAnimalCWE = patientAnimalCWEJson | from_json_string -%}
+    {%- comment -%} Ethnicity {%- endcomment -%}
     {%- assign patientEthnicity = patient.extension | select: 'url', 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity' | get_index: 0 -%}
     {%- evaluate patientEthnicityCWEJson using 'Mutators/PatientEthnicityToCWE' ethnicity: patientEthnicity -%}
     {%- assign patientEthnicityCWE = patientEthnicityCWEJson | from_json_string -%}
+    {%- comment -%} Citizenships {%- endcomment -%}
     {%- assign patientCitizenships = patient.extension | select: 'url', 'http://hl7.org/fhir/StructureDefinition/patient-citizenship' -%}
     {%- assign patientFirstCitizenship = patientCitizenships | get_index: 0 -%}
     {%- evaluate patientCitizenshipCWEJson using 'Mutators/PatientCitizenshipToCWE' citizenship: patientFirstCitizenship -%}
     {%- assign patientCitizenshipCWE = patientCitizenshipCWEJson | from_json_string -%}
-    {%- assign patientVeteranStatus = patient.extension | select: 'url', 'http://example.com/v2-to-fhir-converter/StructureDefinition/VeteranMilitaryStatus' | get_index: 0 -%}
-    {%- evaluate patientVeteranStatusCWEJson using 'Mutators/patientVeteranMilitaryStatusToCWE' veteranStatus: patientVeteranStatus -%}
-    {%- assign patientVeteranStatusCWE = patientVeteranStatusCWEJson | from_json_string -%}
     {%- assign patientTribalCitizenship = patientCitizenships | get_index: 1 -%}
     {%- evaluate patientTribalCitizenshipCWEJson using 'Mutators/PatientCitizenshipToCWE' citizenship: patientTribalCitizenship -%}
     {%- assign patientTribalCitizenshipCWE = patientTribalCitizenshipCWEJson | from_json_string -%}
+    {%- comment -%} Veteran Status {%- endcomment -%}
+    {%- assign patientVeteranStatus = patient.extension | select: 'url', 'http://example.com/v2-to-fhir-converter/StructureDefinition/VeteranMilitaryStatus' | get_index: 0 -%}
+    {%- evaluate patientVeteranStatusCWEJson using 'Mutators/patientVeteranMilitaryStatusToCWE' veteranStatus: patientVeteranStatus -%}
+    {%- assign patientVeteranStatusCWE = patientVeteranStatusCWEJson | from_json_string -%}
 {%- endif -%}
 {%- if patient._birthDate -%}
 {%- assign birthInfo = patient._birthDate.extension | get_by_url: 'http://hl7.org/fhir/StructureDefinition/patient-birthTime' -%}
