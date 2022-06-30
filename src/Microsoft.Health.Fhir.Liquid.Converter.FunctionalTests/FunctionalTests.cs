@@ -346,6 +346,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 actualObject.SelectToken(path).Parent.Remove();
             });
 
+            var tes1 = JsonConvert.SerializeObject(expectedObject, Formatting.Indented);
+            var tes2 = JsonConvert.SerializeObject(actualObject,Formatting.Indented);
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
             Assert.True(traceInfo.UnusedSegments.Count > 0);
         }
