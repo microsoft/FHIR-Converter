@@ -19,6 +19,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
     {
         private const string MetadataFileName = "metadata.json";
         private static readonly List<string> CcdaExtensions = new List<string> { ".ccda", ".xml" };
+        private static readonly ProcessorSettings DefaultProcessorSettings = new ProcessorSettings();
 
         internal static void Convert(ConverterOptions options)
         {
@@ -96,10 +97,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
         {
             return dataType switch
             {
-                DataType.Hl7v2 => new Hl7v2Processor(),
-                DataType.Ccda => new CcdaProcessor(),
-                DataType.Json => new JsonProcessor(),
-                DataType.Fhir => new FhirProcessor(),
+                DataType.Hl7v2 => new Hl7v2Processor(DefaultProcessorSettings),
+                DataType.Ccda => new CcdaProcessor(DefaultProcessorSettings),
+                DataType.Json => new JsonProcessor(DefaultProcessorSettings),
+                DataType.Fhir => new FhirProcessor(DefaultProcessorSettings),
                 _ => throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported")
             };
         }

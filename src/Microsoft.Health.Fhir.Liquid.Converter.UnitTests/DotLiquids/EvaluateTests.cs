@@ -45,7 +45,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         public void GivenValidEvaluateTemplateContent_WhenParseAndRender_CorrectResultShouldBeReturned(string templateContent)
         {
             // Template should be parsed correctly
-            var template = TemplateUtility.ParseTemplate(TemplateName, templateContent);
+            var template = TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent);
             Assert.True(template.Root.NodeList.Count > 0);
 
             // Template should be rendered correctly
@@ -66,14 +66,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [MemberData(nameof(GetInvalidEvaluateTemplateContents))]
         public void GivenInvalidEvaluateTemplateContent_WhenParse_ExceptionsShouldBeThrown(string templateContent)
         {
-            Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplate(TemplateName, templateContent));
+            Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent));
         }
 
         [Fact]
         public void GivenInvalidSnippet_WhenRender_ExceptionsShouldBeThrown()
         {
             // No template file system
-            var template = TemplateUtility.ParseTemplate(TemplateName, @"{% evaluate bundleId using 'ID/Bundle' Data: hl7v2Data -%}");
+            var template = TemplateUtility.ParseLiquidTemplate(TemplateName, @"{% evaluate bundleId using 'ID/Bundle' Data: hl7v2Data -%}");
             var context = new Context(
                 environments: new List<Hash>(),
                 outerScope: new Hash(),
@@ -85,7 +85,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             Assert.Throws<FileSystemException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
 
             // Valid template file system but no such template
-            template = TemplateUtility.ParseTemplate(TemplateName, @"{% evaluate bundleId using 'ID/Foo' Data: hl7v2Data -%}");
+            template = TemplateUtility.ParseLiquidTemplate(TemplateName, @"{% evaluate bundleId using 'ID/Foo' Data: hl7v2Data -%}");
             var templateProvider = new TemplateProvider(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2);
             context = new Context(
                 environments: new List<Hash>(),

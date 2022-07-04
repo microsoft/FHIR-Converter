@@ -1,0 +1,12 @@
+{% validate "Schemas/TestSchema.schema.json" -%}
+{
+    "resourceType": "{{ msg.resourceType }}",
+    "id": "{{ msg.id}}",
+    "nestedProperty":
+    {% validate "Schemas/TestSubPropertySchema.schema.json" -%}
+    {
+        "testField": "fieldValue"
+    }
+    {% endvalidate -%}
+}
+{% endvalidate -%}

@@ -38,46 +38,42 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
         public Template GetTemplate(Context context, string templateName)
         {
-            var templatePath = (string)context[templateName];
-            if (templatePath == null)
+            var templateKey = (string)context[templateName];
+            if (templateKey == null)
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, templateName));
             }
 
-            return GetTemplate(templatePath) ?? throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, templatePath));
+            return GetTemplate(templateKey) ?? throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, templateKey));
         }
 
-        public Template GetTemplate(string templateName)
+        public Template GetTemplate(string templateKey)
         {
-            if (string.IsNullOrEmpty(templateName))
+            if (string.IsNullOrEmpty(templateKey))
             {
                 return null;
             }
 
             // Get template from cache first
-            if (_templateCache.ContainsKey(templateName))
+            if (_templateCache.ContainsKey(templateKey))
             {
-                return _templateCache[templateName];
+                return _templateCache[templateKey];
             }
 
             // If not cached, search local file system
-            var templateContent = ReadTemplateFile(templateName);
-            var template = IsCodeMappingTemplate(templateName) ? TemplateUtility.ParseCodeMapping(templateContent) : TemplateUtility.ParseTemplate(templateName, templateContent);
-            var key = IsCodeMappingTemplate(templateName) ? $"{templateName}/{templateName}" : templateName;
+            var templateContent = ReadTemplateFile(templateKey);
 
-            if (template != null)
-            {
-                _templateCache[key] = template;
-            }
+            Template template = TemplateUtility.ParseTemplate(templateKey, templateContent);
+            _templateCache[templateKey] = template;
 
             return template;
         }
 
-        private string ReadTemplateFile(string templateName)
+        private string ReadTemplateFile(string templateKey)
         {
             try
             {
-                var templatePath = GetAbsoluteTemplatePath(templateName);
+                var templatePath = GetAbsoluteTemplatePath(templateKey);
                 return File.Exists(templatePath) ? File.ReadAllText(templatePath) : null;
             }
             catch (Exception ex)
@@ -88,25 +84,29 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
         private string GetAbsoluteTemplatePath(string templateName)
         {
+            // 1. Json schema template, keep as is. E.g. "schema/Patient.schema.json"
+            // 2. Liquid template in root directory, append ".liquid" suffix. E.g. "CCD" -> "CCD.liquid"
+            // 3. Liquid template in sub directory, append "_" prefix and ".liquid" suffix. E.g. "Resource/Encounter" -> "Resource/_Encounter.liquid"
+            // 4. Code mapping template, append ".json" suffix. E.g. "ValueSet/ValueSet" -> "valueSet/ValueSet.json"
+
             var result = _templateDirectory;
             var pathSegments = templateName.Split(Path.AltDirectorySeparatorChar);
 
-            // Root templates
-            if (pathSegments.Length == 1)
+            if (!TemplateUtility.IsJsonSchemaTemplate(templateName))
             {
-                return Path.Join(_templateDirectory, $"{pathSegments[0]}.liquid");
+                if (pathSegments.Length == 1)
+                {
+                    // Root template
+                    pathSegments[0] = $"{pathSegments[0]}.liquid";
+                }
+                else
+                {
+                    // Snippets
+                    pathSegments[^1] = TemplateUtility.IsCodeMappingTemplate(templateName) ? $"{pathSegments[^1]}.json" : $"_{pathSegments[^1]}.liquid";
+                }
             }
 
-            // Snippets
-            pathSegments[^1] = IsCodeMappingTemplate(templateName) ? $"{pathSegments[^1]}.json" : $"_{pathSegments[^1]}.liquid";
-
             return pathSegments.Aggregate(result, Path.Join);
-        }
-
-        private static bool IsCodeMappingTemplate(string templateName)
-        {
-            return string.Equals("CodeSystem/CodeSystem", templateName, StringComparison.InvariantCultureIgnoreCase) ||
-                   string.Equals("ValueSet/ValueSet", templateName, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

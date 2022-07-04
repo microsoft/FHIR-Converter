@@ -16,7 +16,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
     {
         private readonly IDataParser _parser = new Hl7v2DataParser();
 
-        public Hl7v2Processor(ProcessorSettings processorSettings = null)
+        public Hl7v2Processor(ProcessorSettings processorSettings)
             : base(processorSettings)
         {
         }
@@ -42,7 +42,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             return context;
         }
 
-        protected override void CreateTraceInfo(object data, TraceInfo traceInfo)
+        protected override void CreateTraceInfo(object data, Context context, TraceInfo traceInfo)
         {
             if (traceInfo is Hl7v2TraceInfo hl7v2TraceInfo)
             {
