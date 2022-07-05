@@ -46,6 +46,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly ContainerRegistryInfo _containerRegistryInfo;
         private static readonly string _templateDirectory = Path.Join("..", "..", "data", "Templates");
         private static readonly string _sampleDataDirectory = Path.Join("..", "..", "data", "SampleData");
+        private static readonly ProcessorSettings _processorSettings = new ProcessorSettings();
 
         public TemplateCollectionFunctionalTests()
         {
@@ -362,7 +363,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultHl7v2TemplateImageReference, string.Empty);
             var imageTemplateProvider = new TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
-            var hl7v2Processor = new Hl7v2Processor();
+            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
             var inputContent = File.ReadAllText(inputFile);
 
             var imageResult = hl7v2Processor.Convert(inputContent, rootTemplate, imageTemplateProvider);
@@ -385,7 +386,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultCcdaTemplateImageReference, string.Empty);
             var imageTemplateProvider = new TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
-            var ccdaProcessor = new CcdaProcessor();
+            var ccdaProcessor = new CcdaProcessor(_processorSettings);
             var inputContent = File.ReadAllText(inputFile);
 
             var imageResult = ccdaProcessor.Convert(inputContent, rootTemplate, imageTemplateProvider);
@@ -411,7 +412,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultJsonTemplateImageReference, string.Empty);
             var imageTemplateProvider = new TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
-            var jsonProcessor = new JsonProcessor();
+            var jsonProcessor = new JsonProcessor(_processorSettings);
             var inputContent = File.ReadAllText(inputFile);
 
             var imageResult = jsonProcessor.Convert(inputContent, rootTemplate, imageTemplateProvider);
@@ -433,7 +434,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultStu3ToR4TemplateImageReference, string.Empty);
             var imageTemplateProvider = new TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
-            var fhirProcessor = new FhirProcessor();
+            var fhirProcessor = new FhirProcessor(_processorSettings);
             var inputContent = File.ReadAllText(inputFile);
 
             var imageResult = fhirProcessor.Convert(inputContent, rootTemplate, imageTemplateProvider);
@@ -447,7 +448,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         private void TestByTemplate(string inputFile, string entryTemplate, List<Dictionary<string, Template>> templateProvider)
         {
-            var hl7v2Processor = new Hl7v2Processor();
+            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
             var inputContent = File.ReadAllText(inputFile);
             var actualContent = hl7v2Processor.Convert(inputContent, entryTemplate, new TemplateProvider(templateProvider));
 

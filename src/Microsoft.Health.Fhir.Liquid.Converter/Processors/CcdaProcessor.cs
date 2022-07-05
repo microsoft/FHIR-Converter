@@ -15,7 +15,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
     {
         private readonly IDataParser _parser = new CcdaDataParser();
 
-        public CcdaProcessor(ProcessorSettings processorSettings = null)
+        public CcdaProcessor(ProcessorSettings processorSettings)
             : base(processorSettings)
         {
         }
