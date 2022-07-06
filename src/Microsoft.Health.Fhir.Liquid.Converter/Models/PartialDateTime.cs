@@ -37,7 +37,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
             int hour = groups["hour"].Success ? int.Parse(groups["hour"].Value) : 0;
             int minute = groups["minute"].Success ? int.Parse(groups["minute"].Value) : 0;
             int second = groups["second"].Success ? int.Parse(groups["second"].Value) : 0;
-            int millisecond = groups["millisecond"].Success ? int.Parse(groups["millisecond"].Value) : 0;
+            int millisecond = groups["millisecond"].Success ? int.Parse(groups["millisecond"].Value.Length > 3 ? groups["millisecond"].Value.Substring(0, 3) : groups["millisecond"].Value) : 0;
+            MillisecondString = groups["millisecond"].Success ? groups["millisecond"].Value : null;
 
             var timeSpan = TimeZoneInfo.Local.GetUtcOffset(new DateTime(year, month, day, hour, minute, second, millisecond));
             if (groups["timeZone"].Success)
@@ -71,6 +72,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 
         public bool HasTimeZone { get; private set; }
 
+        public string MillisecondString { get; private set; }
+
         public DateTimePrecision Precision { get; private set; }
 
         public PartialDateTime ConvertToDate()
@@ -82,6 +85,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
         public PartialDateTime AddSeconds(double seconds)
         {
             DateTimeValue = DateTimeValue.AddSeconds(seconds);
+            MillisecondString = null;
+
             if (Precision != DateTimePrecision.Milliseconds)
             {
                 Precision = DateTimeValue.Millisecond == 0 ? DateTimePrecision.Second : DateTimePrecision.Milliseconds;
@@ -112,8 +117,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
             }
 
             var timeZoneSuffix = resultDateTime.Offset == TimeSpan.Zero ? "Z" : "%K";
+            string dateTimeFormat;
+            if (Precision < DateTimePrecision.Milliseconds)
+            {
+                dateTimeFormat = "yyyy-MM-ddTHH:mm:ss" + timeZoneSuffix;
+            }
+            else
+            {
+                dateTimeFormat = MillisecondString == null ? "yyyy-MM-ddTHH:mm:ss.fff" + timeZoneSuffix : "yyyy-MM-ddTHH:mm:ss." + MillisecondString + timeZoneSuffix;
+            }
 
-            var dateTimeFormat = Precision < DateTimePrecision.Milliseconds ? "yyyy-MM-ddTHH:mm:ss" + timeZoneSuffix : "yyyy-MM-ddTHH:mm:ss.fff" + timeZoneSuffix;
             return resultDateTime.ToString(dateTimeFormat);
         }
     }
