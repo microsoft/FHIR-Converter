@@ -160,6 +160,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid JSON schema content : {0}..
+        /// </summary>
+        internal static string InvalidJsonSchemaContent {
+            get {
+                return ResourceManager.GetString("InvalidJsonSchemaContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Content in &apos;MergeDiff&apos; block should be a json object..
         /// </summary>
         internal static string InvalidMergeDiffBlockContent {
@@ -183,6 +192,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         internal static string InvalidTimeZoneHandling {
             get {
                 return ResourceManager.GetString("InvalidTimeZoneHandling", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Content in &apos;validate&apos; block should be a json object: {0}.
+        /// </summary>
+        internal static string InvalidValidateContentBlock {
+            get {
+                return ResourceManager.GetString("InvalidValidateContentBlock", resourceCulture);
             }
         }
         
@@ -345,6 +363,24 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         internal static string UnexpectedJsonConvertToken {
             get {
                 return ResourceManager.GetString("UnexpectedJsonConvertToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The validate block content is not match with schema: {0}. Reasons: {1}.
+        /// </summary>
+        internal static string UnMatchedValidateBlockContent {
+            get {
+                return ResourceManager.GetString("UnMatchedValidateBlockContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Syntax Error in &apos;validate&apos; tag - Valid syntax: validate [schema file]..
+        /// </summary>
+        internal static string ValidateTagSyntaxError {
+            get {
+                return ResourceManager.GetString("ValidateTagSyntaxError", resourceCulture);
             }
         }
     }

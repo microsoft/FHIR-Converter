@@ -5,10 +5,14 @@
 
 using System;
 using System.Globalization;
+using System.IO;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
@@ -45,12 +49,41 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         }
 
         [Fact]
+        public void GivenAValidTemplateDirectory_WhenGetJsonSchemaTemplate_CorrectResultsShouldBeReturned()
+        {
+            var templateLocalFileSystem = new TemplateLocalFileSystem(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates"), DataType.Hl7v2);
+            var testSchemaPath = "Schemas/TestSchema.schema.json";
+            var context = new Context(CultureInfo.InvariantCulture);
+
+            var schemaTemplate = templateLocalFileSystem.GetTemplate(testSchemaPath);
+
+            // Template exists
+            Assert.NotNull(schemaTemplate);
+
+            var jSchemaDocument = schemaTemplate.Root as JSchemaDocument;
+            Assert.NotNull(jSchemaDocument);
+            Assert.NotNull(jSchemaDocument.Schema);
+
+            JSchema expectedJSchema = JSchema.Parse(File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates", testSchemaPath)));
+            Assert.True(JToken.DeepEquals(JToken.Parse(jSchemaDocument.Schema.ToString()), JToken.Parse(expectedJSchema.ToString())));
+        }
+
+        [Fact]
         public void GivenAValidTemplateDirectory_WhenReadTemplateWithContext_ExceptionShouldBeThrown()
         {
             var templateLocalFileSystem = new TemplateLocalFileSystem(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2);
             var context = new Context(CultureInfo.InvariantCulture);
             context["ADT_A01"] = "ADT_A01";
             Assert.Throws<NotImplementedException>(() => templateLocalFileSystem.ReadTemplateFile(context, "hello"));
+        }
+
+        [Fact]
+        public void GivenAValidTemplateDirectory_WhenGetInvalidJsonSchemaTemplate_CorrectResultsShouldBeReturned()
+        {
+            var templateLocalFileSystem = new TemplateLocalFileSystem(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates"), DataType.Hl7v2);
+            var testSchemaPath = "Schemas/InvalidTestSchema.schema.json";
+            var context = new Context(CultureInfo.InvariantCulture);
+            Assert.Throws<TemplateLoadException>(() => templateLocalFileSystem.GetTemplate(testSchemaPath));
         }
     }
 }

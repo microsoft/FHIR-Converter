@@ -9,7 +9,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public class FhirProcessor : JsonProcessor
     {
-        public FhirProcessor(ProcessorSettings processorSettings = null)
+        public FhirProcessor(ProcessorSettings processorSettings)
             : base(processorSettings)
         {
         }

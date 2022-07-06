@@ -150,6 +150,9 @@
   <data name="InvalidInputOfMergeDiffBlock" xml:space="preserve">
     <value>The input message of 'MergeDiff' tag should be a json object.</value>
   </data>
+  <data name="InvalidJsonSchemaContent" xml:space="preserve">
+    <value>Invalid JSON schema content : {0}.</value>
+  </data>
   <data name="InvalidMergeDiffBlockContent" xml:space="preserve">
     <value>Content in 'MergeDiff' block should be a json object.</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="InvalidTimeZoneHandling" xml:space="preserve">
     <value>TimeZoneHandling only supports 'local', 'utc' and 'preserve'.</value>
+  </data>
+  <data name="InvalidValidateContentBlock" xml:space="preserve">
+    <value>Content in 'validate' block should be a json object: {0}</value>
   </data>
   <data name="JsonMergingError" xml:space="preserve">
     <value>Error happened when merging JSON: {0}</value>
@@ -212,5 +218,11 @@
   </data>
   <data name="UnexpectedJsonConvertToken" xml:space="preserve">
     <value>Unexpected token when converting IDictionary&lt;string, object&gt;.</value>
+  </data>
+  <data name="UnMatchedValidateBlockContent" xml:space="preserve">
+    <value>The validate block content is not match with schema: {0}. Reasons: {1}</value>
+  </data>
+  <data name="ValidateTagSyntaxError" xml:space="preserve">
+    <value>Syntax Error in 'validate' tag - Valid syntax: validate [schema file].</value>
   </data>
 </root>
