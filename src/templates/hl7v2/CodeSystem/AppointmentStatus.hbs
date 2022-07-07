@@ -1,0 +1,7 @@
+{{#if (eq STATUS 'no show')}}
+"noshow"
+{{else if (eq STATUS 'started')}}
+"arrived"
+{{else}}
+"{{ STATUS }}"
+{{/if}}
