@@ -11,7 +11,7 @@
                 }]
             }
             ]
-        "status": "{{toLower SCH-25}}",
+        "status": {{>CodeSystem/AppointmentStatus.hbs STATUS=(toLower SCH-25)}},
         "minutesDuration": {{SCH-9}},
         "comment": "{{NTE-3}}"
         {{>DataType/TQAppointment.hbs TQ=SCH-11}},
