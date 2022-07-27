@@ -14,7 +14,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Schema;
+using NJsonSchema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
 {
@@ -51,6 +51,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                     parsedTemplates[templateKey] = ParseTemplate(templateKey, entry.Value);
                 }
             }
+
             return parsedTemplates;
         }
 
@@ -145,12 +146,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                 return null;
             }
 
-            JSchema schema;
+            JsonSchema schema;
             try
             {
-                schema = JSchema.Parse(content);
+                schema = JsonSchema.FromJsonAsync(content).GetAwaiter().GetResult();
             }
-            catch (JSchemaReaderException ex)
+            catch (JsonReaderException ex)
             {
                 throw new TemplateLoadException(FhirConverterErrorCode.InvalidJsonSchema, string.Format(Resources.InvalidJsonSchemaContent, ex.Message), ex);
             }

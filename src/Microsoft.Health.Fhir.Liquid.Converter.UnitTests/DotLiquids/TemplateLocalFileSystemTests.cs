@@ -12,7 +12,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
+using NJsonSchema;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
@@ -23,7 +23,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         public void GivenAValidTemplateDirectory_WhenGetTemplate_CorrectResultsShouldBeReturned()
         {
             var templateLocalFileSystem = new TemplateLocalFileSystem(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2);
-            var context = new Context(CultureInfo.InvariantCulture);
 
             // Template exists
             Assert.NotNull(templateLocalFileSystem.GetTemplate("ADT_A01"));
@@ -49,11 +48,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         }
 
         [Fact]
-        public void GivenAValidTemplateDirectory_WhenGetJsonSchemaTemplate_CorrectResultsShouldBeReturned()
+        public async void GivenAValidTemplateDirectory_WhenGetJsonSchemaTemplate_CorrectResultsShouldBeReturned()
         {
             var templateLocalFileSystem = new TemplateLocalFileSystem(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates"), DataType.Hl7v2);
             var testSchemaPath = "Schemas/TestSchema.schema.json";
-            var context = new Context(CultureInfo.InvariantCulture);
 
             var schemaTemplate = templateLocalFileSystem.GetTemplate(testSchemaPath);
 
@@ -64,8 +62,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             Assert.NotNull(jSchemaDocument);
             Assert.NotNull(jSchemaDocument.Schema);
 
-            JSchema expectedJSchema = JSchema.Parse(File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates", testSchemaPath)));
-            Assert.True(JToken.DeepEquals(JToken.Parse(jSchemaDocument.Schema.ToString()), JToken.Parse(expectedJSchema.ToString())));
+            JsonSchema expectedJSchema = await JsonSchema.FromJsonAsync(File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates", testSchemaPath)));
+            Assert.True(JToken.DeepEquals(JToken.Parse(jSchemaDocument.Schema.ToJson()), JToken.Parse(expectedJSchema.ToJson())));
         }
 
         [Fact]

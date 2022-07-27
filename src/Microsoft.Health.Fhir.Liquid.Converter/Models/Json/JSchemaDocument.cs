@@ -5,13 +5,13 @@
 
 using System;
 using DotLiquid;
-using Newtonsoft.Json.Schema;
+using NJsonSchema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Json
 {
     public class JSchemaDocument : Document
     {
-        public JSchemaDocument(JSchema schema)
+        public JSchemaDocument(JsonSchema schema)
         {
             if (schema == null)
             {
@@ -21,6 +21,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Json
             Schema = schema;
         }
 
-        public JSchema Schema { get; set; }
+        public JsonSchema Schema { get; set; }
     }
 }

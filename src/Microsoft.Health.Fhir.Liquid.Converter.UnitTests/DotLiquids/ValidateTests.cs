@@ -120,7 +120,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             for (int i = 0; i < expectSchemaFiles.Count; i++)
             {
                 var expectedSchemaObject = JObject.Parse(File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, expectSchemaFiles[i])));
-                var actualSchemaObject = JObject.Parse(context.ValidateSchemas[i].ToString());
+                var actualSchemaObject = JObject.Parse(context.ValidateSchemas[i].ToJson());
                 Assert.True(JToken.DeepEquals(expectedSchemaObject, actualSchemaObject));
             }
         }
