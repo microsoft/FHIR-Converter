@@ -141,9 +141,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
 
         public static Template ParseJsonSchemaTemplate(string content)
         {
-            if (content == null)
+            if (string.IsNullOrWhiteSpace(content))
             {
-                return null;
+                throw new TemplateLoadException(FhirConverterErrorCode.InvalidJsonSchema, "Schema cannot be null or empty.");
             }
 
             JsonSchema schema;
@@ -151,7 +151,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             {
                 schema = JsonSchema.FromJsonAsync(content).GetAwaiter().GetResult();
             }
-            catch (JsonReaderException ex)
+            catch (Exception ex)
             {
                 throw new TemplateLoadException(FhirConverterErrorCode.InvalidJsonSchema, string.Format(Resources.InvalidJsonSchemaContent, ex.Message), ex);
             }
