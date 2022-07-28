@@ -11,6 +11,7 @@ using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
@@ -20,6 +21,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         private static readonly string _hl7v2TestData;
         private static readonly string _ccdaTestData;
         private static readonly string _jsonTestData;
+        private static readonly string _jsonExpectData;
         private static readonly string _fhirStu3TestData;
         private static readonly ProcessorSettings _processorSettings;
 
@@ -28,6 +30,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             _hl7v2TestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Hl7v2", "LRI_2.0-NG_CBC_Typ_Message.hl7"));
             _ccdaTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Ccda", "CCD.ccda"));
             _jsonTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Json", "ExamplePatient.json"));
+            _jsonExpectData = File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, "ExamplePatient.json"));
             _fhirStu3TestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Stu3", "Patient.json"));
             _processorSettings = new ProcessorSettings();
         }
@@ -241,6 +244,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
 
             exception = Assert.Throws<RenderException>(() => processor.Convert(data, "NestingTooDeepDiffTemplate", templateProvider));
             Assert.Contains("Nesting too deep", exception.Message);
+        }
+
+        [Fact]
+        public void GivenJObjectInput_WhenConvertWithJsonProcessor_CorrectResultShouldBeReturned()
+        {
+            var processor = new JsonProcessor(_processorSettings);
+            var templateProvider = new TemplateProvider(TestConstants.JsonTemplateDirectory, DataType.Json);
+            var testData = JObject.Parse(_jsonTestData);
+            var result = processor.Convert(testData, "ExamplePatient", templateProvider);
+            Assert.True(JToken.DeepEquals(JObject.Parse(_jsonExpectData), JToken.Parse(result)));
         }
     }
 }
