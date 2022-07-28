@@ -16,7 +16,7 @@
     "eslint": "eslint {src,test}/**/*.js"
   },
   "bin": {
-  "callMe": "eslint {src,test}/**/*.js"
+  "callMe": "nyc node --experimental-worker node_modules/mocha/bin/_mocha --reporter-options configFile=mocha.config.json --exit"
 },
   "eslintConfig": {
     "env": {
