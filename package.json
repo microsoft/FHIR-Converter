@@ -15,6 +15,9 @@
     "start": "node --experimental-worker src/index.js",
     "eslint": "eslint {src,test}/**/*.js"
   },
+  "bin": {
+  "callMe": "eslint {src,test}/**/*.js"
+},
   "eslintConfig": {
     "env": {
       "browser": true,
