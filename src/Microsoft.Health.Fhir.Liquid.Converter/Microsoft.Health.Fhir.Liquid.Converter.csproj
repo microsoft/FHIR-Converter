@@ -29,6 +29,10 @@
   </ItemGroup>
   
   <ItemGroup>
+	<EmbeddedResource  Include="..\..\data\Templates\Json\Schema\meta-schema.json" Link="meta-schema.json" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Compile Update="Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
