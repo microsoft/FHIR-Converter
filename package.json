@@ -13,12 +13,8 @@
     "posttest": "eslint {src,test}/**/*.js",
     "prestart": "node --experimental-worker src/init-service.js",
     "start": "node --experimental-worker src/index.js",
-    "eslint": "eslint {src,test}/**/*.js",
-    "callMeHere": "node src/test.js"
+    "eslint": "eslint {src,test}/**/*.js"
   },
-  "bin": {
-  "callMeHereBin": "test.js"
-},
   "eslintConfig": {
     "env": {
       "browser": true,
