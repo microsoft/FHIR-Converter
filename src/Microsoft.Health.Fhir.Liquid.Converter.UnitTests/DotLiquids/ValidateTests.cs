@@ -89,6 +89,43 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         }
 
         [Theory]
+        [MemberData(nameof(GetValidValidateMatchedTemplateContents))]
+        public void GivenValidValidateMatchedTemplateContent_WhenRenderMultipleTimes_CorrectResultShouldBeReturned(string templateContent, string expectedResult)
+        {
+            int repeatCount = 100000;
+
+            // Template should be parsed correctly
+            var template = TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent);
+
+            var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"ValidValidateTemplates");
+            var parser = new JsonDataParser();
+            var inputContent = "{\"id\": \"0\",\"valueReference\" : \"testReference\",\"resourceType\" : \"Patient\",\"name\":{\"valueString\" : \"valueString\"}}";
+
+            var templateProvider = new TemplateProvider(templateFolder, DataType.Json);
+            var jsonData = parser.Parse(inputContent);
+            var dictionary = new Dictionary<string, object> { { "msg", jsonData } };
+            var context = new Context(
+                environments: new List<Hash> { Hash.FromDictionary(dictionary) },
+                outerScope: new Hash(),
+                registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
+                errorsOutputMode: ErrorsOutputMode.Rethrow,
+                maxIterations: 0,
+                timeout: 0,
+                formatProvider: CultureInfo.InvariantCulture);
+            context.AddFilters(typeof(Filters));
+
+            string result = string.Empty;
+            for (int i = 0; i < repeatCount; i++)
+            {
+                result = template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture));
+            }
+
+            var expectedObject = JObject.Parse(expectedResult);
+            var actualObject = JObject.Parse(result);
+            Assert.True(JToken.DeepEquals(expectedObject, actualObject));
+        }
+
+        [Theory]
         [MemberData(nameof(GetValidValidateMatchedTemplateWithSchemaContents))]
         public void GivenValidValidateMatchedTemplateContent_WithJsonContext_WhenParseAndRender_InvolvedSchemaShouldBeReturned(string templateContent, List<string> expectSchemaFiles)
         {

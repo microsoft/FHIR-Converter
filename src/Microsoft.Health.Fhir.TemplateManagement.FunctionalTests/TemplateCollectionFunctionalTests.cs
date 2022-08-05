@@ -193,11 +193,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public static IEnumerable<object[]> GetDefaultTemplatesInfo()
         {
-            yield return new object[] { "microsofthealth/fhirconverter:default", 915 };
-            yield return new object[] { "microsofthealth/hl7v2templates:default", 915 };
-            yield return new object[] { "microsofthealth/ccdatemplates:default", 821 };
-            yield return new object[] { "microsofthealth/jsontemplates:default", 2 };
-            yield return new object[] { "microsofthealth/stu3tor4templates:default", 264};
+            yield return new object[] { "microsofthealth/fhirconverter:default", "Hl7v2" };
+            yield return new object[] { "microsofthealth/hl7v2templates:default", "Hl7v2" };
+            yield return new object[] { "microsofthealth/ccdatemplates:default", "Ccda" };
+            yield return new object[] { "microsofthealth/jsontemplates:default", "Json" };
+            yield return new object[] { "microsofthealth/stu3tor4templates:default", "Stu3ToR4" };
         }
 
         [Fact]
@@ -341,7 +341,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetDefaultTemplatesInfo))]
-        public async Task GiveDefaultImageReference_WhenGetTemplateCollectionWithEmptyToken_DefaultTemplatesWillBeReturnedAsync(string imageReference, int expectedTemplatesCount)
+        public async Task GiveDefaultImageReference_WhenGetTemplateCollectionWithEmptyToken_DefaultTemplatesWillBeReturnedAsync(string imageReference, string expectedTemplatesFolder)
         {
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
             var templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, string.Empty);
@@ -350,7 +350,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             // metadata.json will not be returned as template.
             // Json/Schema/meta-schema.json will not be returned as template.
-            Assert.Equal(expectedTemplatesCount, templateCollection.First().Count());
+            var excludeFiles = new HashSet<string>()
+            {
+                Path.Join(_templateDirectory, expectedTemplatesFolder, "metadata.json"),
+                Path.Join(_templateDirectory, expectedTemplatesFolder, "Schema", "meta-schema.json"),
+            };
+            var expectedTemplateFiles = Directory.GetFiles(Path.Join(_templateDirectory, expectedTemplatesFolder), "*", SearchOption.AllDirectories)
+                .Where(file => !excludeFiles.Contains(file)).ToList();
+            Assert.Equal(expectedTemplateFiles.Count, templateCollection.First().Count());
         }
 
         // Conversion results of DefaultTemplates.tar.gz and default template folder should be the same.
