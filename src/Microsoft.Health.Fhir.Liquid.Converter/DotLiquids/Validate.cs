@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using DotLiquid;
 using DotLiquid.Exceptions;
@@ -13,7 +14,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
+using NJsonSchema;
 using RenderException = Microsoft.Health.Fhir.Liquid.Converter.Exceptions.RenderException;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
@@ -50,7 +51,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
         public override void Render(Context context, TextWriter result)
         {
-            JSchema validateSchema = LoadValidateSchema(context);
+            JsonSchema validateSchema = LoadValidateSchema(context);
 
             if (context is JSchemaContext jSchemaContext)
             {
@@ -76,15 +77,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 throw new RenderException(FhirConverterErrorCode.InvalidValidateBlockContent, string.Format(Resources.InvalidValidateContentBlock, ex.Message));
             }
 
-            if (!validateObject.IsValid(validateSchema, out IList<string> messages))
+            var errors = validateSchema.Validate(validateObject);
+
+            if (errors.Any())
             {
-                throw new RenderException(FhirConverterErrorCode.UnmatchedValidateBlockContent, string.Format(Resources.UnMatchedValidateBlockContent, _schemaFileName, string.Join(";", messages)));
+                throw new RenderException(FhirConverterErrorCode.UnmatchedValidateBlockContent, string.Format(Resources.UnMatchedValidateBlockContent, _schemaFileName, string.Join(";", errors)));
             }
 
             result.Write(validateContent);
         }
 
-        private JSchema LoadValidateSchema(Context context)
+        private JsonSchema LoadValidateSchema(Context context)
         {
             if (!(context.Registers["file_system"] is IFhirConverterTemplateFileSystem fileSystem))
             {

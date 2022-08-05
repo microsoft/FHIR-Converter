@@ -6,7 +6,7 @@
 using System;
 using System.Collections.Generic;
 using DotLiquid;
-using Newtonsoft.Json.Schema;
+using NJsonSchema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Json
 {
@@ -15,9 +15,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Json
         public JSchemaContext(List<Hash> environments, Hash outerScope, Hash registers, ErrorsOutputMode errorsOutputMode, int maxIterations, int timeout, IFormatProvider formatProvider)
              : base(environments, outerScope, registers, errorsOutputMode, maxIterations, timeout, formatProvider)
         {
-            ValidateSchemas = new List<JSchema>();
+            ValidateSchemas = new List<JsonSchema>();
         }
 
-        public List<JSchema> ValidateSchemas { get; set; }
+        public List<JsonSchema> ValidateSchemas { get; set; }
     }
 }
