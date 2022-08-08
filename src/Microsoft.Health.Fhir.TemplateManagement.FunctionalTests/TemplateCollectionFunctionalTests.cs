@@ -348,8 +348,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
             Assert.Single(templateCollection);
 
-            // metadata.json will not be returned as templates.
-            Assert.Equal(Directory.GetFiles(Path.Join(_templateDirectory, expectedTemplatesFolder), "*", SearchOption.AllDirectories).Length - 1, templateCollection.First().Count());
+            // metadata.json will not be returned as template.
+            // Json/Schema/meta-schema.json will not be returned as template.
+            var excludeFiles = new HashSet<string>()
+            {
+                Path.Join(_templateDirectory, expectedTemplatesFolder, "metadata.json"),
+                Path.Join(_templateDirectory, expectedTemplatesFolder, "Schema", "meta-schema.json"),
+            };
+            var expectedTemplateFiles = Directory.GetFiles(Path.Join(_templateDirectory, expectedTemplatesFolder), "*", SearchOption.AllDirectories)
+                .Where(file => !excludeFiles.Contains(file)).ToList();
+            Assert.Equal(expectedTemplateFiles.Count, templateCollection.First().Count());
         }
 
         // Conversion results of DefaultTemplates.tar.gz and default template folder should be the same.

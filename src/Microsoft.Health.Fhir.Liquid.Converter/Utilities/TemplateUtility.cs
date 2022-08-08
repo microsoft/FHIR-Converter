@@ -6,6 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 using DotLiquid;
 using DotLiquid.Exceptions;
@@ -14,7 +16,9 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Schema;
+using Newtonsoft.Json.Linq;
+using NJsonSchema;
+using NJsonSchema.Validation;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
 {
@@ -23,6 +27,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
         private static readonly Regex FormatRegex = new Regex(@"(\\|/)_?");
         private const string LiquidTemplateFileExtension = ".liquid";
         private const string JsonSchemaTemplateFileExtension = ".schema.json";
+        private const string MetaJsonSchemaFileName = "meta-schema.json";
+        private static readonly JsonSchema MetaJsonSchema;
 
         // Register "evaluate" tag in before Template.Parse
         static TemplateUtility()
@@ -30,6 +36,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             Template.RegisterTag<Evaluate>("evaluate");
             Template.RegisterTag<MergeDiff>("mergeDiff");
             Template.RegisterTag<Validate>("validate");
+            MetaJsonSchema = LoadEmbeddedMetaJsonSchema();
         }
 
         /// <summary>
@@ -51,6 +58,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                     parsedTemplates[templateKey] = ParseTemplate(templateKey, entry.Value);
                 }
             }
+
             return parsedTemplates;
         }
 
@@ -140,17 +148,34 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
 
         public static Template ParseJsonSchemaTemplate(string content)
         {
-            if (content == null)
+            if (string.IsNullOrWhiteSpace(content))
             {
-                return null;
+                throw new TemplateLoadException(FhirConverterErrorCode.InvalidJsonSchema, "Schema cannot be null or empty.");
             }
 
-            JSchema schema;
+            // Validate input Json schema
+            ICollection<ValidationError> errors;
             try
             {
-                schema = JSchema.Parse(content);
+                var schemaObject = JObject.Parse(content);
+                errors = MetaJsonSchema.Validate(content);
             }
-            catch (JSchemaReaderException ex)
+            catch (Exception ex)
+            {
+                throw new TemplateLoadException(FhirConverterErrorCode.InvalidJsonSchema, string.Format(Resources.InvalidJsonSchemaContent, ex.Message), ex);
+            }
+
+            if (errors.Any())
+            {
+                throw new TemplateLoadException(FhirConverterErrorCode.InvalidJsonSchema, string.Format(Resources.InvalidJsonSchemaContent, string.Join(";", errors)));
+            }
+
+            JsonSchema schema;
+            try
+            {
+                schema = JsonSchema.FromJsonAsync(content).GetAwaiter().GetResult();
+            }
+            catch (Exception ex)
             {
                 throw new TemplateLoadException(FhirConverterErrorCode.InvalidJsonSchema, string.Format(Resources.InvalidJsonSchemaContent, ex.Message), ex);
             }
@@ -169,6 +194,21 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
         public static bool IsJsonSchemaTemplate(string templateKey)
         {
             return templateKey.EndsWith(JsonSchemaTemplateFileExtension, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static JsonSchema LoadEmbeddedMetaJsonSchema()
+        {
+            var executingAssembly = Assembly.GetExecutingAssembly();
+            var metaSchemaAssemblyName = string.Format("{0}.{1}", executingAssembly.GetName().Name, MetaJsonSchemaFileName);
+
+            string metaSchemaContent;
+            using (Stream stream = executingAssembly.GetManifestResourceStream(metaSchemaAssemblyName))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                metaSchemaContent = reader.ReadToEnd();
+            }
+
+            return JsonSchema.FromJsonAsync(metaSchemaContent).GetAwaiter().GetResult();
         }
     }
 }

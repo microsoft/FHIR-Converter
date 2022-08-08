@@ -118,5 +118,26 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
             exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
             Assert.Equal(FhirConverterErrorCode.InvalidCodeMapping, exception.FhirConverterErrorCode);
         }
+
+        [Fact]
+        public void GivenInvalidJsonSchemaTemplateContents_WhenParseTemplates_ExceptionsShouldBeThrown()
+        {
+            // Invalid schema content
+            var templates = new Dictionary<string, string> { { "InvalidSchema.schema.json", @"{""type"": ""InvalidType"" }" } };
+            var exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
+            Assert.Equal(FhirConverterErrorCode.InvalidJsonSchema, exception.FhirConverterErrorCode);
+
+            // Invalid JSON
+            templates = new Dictionary<string, string> { { "InvalidSchema.schema.json", @"{""a""" } };
+            exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
+            Assert.Equal(FhirConverterErrorCode.InvalidJsonSchema, exception.FhirConverterErrorCode);
+
+            // Null or empty schema
+            templates = new Dictionary<string, string> { { "InvalidSchema.schema.json", string.Empty } };
+            exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
+
+            templates = new Dictionary<string, string> { { "InvalidSchema.schema.json", null} };
+            exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
+        }
     }
 }

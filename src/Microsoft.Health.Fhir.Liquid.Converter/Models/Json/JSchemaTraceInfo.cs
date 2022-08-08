@@ -4,7 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using Newtonsoft.Json.Schema;
+using NJsonSchema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Json
 {
@@ -14,11 +14,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Json
         {
         }
 
-        public JSchemaTraceInfo(List<JSchema> validateSchemas)
+        public JSchemaTraceInfo(List<JsonSchema> validateSchemas)
         {
             ValidateSchemas = validateSchemas;
         }
 
-        public List<JSchema> ValidateSchemas { get; set; }
+        public List<JsonSchema> ValidateSchemas { get; set; }
     }
 }
