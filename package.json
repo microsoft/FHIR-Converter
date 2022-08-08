@@ -13,10 +13,11 @@
     "posttest": "eslint {src,test}/**/*.js",
     "prestart": "node --experimental-worker src/init-service.js",
     "start": "node --experimental-worker src/index.js",
-    "eslint": "eslint {src,test}/**/*.js"
+    "eslint": "eslint {src,test}/**/*.js",
+    "talkToMe": "node test.js"
   },
   "bin": {
-    "talkToMe": "test.js"
+    "talkToMe": "node test.js"
   },
   "eslintConfig": {
     "env": {
