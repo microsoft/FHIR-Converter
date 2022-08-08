@@ -14,7 +14,7 @@
     "prestart": "node --experimental-worker src/init-service.js",
     "start": "node --experimental-worker src/index.js",
     "eslint": "eslint {src,test}/**/*.js",
-    "talkToMe": "node test.js"
+    "talkToStaffApp": "node test.js"
   },
   "eslintConfig": {
     "env": {
