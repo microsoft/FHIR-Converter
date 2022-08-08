@@ -1,5 +1,5 @@
 // Simple Addition Function in Javascript
-function add(a, b) {
-    return a+b
+function add() {
+    return "Hello you are calling a script from the fhir-converter repo :)"
 }
-console.log(add(4, 6))
+console.log(add())
