@@ -9,7 +9,9 @@ let serviceTemplateFolder = '../../service-templates';
 let sampleDataFolder = '../../sample-data';
 
 module.exports.BASE_TEMPLATE_FILES_LOCATION = path.join(__dirname, '../../templates');
-module.exports.TEMPLATE_FILES_LOCATION = path.join(__dirname, serviceTemplateFolder);
+// TODO: Changing both template file locations to be '../../templates'
+//  Remove functionality to support the src/service-templates in the future
+module.exports.TEMPLATE_FILES_LOCATION = path.join(__dirname, '../../templates');
 module.exports.SAMPLE_DATA_LOCATION =  path.join(__dirname, sampleDataFolder);
 module.exports.STATIC_LOCATION = path.join(__dirname, '../../static');
 module.exports.CODE_MIRROR_LOCATION = path.join(__dirname, '../../../node_modules/codemirror/');

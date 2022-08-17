@@ -13,7 +13,8 @@
     "posttest": "eslint {src,test}/**/*.js",
     "prestart": "node --experimental-worker src/init-service.js",
     "start": "node --experimental-worker src/index.js",
-    "eslint": "eslint {src,test}/**/*.js"
+    "eslint": "eslint {src,test}/**/*.js",
+    "xmlToFhirResource": "node src/convert-xml-to-fhir-resource.js"
   },
   "eslintConfig": {
     "env": {
@@ -92,7 +93,7 @@
     "validator": "^13.7.0"
   },
   "dependencies": {
-    "antlr4": "^4.9.2",
+    "antlr4": "~4.9.2",
     "applicationinsights": "^1.4.1",
     "body-parser": "^1.19.0",
     "codemirror": "^5.62.0",
