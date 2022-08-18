@@ -6,9 +6,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using DotLiquid;
+using Microsoft.Health.Fhir.Liquid.Converter.Extensions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
+using Newtonsoft.Json.Linq;
 using NJsonSchema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
@@ -25,6 +27,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             var jsonData = _parser.Parse(data);
+            return Convert(jsonData, rootTemplate, templateProvider, traceInfo);
+        }
+
+        public string Convert(JObject data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        {
+            var jsonData = data.ToObject();
             return Convert(jsonData, rootTemplate, templateProvider, traceInfo);
         }
 

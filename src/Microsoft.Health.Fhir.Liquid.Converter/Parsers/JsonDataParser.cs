@@ -4,7 +4,6 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Extensions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
