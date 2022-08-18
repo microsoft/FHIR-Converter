@@ -11,7 +11,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Schema;
+using NJsonSchema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
@@ -49,7 +49,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 timeout: timeout,
                 formatProvider: CultureInfo.InvariantCulture)
             {
-                ValidateSchemas = new List<JSchema>(),
+                ValidateSchemas = new List<JsonSchema>(),
             };
 
             // Load filters
