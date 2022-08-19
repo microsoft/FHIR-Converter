@@ -4,6 +4,7 @@
         "identifier":[
             { {{>DataType/EIIdentifier.hbs EI=SCH-2}} }
         ],
+        {{#if SCH-7}}
         "reasonCode": [
             {
                 "coding": [{
@@ -12,6 +13,7 @@
                 }]
             }
             ]
+        {{/if}}
         "status": {{>CodeSystem/AppointmentStatus.hbs STATUS=(toLower SCH-25)}},
         "minutesDuration": {{SCH-9}},
         "comment": "{{NTE-3}}"
