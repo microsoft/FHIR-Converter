@@ -10,10 +10,9 @@
                 {{#if SCH-7}}
                 {{! Remove leading&trailing spaces. Replace multiple spaces in the middle with one in the}}
                     "code": "{{replace (replace SCH-7 '^[ \s]+|[ \s]+$' '') '\s{2,}' ' '}}"
-                {{/if}}
-                {{#unless SCH-7}}
+                {{else}}
                     "code": ""
-                {{/unless}}
+                {{/if}}
                 }]
             }
             ]
