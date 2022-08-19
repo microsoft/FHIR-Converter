@@ -4,18 +4,16 @@
         "identifier":[
             { {{>DataType/EIIdentifier.hbs EI=SCH-2}} }
         ],
+        {{#if SCH-7}}
         "reasonCode": [
             {
                 "coding": [{
-                {{#if SCH-7}}
                 {{! Remove leading&trailing spaces. Replace multiple spaces in the middle with one in the}}
                     "code": "{{replace (replace SCH-7 '^[ \s]+|[ \s]+$' '') '\s{2,}' ' '}}"
-                {{else}}
-                    "code": ""
-                {{/if}}
                 }]
             }
             ]
+        {{/if}}
         "status": {{>CodeSystem/AppointmentStatus.hbs STATUS=(toLower SCH-25)}},
         "minutesDuration": {{SCH-9}},
         "comment": "{{NTE-3}}"
