@@ -1,0 +1,53 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Chart.Name }}-web
+  annotations:
+    {{- include "ingress.annotations" . | nindent 4 }}
+  labels:
+    app: {{ include "fhir.labels.app" . }}
+    component: {{ .Chart.Name }}
+    chart: {{ include "fhir.labels.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    {{- if .Values.ingress.fhir.labels }}
+    {{- toYaml .Values.ingress.fhir.labels | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.ingress.fhir.tls.enabled }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.host }}
+      secretName: {{ .Values.ingress.fhir.tls.secretName }}
+  {{- end }}
+  rules:
+    - http:
+        paths:
+          {{- range .Values.ingress.fhir.precedingPaths }}
+          - path: {{ .path }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .serviceName }}
+                port:
+                  number: {{ .servicePort }}
+          {{- end }}
+          - path: {{ .Values.ingress.fhir.path }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ include "fhir.labels.app" . }}
+                port:
+                  number: 2019
+          {{- range .Values.ingress.fhir.succeedingPaths }}
+          - path: {{ .path }}
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ .serviceName }}
+                port:
+                  number: {{ .servicePort }}
+          {{- end }}
+      host: {{ .Values.ingress.host }}
+{{- end }}

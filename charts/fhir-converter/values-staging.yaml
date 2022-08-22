@@ -1,0 +1,12 @@
+fhir:
+  certIssuer:
+    enabled: true
+
+ingress:
+  cloud: "gcp"
+  host: "fhir-converter-staging.kaikuhealth.com"
+  whitelist: "91.142.128.145/32,62.165.128.226/32, 62.165.128.214/32, 62.165.128.210/32"
+  ## Elekta UK VPN = 91.142.128.145/32
+  ## Kaiku Office = 62.165.128.226/32
+  ## Kaiku Office = 62.165.128.214/32
+  ## Kaiku Office = 62.165.128.210/32

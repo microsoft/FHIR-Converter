@@ -1,0 +1,9 @@
+fhir:
+  image:
+    repository: tstglobalkaikuacr.azurecr.io/fhir-converter
+  certIssuer:
+    enabled: true
+    
+ingress:
+  cloud: "azure"
+  host: "fhir-converter-tst.kaikuhealth.com"

@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+  labels:
+    app: {{ .Chart.Name }}
+    chart: {{ template "fhir.chart" . }}
+    release: {{ .Chart.Name }}
+    heritage: {{ .Release.Service }}
+  annotations:
+    seccomp.security.alpha.kubernetes.io/pod: runtime/default
+    container.apparmor.security.beta.kubernetes.io/app: runtime/default
+    container.apparmor.security.beta.kubernetes.io/audit-log: runtime/default
+spec:
+  replicas: {{ .Values.fhir.replicas }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+      release: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+        release: {{ .Chart.Name }}
+        date: "{{ now | unixEpoch }}"
+    spec:
+      restartPolicy: Always
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      containers:
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.fhir.image.repository }}:{{ .Values.fhir.image.tag }}
+          imagePullPolicy: {{ .Values.fhir.image_pull_policy }}
+          envFrom:
+            - configMapRef:
+                name: {{ .Chart.Name }}
+          env:
+            {{- include "fhir.mapenvsecrets" . | indent 12 }}
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.fhir.healthCheckPath }}
+              port: {{ .Values.fhir.livenessProbe.port }}
+              scheme: HTTP
+            initialDelaySeconds: {{ .Values.fhir.livenessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.fhir.livenessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.fhir.livenessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.fhir.livenessProbe.successThreshold }}
+            failureThreshold: {{ .Values.fhir.livenessProbe.failureThreshold }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.fhir.healthCheckPath }}
+              port: {{ .Values.fhir.readinessProbe.port }}
+              scheme: HTTP
+            initialDelaySeconds: {{ .Values.fhir.readinessProbe.initialDelaySeconds }}
+            periodSeconds: {{ .Values.fhir.readinessProbe.periodSeconds }}
+            timeoutSeconds: {{ .Values.fhir.readinessProbe.timeoutSeconds }}
+            successThreshold: {{ .Values.fhir.readinessProbe.successThreshold }}
+            failureThreshold: {{ .Values.fhir.readinessProbe.failureThreshold }}
+          ports:
+            - name: {{ .Chart.Name }}
+              containerPort: 2019
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: false
+            runAsNonRoot: true
+            runAsUser: 1001  
+            runAsGroup: 1001

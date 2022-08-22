@@ -1,0 +1,33 @@
+{{- if and (.Values.fhir.certIssuer.enabled) (eq "gcp" .Values.ingress.cloud) -}}
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: letsencrypt-prod
+  namespace: {{ .Release.Namespace }}
+spec:
+  acme:
+    email: it@kaikuhealth.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+      - http01:
+          ingress:
+            class: nginx
+{{- else if and (.Values.fhir.certIssuer.enabled) (eq "azure" .Values.ingress.cloud) -}}
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: letsencrypt-prod
+  namespace: {{ .Release.Namespace }}
+spec:
+  acme:
+    email: it@kaikuhealth.com
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    server: https://acme-v02.api.letsencrypt.org/directory
+    solvers:
+      - http01:
+          ingress:
+            class: azure/application-gateway
+{{- end }}
