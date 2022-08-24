@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}
+data:
+  TEMPLATE_GIT_URL: {{ .Values.fhir.git.url }}
+  TEMPLATE_GIT_BRANCH: {{ .Values.fhir.git.branch }}
+  TEMPLATE_GIT_PATH: {{ .Values.fhir.git.path }}

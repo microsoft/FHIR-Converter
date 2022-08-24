@@ -1,0 +1,99 @@
+###################################
+# FHIR Converter - Configs
+###################################
+fhir:
+  image:
+    repository: eu.gcr.io/stevedore-production-42a0d764/fhir-converter
+    tag: latest
+  image_pull_policy: Always
+  replicas: 1
+
+  git:
+    url: https://github.com/netMedi/FHIR-Converter
+    branch: handlebars-stable
+    path: src/templates
+
+  certIssuer:
+    enabled: true
+
+  rbac:
+    enabled: true
+
+  ## the name of a pre-created secret containing the API keys
+  ##
+  converterApiSecret: "fhir-secrets"
+
+  ## the key within `fhir.converterApiSecret` containing the password string
+  ##
+  converterApiSecretKey: "fhir-converter-secret"
+
+  ## Liveness and readiness probe values
+  ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+  ##
+  livenessProbe:
+    failureThreshold: 5
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+    port: 2019
+  readinessProbe:
+    failureThreshold: 3
+    initialDelaySeconds: 10
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 1
+    port: 2019
+  healthCheckPath: "/"
+
+###################################
+# Ingress Configs
+###################################
+ingress:
+  enabled: true
+
+  ## configs for the Ingress of the FHIR Service
+  ##
+  fhir:
+    ## annotations for the Ingress
+    # created in _helpers.tpl
+
+    ## additional labels for the Ingress
+    ##
+    labels: {}
+    path: "/"
+
+    ## the livenessPath for the Ingress
+    ##
+    livenessPath: ""
+
+    ## configs for Ingress TLS
+    ##
+    tls:
+      ## enable TLS termination for the Ingress
+      ##
+      enabled: true
+
+      ## the name of a pre-created Secret containing a TLS private key and certificate
+      ##
+      secretName: "fhir-converter-auto-issued-cert"
+
+    ## http paths to add to the Ingress before the default path
+    ##
+    ## EXAMPLE:
+    ##   precedingPaths:
+    ##     - path: "/*"
+    ##       serviceName: "ssl-redirect"
+    ##       servicePort: "use-annotation"
+    ##
+    precedingPaths: []
+
+    ## http paths to add to the web Ingress after the default path
+    ##
+    ## EXAMPLE:
+    ##   succeedingPaths:
+    ##     - path: "/extra-service"
+    ##       serviceName: "extra-service"
+    ##       servicePort: "use-annotation"
+    ##
+    succeedingPaths: []

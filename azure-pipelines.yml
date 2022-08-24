@@ -1,0 +1,200 @@
+name: $(SourceBranchName)_$(date:yyyyMMdd)$(rev:.r)
+trigger: none
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: netMedi/azure-devops
+      endpoint: azdo_templates
+
+parameters:
+- name: env
+  displayName: Deployment environment
+  type: string
+  default: staging
+  values:
+  - azure-tst
+  - azure-prod-us
+  - azure-prod-br
+  - staging
+  - demo
+  - production-fi
+  - production-de
+
+- name: service
+  displayName: Selected service
+  type: string
+  default: fhir-converter
+
+- name: image
+  displayName: Image tag
+  type: string
+  default: latest
+
+variables:
+  - group: DeploymentSecrets
+  - name: HOME
+    value: /root
+
+  - name: cloud
+    ${{ if or(eq(parameters.env, 'staging'), eq(parameters.env, 'demo'), eq(parameters.env, 'production-de'), eq(parameters.env, 'production-fi')) }}:
+      value: google
+    ${{ if or(eq(parameters.env, 'azure-tst'), eq(parameters.env, 'azure-prod-us'), eq(parameters.env, 'azure-prod-br')) }}:
+      value: azure
+
+  - name: pool
+    ${{ if eq(parameters.env, 'staging') }}:
+      value: STAGING-GCP-AZDO-POOL
+    ${{ if or(eq(parameters.env, 'demo'), eq(parameters.env, 'production-de'), eq(parameters.env, 'production-fi')) }}:
+      value: PRODUCTION-GCP-AZDO-POOL
+    ${{ if eq(parameters.env, 'azure-tst') }}:
+      value: TST-EASTUS-AZDO-POOL
+    ${{ if eq(parameters.env, 'azure-prod-us') }}:
+      value: PROD-EASTUS-AZDO-POOL
+    ${{ if eq(parameters.env, 'azure-prod-br') }}:
+      value: PROD-BRAZILSOUTH-AZDO-POOL
+
+  - name: project
+    ${{ if eq(parameters.env, 'staging') }}:
+      value: holvikaari-staging-2e64e0fc
+    ${{ if or(eq(parameters.env, 'demo'), eq(parameters.env, 'production-de'), eq(parameters.env, 'production-fi')) }}:
+      value: holvikaari-production-38d2f6a7
+
+  - name: location
+    ${{ if or(eq(parameters.env, 'staging'), eq(parameters.env, 'demo'), eq(parameters.env, 'production-fi')) }}:
+      value: europe-north1-a
+    ${{ if eq(parameters.env, 'production-de') }}:
+      value: europe-west3-a
+
+  - name: azsub
+    ${{ if eq(parameters.env, 'azure-tst') }}:
+      value: "Axis Test Kaiku"
+    ${{ if eq(parameters.env, 'azure-prod-us') }}:
+      value: "AXIS Production Kaiku US"
+    ${{ if eq(parameters.env, 'azure-prod-br') }}:
+      value: "AXIS Production Kaiku BR"
+
+  - name: aks_prefix
+    ${{ if eq(parameters.env, 'azure-tst') }}:
+      value: tst
+    ${{ if or(eq(parameters.env, 'azure-prod-us'), eq(parameters.env, 'azure-prod-br')) }}:
+      value: prod
+
+stages:
+- stage: SetupWorkspace
+  jobs:
+    - template: configuration.yaml@templates
+      parameters:
+        cloud: ${{variables.cloud}}
+        pool: ${{variables.pool}}
+        env: ${{parameters.env}}
+        azsub: ${{variables.azsub}}
+        location: ${{variables.location}}
+        project: ${{variables.project}}
+        service: ${{parameters.service}}
+
+- stage: DeployAzureTST
+  dependsOn: SetupWorkspace
+  condition: eq('${{parameters.env}}', 'azure-tst')
+  jobs:
+    - template: deployment.yaml@templates
+      parameters:
+        cloud: ${{variables.cloud}}
+        pool: ${{variables.pool}}
+        env: ${{parameters.env}}
+        service: ${{parameters.service}}
+        azsub: ${{variables.azsub}}
+        aks_prefix: ${{variables.aks_prefix}}
+        image: ${{parameters.image}}
+        app: ${{variables.app}}
+
+- stage: DeployAzureUS
+  dependsOn: SetupWorkspace
+  condition: eq('${{parameters.env}}', 'azure-prod-us')
+  jobs:
+    - template: deployment.yaml@templates
+      parameters:
+        cloud: ${{variables.cloud}}
+        pool: ${{variables.pool}}
+        env: ${{parameters.env}}
+        service: ${{parameters.service}}
+        azsub: ${{variables.azsub}}
+        aks_prefix: ${{variables.aks_prefix}}
+        image: ${{parameters.image}}
+        app: ${{variables.app}}
+
+- stage: DeployAzureBR
+  dependsOn: SetupWorkspace
+  condition: eq('${{parameters.env}}', 'azure-prod-br')
+  jobs:
+    - template: deployment.yaml@templates
+      parameters:
+        cloud: ${{ variables.cloud }}
+        pool: ${{ variables.pool }}
+        env: ${{ parameters.env }}
+        service: ${{ parameters.service }}
+        azsub: ${{ variables.azsub }}
+        aks_prefix: ${{ variables.aks_prefix }}
+        image: ${{ parameters.image }}
+        app: ${{variables.app}}
+
+- stage: DeployStaging
+  dependsOn: SetupWorkspace
+  condition: eq('${{parameters.env}}', 'staging')
+  jobs:
+    - template: deployment.yaml@templates
+      parameters:
+        cloud: ${{variables.cloud}}
+        pool: ${{variables.pool}}
+        env: ${{parameters.env}}
+        service: ${{parameters.service}}
+        image: ${{parameters.image}}
+        location: ${{variables.location}}
+        project: ${{variables.project}}
+        app: ${{variables.app}}
+
+- stage: DeployDemo
+  dependsOn: SetupWorkspace
+  condition: eq('${{parameters.env}}', 'demo')
+  jobs:
+    - template: deployment.yaml@templates
+      parameters:
+        cloud: ${{variables.cloud}}
+        pool: ${{variables.pool}}
+        env: ${{parameters.env}}
+        service: ${{parameters.service}}
+        image: ${{parameters.image}}
+        location: ${{variables.location}}
+        project: ${{variables.project}}
+        app: ${{variables.app}}
+
+- stage: DeployProductionDE
+  dependsOn: SetupWorkspace
+  condition: eq('${{parameters.env}}', 'production-de')
+  jobs:
+    - template: deployment.yaml@templates
+      parameters:
+        cloud: ${{variables.cloud}}
+        pool: ${{variables.pool}}
+        env: ${{parameters.env}}
+        service: ${{parameters.service}}
+        image: ${{parameters.image}}
+        location: ${{variables.location}}
+        project: ${{variables.project}}
+        app: ${{variables.app}}
+
+- stage: DeployProductionFI
+  dependsOn: SetupWorkspace
+  condition: eq('${{parameters.env}}', 'production-fi')
+  jobs:
+    - template: deployment.yaml@templates
+      parameters:
+        cloud: ${{variables.cloud}}
+        pool: ${{variables.pool}}
+        env: ${{parameters.env}}
+        service: ${{parameters.service}}
+        image: ${{parameters.image}}
+        location: ${{variables.location}}
+        project: ${{variables.project}}
+        app: ${{variables.app}}
