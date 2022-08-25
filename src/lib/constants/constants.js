@@ -5,20 +5,21 @@
 
 var path = require('path');
 
-let serviceTemplateFolder = '../../service-templates';
+// let serviceTemplateFolder = '../../service-templates';
 let sampleDataFolder = '../../sample-data';
+let templateFolder = '../../templates';
 
-module.exports.BASE_TEMPLATE_FILES_LOCATION = path.join(__dirname, '../../templates');
+module.exports.BASE_TEMPLATE_FILES_LOCATION = path.join(__dirname, templateFolder);
 // TODO: Changing both template file locations to be '../../templates'
 //  Remove functionality to support the src/service-templates in the future
-module.exports.TEMPLATE_FILES_LOCATION = path.join(__dirname, '../../templates');
+module.exports.TEMPLATE_FILES_LOCATION = path.join(__dirname, templateFolder);
 module.exports.SAMPLE_DATA_LOCATION =  path.join(__dirname, sampleDataFolder);
 module.exports.STATIC_LOCATION = path.join(__dirname, '../../static');
 module.exports.CODE_MIRROR_LOCATION = path.join(__dirname, '../../../node_modules/codemirror/');
 module.exports.MOVE_TO_GLOBAL_KEY_NAME = "_moveResourceToGlobalScope";
-module.exports.HL7V2_TEMPLATE_LOCATION = path.join(__dirname, serviceTemplateFolder, 'hl7v2');
+module.exports.HL7V2_TEMPLATE_LOCATION = path.join(__dirname, templateFolder, 'hl7v2');
 module.exports.HL7V2_DATA_LOCATION = path.join(__dirname, sampleDataFolder, 'hl7v2');
-module.exports.CDA_TEMPLATE_LOCATION = path.join(__dirname, serviceTemplateFolder, 'cda');
+module.exports.CDA_TEMPLATE_LOCATION = path.join(__dirname, templateFolder, 'cda');
 module.exports.CDA_DATA_LOCATION = path.join(__dirname, sampleDataFolder, 'cda');
 module.exports.CLS_NAMESPACE= 'conversionRequest';
 module.exports.CLS_KEY_HANDLEBAR_INSTANCE= 'hbs';
