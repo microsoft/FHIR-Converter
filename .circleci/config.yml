@@ -1,0 +1,15 @@
+version: 2.1
+
+jobs:
+  test:
+    docker:
+      - image: cimg/node:14.19.3
+    resource_class: small
+    steps:
+      - checkout
+      - run: echo "this is the test job"
+
+workflows:
+  test:
+    jobs:
+      - test
