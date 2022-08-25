@@ -8,14 +8,14 @@ const dataFiles = [
     'CDA_with_Embedded_PDF.cda', 'Consultation_Note.cda', 'Consult-Document-Closing-Referral-C-CDAR2.1.cda', 'Diagnostic_Imaging_Report.cda',
     'Discharge_Summary.cda', 'History_and_Physical.cda', 'Operative_Note.cda', 'Patient-1.cda', 'Patient-and-Provider-Organization-Direct-Address-C-CDAR2.1.cda',
     'PROBLEMS_in_Empty_C-CDA_2.1-C-CDAR2.1.cda', 'Procedure_Note.cda', 'Progress_Note.cda', 'Referral_Note.cda', 'sample.cda',
-    'Transfer_Summary.cda', 'Unstructured_Document_embed.cda', 'Unstructured_Document_reference.cda'
+    'Transfer_Summary.cda', 'Unstructured_Document_embed.cda', 'Unstructured_Document_reference.cda', 'Chirp_CCD.cda'
 ];
 const templateFiles = [ 'ccd.hbs' ];
 
 module.exports = () => {
     const cases = [ ];
     dataFiles.forEach(dataFile => cases.push(
-        ...templateFiles.map(templateFile => 
+        ...templateFiles.map(templateFile =>
             ({ dataFile, templateFile }))));
     return cases;
 };
