@@ -3,17 +3,8 @@ version: 2.1
 orbs:
   node: circleci/node@5.0.2
 
-jobs:
-  test:
-    docker:
-      - image: cimg/node:14.19.3
-    resource_class: small
-    steps:
-      - checkout
-      - node/install-packages
-      - node/test
-
 workflows:
   test:
     jobs:
-      - test
+      - node/test
+        version: 14.19.3
