@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  node: circleci/node@5.0.2
+
 jobs:
   test:
     docker:
@@ -7,7 +10,8 @@ jobs:
     resource_class: small
     steps:
       - checkout
-      - run: echo "this is the test job"
+      - node/install-packages
+      - node/test
 
 workflows:
   test:
