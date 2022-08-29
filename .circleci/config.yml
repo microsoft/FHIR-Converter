@@ -6,5 +6,5 @@ orbs:
 workflows:
   test:
     jobs:
-      - node/test
-        version: "14.19.3"
+      - node/test:
+          version: "14.19.3"
