@@ -236,12 +236,14 @@ describe('testRule', function () {
         assert.strictEqual(result.errorMessage, 'Error: Reveal depth exceeds limit.');
     });
 
+   // failing in the original microsoft repo
     xit('Rule officialValidator should return an object with valid status and empty string when the resource is valid.', () => {
         const reqJson = null;
         const resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample3-right.json')));
         assert.ok(testRules.officialValidator(reqJson, resJson).valid);
     }).timeout(300 * 1000);
 
+    // failing in the original microsoft repo
     xit('Rule officialValidator should return an object with invalid status and error message when the resource is invalid.', () => {
         const reqJson = null;
         const resJson = JSON.parse(fs.readFileSync(path.join(__dirname, '../test-samples/FHIR-R4/sample3-wrong.json')));

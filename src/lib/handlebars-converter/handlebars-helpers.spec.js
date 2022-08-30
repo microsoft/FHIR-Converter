@@ -243,6 +243,7 @@ describe('Handlebars helpers', function () {
         });
     });
 
+    // failing in the original microsoft repo
     xit('gzip returns an expected value', function() {
         var result = getHelper('gzip').func("abc", "utf8", "hex");
         // note : gzip output is dependent on OS : https://stackoverflow.com/questions/26516369/zlib-gzip-produces-different-results-for-same-input-on-different-oses
