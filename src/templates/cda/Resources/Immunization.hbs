@@ -10,12 +10,6 @@
             {{/each}}
         ],
 
-        {{#each (toArray imm.entryRelationship)}}
-            {{#if (contains (toJsonString this.observation.templateId) '"2.16.840.1.113883.10.20.22.4.53"')}}
-                "statusReason":{{>DataType/CodeableConcept.hbs code=this.observation.code}},
-            {{/if}}
-        {{/each}}
-
         {{#if imm.effectiveTime.low}}
         	"occurrenceDateTime":"{{formatAsDateTime imm.effectiveTime.low.value}}",
         {{else}}
@@ -31,7 +25,17 @@
             {{/each}}
         {{/each}}
 
+        "primarySource": true,
         "status":"{{imm.statusCode.code}}",
+        "statusReason": {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                    "code": "MEDPREC",
+                    "display": "medical precaution"
+                }
+            ]
+        },
         "route":{{>DataType/CodeableConcept.hbs code=imm.routeCode}},
         "site":{{>DataType/CodeableConcept.hbs code=imm.approachSiteCode}},      
     },
