@@ -17,10 +17,6 @@
                         }
                     ]
         },
-        {{#each (toArray allergyEntry.entryRelationship)}}
-            "code":{{>DataType/CodeableConcept.hbs code=this.observation.value}},
-        {{/each}}
-
         "reaction":
         [
             {
