@@ -482,8 +482,71 @@
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 },
+<<<<<<< HEAD
                 "custodian": {
                     "reference": "Organization/3bfc3db2-cf06-379a-88cb-03444c877632"
+=======
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                  "code": "problem-list-item"
+                }
+              ]
+            }
+          ],
+          "clinicalStatus": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                "code": "inactive"
+              }
+            ]
+          },
+          "code": {
+            "coding": [
+              {
+                "code": "401.9",
+                "display": "Unspecified essential hypertension",
+                "system": "urn:oid:2.16.840.1.113883.6.103"
+              }
+            ]
+          },
+          "onsetDateTime": "2011-10-05T04:00:00.000Z",
+          "subject": {
+            "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+          }
+        },
+        "request": {
+          "method": "PUT",
+          "url": "Condition/e2717651-459a-32eb-a348-427144ccf9cd"
+        }
+      },
+      {
+        "fullUrl": "urn:uuid:081341a3-b007-34b2-ad29-d010dad2ddf6",
+        "resource": {
+          "resourceType": "Condition",
+          "id": "081341a3-b007-34b2-ad29-d010dad2ddf6",
+          "identifier": [
+            {
+              "system": "urn:ietf:rfc:3986",
+              "value": "urn:uuid:1.3.6.1.4.1.22812.4.111.0.4.1.32941"
+            }
+          ],
+          "verificationStatus": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+                "code": "confirmed"
+              }
+            ]
+          },
+          "category": [
+            {
+              "coding": [
+                {
+                  "system": "http://snomed.info/sct",
+                  "code": "55607006",
+                  "display": "Problem"
+>>>>>>> e553834 (Fixing clinicalStatus)
                 },
                 "author": [
                     {
@@ -495,6 +558,31 @@
                 "method": "PUT",
                 "url": "Composition/105d0306-6903-3721-aaaa-bf4de8cbb337"
             }
+<<<<<<< HEAD
+=======
+          ],
+          "clinicalStatus": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                "code": "inactive"
+              }
+            ]
+          },
+          "code": {
+            "coding": [
+              {
+                "code": "780.60",
+                "display": "Fever, unspecified",
+                "system": "urn:oid:2.16.840.1.113883.6.103"
+              }
+            ]
+          },
+          "onsetDateTime": "2015-06-22T04:00:00.000Z",
+          "subject": {
+            "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+          }
+>>>>>>> e553834 (Fixing clinicalStatus)
         },
         {
             "fullUrl": "urn:uuid:3bfc3db2-cf06-379a-88cb-03444c877632",
@@ -578,6 +666,31 @@
                 "method": "PUT",
                 "url": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
             }
+<<<<<<< HEAD
+=======
+          ],
+          "clinicalStatus": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                "code": "inactive"
+              }
+            ]
+          },
+          "code": {
+            "coding": [
+              {
+                "code": "244.8",
+                "display": "Other specified acquired hypothyroidism",
+                "system": "urn:oid:2.16.840.1.113883.6.103"
+              }
+            ]
+          },
+          "onsetDateTime": "2006-12-31T05:00:00.000Z",
+          "subject": {
+            "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+          }
+>>>>>>> e553834 (Fixing clinicalStatus)
         },
         {
             "fullUrl": "urn:uuid:f40da2df-7505-315a-9acb-55513a02c37b",
@@ -681,6 +794,31 @@
                 "method": "PUT",
                 "url": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
             }
+<<<<<<< HEAD
+=======
+          ],
+          "clinicalStatus": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                "code": "inactive"
+              }
+            ]
+          },
+          "code": {
+            "coding": [
+              {
+                "code": "996.81",
+                "display": "Complications of transplanted kidney",
+                "system": "urn:oid:2.16.840.1.113883.6.103"
+              }
+            ]
+          },
+          "onsetDateTime": "2011-12-31T05:00:00.000Z",
+          "subject": {
+            "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+          }
+>>>>>>> e553834 (Fixing clinicalStatus)
         },
         {
             "fullUrl": "urn:uuid:214766fd-00e1-3e1c-98dd-3a8a9d6330e8",
@@ -747,6 +885,68 @@
                 "patient": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 }
+<<<<<<< HEAD
+=======
+              ]
+            }
+          ],
+          "clinicalStatus": {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                "code": "inactive"
+              }
+            ]
+          },
+          "code": {
+            "coding": [
+              {
+                "code": "278.02",
+                "display": "Overweight",
+                "system": "urn:oid:2.16.840.1.113883.6.103"
+              }
+            ]
+          },
+          "onsetDateTime": "2006-12-31T05:00:00.000Z",
+          "subject": {
+            "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+          }
+        },
+        "request": {
+          "method": "PUT",
+          "url": "Condition/767e0192-6340-39d6-9075-7520af641c48"
+        }
+      },
+      {
+        "fullUrl": "urn:uuid:08be0b16-7faa-3009-8165-41e4e7cc9a94",
+        "resource": {
+          "resourceType": "DiagnosticReport",
+          "id": "08be0b16-7faa-3009-8165-41e4e7cc9a94",
+          "identifier": [
+            {
+              "system": "urn:ietf:rfc:3986",
+              "value": "urn:uuid:eb6de6df-9b73-4e7d-8669-a31d4f037edf"
+            }
+          ],
+          "status": "final",
+          "code": {
+            "coding": [
+              {
+                "display": "Urinanalysis macro (dipstick) panel"
+              }
+            ]
+          },
+          "effectivePeriod": {
+            "start": "2015-06-22T00:00:00.000Z",
+            "end": "2015-06-22T00:00:00.000Z"
+          },
+          "subject": {
+            "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+          },
+          "result": [
+            {
+              "reference": "Observation/c8987a72-876b-371a-8930-f6135680ec7f"
+>>>>>>> e553834 (Fixing clinicalStatus)
             },
             "request": {
                 "method": "PUT",
@@ -2653,6 +2853,7 @@
                 "url": "Observation/82743786-4cf3-3baf-adec-1543c65aca8c"
             }
         },
+<<<<<<< HEAD
         {
             "fullUrl": "urn:uuid:10011ca5-3543-3e65-b46b-6db34d7dbb95",
             "resource": {
@@ -2704,6 +2905,36 @@
             "request": {
                 "method": "PUT",
                 "url": "Observation/10011ca5-3543-3e65-b46b-6db34d7dbb95"
+=======
+        "request": {
+          "method": "PUT",
+          "url": "Procedure/296600cb-6150-34cf-b1d0-9eacc07cc506"
+        }
+      },
+      {
+        "fullUrl": "urn:uuid:1f19424c-1bbf-30e7-8774-b8622e36e707",
+        "resource": {
+          "resourceType": "DocumentReference",
+          "id": "1f19424c-1bbf-30e7-8774-b8622e36e707",
+          "type": {
+            "coding": [
+              {
+                "code": "34133-9",
+                "display": "Summarization of Episode Note",
+                "system": "http://loinc.org"
+              }
+            ]
+          },
+          "date": "2022-09-01T21:24:41.474Z",
+          "status": "current",
+          "content": [
+            {
+              "attachment": {
+                "contentType": "text/plain",
+                "data": "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",
+                "hash": "d3V/xGf4vneSj5MeNGGcNMOXiGM="
+              }
+>>>>>>> e553834 (Fixing clinicalStatus)
             }
         },
         {

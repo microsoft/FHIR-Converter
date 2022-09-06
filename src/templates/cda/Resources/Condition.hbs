@@ -36,7 +36,7 @@
             "coding": [
                 {
                     "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
-                    "code": "active"
+                    "code": {{>ValueSet/ConditionStatus.hbs code=conditionEntry.statusCode.code}},
                 }
             ]
         },
