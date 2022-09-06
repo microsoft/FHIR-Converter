@@ -1,7 +1,7 @@
-{{#if (contains (toString (toJsonString msg)) '2.16.840.1.113883.10.20.22.2.22.1')}}
-    {{#with (getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.22.1')}}
-            {{#each (toArray 2_16_840_1_113883_10_20_22_2_22_1.entry) as |encounterEntry|}}
-                {{>Resources/Encounter.hbs encounter=encounterEntry.encounter ID=(generateUUID (toJsonString encounterEntry))}},
+{{#if (contains (toString (toJsonString msg)) '2.16.840.1.113883.10.20.22.2.22')}}
+    {{#with (getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.22')}}
+            {{#each (toArray 2_16_840_1_113883_10_20_22_2_22.entry) as |encounterEntry|}}
+                {{>Resources/Encounter.hbs encounter=encounterEntry.encounter.entryRelationship.act ID=(generateUUID (toJsonString encounterEntry))}},
                 {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
                 	{{>References/Encounter/subject.hbs ID=(generateUUID (toJsonString encounterEntry)) REF=(concat 'Patient/' patientId.Id)}},
                 {{/with}}
