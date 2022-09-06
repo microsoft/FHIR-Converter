@@ -45,6 +45,11 @@
         {{else}}
             "effectiveDateTime":"{{formatAsDateTime observationEntry.effectiveTime.value}}",
         {{/if}}
+        {{#if observationEntry.effectiveTime.low.value}}
+            "issued":"{{formatAsDateTime observationEntry.effectiveTime.low.value}}",
+        {{else}}
+            "issued":"{{formatAsDateTime observationEntry.effectiveTime.value}}",
+        {{/if}}
         
         "bodySite":{{>DataType/CodeableConcept.hbs code=observationEntry.targetSiteCode}},
         
@@ -55,6 +60,8 @@
             {
                 "value":{{observationEntry.value.value}},
                 "unit":"{{observationEntry.value.unit}}",
+                "system": "http://unitsofmeasure.org",
+                "code":"{{observationEntry.value.unit}}"
             }, 
         {{else}}
             "valueString":"{{observationEntry.value._}}",
