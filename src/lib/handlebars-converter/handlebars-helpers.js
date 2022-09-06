@@ -577,9 +577,9 @@ module.exports.external = [
         description: "Returns first instance of birthSex id e.g. getBirthSexInfo msg '2.16.840.1.113883.10.20.22.2.14'",
         func: function getBirthSexInfo(msg, templateId) {
             try {
-                var birthSexValue;
+                var birthSexValue ;
                 let structuredBody = msg.ClinicalDocument.component.structuredBody;
-                if(structuredBody) {
+                if(structuredBody && structuredBody.component) {
                     for(var i=0; i< structuredBody.component.length; i++) {
                         let sectionObj = structuredBody.component[i].section;
                         if(sectionObj && sectionObj.templateId && JSON.stringify(sectionObj.templateId).includes('2.16.840.1.113883.10.20.22.2.17')){
