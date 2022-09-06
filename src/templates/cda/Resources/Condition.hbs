@@ -9,14 +9,37 @@
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
-        "clinicalStatus":
-        [ 
-            {{#each (toArray conditionEntry.entryRelationship)}}
-                {{#if (eq this.observation.templateId.root '2.16.840.1.113883.10.20.22.4.5')}} 
-                    {{>DataType/CodeableConcept.hbs code=this.observation.value}},
-                {{/if}}
-          {{/each}}
-        ],  
+        "verificationStatus": {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+                    "code": "confirmed"
+                }
+            ]
+        },
+        "category": [
+            {
+                "coding": [
+                    {
+                        "system": "http://snomed.info/sct",
+                        "code": "55607006",
+                        "display": "Problem"
+                    },
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                        "code": "problem-list-item"
+                    }
+                ]
+            }
+        ],
+        "clinicalStatus": {
+            "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                    "code": {{>ValueSet/ConditionStatus.hbs code=conditionEntry.statusCode.code}},
+                }
+            ]
+        },
         "code":
             {{#if conditionEntry.value.translation}}
                 {{#with (elementAt (toArray conditionEntry.value.translation) 0)}}
