@@ -571,6 +571,39 @@ module.exports.external = [
             }
         }
     },
+
+    {
+        name: 'getBirthSexInfo',
+        description: "Returns first instance of birthSex id e.g. getBirthSexInfo msg '2.16.840.1.113883.10.20.22.2.14'",
+        func: function getBirthSexInfo(msg, templateId) {
+            try {
+                var birthSexValue;
+                let structuredBody = msg.ClinicalDocument.component.structuredBody;
+                if(structuredBody) {
+                    for(var i=0; i< structuredBody.component.length; i++) {
+                        let sectionObj = structuredBody.component[i].section;
+                        if(sectionObj && sectionObj.templateId && JSON.stringify(sectionObj.templateId).includes('2.16.840.1.113883.10.20.22.2.17')){
+                            let entryObjs = sectionObj.entry;
+                            for(var j=0; j < entryObjs.length; j++) {
+                                let entryObj = entryObjs[j];
+                                if(entryObj){
+                                    let observation = entryObj.observation;
+                                    if(observation && observation.templateId && JSON.stringify(observation.templateId).includes(templateId)){
+                                        birthSexValue = observation.value.code;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return birthSexValue;
+            }
+            catch (err) {
+                throw `helper "getBirthSexInfo" : ${err}`;
+            }
+        }
+    },
     {
         name: 'getFieldRepeats',
         description: 'Returns repeat list for a field: getFieldRepeats fieldData',
