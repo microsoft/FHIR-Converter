@@ -20,16 +20,18 @@
         		{{>DataType/HumanName.hbs name=this}},
             {{/each}}
         ],
+        "active": true,
         "birthDate":"{{addHyphensDate patientRole.patient.birthTime.value}}",
         "gender":"{{toLower patientRole.patient.administrativeGenderCode.displayName}}",
         "extension" : [
             {{>Extensions/Race.hbs patient=patientRole.patient}},
             {{>Extensions/Ethnicity.hbs patient=patientRole.patient}},
+            {{>Extensions/Birthsex.hbs patient=patientRole.patient msg=msg}},
         ],
         "address":
         [
-        	{{#each (toArray patientRole.addr)}}
-        		{{>DataType/Address.hbs addr=this}},
+        	{{#each (toArray patientRole)}}
+        		{{>DataType/Address.hbs addr=this.addr period=this.patient.birthTime.value}},
             {{/each}}
         ],
         "telecom":

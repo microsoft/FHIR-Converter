@@ -44,11 +44,11 @@
     
 {{#with msg.ClinicalDocument.recordTarget.patientRole}}
     {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=this) as |patientId|}}
-        {{>Resources/Patient.hbs patientRole=.. ID=patientId.Id}},
+        {{>Resources/Patient.hbs patientRole=.. ID=patientId.Id msg=../../msg}},
         {{#if ../patient.guardian}}
             {{>Resources/RelatedPerson.hbs relatedPerson=../patient.guardian ID=(generateUUID (toJsonString ../patient.guardian))}},
             {{>References/RelatedPerson/patient.hbs ID=(generateUUID (toJsonString ../patient.guardian)) REF=(concat 'Patient/' patientId.Id)}},
         {{/if}}
     {{/with}}
 
-{{/with}}     
+{{/with}}
