@@ -30,7 +30,17 @@
         {{/if}}
         
         "status":{{>ValueSet/ObservationStatus.hbs code=observationEntry.statusCode.code}},
-        {{#if observationEntry.code.translation.code}}
+        {{#if isBloodPressure}}
+         "code": {
+            "coding": [
+                {
+                "code": "85354-9",
+                "display": "Blood pressure panel with all children optional",
+                "system": "http://loinc.org"
+                }
+            ]
+        },
+        {{else if observationEntry.code.translation.code}}
             "code": {{>DataType/CodeableConcept.hbs code=observationEntry.code.translation}},
         {{else}}
             "code": {{>DataType/CodeableConcept.hbs code=observationEntry.code}},
@@ -50,10 +60,54 @@
         {{else}}
             "issued":"{{formatAsDateTime observationEntry.effectiveTime.value}}",
         {{/if}}
-        
+
+
         "bodySite":{{>DataType/CodeableConcept.hbs code=observationEntry.targetSiteCode}},
-        
-        {{#if observationEntry.value.code}}
+
+        {{#if isBloodPressure}}
+        "component": [
+            {{#each (toArray observationEntry.component) as |component|}}
+                {{#if (eq component.observation.code.displayName 'Systolic blood pressure')}}
+                    {
+                        "code": {
+                          "coding": [
+                            {
+                              "system": "http://loinc.org",
+                              "code": "8480-6",
+                              "display": "Systolic blood pressure"
+                            }
+                          ]
+                        },
+                        "valueQuantity": {
+                          "value": {{component.observation.value.value}},
+                          "unit": "mmHg",
+                          "system": "http://unitsofmeasure.org",
+                          "code": "{{component.observation.value.unit}}"
+                        }
+                    },
+                {{/if}}
+                {{#if (eq component.observation.code.displayName 'Diastolic blood pressure')}}
+                    {
+                        "code": {
+                          "coding": [
+                            {
+                              "system": "http://loinc.org",
+                              "code": "8462-4",
+                              "display": "Diastolic blood pressure"
+                            }
+                          ]
+                        },
+                        "valueQuantity": {
+                          "value": {{component.observation.value.value}},
+                          "unit": "mmHg",
+                          "system": "http://unitsofmeasure.org",
+                          "code": "{{component.observation.value.unit}}"
+                        }
+                    },
+                {{/if}}
+            {{/each}}
+        ],
+        {{else if observationEntry.value.code}}
             "valueCodeableConcept":{{>DataType/CodeableConcept.hbs code=observationEntry.value}},
         {{else if observationEntry.value.value}}
             "valueQuantity":

@@ -16,11 +16,11 @@
         "date":"{{formatAsDateTime composition.effectiveTime.value}}",
         "title":"{{composition.title._}}",
         "confidentiality":"{{composition.confidentialityCode.code}}",
-        "attester": 
+        "attester":
         [
         	{
-                {{#if composition.legalAuthenticator}}            
-        		    "mode": "legal",                
+                {{#if composition.legalAuthenticator}}
+        		    "mode": "legal",
             	    "time":"{{formatAsDateTime composition.legalAuthenticator.time.value}}",
                     {{#if composition.legalAuthenticator.assignedEntity}}
                         {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=composition.legalAuthenticator.assignedEntity) as |practitionerId|}}
@@ -42,8 +42,8 @@
                 },
            	},
         ],
-		"section": 
-        [               
+		"section":
+        [
             {{#each composition.component.structuredBody.component}}
                	{
                     {{#if this.section.title._}}
@@ -53,7 +53,7 @@
                             "status":"generated",
                             "div":"<div xmlns=\"http://www.w3.org/1999/xhtml\">{{this.section.title._}}</div>",
                         }
-                    {{else}}                    
+                    {{else}}
                         "title":"{{this.section.code.displayName}}",
                         "text":
                         {
@@ -67,19 +67,23 @@
                     [
                         {{#with (evaluate 'Utils/ResourceTypeFromSection.hbs' section=this.section) as |resObj|}}
                             {{#if (and (eq resObj.resourceType 'Observation') (contains (toJsonString ../this.section.templateId) '2.16.840.1.113883.10.20.22.2.4.1'))}}
+
                                 {{#each (toArray ../this.section.entry)}}
-                                    {{#each (toArray this.organizer.component)}}                           	
-                                        {
-                                            "reference":"{{concat resObj.resourceType '/' (generateUUID (toJsonString this))}}",
-                                            {{>Utils/DisplayFromSectionEntry.hbs section=../../../this.section entry=this}},
-                                        },
+                                    {{#each (toArray this.organizer.component)}}
+                                        {{#if (contains (toString (toJsonString this)) 'Systolic blood pressure')}}
+                                        {{else}}
+                                            {
+                                                "reference":"{{concat resObj.resourceType '/' (generateUUID (toJsonString this))}}",
+                                                {{>Utils/DisplayFromSectionEntry.hbs section=../../../this.section entry=this}},
+                                            },
+                                        {{/if}}
                                     {{/each}}
                                 {{/each}}
                             {{else if resObj.resourceType}}
-                                {{#each (toArray ../this.section.entry)}}                           	
+                                {{#each (toArray ../this.section.entry)}}
                                     {
-                                        "reference":"{{concat resObj.resourceType '/' (generateUUID (toJsonString this))}}",
-                                        {{>Utils/DisplayFromSectionEntry.hbs section=../../this.section entry=this}}
+                                    "reference":"{{concat resObj.resourceType '/'(generateUUID (toJsonString this))}}",
+                                    {{>Utils/DisplayFromSectionEntry.hbs section=../../this.section entry=this}}
                                     },
                                 {{/each}}
                             {{/if}}
