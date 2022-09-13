@@ -11,7 +11,7 @@
               {{#each (toArray this.component) as |obsEntry|}}
                   {{#if (not (or (eq obsEntry.observation.code.displayName 'Diastolic blood pressure') (eq obsEntry.observation.code.displayName 'Systolic blood pressure')))}}
                       {{>Resources/Observation.hbs observationCategory="vital-signs" observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}},
-                      {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+                      {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
                           {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
                       {{/with}}
                   {{/if}}
