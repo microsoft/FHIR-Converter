@@ -70,7 +70,7 @@
 
                                 {{#each (toArray ../this.section.entry)}}
                                     {{#each (toArray this.organizer.component)}}
-                                        {{#if (contains (toString (toJsonString this)) 'Systolic blood pressure')}}
+                                        {{#if (contains (toJsonString this) 'Systolic blood pressure')}}
                                         {{else}}
                                             {
                                                 "reference":"{{concat resObj.resourceType '/' (generateUUID (toJsonString this))}}",
