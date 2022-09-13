@@ -1,0 +1,94 @@
+
+{
+   "fullUrl":"urn:uuid:{{ID}}",
+   "resource":{
+      "resourceType":"CareTeam",
+      "id":"{{ID}}",
+       "identifier":
+        [
+        	{{#each (toArray practitioner.id)}}
+            	{{>DataType/Identifier.hbs id=this}},
+            {{/each}}
+        ],
+      "meta":{
+         "profile":[
+            "http://hl7.org/fhir/us/core/StructureDefinition/us-core-careteam"
+         ]
+      },
+      "name":"USCoreCareTeam",
+      "status" : "active",
+      "telecom":
+        [
+          {{#each (toArray practitioner.telecom)}}
+            {{>DataType/ContactPoint.hbs contactPoint=this}},
+            {{/each}}
+        ],
+        "participant":[
+         {
+            "role": [
+              {
+                "coding": [
+                  {
+                    "system": "http://snomed.info/sct",
+                    "code": "116154003",
+                    "display": "Patient"
+                  }
+                ],
+                "text": "Patient"
+              }
+            ],
+            "member": {
+              "reference": "Patient/{{generateUUID (toJsonString patient)}}",
+              {{#if patient.name.given._ }}
+                "display" : "{{patient.name.given._}} {{patient.name.family._}} ",
+              {{else}}
+                 "display" : "{{patient.name.given.[0]._}} {{patient.name.family._}} ",
+              {{/if}}
+            }
+        },
+         {
+            "role":[
+               {
+                  "coding":[
+                     {
+                        "system":"http://snomed.info/sct",
+                        "code":"432100008",
+                        "display":"Health coach"
+                     }
+                  ],
+                  "text": "Healthcare professional (occupation)"
+               }
+            ],
+            "member": {
+              "reference":  "Practitioner/{{generateUUID (toJsonString healthCoach)}}",
+              "display" : "{{healthCoach.assignedPerson.name.given._}} {{healthCoach.assignedPerson.name.family._}} ",
+            },
+            
+         },
+         {
+            "role" : [
+              {
+                "coding" : [
+                  {
+                    "system" : "http://snomed.info/sct",
+                    "code" :  "309343006",
+                    "display": "Physician (occupation)"
+                  }
+                ],
+                "text": "Physician (occupation)"
+              }
+          ],
+          "member": {
+            "reference":  "Practitioner/{{ID}}",
+            "display" : "{{practitioner.assignedPerson.name.given._}} {{practitioner.assignedPerson.name.family._}}",
+          },
+          
+        },
+      ]
+        
+   },
+   "request":{
+      "method":"PUT",
+      "url":"CareTeam/{{ID}}"
+   }
+}
