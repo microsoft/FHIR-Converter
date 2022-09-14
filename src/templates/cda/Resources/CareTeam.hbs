@@ -1,4 +1,3 @@
-
 {
    "fullUrl":"urn:uuid:{{ID}}",
    "resource":{
@@ -33,11 +32,11 @@
               }
             ],
             "member": {
-              "reference": "Patient/{{generateUUID (toJsonString patient)}}",
+              "reference": "Patient/{{patientId}}",
               {{#if patient.name.given._ }}
-                "display" : "{{patient.name.given._}} {{patient.name.family._}} ",
+                "display" : "{{patient.name.given._}} {{patient.name.family._}}",
               {{else}}
-                 "display" : "{{patient.name.given.[0]._}} {{patient.name.family._}} ",
+                 "display" : "{{patient.name.given.[0]._}} {{patient.name.family._}}",
               {{/if}}
             }
         },
@@ -55,8 +54,8 @@
                }
             ],
             "member": {
-              "reference":  "Practitioner/{{generateUUID (toJsonString healthCoach)}}",
-              "display" : "{{healthCoach.assignedPerson.name.given._}} {{healthCoach.assignedPerson.name.family._}} ",
+              "reference":  "Practitioner/{{healthCoachId}}",
+              "display" : "{{healthCoach.assignedPerson.name.given._}} {{healthCoach.assignedPerson.name.family._}}",
             },
             
          },

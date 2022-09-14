@@ -59,9 +59,11 @@
     {{/with}}
 {{/with}}
 
-{{#if (and msg.ClinicalDocument.dataEnterer.assignedEntity msg.ClinicalDocument.author.assignedAuthor)}}
-    {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=msg.ClinicalDocument.dataEnterer.assignedEntity) as |practitionerId|}}
-      {{>Resources/CareTeam.hbs healthCoach=../msg.ClinicalDocument.dataEnterer.assignedEntity  practitioner=../msg.ClinicalDocument.author.assignedAuthor ID=practitionerId.Id patient=../msg.ClinicalDocument.recordTarget.patientRole.patient}},
-      {{>References/CareTeam/subject.hbs ID=practitionerId.Id REF=(concat 'Patient/' (generateUUID (toJsonString ../msg.ClinicalDocument.recordTarget.patientRole.patient)))}},
+{{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=msg.ClinicalDocument.author.assignedAuthor) as |practitionerId|}}
+    {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=../msg.ClinicalDocument.dataEnterer.assignedEntity) as |healthCoachId|}}
+        {{#with  (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+            {{>Resources/CareTeam.hbs healthCoach=../../../msg.ClinicalDocument.dataEnterer.assignedEntity  healthCoachId = healthCoachId.Id patientId = patientId.Id  practitioner=../../../msg.ClinicalDocument.author.assignedAuthor ID=practitionerId.Id patient=../../../msg.ClinicalDocument.recordTarget.patientRole.patient}},
+            {{>References/CareTeam/subject.hbs ID=practitionerId.Id  REF=(concat 'Patient/' patientId.Id)}},
+        {{/with}}
     {{/with}}
-{{/if}}
+{{/with}}
