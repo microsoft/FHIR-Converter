@@ -12,12 +12,15 @@
         "status":{{>ValueSet/MedicationStatementStatus.hbs code=medicationStatement.statusCode.code}},
         "effectivePeriod":
         {
-            "start":"{{formatAsDateTime medicationStatement.effectiveTime.low.value}}",
-            "end":"{{formatAsDateTime medicationStatement.effectiveTime.high.value}}"
+            {{#with (getMedicationStartAndStop medicationStatement) as |startAndStop|}}
+                "start":"{{formatAsDateTime startAndStop.start}}",
+                "end":"{{formatAsDateTime startAndStop.stop}}"
+            {{/with}}
         },
         "dosage":
         [
             {
+                "text": "{{medInstructions}}",
                 "doseAndRate": [
                 {
                     "doseQuantity":

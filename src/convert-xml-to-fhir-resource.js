@@ -33,6 +33,8 @@ function createAndUploadFhirResource()  {
         fs.writeFileSync(newPath, JSON.stringify(resultMessage, null, 4));
     }).then(() => {
         workerPool.destroy();
+    }).catch(err => {
+        console.log(`Unable to parse input data. ${err.toString()}`);
     });
 }
 

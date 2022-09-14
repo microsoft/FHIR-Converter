@@ -487,7 +487,7 @@
                 },
                 "author": [
                     {
-                        "reference": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+                        "reference": "Practitioner/c7c84c0b-8a0b-3871-b4ce-31ab96f70e1d"
                     }
                 ]
             },
@@ -533,7 +533,7 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:5942c17c-61a6-351b-a314-39fb9fc72561",
+            "fullUrl": "urn:uuid:c7c84c0b-8a0b-3871-b4ce-31ab96f70e1d",
             "resource": {
                 "resourceType": "Practitioner",
                 "meta": {
@@ -541,7 +541,7 @@
                         "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
                     ]
                 },
-                "id": "5942c17c-61a6-351b-a314-39fb9fc72561",
+                "id": "c7c84c0b-8a0b-3871-b4ce-31ab96f70e1d",
                 "identifier": [
                     {
                         "system": "http://hl7.org/fhir/sid/us-npi",
@@ -553,12 +553,6 @@
                         "family": "Davis",
                         "given": [
                             "Albert"
-                        ]
-                    },
-                    {
-                        "family": "Zelaznik",
-                        "given": [
-                            "Steve"
                         ]
                     }
                 ],
@@ -578,11 +572,6 @@
                         "system": "phone",
                         "value": "555-555-1002",
                         "use": "work"
-                    },
-                    {
-                        "system": "phone",
-                        "value": "UNK",
-                        "use": "work"
                     }
                 ],
                 "qualification": [
@@ -596,21 +585,12 @@
                                 }
                             ]
                         }
-                    },
-                    {
-                        "code": {
-                            "coding": [
-                                {
-                                    "code": "UNK"
-                                }
-                            ]
-                        }
                     }
                 ]
             },
             "request": {
                 "method": "PUT",
-                "url": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+                "url": "Practitioner/c7c84c0b-8a0b-3871-b4ce-31ab96f70e1d"
             }
         },
         {
@@ -854,8 +834,12 @@
                     }
                 ],
                 "status": "active",
+                "effectivePeriod": {
+                    "start": "2015-06-22"
+                },
                 "dosage": [
                     {
+                        "text": "Inject 1 syringe intramuscularly once a week",
                         "doseAndRate": [
                             {
                                 "doseQuantity": {
@@ -905,11 +889,25 @@
                 "identifier": [
                     {
                         "system": "urn:ietf:rfc:3986",
-                        "value": "urn:uuid:afd2ba2b-c11d-4ab2-99b2-68c52f3de73c"
+                        "value": "urn:uuid:7d28c1ed-481c-46ea-afd4-bfad68bde799"
                     }
                 ],
                 "intent": "order",
                 "status": "active",
+                "reportedBoolean": false,
+                "authoredOn": "2015-06-22",
+                "dosageInstruction": [
+                    {
+                        "text": "Inject 1 syringe intramuscularly once a week",
+                        "doseAndRate": [
+                            {
+                                "doseQuantity": {
+                                    "value": 1
+                                }
+                            }
+                        ]
+                    }
+                ],
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 },
@@ -917,12 +915,60 @@
                     "reference": "Medication/a6491cac-c1ee-3c02-a78e-063c467a9350"
                 },
                 "requester": {
-                    "reference": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+                    "reference": "Practitioner/77feb0a0-c8a6-342a-98da-5b3375442250"
                 }
             },
             "request": {
                 "method": "PUT",
                 "url": "MedicationRequest/b9b54f80-e993-3029-b101-337462322fdf"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:77feb0a0-c8a6-342a-98da-5b3375442250",
+            "resource": {
+                "resourceType": "Practitioner",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+                    ]
+                },
+                "id": "77feb0a0-c8a6-342a-98da-5b3375442250",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "99999999"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Zelaznik",
+                        "given": [
+                            "Steve"
+                        ]
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "UNK",
+                        "use": "work"
+                    }
+                ],
+                "qualification": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "code": "UNK"
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/77feb0a0-c8a6-342a-98da-5b3375442250"
             }
         },
         {
@@ -937,8 +983,12 @@
                     }
                 ],
                 "status": "active",
+                "effectivePeriod": {
+                    "start": "2022-09-13"
+                },
                 "dosage": [
                     {
+                        "text": "Take 1 tablet by mouth once a day",
                         "doseAndRate": [
                             {
                                 "doseQuantity": {
@@ -981,6 +1031,48 @@
             }
         },
         {
+            "fullUrl": "urn:uuid:adfd3ece-08e8-3f5d-9772-8f51192a9fc0",
+            "resource": {
+                "resourceType": "MedicationRequest",
+                "id": "adfd3ece-08e8-3f5d-9772-8f51192a9fc0",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:428b1aa8-43b5-4027-bf0a-ce275fdb980b"
+                    }
+                ],
+                "intent": "plan",
+                "status": "active",
+                "reportedBoolean": true,
+                "authoredOn": "2022-09-13",
+                "dosageInstruction": [
+                    {
+                        "text": "Take 1 tablet by mouth once a day",
+                        "doseAndRate": [
+                            {
+                                "doseQuantity": {
+                                    "value": 1
+                                }
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+                },
+                "requester": {
+                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+                },
+                "medicationReference": {
+                    "reference": "Medication/3a5b2405-cbc2-3370-a18d-a4c96b12a816"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "MedicationRequest/adfd3ece-08e8-3f5d-9772-8f51192a9fc0"
+            }
+        },
+        {
             "fullUrl": "urn:uuid:e9491721-dc0d-39fa-b52a-2cee89997404",
             "resource": {
                 "resourceType": "MedicationStatement",
@@ -992,8 +1084,12 @@
                     }
                 ],
                 "status": "active",
+                "effectivePeriod": {
+                    "start": "2015-06-22"
+                },
                 "dosage": [
                     {
+                        "text": "Inject 1 unit twice a day as directed",
                         "doseAndRate": [
                             {
                                 "doseQuantity": {
@@ -1043,11 +1139,25 @@
                 "identifier": [
                     {
                         "system": "urn:ietf:rfc:3986",
-                        "value": "urn:uuid:0a1cdc27-ffac-4fed-ac32-78bbd864ca9d"
+                        "value": "urn:uuid:7c490f66-143a-45cf-ad59-31b8d3943bbb"
                     }
                 ],
                 "intent": "order",
                 "status": "active",
+                "reportedBoolean": false,
+                "authoredOn": "2015-06-22",
+                "dosageInstruction": [
+                    {
+                        "text": "Inject 1 unit twice a day as directed",
+                        "doseAndRate": [
+                            {
+                                "doseQuantity": {
+                                    "value": 1
+                                }
+                            }
+                        ]
+                    }
+                ],
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 },
@@ -1055,7 +1165,7 @@
                     "reference": "Medication/0ca58338-80c4-3637-8f7f-2ad7a174d09c"
                 },
                 "requester": {
-                    "reference": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+                    "reference": "Practitioner/77feb0a0-c8a6-342a-98da-5b3375442250"
                 }
             },
             "request": {
@@ -1080,6 +1190,7 @@
                 },
                 "dosage": [
                     {
+                        "text": "Take 1 tablet by mouth as needed",
                         "doseAndRate": [
                             {
                                 "doseQuantity": {
@@ -1129,11 +1240,25 @@
                 "identifier": [
                     {
                         "system": "urn:ietf:rfc:3986",
-                        "value": "urn:uuid:3b626fe9-a250-4d10-aca6-68f494f1a18c"
+                        "value": "urn:uuid:5ca79117-a697-48d8-b2a0-f952a16c1445"
                     }
                 ],
                 "intent": "order",
                 "status": "active",
+                "reportedBoolean": false,
+                "authoredOn": "2015-06-22",
+                "dosageInstruction": [
+                    {
+                        "text": "Take 1 tablet by mouth as needed",
+                        "doseAndRate": [
+                            {
+                                "doseQuantity": {
+                                    "value": 1
+                                }
+                            }
+                        ]
+                    }
+                ],
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 },
@@ -1141,7 +1266,7 @@
                     "reference": "Medication/f1bf406b-00cb-333d-bfe9-1c9e0a070162"
                 },
                 "requester": {
-                    "reference": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+                    "reference": "Practitioner/77feb0a0-c8a6-342a-98da-5b3375442250"
                 }
             },
             "request": {
@@ -3167,7 +3292,7 @@
                         }
                     ]
                 },
-                "date": "2022-09-14T16:54:39.102Z",
+                "date": "2022-09-14T16:55:56.510Z",
                 "status": "current",
                 "content": [
                     {
