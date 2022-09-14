@@ -7,9 +7,13 @@
             {{/if}}
         {{/each}}
 	{{else if (eq this.resourceType 'Observation')}}
-    	"display":"{{../entry.observation.code.originalText._}}",
-        "display":"{{../entry.observation.code.displayName}}",
-        "display":"{{../entry.observation.code.translation.displayName}}",
+        {{#if (or (eq ../entry.observation.code.originalText._ 'Diastolic blood pressure')(eq ../entry.observation.code.displayName 'Diastolic blood pressure')(eq ../entry.observation.code.translation.displayName 'Diastolic blood pressure'))}}
+            "display": "Blood pressure panel with all children optional",
+        {{else}}
+            "display":"{{../entry.observation.code.originalText._}}",
+            "display":"{{../entry.observation.code.displayName}}",
+            "display":"{{../entry.observation.code.translation.displayName}}",
+        {{/if}}
     {{/if}}   
 {{/with}}
 
