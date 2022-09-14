@@ -21,7 +21,14 @@
             {{else}}
                 {{>DataType/CodeableConcept.hbs code=procedureEntry.code}},
             {{/if}}
- 
+        {{#if procedureEntry.effectiveTime.value}}
+            "performedDateTime":"{{formatAsDateTime procedureEntry.effectiveTime.value}}",
+        {{else if procedureEntry.effectiveTime.low}}
+            "performedPeriod": {
+                "start":"{{formatAsDateTime procedureEntry.effectiveTime.low.value}}",
+                "end":"{{formatAsDateTime procedureEntry.effectiveTime.high.value}}",
+            }
+        {{/if}}
         "performedDateTime":"{{formatAsDateTime procedureEntry.effectiveTime.value}}",
         "bodySite":
         [
