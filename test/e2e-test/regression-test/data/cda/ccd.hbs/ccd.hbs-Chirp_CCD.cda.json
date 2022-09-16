@@ -476,6 +476,9 @@
                 "author": [
                     {
                         "reference": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+                    },
+                    {
+                        "reference": "Practitioner/328eef6e-a0d0-3457-b8ab-6d9d0441c624"
                     }
                 ]
             },
@@ -579,6 +582,54 @@
             "request": {
                 "method": "PUT",
                 "url": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:328eef6e-a0d0-3457-b8ab-6d9d0441c624",
+            "resource": {
+                "resourceType": "Practitioner",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+                    ]
+                },
+                "id": "328eef6e-a0d0-3457-b8ab-6d9d0441c624",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "999999943252"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Davis",
+                        "given": [
+                            "Tracy"
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "2472, Rocky  place"
+                        ],
+                        "city": "Beaverton",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "97006"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "555-555-1002",
+                        "use": "work"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/328eef6e-a0d0-3457-b8ab-6d9d0441c624"
             }
         },
         {
@@ -702,6 +753,91 @@
             "request": {
                 "method": "PUT",
                 "url": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:5942c17c-61a6-351b-a314-39fb9fc72561",
+            "resource": {
+                "resourceType": "CareTeam",
+                "id": "5942c17c-61a6-351b-a314-39fb9fc72561",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "99999999"
+                    }
+                ],
+                "name": "USCoreCareTeam",
+                "status": "active",
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "555-555-1002",
+                        "use": "work"
+                    }
+                ],
+                "participant": [
+                    {
+                        "role": [
+                            {
+                                "coding": [
+                                    {
+                                        "system": "http://snomed.info/sct",
+                                        "code": "116154003",
+                                        "display": "Patient"
+                                    }
+                                ],
+                                "text": "Patient"
+                            }
+                        ],
+                        "member": {
+                            "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b",
+                            "display": "Alice Newman"
+                        }
+                    },
+                    {
+                        "role": [
+                            {
+                                "coding": [
+                                    {
+                                        "system": "http://snomed.info/sct",
+                                        "code": "432100008",
+                                        "display": "Health coach"
+                                    }
+                                ],
+                                "text": "Healthcare professional (occupation)"
+                            }
+                        ],
+                        "member": {
+                            "reference": "Practitioner/328eef6e-a0d0-3457-b8ab-6d9d0441c624",
+                            "display": "Tracy Davis"
+                        }
+                    },
+                    {
+                        "role": [
+                            {
+                                "coding": [
+                                    {
+                                        "system": "http://snomed.info/sct",
+                                        "code": "309343006",
+                                        "display": "Physician (occupation)"
+                                    }
+                                ],
+                                "text": "Physician (occupation)"
+                            }
+                        ],
+                        "member": {
+                            "reference": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561",
+                            "display": "Albert Davis"
+                        }
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "CareTeam/5942c17c-61a6-351b-a314-39fb9fc72561"
             }
         },
         {
@@ -3051,7 +3187,7 @@
                         }
                     ]
                 },
-                "date": "2022-09-16T15:36:47.325Z",
+                "date": "2022-09-16T15:49:55.149Z",
                 "status": "current",
                 "content": [
                     {
