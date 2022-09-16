@@ -40,6 +40,21 @@
                 }
             ]
         },
+        {{else if isPulseOximetry}}
+          "code":{
+            "coding":[
+              {
+                "code":"59408-5",
+                "display":"Oxygen saturation in Arterial blood by Pulse oximetry",
+                "system":"http://loinc.org"
+              },
+              {
+                "system":"http://loinc.org",
+                "code":"2708-6",
+                "display":"Oxygen saturation in Arterial blood"
+              }
+            ]
+          },
         {{else if observationEntry.code.translation.code}}
             "code": {{>DataType/CodeableConcept.hbs code=observationEntry.code.translation}},
         {{else}}
@@ -64,7 +79,7 @@
 
         "bodySite":{{>DataType/CodeableConcept.hbs code=observationEntry.targetSiteCode}},
 
-        {{#if isBloodPressure}}
+        {{#if (or isBloodPressure isPulseOximetry)}}
         "component": [
             {{#each (toArray observationEntry.component) as |component|}}
                 {{#if (eq component.observation.code.displayName 'Systolic blood pressure')}}
@@ -105,6 +120,65 @@
                         }
                     },
                 {{/if}}
+                {{#if (eq component.observation.code.displayName 'Oxygen saturation in Arterial blood by Pulse oximetry')}}
+                {{ log "compo " component.observation}}
+                    {
+                        "code":{
+                            "coding":[
+                                {
+                                    "system":"http://loinc.org",
+                                    "code":"3151-8",
+                                    "display":"Inhaled oxygen flow rate"
+                                }
+                            ],
+                            "text":"Inhaled oxygen flow rate"
+                        },
+                        "valueQuantity": {
+                          "value": {{component.observation.value.value}},
+                          "unit": "Sao2",
+                          "system": "http://unitsofmeasure.org",
+                          "code": "{{component.observation.value.unit}}"
+                        }
+                        "dataAbsentReason":{
+                            "coding":[
+                                {
+                                    "system":"http://terminology.hl7.org/CodeSystem/data-absent-reason",
+                                    "code":"unknown",
+                                    "display":"Unknown"
+                                }
+                            ],
+                        "text":"Unknown"
+                      }
+                  },
+                  {
+                      "code":{
+                          "coding":[
+                              {
+                                  "system":"http://loinc.org",
+                                  "code":"3150-0",
+                                  "display":"Inhaled oxygen concentration"
+                              }
+                          ],
+                          "text":"Inhaled oxygen concentration"
+                      },
+                      "valueQuantity": {
+                        "value": {{component.observation.value.value}},
+                        "unit": "Sao2",
+                        "system": "http://unitsofmeasure.org",
+                        "code": "{{component.observation.value.unit}}"
+                      },
+                      "dataAbsentReason":{
+                          "coding":[
+                              {
+                                  "system":"http://terminology.hl7.org/CodeSystem/data-absent-reason",
+                                  "code":"unknown",
+                                  "display":"Unknown"
+                              }
+                          ],
+                           "text":"Unknown"
+                      }
+                  },
+                {{/if}}
             {{/each}}
         ],
         {{else if observationEntry.value.code}}
@@ -116,7 +190,7 @@
                 "unit":"{{observationEntry.value.unit}}",
                 "system": "http://unitsofmeasure.org",
                 "code":"{{observationEntry.value.unit}}"
-            }, 
+            },
         {{else}}
             "valueString":"{{observationEntry.value._}}",
         {{/if}}
