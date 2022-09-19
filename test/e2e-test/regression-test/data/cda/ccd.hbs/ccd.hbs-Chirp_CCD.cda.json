@@ -1483,20 +1483,40 @@
                     }
                 ],
                 "status": "final",
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                                "code": "LAB",
+                                "display": "Laboratory"
+                            }
+                        ]
+                    }
+                ],
                 "code": {
                     "coding": [
                         {
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                            "code": "LAB",
                             "display": "Urinanalysis macro (dipstick) panel"
                         }
-                    ]
+                    ],
+                    "text": "Urinanalysis macro (dipstick) panel"
                 },
                 "effectivePeriod": {
                     "start": "2015-06-22T00:00:00.000Z",
                     "end": "2015-06-22T00:00:00.000Z"
                 },
+                "issued": "2015-06-22T00:00:00.000Z",
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 },
+                "performer": [
+                    {
+                        "reference": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+                    }
+                ],
                 "result": [
                     {
                         "reference": "Observation/c8987a72-876b-371a-8930-f6135680ec7f"
@@ -1918,20 +1938,40 @@
                     }
                 ],
                 "status": "final",
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                                "code": "LAB",
+                                "display": "Laboratory"
+                            }
+                        ]
+                    }
+                ],
                 "code": {
                     "coding": [
                         {
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                            "code": "LAB",
                             "display": "Chest X-ray 2 Views"
                         }
-                    ]
+                    ],
+                    "text": "Chest X-ray 2 Views"
                 },
                 "effectivePeriod": {
                     "start": "2015-06-22T00:00:00.000Z",
                     "end": "2015-06-22T00:00:00.000Z"
                 },
+                "issued": "2015-06-22T00:00:00.000Z",
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 },
+                "performer": [
+                    {
+                        "reference": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+                    }
+                ],
                 "result": [
                     {
                         "reference": "Observation/ae6281bc-b54d-3c29-86d4-e0d88013c48f"
@@ -3124,7 +3164,7 @@
                         }
                     ]
                 },
-                "date": "2022-09-14T20:27:07.199Z",
+                "date": "2022-09-19T18:04:41.513Z",
                 "status": "current",
                 "content": [
                     {
