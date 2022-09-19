@@ -585,6 +585,50 @@
             }
         },
         {
+            "fullUrl": "urn:uuid:604a79b8-d538-3959-a3ef-5ac66ee03e08",
+            "resource": {
+                "resourceType": "Location",
+                "id": "604a79b8-d538-3959-a3ef-5ac66ee03e08",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "99999999"
+                    }
+                ],
+                "address": {
+                    "line": [
+                        "2472, Rocky  place"
+                    ],
+                    "city": "Beaverton",
+                    "state": "OR",
+                    "country": "US",
+                    "postalCode": "97006"
+                },
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "555-555-1002",
+                        "use": "work"
+                    }
+                ],
+                "type": [
+                    {
+                        "coding": [
+                            {
+                                "code": "200000000X",
+                                "display": "Neighborhood Physicians Practice",
+                                "system": "http://nucc.org/provider-taxonomy"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/604a79b8-d538-3959-a3ef-5ac66ee03e08"
+            }
+        },
+        {
             "fullUrl": "urn:uuid:328eef6e-a0d0-3457-b8ab-6d9d0441c624",
             "resource": {
                 "resourceType": "Practitioner",
@@ -2972,15 +3016,109 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:ba2d2fbb-b74a-3400-adf2-26ca97f3775b",
+            "fullUrl": "urn:uuid:e3473715-b850-3211-8c75-abc085671952",
             "resource": {
-                "resourceType": "CarePlan",
-                "id": "ba2d2fbb-b74a-3400-adf2-26ca97f3775b",
-                "text": {
-                    "status": "additional",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><list>\n  <item>\n    Urinalysis macro (dipstick) panel | Date: 6/29/15\n    <ID>PlannedObservation2dab4f8583ce44848069b18556d1c183</ID>\n  </item>\n  <item>\n    i. Get an EKG done on 6/23/2015.ii. Get a Chest X-ray done on 6/23/2015 showing the Lower Respiratory TractStructure.iii. Take Clindamycin 300mg three times a day as needed if pain does not subside/iv. Schedule follow on visit with Neighborhood Physicians Practice on7/1/2015.\n    <ID>PlannedObservation7a8da4f2-b8e1-439f-a8dd-40091dd88452</ID>\n  </item>\n</list></div>"
+                "resourceType": "Encounter",
+                "id": "e3473715-b850-3211-8c75-abc085671952",
+                "status": "finished",
+                "class": {
+                    "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+                    "code": "AMB"
                 },
-                "title": "Plan of Treatment",
+                "type": [
+                    {
+                        "coding": [
+                            {
+                                "code": "29308-4",
+                                "display": "Diagnosis",
+                                "system": "http://loinc.org"
+                            }
+                        ]
+                    }
+                ],
+                "reasonCode": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://snomed.info/sct",
+                                "code": "55607006",
+                                "display": "Problem"
+                            }
+                        ]
+                    }
+                ],
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:25e8b014-93b9-4e26-8148-c6e2b6423728"
+                    }
+                ],
+                "period": {
+                    "start": "2019-10-16T04:00:00.000Z"
+                },
+                "location": [
+                    {
+                        "location": {
+                            "reference": "Location/604a79b8-d538-3959-a3ef-5ac66ee03e08"
+                        }
+                    }
+                ],
+                "participant": [
+                    {
+                        "individual": {
+                            "reference": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+                        },
+                        "period": {
+                            "start": "2019-10-16T04:00:00.000Z"
+                        },
+                        "type": [
+                            {
+                                "coding": [
+                                    {
+                                        "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                                        "code": "PPRF",
+                                        "display": "primary performer"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+                },
+                "diagnosis": [
+                    {
+                        "condition": {
+                            "reference": "Condition/3419082e-9430-3164-9d28-06adf2fc3111"
+                        }
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Encounter/e3473715-b850-3211-8c75-abc085671952"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:3419082e-9430-3164-9d28-06adf2fc3111",
+            "resource": {
+                "resourceType": "Condition",
+                "id": "3419082e-9430-3164-9d28-06adf2fc3111",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:c74a5a0e-ab50-455d-9ba2-0d1ebd92c01a"
+                    }
+                ],
+                "verificationStatus": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+                            "code": "confirmed"
+                        }
+                    ]
+                },
                 "category": [
                     {
                         "coding": [
@@ -2993,15 +3131,31 @@
                         "text": "Assessment and Plan of Treatment"
                     }
                 ],
-                "status": "active",
-                "intent": "plan",
+                "clinicalStatus": {
+                    "coding": [
+                        {
+                            "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                            "code": "inactive"
+                        }
+                    ]
+                },
+                "code": {
+                    "coding": [
+                        {
+                            "code": "780.60",
+                            "display": "Fever, unspecified",
+                            "system": "urn:oid:2.16.840.1.113883.6.103"
+                        }
+                    ]
+                },
+                "onsetDateTime": "2015-06-22T04:00:00.000Z",
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 }
             },
             "request": {
                 "method": "PUT",
-                "url": "CarePlan/ba2d2fbb-b74a-3400-adf2-26ca97f3775b"
+                "url": "Condition/3419082e-9430-3164-9d28-06adf2fc3111"
             }
         },
         {
