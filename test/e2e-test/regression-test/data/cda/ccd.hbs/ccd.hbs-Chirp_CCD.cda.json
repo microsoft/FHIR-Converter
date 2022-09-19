@@ -405,11 +405,7 @@
                             },
                             {
                                 "reference": "Observation/46862d3a-90af-3fcf-b06e-0b1fe7ba2788",
-                                "display": "Diastolic blood pressure"
-                            },
-                            {
-                                "reference": "Observation/de40ed73-2a44-3aec-8d7d-475af4d837f1",
-                                "display": "Systolic blood pressure"
+                                "display": "Blood pressure panel with all children optional"
                             },
                             {
                                 "reference": "Observation/26b487e9-f6b3-3ec8-9429-1f9d68191bba",
@@ -445,19 +441,11 @@
                             },
                             {
                                 "reference": "Observation/e0728d50-c25e-3924-b6d7-27daa19c85ac",
-                                "display": "Diastolic blood pressure"
-                            },
-                            {
-                                "reference": "Observation/5a341467-2c22-3ce8-b5c1-dca4027c4fc0",
-                                "display": "Systolic blood pressure"
-                            },
-                            {
-                                "reference": "Observation/5e50126d-4daa-3b95-a0e0-338cd01561d9",
-                                "display": "Systolic blood pressure"
+                                "display": "Blood pressure panel with all children optional"
                             },
                             {
                                 "reference": "Observation/5cb112d1-7494-307b-b398-93d904c1b2d4",
-                                "display": "Diastolic blood pressure"
+                                "display": "Blood pressure panel with all children optional"
                             }
                         ]
                     },
@@ -488,6 +476,9 @@
                 "author": [
                     {
                         "reference": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+                    },
+                    {
+                        "reference": "Practitioner/328eef6e-a0d0-3457-b8ab-6d9d0441c624"
                     }
                 ]
             },
@@ -591,6 +582,54 @@
             "request": {
                 "method": "PUT",
                 "url": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:328eef6e-a0d0-3457-b8ab-6d9d0441c624",
+            "resource": {
+                "resourceType": "Practitioner",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+                    ]
+                },
+                "id": "328eef6e-a0d0-3457-b8ab-6d9d0441c624",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "999999943252"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Davis",
+                        "given": [
+                            "Tracy"
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "2472, Rocky  place"
+                        ],
+                        "city": "Beaverton",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "97006"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "555-555-1002",
+                        "use": "work"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/328eef6e-a0d0-3457-b8ab-6d9d0441c624"
             }
         },
         {
@@ -714,6 +753,91 @@
             "request": {
                 "method": "PUT",
                 "url": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:5942c17c-61a6-351b-a314-39fb9fc72561",
+            "resource": {
+                "resourceType": "CareTeam",
+                "id": "5942c17c-61a6-351b-a314-39fb9fc72561",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "99999999"
+                    }
+                ],
+                "name": "USCoreCareTeam",
+                "status": "active",
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "555-555-1002",
+                        "use": "work"
+                    }
+                ],
+                "participant": [
+                    {
+                        "role": [
+                            {
+                                "coding": [
+                                    {
+                                        "system": "http://snomed.info/sct",
+                                        "code": "116154003",
+                                        "display": "Patient"
+                                    }
+                                ],
+                                "text": "Patient"
+                            }
+                        ],
+                        "member": {
+                            "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b",
+                            "display": "Alice Newman"
+                        }
+                    },
+                    {
+                        "role": [
+                            {
+                                "coding": [
+                                    {
+                                        "system": "http://snomed.info/sct",
+                                        "code": "432100008",
+                                        "display": "Health coach"
+                                    }
+                                ],
+                                "text": "Healthcare professional (occupation)"
+                            }
+                        ],
+                        "member": {
+                            "reference": "Practitioner/328eef6e-a0d0-3457-b8ab-6d9d0441c624",
+                            "display": "Tracy Davis"
+                        }
+                    },
+                    {
+                        "role": [
+                            {
+                                "coding": [
+                                    {
+                                        "system": "http://snomed.info/sct",
+                                        "code": "309343006",
+                                        "display": "Physician (occupation)"
+                                    }
+                                ],
+                                "text": "Physician (occupation)"
+                            }
+                        ],
+                        "member": {
+                            "reference": "Practitioner/5942c17c-61a6-351b-a314-39fb9fc72561",
+                            "display": "Albert Davis"
+                        }
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "CareTeam/5942c17c-61a6-351b-a314-39fb9fc72561"
             }
         },
         {
@@ -2069,7 +2193,7 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:2533d098-6f6c-3b9e-8261-983a4f67825e",
+            "fullUrl": "urn:uuid:0abc9d10-77f2-3318-9806-9887db505c31",
             "resource": {
                 "resourceType": "Observation",
                 "meta": {
@@ -2077,11 +2201,11 @@
                         "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
                     ]
                 },
-                "id": "2533d098-6f6c-3b9e-8261-983a4f67825e",
+                "id": "0abc9d10-77f2-3318-9806-9887db505c31",
                 "identifier": [
                     {
                         "system": "urn:ietf:rfc:3986",
-                        "value": "urn:uuid:1.3.6.1.4.1.22812.4.111.0.4.1.1.0"
+                        "value": "urn:uuid:1.3.6.1.4.1.22812.4.111.0.4.1.1"
                     }
                 ],
                 "category": [
@@ -2098,80 +2222,57 @@
                 "code": {
                     "coding": [
                         {
-                            "code": "8462-4",
-                            "display": "Diastolic blood pressure",
+                            "code": "85354-9",
+                            "display": "Blood pressure panel with all children optional",
                             "system": "http://loinc.org"
                         }
                     ]
                 },
-                "effectiveDateTime": "2015-06-22T20:19:00.000Z",
-                "issued": "2015-06-22T20:19:00.000Z",
-                "valueQuantity": {
-                    "value": 88,
-                    "unit": "mm[Hg]",
-                    "system": "http://unitsofmeasure.org",
-                    "code": "mm[Hg]"
-                },
+                "effectiveDateTime": "2015-06-22T23:59:59.000Z",
+                "issued": "2015-06-22T23:59:59.000Z",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "http://loinc.org",
+                                    "code": "8462-4",
+                                    "display": "Diastolic blood pressure"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": 88,
+                            "unit": "mmHg",
+                            "system": "http://unitsofmeasure.org",
+                            "code": "mm[Hg]"
+                        }
+                    },
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "http://loinc.org",
+                                    "code": "8480-6",
+                                    "display": "Systolic blood pressure"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": 145,
+                            "unit": "mmHg",
+                            "system": "http://unitsofmeasure.org",
+                            "code": "mm[Hg]"
+                        }
+                    }
+                ],
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 }
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/2533d098-6f6c-3b9e-8261-983a4f67825e"
-            }
-        },
-        {
-            "fullUrl": "urn:uuid:ce19d384-f797-32b5-bf5d-ca15e5ecd4af",
-            "resource": {
-                "resourceType": "Observation",
-                "meta": {
-                    "profile": [
-                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
-                    ]
-                },
-                "id": "ce19d384-f797-32b5-bf5d-ca15e5ecd4af",
-                "identifier": [
-                    {
-                        "system": "urn:ietf:rfc:3986",
-                        "value": "urn:uuid:1.3.6.1.4.1.22812.4.111.0.4.1.1.1"
-                    }
-                ],
-                "category": [
-                    {
-                        "coding": [
-                            {
-                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-                                "code": "vital-signs"
-                            }
-                        ]
-                    }
-                ],
-                "status": "final",
-                "code": {
-                    "coding": [
-                        {
-                            "code": "8480-6",
-                            "display": "Systolic blood pressure",
-                            "system": "http://loinc.org"
-                        }
-                    ]
-                },
-                "effectiveDateTime": "2015-06-22T20:19:00.000Z",
-                "issued": "2015-06-22T20:19:00.000Z",
-                "valueQuantity": {
-                    "value": 145,
-                    "unit": "mm[Hg]",
-                    "system": "http://unitsofmeasure.org",
-                    "code": "mm[Hg]"
-                },
-                "subject": {
-                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
-                }
-            },
-            "request": {
-                "method": "PUT",
-                "url": "Observation/ce19d384-f797-32b5-bf5d-ca15e5ecd4af"
+                "url": "Observation/0abc9d10-77f2-3318-9806-9887db505c31"
             }
         },
         {
@@ -2493,6 +2594,89 @@
             }
         },
         {
+            "fullUrl": "urn:uuid:88c62af7-5b9b-3874-9308-b5653ddebb58",
+            "resource": {
+                "resourceType": "Observation",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
+                    ]
+                },
+                "id": "88c62af7-5b9b-3874-9308-b5653ddebb58",
+                "identifier": [
+                    {
+                        "system": "urn:ietf:rfc:3986",
+                        "value": "urn:uuid:1.3.6.1.4.1.22812.4.111.0.4.1.3"
+                    }
+                ],
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+                                "code": "vital-signs"
+                            }
+                        ]
+                    }
+                ],
+                "status": "final",
+                "code": {
+                    "coding": [
+                        {
+                            "code": "85354-9",
+                            "display": "Blood pressure panel with all children optional",
+                            "system": "http://loinc.org"
+                        }
+                    ]
+                },
+                "effectiveDateTime": "2021-01-28T23:59:59.000Z",
+                "issued": "2021-01-28T23:59:59.000Z",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "http://loinc.org",
+                                    "code": "8462-4",
+                                    "display": "Diastolic blood pressure"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": 90,
+                            "unit": "mmHg",
+                            "system": "http://unitsofmeasure.org",
+                            "code": "mm[Hg]"
+                        }
+                    },
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "http://loinc.org",
+                                    "code": "8480-6",
+                                    "display": "Systolic blood pressure"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": 145,
+                            "unit": "mmHg",
+                            "system": "http://unitsofmeasure.org",
+                            "code": "mm[Hg]"
+                        }
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Observation/88c62af7-5b9b-3874-9308-b5653ddebb58"
+            }
+        },
+        {
             "fullUrl": "urn:uuid:11c099a0-2fc0-3ad7-9cf0-d7a720ea5cfe",
             "resource": {
                 "resourceType": "Observation",
@@ -2599,7 +2783,7 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:82743786-4cf3-3baf-adec-1543c65aca8c",
+            "fullUrl": "urn:uuid:e8b78df8-55f5-30e0-b55c-ff9da504fc84",
             "resource": {
                 "resourceType": "Observation",
                 "meta": {
@@ -2607,11 +2791,11 @@
                         "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
                     ]
                 },
-                "id": "82743786-4cf3-3baf-adec-1543c65aca8c",
+                "id": "e8b78df8-55f5-30e0-b55c-ff9da504fc84",
                 "identifier": [
                     {
                         "system": "urn:ietf:rfc:3986",
-                        "value": "urn:uuid:1.3.6.1.4.1.22812.4.111.0.4.1.3.2"
+                        "value": "urn:uuid:1.3.6.1.4.1.22812.4.111.0.4.1.4"
                     }
                 ],
                 "category": [
@@ -2628,186 +2812,57 @@
                 "code": {
                     "coding": [
                         {
-                            "code": "8462-4",
-                            "display": "Diastolic blood pressure",
+                            "code": "85354-9",
+                            "display": "Blood pressure panel with all children optional",
                             "system": "http://loinc.org"
                         }
                     ]
                 },
-                "effectiveDateTime": "2021-01-28T05:00:00.000Z",
-                "issued": "2021-01-28T05:00:00.000Z",
-                "valueQuantity": {
-                    "value": 90,
-                    "unit": "mm[Hg]",
-                    "system": "http://unitsofmeasure.org",
-                    "code": "mm[Hg]"
-                },
+                "effectiveDateTime": "2021-05-14T23:59:59.000Z",
+                "issued": "2021-05-14T23:59:59.000Z",
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "http://loinc.org",
+                                    "code": "8480-6",
+                                    "display": "Systolic blood pressure"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": 160,
+                            "unit": "mmHg",
+                            "system": "http://unitsofmeasure.org",
+                            "code": "mm[Hg]"
+                        }
+                    },
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "http://loinc.org",
+                                    "code": "8462-4",
+                                    "display": "Diastolic blood pressure"
+                                }
+                            ]
+                        },
+                        "valueQuantity": {
+                            "value": 90,
+                            "unit": "mmHg",
+                            "system": "http://unitsofmeasure.org",
+                            "code": "mm[Hg]"
+                        }
+                    }
+                ],
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 }
             },
             "request": {
                 "method": "PUT",
-                "url": "Observation/82743786-4cf3-3baf-adec-1543c65aca8c"
-            }
-        },
-        {
-            "fullUrl": "urn:uuid:10011ca5-3543-3e65-b46b-6db34d7dbb95",
-            "resource": {
-                "resourceType": "Observation",
-                "meta": {
-                    "profile": [
-                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
-                    ]
-                },
-                "id": "10011ca5-3543-3e65-b46b-6db34d7dbb95",
-                "identifier": [
-                    {
-                        "system": "urn:ietf:rfc:3986",
-                        "value": "urn:uuid:1.3.6.1.4.1.22812.4.111.0.4.1.3.3"
-                    }
-                ],
-                "category": [
-                    {
-                        "coding": [
-                            {
-                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-                                "code": "vital-signs"
-                            }
-                        ]
-                    }
-                ],
-                "status": "final",
-                "code": {
-                    "coding": [
-                        {
-                            "code": "8480-6",
-                            "display": "Systolic blood pressure",
-                            "system": "http://loinc.org"
-                        }
-                    ]
-                },
-                "effectiveDateTime": "2021-01-28T05:00:00.000Z",
-                "issued": "2021-01-28T05:00:00.000Z",
-                "valueQuantity": {
-                    "value": 145,
-                    "unit": "mm[Hg]",
-                    "system": "http://unitsofmeasure.org",
-                    "code": "mm[Hg]"
-                },
-                "subject": {
-                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
-                }
-            },
-            "request": {
-                "method": "PUT",
-                "url": "Observation/10011ca5-3543-3e65-b46b-6db34d7dbb95"
-            }
-        },
-        {
-            "fullUrl": "urn:uuid:0d4b4c72-984f-34c2-ac4f-39d8496b679a",
-            "resource": {
-                "resourceType": "Observation",
-                "meta": {
-                    "profile": [
-                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
-                    ]
-                },
-                "id": "0d4b4c72-984f-34c2-ac4f-39d8496b679a",
-                "identifier": [
-                    {
-                        "system": "urn:ietf:rfc:3986",
-                        "value": "urn:uuid:1.3.6.1.4.1.22812.4.111.0.4.1.4.0"
-                    }
-                ],
-                "category": [
-                    {
-                        "coding": [
-                            {
-                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-                                "code": "vital-signs"
-                            }
-                        ]
-                    }
-                ],
-                "status": "final",
-                "code": {
-                    "coding": [
-                        {
-                            "code": "8480-6",
-                            "display": "Systolic blood pressure",
-                            "system": "http://loinc.org"
-                        }
-                    ]
-                },
-                "effectiveDateTime": "2021-05-14T19:20:00.000Z",
-                "issued": "2021-05-14T19:20:00.000Z",
-                "valueQuantity": {
-                    "value": 160,
-                    "unit": "mm[Hg]",
-                    "system": "http://unitsofmeasure.org",
-                    "code": "mm[Hg]"
-                },
-                "subject": {
-                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
-                }
-            },
-            "request": {
-                "method": "PUT",
-                "url": "Observation/0d4b4c72-984f-34c2-ac4f-39d8496b679a"
-            }
-        },
-        {
-            "fullUrl": "urn:uuid:446db5b9-46f7-3114-b906-a9eb09fd41b4",
-            "resource": {
-                "resourceType": "Observation",
-                "meta": {
-                    "profile": [
-                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults"
-                    ]
-                },
-                "id": "446db5b9-46f7-3114-b906-a9eb09fd41b4",
-                "identifier": [
-                    {
-                        "system": "urn:ietf:rfc:3986",
-                        "value": "urn:uuid:1.3.6.1.4.1.22812.4.111.0.4.1.4.1"
-                    }
-                ],
-                "category": [
-                    {
-                        "coding": [
-                            {
-                                "system": "http://terminology.hl7.org/CodeSystem/observation-category",
-                                "code": "vital-signs"
-                            }
-                        ]
-                    }
-                ],
-                "status": "final",
-                "code": {
-                    "coding": [
-                        {
-                            "code": "8462-4",
-                            "display": "Diastolic blood pressure",
-                            "system": "http://loinc.org"
-                        }
-                    ]
-                },
-                "effectiveDateTime": "2021-05-14T19:20:00.000Z",
-                "issued": "2021-05-14T19:20:00.000Z",
-                "valueQuantity": {
-                    "value": 90,
-                    "unit": "mm[Hg]",
-                    "system": "http://unitsofmeasure.org",
-                    "code": "mm[Hg]"
-                },
-                "subject": {
-                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
-                }
-            },
-            "request": {
-                "method": "PUT",
-                "url": "Observation/446db5b9-46f7-3114-b906-a9eb09fd41b4"
+                "url": "Observation/e8b78df8-55f5-30e0-b55c-ff9da504fc84"
             }
         },
         {
@@ -2835,6 +2890,9 @@
                             "system": "http://snomed.info/sct"
                         }
                     ]
+                },
+                "performedPeriod": {
+                    "start": "2015-06-22T00:00:00.000Z"
                 },
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
@@ -2870,6 +2928,9 @@
                             "system": "http://snomed.info/sct"
                         }
                     ]
+                },
+                "performedPeriod": {
+                    "start": "2011-10-05T00:00:00.000Z"
                 },
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
@@ -3070,6 +3131,9 @@
                     }
                 ],
                 "status": "active",
+                "performedPeriod": {
+                    "start": "2011-10-05T00:00:00.000Z"
+                },
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 }
@@ -3093,7 +3157,7 @@
                         }
                     ]
                 },
-                "date": "2022-09-15T18:24:54.808Z",
+                "date": "2022-09-19T16:55:54.293Z",
                 "status": "current",
                 "content": [
                     {
