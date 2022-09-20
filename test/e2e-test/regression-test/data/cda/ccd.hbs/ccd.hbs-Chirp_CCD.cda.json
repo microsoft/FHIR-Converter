@@ -2972,6 +2972,39 @@
             }
         },
         {
+            "fullUrl": "urn:uuid:ba2d2fbb-b74a-3400-adf2-26ca97f3775b",
+            "resource": {
+                "resourceType": "CarePlan",
+                "id": "ba2d2fbb-b74a-3400-adf2-26ca97f3775b",
+                "text": {
+                    "status": "additional",
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><list>\n  <item>\n    Urinalysis macro (dipstick) panel | Date: 6/29/15\n    <ID>PlannedObservation2dab4f8583ce44848069b18556d1c183</ID>\n  </item>\n  <item>\n    i. Get an EKG done on 6/23/2015.ii. Get a Chest X-ray done on 6/23/2015 showing the Lower Respiratory TractStructure.iii. Take Clindamycin 300mg three times a day as needed if pain does not subside/iv. Schedule follow on visit with Neighborhood Physicians Practice on7/1/2015.\n    <ID>PlannedObservation7a8da4f2-b8e1-439f-a8dd-40091dd88452</ID>\n  </item>\n</list></div>"
+                },
+                "title": "Plan of Treatment",
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://hl7.org/fhir/us/core/CodeSystem/careplan-category",
+                                "code": "assess-plan",
+                                "display": "Assessment and Plan of Treatment"
+                            }
+                        ],
+                        "text": "Assessment and Plan of Treatment"
+                    }
+                ],
+                "status": "active",
+                "intent": "plan",
+                "subject": {
+                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "CarePlan/ba2d2fbb-b74a-3400-adf2-26ca97f3775b"
+            }
+        },
+        {
             "fullUrl": "urn:uuid:6e3ffee1-b673-3e5d-8b21-10b3fc5761c2",
             "resource": {
                 "resourceType": "Immunization",
@@ -3154,7 +3187,7 @@
                         }
                     ]
                 },
-                "date": "2022-09-20T17:10:57.839Z",
+                "date": "2022-09-20T17:20:42.907Z",
                 "status": "current",
                 "content": [
                     {
