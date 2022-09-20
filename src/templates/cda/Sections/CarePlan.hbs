@@ -1,0 +1,39 @@
+{{#if (contains (toString (toJsonString msg)) '2.16.840.1.113883.10.20.22.2.10')}}
+  {{#with (getFirstCdaSectionsByTemplateId msg '2.16.840.1.113883.10.20.22.2.10') as |section|}}
+    {{#with (generateUUID (toJsonString section)) as |Id| }}
+      {
+        "fullUrl":"urn:uuid:{{Id}}",
+        "resource":{
+            "resourceType": "CarePlan",
+            "id":"{{Id}}",
+            "text": {
+              "status": "additional", {{!-- Specifying this additional because most of the structured data below is missing  --}}
+              "div": {{buildDivHtml section.2_16_840_1_113883_10_20_22_2_10.text}}
+            },
+            "title": "{{section.2_16_840_1_113883_10_20_22_2_10.title._}}"
+            "category": [
+              {
+                "coding": [
+                  {
+                    "system": "http://hl7.org/fhir/us/core/CodeSystem/careplan-category",
+                    "code": "assess-plan", {{!-- Current only support category --}}
+                    "display": "Assessment and Plan of Treatment"
+                  }
+                ],
+                "text": "Assessment and Plan of Treatment"
+              }
+            ],
+            "status":"active",  
+            "intent":"plan", {{!-- Current only support intent --}}
+        },
+        "request":{
+            "method":"PUT",
+            "url":"CarePlan/{{Id}}",
+        },
+      },
+      {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+        {{>References/CarePlan/subject.hbs ID=Id REF=(concat 'Patient/' patientId.Id)}},
+      {{/with}}
+    {{/with}}
+  {{/with}} 
+{{/if}}
