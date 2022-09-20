@@ -476,6 +476,9 @@
                 "author": [
                     {
                         "reference": "Practitioner/c7c84c0b-8a0b-3871-b4ce-31ab96f70e1d"
+                    },
+                    {
+                        "reference": "Practitioner/ead05b2c-8f43-3a9f-946d-1553f5aaa816"
                     }
                 ]
             },
@@ -579,6 +582,54 @@
             "request": {
                 "method": "PUT",
                 "url": "Practitioner/c7c84c0b-8a0b-3871-b4ce-31ab96f70e1d"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:ead05b2c-8f43-3a9f-946d-1553f5aaa816",
+            "resource": {
+                "resourceType": "Practitioner",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-practitioner"
+                    ]
+                },
+                "id": "ead05b2c-8f43-3a9f-946d-1553f5aaa816",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "999999943252"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Davis",
+                        "given": [
+                            "Tracy"
+                        ]
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "2472, Rocky  place"
+                        ],
+                        "city": "Beaverton",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "97006"
+                    }
+                ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "555-555-1002",
+                        "use": "work"
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Practitioner/ead05b2c-8f43-3a9f-946d-1553f5aaa816"
             }
         },
         {
@@ -702,6 +753,91 @@
             "request": {
                 "method": "PUT",
                 "url": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:c7c84c0b-8a0b-3871-b4ce-31ab96f70e1d",
+            "resource": {
+                "resourceType": "CareTeam",
+                "id": "c7c84c0b-8a0b-3871-b4ce-31ab96f70e1d",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "99999999"
+                    }
+                ],
+                "name": "USCoreCareTeam",
+                "status": "active",
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "555-555-1002",
+                        "use": "work"
+                    }
+                ],
+                "participant": [
+                    {
+                        "role": [
+                            {
+                                "coding": [
+                                    {
+                                        "system": "http://snomed.info/sct",
+                                        "code": "116154003",
+                                        "display": "Patient"
+                                    }
+                                ],
+                                "text": "Patient"
+                            }
+                        ],
+                        "member": {
+                            "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b",
+                            "display": "Alice Newman"
+                        }
+                    },
+                    {
+                        "role": [
+                            {
+                                "coding": [
+                                    {
+                                        "system": "http://snomed.info/sct",
+                                        "code": "432100008",
+                                        "display": "Health coach"
+                                    }
+                                ],
+                                "text": "Healthcare professional (occupation)"
+                            }
+                        ],
+                        "member": {
+                            "reference": "Practitioner/ead05b2c-8f43-3a9f-946d-1553f5aaa816",
+                            "display": "Tracy Davis"
+                        }
+                    },
+                    {
+                        "role": [
+                            {
+                                "coding": [
+                                    {
+                                        "system": "http://snomed.info/sct",
+                                        "code": "309343006",
+                                        "display": "Physician (occupation)"
+                                    }
+                                ],
+                                "text": "Physician (occupation)"
+                            }
+                        ],
+                        "member": {
+                            "reference": "Practitioner/c7c84c0b-8a0b-3871-b4ce-31ab96f70e1d",
+                            "display": "Albert Davis"
+                        }
+                    }
+                ],
+                "subject": {
+                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "CareTeam/c7c84c0b-8a0b-3871-b4ce-31ab96f70e1d"
             }
         },
         {
@@ -3038,6 +3174,39 @@
             }
         },
         {
+            "fullUrl": "urn:uuid:be062b99-7b2a-392a-a967-145233bc6d31",
+            "resource": {
+                "resourceType": "CarePlan",
+                "id": "be062b99-7b2a-392a-a967-145233bc6d31",
+                "text": {
+                    "status": "additional",
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><list>\n  <item>\n    Urinalysis macro (dipstick) panel | Date: 6/29/15\n    <ID>PlannedObservation2dab4f8583ce44848069b18556d1c183</ID>\n  </item>\n  <item>\n    i. Get an EKG done on 6/23/2015.ii. Get a Chest X-ray done on 6/23/2015 showing the Lower Respiratory TractStructure.iii. Take Clindamycin 300mg three times a day as needed if pain does not subside/iv. Schedule follow on visit with Neighborhood Physicians Practice on7/1/2015.\n    <ID>PlannedObservation7a8da4f2-b8e1-439f-a8dd-40091dd88452</ID>\n  </item>\n</list></div>"
+                },
+                "title": "Plan of Treatment",
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://hl7.org/fhir/us/core/CodeSystem/careplan-category",
+                                "code": "assess-plan",
+                                "display": "Assessment and Plan of Treatment"
+                            }
+                        ],
+                        "text": "Assessment and Plan of Treatment"
+                    }
+                ],
+                "status": "active",
+                "intent": "plan",
+                "subject": {
+                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "CarePlan/be062b99-7b2a-392a-a967-145233bc6d31"
+            }
+        },
+        {
             "fullUrl": "urn:uuid:5c498cd1-ae4b-38af-adb7-e4030980f7c2",
             "resource": {
                 "resourceType": "Immunization",
@@ -3220,7 +3389,7 @@
                         }
                     ]
                 },
-                "date": "2022-09-14T18:32:34.950Z",
+                "date": "2022-09-20T18:19:20.816Z",
                 "status": "current",
                 "content": [
                     {
