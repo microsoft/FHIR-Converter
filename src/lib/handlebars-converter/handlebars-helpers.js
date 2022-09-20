@@ -4,7 +4,9 @@
 // -------------------------------------------------------------------------------------------------
 
 var uuidv3 = require('uuid/v3');
+var xml2js = require('xml2js');
 var HandlebarsUtils = require('handlebars').Utils;
+var Handlebars = require('handlebars');
 var constants = require('../constants/constants');
 var fs = require('fs');
 var crypto = require('crypto');
@@ -761,6 +763,16 @@ module.exports.external = [
                 return [].concat(...(values.slice(0, -1))); //last element is full msg
             }
             return ''.concat(...(values.slice(0, -1))); //last element is full msg
+        }
+    },
+    {
+        name: 'buildDivHtml',
+        description: 'Rebuilds the XML of the json node and outputs a HTML Safe DIV',
+        func: function (jsonObject) {
+            var builder = new xml2js.Builder({headless: true});
+            var foo = builder.buildObject(jsonObject);
+            var bar = '<div xmlns="http://www.w3.org/1999/xhtml">' + foo + "</div>";
+            return new Handlebars.SafeString(JSON.stringify(bar));
         }
     },
     {
