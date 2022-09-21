@@ -1483,17 +1483,32 @@
                     }
                 ],
                 "status": "final",
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                                "code": "LAB",
+                                "display": "Laboratory"
+                            }
+                        ]
+                    }
+                ],
                 "code": {
                     "coding": [
                         {
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                            "code": "LAB",
                             "display": "Urinanalysis macro (dipstick) panel"
                         }
-                    ]
+                    ],
+                    "text": "Urinanalysis macro (dipstick) panel"
                 },
                 "effectivePeriod": {
                     "start": "2015-06-22T00:00:00.000Z",
                     "end": "2015-06-22T00:00:00.000Z"
                 },
+                "issued": "2015-06-22T00:00:00.000Z",
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 },
@@ -1918,17 +1933,32 @@
                     }
                 ],
                 "status": "final",
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                                "code": "LAB",
+                                "display": "Laboratory"
+                            }
+                        ]
+                    }
+                ],
                 "code": {
                     "coding": [
                         {
+                            "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                            "code": "LAB",
                             "display": "Chest X-ray 2 Views"
                         }
-                    ]
+                    ],
+                    "text": "Chest X-ray 2 Views"
                 },
                 "effectivePeriod": {
                     "start": "2015-06-22T00:00:00.000Z",
                     "end": "2015-06-22T00:00:00.000Z"
                 },
+                "issued": "2015-06-22T00:00:00.000Z",
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 },
@@ -3208,7 +3238,7 @@
                         }
                     ]
                 },
-                "date": "2022-09-21T14:37:14.631Z",
+                "date": "2022-09-21T19:54:47.372Z",
                 "status": "current",
                 "content": [
                     {

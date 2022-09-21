@@ -7,7 +7,7 @@
                 {{/with}}
                 {{#if drEntry.organizer.performer}}
                     {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=drEntry.organizer.performer) as |practitionerId|}}
-                        {{>References/DiagnosticReport/performer.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Practitioner/' practitionerId.Id)}}
+                      {{>References/DiagnosticReport/performer.hbs ID=(generateUUID (toJsonString drEntry.organizer)) REF=(concat 'Practitioner/' practitionerId.Id)}}
                     {{/with}}
                 {{/if}}
 
