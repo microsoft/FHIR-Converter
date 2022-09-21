@@ -585,6 +585,50 @@
             }
         },
         {
+            "fullUrl": "urn:uuid:604a79b8-d538-3959-a3ef-5ac66ee03e08",
+            "resource": {
+                "resourceType": "Location",
+                "id": "604a79b8-d538-3959-a3ef-5ac66ee03e08",
+                "identifier": [
+                    {
+                        "system": "http://hl7.org/fhir/sid/us-npi",
+                        "value": "99999999"
+                    }
+                ],
+                "address": {
+                    "line": [
+                        "2472, Rocky  place"
+                    ],
+                    "city": "Beaverton",
+                    "state": "OR",
+                    "country": "US",
+                    "postalCode": "97006"
+                },
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "555-555-1002",
+                        "use": "work"
+                    }
+                ],
+                "type": [
+                    {
+                        "coding": [
+                            {
+                                "code": "200000000X",
+                                "display": "Neighborhood Physicians Practice",
+                                "system": "http://nucc.org/provider-taxonomy"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Location/604a79b8-d538-3959-a3ef-5ac66ee03e08"
+            }
+        },
+        {
             "fullUrl": "urn:uuid:328eef6e-a0d0-3457-b8ab-6d9d0441c624",
             "resource": {
                 "resourceType": "Practitioner",
@@ -2972,6 +3016,40 @@
             }
         },
         {
+            "fullUrl": "urn:uuid:ba2d2fbb-b74a-3400-adf2-26ca97f3775b",
+            "resource": {
+                "resourceType": "CarePlan",
+                "id": "ba2d2fbb-b74a-3400-adf2-26ca97f3775b",
+                "text": {
+                    "status": "additional",
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><list>\n  <item>\n    Urinalysis macro (dipstick) panel | Date: 6/29/15\n    <ID>PlannedObservation2dab4f8583ce44848069b18556d1c183</ID>\n  </item>\n  <item>\n    i. Get an EKG done on 6/23/2015.ii. Get a Chest X-ray done on 6/23/2015 showing the Lower Respiratory TractStructure.iii. Take Clindamycin 300mg three times a day as needed if pain does not subside/iv. Schedule follow on visit with Neighborhood Physicians Practice on7/1/2015.\n    <ID>PlannedObservation7a8da4f2-b8e1-439f-a8dd-40091dd88452</ID>\n  </item>\n</list></div>"
+                },
+                "title": "Plan of Treatment",
+                "category": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://hl7.org/fhir/us/core/CodeSystem/careplan-category",
+                                "code": "assess-plan",
+                                "display": "Assessment and Plan of Treatment"
+                            }
+                        ],
+                        "text": "Assessment and Plan of Treatment"
+                    }
+                ],
+                "status": "active",
+                "intent": "plan",
+                "subject": {
+                    "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "CarePlan/ba2d2fbb-b74a-3400-adf2-26ca97f3775b"
+            }
+        },
+        {
+>>>>>>> 35d56bc (Fix merge conflicts)
             "fullUrl": "urn:uuid:e3473715-b850-3211-8c75-abc085671952",
             "resource": {
                 "resourceType": "Encounter",
@@ -3079,12 +3157,15 @@
                     {
                         "coding": [
                             {
-                                "system": "http://hl7.org/fhir/us/core/CodeSystem/careplan-category",
-                                "code": "assess-plan",
-                                "display": "Assessment and Plan of Treatment"
+                                "system": "http://snomed.info/sct",
+                                "code": "55607006",
+                                "display": "Problem"
+                            },
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                                "code": "problem-list-item"
                             }
-                        ],
-                        "text": "Assessment and Plan of Treatment"
+                        ]
                     }
                 ],
                 "clinicalStatus": {
@@ -3105,8 +3186,6 @@
                     ]
                 },
                 "onsetDateTime": "2015-06-22T04:00:00.000Z",
-                "status": "active",
-                "intent": "plan",
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 }
@@ -3300,6 +3379,7 @@
                     ]
                 },
                 "date": "2022-09-20T17:20:42.907Z",
+
                 "status": "current",
                 "content": [
                     {
