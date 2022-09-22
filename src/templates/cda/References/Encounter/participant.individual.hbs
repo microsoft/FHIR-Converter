@@ -9,6 +9,18 @@
                 {
                     "reference":"{{REF}}",
                 },
+                "period": {{>DataType/Period.hbs period=encounter.effectiveTime}},
+                "type": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                                "code": "PPRF",
+                                "display": "primary performer"
+                            }
+                        ]
+                    }
+                ],
             },
         ],
     },
