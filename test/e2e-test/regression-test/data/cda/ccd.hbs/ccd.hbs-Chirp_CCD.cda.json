@@ -2524,6 +2524,11 @@
                             "code": "59408-5",
                             "display": "Oxygen saturation in Arterial blood by Pulse oximetry",
                             "system": "http://loinc.org"
+                        },
+                        {
+                            "system": "http://loinc.org",
+                            "code": "2708-6",
+                            "display": "Oxygen saturation in Arterial blood"
                         }
                     ]
                 },
@@ -2537,7 +2542,53 @@
                 },
                 "subject": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
-                }
+                },
+                "component": [
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "http://loinc.org",
+                                    "code": "3151-8",
+                                    "display": "Inhaled oxygen flow rate"
+                                }
+                            ],
+                            "text": "Inhaled oxygen flow rate"
+                        },
+                        "dataAbsentReason": {
+                            "coding": [
+                                {
+                                    "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+                                    "code": "unknown",
+                                    "display": "Unknown"
+                                }
+                            ],
+                            "text": "Unknown"
+                        }
+                    },
+                    {
+                        "code": {
+                            "coding": [
+                                {
+                                    "system": "http://loinc.org",
+                                    "code": "3150-0",
+                                    "display": "Inhaled oxygen concentration"
+                                }
+                            ],
+                            "text": "Inhaled oxygen concentration"
+                        },
+                        "dataAbsentReason": {
+                            "coding": [
+                                {
+                                    "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+                                    "code": "unknown",
+                                    "display": "Unknown"
+                                }
+                            ],
+                            "text": "Unknown"
+                        }
+                    }
+                ]
             },
             "request": {
                 "method": "PUT",
@@ -3413,7 +3464,7 @@
                         }
                     ]
                 },
-                "date": "2022-09-21T19:12:02.871Z",
+                "date": "2022-09-20T17:20:42.907Z",
                 "status": "current",
                 "content": [
                     {

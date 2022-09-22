@@ -40,6 +40,21 @@
                 }
             ]
         },
+        {{else if isPulseOximetry}}
+          "code":{
+            "coding":[
+              {
+                "code":"59408-5",
+                "display":"Oxygen saturation in Arterial blood by Pulse oximetry",
+                "system":"http://loinc.org"
+              },
+              {
+                "system":"http://loinc.org",
+                "code":"2708-6",
+                "display":"Oxygen saturation in Arterial blood"
+              }
+            ]
+          },
         {{else if observationEntry.code.translation.code}}
             "code": {{>DataType/CodeableConcept.hbs code=observationEntry.code.translation}},
         {{else}}
@@ -116,11 +131,59 @@
                 "unit":"{{observationEntry.value.unit}}",
                 "system": "http://unitsofmeasure.org",
                 "code":"{{observationEntry.value.unit}}"
-            }, 
+            },
         {{else}}
             "valueString":"{{observationEntry.value._}}",
         {{/if}}
-        
+
+        {{#if isPulseOximetry}}
+            "component": [
+              {
+                "code": {
+                    "coding": [
+                        {
+                            "system": "http://loinc.org",
+                            "code": "3151-8",
+                            "display": "Inhaled oxygen flow rate"
+                        }
+                    ],
+                    "text": "Inhaled oxygen flow rate"
+                },
+                "dataAbsentReason": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+                      "code": "unknown",
+                      "display": "Unknown"
+                    }
+                  ],
+                  "text": "Unknown"
+                }
+            },
+            {
+              "code": {
+                "coding": [
+                  {
+                      "system": "http://loinc.org",
+                      "code": "3150-0",
+                      "display": "Inhaled oxygen concentration"
+                  }
+                ],
+                "text": "Inhaled oxygen concentration"
+              },
+                "dataAbsentReason": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/data-absent-reason",
+                      "code": "unknown",
+                      "display": "Unknown"
+                    }
+                  ],
+                  "text": "Unknown"
+                }
+              }
+            ],
+        {{/if}}
         "referenceRange":
         [
           {

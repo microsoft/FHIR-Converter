@@ -16,6 +16,15 @@
                       {{/with}}
                   {{/if}}
               {{/each}}
+
+               {{#each (toArray this.component) as |obsEntry|}}
+                  {{#if (eq obsEntry.observation.code.code "59408-5")}}
+                    {{>Resources/Observation.hbs observationCategory="vital-signs" observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation)) isPulseOximetry= true}},
+                      {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+                          {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
+                      {{/with}}
+                  {{/if}}
+               {{/each}}
         {{/each}}
      {{/each}}
     {{/with}}
