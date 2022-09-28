@@ -5,12 +5,34 @@
         "id":"{{ID}}",
         "identifier":
   		[
-        	{{#each (toArray medicationRequest.id)}}
+        	{{#each (toArray medicationStatement.id)}}
             	{{>DataType/Identifier.hbs id=this}}
             {{/each}}
         ],
-        "intent":"order",
-        "status":"{{medicationRequest.statusCode.code}}",
+        {{#if reportedBoolean}}
+            "intent":"plan",
+        {{else}}
+            "intent":"order",
+        {{/if}}
+        "status":"{{medicationStatement.statusCode.code}}",
+        "reportedBoolean":{{reportedBoolean}},
+        {{#with (getMedicationStartAndStop medicationStatement) as |startAndStop|}}
+            "authoredOn":"{{formatAsDateTime startAndStop.start}}",
+        {{/with}}
+        "dosageInstruction": [
+          {
+            "text": "{{medInstructions}}",
+            "doseAndRate": [
+                {
+                    "doseQuantity":
+                    {
+                        "value":{{medicationStatement.doseQuantity.value}},
+                        "unit":"{{medicationStatement.doseQuantity.unit}}"
+                    }
+                },
+            ]
+          }
+        ]
     },
     "request":{
         "method":"PUT",
