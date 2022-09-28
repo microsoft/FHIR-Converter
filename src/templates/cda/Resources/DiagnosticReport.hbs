@@ -1,4 +1,4 @@
-{
+  {
     "fullUrl":"urn:uuid:{{ID}}",
     "resource":{
         "resourceType": "DiagnosticReport",
@@ -10,21 +10,43 @@
             {{/each}}
         ],
         "status":{{>ValueSet/DiagnosticReportStatus.hbs code=diagReport.statusCode.code}},
+        "category": [
+          {
+            "coding": [
+              {
+                "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                "code": "LAB",
+                "display": "Laboratory"
+              }
+            ]
+          }
+        ],
         "code":
             {{#if diagReport.code.translation}}
                 {{>DataType/CodeableConcept.hbs code=diagReport.code.translation}},
             {{else}}
-                {{>DataType/CodeableConcept.hbs code=diagReport.code}},
+                {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/v2-0074",
+                      "code": "LAB",
+                      "display": "{{diagReport.code.displayName}}"
+                    }
+                  ],
+                  "text": "{{diagReport.code.displayName}}"
+                }
             {{/if}}
-            
         "effectivePeriod":
         {
             "start":"{{formatAsDateTime diagReport.effectiveTime.low.value}}",
             "end":"{{formatAsDateTime diagReport.effectiveTime.high.value}}"
         },
-        
+        {{#if diagReport.effectiveTime.value}}
+          "issued": "{{formatAsDateTime diagReport.effectiveTime.value}}",
+        {{else}}
+          "issued": "{{formatAsDateTime diagReport.effectiveTime.low.value}}",
+        {{/if}}
         "effectiveDateTime":"{{formatAsDateTime diagReport.effectiveTime.value}}",
-
     },
     "request":{
         "method":"PUT",

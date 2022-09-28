@@ -39,6 +39,7 @@
     {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=msg.ClinicalDocument.author.assignedAuthor) as |practitionerId|}}
         {{>Resources/Practitioner.hbs practitioner=../msg.ClinicalDocument.author.assignedAuthor ID=practitionerId.Id}},
         {{>References/Composition/author.hbs ID=(generateUUID (toJsonString ../msg.ClinicalDocument)) REF=(concat 'Practitioner/' practitionerId.Id)}},
+        {{>Resources/Location.hbs location=../msg.ClinicalDocument.author.assignedAuthor ID=(generateUUID (toJsonString ../msg.ClinicalDocument.author.assignedAuthor))}},
     {{/with}}
 {{/if}}
 

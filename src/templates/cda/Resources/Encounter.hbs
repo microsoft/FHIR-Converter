@@ -3,25 +3,31 @@
     "resource":{
         "resourceType": "Encounter",
         "id":"{{ID}}",
-        
-        {{#if encounter.statusCode.code}}
-            "status":{{>ValueSet/EncounterStatus.hbs code=encounter.statusCode.code}},
+
+        {{#if encounter.entryRelationship.observation.statusCode.code}}
+            "status":{{>ValueSet/EncounterStatus.hbs code=encounter.entryRelationship.observation.statusCode.code}},
         {{else}}
             "status":"unknown",
         {{/if}}
-        
-        {{#if (elementAt (toArray encounter.code.translation) 0)}}
-            {{#with (elementAt (toArray encounter.code.translation) 0)}}
-                "class":{{>DataType/Coding.hbs code=this}},
-            {{/with}}
-        {{else}}
-            "class":{{>DataType/Coding.hbs code=encounter.code}},     
-        {{/if}}
-        
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB"
+        },
         "type":
         [
            	{{>DataType/CodeableConcept.hbs code=encounter.code}},
         ],
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "system": "http://snomed.info/sct",
+                "code": "{{encounter.entryRelationship.observation.code.code}}",
+                "display": "{{encounter.entryRelationship.observation.code.displayName}}"
+              }
+            ]
+          }
+        ]
         "identifier":
         [
         	{{#each (toArray encounter.id)}}
@@ -30,7 +36,7 @@
         ],
         "period": {{>DataType/Period.hbs period=encounter.effectiveTime}},
         "priority":{{>DataType/CodeableConcept.hbs code=encounter.priorityCode}},
-       
+
         "hospitalization":
             {
             "dischargeDisposition":{{>DataType/CodeableConcept.hbs code=encounter.dischargeDispositionCode}},
