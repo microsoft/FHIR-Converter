@@ -7,24 +7,19 @@
                     {{>Resources/Device2.hbs deviceEntry=medequipEntry.supply ID=(generateUUID (toJsonString medequipEntry.supply))}},
                 {{/each}}
             {{/if}}
-            
+
             {{#if this.supply}}
                 {{>Resources/Device2.hbs deviceEntry=this.supply ID=(generateUUID (toJsonString this.supply))}},
             {{/if}}
-            
+
             {{#if this.procedure}}
-                {{>Resources/Procedure.hbs procedureEntry=this.procedure ID=(generateUUID (toJsonString this.procedure))}},
-                {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../msg.ClinicalDocument.author)) REF=(concat 'Procedure/' (generateUUID (toJsonString this.procedure)))}},
- 
+                {{>Resources/Device2.hbs deviceEntry=this.procedure deviceProps=(extractDeviceProperties this.procedure.participant.participantRole.id.extension) ID=(generateUUID (toJsonString this.procedure))}}
+                <!--                take participant role id string to parse out device fields-->
                 {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
-                    {{>References/Procedure/subject.hbs ID=(generateUUID (toJsonString ../procedure)) REF=(concat 'Patient/' patientId.Id)}},
+                    {{>References/Device/patient.hbs ID=(generateUUID (toJsonString ../procedure)) REF=(concat 'Patient/' patientId.Id)}},
                 {{/with}}
-                {{#if this.procedure.performer.assignedEntity.representedOrganization.name._}}
-                    {{>Resources/Organization.hbs org=this.procedure.performer.assignedEntity.representedOrganization ID=(generateUUID (toJsonString this.procedure.performer.assignedEntity.representedOrganization))}},
-                    {{>References/Procedure/performer.actor.hbs ID=(generateUUID (toJsonString this.procedure)) REF=(concat 'Organization/' (generateUUID (toJsonString this.procedure.performer.assignedEntity.representedOrganization)))}},
-                {{/if}}
             {{/if}}
-            
+
         {{/each}}
-    {{/with}}    
-{{/if}}  
+    {{/with}}
+{{/if}}

@@ -196,6 +196,38 @@ module.exports.external = [
         }
     },
     {
+        "name": 'extractDeviceProperties',
+        description: "parse out properties using id format e.g. (01)00643169007222(17)160128(21)BLC200461H",
+        func: function (id) {
+            console.log("id: " + id)
+            let deviceKeys = {"01": "distinctIdentifier", "10": "lotNumber", "11": "manufactureDate", "17": "expirationDate", "21": "serialNumber"}
+            let getPair = (pair) => {
+                let start = 0;
+                for (let i = 0; i < pair.length; i++) {
+                    if (pair[i] === ")") {
+                        start = i;
+                        break;
+                    }
+                }
+                let obj = {};
+                let key = pair.substring(1, start); // exclude surrounding parenthesis
+                let property = deviceKeys[key];
+                obj[property] = pair.substring(start+1);
+                return obj;
+            }
+            let props = {};
+            let regex = /(\([0-9]+\)([a-zA-Z0-9]+))/mg;
+            let groups = id.match(regex);
+            groups.forEach(group => {
+                let pair = getPair(group);
+                props = {...props, ...pair}; // merge pairs into single object
+            });
+            props["fullID"] = id;
+            console.log(props);
+            return props;
+        }
+    },
+    {
         name: 'ne',
         description: 'Not equal to any value: ne x a b …',
         func: function (x, ...values) {
