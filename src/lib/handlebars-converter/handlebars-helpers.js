@@ -845,6 +845,22 @@ module.exports.external = [
         }
     },
     {
+        name: 'convertDateToDateTime',
+        description: "Converts Date  YYYYMMDD to Datetime format  YYYYMMDDHHMMSS",
+        func: function (dateString) {
+            try {
+                if (!validDatetimeString(dateString)){
+                    return '';
+                }
+                const date =  dateString.concat('', '+0000');
+                return getDateTime(date);
+            }
+            catch (err) {
+                throw `helper "convertDateToDateTime" : ${err}`;
+            }
+        }
+    },
+    {
         name: 'toString',
         description: 'Converts to string: toString object',
         func: function (o) {

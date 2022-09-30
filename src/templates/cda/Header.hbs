@@ -21,7 +21,7 @@
         
         {{#if this.custodian.assignedCustodian.representedCustodianOrganization.name._}}
             {{>Resources/Organization.hbs org=this.custodian.assignedCustodian.representedCustodianOrganization ID=(generateUUID (toJsonString this.custodian.assignedCustodian.representedCustodianOrganization))}},
-    		{{>References/Composition/custodian.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Organization/' (generateUUID (toJsonString this.custodian.assignedCustodian.representedCustodianOrganization)))}},            
+    		    {{>References/Composition/custodian.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Organization/' (generateUUID (toJsonString this.custodian.assignedCustodian.representedCustodianOrganization)))}},
         {{/if}}
         
 {{/with}}
@@ -47,6 +47,18 @@
     {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=msg.ClinicalDocument.dataEnterer.assignedEntity) as |practitionerId|}}
         {{>Resources/Practitioner.hbs practitioner=../msg.ClinicalDocument.dataEnterer.assignedEntity ID=practitionerId.Id }},
         {{>References/Composition/author.hbs ID=(generateUUID (toJsonString ../msg.ClinicalDocument)) REF=(concat 'Practitioner/' practitionerId.Id)}},
+    {{/with}}
+{{/if}}
+
+{{#if msg.ClinicalDocument.author.assignedAuthor}}
+    {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=msg.ClinicalDocument.author.assignedAuthor) as |practitionerId|}}
+      {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=../msg.ClinicalDocument.dataEnterer.assignedEntity) as |dataEntererId|}}
+           {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+              {{>Resources/Provenance.hbs practitioner=../../../msg.ClinicalDocument.author ID=practitionerId.Id dataEntererId= dataEntererId.Id dataEnterer=../../../msg.ClinicalDocument.dataEnterer.assignedEntity patientID = patientId.Id  org=../../../msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization orgID=(generateUUID (toJsonString ../../../msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization))}},
+              {{!-- {{>References/Provenance/agent.who.hbs ID=(generateUUID (toJsonString ../msg.ClinicalDocument))  REF=(concat 'Practitioner/' practitionerId.Id)  }}
+              {{> References/Provenance/agent.onBehalfOf.hbs ID=(generateUUID (toJsonString ../msg.ClinicalDocument))  REF=(concat 'Organization/'(generateUUID (toJsonString ../msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization)) ) }} --}}
+          {{/with}}
+      {{/with}}
     {{/with}}
 {{/if}}
 
