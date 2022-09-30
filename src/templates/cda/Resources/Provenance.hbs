@@ -2,22 +2,8 @@
    "fullUrl":"urn:uuid:{{ID}}",
    "resource":{
       "resourceType":"Provenance",
-        {{log "prac" practitioner}}
+       "id":"{{ID}}",
       "recorded": "{{convertDateToDateTime practitioner.time.value }}",
-      "target": [
-          {
-            "reference": "Organization/{{orgID}}"
-          },
-          {
-            "reference": "Practitioner/{{ID}}"
-          },
-          {
-            "reference": "Patient/{{patientID}}"
-          },
-          {
-             "reference": "CarePlan/{{patientID}}"
-          }
-        ],
        "agent":
           [
 
