@@ -4,6 +4,7 @@
           {{#each (toArray this.organizer) as |organizer|}}
               {{#if (contains (toString (toJsonString organizer)) 'blood pressure')}}
                   {{>Resources/Observation.hbs observationCategory="vital-signs" observationEntry=organizer isBloodPressure=true ID=(generateUUID (toJsonString organizer))}},
+                  {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../msg.ClinicalDocument.author)) REF=(concat 'Observation/'(generateUUID (toJsonString organizer)))}},
                   {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
                       {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString organizer)) REF=(concat 'Patient/' patientId.Id)}},
                   {{/with}}
@@ -11,6 +12,7 @@
               {{#each (toArray this.component) as |obsEntry|}}
                   {{#if (not (or (eq obsEntry.observation.code.displayName 'Diastolic blood pressure') (eq obsEntry.observation.code.displayName 'Systolic blood pressure')))}}
                       {{>Resources/Observation.hbs observationCategory="vital-signs" observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation))}},
+                      {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../../msg.ClinicalDocument.author)) REF=(concat 'Observation/'(generateUUID (toJsonString organizer)))}},
                       {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
                           {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
                       {{/with}}
@@ -20,6 +22,8 @@
                {{#each (toArray this.component) as |obsEntry|}}
                   {{#if (eq obsEntry.observation.code.code "59408-5")}}
                     {{>Resources/Observation.hbs observationCategory="vital-signs" observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation)) isPulseOximetry= true}},
+                    {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../../msg.ClinicalDocument.author)) REF=(concat 'Observation/'(generateUUID (toJsonString obsEntry.observation)))}},
+
                       {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
                           {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
                       {{/with}}
