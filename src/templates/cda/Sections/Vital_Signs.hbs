@@ -29,6 +29,66 @@
                       {{/with}}
                   {{/if}}
                {{/each}}
+
+                {{#each (toArray this.component) as |obsEntry|}}
+                  {{#if (eq obsEntry.observation.code.code "8302-2")}}
+                    {{>Resources/Observation.hbs observationCategory="vital-signs" observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation)) }},
+                    {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../../msg.ClinicalDocument.author)) REF=(concat 'Observation/'(generateUUID (toJsonString obsEntry.observation)))}},
+                      {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+                          {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
+                      {{/with}}
+                  {{/if}}
+               {{/each}}
+
+               {{#each (toArray this.component) as |obsEntry|}}
+                  {{#if (eq obsEntry.observation.code.code "8302-2")}}
+                    {{>Resources/Observation.hbs observationCategory="vital-signs" observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation)) }},
+                    {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../../msg.ClinicalDocument.author)) REF=(concat 'Observation/'(generateUUID (toJsonString obsEntry.observation)))}},
+                      {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+                          {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
+                      {{/with}}
+                  {{/if}}
+               {{/each}}
+
+               {{#each (toArray this.component) as |obsEntry|}}
+                  {{#if (eq obsEntry.observation.code.code "8867-4")}}
+                    {{>Resources/Observation.hbs observationCategory="vital-signs" observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation)) }},
+                    {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../../msg.ClinicalDocument.author)) REF=(concat 'Observation/'(generateUUID (toJsonString obsEntry.observation)))}},
+                      {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+                          {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
+                      {{/with}}
+                  {{/if}}
+               {{/each}}
+
+                {{#each (toArray this.component) as |obsEntry|}}
+                  {{#if (eq obsEntry.observation.code.code "8310-5")}}
+                    {{>Resources/Observation.hbs observationCategory="vital-signs" observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation)) }},
+                    {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../../msg.ClinicalDocument.author)) REF=(concat 'Observation/'(generateUUID (toJsonString obsEntry.observation)))}},
+                      {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+                          {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
+                      {{/with}}
+                  {{/if}}
+               {{/each}}
+
+               {{#each (toArray this.component) as |obsEntry|}}
+                  {{#if (eq obsEntry.observation.code.code "29463-7")}}
+                    {{>Resources/Observation.hbs observationCategory="vital-signs" observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation)) }},
+                    {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../../msg.ClinicalDocument.author)) REF=(concat 'Observation/'(generateUUID (toJsonString obsEntry.observation)))}},
+                      {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+                          {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
+                      {{/with}}
+                  {{/if}}
+               {{/each}}
+
+                {{#each (toArray this.component) as |obsEntry|}}
+                  {{#if (eq obsEntry.observation.code.code "9279-1")}}
+                    {{>Resources/Observation.hbs observationCategory="vital-signs" observationEntry=obsEntry.observation ID=(generateUUID (toJsonString obsEntry.observation)) }},
+                    {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../../msg.ClinicalDocument.author)) REF=(concat 'Observation/'(generateUUID (toJsonString obsEntry.observation)))}},
+                      {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+                          {{>References/Observation/subject.hbs ID=(generateUUID (toJsonString obsEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
+                      {{/with}}
+                  {{/if}}
+               {{/each}}
         {{/each}}
      {{/each}}
     {{/with}}
