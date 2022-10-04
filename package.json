@@ -14,6 +14,7 @@
     "prestart": "node --experimental-worker src/init-service.js",
     "start": "node --experimental-worker src/index.js",
     "eslint": "eslint {src,test}/**/*.js",
+    "eslintv": "eslint -v",
     "xmlToFhirResource": "node src/convert-xml-to-fhir-resource.js",
     "regenChirpTestFile": "node src/convert-xml-to-fhir-resource.js --chirp-test-file"
   },
@@ -23,15 +24,12 @@
       "node": true,
       "mocha": true,
       "jquery": true,
-      "es6": true
+      "es2022": true
     },
     "globals": {
       "Split": "readable",
       "Cookies": "readable",
       "CodeMirror": "readable"
-    },
-    "parserOptions": {
-      "ecmaVersion": 9
     },
     "extends": "eslint:recommended",
     "rules": {
@@ -85,7 +83,7 @@
   },
   "devDependencies": {
     "assert": "^2.0.0",
-    "eslint": "^6.1.0",
+    "eslint": "^8.23.0",
     "mocha": "^6.2.3",
     "mocha-junit-reporter": "^1.23.0",
     "mocha-multi-reporters": "^1.1.7",

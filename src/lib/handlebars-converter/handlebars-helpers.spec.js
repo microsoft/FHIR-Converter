@@ -641,6 +641,98 @@ describe('Helper "evaluate" test', function () {
     });
 });
 
+describe('Helper getTextReference', function() {
+    const textBlock = {
+        list: {
+            item: [
+                { content: { ID: 'text1', _: 'The first text' } },
+                { content: { ID: 'text2', _: 'The second text' } },
+                { content: { ID: 'text3', _: 'The third text' } },
+            ]
+        }
+    };
+
+    it('extracts text content by referencence', function () {
+        const text = getHelper('getTextReference').func(textBlock, '#text2');
+        assert.strictEqual(text, 'The second text');
+    });
+
+    describe('if the reference doesnt exist', function() {
+        it('returns an empty string', function() {
+            const text = getHelper('getTextReference').func(textBlock, '#text100');
+            assert.strictEqual(text, '');
+        });
+    });
+
+    describe('if the textBlock is empty', function() {
+        it('returns an empty string', function() {
+            const text = getHelper('getTextReference').func({}, '#text2');
+            assert.strictEqual(text, '');
+        });
+    });
+});
+
+describe('Helper getMedicationInstructions', function() {
+    const textBlock = {
+        list: {
+            item: [
+                { content: { ID: 'med1', _: 'ceftriaxone 10 gram recon soln | Inject 1 unit twice a day as directed | Status: Active | Code System: RxNorm' } },
+                { content: { ID: 'med2', _: 'azithromycin 250 mg tablet | Take 1 tablet by mouth once a day | Status: Active | Code System: RxNorm' } },
+                { content: { ID: 'med3', _: 'Tylenol Extra Strength 500 mg tablet | Take 1 tablet by mouth as needed | Status: Active | Code System: RxNorm' } },
+            ]
+        }
+    };
+
+    it('extracts the instructions from medication text', function () {
+        const text = getHelper('getMedicationInstructions').func(textBlock, '#med2');
+        assert.strictEqual(text, 'Take 1 tablet by mouth once a day');
+    });
+});
+
+describe('Helper getMedicationStartAndStop', function() {
+
+    it('returns an object with start and stop times from the medicatin statement time', function () {
+        const medicationStatement = {
+            effectiveTime: [
+                { 'xsi:type': 'IVL_TS', low: { value: '20150622' }, high: { value: '20150822' } },
+                { 'xsi:type': 'PIVL_TS', period: { value: 1 } }
+            ]
+        };
+        const { start, stop} = getHelper('getMedicationStartAndStop').func(medicationStatement);
+        assert.strictEqual(start, '20150622');
+        assert.strictEqual(stop, '20150822');
+    });
+
+    describe('if one of the times is null', function() {
+        it('sets the value to undefined', function() {
+            const medicationStatement = {
+                effectiveTime: [
+                    { 'xsi:type': 'IVL_TS', low: { value: '20150622' }, high: { nullFlavor: "NI" } },
+                    { 'xsi:type': 'PIVL_TS', period: { value: 1 } }
+                ]
+            };
+            const { start, stop} = getHelper('getMedicationStartAndStop').func(medicationStatement);
+            assert.strictEqual(start, '20150622');
+            assert.strictEqual(stop, undefined);
+        });
+    });
+
+    describe('if theres only 1 effectiveTime', function() {
+        it('still gets the start and stop', function() {
+            const medicationStatement = {
+                effectiveTime: {
+                    'xsi:type': 'IVL_TS',
+                    low: { value: '20150622' },
+                    high: { value: '20150822' }
+                }
+            };
+            const { start, stop} = getHelper('getMedicationStartAndStop').func(medicationStatement);
+            assert.strictEqual(start, '20150622');
+            assert.strictEqual(stop, '20150822');
+        });
+    });
+});
+
 function getHelper(helperName) {
     for (var i = 0; i < helpers.length; i++) {
         if (helpers[i].name === helperName) {

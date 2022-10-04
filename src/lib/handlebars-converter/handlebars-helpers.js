@@ -46,9 +46,9 @@ var validUTCDateTime = function (dateTimeComposition){
     for (var key in dateTimeComposition)
         dateTimeComposition[key] = Number(dateTimeComposition[key]);
     var dateInstance = new Date(Date.UTC(dateTimeComposition.year, dateTimeComposition.month - 1, dateTimeComposition.day, dateTimeComposition.hours, dateTimeComposition.minutes, dateTimeComposition.seconds, dateTimeComposition.milliseconds));
-    if(dateInstance.getUTCFullYear() === dateTimeComposition.year && dateInstance.getUTCMonth() === dateTimeComposition.month - 1 
-        && dateInstance.getUTCDate() === dateTimeComposition.day && dateInstance.getUTCHours() === dateTimeComposition.hours 
-        && dateInstance.getUTCMinutes() === dateTimeComposition.minutes && dateInstance.getSeconds() === dateTimeComposition.seconds 
+    if(dateInstance.getUTCFullYear() === dateTimeComposition.year && dateInstance.getUTCMonth() === dateTimeComposition.month - 1
+        && dateInstance.getUTCDate() === dateTimeComposition.day && dateInstance.getUTCHours() === dateTimeComposition.hours
+        && dateInstance.getUTCMinutes() === dateTimeComposition.minutes && dateInstance.getSeconds() === dateTimeComposition.seconds
         && dateInstance.getMilliseconds() === dateTimeComposition.milliseconds)
         return true;
     return false;
@@ -125,7 +125,7 @@ var getDateTime = function (dateTimeString) {
     if (ds.indexOf('-') !== -1)
         timeZoneChar = '-';
     else if (ds.indexOf('+') !== -1)
-        timeZoneChar = '+'; 
+        timeZoneChar = '+';
     if (timeZoneChar !== '')
     {
         var dateSections = ds.split(timeZoneChar);
@@ -140,12 +140,24 @@ var getDateTime = function (dateTimeString) {
 
     if (ds.length <= 8)
         return convertDate(ds);
-    
-    // Padding 0s to 17 digits 
+
+    // Padding 0s to 17 digits
     dateTimeComposition = getDateTimeComposition(ds);
     if (!validUTCDateTime(dateTimeComposition))
         throw `Invalid datetime: ${ds}`;
     return (new Date(Date.UTC(dateTimeComposition.year, dateTimeComposition.month - 1, dateTimeComposition.day, dateTimeComposition.hours, dateTimeComposition.minutes, dateTimeComposition.seconds, dateTimeComposition.milliseconds))).toJSON();
+};
+
+var getTextReferenceInternal =  function (textBlock, referenceValue) {
+    const value = (referenceValue || '').replace(/^#/, '');
+    const textItem = (textBlock?.list?.item || []).find((item) => {
+        return item.content.ID === value;
+    });
+    if (textItem) {
+        return textItem.content._;
+    } else {
+        return '';
+    }
 };
 
 module.exports.internal = {
@@ -1007,6 +1019,40 @@ module.exports.external = [
         description: 'divide first number by the second number: / number1 number2',
         func: function (x, y) {
             return Number(x) / Number(y);
+        }
+    },
+    {
+        name: 'getTextReference',
+        description: "Get text by reference",
+        func: function getTextReference(textBlock, referenceValue) {
+            return getTextReferenceInternal(textBlock, referenceValue);
+        }
+    },
+    {
+        name: 'getMedicationInstructions',
+        description: "Get instructions from medication text",
+        func: function getMedicationInstructions(textBlock, referenceValue) {
+            const text = getTextReferenceInternal(textBlock, referenceValue);
+            if (text) {
+                return text.split(" | ")[1];
+            } else {
+                return null;
+            }
+        }
+    },
+    {
+        name: 'getMedicationStartAndStop',
+        description: "Get stop and start times for medication",
+        func: function getMedicationStartAndStop(medicationStatement) {
+            let effectiveTimes = medicationStatement.effectiveTime;
+            if (!Array.isArray(effectiveTimes)) {
+                effectiveTimes = [effectiveTimes];
+            }
+            const prescriptionTime = effectiveTimes.find((time) => time['xsi:type'] === 'IVL_TS');
+            return {
+                start: prescriptionTime?.low?.value,
+                stop: prescriptionTime?.high?.value
+            };
         }
     }
 ];
