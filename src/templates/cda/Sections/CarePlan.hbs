@@ -31,6 +31,8 @@
             "url":"CarePlan/{{Id}}",
         },
       },
+
+      {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../msg.ClinicalDocument.author)) REF=(concat 'CareTeam/' Id)}},
       {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
         {{>References/CarePlan/subject.hbs ID=Id REF=(concat 'Patient/' patientId.Id)}},
       {{/with}}
