@@ -10,9 +10,16 @@
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
-        
-        "description":{{>DataType/CodeableConcept.hbs code=goalEntry.code}},
-        
+
+        "description": {
+            "coding": [
+                {
+                    "system": "http://loinc.org",
+                    "code": "61146-7"
+                }
+            ]
+        },
+
         "lifecycleStatus":"{{goalEntry.statusCode.code}}",
        
         
@@ -20,19 +27,11 @@
             "priority":{{>DataType/CodeableConcept.hbs code=this.observation.value}}, 
         {{/with}}
 
-        "target":
-        {
-            "measure":
-            [
-            	{{#if goalEntry.code.translation}}
-                    {{>DataType/CodeableConcept.hbs code=goalEntry.code.translation}},
-                {{else}}
-                    {{>DataType/CodeableConcept.hbs code=goalEntry.code}},
-                {{/if}}
-            ],  
-            "detailQuantity":"{{goalEntry.value.low.value}}{{goalEntry.value.low.unit}}",
-            "dueDate":"{{addHyphensDate goalEntry.effectiveTime.value}}",         
-        },
+        "target": [
+            {
+                "dueDate":"{{addHyphensDate goalEntry.effectiveTime.value}}"
+            }
+        ],
     },
     "request":{
         "method":"PUT",
