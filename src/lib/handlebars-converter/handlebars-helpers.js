@@ -199,8 +199,7 @@ module.exports.external = [
         "name": 'extractDeviceProperties',
         description: "parse out properties using id format e.g. (01)00643169007222(17)160128(21)BLC200461H",
         func: function (id) {
-            console.log("id: " + id)
-            let deviceKeys = {"01": "distinctIdentifier", "10": "lotNumber", "11": "manufactureDate", "17": "expirationDate", "21": "serialNumber"}
+            let deviceKeys = {"01": "distinctIdentifier", "10": "lotNumber", "11": "manufactureDate", "17": "expirationDate", "21": "serialNumber"};
             let getPair = (pair) => {
                 let start = 0;
                 for (let i = 0; i < pair.length; i++) {
@@ -214,7 +213,7 @@ module.exports.external = [
                 let property = deviceKeys[key];
                 obj[property] = pair.substring(start+1);
                 return obj;
-            }
+            };
             let props = {};
             let regex = /(\([0-9]+\)([a-zA-Z0-9]+))/mg;
             let groups = id.match(regex);
@@ -223,8 +222,25 @@ module.exports.external = [
                 props = {...props, ...pair}; // merge pairs into single object
             });
             props["fullID"] = id;
-            console.log(props);
             return props;
+        }
+    },
+    {
+        name: 'dateFormat',
+        description: 'format date to YYYY-MM-DD from input dateString YYYYMMDD',
+        func: function (dateString) {
+            if (!dateString || dateString.length !== 8) {
+                console.warn('Warning: dateString must be in format YYYY-MM-DD');
+                return dateString;
+            }
+            let year = dateString.substring(0,4);
+            let month = dateString.substring(4,6);
+            let day = dateString.substring(6);
+            if (year.length !== 4 || month.length !== 2 || day.length !== 2) {
+                console.warn('Warning: Must provide 4 digits for year, 2 digits for month, and 2 digits for day');
+                return dateString;
+            }
+            return `${year}-${month}-${day}`;
         }
     },
     {
@@ -610,6 +626,7 @@ module.exports.external = [
                         }
                     }
                 }
+                // console.log(ret)
                 return ret;
             }
             catch (err) {
