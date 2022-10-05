@@ -199,6 +199,7 @@ module.exports.external = [
         "name": 'extractDeviceProperties',
         description: "parse out properties using id format e.g. (01)00643169007222(17)160128(21)BLC200461H",
         func: function (id) {
+            if (!id) return id;
             let deviceKeys = {"01": "distinctIdentifier", "10": "lotNumber", "11": "manufactureDate", "17": "expirationDate", "21": "serialNumber"};
             let getPair = (pair) => {
                 let start = 0;
