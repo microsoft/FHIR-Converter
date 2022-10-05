@@ -3,7 +3,7 @@
    "resource":{
       "resourceType":"Provenance",
        "id":"{{ID}}",
-      "recorded": "{{convertDateToDateTime practitioner.time.value }}",
+      "recorded": "{{formatAsDateTime practitioner.time.value }}",
        "agent":
           [
 
@@ -19,7 +19,7 @@
                 "text": "Author"
               },
               "who": {
-                "reference": "Practitioner/{{ID}}",
+                "reference": "Practitioner/{{ practitionerId}}",
                 "display": "{{ practitioner.assignedAuthor.assignedPerson.name.given._}} {{ practitioner.assignedAuthor.assignedPerson.name.family._}}",
               },
               "onBehalfOf": {

@@ -54,7 +54,7 @@
     {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=msg.ClinicalDocument.author.assignedAuthor) as |practitionerId|}}
       {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=../msg.ClinicalDocument.dataEnterer.assignedEntity) as |dataEntererId|}}
            {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
-              {{>Resources/Provenance.hbs practitioner=../../../msg.ClinicalDocument.author ID=(generateUUID (toJsonString ../../../msg.ClinicalDocument.author)) dataEntererId= dataEntererId.Id dataEnterer=../../../msg.ClinicalDocument.dataEnterer.assignedEntity patientID = patientId.Id  org=../../../msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization orgID=(generateUUID (toJsonString ../../../msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization))}},
+              {{>Resources/Provenance.hbs practitioner=../../../msg.ClinicalDocument.author practitionerId= practitionerId.Id ID=(generateUUID (toJsonString ../../../msg.ClinicalDocument.author)) dataEntererId= dataEntererId.Id dataEnterer=../../../msg.ClinicalDocument.dataEnterer.assignedEntity patientID = patientId.Id  org=../../../msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization orgID=(generateUUID (toJsonString ../../../msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization))}},
           {{/with}}
       {{/with}}
     {{/with}}
