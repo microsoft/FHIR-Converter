@@ -8,8 +8,8 @@
   <templateId root="2.16.840.1.113883.10.20.22.1.2" extension="2015-08-01"/>
   <id root="TT101" extension="2.16.840.1.113883.19.5.99999.1"/>
   <code code="34133-9" codeSystem="2.16.840.1.113883.6.1" displayName="Summarization of Episode Note"/>
-  <title>Data for Alice Newman, starting 10/03/1922, ending 10/03/2022</title>
-  <effectiveTime value="20221003152741+0000"/>
+  <title>Data for Alice Newman, starting 10/05/1922, ending 10/05/2022</title>
+  <effectiveTime value="20221005203935+0000"/>
   <confidentialityCode code="N" codeSystem="2.16.840.1.113883.5.25" codeSystemName="Confidentiality" displayName="normal"/>
   <languageCode code="en"/>
   <recordTarget>
@@ -112,8 +112,8 @@
   <documentationOf>
     <serviceEvent classCode="PCPR">
       <effectiveTime>
-        <low value="19221003" inclusive="true"/>
-        <high value="20221003" inclusive="true"/>
+        <low value="19221005" inclusive="true"/>
+        <high value="20221005" inclusive="true"/>
       </effectiveTime>
       <performer typeCode="PRF">
         <functionCode code="PCP" codeSystem="2.16.840.1.113883.5.88" codeSystemName="ParticipationFunction" displayName="Primary Care Provider">
@@ -170,7 +170,7 @@
             <act classCode="ACT" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.30"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.30" extension="2015-08-01"/>
-              <id root="d6318a97-207c-47a7-941b-b4d083186da9"/>
+              <id root="85efbe2d-64e9-48e2-9848-aba7615247f3"/>
               <code code="48765-2" codeSystem="2.16.840.1.113883.6.1" displayName="Allergies, adverse reactions, alerts"/>
               <statusCode code="active"/>
               <effectiveTime>
@@ -180,7 +180,7 @@
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.22.4.7"/>
                   <templateId root="2.16.840.1.113883.10.20.22.4.7" extension="2014-06-09"/>
-                  <id root="3d4c7888-a0f8-4157-81b1-b3df7c0133da"/>
+                  <id root="1bad93bd-4570-47e3-9e2a-8d098c8b39a6"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" displayName="Assertion"/>
                   <statusCode code="completed"/>
                   <effectiveTime>
@@ -201,7 +201,7 @@
                   <entryRelationship typeCode="MFST" inversionInd="true">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.22.4.9"/>
-                      <id root="ff26ff1f-4feb-48aa-af12-91f031c0b340"/>
+                      <id root="260a0b2b-7749-4442-b7a7-4dec475058ec"/>
                       <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
                       <statusCode code="completed"/>
                       <value code="247472004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Hives" xsi:type="CD"/>
@@ -223,7 +223,7 @@
             <act classCode="ACT" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.30"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.30" extension="2015-08-01"/>
-              <id root="0a846beb-1782-4b2f-97ab-06c3e8b1c241"/>
+              <id root="53666739-2efb-4d58-bd29-463ccf79efb2"/>
               <code code="48765-2" codeSystem="2.16.840.1.113883.6.1" displayName="Allergies, adverse reactions, alerts"/>
               <statusCode code="active"/>
               <effectiveTime>
@@ -233,7 +233,7 @@
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.22.4.7"/>
                   <templateId root="2.16.840.1.113883.10.20.22.4.7" extension="2014-06-09"/>
-                  <id root="faade653-5575-4b53-b5cc-cad0d001e053"/>
+                  <id root="cf35156a-b146-443c-86bb-4f7ffcbb8917"/>
                   <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4" displayName="Assertion"/>
                   <statusCode code="completed"/>
                   <effectiveTime>
@@ -254,7 +254,7 @@
                   <entryRelationship typeCode="MFST" inversionInd="true">
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.22.4.9"/>
-                      <id root="76cdda54-a3df-476e-8fb9-37c0ac0ad4fe"/>
+                      <id root="bf0d5c82-6130-4fe5-b087-07b62b741784"/>
                       <code code="ASSERTION" codeSystem="2.16.840.1.113883.5.4"/>
                       <statusCode code="completed"/>
                       <value code="247472004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Hives" xsi:type="CD"/>
@@ -302,7 +302,7 @@
           <entry>
             <encounter classCode="ENC" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.49"/>
-              <id root="bcdac398-d02b-4f7e-9c57-46d628d9d000"/>
+              <id root="7890ee27-519b-4d09-a4b1-c6e91bee67d4"/>
               <code code="99213" codeSystem="2.16.840.1.113883.6.12" codeSystemName="CPT-4" displayName="Office outpatient visit">
                 <originalText>
                   <reference value="#Encounter2675"/>
@@ -314,7 +314,7 @@
               <entryRelationship typeCode="SUBJ">
                 <act classCode="ACT" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.22.4.80"/>
-                  <id root="4bad68b7-298f-46ae-b68e-2cb06c2ec684"/>
+                  <id root="b1436bd9-39bc-437d-bf37-ab2f90b97f28"/>
                   <code code="29308-4" codeSystem="2.16.840.1.113883.6.1" displayName="Diagnosis"/>
                   <effectiveTime>
                     <low value="20191016040000+0000"/>
@@ -323,7 +323,7 @@
                     <observation classCode="OBS" moodCode="EVN">
                       <templateId root="2.16.840.1.113883.10.20.22.4.4"/>
                       <templateId root="2.16.840.1.113883.10.20.22.4.4" extension="2015-08-01"/>
-                      <id root="50c80ce7-0f02-43f1-acbc-140b0305346b"/>
+                      <id root="14f97887-4906-445c-a2dc-55c355b65e67"/>
                       <code code="55607006" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Problem">
                         <translation code="75326-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Problem"/>
                       </code>
@@ -377,6 +377,7 @@
                 <reference value="#Goals"/>
               </text>
               <statusCode code="active"/>
+              <effectiveTime value="20200928122801+0000"/>
             </observation>
           </entry>
         </section>
@@ -426,7 +427,7 @@
             <substanceAdministration classCode="SBADM" moodCode="EVN" negationInd="false">
               <templateId root="2.16.840.1.113883.10.20.22.4.52"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.52" extension="2015-08-01"/>
-              <id root="84f439fd-318d-46d3-a4b3-b4fe839c9343"/>
+              <id root="29c9035e-66af-431f-a7b5-5b794f0223b3"/>
               <text>
                 <reference value="#immunization6870"/>
               </text>
@@ -448,7 +449,7 @@
             <substanceAdministration classCode="SBADM" moodCode="EVN" negationInd="false">
               <templateId root="2.16.840.1.113883.10.20.22.4.52"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.52" extension="2015-08-01"/>
-              <id root="2e7b74d2-b7cd-402a-bf71-5b4348fa1e86"/>
+              <id root="cbe1cb87-c7f7-46da-94d9-969b6504ee7b"/>
               <text>
                 <reference value="#immunization6217"/>
               </text>
@@ -469,7 +470,7 @@
             <substanceAdministration classCode="SBADM" moodCode="EVN" negationInd="false">
               <templateId root="2.16.840.1.113883.10.20.22.4.52"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.52" extension="2015-08-01"/>
-              <id root="f817d4fb-ecc6-43a2-a072-93e911015e77"/>
+              <id root="eb111bbd-0110-48ff-899a-0d5f2c313cb9"/>
               <text>
                 <reference value="#immunization6661"/>
               </text>
@@ -499,6 +500,7 @@
             <list>
               <item>
                 <content ID="procedure_6">Cardiac resynchronization therapy implantable pacemaker | UDI: (01)00643169007222(17)160128(21)BLC200461H | Assigning Authority: FDA</content>
+                <content ID="procedure_51">XIENCE Alpine Everolimus Eluting | UDI: (01)08717648200274(11)20130201(10)000000000000XYZ123(21)000025(17)20140201 | Assigning Authority: FDA</content>
               </item>
             </list>
           </text>
@@ -519,6 +521,33 @@
                     <code code="704708004" codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="Cardiac resynchronization therapy implantable pacemaker">
                       <originalText>
                         <reference value="#procedure_6"/>
+                      </originalText>
+                    </code>
+                  </playingDevice>
+                  <scopingEntity>
+                    <id root="2.16.840.1.113883.3.3719"/>
+                  </scopingEntity>
+                </participantRole>
+              </participant>
+            </procedure>
+          </entry>
+          <entry>
+            <procedure classCode="PROC" moodCode="EVN">
+              <templateId root="2.16.840.1.113883.10.20.22.4.14"/>
+              <id root="1.2.840.114350.1.13.5552.1.7.2.737780" extension="2744"/>
+              <code nullFlavor="UNK"/>
+              <statusCode code="active"/>
+              <effectiveTime>
+                <low value="20220915040000+0000"/>
+              </effectiveTime>
+              <participant typeCode="DEV">
+                <participantRole classCode="MANU">
+                  <templateId root="2.16.840.1.113883.10.20.22.4.37"/>
+                  <id root="2.16.840.1.113883.3.3719" extension="(01)08717648200274(11)20130201(10)000000000000XYZ123(21)000025(17)20140201" assigningAuthorityName="FDA"/>
+                  <playingDevice>
+                    <code codeSystem="2.16.840.1.113883.6.96" codeSystemName="SNOMED-CT" displayName="XIENCE Alpine Everolimus Eluting">
+                      <originalText>
+                        <reference value="#procedure_51"/>
                       </originalText>
                     </code>
                   </playingDevice>
@@ -557,7 +586,7 @@
             <substanceAdministration classCode="SBADM" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.16"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.16" extension="2014-06-09"/>
-              <id root="8705f86f-034f-4b0e-bfc9-4d2314548530"/>
+              <id root="06c862ea-3e8f-42b6-b4a7-0699149e1caa"/>
               <text>
                 <reference value="#medication0"/>
               </text>
@@ -583,7 +612,7 @@
               <entryRelationship typeCode="REFR">
                 <supply classCode="SPLY" moodCode="RQO">
                   <templateId root="2.16.840.1.113883.10.20.22.4.17" extension="2014-06-09"/>
-                  <id root="6ca10fac-a50e-4e64-a5f0-ae8424f2eee3"/>
+                  <id root="42d7eaea-a8a4-4ffb-b5ba-2ea68dfd74a8"/>
                   <statusCode code="active"/>
                   <author>
                     <time value="20150622"/>
@@ -608,7 +637,7 @@
             <substanceAdministration classCode="SBADM" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.16"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.16" extension="2014-06-09"/>
-              <id root="3d1a3a7f-bbad-4ece-847a-49922ae24048"/>
+              <id root="7a87e413-9f02-472f-a744-c9b2fa6d37be"/>
               <text>
                 <reference value="#medication1"/>
               </text>
@@ -637,7 +666,7 @@
             <substanceAdministration classCode="SBADM" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.16"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.16" extension="2014-06-09"/>
-              <id root="88fa01a6-bd93-412f-ae2b-1c74d6527aba"/>
+              <id root="1e4a9a25-acb7-4b01-97a7-24de9823d54d"/>
               <text>
                 <reference value="#medication2"/>
               </text>
@@ -663,7 +692,7 @@
               <entryRelationship typeCode="REFR">
                 <supply classCode="SPLY" moodCode="RQO">
                   <templateId root="2.16.840.1.113883.10.20.22.4.17" extension="2014-06-09"/>
-                  <id root="8097e812-c9ca-4794-a0c0-b7da922d4a02"/>
+                  <id root="3361d6f3-bb3b-4d0d-9855-c4703fb00b1d"/>
                   <statusCode code="active"/>
                   <author>
                     <time value="20150622"/>
@@ -688,7 +717,7 @@
             <substanceAdministration classCode="SBADM" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.16"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.16" extension="2014-06-09"/>
-              <id root="be50a122-63b8-4795-8d06-ba545b4596f2"/>
+              <id root="fe67c617-6728-4221-a2d2-2af3705dbcea"/>
               <text>
                 <reference value="#medication3"/>
               </text>
@@ -711,7 +740,7 @@
               <entryRelationship typeCode="REFR">
                 <supply classCode="SPLY" moodCode="RQO">
                   <templateId root="2.16.840.1.113883.10.20.22.4.17" extension="2014-06-09"/>
-                  <id root="4877e08c-0d22-4a78-8964-c0d02a965747"/>
+                  <id root="07225dce-c091-4502-9e11-96b5d7fe50fd"/>
                   <statusCode code="active"/>
                   <author>
                     <time value="20150622"/>
@@ -761,7 +790,7 @@
           <entry>
             <observation classCode="OBS" moodCode="INT">
               <templateId root="2.16.840.1.113883.10.20.22.4.44"/>
-              <id root="30ad6038-5f96-422f-834b-9379e9a4e95b"/>
+              <id root="2be50784-8392-4f22-9693-e98803bc80cd"/>
               <code displayName="Urinalysis macro (dipstick) panel | Date: 6/29/15"/>
               <text>
                 <reference value="#PlannedObservation2dab4f8583ce44848069b18556d1c183"/>
@@ -801,7 +830,7 @@
             <act classCode="ACT" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.3"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.3" extension="2015-08-01"/>
-              <id root="fa639ab5-f515-420d-bf69-23aaeac10b7b"/>
+              <id root="5a65e342-50e4-4c7f-8eea-9749d7aad1f8"/>
               <code code="CONC" codeSystem="2.16.840.1.113883.5.6" displayName="Concern"/>
               <text>
                 <reference value="#Act32939"/>
@@ -837,7 +866,7 @@
             <act classCode="ACT" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.3"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.3" extension="2015-08-01"/>
-              <id root="96ba8f06-0f9f-471a-a28a-765b358238d9"/>
+              <id root="cead87fe-efa0-49f5-8093-29d4cfa1d0dd"/>
               <code code="CONC" codeSystem="2.16.840.1.113883.5.6" displayName="Concern"/>
               <text>
                 <reference value="#Act32940"/>
@@ -873,7 +902,7 @@
             <act classCode="ACT" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.3"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.3" extension="2015-08-01"/>
-              <id root="deda9556-b6ac-4ba6-bdba-659cbe9d4f35"/>
+              <id root="338a8b08-a855-4b72-87d2-5141d1bd8364"/>
               <code code="CONC" codeSystem="2.16.840.1.113883.5.6" displayName="Concern"/>
               <text>
                 <reference value="#Act32941"/>
@@ -909,7 +938,7 @@
             <act classCode="ACT" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.3"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.3" extension="2015-08-01"/>
-              <id root="a87379a1-5a8a-44f7-bef2-23f24318dac1"/>
+              <id root="e81971a1-9f24-4899-b73e-f2240cb9940d"/>
               <code code="CONC" codeSystem="2.16.840.1.113883.5.6" displayName="Concern"/>
               <text>
                 <reference value="#Act32938"/>
@@ -945,7 +974,7 @@
             <act classCode="ACT" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.3"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.3" extension="2015-08-01"/>
-              <id root="a7931baf-5c78-4da2-8b3f-821ebbd0f975"/>
+              <id root="89a7379c-390d-487b-93e7-0d86a247d35d"/>
               <code code="CONC" codeSystem="2.16.840.1.113883.5.6" displayName="Concern"/>
               <text>
                 <reference value="#Act32942"/>
@@ -1075,7 +1104,7 @@
             <organizer classCode="BATTERY" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.1"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.1" extension="2015-08-01"/>
-              <id root="dd58dded-95cb-4a1f-9330-2fce25c72587"/>
+              <id root="25bed8b1-b2f3-44b4-8c3d-fcfbab7c14e3"/>
               <code displayName="Urinanalysis macro (dipstick) panel"/>
               <statusCode code="completed"/>
               <effectiveTime>
@@ -1086,7 +1115,7 @@
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
                   <templateId root="2.16.840.1.113883.10.20.22.4.2" extension="2015-08-01"/>
-                  <id root="4dcc804b-64a2-41c0-8651-348994ee65cb"/>
+                  <id root="1fad0a02-c973-455c-b789-9b20bed8460d"/>
                   <code code="5778-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Color of Urine"/>
                   <text>
                     <reference value="#ResultObservation0.0"/>
@@ -1100,7 +1129,7 @@
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
                   <templateId root="2.16.840.1.113883.10.20.22.4.2" extension="2015-08-01"/>
-                  <id root="aa392fe2-6821-4394-8afb-728d6aba0cb2"/>
+                  <id root="a27d064d-a4b1-4288-9791-fd7802c250c3"/>
                   <code code="5767-9" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Appearance of Urine"/>
                   <text>
                     <reference value="#ResultObservation0.1"/>
@@ -1114,7 +1143,7 @@
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
                   <templateId root="2.16.840.1.113883.10.20.22.4.2" extension="2015-08-01"/>
-                  <id root="5f8520b0-757a-4cbb-87e9-2ae0b46ee43a"/>
+                  <id root="b84033b3-7785-4f19-b6ec-643d690ecbab"/>
                   <code code="5811-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Specific gravity of Urine by Test strip"/>
                   <text>
                     <reference value="#ResultObservation0.2"/>
@@ -1136,7 +1165,7 @@
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
                   <templateId root="2.16.840.1.113883.10.20.22.4.2" extension="2015-08-01"/>
-                  <id root="b81a35a0-fb27-4aa8-8ff4-8cae03906c15"/>
+                  <id root="1e5ec535-7056-4a43-b75c-826f848b4c03"/>
                   <code code="5803-2" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="pH of Urine by Test strip"/>
                   <text>
                     <reference value="#ResultObservation0.3"/>
@@ -1158,7 +1187,7 @@
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
                   <templateId root="2.16.840.1.113883.10.20.22.4.2" extension="2015-08-01"/>
-                  <id root="c54ab0a6-25f2-4367-bb40-c55599e7a5ea"/>
+                  <id root="60d40f28-f236-4e56-b155-c60363601f14"/>
                   <code code="5792-7" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Glucose[Mass/volume] in urine by test strip"/>
                   <text>
                     <reference value="#ResultObservation0.4"/>
@@ -1172,7 +1201,7 @@
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
                   <templateId root="2.16.840.1.113883.10.20.22.4.2" extension="2015-08-01"/>
-                  <id root="de99a3fd-90fc-4616-a7d1-3a6ee32bb383"/>
+                  <id root="5b164b3d-7677-46a9-a9c2-f47562a58553"/>
                   <code code="5797-6" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Ketones[Mass/volume] in urine by test strip"/>
                   <text>
                     <reference value="#ResultObservation0.5"/>
@@ -1186,7 +1215,7 @@
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
                   <templateId root="2.16.840.1.113883.10.20.22.4.2" extension="2015-08-01"/>
-                  <id root="ab2048b5-2a37-4410-9b0a-5dca4e76595c"/>
+                  <id root="4e789a55-b92b-451a-ab6b-d3ac68a76fb3"/>
                   <code code="5804-0" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Protein[Mass/volume] in urine by test strip"/>
                   <text>
                     <reference value="#ResultObservation0.6"/>
@@ -1202,7 +1231,7 @@
             <organizer classCode="BATTERY" moodCode="EVN">
               <templateId root="2.16.840.1.113883.10.20.22.4.1"/>
               <templateId root="2.16.840.1.113883.10.20.22.4.1" extension="2015-08-01"/>
-              <id root="4dd7d428-8a45-4cec-81d6-62b528604ffa"/>
+              <id root="9465af18-bcf3-4d0e-9981-66c642a01345"/>
               <code displayName="Chest X-ray 2 Views"/>
               <statusCode code="completed"/>
               <effectiveTime>
@@ -1213,7 +1242,7 @@
                 <observation classCode="OBS" moodCode="EVN">
                   <templateId root="2.16.840.1.113883.10.20.22.4.2"/>
                   <templateId root="2.16.840.1.113883.10.20.22.4.2" extension="2015-08-01"/>
-                  <id root="50dc72ae-61e3-42fb-b06e-e79311f7102f"/>
+                  <id root="b97ac43e-f5c2-46b7-b4a8-62f9d32939f0"/>
                   <code code="36643-5" codeSystem="2.16.840.1.113883.6.1" codeSystemName="LOINC" displayName="Chest X-ray 2 Views"/>
                   <text>
                     <reference value="#ResultObservation1.0"/>
