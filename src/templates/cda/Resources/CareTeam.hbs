@@ -32,12 +32,7 @@
               }
             ],
             "member": {
-              "reference": "Patient/{{patientId}}",
-              {{#if patient.name.given._ }}
-                "display" : "{{patient.name.given._}} {{patient.name.family._}}",
-              {{else}}
-                 "display" : "{{patient.name.given.[0]._}} {{patient.name.family._}}",
-              {{/if}}
+              "reference": "Patient/{{patientId}}"
             }
         },
          {
@@ -57,7 +52,7 @@
               "reference":  "Practitioner/{{healthCoachId}}",
               "display" : "{{healthCoach.assignedPerson.name.given._}} {{healthCoach.assignedPerson.name.family._}}",
             },
-            
+
          },
          {
             "role" : [
@@ -76,10 +71,10 @@
             "reference":  "Practitioner/{{ID}}",
             "display" : "{{practitioner.assignedPerson.name.given._}} {{practitioner.assignedPerson.name.family._}}",
           },
-          
+
         },
       ]
-        
+
    },
    "request":{
       "method":"PUT",

@@ -733,6 +733,39 @@ describe('Helper getMedicationStartAndStop', function() {
     });
 });
 
+describe('Helper containsBirthName', function() {
+
+    describe('if no name field has a "BR" qualifier', function() {
+        it('returns false', function() {
+            const name = {
+                family: { _: 'Newman' },
+                given: [ { _: 'Jones' }, { _: 'Alicia', qualifier: 'BLAHBLAH' } ]
+            };
+            assert.ok(!getHelper('containsBirthName').func(name));
+        });
+    });
+
+    describe('if family has a "BR" qualifier', function() {
+        it('returns true', function() {
+            const name = {
+                family: { _: 'Newman', qualifier: 'BR' },
+                given: [ { _: 'Jones' }, { _: 'Alicia', qualifier: 'BLAHBLAH' } ]
+            };
+            assert.ok(getHelper('containsBirthName').func(name));
+        });
+    });
+
+    describe('if a given has a "BR" qualifier', function() {
+        it('returns true', function() {
+            const name = {
+                family: { _: 'Newman' },
+                given: [ { _: 'Jones' }, { _: 'Alicia', qualifier: 'BR' } ]
+            };
+            assert.ok(getHelper('containsBirthName').func(name));
+        });
+    });
+});
+
 function getHelper(helperName) {
     for (var i = 0; i < helpers.length; i++) {
         if (helpers[i].name === helperName) {
