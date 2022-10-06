@@ -1,5 +1,5 @@
 {
-	"use":{{>ValueSet/NameUse.hbs code=name.use}},
+	"use":{{>ValueSet/NameUse.hbs code=name.use containsBirthName=(containsBirthName name)}},
 	"family":"{{name.family._}}",
 	"given":[
 		{{#each (toArray name.given)}}

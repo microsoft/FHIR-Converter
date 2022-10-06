@@ -1038,5 +1038,12 @@ module.exports.external = [
                 stop: prescriptionTime?.high?.value
             };
         }
+    },
+    {
+        name: 'containsBirthName',
+        description: "Check if name fields have a Birth Name qualifier",
+        func: function containsBirthName(name) {
+            return [name.family, name.given].flat().map(subName => subName.qualifier).includes("BR");
+        }
     }
 ];
