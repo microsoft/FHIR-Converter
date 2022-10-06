@@ -627,7 +627,6 @@ module.exports.external = [
                         }
                     }
                 }
-                // console.log(ret)
                 return ret;
             }
             catch (err) {
