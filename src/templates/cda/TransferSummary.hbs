@@ -50,7 +50,6 @@
         {{! Document Resource Creation }}
         
         {{>Resources/DocumentReference.hbs docref=msg ID=(generateUUID (toJsonString msg))}}
-        {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString msg.ClinicalDocument.author)) REF=(concat 'DocumentReference/'(generateUUID (toJsonString msg)))}},
 
       ]
 }
