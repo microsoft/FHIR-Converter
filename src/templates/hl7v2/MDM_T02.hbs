@@ -3,14 +3,13 @@
     "type": "transaction",
     "entry": [
         {{assert (hasSegments msg.v2 'PID' 'TXA' 'OBX') "One or more of PID, SCH, PV1 Segment missing"}}
-
-        {{#with (getSegmentLists msg.v2 'OBX')}}
-                    {{>Resources/DocumentReference.hbs OBX=OBX}},
-        {{/with}}
         {{#with (getFirstSegments msg.v2 'PID' 'TXA')}}
                 {{#if TXA}},
-                    {{>Resources/DocumentReference.hbs TXA=TXA PID=PID}},
+                    {{>Resources/DocumentReference.hbs TXA=TXA PID=PID ID=TXA-12}},
                 {{/if}},
-         {{/with}}
+        {{/with}}
+        {{#with (getSegmentLists msg.v2 'OBX' 'TXA')}}
+                {{>Resources/Content.hbs OBX=OBX TXA=TXA}},
+        {{/with}}
     ] 
 }

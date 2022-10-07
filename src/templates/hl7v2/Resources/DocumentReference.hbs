@@ -7,19 +7,6 @@
         {{#if PID-3-1}},
                "subject": {{>References/Patient/basicPatient.hbs PID=PID STATUS='accepted'}},
         {{/if}},
-        {{#if OBX}}
-        "content":
-        [
-            {
-                "attachment":
-                {
-                    "contentType":"base64Binary",
-                    "data":"{{#each OBX as |OBXinstance|}}{{OBXinstance-5-5}}{{/each}}",
-                    "title": "{{TXA-1-2}}"
-                },
-            },
-        ],
-        {{/if}}
     },
     "request":{
         "method":"PUT",
