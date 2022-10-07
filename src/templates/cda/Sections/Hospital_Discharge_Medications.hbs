@@ -8,10 +8,10 @@
                     	{{>References/MedicationAdministration/subject.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Patient/' patientId.Id)}},
                     {{/with}}
                     {{>References/MedicationAdministration/medicationReference.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Medication/' (generateUUID (toJsonString medAdm.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial)))}},
-
                     {{#each (toArray this.substanceAdministration.entryRelationship)}}
                         {{#if (contains (toJsonString this.observation.templateId) '"2.16.840.1.113883.10.20.22.4.19"')}}
                             {{>Resources/Condition.hbs conditionEntry=this.observation ID=(generateUUID (toJsonString this.observation))}},
+                            {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../msg.ClinicalDocument.author)) REF=(concat 'Condition/'(generateUUID (toJsonString this.observation)))}},
                             {{>References/MedicationAdministration/reasonReference.hbs ID=(generateUUID (toJsonString medAdm.substanceAdministration)) REF=(concat 'Condition/' (generateUUID (toJsonString this.observation)))}},
                         {{/if}}
                     {{/each}}

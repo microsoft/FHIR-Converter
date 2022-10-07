@@ -10,6 +10,7 @@
                 {{#if advdirEntry.organizer.component.observation.reference}}
                     {{>Resources/DocumentReference2.hbs docref=advdirEntry.organizer.component.observation.reference ID=(generateUUID (toJsonString advdirEntry.organizer.component.observation.reference))}},
                     {{>References/Consent/sourceReference.hbs ID=(generateUUID (toJsonString advdirEntry.organizer)) REF=(concat 'DocumentReference/' (generateUUID (toJsonString advdirEntry.organizer.component.observation.reference)))}},
+                    {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../msg.ClinicalDocument.author)) REF=(concat 'DocumentReference/'(generateUUID (toJsonString advdirEntry.organizer.component.observation.reference)))}},
                 {{/if}}
                 {{#if advdirEntry.organizer.component.observation.author.assignedAuthor}}
                     {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=advdirEntry.organizer.component.observation.author.assignedAuthor) as |practitionerId|}}

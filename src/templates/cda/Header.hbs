@@ -21,7 +21,7 @@
 
         {{#if this.custodian.assignedCustodian.representedCustodianOrganization.name._}}
             {{>Resources/Organization.hbs org=this.custodian.assignedCustodian.representedCustodianOrganization ID=(generateUUID (toJsonString this.custodian.assignedCustodian.representedCustodianOrganization))}},
-    		{{>References/Composition/custodian.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Organization/' (generateUUID (toJsonString this.custodian.assignedCustodian.representedCustodianOrganization)))}},
+    		     {{>References/Composition/custodian.hbs ID=(generateUUID (toJsonString this)) REF=(concat 'Organization/' (generateUUID (toJsonString this.custodian.assignedCustodian.representedCustodianOrganization)))}},
         {{/if}}
 
 {{/with}}
@@ -54,8 +54,10 @@
     {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=../msg.ClinicalDocument.author.assignedAuthor) as |practitionerId|}}
         {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=patientRole) as |patientId|}}
             {{>Resources/Patient.hbs patientRole=patientRole ID=patientId.Id msg=../../../msg}},
+            {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../msg.ClinicalDocument.author)) REF=(concat 'Patient/' patientId.Id)}},
             {{>References/Patient/generalPractitioner.hbs ID=patientId.Id REF=(concat 'Practitioner/' practitionerId.Id)}},
             {{>References/Patient/managingOrganization.hbs ID=patientId.Id REF=(concat 'Organization/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization)))}},
+
             {{#if patientRole.patient.guardian}}
                 {{>Resources/RelatedPerson.hbs relatedPerson=patientRole.patient.guardian ID=(generateUUID (toJsonString patientRole.patient.guardian))}},
                 {{>References/RelatedPerson/patient.hbs ID=(generateUUID (toJsonString patientRole.patient.guardian)) REF=(concat 'Patient/' patientId.Id)}},
@@ -64,11 +66,24 @@
     {{/with}}
 {{/with}}
 
+{{#if msg.ClinicalDocument.author.assignedAuthor}}
+    {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=msg.ClinicalDocument.author.assignedAuthor) as |practitionerId|}}
+      {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=../msg.ClinicalDocument.dataEnterer.assignedEntity) as |dataEntererId|}}
+           {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
+              {{>Resources/Provenance.hbs practitioner=../../../msg.ClinicalDocument.author practitionerId= practitionerId.Id ID=(generateUUID (toJsonString ../../../msg.ClinicalDocument.author)) dataEntererId= dataEntererId.Id dataEnterer=../../../msg.ClinicalDocument.dataEnterer.assignedEntity patientID = patientId.Id  org=../../../msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization orgID=(generateUUID (toJsonString ../../../msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization))}},
+          {{/with}}
+      {{/with}}
+    {{/with}}
+{{/if}}
+
+
+
 {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=msg.ClinicalDocument.author.assignedAuthor) as |practitionerId|}}
     {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=../msg.ClinicalDocument.dataEnterer.assignedEntity) as |healthCoachId|}}
         {{#with  (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
             {{>Resources/CareTeam.hbs healthCoach=../../../msg.ClinicalDocument.dataEnterer.assignedEntity  healthCoachId = healthCoachId.Id patientId = patientId.Id  practitioner=../../../msg.ClinicalDocument.author.assignedAuthor ID=practitionerId.Id patient=../../../msg.ClinicalDocument.recordTarget.patientRole.patient}},
             {{>References/CareTeam/subject.hbs ID=practitionerId.Id  REF=(concat 'Patient/' patientId.Id)}},
+            {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../msg.ClinicalDocument.author)) REF=(concat 'CareTeam/' practitionerId.Id)}},
         {{/with}}
     {{/with}}
 {{/with}}

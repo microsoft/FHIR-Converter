@@ -3,6 +3,7 @@
         {{#each (toArray this.act.entryRelationship) as |condEntry|}}
             {{#if condEntry.observation}}
                 {{>Resources/Condition.hbs conditionEntry=condEntry.observation ID=(generateUUID (toJsonString condEntry.observation))}},
+                {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../msg.ClinicalDocument.author)) REF=(concat 'Condition/'(generateUUID (toJsonString condEntry.observation)))}},
                 {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
                 	{{>References/Condition/subject.hbs ID=(generateUUID (toJsonString condEntry.observation)) REF=(concat 'Patient/' patientId.Id)}},
                 {{/with}}

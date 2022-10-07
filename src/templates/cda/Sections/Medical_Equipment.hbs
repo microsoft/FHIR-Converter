@@ -14,6 +14,8 @@
             
             {{#if this.procedure}}
                 {{>Resources/Procedure.hbs procedureEntry=this.procedure ID=(generateUUID (toJsonString this.procedure))}},
+                {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../msg.ClinicalDocument.author)) REF=(concat 'Procedure/' (generateUUID (toJsonString this.procedure)))}},
+ 
                 {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
                     {{>References/Procedure/subject.hbs ID=(generateUUID (toJsonString ../procedure)) REF=(concat 'Patient/' patientId.Id)}},
                 {{/with}}
