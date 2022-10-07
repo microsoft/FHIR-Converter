@@ -20,7 +20,7 @@
         {{>DataType/TQAppointment.hbs TQ=SCH-11}},
         "created": "{{formatAsDateTime PV1-44}}",
         "participant": [
-        {{>References/Patient/appointment.hbs PID=PID STATUS='accepted'}},
+        {{>References/Patient/basicPatient.hbs PID=PID STATUS='accepted'}},
         {{#if AIL}}
             {{>References/Location/appointment.hbs AIL=AIL STATUS='accepted'}}
         {{/if}},
