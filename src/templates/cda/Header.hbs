@@ -50,6 +50,22 @@
     {{/with}}
 {{/if}}
 
+{{#with msg.ClinicalDocument.recordTarget.patientRole as |patientRole|}}
+    {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=../msg.ClinicalDocument.author.assignedAuthor) as |practitionerId|}}
+        {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=patientRole) as |patientId|}}
+            {{>Resources/Patient.hbs patientRole=patientRole ID=patientId.Id msg=../../../msg}},
+            {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../../msg.ClinicalDocument.author)) REF=(concat 'Patient/' patientId.Id)}},
+            {{>References/Patient/generalPractitioner.hbs ID=patientId.Id REF=(concat 'Practitioner/' practitionerId.Id)}},
+            {{>References/Patient/managingOrganization.hbs ID=patientId.Id REF=(concat 'Organization/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization)))}},
+
+            {{#if patientRole.patient.guardian}}
+                {{>Resources/RelatedPerson.hbs relatedPerson=patientRole.patient.guardian ID=(generateUUID (toJsonString patientRole.patient.guardian))}},
+                {{>References/RelatedPerson/patient.hbs ID=(generateUUID (toJsonString patientRole.patient.guardian)) REF=(concat 'Patient/' patientId.Id)}},
+            {{/if}}
+        {{/with}}
+    {{/with}}
+{{/with}}
+
 {{#if msg.ClinicalDocument.author.assignedAuthor}}
     {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=msg.ClinicalDocument.author.assignedAuthor) as |practitionerId|}}
       {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=../msg.ClinicalDocument.dataEnterer.assignedEntity) as |dataEntererId|}}
@@ -60,19 +76,7 @@
     {{/with}}
 {{/if}}
 
-{{#with msg.ClinicalDocument.recordTarget.patientRole as |patientRole|}}
-    {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=../msg.ClinicalDocument.author.assignedAuthor) as |practitionerId|}}
-        {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=patientRole) as |patientId|}}
-            {{>Resources/Patient.hbs patientRole=patientRole ID=patientId.Id msg=../../../msg}},
-            {{>References/Patient/generalPractitioner.hbs ID=patientId.Id REF=(concat 'Practitioner/' practitionerId.Id)}},
-            {{>References/Patient/managingOrganization.hbs ID=patientId.Id REF=(concat 'Organization/' (generateUUID (toJsonString ../../../msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization)))}},
-            {{#if patientRole.patient.guardian}}
-                {{>Resources/RelatedPerson.hbs relatedPerson=patientRole.patient.guardian ID=(generateUUID (toJsonString patientRole.patient.guardian))}},
-                {{>References/RelatedPerson/patient.hbs ID=(generateUUID (toJsonString patientRole.patient.guardian)) REF=(concat 'Patient/' patientId.Id)}},
-            {{/if}}
-        {{/with}}
-    {{/with}}
-{{/with}}
+
 
 {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=msg.ClinicalDocument.author.assignedAuthor) as |practitionerId|}}
     {{#with (evaluate 'Utils/GeneratePractitionerId.hbs' obj=../msg.ClinicalDocument.dataEnterer.assignedEntity) as |healthCoachId|}}

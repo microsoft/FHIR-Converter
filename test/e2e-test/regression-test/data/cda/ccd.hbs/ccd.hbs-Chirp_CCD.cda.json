@@ -681,54 +681,157 @@
             }
         },
         {
-            "fullUrl": "urn:uuid:c41344e6-ba6e-379a-a1a1-8c93956220c3",
+            "fullUrl": "urn:uuid:f40da2df-7505-315a-9acb-55513a02c37b",
             "resource": {
-                "resourceType": "Provenance",
-                "id": "c41344e6-ba6e-379a-a1a1-8c93956220c3",
-                "recorded": "2019-10-16T09:58:28.000Z",
-                "agent": [
+                "resourceType": "Patient",
+                "meta": {
+                    "profile": [
+                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
+                    ]
+                },
+                "id": "f40da2df-7505-315a-9acb-55513a02c37b",
+                "identifier": [
                     {
-                        "type": {
-                            "coding": [
-                                {
-                                    "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
-                                    "code": "author",
-                                    "display": "Author"
-                                }
-                            ],
-                            "text": "Author"
-                        },
-                        "who": {
-                            "reference": "Practitioner/17763d72-7526-32d1-a535-e60859682208",
-                            "display": "Albert Davis"
-                        },
-                        "onBehalfOf": {
-                            "reference": "Organization/3bfc3db2-cf06-379a-88cb-03444c877632",
-                            "display": "Iora Health"
-                        }
+                        "system": "urn:oid:2.16.840.1.113883.19.5.99999.2",
+                        "value": "998991"
+                    }
+                ],
+                "name": [
+                    {
+                        "family": "Newman",
+                        "given": [
+                            "Alice",
+                            "Jones"
+                        ],
+                        "suffix": [
+                            "Jr."
+                        ]
                     },
                     {
-                        "type": {
-                            "coding": [
-                                {
-                                    "system": "http://hl7.org/fhir/us/core/CodeSystem/us-core-provenance-participant-type",
-                                    "code": "transmitter",
-                                    "display": "Transmitter"
+                        "use": "old",
+                        "family": "Newman",
+                        "given": [
+                            "Alicia",
+                            "Jones"
+                        ],
+                        "suffix": [
+                            "Jr."
+                        ]
+                    }
+                ],
+                "active": true,
+                "birthDate": "1970-05-01",
+                "gender": "female",
+                "extension": [
+                    {
+                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+                        "extension": [
+                            {
+                                "url": "ombCategory",
+                                "valueCoding": {
+                                    "code": "2106-3",
+                                    "display": "White",
+                                    "system": "urn:oid:2.16.840.1.113883.6.238"
                                 }
-                            ],
-                            "text": "Transmitter"
-                        },
-                        "who": {
-                            "reference": "Practitioner/ead05b2c-8f43-3a9f-946d-1553f5aaa816",
-                            "display": "Tracy Davis"
-                        },
-                        "onBehalfOf": {
-                            "reference": "Organization/3bfc3db2-cf06-379a-88cb-03444c877632",
-                            "display": "Iora Health"
+                            },
+                            {
+                                "url": "detailed",
+                                "valueCoding": {
+                                    "code": "2108-9",
+                                    "display": "European",
+                                    "system": "urn:oid:2.16.840.1.113883.6.238"
+                                }
+                            },
+                            {
+                                "url": "text",
+                                "valueString": "Mixed"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
+                        "extension": [
+                            {
+                                "url": "ombCategory",
+                                "valueCoding": {
+                                    "code": "2186-5",
+                                    "display": "Not Hispanic or Latino",
+                                    "system": "urn:oid:2.16.840.1.113883.6.238"
+                                }
+                            },
+                            {
+                                "url": "text",
+                                "valueString": "Not Hispanic or Latino"
+                            }
+                        ]
+                    },
+                    {
+                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
+                        "valueCode": "F"
+                    }
+                ],
+                "address": [
+                    {
+                        "line": [
+                            "1357, Amber Dr"
+                        ],
+                        "city": "Beaverton",
+                        "state": "OR",
+                        "country": "US",
+                        "postalCode": "97006",
+                        "period": {
+                            "start": "1970-05-01"
                         }
                     }
                 ],
+                "telecom": [
+                    {
+                        "system": "phone",
+                        "value": "(555)723-1544",
+                        "use": "home"
+                    },
+                    {
+                        "system": "phone",
+                        "value": "(555)777-1234",
+                        "use": "mobile"
+                    }
+                ],
+                "communication": [
+                    {
+                        "language": {
+                            "coding": [
+                                {
+                                    "system": "urn:ietf:bcp:47",
+                                    "code": "en",
+                                    "display": "English"
+                                }
+                            ]
+                        },
+                        "preferred": true
+                    }
+                ],
+                "generalPractitioner": [
+                    {
+                        "reference": "Practitioner/17763d72-7526-32d1-a535-e60859682208"
+                    }
+                ],
+                "managingOrganization": {
+                    "reference": "Organization/3bfc3db2-cf06-379a-88cb-03444c877632"
+                }
+            },
+            "request": {
+                "method": "PUT",
+                "url": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+            }
+        },
+        {
+            "resource": {
+                "resourceType": "Provenance",
+                "id": "c41344e6-ba6e-379a-a1a1-8c93956220c3",
                 "target": [
+                    {
+                        "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
+                    },
                     {
                         "reference": "CareTeam/17763d72-7526-32d1-a535-e60859682208"
                     },
@@ -873,155 +976,55 @@
                     {
                         "reference": "DocumentReference/2d604404-36dd-3cc4-98bb-18f22e92f102"
                     }
+                ],
+                "recorded": "2019-10-16T09:58:28.000Z",
+                "agent": [
+                    {
+                        "type": {
+                            "coding": [
+                                {
+                                    "system": "http://terminology.hl7.org/CodeSystem/provenance-participant-type",
+                                    "code": "author",
+                                    "display": "Author"
+                                }
+                            ],
+                            "text": "Author"
+                        },
+                        "who": {
+                            "reference": "Practitioner/17763d72-7526-32d1-a535-e60859682208",
+                            "display": "Albert Davis"
+                        },
+                        "onBehalfOf": {
+                            "reference": "Organization/3bfc3db2-cf06-379a-88cb-03444c877632",
+                            "display": "Iora Health"
+                        }
+                    },
+                    {
+                        "type": {
+                            "coding": [
+                                {
+                                    "system": "http://hl7.org/fhir/us/core/CodeSystem/us-core-provenance-participant-type",
+                                    "code": "transmitter",
+                                    "display": "Transmitter"
+                                }
+                            ],
+                            "text": "Transmitter"
+                        },
+                        "who": {
+                            "reference": "Practitioner/ead05b2c-8f43-3a9f-946d-1553f5aaa816",
+                            "display": "Tracy Davis"
+                        },
+                        "onBehalfOf": {
+                            "reference": "Organization/3bfc3db2-cf06-379a-88cb-03444c877632",
+                            "display": "Iora Health"
+                        }
+                    }
                 ]
             },
+            "fullUrl": "urn:uuid:c41344e6-ba6e-379a-a1a1-8c93956220c3",
             "request": {
                 "method": "PUT",
                 "url": "Provenance/c41344e6-ba6e-379a-a1a1-8c93956220c3"
-            }
-        },
-        {
-            "fullUrl": "urn:uuid:f40da2df-7505-315a-9acb-55513a02c37b",
-            "resource": {
-                "resourceType": "Patient",
-                "meta": {
-                    "profile": [
-                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
-                    ]
-                },
-                "id": "f40da2df-7505-315a-9acb-55513a02c37b",
-                "identifier": [
-                    {
-                        "system": "urn:oid:2.16.840.1.113883.19.5.99999.2",
-                        "value": "998991"
-                    }
-                ],
-                "name": [
-                    {
-                        "family": "Newman",
-                        "given": [
-                            "Alice",
-                            "Jones"
-                        ],
-                        "suffix": [
-                            "Jr."
-                        ]
-                    },
-                    {
-                        "use": "old",
-                        "family": "Newman",
-                        "given": [
-                            "Alicia",
-                            "Jones"
-                        ],
-                        "suffix": [
-                            "Jr."
-                        ]
-                    }
-                ],
-                "active": true,
-                "birthDate": "1970-05-01",
-                "gender": "female",
-                "extension": [
-                    {
-                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
-                        "extension": [
-                            {
-                                "url": "ombCategory",
-                                "valueCoding": {
-                                    "code": "2106-3",
-                                    "display": "White",
-                                    "system": "urn:oid:2.16.840.1.113883.6.238"
-                                }
-                            },
-                            {
-                                "url": "detailed",
-                                "valueCoding": {
-                                    "code": "2108-9",
-                                    "display": "European",
-                                    "system": "urn:oid:2.16.840.1.113883.6.238"
-                                }
-                            },
-                            {
-                                "url": "text",
-                                "valueString": "Mixed"
-                            }
-                        ]
-                    },
-                    {
-                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
-                        "extension": [
-                            {
-                                "url": "ombCategory",
-                                "valueCoding": {
-                                    "code": "2186-5",
-                                    "display": "Not Hispanic or Latino",
-                                    "system": "urn:oid:2.16.840.1.113883.6.238"
-                                }
-                            },
-                            {
-                                "url": "text",
-                                "valueString": "Not Hispanic or Latino"
-                            }
-                        ]
-                    },
-                    {
-                        "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
-                        "valueCode": "F"
-                    }
-                ],
-                "address": [
-                    {
-                        "line": [
-                            "1357, Amber Dr"
-                        ],
-                        "city": "Beaverton",
-                        "state": "OR",
-                        "country": "US",
-                        "postalCode": "97006",
-                        "period": {
-                            "start": "1970-05-01"
-                        }
-                    }
-                ],
-                "telecom": [
-                    {
-                        "system": "phone",
-                        "value": "(555)723-1544",
-                        "use": "home"
-                    },
-                    {
-                        "system": "phone",
-                        "value": "(555)777-1234",
-                        "use": "mobile"
-                    }
-                ],
-                "communication": [
-                    {
-                        "language": {
-                            "coding": [
-                                {
-                                    "system": "urn:ietf:bcp:47",
-                                    "code": "en",
-                                    "display": "English"
-                                }
-                            ]
-                        },
-                        "preferred": true
-                    }
-                ],
-                "generalPractitioner": [
-                    {
-                        "reference": "Practitioner/17763d72-7526-32d1-a535-e60859682208"
-                    }
-                ],
-                "managingOrganization": {
-                    "reference": "Organization/3bfc3db2-cf06-379a-88cb-03444c877632"
-                }
-            },
-            "request": {
-                "method": "PUT",
-                "url": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
             }
         },
         {
@@ -3977,7 +3980,7 @@
                         }
                     ]
                 },
-                "date": "2022-10-06T14:53:30.114Z",
+                "date": "2022-10-07T02:23:44.303Z",
                 "status": "current",
                 "content": [
                     {
