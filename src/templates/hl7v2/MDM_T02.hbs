@@ -1,0 +1,16 @@
+{
+    "resourceType": "Bundle",
+    "type": "transaction",
+    "entry": [
+        {{assert (hasSegments msg.v2 'PID' 'TXA' 'OBX') "One or more of PID, SCH, PV1 Segment missing"}}
+
+        {{#with (getSegmentLists msg.v2 'OBX')}}
+                    {{>Resources/DocumentReference.hbs OBX=OBX}},
+        {{/with}}
+        {{#with (getFirstSegments msg.v2 'PID' 'TXA')}}
+                {{#if TXA}},
+                    {{>Resources/DocumentReference.hbs TXA=TXA PID=PID}},
+                {{/if}},
+         {{/with}}
+    ] 
+}
