@@ -968,12 +968,6 @@
                         "reference": "Immunization/d236c7d3-00d8-30cd-9768-74dc22434715"
                     },
                     {
-                        "reference": "Procedure/296600cb-6150-34cf-b1d0-9eacc07cc506"
-                    },
-                    {
-                        "reference": "Procedure/b094e726-a50f-36b2-9bc7-a6e02151f14a"
-                    },
-                    {
                         "reference": "DocumentReference/2d604404-36dd-3cc4-98bb-18f22e92f102"
                     }
                 ],
@@ -3911,12 +3905,7 @@
         {
             "fullUrl": "urn:uuid:296600cb-6150-34cf-b1d0-9eacc07cc506",
             "resource": {
-                "resourceType": "Procedure",
-                "meta": {
-                    "profile": [
-                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure"
-                    ]
-                },
+                "resourceType": "Device",
                 "id": "296600cb-6150-34cf-b1d0-9eacc07cc506",
                 "identifier": [
                     {
@@ -3924,28 +3913,37 @@
                         "value": "2744"
                     }
                 ],
-                "status": "active",
-                "performedPeriod": {
-                    "start": "2011-10-05T00:00:00.000Z"
+                "udiCarrier": [
+                    {
+                        "deviceIdentifier": "00643169007222",
+                        "carrierHRF": "(01)00643169007222(17)160128(21)BLC200461H"
+                    }
+                ],
+                "distinctIdentifier": "00643169007222",
+                "expirationDate": "160128",
+                "serialNumber": "BLC200461H",
+                "type": {
+                    "coding": [
+                        {
+                            "code": "704708004",
+                            "display": "Cardiac resynchronization therapy implantable pacemaker",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
                 },
-                "subject": {
+                "patient": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 }
             },
             "request": {
                 "method": "PUT",
-                "url": "Procedure/296600cb-6150-34cf-b1d0-9eacc07cc506"
+                "url": "Device/296600cb-6150-34cf-b1d0-9eacc07cc506"
             }
         },
         {
             "fullUrl": "urn:uuid:b094e726-a50f-36b2-9bc7-a6e02151f14a",
             "resource": {
-                "resourceType": "Procedure",
-                "meta": {
-                    "profile": [
-                        "http://hl7.org/fhir/us/core/StructureDefinition/us-core-procedure"
-                    ]
-                },
+                "resourceType": "Device",
                 "id": "b094e726-a50f-36b2-9bc7-a6e02151f14a",
                 "identifier": [
                     {
@@ -3953,17 +3951,32 @@
                         "value": "2744"
                     }
                 ],
-                "status": "active",
-                "performedPeriod": {
-                    "start": "2022-09-15T04:00:00.000Z"
+                "udiCarrier": [
+                    {
+                        "deviceIdentifier": "08717648200274",
+                        "carrierHRF": "(01)08717648200274(11)20130201(10)000000000000XYZ123(21)000025(17)20140201"
+                    }
+                ],
+                "distinctIdentifier": "08717648200274",
+                "manufactureDate": "2013-02-01",
+                "expirationDate": "2014-02-01",
+                "lotNumber": "000000000000XYZ123",
+                "serialNumber": "000025",
+                "type": {
+                    "coding": [
+                        {
+                            "display": "XIENCE Alpine Everolimus Eluting",
+                            "system": "http://snomed.info/sct"
+                        }
+                    ]
                 },
-                "subject": {
+                "patient": {
                     "reference": "Patient/f40da2df-7505-315a-9acb-55513a02c37b"
                 }
             },
             "request": {
                 "method": "PUT",
-                "url": "Procedure/b094e726-a50f-36b2-9bc7-a6e02151f14a"
+                "url": "Device/b094e726-a50f-36b2-9bc7-a6e02151f14a"
             }
         },
         {
@@ -3980,7 +3993,7 @@
                         }
                     ]
                 },
-                "date": "2022-10-07T02:23:44.303Z",
+                "date": "2022-10-10T17:53:02.308Z",
                 "status": "current",
                 "content": [
                     {
