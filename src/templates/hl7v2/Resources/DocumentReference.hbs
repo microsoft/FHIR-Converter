@@ -1,7 +1,7 @@
 {
     "resource":{
         "resourceType": "DocumentReference",
-        "masterIdentifier":"{{TXA-12}}",
+        "masterIdentifier": { {{>DataType/EIIdentifier.hbs EI=TXA-12}} },
         "date":"{{formatAsDateTime TXA-7}}",
         "status":"current",
         {{#if PID-3-1}},
