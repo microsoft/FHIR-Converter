@@ -5,7 +5,7 @@
         "date":"{{formatAsDateTime TXA-7}}",
         "status":"current",
         {{#if PID-3-1}},
-               "subject": {{>References/Patient/basicPatient.hbs PID=PID STATUS='accepted'}},
+               "subject": {{>References/Patient/documentReference.hbs PID=PID}},
         {{/if}},
     },
     "request":{
