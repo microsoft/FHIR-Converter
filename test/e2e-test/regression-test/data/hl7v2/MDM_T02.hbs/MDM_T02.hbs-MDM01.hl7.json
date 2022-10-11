@@ -5,18 +5,17 @@
         {
             "resource": {
                 "resourceType": "DocumentReference",
-                "masterIdentifier": "109",
+                "masterIdentifier": {
+                    "value": "109"
+                },
                 "date": "2022-10-03T12:11:05.000Z",
                 "status": "current",
                 "subject": {
-                    "status": "accepted",
-                    "actor": {
-                        "type": "Patient",
-                        "identifier": {
-                            "value": "TRN0001"
-                        },
-                        "display": "Travis C Prostate"
-                    }
+                    "type": "Patient",
+                    "identifier": {
+                        "value": "TRN0001"
+                    },
+                    "display": "Travis C Prostate"
                 },
                 "content": [
                     {
@@ -30,7 +29,7 @@
             },
             "request": {
                 "method": "PUT",
-                "url": "DocumentReference/109"
+                "url": "DocumentReference/"
             }
         }
     ]
