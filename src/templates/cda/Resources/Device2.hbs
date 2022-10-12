@@ -9,17 +9,28 @@
             	{{>DataType/Identifier.hbs id=this}},
             {{/each}}
         ],
-		"type":
-        {{#if deviceEntry.code}}
-            {{>DataType/CodeableConcept.hbs code=deviceEntry.code}},
-        {{else}}
-            {{>DataType/CodeableConcept.hbs code=deviceEntry.participant.participantRole.playingDevice.code}},
-        {{/if}}
-
-        "manufacturer":"{{deviceEntry.participant.participantRole.scopingEntity.desc._}}",
-    },
+        "udiCarrier": [
+            {"deviceIdentifier": "{{deviceProps.distinctIdentifier}}", "carrierHRF": "{{deviceProps.fullID}}" }
+        ],
+        "distinctIdentifier": "{{deviceProps.distinctIdentifier}}",
+        "manufactureDate": "{{ dateFormat deviceProps.manufactureDate }}",
+        "expirationDate": "{{ dateFormat deviceProps.expirationDate }}",
+        "lotNumber": "{{deviceProps.lotNumber}}",
+        "serialNumber": "{{deviceProps.serialNumber}}",
+        "type": {
+            "coding": [
+                {{#each (toArray deviceEntry.participant.participantRole.playingDevice.code) as |code|}}
+                    {
+                    "code":"{{code.code}}",
+                    "display":"{{code.displayName}}",
+                    "system":{{>ValueSet/SystemReference.hbs code=code.codeSystem}},
+                    },
+                {{/each}}
+            ],
+        },
+    }
     "request":{
         "method":"PUT",
         "url":"Device/{{ID}}",
-    },
+    }
 },
