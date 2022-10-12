@@ -76,7 +76,7 @@
   </ItemGroup>
     
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="mkdir $(BinFolder) &amp; tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
+    <Exec Command="mkdir -p $(BinFolder) &amp;&amp; tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
     <Exec Command="tar -zcvf $(BinFolder)CcdaDefaultTemplates.tar.gz -C $(DataFolder)Templates/Ccda ." />
     <Exec Command="tar -zcvf $(BinFolder)JsonDefaultTemplates.tar.gz -C $(DataFolder)Templates/Json ." />
     <Exec Command="tar -zcvf $(BinFolder)Stu3ToR4DefaultTemplates.tar.gz -C $(DataFolder)Templates/Stu3ToR4 ." />
