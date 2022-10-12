@@ -3,6 +3,7 @@
         {{#each (toArray 2_16_840_1_113883_10_20_22_2_23.entry)}}
             {{#if this.organizer}}
                 {{>Resources/Device2.hbs deviceEntry=this.organizer ID=(generateUUID (toJsonString this.organizer))}},
+                {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../msg.ClinicalDocument.author)) REF=(concat 'Device/'(generateUUID (toJsonString this.organizer)))}},
                 {{#each (toArray this.organizer.component) as |medequipEntry|}}
                     {{>Resources/Device2.hbs deviceEntry=medequipEntry.supply ID=(generateUUID (toJsonString medequipEntry.supply))}},
                 {{/each}}
@@ -10,10 +11,12 @@
 
             {{#if this.supply}}
                 {{>Resources/Device2.hbs deviceEntry=this.supply ID=(generateUUID (toJsonString this.supply))}},
+                {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../msg.ClinicalDocument.author)) REF=(concat 'Device/'(generateUUID (toJsonString this.supply)))}},
             {{/if}}
 
             {{#if this.procedure}}
-                {{>Resources/Device2.hbs deviceEntry=this.procedure deviceProps=(extractDeviceProperties this.procedure.participant.participantRole.id.extension) ID=(generateUUID (toJsonString this.procedure))}}
+                {{>Resources/Device2.hbs deviceEntry=this.procedure deviceProps=(extractDeviceProperties this.procedure.participant.participantRole.id.extension) ID=(generateUUID (toJsonString this.procedure))}},
+                {{>References/Provenance/target.hbs ID=(generateUUID (toJsonString ../../msg.ClinicalDocument.author)) REF=(concat 'Device/'(generateUUID (toJsonString this.procedure)))}},
                 <!--                take participant role id string to parse out device fields-->
                 {{#with (evaluate 'Utils/GeneratePatientId.hbs' obj=../../msg.ClinicalDocument.recordTarget.patientRole) as |patientId|}}
                     {{>References/Device/patient.hbs ID=(generateUUID (toJsonString ../procedure)) REF=(concat 'Patient/' patientId.Id)}},
