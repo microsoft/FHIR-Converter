@@ -17,7 +17,7 @@
     <DataFolder>$(SolutionFolder)data\</DataFolder>
     <BinFolder>$(SolutionFolder)bin\</BinFolder>
     <CopyExecutable>copy</CopyExecutable>
-    <MakeBinDirectory>if not exist $(BinFolder)/NUL mkdir $(BinFolder)</MakeBinDirectory>
+    <MakeDirectory>mkdir $(BinFolder)</MakeDirectory>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
@@ -25,7 +25,7 @@
     <DataFolder>$(SolutionFolder)data/</DataFolder>
     <BinFolder>$(SolutionFolder)bin/</BinFolder>
     <CopyExecutable>cp</CopyExecutable>
-    <MakeBinDirectory>mkdir -p $(BinFolder)</MakeBinDirectory>
+    <MakeDirectory>mkdir -p</MakeDirectory>
   </PropertyGroup>
 
   <ItemGroup>
@@ -78,7 +78,7 @@
   </ItemGroup>
     
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="$(MakeBinDirectory) &amp;&amp; tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
+    <Exec Command="$(MakeDirectory) $(BinFolder) &amp;&amp; tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
     <Exec Command="tar -zcvf $(BinFolder)CcdaDefaultTemplates.tar.gz -C $(DataFolder)Templates/Ccda ." />
     <Exec Command="tar -zcvf $(BinFolder)JsonDefaultTemplates.tar.gz -C $(DataFolder)Templates/Json ." />
     <Exec Command="tar -zcvf $(BinFolder)Stu3ToR4DefaultTemplates.tar.gz -C $(DataFolder)Templates/Stu3ToR4 ." />
