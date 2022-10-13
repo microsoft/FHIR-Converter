@@ -30,7 +30,7 @@
           {
             "attachment": {
               "contentType": "text/plain",
-              "data": "{{base64Encode noteText}}",
+              "data":"{{{gzip noteText 'utf8' 'base64'}}}"
             },
             "format": {
               "system": "http://ihe.net/fhir/ValueSet/IHE.FormatCode.codesystem",

@@ -416,15 +416,11 @@ module.exports.external = [
         description: 'Returns base64 encoded string: base64Encode string encoding',
         func: function (str, encoding) {
             try {
-                if (encoding) {
-                    if (typeof encoding !== 'string')
-                    {
-                        encoding = 'utf8';
-                    }
-                    return Buffer.from(str.toString(), encoding).toString('base64');
-                } else {
-                    return Buffer.from(str).toString('base64');
+                if (typeof encoding !== 'string')
+                {
+                    encoding = 'utf8';
                 }
+                return Buffer.from(str.toString(), encoding).toString('base64');
             }
             catch (err) {
                 throw `helper "base64Encode" : ${err}`;
