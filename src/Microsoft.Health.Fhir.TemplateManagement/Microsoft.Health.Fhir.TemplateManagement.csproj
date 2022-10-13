@@ -17,7 +17,7 @@
     <DataFolder>$(SolutionFolder)data\</DataFolder>
     <BinFolder>$(SolutionFolder)bin\</BinFolder>
     <CopyExecutable>copy</CopyExecutable>
-    <MakeDirectory>mkdir $(BinFolder)</MakeDirectory>
+    <MakeDirectory>mkdir</MakeDirectory>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
