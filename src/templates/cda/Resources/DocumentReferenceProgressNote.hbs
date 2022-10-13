@@ -1,0 +1,47 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "DocumentReference",
+        "id":"{{ID}}",
+        "type": {
+            "coding": [
+                {
+                    "system": "http://loinc.org",
+                    "code": "{{noteEntry.code.translation.code}}",
+                    "display": "{{noteEntry.code.translation.displayName}}"
+                }
+            ],
+        "text": "{{noteEntry.code.translation.displayName}}"
+        },
+        "status": "superseded",
+        "category": [
+            {
+                "coding": [
+                    {
+                        "system": "http://hl7.org/fhir/us/core/CodeSystem/us-core-documentreference-category",
+                        "code": "clinical-note",
+                        "display": "Clinical Note"
+                    }
+                ]
+            }
+        ],
+        "date": "{{formatAsDateTime noteEntry.effectiveTime.value}}",
+        "content": [
+          {
+            "attachment": {
+              "contentType": "text/plain",
+              "data": "{{base64Encode noteText}}",
+            },
+            "format": {
+              "system": "http://ihe.net/fhir/ValueSet/IHE.FormatCode.codesystem",
+              "code": "urn:ihe:iti:xds:2017:mimeTypeSufficient",
+              "display": "mimeType Sufficient"
+            }
+          }
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"DocumentReference/{{ID}}",
+    },
+},

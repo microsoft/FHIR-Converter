@@ -44,7 +44,9 @@
         {{>Sections/Nutrition.hbs}},
         
         {{>Sections/Payers.hbs}},
-     
+
+        {{>Sections/Progress_Notes.hbs}},
+
         {{! Document Resource Creation }}
         
         {{>Resources/DocumentReference.hbs docref=msg ID=(generateUUID (toJsonString msg))}},

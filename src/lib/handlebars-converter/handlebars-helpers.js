@@ -150,9 +150,8 @@ var getDateTime = function (dateTimeString) {
 
 var getTextReferenceInternal =  function (textBlock, referenceValue) {
     const value = (referenceValue || '').replace(/^#/, '');
-    const textItem = (textBlock?.list?.item || []).find((item) => {
-        return item.content.ID === value;
-    });
+    const item = textBlock?.list?.item || [];
+    const textItem = Array.isArray(item) ? item.find((item) => {return item.content.ID === value;}) : item;
     if (textItem) {
         return textItem.content._;
     } else {
@@ -417,11 +416,15 @@ module.exports.external = [
         description: 'Returns base64 encoded string: base64Encode string encoding',
         func: function (str, encoding) {
             try {
-                if (typeof encoding !== 'string')
-                {
-                    encoding = 'utf8';
+                if (encoding) {
+                    if (typeof encoding !== 'string')
+                    {
+                        encoding = 'utf8';
+                    }
+                    return Buffer.from(str.toString(), encoding).toString('base64');
+                } else {
+                    return Buffer.from(str).toString('base64');
                 }
-                return Buffer.from(str.toString(), encoding).toString('base64');
             }
             catch (err) {
                 throw `helper "base64Encode" : ${err}`;
