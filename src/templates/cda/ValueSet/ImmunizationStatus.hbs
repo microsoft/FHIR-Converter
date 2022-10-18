@@ -1,0 +1,9 @@
+{{#if (eq code 'completed')}}
+    "completed"
+{{else if (eq code 'cancelled')}}
+    "not-done"
+{{else if (eq code 'entered-in-error')}}
+    "entered-in-error"
+{{else}}
+    "not-done"
+{{/if}}

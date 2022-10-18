@@ -150,9 +150,8 @@ var getDateTime = function (dateTimeString) {
 
 var getTextReferenceInternal =  function (textBlock, referenceValue) {
     const value = (referenceValue || '').replace(/^#/, '');
-    const textItem = (textBlock?.list?.item || []).find((item) => {
-        return item.content.ID === value;
-    });
+    const item = textBlock?.list?.item || [];
+    const textItem = Array.isArray(item) ? item.find((item) => {return item.content.ID === value;}) : item;
     if (textItem) {
         return textItem.content._;
     } else {
