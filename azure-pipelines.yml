@@ -83,7 +83,7 @@ variables:
   - name: aks_prefix
     ${{ if eq(parameters.env, 'azure-tst') }}:
       value: tst
-    ${{ if or(eq(parameters.env, 'azure-prod-us'), eq(parameters.env, 'azure-prod-br')) }}:
+    ${{ if or(eq(parameters.env, 'azure-prod-us'), eq(parameters.env, 'azure-prod-br'), eq(parameters.env, 'azure-prod-uk')) }}:
       value: prod
 
 stages:
@@ -146,7 +146,7 @@ stages:
 
 - stage: DeployAzureUK
   dependsOn: SetupWorkspace
-  condition: eq('${{parameters.env}}', 'azure-prod-UK')
+  condition: eq('${{parameters.env}}', 'azure-prod-uk')
   jobs:
     - template: deployment.yaml@templates
       parameters:
