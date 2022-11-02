@@ -17,6 +17,7 @@ parameters:
   - azure-tst
   - azure-prod-us
   - azure-prod-br
+  - azure-prod-uk
   - staging
   - demo
   - production-fi
@@ -54,6 +55,8 @@ variables:
       value: PROD-EASTUS-AZDO-POOL
     ${{ if eq(parameters.env, 'azure-prod-br') }}:
       value: PROD-BRAZILSOUTH-AZDO-POOL
+    ${{ if eq(parameters.env, 'azure-prod-uk') }}:
+      value: PROD-UKSOUTH-AZDO-POOL
 
   - name: project
     ${{ if eq(parameters.env, 'staging') }}:
@@ -74,6 +77,8 @@ variables:
       value: "AXIS Production Kaiku US"
     ${{ if eq(parameters.env, 'azure-prod-br') }}:
       value: "AXIS Production Kaiku BR"
+    ${{ if eq(parameters.env, 'azure-prod-uk') }}:
+      value: "AXIS Production Kaiku UK"
 
   - name: aks_prefix
     ${{ if eq(parameters.env, 'azure-tst') }}:
@@ -127,6 +132,21 @@ stages:
 - stage: DeployAzureBR
   dependsOn: SetupWorkspace
   condition: eq('${{parameters.env}}', 'azure-prod-br')
+  jobs:
+    - template: deployment.yaml@templates
+      parameters:
+        cloud: ${{ variables.cloud }}
+        pool: ${{ variables.pool }}
+        env: ${{ parameters.env }}
+        service: ${{ parameters.service }}
+        azsub: ${{ variables.azsub }}
+        aks_prefix: ${{ variables.aks_prefix }}
+        image: ${{ parameters.image }}
+        app: ${{variables.app}}
+
+- stage: DeployAzureUK
+  dependsOn: SetupWorkspace
+  condition: eq('${{parameters.env}}', 'azure-prod-UK')
   jobs:
     - template: deployment.yaml@templates
       parameters:
