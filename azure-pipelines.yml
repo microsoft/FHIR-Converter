@@ -41,7 +41,7 @@ variables:
   - name: cloud
     ${{ if or(eq(parameters.env, 'staging'), eq(parameters.env, 'demo'), eq(parameters.env, 'production-de'), eq(parameters.env, 'production-fi')) }}:
       value: google
-    ${{ if or(eq(parameters.env, 'azure-tst'), eq(parameters.env, 'azure-prod-us'), eq(parameters.env, 'azure-prod-br')) }}:
+    ${{ if or(eq(parameters.env, 'azure-tst'), eq(parameters.env, 'azure-prod-us'), eq(parameters.env, 'azure-prod-br')), eq(parameters.env, 'azure-prod-uk')) }}:
       value: azure
 
   - name: pool
