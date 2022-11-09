@@ -8,7 +8,7 @@ const patterns = [
     { template: 'VXU_V04.hbs', data: [ 'VXU.hl7' ] },
     { template: 'ORU_R01.hbs', data: [ 'LAB-ORU-1.hl7', 'LAB-ORU-2.hl7', 'LRI_2.0-NG_CBC_Typ_Message.hl7', 'ORU-R01-RMGEAD.hl7' ] },
     { template: 'OML_O21.hbs', data: [ 'MDHHS-OML-O21-1.hl7', 'MDHHS-OML-O21-2.hl7' ] },
-    { template: 'SIU.hbs', data: [ 'SIU-S12.hl7', 'SIU-S13.hl7', 'SIU-S15.hl7' ] },
+    { template: 'SIU.hbs', data: [ 'SIU-S12.hl7', 'SIU-S13.hl7', 'SIU-S13_2.hl7', 'SIU-S15.hl7' ] },
     { template: 'MDM_T02.hbs', data: [ 'MDM01.hl7' ] }
 ];
 
