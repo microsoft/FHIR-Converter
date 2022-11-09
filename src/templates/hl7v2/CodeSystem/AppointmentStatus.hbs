@@ -2,6 +2,8 @@
 "noshow"
 {{else if (eq STATUS 'started')}}
 "arrived"
+{{else if (eq STATUS 'complete')}}
+"fulfilled"
 {{else}}
 "{{ STATUS }}"
 {{/if}}
