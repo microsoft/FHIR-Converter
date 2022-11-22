@@ -10,6 +10,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement
         // Accept media type for manifest.
         internal const string MediatypeV2Manifest = "application/vnd.docker.distribution.manifest.v2+json";
 
+        internal const string OCILayersMediatype = "application/vnd.oci.image.layer.v1.tar";
+
+        internal const string OCIConfigMediatype = "application/vnd.unknown.config.v1+json";
+
+        internal const string EmptyConfigFileName = "EmptyCinfig.json";
+
+        internal const string V2ManifestFileName = "v2manifest.json";
+
         internal const string ImageReferenceFormat = "{0}/{1}:{2}";
 
         internal const string WhiteoutsLabel = ".wh.";

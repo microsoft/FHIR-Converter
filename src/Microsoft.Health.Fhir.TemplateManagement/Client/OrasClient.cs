@@ -17,6 +17,7 @@ using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
+using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Client
 {
@@ -89,29 +90,46 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             DirectoryHelper.ClearFolder(_imageFolder);
 
-            string imageReference = string.Format("{0}/{1}:{2}", _registry, name, tag);
-            List<string> fileNameList = new List<string>();
-            string command = $"push \"{imageReference}\"";
+            if (artifactImage.Blobs.Count == 0)
+            {
+                throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file to push.");
+            }
 
+            // 1. Push layers
+            var layers = new List<Descriptor>();
+            string command;
             foreach (var layer in artifactImage.Blobs)
             {
                 if (layer.Content != null)
                 {
                     await layer.WriteToFileAsync(Path.Combine(_imageFolder, layer.FileName));
-                    fileNameList.Add($"\"{layer.FileName}\"");
+                    command = $" blob push {string.Format("{0}/{1}@{2}", _registry, name, layer.Digest)} {layer.FileName}";
+                    Console.WriteLine(await OrasExecutionAsync(command, _imageFolder));
+                    layers.Add(new Descriptor(Constants.OCILayersMediatype, layer.Content.Length, layer.Digest, null, new Annotations(title: layer.FileName)));
                 }
             }
 
-            if (fileNameList.Count == 0)
+            // 2. Push config blob. Default config is empty.
+            File.WriteAllText(Path.Join(_imageFolder, Constants.EmptyConfigFileName), "{}");
+            var configDigest = StreamUtility.CalculateDigestFromSha256(File.ReadAllBytes(Path.Join(_imageFolder, Constants.EmptyConfigFileName)));
+            command = $" blob push {string.Format("{0}/{1}@{2}", _registry, name, configDigest)} {Constants.EmptyConfigFileName} ";
+            Console.WriteLine(await OrasExecutionAsync(command, _imageFolder));
+
+            // 3. Push manifest
+            var manifest = new OrasManifest()
             {
-                throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file to push.");
-            }
+                SchemaVersion = 2,
+                Config = new Descriptor(Constants.OCIConfigMediatype, 2, configDigest),
+                Layers = layers,
+                MediaType = Constants.MediatypeV2Manifest,
+            };
 
-            string argument = string.Join(" ", fileNameList);
+            File.WriteAllText(Path.Join(_imageFolder, Constants.V2ManifestFileName), JsonConvert.SerializeObject(manifest, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
 
-            // In order to remove image's directory prefix. (e.g. "layers/layer1" --> "layer1")
-            // Change oras working folder to inputFolder
-            var output = await OrasExecutionAsync(string.Concat(command, " ", argument), _imageFolder);
+            command = $" manifest push {string.Format("{0}/{1}:{2}", _registry, name, tag)} {Constants.V2ManifestFileName} ";
+            var output = await OrasExecutionAsync(command, _imageFolder);
+            Console.WriteLine(output);
+
             var digest = GetImageDigest(output);
             return digest.Value;
         }

@@ -184,6 +184,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Overlay
 
             var fileContents = fileLayer.FileContent;
             fileLayer.Content = StreamUtility.CompressToTarGz(fileContents, true);
+            fileLayer.Digest = StreamUtility.CalculateDigestFromSha256(fileLayer.Content);
             return fileLayer;
         }
 
