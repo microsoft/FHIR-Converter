@@ -15,6 +15,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
     {
         public static async Task<int> Main(string[] args)
         {
+            // args = "convert -d ../../../../../data/Templates/Ccda/ -r CCD -i ../../../../../Blake_Bradford_ZZZZZ006QS/ -o output".Split(" ");
+            //args = "pull quwanacr0408.azurecr.io/customizedtemplate:extensiontemplates output -f".Split(" ");
             var parseResult = Parser.Default.ParseArguments<ConverterOptions, PullTemplateOptions, PushTemplateOptions>(args);
             try
             {

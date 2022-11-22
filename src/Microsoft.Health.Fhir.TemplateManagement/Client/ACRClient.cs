@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Threading;
@@ -22,6 +23,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
     public class AcrClient : IOciClient
     {
         private readonly IAzureContainerRegistryClient _client;
+
+        // Accept media type for manifest.
+        private readonly List<string> _acceptedManifestMediatype =
+            new List<string>()
+            {
+                Constants.MediaTypeManifest,
+                Constants.MediaTypeManifestList,
+                Constants.OCIMediaTypeArtifactManifest,
+                Constants.OCIMediaTypeImageManifest,
+                Constants.OCIMediaTypeImageIndex,
+            };
 
         public AcrClient(string registry, string token)
         {
@@ -76,7 +88,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                var manifestInfo = await _client.Manifests.GetAsync(imageName, reference, Constants.MediatypeV2Manifest, cancellationToken);
+                var manifestInfo = await _client.Manifests.GetAsync(imageName, reference, string.Join(",", _acceptedManifestMediatype), cancellationToken);
                 return manifestInfo;
             }
             catch (TemplateManagementException)

@@ -21,6 +21,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 {
     public class ContainerRegistry
     {
+        private const string MediatypeV1Manifest = "application/vnd.oci.image.config.v1+json";
+
         public ContainerRegistryInfo GetTestContainerRegistryInfo()
         {
             var containerRegistry = new ContainerRegistryInfo
@@ -37,7 +39,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             return containerRegistry;
         }
 
-        public async Task GenerateTemplateImageAsync(ContainerRegistryInfo registry, string imageReference, List<string> templateFiles)
+        public async Task GenerateV2emplateImageAsync(ContainerRegistryInfo registry, string imageReference, string mediaType, List<string> templateFiles)
         {
             ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
 
@@ -46,16 +48,26 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
                 return;
             }
 
-            await PushTemplateCollection(registry, imageInfo.ImageName, imageInfo.Tag, templateFiles);
+            await PushV2TemplateCollection(registry, imageInfo.ImageName, imageInfo.Tag, mediaType, templateFiles);
         }
 
-        private async Task PushTemplateCollection(ContainerRegistryInfo registry, string repository, string tag, List<string> templateFiles)
+        public async Task GenerateV1TemplateImageAsync(ContainerRegistryInfo registry, string imageReference, string mediaType, List<string> templateFiles)
+        {
+            ImageInfo imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+
+            if (imageInfo.Registry != registry.ContainerRegistryServer)
+            {
+                return;
+            }
+
+            await PushV1TemplateCollection(registry, imageInfo.ImageName, imageInfo.Tag, mediaType, templateFiles);
+        }
+
+        private async Task PushV2TemplateCollection(ContainerRegistryInfo registry, string repository, string tag, string mediaType, List<string> templateFiles)
         {
             AzureContainerRegistryClient acrClient = new AzureContainerRegistryClient(registry.ContainerRegistryServer, new AcrBasicToken(registry));
 
             int schemaV2 = 2;
-            string mediatypeV2Manifest = "application/vnd.docker.distribution.manifest.v2+json";
-            string mediatypeV1Manifest = "application/vnd.oci.image.config.v1+json";
             string emptyConfigStr = "{}";
 
             // Upload config blob
@@ -76,12 +88,45 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
                 var blobLength = byteStream.Length;
                 string blobDigest = ComputeDigest(byteStream);
                 await UploadBlob(acrClient, byteStream, repository, blobDigest);
-                layers.Add(new Descriptor("application/vnd.oci.image.layer.v1.tar", blobLength, blobDigest));
+                layers.Add(new Descriptor(MediatypeV1Manifest, blobLength, blobDigest));
             }
 
             // Push manifest
-            var v2Manifest = new V2Manifest(schemaV2, mediatypeV2Manifest, new Descriptor(mediatypeV1Manifest, originalConfigBytes.Length, originalConfigDigest), layers);
+            var v2Manifest = new V2Manifest(2, mediaType, new Descriptor(MediatypeV1Manifest, originalConfigBytes.Length, originalConfigDigest), layers);
             await acrClient.Manifests.CreateAsync(repository, tag, v2Manifest);
+        }
+
+        private async Task PushV1TemplateCollection(ContainerRegistryInfo registry, string repository, string tag, string mediaType, List<string> templateFiles)
+        {
+            AzureContainerRegistryClient acrClient = new AzureContainerRegistryClient(registry.ContainerRegistryServer, new AcrBasicToken(registry));
+
+            int schemaV2 = 2;
+            string emptyConfigStr = "{}";
+
+            // Upload config blob
+            byte[] originalConfigBytes = Encoding.UTF8.GetBytes(emptyConfigStr);
+            using var originalConfigStream = new MemoryStream(originalConfigBytes);
+            string originalConfigDigest = ComputeDigest(originalConfigStream);
+            await UploadBlob(acrClient, originalConfigStream, repository, originalConfigDigest);
+
+            // Upload memory blob
+
+            List<Descriptor> layers = new List<Descriptor>();
+
+            foreach (var templateFile in templateFiles)
+            {
+                using FileStream fileStream = File.OpenRead(templateFile);
+                using MemoryStream byteStream = new MemoryStream();
+                fileStream.CopyTo(byteStream);
+                var blobLength = byteStream.Length;
+                string blobDigest = ComputeDigest(byteStream);
+                await UploadBlob(acrClient, byteStream, repository, blobDigest);
+                layers.Add(new Descriptor(MediatypeV1Manifest, blobLength, blobDigest));
+            }
+
+            // Push manifest
+            var v1Manifest = new OCIManifest(2, MediatypeV1Manifest, new Descriptor(MediatypeV1Manifest, originalConfigBytes.Length, originalConfigDigest), layers);
+            await acrClient.Manifests.CreateAsync(repository, tag, v1Manifest);
         }
 
         private async Task UploadBlob(AzureContainerRegistryClient acrClient, Stream stream, string repository, string digest)
