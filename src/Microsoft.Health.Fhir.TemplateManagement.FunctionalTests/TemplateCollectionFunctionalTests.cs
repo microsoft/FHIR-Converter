@@ -40,7 +40,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string _defaultStu3ToR4TemplateImageReference = "microsofthealth/stu3tor4templates:default";
         private readonly string testOneLayerImageReference;
         private readonly string testMultiLayerImageReference;
-        private readonly string testV1MediatypeImageReference;
         private readonly string testInvalidImageReference;
         private readonly string testInvalidTemplateImageReference;
         private readonly ContainerRegistry _containerRegistry = new ContainerRegistry();
@@ -48,8 +47,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private static readonly string _templateDirectory = Path.Join("..", "..", "data", "Templates");
         private static readonly string _sampleDataDirectory = Path.Join("..", "..", "data", "SampleData");
         private static readonly ProcessorSettings _processorSettings = new ProcessorSettings();
-        private const string MediatypeV2Manifest = "application/vnd.docker.distribution.manifest.v2+json";
-        private const string MediatypeV1Manifest = "application/vnd.oci.image.config.v1+json";
+        private bool _isOrasValid = true;
+        private readonly string _orasErrorMessage = "Oras tool invalid.";
 
         public TemplateCollectionFunctionalTests()
         {
@@ -61,7 +60,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
             testOneLayerImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:onelayer";
             testMultiLayerImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:multilayers";
-            testV1MediatypeImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:v1mediatype";
             testInvalidImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidlayers";
             testInvalidTemplateImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidtemplateslayers";
             token = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_containerRegistryInfo.ContainerRegistryUsername}:{_containerRegistryInfo.ContainerRegistryPassword}"));
@@ -74,11 +72,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
                 return;
             }
 
-            //await InitOneLayerImageAsync();
-            //await InitMultiLayerImageAsync();
-            await InitV1MediatypeImageAsync();
-            //await InitInvalidTarGzImageAsync();
-            //await InitInvalidTemplateImageAsync();
+            await InitOneLayerImageAsync();
+            await InitMultiLayerImageAsync();
+            await InitInvalidTarGzImageAsync();
+            await InitInvalidTemplateImageAsync();
+
+            _isOrasValid = await OrasTestUtility.PushOneLayerWithValidSequenceNumberAsync() &&
+            await OrasTestUtility.PushMultiLayersWithValidSequenceNumberAsync();
         }
 
         public Task DisposeAsync()
@@ -88,9 +88,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public static IEnumerable<object[]> GetValidImageInfoWithTag()
         {
-            //yield return new object[] { new List<int> { 838 }, "templatetest", "onelayer" };
-            //yield return new object[] { new List<int> { 767, 838 }, "templatetest", "multilayers" };
+            yield return new object[] { new List<int> { 838 }, "templatetest", "onelayer" };
+            yield return new object[] { new List<int> { 767, 838 }, "templatetest", "multilayers" };
             yield return new object[] { new List<int> { 838 }, "templatetest", "v1mediatype" };
+        }
+
+        public static IEnumerable<object[]> GetValidOCIImageInfoWithTag()
+        {
+            yield return new object[] { new List<int> { 838 }, OrasTestUtility._testOneLayerWithValidSequenceNumberImageReference };
+            yield return new object[] { new List<int> { 767, 838 }, OrasTestUtility._testMultiLayersWithValidSequenceNumberImageReference };
         }
 
         public static IEnumerable<object[]> GetHl7v2DataAndEntryTemplate()
@@ -317,18 +323,19 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         }
 
         [Theory]
-        [MemberData(nameof(GetHl7v2DataAndEntryTemplate))]
-        public async Task GetTemplateCollectionFromAcrWithV1Mediatype_WhenGivenHl7v2DataForConverting__ExpectedFhirResourceShouldBeReturnedAsync(string hl7v2Data, string entryTemplate)
+        [MemberData(nameof(GetValidOCIImageInfoWithTag))]
+        public async Task GiveOCIImageReference_WhenGetTemplateCollection_ACorrectTemplateCollectionWillBeReturnedAsync(List<int> expectedTemplatesCounts, string imageReference)
         {
-            if (_containerRegistryInfo == null)
-            {
-                return;
-            }
+            Assert.True(_isOrasValid, _orasErrorMessage);
 
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
-            var templateCollectionProvider = factory.CreateTemplateCollectionProvider(testV1MediatypeImageReference, token);
+            var templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, token);
             var templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
-            TestByTemplate(hl7v2Data, entryTemplate, templateCollection);
+            Assert.Equal(expectedTemplatesCounts.Count(), templateCollection.Count());
+            for (var i = 0; i < expectedTemplatesCounts.Count(); i++)
+            {
+                Assert.Equal(expectedTemplatesCounts[i], templateCollection[i].Count());
+            }
         }
 
         [Theory]
@@ -487,31 +494,25 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private async Task InitOneLayerImageAsync()
         {
             List<string> templateFiles = new List<string> { baseLayerTemplatePath };
-            await _containerRegistry.GenerateV1TemplateImageAsync(_containerRegistryInfo, testOneLayerImageReference, MediatypeV2Manifest, templateFiles);
+            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testOneLayerImageReference, templateFiles);
         }
 
         private async Task InitMultiLayerImageAsync()
         {
             List<string> templateFiles = new List<string> { baseLayerTemplatePath, userLayerTemplatePath };
-            await _containerRegistry.GenerateV1TemplateImageAsync(_containerRegistryInfo, testMultiLayerImageReference, MediatypeV2Manifest, templateFiles);
-        }
-
-        private async Task InitV1MediatypeImageAsync()
-        {
-            List<string> templateFiles = new List<string> { baseLayerTemplatePath };
-            await _containerRegistry.GenerateV2emplateImageAsync(_containerRegistryInfo, testV1MediatypeImageReference, MediatypeV2Manifest, templateFiles);
+            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testMultiLayerImageReference, templateFiles);
         }
 
         private async Task InitInvalidTarGzImageAsync()
         {
             List<string> templateFiles = new List<string> { invalidTarGzPath };
-            await _containerRegistry.GenerateV1TemplateImageAsync(_containerRegistryInfo, testInvalidImageReference, MediatypeV2Manifest, templateFiles);
+            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testInvalidImageReference, templateFiles);
         }
 
         private async Task InitInvalidTemplateImageAsync()
         {
             List<string> templateFiles = new List<string> { invalidTemplatePath };
-            await _containerRegistry.GenerateV1TemplateImageAsync(_containerRegistryInfo, testInvalidTemplateImageReference, MediatypeV2Manifest, templateFiles);
+            await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testInvalidTemplateImageReference, templateFiles);
         }
     }
 }

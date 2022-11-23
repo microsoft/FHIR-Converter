@@ -19,40 +19,18 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
     public class OciArtifactFunctionalTests : IAsyncLifetime
     {
         private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
-        private static readonly string _testTarGzPath = Path.Join("TestData", "TarGzFiles");
         private readonly string _containerRegistryServer;
-        private readonly string _baseLayerTemplatePath = Path.Join(_testTarGzPath, "layerbase.tar.gz");
-        private readonly string _userLayerTemplatePath = Path.Join(_testTarGzPath, "layer2.tar.gz");
-        private readonly string _emptySequenceNumberLayerPath = Path.Join(_testTarGzPath, "userV1.tar.gz");
-        private readonly string _invalidCompressedImageLayerPath = Path.Join(_testTarGzPath, "invalid1.tar.gz");
-        private readonly string _testOneLayerWithValidSequenceNumberImageReference;
-        private readonly string _testOneLayerWithoutSequenceNumberImageReference;
-        private readonly string _testOneLayerWithInValidSequenceNumberImageReference;
-        private readonly string _testMultiLayersWithValidSequenceNumberImageReference;
-        private readonly string _testMultiLayersWithInValidSequenceNumberImageReference;
-        private readonly string _testInvalidCompressedImageReference;
         private bool _isOrasValid = true;
         private readonly string _orasErrorMessage = "Oras tool invalid.";
 
-        public OciArtifactFunctionalTests()
-        {
-            _containerRegistryServer = "localhost:5000";
-            _testOneLayerWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_valid_sequence";
-            _testOneLayerWithoutSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_without_sequence";
-            _testOneLayerWithInValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:onelayer_invalid_sequence";
-            _testMultiLayersWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:multilayers_valid_sequence";
-            _testMultiLayersWithInValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:multilayers_invalid_sequence";
-            _testInvalidCompressedImageReference = _containerRegistryServer + "/templatetest:invalid_image";
-        }
-
         public async Task InitializeAsync()
         {
-            await PushOneLayerWithValidSequenceNumberAsync();
-            await PushOneLayerWithoutSequenceNumberAsync();
-            await PushOneLayerWithInvalidSequenceNumberAsync();
-            await PushMultiLayersWithValidSequenceNumberAsync();
-            await PushMultiLayersWithInValidSequenceNumberAsync();
-            await PushInvalidCompressedImageAsync();
+            _isOrasValid = await OrasTestUtility.PushOneLayerWithValidSequenceNumberAsync() &&
+            await OrasTestUtility.PushOneLayerWithoutSequenceNumberAsync() &&
+            await OrasTestUtility.PushOneLayerWithInvalidSequenceNumberAsync() &&
+            await OrasTestUtility.PushMultiLayersWithValidSequenceNumberAsync() &&
+            await OrasTestUtility.PushMultiLayersWithInValidSequenceNumberAsync() &&
+            await OrasTestUtility.PushInvalidCompressedImageAsync();
         }
 
         public Task DisposeAsync()
@@ -61,60 +39,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             return Task.CompletedTask;
         }
 
-        private async Task PushOneLayerWithValidSequenceNumberAsync()
-        {
-            string command = $"push {_testOneLayerWithValidSequenceNumberImageReference} {_baseLayerTemplatePath}";
-            await ExecuteOrasCommandAsync(command);
-        }
-
-        private async Task PushOneLayerWithoutSequenceNumberAsync()
-        {
-            string command = $"push {_testOneLayerWithoutSequenceNumberImageReference} {_emptySequenceNumberLayerPath}";
-            await ExecuteOrasCommandAsync(command);
-        }
-
-        private async Task PushOneLayerWithInvalidSequenceNumberAsync()
-        {
-            string command = $"push {_testOneLayerWithInValidSequenceNumberImageReference} {_userLayerTemplatePath}";
-            await ExecuteOrasCommandAsync(command);
-        }
-
-        private async Task PushMultiLayersWithValidSequenceNumberAsync()
-        {
-            string command = $"push {_testMultiLayersWithValidSequenceNumberImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
-            await ExecuteOrasCommandAsync(command);
-        }
-
-        private async Task PushMultiLayersWithInValidSequenceNumberAsync()
-        {
-            string command = $"push {_testMultiLayersWithInValidSequenceNumberImageReference} {_baseLayerTemplatePath} {_emptySequenceNumberLayerPath}";
-            await ExecuteOrasCommandAsync(command);
-        }
-
-        private async Task PushInvalidCompressedImageAsync()
-        {
-            string command = $"push {_testInvalidCompressedImageReference} {_invalidCompressedImageLayerPath}";
-            await ExecuteOrasCommandAsync(command);
-        }
-
-        private async Task ExecuteOrasCommandAsync(string command)
-        {
-            try
-            {
-                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
-            }
-            catch
-            {
-                _isOrasValid = false;
-            }
-        }
-
         // Pull one layer image with valid sequence number, successfully pulled with base layer copied.
         [Fact]
         public async Task GivenOneLayerImage_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
-            var imageReference = _testOneLayerWithValidSequenceNumberImageReference;
+            var imageReference = OrasTestUtility._testOneLayerWithValidSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithValidSequenceNumber";
             DirectoryHelper.ClearFolder(outputFolder);
 
@@ -131,7 +61,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         public async Task GivenOneLayerImageWithoutSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
-            string imageReference = _testOneLayerWithoutSequenceNumberImageReference;
+            string imageReference = OrasTestUtility._testOneLayerWithoutSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithoutSequenceNumber";
             DirectoryHelper.ClearFolder(outputFolder);
 
@@ -148,7 +78,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         public async Task GivenOneLayerImageWithInvalidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
-            string imageReference = _testOneLayerWithInValidSequenceNumberImageReference;
+            string imageReference = OrasTestUtility._testOneLayerWithInValidSequenceNumberImageReference;
             string outputFolder = "TestData/testOneLayerWithInValidSequenceNumber";
             DirectoryHelper.ClearFolder(outputFolder);
 
@@ -165,7 +95,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         public async Task GivenMultiLayerImageWithValidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
-            string imageReference = _testMultiLayersWithValidSequenceNumberImageReference;
+            string imageReference = OrasTestUtility._testMultiLayersWithValidSequenceNumberImageReference;
             string outputFolder = "TestData/testMultiLayersWithValidSequenceNumber";
             DirectoryHelper.ClearFolder(outputFolder);
 
@@ -182,7 +112,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         public async Task GivenMultiLayersImageWithInvalidSequenceNumber_WhenPulled_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
-            string imageReference = _testMultiLayersWithInValidSequenceNumberImageReference;
+            string imageReference = OrasTestUtility._testMultiLayersWithInValidSequenceNumberImageReference;
             string outputFolder = "TestData/testMultiLayersWithInValidSequenceNumber";
             DirectoryHelper.ClearFolder(outputFolder);
 
@@ -199,7 +129,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         public async Task GivenInvalidCompressedImage_WhenPulled_ExceptionWillBeThrownAsync()
         {
             Assert.True(_isOrasValid, _orasErrorMessage);
-            string imageReference = _testInvalidCompressedImageReference;
+            string imageReference = OrasTestUtility._testInvalidCompressedImageReference;
             string outputFolder = "TestData/testInvalidCompressedImage";
             DirectoryHelper.ClearFolder(outputFolder);
 
@@ -216,7 +146,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             Assert.True(_isOrasValid, _orasErrorMessage);
 
             // Pull an image
-            string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
+            string initImageReference = OrasTestUtility._testOneLayerWithValidSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder1";
 
             DirectoryHelper.ClearFolder(initInputFolder);
@@ -254,7 +184,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             Assert.True(_isOrasValid, _orasErrorMessage);
 
             // Pull an image
-            string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
+            string initImageReference = OrasTestUtility._testOneLayerWithValidSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder2";
 
             DirectoryHelper.ClearFolder(initInputFolder);
@@ -292,7 +222,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             Assert.True(_isOrasValid, _orasErrorMessage);
 
             // Pull an image
-            string initImageReference = _testOneLayerWithValidSequenceNumberImageReference;
+            string initImageReference = OrasTestUtility._testOneLayerWithValidSequenceNumberImageReference;
             string initInputFolder = "TestData/UserFolder3";
 
             DirectoryHelper.ClearFolder(initInputFolder);
