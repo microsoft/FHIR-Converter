@@ -90,11 +90,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             DirectoryHelper.ClearFolder(_imageFolder);
 
-            if (artifactImage.Blobs.Count == 0)
-            {
-                throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file to push.");
-            }
-
             // 1. Push layers
             var layers = new List<Descriptor>();
             string command;
@@ -107,6 +102,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
                     Console.WriteLine(await OrasExecutionAsync(command, _imageFolder));
                     layers.Add(new Descriptor(Constants.OCILayersMediatype, layer.Content.Length, layer.Digest, null, new Annotations(title: layer.FileName)));
                 }
+            }
+
+            if (layers.Count == 0)
+            {
+                throw new OverlayException(TemplateManagementErrorCode.ImageLayersNotFound, "No file to push.");
             }
 
             // 2. Push config blob. Default config is empty.

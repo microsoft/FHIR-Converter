@@ -7,12 +7,12 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Xunit;
+using SearchOption = System.IO.SearchOption;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 {
@@ -57,7 +57,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public Task DisposeAsync()
         {
-            DirectoryHelper.ClearFolder(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName));
+            var cacheDirectory = Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName);
+            foreach (string file in Directory.EnumerateFiles(cacheDirectory, "*.*", SearchOption.AllDirectories))
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+
+            DirectoryHelper.ClearFolder(cacheDirectory);
             return Task.CompletedTask;
         }
 
