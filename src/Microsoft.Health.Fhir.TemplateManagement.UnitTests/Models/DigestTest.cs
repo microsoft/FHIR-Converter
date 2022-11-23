@@ -48,6 +48,21 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Models
             yield return new object[] { "sha256:d377125165eb6d770f" };
         }
 
+        public static IEnumerable<object[]> GetValidDigest()
+        {
+            yield return new object[] { "sha256:d377125165eb6d770f344429a7a55379d4028774aebe267fe620cd1fcd2daab7" };
+            yield return new object[] { "sha256:123425165eb6d770f344429a7a55379d4028774aebe267fe620cd1fcd2daab7" };
+            yield return new object[] { "sha128:123425165eb6d770f344429a7a55379d4028774aebe267fe620cd1fcd2daab7" };
+        }
+
+        public static IEnumerable<object[]> GetInvalidDigest()
+        {
+            yield return new object[] { "sha256d377125165eb6d770f344429a7a55379d4028774aebe267fe620cd1fcd2daab7" };
+            yield return new object[] { "256:123425165eb6d770f344429a7a55379d4028774aebe267fe620cd1fcd2daab7" };
+            yield return new object[] { "sha128:55379d4028774ae:be267fe620cd1fcd2daab7" };
+            yield return new object[] { "test" };
+        }
+
         [Theory]
         [MemberData(nameof(GetInputStringContainsDigests))]
         public void GivenAnInputStringContainsDigests_WhenGetDigest_CorrectDigestsWillBeReturned(string input, List<Digest> expectedDigests)
@@ -69,6 +84,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Models
         {
             var results = Digest.GetDigest(input);
             Assert.Empty(results);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidDigest))]
+        public void GivenValidDigest_WhenCheckIsDigest_TrueWillBeReturned(string input)
+        {
+            Assert.True(Digest.IsDigest(input));
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInvalidDigest))]
+        public void GivenInvalidDigest_WhenCheckIsDigest_FalseWillBeReturned(string input)
+        {
+            Assert.False(Digest.IsDigest(input));
         }
     }
 }

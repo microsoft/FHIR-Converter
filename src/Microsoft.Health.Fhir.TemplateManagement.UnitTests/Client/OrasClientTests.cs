@@ -6,11 +6,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
+using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
@@ -22,6 +24,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         private readonly string _userLayerTemplatePath = "TestData/TarGzFiles/userV1.tar.gz";
         private readonly string _testOneLayerImageReference;
         private readonly string _testMultiLayersImageReference;
+        private string _testOneLayerImageDigest;
+        private string _testMultiLayersImageDigest;
         private bool _isOrasValid = true;
 
         public OrasClientTests()
@@ -33,8 +37,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
         public async Task InitializeAsync()
         {
-            await PushOneLayerImageAsync();
-            await PushMultiLayersImageAsync();
+            _testOneLayerImageDigest = await PushOneLayerImageAsync();
+            _testMultiLayersImageDigest = await PushMultiLayersImageAsync();
         }
 
         public Task DisposeAsync()
@@ -200,41 +204,84 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
                 return;
             }
 
-            DirectoryHelper.ClearFolder("TestData/PullTest");
+            var folder = "TestData/PullTest";
+            DirectoryHelper.ClearFolder(folder);
 
+            // Pull one layer image by tag
             string imageReference = _testOneLayerImageReference;
-            OrasClient orasClient = new OrasClient(_containerRegistryServer, "TestData/PullTest");
+            OrasClient orasClient = new OrasClient(_containerRegistryServer, folder);
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(imageInfo.ImageName, imageInfo.Tag));
             Assert.Null(ex);
+            Assert.Single(Directory.EnumerateFiles(folder, "*.*", SearchOption.AllDirectories));
 
-            DirectoryHelper.ClearFolder("TestData/PullTest");
+            DirectoryHelper.ClearFolder(folder);
+
+            // Pull one layer image by digest
+            ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(imageInfo.ImageName, _testOneLayerImageDigest));
+            Assert.Null(ex);
+            Assert.Single(Directory.EnumerateFiles(folder, "*.*", SearchOption.AllDirectories));
+
+            DirectoryHelper.ClearFolder(folder);
+
+            // Pull multi layer image by tag
+            imageReference = _testMultiLayersImageReference;
+            imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(imageInfo.ImageName, imageInfo.Tag));
+            Assert.Null(ex);
+            Assert.Equal(2, Directory.EnumerateFiles(folder, "*.*", SearchOption.AllDirectories).Count());
+
+            DirectoryHelper.ClearFolder(folder);
+
+            // Pull multi layer image by digest
+            ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(imageInfo.ImageName, _testMultiLayersImageDigest));
+            Assert.Null(ex);
+            Assert.Equal(2, Directory.EnumerateFiles(folder, "*.*", SearchOption.AllDirectories).Count());
+
+            DirectoryHelper.ClearFolder(folder);
         }
 
-        private async Task PushOneLayerImageAsync()
+        private async Task<string> PushOneLayerImageAsync()
         {
             string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath}";
             try
             {
-                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+                var output = await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+                var digest = GetImageDigest(output);
+                return digest.Value;
             }
             catch
             {
                 _isOrasValid = false;
+                return null;
             }
         }
 
-        private async Task PushMultiLayersImageAsync()
+        private async Task<string> PushMultiLayersImageAsync()
         {
             string command = $"push {_testMultiLayersImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
             try
             {
-                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+                var output = await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+                var digest = GetImageDigest(output);
+                return digest.Value;
             }
             catch
             {
                 _isOrasValid = false;
+                return null;
             }
+        }
+
+        private Digest GetImageDigest(string input)
+        {
+            var digests = Digest.GetDigest(input);
+            if (digests.Count == 0)
+            {
+                throw new OciClientException(TemplateManagementErrorCode.OrasProcessFailed, "Failed to parse image digest.");
+            }
+
+            return digests[0];
         }
     }
 }

@@ -18,6 +18,7 @@ using Microsoft.Health.Fhir.Liquid.Converter;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
+using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Newtonsoft.Json.Linq;
@@ -40,12 +41,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string _defaultStu3ToR4TemplateImageReference = "microsofthealth/stu3tor4templates:default";
         private readonly string testOneLayerImageReference;
         private readonly string testMultiLayerImageReference;
+        private readonly string testOneLayerOCIImageReference;
+        private readonly string testMultiLayerOCIImageReference;
         private readonly string testInvalidImageReference;
         private readonly string testInvalidTemplateImageReference;
         private readonly ContainerRegistry _containerRegistry = new ContainerRegistry();
         private readonly ContainerRegistryInfo _containerRegistryInfo;
         private static readonly string _templateDirectory = Path.Join("..", "..", "data", "Templates");
         private static readonly string _sampleDataDirectory = Path.Join("..", "..", "data", "SampleData");
+        private static readonly string _testTarGzPath = Path.Join("TestData", "TarGzFiles");
+        private readonly string _baseLayerTemplatePath = Path.Join(_testTarGzPath, "layerbase.tar.gz");
+        private readonly string _userLayerTemplatePath = Path.Join(_testTarGzPath, "layer2.tar.gz");
         private static readonly ProcessorSettings _processorSettings = new ProcessorSettings();
         private bool _isOrasValid = true;
         private readonly string _orasErrorMessage = "Oras tool invalid.";
@@ -62,6 +68,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             testMultiLayerImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:multilayers";
             testInvalidImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidlayers";
             testInvalidTemplateImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidtemplateslayers";
+            testOneLayerOCIImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:ocionelayer";
+            testMultiLayerOCIImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:ocimultilayer";
             token = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_containerRegistryInfo.ContainerRegistryUsername}:{_containerRegistryInfo.ContainerRegistryPassword}"));
         }
 
@@ -77,8 +85,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             await InitInvalidTarGzImageAsync();
             await InitInvalidTemplateImageAsync();
 
-            _isOrasValid = await OrasTestUtility.PushOneLayerWithValidSequenceNumberAsync() &&
-            await OrasTestUtility.PushMultiLayersWithValidSequenceNumberAsync();
+            await OrasLogin();
+            await PushOneLayerOCIImageAsync();
+            await PushMultiLayersOCIImageAsync();
         }
 
         public Task DisposeAsync()
@@ -95,8 +104,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public static IEnumerable<object[]> GetValidOCIImageInfoWithTag()
         {
-            yield return new object[] { new List<int> { 838 }, OrasTestUtility._testOneLayerWithValidSequenceNumberImageReference };
-            yield return new object[] { new List<int> { 767, 838 }, OrasTestUtility._testMultiLayersWithValidSequenceNumberImageReference };
+            yield return new object[] { new List<int> { 838 }, "templatetest", "ocionelayer" };
+            yield return new object[] { new List<int> { 834, 838 }, "templatetest", "ocimultilayer" };
         }
 
         public static IEnumerable<object[]> GetHl7v2DataAndEntryTemplate()
@@ -324,10 +333,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         [Theory]
         [MemberData(nameof(GetValidOCIImageInfoWithTag))]
-        public async Task GiveOCIImageReference_WhenGetTemplateCollection_ACorrectTemplateCollectionWillBeReturnedAsync(List<int> expectedTemplatesCounts, string imageReference)
+        public async Task GiveOCIImageReference_WhenGetTemplateCollection_ACorrectTemplateCollectionWillBeReturnedAsync(List<int> expectedTemplatesCounts, string imageName, string tag)
         {
+            if (_containerRegistryInfo == null)
+            {
+                return;
+            }
+
             Assert.True(_isOrasValid, _orasErrorMessage);
 
+            string imageReference = string.Format("{0}/{1}:{2}", _containerRegistryInfo.ContainerRegistryServer, imageName, tag);
             TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
             var templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, token);
             var templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
@@ -513,6 +528,43 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         {
             List<string> templateFiles = new List<string> { invalidTemplatePath };
             await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testInvalidTemplateImageReference, templateFiles);
+        }
+
+        private async Task PushOneLayerOCIImageAsync()
+        {
+            string command = $"push {testOneLayerOCIImageReference} {_baseLayerTemplatePath}";
+            await ExecuteOrasCommandAsync(command);
+        }
+
+        private async Task PushMultiLayersOCIImageAsync()
+        {
+            string command = $"push {testMultiLayerOCIImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
+            await ExecuteOrasCommandAsync(command);
+        }
+
+        private async Task OrasLogin()
+        {
+            try
+            {
+                var command = $"login {_containerRegistryInfo.ContainerRegistryServer} -u {_containerRegistryInfo.ContainerRegistryUsername} -p {_containerRegistryInfo.ContainerRegistryPassword}";
+                await ExecuteOrasCommandAsync(command);
+            }
+            catch
+            {
+                _isOrasValid = false;
+            }
+        }
+
+        private async Task ExecuteOrasCommandAsync(string command)
+        {
+            try
+            {
+                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+            }
+            catch
+            {
+                _isOrasValid = false;
+            }
         }
     }
 }

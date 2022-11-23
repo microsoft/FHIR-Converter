@@ -42,7 +42,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
 
             DirectoryHelper.ClearFolder(_imageFolder);
 
-            string imageReference = string.Format("{0}/{1}:{2}", _registry, name, reference);
+            string imageReference;
+            if (Digest.IsDigest(reference))
+            {
+                imageReference = string.Format("{0}/{1}@{2}", _registry, name, reference);
+            }
+            else
+            {
+                imageReference = string.Format("{0}/{1}:{2}", _registry, name, reference);
+            }
+
             string command = $"pull  \"{imageReference}\" -o \"{_imageFolder}\"";
 
             string output = await OrasExecutionAsync(command, null);
