@@ -19,8 +19,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
     public class OciFileManagerTests : IAsyncLifetime
     {
         private readonly string _containerRegistryServer;
-        private readonly string _baseLayerTemplatePath = "TestData/TarGzFiles/layer1.tar.gz";
-        private readonly string _userLayerTemplatePath = "TestData/TarGzFiles/layer2.tar.gz";
         private readonly string _testOneLayerImageReference;
         private readonly string _testMultiLayersImageReference;
         private string _testOneLayerImageDigest;
@@ -36,8 +34,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         public async Task InitializeAsync()
         {
-            _testOneLayerImageDigest = await PushOneLayerImageAsync();
-            _testMultiLayerImageDigest = await PushMultiLayersImageAsync();
+            _testOneLayerImageDigest = await OrasUtility.PushOneLayerImageAsync(_testOneLayerImageReference);
+            _testMultiLayerImageDigest = await OrasUtility.PushMultiLayersImageAsync(_testMultiLayersImageReference);
+            _isOrasValid = !(_testOneLayerImageDigest == null || _testMultiLayerImageDigest == null);
         }
 
         public Task DisposeAsync()
@@ -152,49 +151,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var ex = await Record.ExceptionAsync(async () => await testManager.PushOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true));
             Assert.Null(ex);
-        }
-
-        private async Task<string> PushOneLayerImageAsync()
-        {
-            string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath}";
-            try
-            {
-                var output = await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
-                var digest = GetImageDigest(output);
-                return digest.Value;
-            }
-            catch
-            {
-                _isOrasValid = false;
-                return null;
-            }
-        }
-
-        private async Task<string> PushMultiLayersImageAsync()
-        {
-            string command = $"push {_testMultiLayersImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
-            try
-            {
-                var output = await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
-                var digest = GetImageDigest(output);
-                return digest.Value;
-            }
-            catch
-            {
-                _isOrasValid = false;
-                return null;
-            }
-        }
-
-        private Digest GetImageDigest(string input)
-        {
-            var digests = Digest.GetDigest(input);
-            if (digests.Count == 0)
-            {
-                throw new OciClientException(TemplateManagementErrorCode.OrasProcessFailed, "Failed to parse image digest.");
-            }
-
-            return digests[0];
         }
     }
 }
