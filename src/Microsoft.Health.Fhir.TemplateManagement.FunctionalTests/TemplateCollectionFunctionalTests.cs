@@ -45,6 +45,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string testMultiLayerOCIImageReference;
         private readonly string testInvalidImageReference;
         private readonly string testInvalidTemplateImageReference;
+        private string testOneLayerImageDigest;
+        private string testMultiLayerImageDigest;
         private readonly ContainerRegistry _containerRegistry = new ContainerRegistry();
         private readonly ContainerRegistryInfo _containerRegistryInfo;
         private static readonly string _templateDirectory = Path.Join("..", "..", "data", "Templates");
@@ -353,6 +355,28 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             }
         }
 
+        [Fact]
+        public async Task GiveOCIImageReferenceWithDigest_WhenGetTemplateCollection_ACorrectTemplateCollectionWillBeReturnedAsync()
+        {
+            if (_containerRegistryInfo == null)
+            {
+                return;
+            }
+
+            Assert.True(_isOrasValid, _orasErrorMessage);
+
+            string imageReference = string.Format("{0}/{1}@{2}", _containerRegistryInfo.ContainerRegistryServer, "templatetest", testOneLayerImageDigest);
+            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
+            var templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, token);
+            var templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
+            Assert.Single(templateCollection);
+
+            imageReference = string.Format("{0}/{1}@{2}", _containerRegistryInfo.ContainerRegistryServer, "templatetest", testMultiLayerImageDigest);
+            templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, token);
+            templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
+            Assert.Equal(2, templateCollection.Count());
+        }
+
         [Theory]
         [MemberData(nameof(GetHl7v2DataAndEntryTemplate))]
         public async Task GetTemplateCollectionFromAcr_WhenGivenHl7v2DataForConverting__ExpectedFhirResourceShouldBeReturnedAsync(string hl7v2Data, string entryTemplate)
@@ -533,13 +557,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private async Task PushOneLayerOCIImageAsync()
         {
             string command = $"push {testOneLayerOCIImageReference} {_baseLayerTemplatePath}";
-            await ExecuteOrasCommandAsync(command);
+            testOneLayerImageDigest = await ExecuteOrasCommandAsync(command);
         }
 
         private async Task PushMultiLayersOCIImageAsync()
         {
             string command = $"push {testMultiLayerOCIImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
-            await ExecuteOrasCommandAsync(command);
+            testMultiLayerImageDigest = await ExecuteOrasCommandAsync(command);
         }
 
         private async Task OrasLogin()
@@ -555,16 +579,30 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             }
         }
 
-        private async Task ExecuteOrasCommandAsync(string command)
+        private async Task<string> ExecuteOrasCommandAsync(string command)
         {
             try
             {
-                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+                var output = await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+                var digest = GetImageDigest(output);
+                return digest.Value;
             }
             catch
             {
                 _isOrasValid = false;
+                return null;
             }
+        }
+
+        private Digest GetImageDigest(string input)
+        {
+            var digests = Digest.GetDigest(input);
+            if (digests.Count == 0)
+            {
+                throw new OciClientException(TemplateManagementErrorCode.OrasProcessFailed, "Failed to parse image digest.");
+            }
+
+            return digests[0];
         }
     }
 }
