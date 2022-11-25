@@ -102,7 +102,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public Task DisposeAsync()
         {
-            DirectoryHelper.ClearFolder(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName));
             return Task.CompletedTask;
         }
 
