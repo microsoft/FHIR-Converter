@@ -571,7 +571,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             try
             {
                 var command = $"login {_containerRegistryInfo.ContainerRegistryServer} -u {_containerRegistryInfo.ContainerRegistryUsername} -p {_containerRegistryInfo.ContainerRegistryPassword}";
-                await ExecuteOrasCommandAsync(command);
+                await OrasClient.OrasExecutionAsync(command);
             }
             catch
             {
