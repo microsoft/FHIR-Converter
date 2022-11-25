@@ -7,7 +7,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
@@ -18,7 +17,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 {
     public class OciArtifactFunctionalTests : IAsyncLifetime
     {
-        private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
         private static readonly string _testTarGzPath = Path.Join("TestData", "TarGzFiles");
         private readonly string _containerRegistryServer;
         private readonly string _baseLayerTemplatePath = Path.Join(_testTarGzPath, "layerbase.tar.gz");
@@ -35,6 +33,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private string _testMultiLayerImageDigest;
         private bool _isOrasValid = true;
         private readonly string _orasErrorMessage = "Oras tool invalid.";
+        private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
+        private const string _defaultOrasCacheEnvironmentVariable = ".oras/cache";
 
         public OciArtifactFunctionalTests()
         {
@@ -45,6 +45,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             _testMultiLayersWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:multilayers_valid_sequence";
             _testMultiLayersWithInValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:multilayers_invalid_sequence";
             _testInvalidCompressedImageReference = _containerRegistryServer + "/templatetest:invalid_image";
+
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName)))
+            {
+                Environment.SetEnvironmentVariable(_orasCacheEnvironmentVariableName, _defaultOrasCacheEnvironmentVariable);
+            }
         }
 
         public async Task InitializeAsync()

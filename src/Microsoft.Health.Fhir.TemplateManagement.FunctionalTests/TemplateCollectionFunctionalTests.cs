@@ -21,6 +21,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Processors;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
@@ -57,6 +58,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private static readonly ProcessorSettings _processorSettings = new ProcessorSettings();
         private bool _isOrasValid = true;
         private readonly string _orasErrorMessage = "Oras tool invalid.";
+        private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
+        private const string _defaultOrasCacheEnvironmentVariable = ".oras/cache";
 
         public TemplateCollectionFunctionalTests()
         {
@@ -73,6 +76,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             testOneLayerOCIImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:ocionelayer";
             testMultiLayerOCIImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:ocimultilayer";
             token = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_containerRegistryInfo.ContainerRegistryUsername}:{_containerRegistryInfo.ContainerRegistryPassword}"));
+
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName)))
+            {
+                Environment.SetEnvironmentVariable(_orasCacheEnvironmentVariableName, _defaultOrasCacheEnvironmentVariable);
+            }
         }
 
         public async Task InitializeAsync()
@@ -94,6 +102,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public Task DisposeAsync()
         {
+            DirectoryHelper.ClearFolder(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName));
             return Task.CompletedTask;
         }
 

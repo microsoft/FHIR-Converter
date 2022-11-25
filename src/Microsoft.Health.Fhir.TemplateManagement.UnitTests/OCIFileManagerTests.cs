@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
@@ -24,12 +23,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
         private string _testOneLayerImageDigest;
         private string _testMultiLayerImageDigest;
         private bool _isOrasValid = true;
+        private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
 
         public OciFileManagerTests()
         {
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:user1";
             _testMultiLayersImageReference = _containerRegistryServer + "/templatetest:user2";
+
+            OrasUtility.InitOrasCache();
         }
 
         public async Task InitializeAsync()
@@ -41,6 +43,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 
         public Task DisposeAsync()
         {
+            DirectoryHelper.ClearFolder(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName));
             return Task.CompletedTask;
         }
 

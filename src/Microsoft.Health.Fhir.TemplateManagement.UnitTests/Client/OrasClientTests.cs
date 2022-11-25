@@ -25,12 +25,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
         private string _testOneLayerImageDigest;
         private string _testMultiLayerImageDigest;
         private bool _isOrasValid = true;
+        private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
 
         public OrasClientTests()
         {
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:v1";
             _testMultiLayerImageReference = _containerRegistryServer + "/templatetest:v2";
+
+            OrasUtility.InitOrasCache();
         }
 
         public async Task InitializeAsync()
@@ -42,6 +45,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
 
         public Task DisposeAsync()
         {
+            DirectoryHelper.ClearFolder(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName));
             return Task.CompletedTask;
         }
 

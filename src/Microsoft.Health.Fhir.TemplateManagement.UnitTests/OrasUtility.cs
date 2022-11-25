@@ -1,11 +1,14 @@
-﻿using Microsoft.Health.Fhir.TemplateManagement.Client;
+﻿// -------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
+// -------------------------------------------------------------------------------------------------
+
+using System;
+using System.IO;
+using System.Threading.Tasks;
+using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
 {
@@ -13,6 +16,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests
     {
         private static readonly string _baseLayerTemplatePath = "TestData/TarGzFiles/layer1.tar.gz";
         private static readonly string _userLayerTemplatePath = "TestData/TarGzFiles/layer2.tar.gz";
+        private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
+        private const string _defaultOrasCacheEnvironmentVariable = ".oras/cache";
+
+        public static void InitOrasCache()
+        {
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName)))
+            {
+                Environment.SetEnvironmentVariable(_orasCacheEnvironmentVariableName, _defaultOrasCacheEnvironmentVariable);
+            }
+        }
 
         public static async Task<string> PushOneLayerImageAsync(string testOneLayerImageReference)
         {
