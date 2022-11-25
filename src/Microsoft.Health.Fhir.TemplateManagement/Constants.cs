@@ -7,8 +7,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement
 {
     internal static class Constants
     {
-        // Accept media type for manifest.
-        internal const string MediatypeV2Manifest = "application/vnd.docker.distribution.manifest.v2+json";
+        // Accepted media type for manifest. https://github.com/distribution/distribution/blob/main/docs/spec/manifest-v2-2.md
+        internal const string V2MediaTypeManifest = "application/vnd.docker.distribution.manifest.v2+json";
+        
+        // Accepted media type for OCI manifest https://github.com/opencontainers/image-spec/blob/main/manifest.md#image-manifest
+        internal const string OCIMediaTypeImageManifest = "application/vnd.oci.image.manifest.v1+json";
 
         internal const string ImageReferenceFormat = "{0}/{1}:{2}";
 

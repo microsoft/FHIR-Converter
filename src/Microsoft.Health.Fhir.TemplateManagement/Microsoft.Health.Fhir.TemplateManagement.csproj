@@ -17,6 +17,7 @@
     <DataFolder>$(SolutionFolder)data\</DataFolder>
     <BinFolder>$(SolutionFolder)bin\</BinFolder>
     <CopyExecutable>copy</CopyExecutable>
+    <MakeDirectory>mkdir</MakeDirectory>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
@@ -24,6 +25,7 @@
     <DataFolder>$(SolutionFolder)data/</DataFolder>
     <BinFolder>$(SolutionFolder)bin/</BinFolder>
     <CopyExecutable>cp</CopyExecutable>
+    <MakeDirectory>mkdir -p</MakeDirectory>
   </PropertyGroup>
 
   <ItemGroup>
@@ -76,7 +78,7 @@
   </ItemGroup>
     
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="mkdir $(BinFolder) &amp; tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
+    <Exec Command="$(MakeDirectory) $(BinFolder) &amp; tar -zcvf $(BinFolder)Hl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/Hl7v2 ." />
     <Exec Command="tar -zcvf $(BinFolder)CcdaDefaultTemplates.tar.gz -C $(DataFolder)Templates/Ccda ." />
     <Exec Command="tar -zcvf $(BinFolder)JsonDefaultTemplates.tar.gz -C $(DataFolder)Templates/Json ." />
     <Exec Command="tar -zcvf $(BinFolder)Stu3ToR4DefaultTemplates.tar.gz -C $(DataFolder)Templates/Stu3ToR4 ." />
@@ -86,7 +88,7 @@
     <DownloadFile SourceUrl="$(OrasWinUrl)" DestinationFolder="$(BinFolder)" DestinationFileName="$(OrasWinTarGzFile)">
       <Output TaskParameter="DownloadedFile" ItemName="Content" />
     </DownloadFile>
-    <Exec Command="tar -xvf $(BinFolder)$(OrasWinTarGzFile) -C $(BinFolder) &amp; $(CopyExecutable) $(BinFolder)oras.exe ." />
+    <Exec Command="tar -xvf $(BinFolder)$(OrasWinTarGzFile) -C $(BinFolder) &amp;&amp; $(CopyExecutable) $(BinFolder)oras.exe ." />
   </Target>
 
   <Target Name="DownloadOSXOrasFile" BeforeTargets="Build">

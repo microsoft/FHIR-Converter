@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
@@ -19,22 +20,27 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
     {
         private readonly string _containerRegistryServer;
         private readonly string _baseLayerTemplatePath = "TestData/TarGzFiles/baseLayer.tar.gz";
-        private readonly string _userLayerTemplatePath = "TestData/TarGzFiles/userV1.tar.gz";
         private readonly string _testOneLayerImageReference;
-        private readonly string _testMultiLayersImageReference;
+        private readonly string _testMultiLayerImageReference;
+        private string _testOneLayerImageDigest;
+        private string _testMultiLayerImageDigest;
         private bool _isOrasValid = true;
+        private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
 
         public OrasClientTests()
         {
             _containerRegistryServer = Environment.GetEnvironmentVariable("TestContainerRegistryServer");
             _testOneLayerImageReference = _containerRegistryServer + "/templatetest:v1";
-            _testMultiLayersImageReference = _containerRegistryServer + "/templatetest:v2";
+            _testMultiLayerImageReference = _containerRegistryServer + "/templatetest:v2";
+
+            OrasUtility.InitOrasCache();
         }
 
         public async Task InitializeAsync()
         {
-            await PushOneLayerImageAsync();
-            await PushMultiLayersImageAsync();
+            _testOneLayerImageDigest = await OrasUtility.PushOneLayerImageAsync(_testOneLayerImageReference);
+            _testMultiLayerImageDigest = await OrasUtility.PushMultiLayersImageAsync(_testMultiLayerImageReference);
+            _isOrasValid = !(_testOneLayerImageDigest == null || _testMultiLayerImageDigest == null);
         }
 
         public Task DisposeAsync()
@@ -200,41 +206,41 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Client
                 return;
             }
 
-            DirectoryHelper.ClearFolder("TestData/PullTest");
+            var folder = "TestData/PullTest";
+            DirectoryHelper.ClearFolder(folder);
 
+            // Pull one layer image by tag
             string imageReference = _testOneLayerImageReference;
-            OrasClient orasClient = new OrasClient(_containerRegistryServer, "TestData/PullTest");
+            OrasClient orasClient = new OrasClient(_containerRegistryServer, folder);
             var imageInfo = ImageInfo.CreateFromImageReference(imageReference);
             var ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(imageInfo.ImageName, imageInfo.Tag));
             Assert.Null(ex);
+            Assert.Single(Directory.EnumerateFiles(folder, "*.*", SearchOption.AllDirectories));
 
-            DirectoryHelper.ClearFolder("TestData/PullTest");
-        }
+            DirectoryHelper.ClearFolder(folder);
 
-        private async Task PushOneLayerImageAsync()
-        {
-            string command = $"push {_testOneLayerImageReference} {_baseLayerTemplatePath}";
-            try
-            {
-                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
-            }
-            catch
-            {
-                _isOrasValid = false;
-            }
-        }
+            // Pull one layer image by digest
+            ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(imageInfo.ImageName, _testOneLayerImageDigest));
+            Assert.Null(ex);
+            Assert.Single(Directory.EnumerateFiles(folder, "*.*", SearchOption.AllDirectories));
 
-        private async Task PushMultiLayersImageAsync()
-        {
-            string command = $"push {_testMultiLayersImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
-            try
-            {
-                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
-            }
-            catch
-            {
-                _isOrasValid = false;
-            }
+            DirectoryHelper.ClearFolder(folder);
+
+            // Pull multi layer image by tag
+            imageReference = _testMultiLayerImageReference;
+            imageInfo = ImageInfo.CreateFromImageReference(imageReference);
+            ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(imageInfo.ImageName, imageInfo.Tag));
+            Assert.Null(ex);
+            Assert.Equal(2, Directory.EnumerateFiles(folder, "*.*", SearchOption.AllDirectories).Count());
+
+            DirectoryHelper.ClearFolder(folder);
+
+            // Pull multi layer image by digest
+            ex = await Record.ExceptionAsync(async () => await orasClient.PullImageAsync(imageInfo.ImageName, _testMultiLayerImageDigest));
+            Assert.Null(ex);
+            Assert.Equal(2, Directory.EnumerateFiles(folder, "*.*", SearchOption.AllDirectories).Count());
+
+            DirectoryHelper.ClearFolder(folder);
         }
     }
 }
