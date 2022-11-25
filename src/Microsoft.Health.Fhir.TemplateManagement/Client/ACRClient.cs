@@ -28,11 +28,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Client
         private readonly List<string> _acceptedManifestMediatype =
             new List<string>()
             {
-                Constants.MediaTypeManifest,
-                Constants.MediaTypeManifestList,
-                Constants.OCIMediaTypeArtifactManifest,
+                Constants.V2MediaTypeManifest,
                 Constants.OCIMediaTypeImageManifest,
-                Constants.OCIMediaTypeImageIndex,
             };
 
         public AcrClient(string registry, string token)
