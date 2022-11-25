@@ -110,7 +110,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         {
             yield return new object[] { new List<int> { 838 }, "templatetest", "onelayer" };
             yield return new object[] { new List<int> { 767, 838 }, "templatetest", "multilayers" };
-            yield return new object[] { new List<int> { 838 }, "templatetest", "v1mediatype" };
         }
 
         public static IEnumerable<object[]> GetValidOCIImageInfoWithTag()
