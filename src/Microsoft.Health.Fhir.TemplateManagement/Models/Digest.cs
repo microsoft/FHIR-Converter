@@ -33,5 +33,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
             return digests;
         }
+
+        public static bool IsDigest(string input)
+        {
+            return _digestRegex.IsMatch(input);
+        }
     }
 }

@@ -7,7 +7,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
@@ -18,7 +17,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 {
     public class OciArtifactFunctionalTests : IAsyncLifetime
     {
-        private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
         private static readonly string _testTarGzPath = Path.Join("TestData", "TarGzFiles");
         private readonly string _containerRegistryServer;
         private readonly string _baseLayerTemplatePath = Path.Join(_testTarGzPath, "layerbase.tar.gz");
@@ -31,8 +29,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string _testMultiLayersWithValidSequenceNumberImageReference;
         private readonly string _testMultiLayersWithInValidSequenceNumberImageReference;
         private readonly string _testInvalidCompressedImageReference;
+        private string _testOneLayerImageDigest;
+        private string _testMultiLayerImageDigest;
         private bool _isOrasValid = true;
         private readonly string _orasErrorMessage = "Oras tool invalid.";
+        private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
+        private const string _defaultOrasCacheEnvironmentVariable = ".oras/cache";
 
         public OciArtifactFunctionalTests()
         {
@@ -43,6 +45,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             _testMultiLayersWithValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:multilayers_valid_sequence";
             _testMultiLayersWithInValidSequenceNumberImageReference = _containerRegistryServer + "/templatetest:multilayers_invalid_sequence";
             _testInvalidCompressedImageReference = _containerRegistryServer + "/templatetest:invalid_image";
+
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName)))
+            {
+                Environment.SetEnvironmentVariable(_orasCacheEnvironmentVariableName, _defaultOrasCacheEnvironmentVariable);
+            }
         }
 
         public async Task InitializeAsync()
@@ -64,7 +71,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private async Task PushOneLayerWithValidSequenceNumberAsync()
         {
             string command = $"push {_testOneLayerWithValidSequenceNumberImageReference} {_baseLayerTemplatePath}";
-            await ExecuteOrasCommandAsync(command);
+            _testOneLayerImageDigest = await ExecuteOrasCommandAsync(command);
         }
 
         private async Task PushOneLayerWithoutSequenceNumberAsync()
@@ -83,6 +90,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         {
             string command = $"push {_testMultiLayersWithValidSequenceNumberImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
             await ExecuteOrasCommandAsync(command);
+            _testMultiLayerImageDigest = await ExecuteOrasCommandAsync(command);
         }
 
         private async Task PushMultiLayersWithInValidSequenceNumberAsync()
@@ -97,16 +105,30 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             await ExecuteOrasCommandAsync(command);
         }
 
-        private async Task ExecuteOrasCommandAsync(string command)
+        private async Task<string> ExecuteOrasCommandAsync(string command)
         {
             try
             {
-                await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+                var output = await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+                var digest = GetImageDigest(output);
+                return digest.Value;
             }
             catch
             {
                 _isOrasValid = false;
+                return null;
             }
+        }
+
+        private Digest GetImageDigest(string input)
+        {
+            var digests = Digest.GetDigest(input);
+            if (digests.Count == 0)
+            {
+                throw new OciClientException(TemplateManagementErrorCode.OrasProcessFailed, "Failed to parse image digest.");
+            }
+
+            return digests[0];
         }
 
         // Pull one layer image with valid sequence number, successfully pulled with base layer copied.
@@ -139,6 +161,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
             Assert.Equal(4, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
+            DirectoryHelper.ClearFolder(outputFolder);
+        }
+
+        [Fact]
+        public async Task GivenOneLayerImage_WhenPulledUsingDigest_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
+        {
+            Assert.True(_isOrasValid, _orasErrorMessage);
+            string outputFolder = "TestData/testOneLayerWithDigest";
+            DirectoryHelper.ClearFolder(outputFolder);
+
+            var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
+            await testManager.PullOciImageAsync("templatetest", _testOneLayerImageDigest, true);
+            Assert.Equal(843, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
             DirectoryHelper.ClearFolder(outputFolder);
         }
@@ -190,6 +226,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
             await testManager.PullOciImageAsync(imageInfo.ImageName, imageInfo.Tag, true);
             Assert.Equal(32, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
+            Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
+            DirectoryHelper.ClearFolder(outputFolder);
+        }
+
+        [Fact]
+        public async Task GivenMultiLayerImage_WhenPulledUsingDigest_ArtifactsWillBePulledWithBaseLayerCopiedAsync()
+        {
+            Assert.True(_isOrasValid, _orasErrorMessage);
+            string outputFolder = "TestData/testMultiLayerWithDigest";
+            DirectoryHelper.ClearFolder(outputFolder);
+
+            var testManager = new OciFileManager(_containerRegistryServer, outputFolder);
+            await testManager.PullOciImageAsync("templatetest", _testMultiLayerImageDigest, true);
+            Assert.Equal(10, Directory.EnumerateFiles(outputFolder, "*.*", SearchOption.AllDirectories).Count());
             Assert.Single(Directory.EnumerateFiles(Path.Combine(outputFolder, ".image", "base"), "*.tar.gz", SearchOption.AllDirectories));
             DirectoryHelper.ClearFolder(outputFolder);
         }

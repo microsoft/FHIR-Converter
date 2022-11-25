@@ -18,8 +18,10 @@ using Microsoft.Health.Fhir.Liquid.Converter;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
+using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Utilities;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
@@ -40,13 +42,24 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string _defaultStu3ToR4TemplateImageReference = "microsofthealth/stu3tor4templates:default";
         private readonly string testOneLayerImageReference;
         private readonly string testMultiLayerImageReference;
+        private readonly string testOneLayerOCIImageReference;
+        private readonly string testMultiLayerOCIImageReference;
         private readonly string testInvalidImageReference;
         private readonly string testInvalidTemplateImageReference;
+        private string testOneLayerImageDigest;
+        private string testMultiLayerImageDigest;
         private readonly ContainerRegistry _containerRegistry = new ContainerRegistry();
         private readonly ContainerRegistryInfo _containerRegistryInfo;
         private static readonly string _templateDirectory = Path.Join("..", "..", "data", "Templates");
         private static readonly string _sampleDataDirectory = Path.Join("..", "..", "data", "SampleData");
+        private static readonly string _testTarGzPath = Path.Join("TestData", "TarGzFiles");
+        private readonly string _baseLayerTemplatePath = Path.Join(_testTarGzPath, "layerbase.tar.gz");
+        private readonly string _userLayerTemplatePath = Path.Join(_testTarGzPath, "layer2.tar.gz");
         private static readonly ProcessorSettings _processorSettings = new ProcessorSettings();
+        private bool _isOrasValid = true;
+        private readonly string _orasErrorMessage = "Oras tool invalid.";
+        private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
+        private const string _defaultOrasCacheEnvironmentVariable = ".oras/cache";
 
         public TemplateCollectionFunctionalTests()
         {
@@ -60,7 +73,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             testMultiLayerImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:multilayers";
             testInvalidImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidlayers";
             testInvalidTemplateImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:invalidtemplateslayers";
+            testOneLayerOCIImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:ocionelayer";
+            testMultiLayerOCIImageReference = _containerRegistryInfo.ContainerRegistryServer + "/templatetest:ocimultilayer";
             token = "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes($"{_containerRegistryInfo.ContainerRegistryUsername}:{_containerRegistryInfo.ContainerRegistryPassword}"));
+
+            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName)))
+            {
+                Environment.SetEnvironmentVariable(_orasCacheEnvironmentVariableName, _defaultOrasCacheEnvironmentVariable);
+            }
         }
 
         public async Task InitializeAsync()
@@ -74,10 +94,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             await InitMultiLayerImageAsync();
             await InitInvalidTarGzImageAsync();
             await InitInvalidTemplateImageAsync();
+
+            await OrasLogin();
+            await PushOneLayerOCIImageAsync();
+            await PushMultiLayersOCIImageAsync();
         }
 
         public Task DisposeAsync()
         {
+            DirectoryHelper.ClearFolder(Environment.GetEnvironmentVariable(_orasCacheEnvironmentVariableName));
             return Task.CompletedTask;
         }
 
@@ -85,6 +110,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         {
             yield return new object[] { new List<int> { 838 }, "templatetest", "onelayer" };
             yield return new object[] { new List<int> { 767, 838 }, "templatetest", "multilayers" };
+        }
+
+        public static IEnumerable<object[]> GetValidOCIImageInfoWithTag()
+        {
+            yield return new object[] { new List<int> { 838 }, "templatetest", "ocionelayer" };
+            yield return new object[] { new List<int> { 834, 838 }, "templatetest", "ocimultilayer" };
         }
 
         public static IEnumerable<object[]> GetHl7v2DataAndEntryTemplate()
@@ -311,6 +342,50 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         }
 
         [Theory]
+        [MemberData(nameof(GetValidOCIImageInfoWithTag))]
+        public async Task GiveOCIImageReference_WhenGetTemplateCollection_ACorrectTemplateCollectionWillBeReturnedAsync(List<int> expectedTemplatesCounts, string imageName, string tag)
+        {
+            if (_containerRegistryInfo == null)
+            {
+                return;
+            }
+
+            Assert.True(_isOrasValid, _orasErrorMessage);
+
+            string imageReference = string.Format("{0}/{1}:{2}", _containerRegistryInfo.ContainerRegistryServer, imageName, tag);
+            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
+            var templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, token);
+            var templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
+            Assert.Equal(expectedTemplatesCounts.Count(), templateCollection.Count());
+            for (var i = 0; i < expectedTemplatesCounts.Count(); i++)
+            {
+                Assert.Equal(expectedTemplatesCounts[i], templateCollection[i].Count());
+            }
+        }
+
+        [Fact]
+        public async Task GiveOCIImageReferenceWithDigest_WhenGetTemplateCollection_ACorrectTemplateCollectionWillBeReturnedAsync()
+        {
+            if (_containerRegistryInfo == null)
+            {
+                return;
+            }
+
+            Assert.True(_isOrasValid, _orasErrorMessage);
+
+            string imageReference = string.Format("{0}/{1}@{2}", _containerRegistryInfo.ContainerRegistryServer, "templatetest", testOneLayerImageDigest);
+            TemplateCollectionProviderFactory factory = new TemplateCollectionProviderFactory(cache, Options.Create(_config));
+            var templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, token);
+            var templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
+            Assert.Single(templateCollection);
+
+            imageReference = string.Format("{0}/{1}@{2}", _containerRegistryInfo.ContainerRegistryServer, "templatetest", testMultiLayerImageDigest);
+            templateCollectionProvider = factory.CreateTemplateCollectionProvider(imageReference, token);
+            templateCollection = await templateCollectionProvider.GetTemplateCollectionAsync();
+            Assert.Equal(2, templateCollection.Count());
+        }
+
+        [Theory]
         [MemberData(nameof(GetHl7v2DataAndEntryTemplate))]
         public async Task GetTemplateCollectionFromAcr_WhenGivenHl7v2DataForConverting__ExpectedFhirResourceShouldBeReturnedAsync(string hl7v2Data, string entryTemplate)
         {
@@ -485,6 +560,57 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         {
             List<string> templateFiles = new List<string> { invalidTemplatePath };
             await _containerRegistry.GenerateTemplateImageAsync(_containerRegistryInfo, testInvalidTemplateImageReference, templateFiles);
+        }
+
+        private async Task PushOneLayerOCIImageAsync()
+        {
+            string command = $"push {testOneLayerOCIImageReference} {_baseLayerTemplatePath}";
+            testOneLayerImageDigest = await ExecuteOrasCommandAsync(command);
+        }
+
+        private async Task PushMultiLayersOCIImageAsync()
+        {
+            string command = $"push {testMultiLayerOCIImageReference} {_baseLayerTemplatePath} {_userLayerTemplatePath}";
+            testMultiLayerImageDigest = await ExecuteOrasCommandAsync(command);
+        }
+
+        private async Task OrasLogin()
+        {
+            try
+            {
+                var command = $"login {_containerRegistryInfo.ContainerRegistryServer} -u {_containerRegistryInfo.ContainerRegistryUsername} -p {_containerRegistryInfo.ContainerRegistryPassword}";
+                await OrasClient.OrasExecutionAsync(command);
+            }
+            catch
+            {
+                _isOrasValid = false;
+            }
+        }
+
+        private async Task<string> ExecuteOrasCommandAsync(string command)
+        {
+            try
+            {
+                var output = await OrasClient.OrasExecutionAsync(command, Directory.GetCurrentDirectory());
+                var digest = GetImageDigest(output);
+                return digest.Value;
+            }
+            catch
+            {
+                _isOrasValid = false;
+                return null;
+            }
+        }
+
+        private Digest GetImageDigest(string input)
+        {
+            var digests = Digest.GetDigest(input);
+            if (digests.Count == 0)
+            {
+                throw new OciClientException(TemplateManagementErrorCode.OrasProcessFailed, "Failed to parse image digest.");
+            }
+
+            return digests[0];
         }
     }
 }
