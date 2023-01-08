@@ -131,7 +131,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
         private static void SaveConverterResult(string outputFilePath, ConverterResult result)
         {
             var outputFileDirectory = Path.GetDirectoryName(outputFilePath);
-            Directory.CreateDirectory(outputFileDirectory);
+            if (!string.IsNullOrEmpty(outputFileDirectory))
+            {
+                Directory.CreateDirectory(outputFileDirectory);
+            }
 
             var content = JsonConvert.SerializeObject(result, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
             File.WriteAllText(outputFilePath, content);
