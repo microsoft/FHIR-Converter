@@ -144,7 +144,6 @@ function createComponents(containerArr, dataStr, fieldSeparator, componentSepara
             containerArr.push(null);
         }
     }
-    console.log(containerArr)
 }
 
 function parseCoverageReport(parsedMsg) {
