@@ -15,7 +15,9 @@
             ]
         {{/if}}
         "status": {{>CodeSystem/AppointmentStatus.hbs STATUS=(toLower SCH-25)}},
-        "minutesDuration": {{SCH-9}},
+        {{#if (gt SCH-9 0)}}
+            "minutesDuration": {{SCH-9}},
+        {{/if}}
         "comment": "{{NTE-3}}"
         {{>DataType/TQAppointment.hbs TQ=SCH-11}},
         "created": "{{formatAsDateTime PV1-44}}",
