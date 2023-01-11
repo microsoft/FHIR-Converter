@@ -3,8 +3,8 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-let escapeRegex = /(\\|")/g;
-let unescapeRegex = /(\\)(\\|")/g;
+let escapeRegex = /(\\)/g;
+let unescapeRegex = /(\\)(\\)/g;
 
 module.exports.Escape = function (input) {
     return input.replace(escapeRegex, escaper);
