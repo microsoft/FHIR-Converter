@@ -7,7 +7,7 @@ let escapeRegex = /(\\)/g;
 let unescapeRegex = /(\\)(\\)/g;
 
 module.exports.Escape = function (input) {
-    return input.replace(escapeRegex, escaper);
+    return input.replace(escapeRegex, escaper).replace(/\t/g, '    ');
 };
 
 module.exports.Unescape = function (input) {
