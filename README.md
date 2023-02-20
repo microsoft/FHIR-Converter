@@ -21,7 +21,7 @@ Currently, FHIR Converter supports four types of conversions, **HL7v2 to FHIR**,
 
 The converter comes with a few ready-to-use templates. If needed, you can create a new template, or modify existing templates to meet your specific conversion requirements.
 
-FHIR Converter with DotLiquid engine transforms the input data into FHIR bundles that are persisted to a FHIR server. The converter is integrated into both [Azure Health Data Services](https://azure.microsoft.com/en-us/services/health-data-services/#overview) and [Azure API for FHIR](https://docs.microsoft.com/azure/healthcare-apis/azure-api-for-fhir/), as well as in the open-source [FHIR Server](https://github.com/microsoft/fhir-server) as a [`$convert-data`] #using-convert-data-in-fhir-server) operation. It is also available as a [command line tool](#using-command-line-tool).
+FHIR Converter with DotLiquid engine transforms the input data into FHIR bundles that are persisted to a FHIR server. The converter is integrated into both [Azure Health Data Services](https://azure.microsoft.com/en-us/services/health-data-services/#overview) and [Azure API for FHIR](https://docs.microsoft.com/azure/healthcare-apis/azure-api-for-fhir/), as well as in the open-source [FHIR Server](https://github.com/microsoft/fhir-server) as a [`$convert-data`](#using-convert-data-in-fhir-server) operation. It is also available as a [command line tool](#using-command-line-tool).
 
 NOTE: **FHIR STU3 to R4** conversion is only available in the open-source [FHIR Server](https://github.com/microsoft/fhir-server) as a [`$convert-data`](#using-convert-data-in-fhir-server) operation. It is also available as a [command line tool](#using-command-line-tool).
 
