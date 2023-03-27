@@ -273,6 +273,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 "Immunization",
                 "Questionnaire",
 
+                // Maturity Level in R4 : 1 & 2
+                "DetectedIssue",
+
             };
             return data.Select(item => new[]
             {

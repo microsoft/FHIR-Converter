@@ -2,7 +2,7 @@
 {
   "contained" : [ {{msg.contained | to_array | batch_render : 'Resource', 'msg'}} ],
   "code" : {{msg.category | to_json_string | default : '""'}},
-  "identifiedDateTime" : "{{msg.date}}",
+  "identifiedDateTime" : "{{ msg.date | date: "yyyy-MM-ddTHH:mm:ss.fff%K" }}",
   "date" : "",
   "category" : ""
 }
