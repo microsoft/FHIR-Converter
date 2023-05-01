@@ -215,7 +215,7 @@ stages:
           
           brew install docker-machine docker
           
-          docker-machine restart
+          docker-machine create default
           
           eval "$(docker-machine env default)"
           
