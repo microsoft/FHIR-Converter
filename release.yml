@@ -202,7 +202,8 @@ stages:
         container: registry
   
   - job: OSX_Functional_Test
-    pool: macOS-latest
+    pool: 
+      vmImage: 'macOS-latest'
     continueOnError: false
     steps:
     - checkout: none #skip checking out the default repository resource
