@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading;
 using DotLiquid;
 using DotLiquid.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
@@ -56,8 +57,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
-                timeout: 0,
-                formatProvider: CultureInfo.InvariantCulture);
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: CancellationToken.None);
 
             Assert.Empty(template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
         }
@@ -80,8 +81,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 registers: new Hash(),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
-                timeout: 0,
-                formatProvider: CultureInfo.InvariantCulture);
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: CancellationToken.None);
             Assert.Throws<FileSystemException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
 
             // Valid template file system but no such template
@@ -93,8 +94,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
-                timeout: 0,
-                formatProvider: CultureInfo.InvariantCulture);
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: CancellationToken.None);
             Assert.Throws<Exceptions.RenderException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
         }
     }

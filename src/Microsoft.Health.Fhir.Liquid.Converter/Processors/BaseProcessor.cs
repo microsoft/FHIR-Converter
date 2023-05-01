@@ -38,15 +38,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load data and templates
-            var timeout = Settings.TimeOut;
+            var cancellationTokenSource = new CancellationTokenSource(Settings.TimeOut);
             var context = new Context(
                 environments: new List<Hash> { Hash.FromDictionary(data) },
                 outerScope: new Hash(),
                 registers: Hash.FromDictionary(new Dictionary<string, object> { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: Settings.MaxIterations,
-                timeout: timeout,
-                formatProvider: CultureInfo.InvariantCulture);
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: cancellationTokenSource.Token);
 
             // Load filters
             context.AddFilters(typeof(Filters));

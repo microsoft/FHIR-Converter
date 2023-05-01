@@ -6,6 +6,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -79,8 +80,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
-                timeout: 0,
-                formatProvider: CultureInfo.InvariantCulture);
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: CancellationToken.None);
             context.AddFilters(typeof(Filters));
             var result = template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture));
             var expectedObject = JObject.Parse(expectedResult);
@@ -110,8 +111,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
-                timeout: 0,
-                formatProvider: CultureInfo.InvariantCulture);
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: CancellationToken.None);
             context.AddFilters(typeof(Filters));
 
             string result = string.Empty;
@@ -147,8 +148,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
-                timeout: 0,
-                formatProvider: CultureInfo.InvariantCulture);
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: CancellationToken.None);
             context.AddFilters(typeof(Filters));
             var result = template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture));
 
@@ -180,8 +181,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
-                timeout: 0,
-                formatProvider: CultureInfo.InvariantCulture);
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: CancellationToken.None);
             context.AddFilters(typeof(Filters));
             Assert.Throws<RenderException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
         }
@@ -204,8 +205,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
-                timeout: 0,
-                formatProvider: CultureInfo.InvariantCulture);
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: CancellationToken.None);
             context.AddFilters(typeof(Filters));
             Assert.Throws<RenderException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
         }
@@ -213,7 +214,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         [Fact]
         public void GivenInvalidValidateSchema_WhenParseAndRender_ExceptionsShouldBeThrown()
         {
-            var templateContent = File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/InvalidRefSchema.liquid")); 
+            var templateContent = File.ReadAllText(Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates/InvalidRefSchema.liquid"));
             var template = TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent);
 
             var templateFolder = Path.Join(TestConstants.TestTemplateDirectory, @"InvalidValidateTemplates");
@@ -228,8 +229,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
                 registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: 0,
-                timeout: 0,
-                formatProvider: CultureInfo.InvariantCulture);
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: CancellationToken.None);
             context.AddFilters(typeof(Filters));
             Assert.Throws<TemplateLoadException>(() => template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture)));
         }
@@ -240,6 +241,5 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
         {
             Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseLiquidTemplate(TemplateName, templateContent));
         }
-
     }
 }
