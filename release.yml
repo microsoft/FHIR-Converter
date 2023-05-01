@@ -207,9 +207,10 @@ stages:
     continueOnError: false
     steps:
     - checkout: none #skip checking out the default repository resource
-    - task: DockerInstaller@0
+    - task: Bash@3
       inputs:
-        dockerVersion: '17.09.0-ce'
+        targetType: 'inline'
+        script: 'brew install docker-machine docker'
     - task: DownloadBuildArtifacts@0
       displayName: 'Download Artifacts'
       inputs:
