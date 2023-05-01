@@ -215,9 +215,7 @@ stages:
           
           brew install docker-machine docker
           
-          brew install --cask virtualbox
-          
-          docker-machine create --driver virtualbox default
+          docker-machine restart
           
           eval "$(docker-machine env default)"
           
