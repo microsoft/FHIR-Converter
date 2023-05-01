@@ -210,7 +210,18 @@ stages:
     - task: Bash@3
       inputs:
         targetType: 'inline'
-        script: 'brew install --cask docker'
+        script: |
+          # Install and run docker daemon
+          
+          brew install docker-machine docker
+          
+          brew install --cask virtualbox
+          
+          docker-machine create --driver virtualbox default
+          
+          eval "$(docker-machine env default)"
+          
+          docker ps
     # - task: DownloadBuildArtifacts@0
     #   displayName: 'Download Artifacts'
     #   inputs:
