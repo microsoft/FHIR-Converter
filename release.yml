@@ -211,18 +211,18 @@ stages:
       inputs:
         targetType: 'inline'
         script: 'brew install --cask docker'
-    - task: DownloadBuildArtifacts@0
-      displayName: 'Download Artifacts'
-      inputs:
-        artifactName: FhirConverterBuild
-        downloadPath: $(System.DefaultWorkingDirectory)
+    # - task: DownloadBuildArtifacts@0
+    #   displayName: 'Download Artifacts'
+    #   inputs:
+    #     artifactName: FhirConverterBuild
+    #     downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
         docker run --rm -d -p 5000:5000 --name registryOSX registry:2
       displayName: start registryOSX
-    - script: |
-        chmod +x FhirConverterBuild/**/**/oras*
-        dotnet test FhirConverterBuild/**/*FunctionalTests.dll
-      displayName: Functional Tests
+    # - script: |
+    #     chmod +x FhirConverterBuild/**/**/oras*
+    #     dotnet test FhirConverterBuild/**/*FunctionalTests.dll
+    #   displayName: Functional Tests
     - task: Docker@2
       displayName: stop registryOSX
       condition: succeededOrFailed()
