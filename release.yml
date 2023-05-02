@@ -175,53 +175,53 @@ stages:
 
 - stage: FunctionalTests
   jobs:
-  # - job: Windows_Functional_Test
-  #   pool:
-  #       vmImage: 'windows-2019'
-  #   continueOnError: false
-  #   steps:
-  #   - checkout: none #skip checking out the default repository resource
-  #   - task: DownloadBuildArtifacts@0
-  #     displayName: 'Download Artifacts'
-  #     inputs:
-  #       artifactName: FhirConverterBuild
-  #       downloadPath: $(System.DefaultWorkingDirectory)
-  #   - script: |
-  #       docker pull wusongrui/registry-windows:2.7.1
-  #       docker run --rm -d -p 5000:5000 --name registry wusongrui/registry-windows:2.7.1
-  #     displayName: start registry
-
-  #   - script: |
-  #       dotnet test FhirConverterBuild/**/*FunctionalTests.dll
-  #     displayName: Functional Tests
-  #   - task: Docker@2
-  #     displayName: stop registry
-  #     condition: succeededOrFailed()
-  #     inputs:
-  #       command: stop
-  #       container: registry
-  
-  - job: OSX_Functional_Test
-    pool: 
-      vmImage: 'macOS-latest'
+  - job: Windows_Functional_Test
+    pool:
+        vmImage: 'windows-latest'
     continueOnError: false
     steps:
-     - checkout: none #skip checking out the default repository resource
-     - task: Bash@3
-       inputs:
-         targetType: 'inline'
-         script: |
-            brew install --cask docker virtualbox
-            brew install docker-machine
-            sudo mkdir /etc/vbox
-            sudo nano /etc/vbox/networks.conf
-            echo "* 192.168.0.0/24" > /etc/vbox/networks.conf
-            docker-machine create --driver virtualbox default
-            docker-machine restart
-            eval "$(docker-machine env default)"
+    - checkout: none #skip checking out the default repository resource
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download Artifacts'
+      inputs:
+        artifactName: FhirConverterBuild
+        downloadPath: $(System.DefaultWorkingDirectory)
+    - script: |
+        # docker pull wusongrui/registry-windows:2.7.1
+        docker run --rm -d -p 5000:5000 --name registry mcr.microsoft.com/windows/nanoserver:2022
+      displayName: start registry
 
-     - script: docker run hello-world
-       displayName: 'Run a Docker container'
+    - script: |
+        dotnet test FhirConverterBuild/**/*FunctionalTests.dll
+      displayName: Functional Tests
+    - task: Docker@2
+      displayName: stop registry
+      condition: succeededOrFailed()
+      inputs:
+        command: stop
+        container: registry
+  
+  # - job: OSX_Functional_Test
+  #   pool: 
+  #     vmImage: 'macOS-latest'
+  #   continueOnError: false
+  #   steps:
+  #    - checkout: none #skip checking out the default repository resource
+  #    - task: Bash@3
+  #      inputs:
+  #        targetType: 'inline'
+  #        script: |
+  #           brew install --cask docker virtualbox
+  #           brew install docker-machine
+  #           sudo mkdir /etc/vbox
+  #           sudo nano /etc/vbox/networks.conf
+  #           echo "* 192.168.0.0/24" > /etc/vbox/networks.conf
+  #           docker-machine create --driver virtualbox default
+  #           docker-machine restart
+  #           eval "$(docker-machine env default)"
+
+  #    - script: docker run hello-world
+  #      displayName: 'Run a Docker container'
 
     # - task: Bash@3
     #   inputs:
