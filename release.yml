@@ -211,10 +211,14 @@ stages:
        inputs:
          targetType: 'inline'
          script: |
-            brew install --cask docker
-            open /Applications/Docker.app
-            ln -s /Applications/Docker.app/Contents/Resources/bin/docker /usr/local/bin/
-            docker --version
+            brew install --cask docker virtualbox
+            brew install docker-machine
+            sudo mkdir /etc/vbox
+            sudo nano /etc/vbox/networks.conf
+            echo "* 10.0.0.0/8 192.168.0.0/16" > /etc/vbox/networks.conf
+            docker-machine create --driver virtualbox default
+            docker-machine restart
+            eval "$(docker-machine env default)"
 
      - script: docker run hello-world
        displayName: 'Run a Docker container'
