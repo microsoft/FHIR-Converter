@@ -181,11 +181,11 @@ stages:
     continueOnError: false
     steps:
     - checkout: none #skip checking out the default repository resource
-    - task: DownloadBuildArtifacts@0
-      displayName: 'Download Artifacts'
-      inputs:
-        artifactName: FhirConverterBuild
-        downloadPath: $(System.DefaultWorkingDirectory)
+    # - task: DownloadBuildArtifacts@0
+    #   displayName: 'Download Artifacts'
+    #   inputs:
+    #     artifactName: FhirConverterBuild
+    #     downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
         # docker pull wusongrui/registry-windows:2.7.1
         docker run --rm -d -p 5000:5000 --name registry mcr.microsoft.com/windows/nanoserver:2022
