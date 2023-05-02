@@ -238,7 +238,7 @@ stages:
     #     downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
         # docker run --rm -d -p 5000:5000 --name registryOSX registry:2
-        docker run --rm -d -p 5000:5000 --restart=always --name registry registry:2
+        docker run -d -p 5000:5000 --restart=always --name registry registry:2
         docker context ls
       displayName: start registryOSX
     # - script: |
