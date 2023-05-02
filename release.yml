@@ -217,6 +217,7 @@ stages:
             # docker-machine restart
             eval "$(docker-machine env default)"
             docker-machine ls
+            docker run hello-world
 
      - script: docker run hello-world
        displayName: 'Run a Docker container'
