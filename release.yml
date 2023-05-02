@@ -208,6 +208,7 @@ stages:
          script: |
             brew install --cask docker virtualbox
             brew install docker-machine
+            ln -s /Applications/Docker.app/Contents/Resources/bin/docker /usr/local/bin/
             sudo mkdir /etc/vbox
             sudo nano /etc/vbox/networks.conf
             sudo bash -c "echo '* 0.0.0.0/0 ::/0' > /etc/vbox/networks.conf"
@@ -215,6 +216,7 @@ stages:
             docker-machine create --driver virtualbox default
             docker-machine restart
             eval "$(docker-machine env default)"
+            docker-machine ls
 
      - script: docker run hello-world
        displayName: 'Run a Docker container'
