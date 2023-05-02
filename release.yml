@@ -216,36 +216,19 @@ stages:
             docker-machine create --driver virtualbox default
             eval "$(docker-machine env default)"
             docker-machine ls
-            docker run --rm -d -p 5000:5000 --name registryOSX registry:2
+            # docker run --rm -d -p 5000:5000 --name registryOSX registry:2
 
-     - script: docker run hello-world
-       displayName: 'Run a Docker container'
 
-    # - task: Bash@3
-    #   inputs:
-    #     targetType: 'inline'
-    #     script: |
-    #       # Install and run docker daemon
-    #       brew install --cask docker virtualbox
-    #       brew install docker-machine
-    #       sudo mkdir /etc/vbox
-    #       sudo nano /etc/vbox/networks.conf
-    #       echo "* 10.0.0.0/8 192.168.0.0/16" > /etc/vbox/networks.conf
-    #       docker-machine create --driver virtualbox default
-    #       docker-machine restart
-    #       eval "$(docker-machine env default)"
-    #       docker run hello-world
 
     # - task: DownloadBuildArtifacts@0
     #   displayName: 'Download Artifacts'
     #   inputs:
     #     artifactName: FhirConverterBuild
     #     downloadPath: $(System.DefaultWorkingDirectory)
-    # - script: |
-    #     # docker run --rm -d -p 5000:5000 --name registryOSX registry:2
-    #     docker run -d -p 5000:5000 --restart=always --name registry registry:2
-    #     docker context ls
-    #   displayName: start registryOSX
+     - script: |
+         docker run -d -p 5000:5000 --restart=always --name registry registry:2
+         docker context ls
+       displayName: start registryOSX
     # # - script: |
     # #     chmod +x FhirConverterBuild/**/**/oras*
     # #     dotnet test FhirConverterBuild/**/*FunctionalTests.dll
