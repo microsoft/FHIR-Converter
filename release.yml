@@ -214,12 +214,13 @@ stages:
           # Install and run docker daemon
           # brew install docker-machine docker
           brew install --cask docker
-          $HOME/.docker/bin/docker --version
+          echo "export PATH=\"\$HOME/.docker/bin:\$PATH\"" >> ~/.zshrc
+          docker --version
           # docker-machine ls
           # docker-machine create default
           # docker-machine ls
           # eval "$(docker-machine env default)"
-          $HOME/.docker/bin/docker ps
+          docker ps
     # - task: DownloadBuildArtifacts@0
     #   displayName: 'Download Artifacts'
     #   inputs:
