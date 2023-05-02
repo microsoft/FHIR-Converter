@@ -168,8 +168,8 @@ stages:
 #         pathToPublish: '$(Build.ArtifactStagingDirectory)' 
 #         artifactName: 'FhirConverterBuild'
 
-# - stage: FunctionalTests
-#   jobs:
+- stage: FunctionalTests
+  jobs:
 #   - job: Windows_Functional_Test
 #     pool:
 #         vmImage: 'windows-latest'
