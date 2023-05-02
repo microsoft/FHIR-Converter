@@ -112,10 +112,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
                 var digest = GetImageDigest(output);
                 return digest.Value;
             }
-            catch
+            catch (Exception ex)
             {
-                _isOrasValid = false;
-                return null;
+                throw ex;
+                // _isOrasValid = false;
+                // return null;
             }
         }
 
