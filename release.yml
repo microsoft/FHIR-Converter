@@ -214,7 +214,8 @@ stages:
           # Install and run docker daemon
           # brew install docker-machine docker
           brew install --cask docker
-          echo "export PATH=\"\$HOME/.docker/bin:\$PATH\"" >> ~/.zshrc
+          open /Applications/Docker.app
+          # echo "export PATH=\"\$HOME/.docker/bin:\$PATH\"" >> ~/.zshrc
           docker --version
           # docker-machine ls
           # docker-machine create default
