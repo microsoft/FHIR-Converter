@@ -212,24 +212,12 @@ stages:
         targetType: 'inline'
         script: |
           # Install and run docker daemon
-          # brew install docker-machine docker
-          brew uninstall docker
-          brew install --cask docker
-          open /Applications/Docker.app
-          # echo PATH="$PATH:$HOME/.docker/bin"
-          # export PATH="$HOME/.docker/bin:$PATH"
-          ln -s /Applications/Docker.app/Contents/Resources/bin/docker /usr/local/bin/
-          docker --version
-          # docker context ls
-          # DOCKER_HOST=unix://$HOME/.docker/run/docker.sock docker ps
-          # sudo ln -s /Applications/Docker.app/Contents/Resources/run/docker.sock /var/run/docker.sock
-          # sudo ln -s $HOME/.docker/run/docker.sock /var/run/docker.sock
-          # sudo ln -s ~/Library/Containers/com.docker.docker/Data/docker.raw.sock /var/run/docker.sock
-          # DOCKER_HOST=unix:///var/run/docker.sock docker ps # test that it works using linked socket file
-          # docker-machine ls
-          # docker-machine create default
-          # docker-machine ls
-          # eval "$(docker-machine env default)"
+          brew install --cask docker virtualbox
+          brew install docker-machine
+          docker-machine create --driver virtualbox default
+          docker-machine restart
+          eval "$(docker-machine env default)"
+          docker run hello-world
 
     # - task: DownloadBuildArtifacts@0
     #   displayName: 'Download Artifacts'
