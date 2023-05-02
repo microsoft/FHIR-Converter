@@ -213,11 +213,11 @@ stages:
         script: |
           # Install and run docker daemon
           # brew install docker-machine docker
+          brew uninstall docker
           brew install --cask docker
           open /Applications/Docker.app
-          echo PATH
-          export PATH="$HOME/.docker/bin:$PATH"
-          echo PATH
+          #echo PATH="$PATH:$HOME/.docker/bin"
+          #export PATH="$HOME/.docker/bin:$PATH"
           docker --version
           # docker-machine ls
           # docker-machine create default
