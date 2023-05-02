@@ -221,7 +221,8 @@ stages:
           ln -s /Applications/Docker.app/Contents/Resources/bin/docker /usr/local/bin/
           docker --version
           # DOCKER_HOST=unix://$HOME/.docker/run/docker.sock docker ps
-          sudo ln -s $HOME/.docker/run/docker.sock /var/run/docker.sock
+          sudo ln -s /Applications/Docker.app/Contents/Resources/bin/docker/run/docker.sock /var/run/docker.sock
+          # sudo ln -s $HOME/.docker/run/docker.sock /var/run/docker.sock
           # sudo ln -s ~/Library/Containers/com.docker.docker/Data/docker.raw.sock /var/run/docker.sock
           DOCKER_HOST=unix:///var/run/docker.sock docker ps # test that it works using linked socket file
           # docker-machine ls
