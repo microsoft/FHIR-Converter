@@ -214,7 +214,7 @@ stages:
           # Install and run docker daemon
           # brew install docker-machine docker
           brew install --cask docker
-          # open /Applications/Docker.app
+          open /Applications/Docker.app
           echo PATH="$PATH:$HOME/.docker/bin"
           docker --version
           # docker-machine ls
