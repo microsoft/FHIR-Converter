@@ -220,6 +220,7 @@ stages:
           # export PATH="$HOME/.docker/bin:$PATH"
           ln -s /Applications/Docker.app/Contents/Resources/bin/docker /usr/local/bin/
           docker --version
+          docker context ls
           # DOCKER_HOST=unix://$HOME/.docker/run/docker.sock docker ps
           sudo ln -s /Applications/Docker.app/Contents/Resources/run/docker.sock /var/run/docker.sock
           # sudo ln -s $HOME/.docker/run/docker.sock /var/run/docker.sock
