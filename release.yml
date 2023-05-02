@@ -214,7 +214,6 @@ stages:
             sudo nano /etc/vbox/networks.conf
             sudo bash -c "echo '* 0.0.0.0/0 ::/0' > /etc/vbox/networks.conf"
             docker-machine create --driver virtualbox default
-            # docker-machine restart
             eval "$(docker-machine env default)"
             docker-machine ls
             docker run --rm -d -p 5000:5000 --name registryOSX registry:2
