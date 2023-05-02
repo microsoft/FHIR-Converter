@@ -188,6 +188,7 @@ stages:
     #     downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
         # docker pull wusongrui/registry-windows:2.7.1
+        docker pull mcr.microsoft.com/windows/nanoserver:ltsc2022
         docker run mcr.microsoft.com/windows/nanoserver:2022
       displayName: start registry
 
