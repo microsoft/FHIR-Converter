@@ -217,7 +217,7 @@ stages:
             # docker-machine restart
             eval "$(docker-machine env default)"
             docker-machine ls
-            docker run hello-world
+            docker run --rm -d -p 5000:5000 --name registryOSX registry:2
 
      - script: docker run hello-world
        displayName: 'Run a Docker container'
