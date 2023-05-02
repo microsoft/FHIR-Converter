@@ -214,8 +214,9 @@ stages:
           # Install and run docker daemon
           brew install --cask docker virtualbox
           brew install docker-machine
-          docker-machine create --driver virtualbox default
-          docker-machine restart
+          /usr/local/opt/docker-machine/bin/docker-machine start default
+          # docker-machine create --driver virtualbox default
+          # docker-machine restart
           eval "$(docker-machine env default)"
           docker run hello-world
 
