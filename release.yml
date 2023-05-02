@@ -215,7 +215,7 @@ stages:
             brew install docker-machine
             sudo mkdir /etc/vbox
             sudo nano /etc/vbox/networks.conf
-            echo "* 10.0.0.0/8 192.168.0.0/16" > /etc/vbox/networks.conf
+            echo "* 192.168.0.0/24" > /etc/vbox/networks.conf
             docker-machine create --driver virtualbox default
             docker-machine restart
             eval "$(docker-machine env default)"
