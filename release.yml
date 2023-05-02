@@ -213,12 +213,11 @@ stages:
         script: |
           # Install and run docker daemon
           # brew install docker-machine docker
-          # brew uninstall docker
+          brew uninstall docker
           brew install --cask docker
           open /Applications/Docker.app
           #echo PATH="$PATH:$HOME/.docker/bin"
-          # export PATH="$HOME/.docker/bin:$PATH"
-          ln -s /Applications/Docker.app/Contents/Resources/bin/docker /usr/local/bin/
+          export PATH="$HOME/.docker/bin:$PATH"
           docker --version
           /Applications/Docker.app/Contents/Resources/bin/docker --version
           # docker-machine ls
