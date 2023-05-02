@@ -206,11 +206,11 @@ stages:
        inputs:
          targetType: 'inline'
          script: |
-            brew install --cask docker virtualbox@6.1.26
+            brew install --cask docker virtualbox
             brew install docker-machine
-            # sudo mkdir /etc/vbox
-            # sudo nano /etc/vbox/networks.conf
-            # echo "* 192.168.0.0/24" > /etc/vbox/networks.conf
+            sudo mkdir /etc/vbox
+            sudo nano /etc/vbox/networks.conf
+            echo "* 0.0.0.0/0 ::/0" > /etc/vbox/networks.conf
             docker-machine create --driver virtualbox default
             docker-machine restart
             eval "$(docker-machine env default)"
