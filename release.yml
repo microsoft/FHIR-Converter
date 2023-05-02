@@ -220,8 +220,9 @@ stages:
           # export PATH="$HOME/.docker/bin:$PATH"
           ln -s /Applications/Docker.app/Contents/Resources/bin/docker /usr/local/bin/
           docker --version
-          sudo ln -s ~/Library/Containers/com.docker.docker/Data/docker.raw.sock /var/run/docker.sock
-          DOCKER_HOST=unix:///var/run/docker.sock docker ps # test that it works using linked socket file
+          DOCKER_HOST=unix:///Users/$(whoami)/Library/Containers/com.docker.docker/Data/docker.raw.sock docker ps
+          # sudo ln -s ~/Library/Containers/com.docker.docker/Data/docker.raw.sock /var/run/docker.sock
+          # DOCKER_HOST=unix:///var/run/docker.sock docker ps # test that it works using linked socket file
           # docker-machine ls
           # docker-machine create default
           # docker-machine ls
