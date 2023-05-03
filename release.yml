@@ -216,9 +216,9 @@ stages:
             docker-machine create --driver virtualbox default
             eval "$(docker-machine env default)"
             docker-machine ls
-            docker run --rm -d -p 5000:5000 --name registryOSX registry:2
-            chmod +x FhirConverterBuild/**/**/oras*
-            dotnet test FhirConverterBuild/**/*FunctionalTests.dll
+            # docker run --rm -d -p 5000:5000 --name registryOSX registry:2
+            # chmod +x FhirConverterBuild/**/**/oras*
+            # dotnet test FhirConverterBuild/**/*FunctionalTests.dll
 
     #  - task: Docker@2
     #    displayName: stop registryOSX
@@ -240,8 +240,11 @@ stages:
        
 
      - script: |
-        chmod +x FhirConverterBuild/**/**/oras*
-        dotnet test FhirConverterBuild/**/*FunctionalTests.dll
+          eval "$(docker-machine env default)"
+          docker-machine ls
+          docker run --rm -d -p 5000:5000 --name registryOSX registry:2
+          chmod +x FhirConverterBuild/**/**/oras*
+          dotnet test FhirConverterBuild/**/*FunctionalTests.dll
        displayName: Functional Tests
 
         #  - task: Docker@2
