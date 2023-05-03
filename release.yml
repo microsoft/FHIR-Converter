@@ -2,13 +2,8 @@ name: $(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
 - main
-- master
-- dotliquid
-- refs/heads/dotliquid
 pr:
-- dotliquid
 - main
-- templates/*
 
 variables:
   solution: '**/*.sln'
@@ -25,7 +20,7 @@ variables:
 stages:
 - stage: Build
   pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
   jobs:
   - job: Build
     steps:
@@ -177,7 +172,7 @@ stages:
   jobs:
   - job: Windows_Functional_Test
     pool:
-        vmImage: 'windows-2019'
+        vmImage: 'windows-latest'
     continueOnError: false
     steps:
     - checkout: none #skip checking out the default repository resource
@@ -202,6 +197,7 @@ stages:
         container: registry
   
   - job: OSX_Functional_Test
+    condition: false # temporarily disabled due to lack of functional Mac agent to support these tests.
     pool: CompassMacHosted
     continueOnError: false
     steps:
