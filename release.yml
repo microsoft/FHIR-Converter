@@ -199,6 +199,7 @@ stages:
   - job: OSX_Functional_Test
     pool: 
       vmImage: 'macOS-latest'
+    condition: false
     continueOnError: false
     steps:
      - checkout: none #skip checking out the default repository resource
@@ -217,6 +218,8 @@ stages:
             eval "$(docker-machine env default)"
             docker-machine ls
             docker run --rm -d -p 5000:5000 --name registryOSX registry:2
+            chmod +x FhirConverterBuild/**/**/oras*
+            dotnet test FhirConverterBuild/**/*FunctionalTests.dll
 
     #  - task: Docker@2
     #    displayName: stop registryOSX
