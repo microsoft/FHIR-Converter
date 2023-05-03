@@ -199,7 +199,6 @@ stages:
   - job: OSX_Functional_Test
     pool: 
       vmImage: 'macOS-latest'
-    condition: false
     continueOnError: false
     steps:
      - checkout: none #skip checking out the default repository resource
