@@ -63,12 +63,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         {
             var positiveTimeOutSettings = new ProcessorSettings
             {
-                TimeOut = 1,
+                TimeOut = 1, // expect operation to timeout after 1ms
             };
 
             var negativeTimeOutSettings = new ProcessorSettings
             {
-                TimeOut = -1,
+                TimeOut = -1, // expect operation to not timeout
             };
 
             yield return new object[]
