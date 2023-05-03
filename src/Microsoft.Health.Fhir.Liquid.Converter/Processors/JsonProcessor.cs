@@ -40,7 +40,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load data and templates
-            var cancellationTokenSource = new CancellationTokenSource(Settings.TimeOut);
+            var cancellationToken = Settings.TimeOut > 0 ? new CancellationTokenSource(Settings.TimeOut).Token : CancellationToken.None;
             var context = new JSchemaContext(
                 environments: new List<Hash> { Hash.FromDictionary(data) },
                 outerScope: new Hash(),
@@ -48,7 +48,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: Settings.MaxIterations,
                 formatProvider: CultureInfo.InvariantCulture,
-                cancellationToken: cancellationTokenSource.Token)
+                cancellationToken: cancellationToken)
             {
                 ValidateSchemas = new List<JsonSchema>(),
             };

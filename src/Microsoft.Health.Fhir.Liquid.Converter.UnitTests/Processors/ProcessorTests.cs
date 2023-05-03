@@ -200,7 +200,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             // Positive time out ProcessorSettings: exception thrown when time out
             var exception = Assert.Throws<RenderException>(() => positiveTimeOutProcessor.Convert(data, "TimeOutTemplate", templateProvider));
             Assert.Equal(FhirConverterErrorCode.TimeoutError, exception.FhirConverterErrorCode);
-            Assert.True(exception.InnerException is TimeoutException);
+            Assert.True(exception.InnerException is OperationCanceledException);
 
             // Negative time out ProcessorSettings: no time out
             result = negativeTimeOutProcessor.Convert(data, "TimeOutTemplate", templateProvider);

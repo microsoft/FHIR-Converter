@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load data and templates
-            var cancellationTokenSource = new CancellationTokenSource(Settings.TimeOut);
+            var cancellationToken = Settings.TimeOut > 0 ? new CancellationTokenSource(Settings.TimeOut).Token : CancellationToken.None;
             var context = new Context(
                 environments: new List<Hash> { Hash.FromDictionary(data) },
                 outerScope: new Hash(),
@@ -46,7 +46,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: Settings.MaxIterations,
                 formatProvider: CultureInfo.InvariantCulture,
-                cancellationToken: cancellationTokenSource.Token);
+                cancellationToken: cancellationToken);
 
             // Load filters
             context.AddFilters(typeof(Filters));
@@ -93,6 +93,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 return template.Render(RenderParameters.FromContext(context, CultureInfo.InvariantCulture));
             }
             catch (TimeoutException ex)
+            {
+                throw new RenderException(FhirConverterErrorCode.TimeoutError, Resources.TimeoutError, ex);
+            }
+            catch (OperationCanceledException ex)
             {
                 throw new RenderException(FhirConverterErrorCode.TimeoutError, Resources.TimeoutError, ex);
             }
