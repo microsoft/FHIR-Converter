@@ -63,12 +63,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         {
             var positiveTimeOutSettings = new ProcessorSettings
             {
-                TimeOut = 1,
+                TimeOut = 1, // expect operation to timeout after 1ms
             };
 
             var negativeTimeOutSettings = new ProcessorSettings
             {
-                TimeOut = -1,
+                TimeOut = -1, // expect operation to not timeout
             };
 
             yield return new object[]
@@ -185,29 +185,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         }
 
         [Theory]
-        [MemberData(nameof(GetValidInputsWithProcessSettings))]
-        public void GivenProcessorSettings_WhenConvert_CorrectResultsShouldBeReturned(
-            IFhirConverter defaultSettingProcessor,
-            IFhirConverter positiveTimeOutProcessor,
-            IFhirConverter negativeTimeOutProcessor,
-            ITemplateProvider templateProvider,
-            string data)
-        {
-            // Default ProcessorSettings: no time out
-            var result = defaultSettingProcessor.Convert(data, "TimeOutTemplate", templateProvider);
-            Assert.True(result.Length > 0);
-
-            // Positive time out ProcessorSettings: exception thrown when time out
-            var exception = Assert.Throws<RenderException>(() => positiveTimeOutProcessor.Convert(data, "TimeOutTemplate", templateProvider));
-            Assert.Equal(FhirConverterErrorCode.TimeoutError, exception.FhirConverterErrorCode);
-            Assert.True(exception.InnerException is TimeoutException);
-
-            // Negative time out ProcessorSettings: no time out
-            result = negativeTimeOutProcessor.Convert(data, "TimeOutTemplate", templateProvider);
-            Assert.True(result.Length > 0);
-        }
-
-        [Theory]
         [MemberData(nameof(GetValidInputsWithTemplateDirectory))]
         public void GivenCancellationToken_WhenConvert_CorrectResultsShouldBeReturned(IFhirConverter processor, ITemplateProvider templateProvider, string data, string rootTemplate)
         {
@@ -244,6 +221,29 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
 
             exception = Assert.Throws<RenderException>(() => processor.Convert(data, "NestingTooDeepDiffTemplate", templateProvider));
             Assert.Contains("Nesting too deep", exception.Message);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidInputsWithProcessSettings))]
+        public void GivenProcessorSettings_WhenConvert_CorrectResultsShouldBeReturned(
+            IFhirConverter defaultSettingProcessor,
+            IFhirConverter positiveTimeOutProcessor,
+            IFhirConverter negativeTimeOutProcessor,
+            ITemplateProvider templateProvider,
+            string data)
+        {
+            // Default ProcessorSettings: no time out
+            var result = defaultSettingProcessor.Convert(data, "TimeOutTemplate", templateProvider);
+            Assert.True(result.Length > 0);
+
+            // Positive time out ProcessorSettings: exception thrown when time out
+            var exception = Assert.Throws<RenderException>(() => positiveTimeOutProcessor.Convert(data, "TimeOutTemplate", templateProvider));
+            Assert.Equal(FhirConverterErrorCode.TimeoutError, exception.FhirConverterErrorCode);
+            Assert.True(exception.InnerException is OperationCanceledException);
+
+            // Negative time out ProcessorSettings: no time out
+            result = negativeTimeOutProcessor.Convert(data, "TimeOutTemplate", templateProvider);
+            Assert.True(result.Length > 0);
         }
 
         [Fact]

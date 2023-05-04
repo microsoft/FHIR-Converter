@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -44,13 +45,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
             var templateProvider = new TemplateProvider(templateCollection);
             var context = new Context(
-                new List<Hash>(),
-                new Hash(),
-                Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
-                ErrorsOutputMode.Rethrow,
-                0,
-                0,
-                CultureInfo.InvariantCulture);
+                environments: new List<Hash>(),
+                outerScope: new Hash(),
+                registers: Hash.FromDictionary(new Dictionary<string, object>() { { "file_system", templateProvider.GetTemplateFileSystem() } }),
+                errorsOutputMode: ErrorsOutputMode.Rethrow,
+                maxIterations: 0,
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: CancellationToken.None);
             var collection = new List<object> { 1, 2, 3 };
             Assert.Equal("1 ,2 ,3 ,", Filters.BatchRender(context, collection, "foo", "i"));
 

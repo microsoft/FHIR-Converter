@@ -5,6 +5,7 @@
 
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Extensions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -39,15 +40,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load data and templates
-            var timeout = Settings.TimeOut;
+            var cancellationToken = Settings.TimeOut > 0 ? new CancellationTokenSource(Settings.TimeOut).Token : CancellationToken.None;
             var context = new JSchemaContext(
                 environments: new List<Hash> { Hash.FromDictionary(data) },
                 outerScope: new Hash(),
                 registers: Hash.FromDictionary(new Dictionary<string, object> { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: Settings.MaxIterations,
-                timeout: timeout,
-                formatProvider: CultureInfo.InvariantCulture)
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: cancellationToken)
             {
                 ValidateSchemas = new List<JsonSchema>(),
             };

@@ -272,8 +272,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 "Medication",
                 "Immunization",
                 "Questionnaire",
-
             };
+
             return data.Select(item => new[]
             {
                 item,

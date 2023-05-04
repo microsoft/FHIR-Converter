@@ -136,7 +136,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
             templates = new Dictionary<string, string> { { "InvalidSchema.schema.json", string.Empty } };
             exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
 
-            templates = new Dictionary<string, string> { { "InvalidSchema.schema.json", null} };
+            templates = new Dictionary<string, string> { { "InvalidSchema.schema.json", null } };
             exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
         }
     }
