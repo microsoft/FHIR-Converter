@@ -12,6 +12,7 @@ using Azure.Storage.Blobs.Models;
 using DotLiquid;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
+using Microsoft.Health.Fhir.TemplateManagement.Models;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 {
@@ -21,14 +22,17 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
         private readonly IMemoryCache _templateCache;
 
+        private readonly TemplateCollectionConfiguration _templateCollectionConfiguration;
+
         private readonly string _blobTemplateCacheKey = "cached-blob-templates";
 
         private readonly int _segmentSize = 100;
 
-        public BlobTemplateProvider(BlobContainerClient blobContainerClient, IMemoryCache templateCache)
+        public BlobTemplateProvider(BlobContainerClient blobContainerClient, IMemoryCache templateCache, TemplateCollectionConfiguration templateConfiguration)
         {
             _blobContainerClient = blobContainerClient;
             _templateCache = templateCache;
+            _templateCollectionConfiguration = templateConfiguration;
         }
 
         public async Task<List<Dictionary<string, Template>>> GetTemplateCollectionAsync(CancellationToken cancellationToken = default)
@@ -39,28 +43,26 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
                 return (List<Dictionary<string, Template>>)templateCache;
             }
 
-            var templateLookup = new Dictionary<string, Template>();
-            var templateNames = await ListBlobsFlatListing(_blobContainerClient, _segmentSize);
+            var templateNames = await ListBlobsFlatListing(_blobContainerClient, _segmentSize, cancellationToken);
+
+            var templates = new Dictionary<string, string>();
 
             foreach (var templateName in templateNames)
             {
                 var template = await DownloadBlobToStringAsync(_blobContainerClient, templateName);
-                var renamedTemplate = TrimBlobName(templateName);
-                Template liquidTemplate = TemplateUtility.ParseTemplate(renamedTemplate, template);
-                templateLookup.Add(renamedTemplate, liquidTemplate);
+                templates.Add(templateName, template);
             }
 
-            var templates = new List<Dictionary<string, Template>>
-            {
-                templateLookup,
-            };
+            var parsedtemplates = TemplateUtility.ParseTemplates(templates);
 
-            _templateCache.Set(_blobTemplateCacheKey, templates);
+            var templateCollection = new List<Dictionary<string, Template>> { parsedtemplates };
 
-            return templates;
+            _templateCache.Set(_blobTemplateCacheKey, templateCollection, _templateCollectionConfiguration.ShortCacheTimeSpan);
+
+            return templateCollection;
         }
 
-        private static async Task<List<string>> ListBlobsFlatListing(BlobContainerClient blobContainerClient, int? segmentSize)
+        private static async Task<List<string>> ListBlobsFlatListing(BlobContainerClient blobContainerClient, int? segmentSize, CancellationToken ct)
         {
             var blobs = new List<string>();
 
@@ -83,17 +85,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             var blobClient = blobContainerClient.GetBlobClient(blobName);
             BlobDownloadResult downloadResult = await blobClient.DownloadContentAsync();
             return downloadResult.Content.ToString();
-        }
-
-        // TODO: eventually want to remove this and create a common utility for ACR and storage templates
-        private string TrimBlobName(string templateName)
-        {
-            return templateName
-                .Replace("Hl7v2/_", string.Empty)
-                .Replace("Hl7v2/", string.Empty)
-                .Replace(".liquid", string.Empty)
-                .Replace(".json", string.Empty)
-                .Replace("/_", "/");
         }
     }
 }

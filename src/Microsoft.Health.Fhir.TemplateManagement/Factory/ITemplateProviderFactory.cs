@@ -9,10 +9,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Factory
 {
     public interface ITemplateProviderFactory
     {
-        public IConvertDataTemplateProvider GetContainerRegistryTemplateProvider();
-
-        public IConvertDataTemplateProvider GetStorageContainerTemplateProvider();
-
-        public IConvertDataTemplateProvider GetDefaultTemplateProvider();
+        public IConvertDataTemplateProvider GetTemplateProvider();
     }
 }

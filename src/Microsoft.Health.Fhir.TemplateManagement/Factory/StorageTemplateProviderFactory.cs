@@ -3,10 +3,10 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
+using Microsoft.Health.Fhir.TemplateManagement.Models;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Factory
 {
@@ -16,33 +16,26 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Factory
 
         private IMemoryCache _memoryCache;
 
+        private TemplateCollectionConfiguration _templateCollectionConfiguration;
+
         private string _templateProviderCachePrefix = "storage-template-provider-";
 
-        public StorageTemplateProviderFactory(BlobContainerClient blobContainerClient, IMemoryCache memoryCache)
+        public StorageTemplateProviderFactory(BlobContainerClient blobContainerClient, IMemoryCache memoryCache, TemplateCollectionConfiguration templateCollectionConfiguration)
         {
-            _memoryCache = memoryCache;
             _blobContainerClient = blobContainerClient;
+            _memoryCache = memoryCache;
+            _templateCollectionConfiguration = templateCollectionConfiguration;
         }
 
-        public IConvertDataTemplateProvider GetContainerRegistryTemplateProvider()
+        public IConvertDataTemplateProvider GetTemplateProvider()
         {
-            throw new NotImplementedException();
-        }
-
-        public IConvertDataTemplateProvider GetDefaultTemplateProvider()
-        {
-            throw new NotImplementedException();
-        }
-
-        public IConvertDataTemplateProvider GetStorageContainerTemplateProvider()
-        {
-            if (_memoryCache.TryGetValue(_templateProviderCachePrefix + _blobContainerClient.Name, out var templateProviderCache) == true)
+            if (_memoryCache.TryGetValue(_templateProviderCachePrefix + _blobContainerClient.Name, out var templateProviderCache))
             {
                 return (IConvertDataTemplateProvider)templateProviderCache;
             }
 
-            var templateProvider = new BlobTemplateProvider(_blobContainerClient, _memoryCache);
-            _memoryCache.CreateEntry(_templateProviderCachePrefix + _blobContainerClient.Name).Value = new BlobTemplateProvider(_blobContainerClient, _memoryCache);
+            var templateProvider = new BlobTemplateProvider(_blobContainerClient, _memoryCache, _templateCollectionConfiguration);
+            _memoryCache.CreateEntry(_templateProviderCachePrefix + _blobContainerClient.Name).Value = templateProvider;
             return templateProvider;
         }
     }
