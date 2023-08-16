@@ -4,7 +4,9 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using DotLiquid;
@@ -12,28 +14,50 @@ using EnsureThat;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors;
+using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
+using Microsoft.Health.Logging.Telemetry;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public abstract class BaseProcessor : IFhirConverter
     {
-        protected BaseProcessor(ProcessorSettings processorSettings)
+        protected BaseProcessor(ProcessorSettings processorSettings, ITelemetryLogger telemetryLogger)
         {
             Settings = EnsureArg.IsNotNull(processorSettings, nameof(processorSettings));
+            TelemetryLogger = EnsureArg.IsNotNull(telemetryLogger, nameof(telemetryLogger));
         }
 
         public ProcessorSettings Settings { get; }
+
+        protected readonly ITelemetryLogger TelemetryLogger;
 
         protected virtual string DataKey { get; set; } = "msg";
 
         public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, CancellationToken cancellationToken, TraceInfo traceInfo = null)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return Convert(data, rootTemplate, templateProvider, traceInfo);
+            string result;
+            using (ITimed totalConversionTime = TelemetryLogger.TrackDuration(ConverterMetrics.TotalDuration))
+            {
+                result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
+            }
+
+            return result;
         }
 
-        public abstract string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
+        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        {
+            string result;
+            using (ITimed totalConversionTime = TelemetryLogger.TrackDuration(ConverterMetrics.TotalDuration))
+            {
+                result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
+            }
+
+            return result;
+        }
+
+        protected abstract string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
 
         protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
@@ -58,7 +82,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
         }
 
-        protected string Convert(object data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        protected string InternalConvertFromObject(object data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             if (string.IsNullOrEmpty(rootTemplate))
             {

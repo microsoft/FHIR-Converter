@@ -4,30 +4,35 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using EnsureThat;
 using Microsoft.Health.Common.Telemetry;
 using Microsoft.Health.Logging.Telemetry;
+using Xunit.Abstractions;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Telemetry
 {
-    /// <summary>
-    /// This is a simple logger to print out the telemetry in the console.
-    /// Note: this will not work for Xunit.
-    /// </summary>
-    public class ConsoleTelemetryLogger : ITelemetryLogger
+    public class XunitTelemetryLogger : ITelemetryLogger
     {
+        private readonly ITestOutputHelper _output;
+
+        public XunitTelemetryLogger(ITestOutputHelper outputHelper)
+        {
+            _output = EnsureArg.IsNotNull(outputHelper, nameof(outputHelper));
+        }
+
         public void LogError(Exception ex)
         {
-            Console.WriteLine($"Error: {ex.Message}");
+            _output.WriteLine($"Error: {ex.Message}");
         }
 
         public void LogMetric(Metric metric, double metricValue)
         {
-            Console.WriteLine($"Metric \"{metric.Name}\" Value: {metricValue}");
+            _output.WriteLine($"Metric \"{metric.Name}\" Value: {metricValue}");
         }
 
         public void LogTrace(string message)
         {
-            Console.WriteLine(message);
+            _output.WriteLine(message);
         }
     }
 }
