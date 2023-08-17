@@ -79,7 +79,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             var dictionary = new Dictionary<string, object> { { DataKey, data } };
             var context = CreateContext(templateProvider, dictionary);
             var rawResult = RenderTemplates(template, context);
-            var result = PostProcessor.Process(rawResult);
+            var result = PostProcessor.Process(rawResult, Settings);
             CreateTraceInfo(data, context, traceInfo);
 
             return result.ToString(Formatting.Indented);

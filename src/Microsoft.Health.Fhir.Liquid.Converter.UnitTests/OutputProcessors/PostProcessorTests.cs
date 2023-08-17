@@ -173,23 +173,35 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.OutputProcessors
         [MemberData(nameof(GetValidDataForParseJson))]
         public void GivenValidData_WhenParsing_ValidDataShouldBeParsed(string input, string expected)
         {
-            string result = PostProcessor.ParseJson(input).ToString(Formatting.None);
+            string result = PostProcessor.ParseJson(input, includeInputInException: false).ToString(Formatting.None);
             Assert.Equal(expected, result);
         }
 
         [Theory]
         [MemberData(nameof(GetInvalidDataForParseJson))]
-        public void GivenInvalidData_WhenParsing_ValidDataShouldBeParsed(string input)
+        public void GivenInvalidData_WhenParsing_JsonParsingExceptionShouldBeThrownWithoutMessageDetails(string input)
         {
-            var exception = Assert.Throws<PostprocessException>(() => PostProcessor.ParseJson(input));
+            var exception = Assert.Throws<PostprocessException>(() => PostProcessor.ParseJson(input, includeInputInException: false));
             Assert.Equal(FhirConverterErrorCode.JsonParsingError, exception.FhirConverterErrorCode);
+
+            Assert.DoesNotContain("message:", exception.Message);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInvalidDataForParseJson))]
+        public void GivenInvalidData_WhenParsingWithVerboseLoggingEnabled_JsonParsingExceptionShouldBeThrownWithMessageDetails(string input)
+        {
+            var exception = Assert.Throws<PostprocessException>(() => PostProcessor.ParseJson(input, includeInputInException: true));
+            Assert.Equal(FhirConverterErrorCode.JsonParsingError, exception.FhirConverterErrorCode);
+
+            Assert.Contains("message:", exception.Message);
         }
 
         [Theory]
         [MemberData(nameof(GetDataForMergeJson))]
         public void GivenTwoJObjects_WhenMerge_MergedJObjectShouldBeReturned(JObject obj, JObject expectedObject)
         {
-            var resultObject = PostProcessor.MergeJson(obj);
+            var resultObject = PostProcessor.MergeJson(obj, includeInputInException: false);
             var result = JsonConvert.SerializeObject(resultObject);
             var expected = JsonConvert.SerializeObject(expectedObject);
             Assert.True(string.Equals(result, expected, StringComparison.InvariantCultureIgnoreCase));

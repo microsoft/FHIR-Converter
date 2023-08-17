@@ -18,13 +18,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors
 {
     public static class PostProcessor
     {
-        public static JObject Process(string input)
+        public static JObject Process(string input, ProcessorSettings processorSettings)
         {
-            var jsonObject = ParseJson(input);
-            return MergeJson(jsonObject);
+            bool includeInputInException = processorSettings.IncludeInputInException;
+            var jsonObject = ParseJson(input, includeInputInException);
+            return MergeJson(jsonObject, includeInputInException);
         }
 
-        public static JObject ParseJson(string input)
+        public static JObject ParseJson(string input, bool includeInputInException)
         {
             var stream = new AntlrInputStream(input);
             var lexer = new jsonLexer(stream);
@@ -33,7 +34,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors
             var parser = new jsonParser(tokens, new StringWriter(new StringBuilder()), new StringWriter(errorBuilder));
             lexer.RemoveErrorListeners();
             parser.RemoveErrorListeners();
-            parser.AddErrorListener(new JsonParserErrorListener());
+            parser.AddErrorListener(new JsonParserErrorListener(includeInputInException));
             parser.BuildParseTree = true;
             var tree = parser.json();
             if (parser.NumberOfSyntaxErrors > 0)
@@ -48,7 +49,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors
             return JsonConvert.DeserializeObject<JObject>(result, new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
         }
 
-        public static JObject MergeJson(JObject obj)
+        public static JObject MergeJson(JObject obj, bool includeInputInException)
         {
             try
             {
@@ -77,7 +78,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors
             }
             catch (Exception ex)
             {
-                throw new PostprocessException(FhirConverterErrorCode.JsonMergingError, string.Format(Resources.JsonMergingError, ex.Message), ex);
+                if (includeInputInException)
+                {
+                    throw new PostprocessException(FhirConverterErrorCode.JsonMergingError, string.Format(Resources.JsonMergingError, ex.Message), ex);
+                }
+                else
+                {
+                    throw new PostprocessException(FhirConverterErrorCode.JsonMergingError, string.Format(Resources.JsonMergingError));
+                }
             }
 
             return obj;

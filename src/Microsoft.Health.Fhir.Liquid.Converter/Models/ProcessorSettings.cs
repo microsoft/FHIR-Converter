@@ -12,5 +12,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 
         // Max iterations for rendering templates.
         public int MaxIterations { get; set; } = 100000;
+
+        // Boolean that determines whether the input message payload is included in the exception details
+        public bool IncludeInputInException { get; set; } = false;
     }
 }

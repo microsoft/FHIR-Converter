@@ -10,9 +10,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors
 {
     public class JsonParserErrorListener : BaseErrorListener
     {
+        private bool _includeMessage = false;
+
+        public JsonParserErrorListener(bool includeMessage = false)
+        {
+            _includeMessage = includeMessage;
+        }
+
         public override void SyntaxError(TextWriter output, IRecognizer recognizer, IToken offendingSymbol, int line, int charPositionInLine, string msg, RecognitionException e)
         {
-            output.WriteLine("line " + line + ":" + charPositionInLine + " " + msg);
+            var syntaxError = "line " + line + ":" + charPositionInLine;
+
+            if (_includeMessage)
+            {
+                syntaxError = syntaxError + " message: " + msg;
+            }
+
+            output.WriteLine(syntaxError);
         }
     }
 }
