@@ -4,9 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 using DotLiquid;
@@ -16,7 +14,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors;
 using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
 using Microsoft.Health.Logging.Telemetry;
-using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
@@ -94,7 +92,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
             }
 
-            var template = templateProvider.GetTemplate(rootTemplate);
+            // Step: Retrieve Template
+            Template template;
+            using (ITimed templateRetrivalTime = TelemetryLogger.TrackDuration(ConverterMetrics.TemplateRetrivalDuration))
+            {
+               template = templateProvider.GetTemplate(rootTemplate);
+            }
+
             if (template == null)
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
@@ -102,11 +106,24 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
             var dictionary = new Dictionary<string, object> { { DataKey, data } };
             var context = CreateContext(templateProvider, dictionary);
-            var rawResult = RenderTemplates(template, context);
-            var result = PostProcessor.Process(rawResult);
+
+            // Step: Render Template
+            string rawResult;
+            using (ITimed templateRenderTime = TelemetryLogger.TrackDuration(ConverterMetrics.TemplateRenderDuration))
+            {
+                rawResult = RenderTemplates(template, context);
+            }
+
+            // Step: Post-Process
+            JObject result;
+            using (ITimed postProcessTime = TelemetryLogger.TrackDuration(ConverterMetrics.PostProcessDuration))
+            {
+                result = PostProcessor.Process(rawResult);
+            }
+
             CreateTraceInfo(data, context, traceInfo);
 
-            return result.ToString(Formatting.Indented);
+            return result.ToString();
         }
 
         protected string RenderTemplates(Template template, Context context)
