@@ -29,13 +29,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Factory
 
         public IConvertDataTemplateProvider GetTemplateProvider()
         {
-            if (_memoryCache.TryGetValue(_templateProviderCachePrefix + _blobContainerClient.Name, out var templateProviderCache))
+            var cacheKey = _templateProviderCachePrefix + _blobContainerClient.Name;
+            if (_memoryCache.TryGetValue(cacheKey, out var templateProviderCache))
             {
                 return (IConvertDataTemplateProvider)templateProviderCache;
             }
 
             var templateProvider = new BlobTemplateProvider(_blobContainerClient, _memoryCache, _templateCollectionConfiguration);
-            _memoryCache.CreateEntry(_templateProviderCachePrefix + _blobContainerClient.Name).Value = templateProvider;
+            _memoryCache.CreateEntry(cacheKey).Value = templateProvider;
             return templateProvider;
         }
     }

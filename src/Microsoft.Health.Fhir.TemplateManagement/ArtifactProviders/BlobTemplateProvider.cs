@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ using DotLiquid;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Polly;
+using Polly.Retry;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 {
@@ -28,19 +31,25 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
         private readonly int _segmentSize = 100;
 
+        private readonly AsyncRetryPolicy _downloadRetryPolicy;
+
+
         public BlobTemplateProvider(BlobContainerClient blobContainerClient, IMemoryCache templateCache, TemplateCollectionConfiguration templateConfiguration)
         {
             _blobContainerClient = blobContainerClient;
             _templateCache = templateCache;
             _templateCollectionConfiguration = templateConfiguration;
+            _downloadRetryPolicy = Policy
+                    .Handle<Exception>()
+                    .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromMilliseconds(10));
         }
 
         public async Task<List<Dictionary<string, Template>>> GetTemplateCollectionAsync(CancellationToken cancellationToken = default)
         {
             // read templates from cache if available
-            if (_templateCache.TryGetValue(_blobTemplateCacheKey, out var templateCache))
+            if (_templateCache.TryGetValue(_blobTemplateCacheKey, out List<Dictionary<string, Template>> templateCache))
             {
-                return (List<Dictionary<string, Template>>)templateCache;
+                return templateCache;
             }
 
             var templateNames = await ListBlobsFlatListing(_blobContainerClient, _segmentSize, cancellationToken);
@@ -49,7 +58,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
             foreach (var templateName in templateNames)
             {
-                var template = await DownloadBlobToStringAsync(_blobContainerClient, templateName);
+                var template = await DownloadBlobToStringAsync(_blobContainerClient, templateName, cancellationToken);
                 templates.Add(templateName, template);
             }
 
@@ -66,7 +75,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
         {
             var blobs = new List<string>();
 
-            var resultSegment = blobContainerClient.GetBlobsAsync()
+            var resultSegment = blobContainerClient.GetBlobsAsync(default, default, null, ct)
                 .AsPages(default, segmentSize);
 
             await foreach (Page<BlobItem> blobPage in resultSegment)
@@ -80,11 +89,20 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             return blobs;
         }
 
-        public static async Task<string> DownloadBlobToStringAsync(BlobContainerClient blobContainerClient, string blobName)
+        public async Task<string> DownloadBlobToStringAsync(BlobContainerClient blobContainerClient, string blobName, CancellationToken ct)
         {
             var blobClient = blobContainerClient.GetBlobClient(blobName);
-            BlobDownloadResult downloadResult = await blobClient.DownloadContentAsync();
-            return downloadResult.Content.ToString();
+
+            PolicyResult<Response<BlobDownloadResult>> policyResponse = await _downloadRetryPolicy.ExecuteAndCaptureAsync(async() => await blobClient.DownloadContentAsync(ct));
+
+            if (policyResponse.FinalException == null)
+            {
+                return policyResponse.Result.Value.Content.ToString();
+            }
+            else
+            {
+                throw policyResponse.FinalException;
+            }
         }
     }
 }
