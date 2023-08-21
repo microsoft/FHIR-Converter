@@ -20,15 +20,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public abstract class BaseProcessor : IFhirConverter
     {
+        private readonly ITelemetryLogger _telemetryLogger;
+
         protected BaseProcessor(ProcessorSettings processorSettings, ITelemetryLogger telemetryLogger)
         {
             Settings = EnsureArg.IsNotNull(processorSettings, nameof(processorSettings));
-            TelemetryLogger = EnsureArg.IsNotNull(telemetryLogger, nameof(telemetryLogger));
+            _telemetryLogger = EnsureArg.IsNotNull(telemetryLogger, nameof(telemetryLogger));
         }
 
         public ProcessorSettings Settings { get; }
 
-        protected readonly ITelemetryLogger TelemetryLogger;
+        protected ITelemetryLogger TelemetryLogger { get => _telemetryLogger; }
 
         protected virtual string DataKey { get; set; } = "msg";
 
