@@ -251,5 +251,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             result = negativeTimeOutProcessor.Convert(data, "TimeOutTemplate", templateProvider);
             Assert.True(result.Length > 0);
         }
+
+        [Fact]
+        public void GivenJObjectInput_WhenConvertWithJsonProcessor_CorrectResultShouldBeReturned()
+        {
+            var processor = new JsonProcessor(_processorSettings, _telemetryLogger);
+            var templateProvider = new TemplateProvider(TestConstants.JsonTemplateDirectory, DataType.Json);
+            var testData = JObject.Parse(_jsonTestData);
+            var result = processor.Convert(testData, "ExamplePatient", templateProvider);
+            Assert.True(JToken.DeepEquals(JObject.Parse(_jsonExpectData), JToken.Parse(result)));
+        }
     }
 }
