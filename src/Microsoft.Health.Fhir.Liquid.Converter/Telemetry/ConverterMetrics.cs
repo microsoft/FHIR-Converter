@@ -12,6 +12,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Telemetry
     {
         public static Metric TotalDuration { get => new Metric(nameof(TotalDuration), new Dictionary<string, object> { }); }
 
+        public static Metric InputDeserializationDuration { get => new Metric(nameof(InputDeserializationDuration), new Dictionary<string, object> { }); }
+
         public static Metric TemplateRetrivalDuration { get => new Metric(nameof(TemplateRetrivalDuration), new Dictionary<string, object> { }); }
 
         public static Metric TemplateRenderDuration { get => new Metric(nameof(TemplateRenderDuration), new Dictionary<string, object> { }); }

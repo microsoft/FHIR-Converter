@@ -9,6 +9,7 @@ using System.Linq;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
+using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
 using Microsoft.Health.Logging.Telemetry;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
@@ -24,7 +25,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
-            var ccdaData = _parser.Parse(data);
+            object ccdaData;
+            using (ITimed templateRetrivalTime = TelemetryLogger.TrackDuration(ConverterMetrics.InputDeserializationDuration))
+            {
+                ccdaData = _parser.Parse(data);
+            }
+
             return InternalConvertFromObject(ccdaData, rootTemplate, templateProvider, traceInfo);
         }
 
