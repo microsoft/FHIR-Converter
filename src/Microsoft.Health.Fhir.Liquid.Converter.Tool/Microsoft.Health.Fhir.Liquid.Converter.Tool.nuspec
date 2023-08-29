@@ -9,10 +9,10 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Package Description</description>
     <contentFiles>
-      <files include="any/netcoreapp3.1/**/*.*" buildAction="Content" copyToOutput="true" />
+      <files include="any/net7.0/**/*.*" buildAction="Content" copyToOutput="true" />
     </contentFiles>
   </metadata>
   <files>
-    <file src="..\..\bin\publish\**" target="contentFiles\any\netcoreapp3.1" />
+    <file src="..\..\bin\publish\**" target="contentFiles\any\net7.0" />
   </files>
 </package>
