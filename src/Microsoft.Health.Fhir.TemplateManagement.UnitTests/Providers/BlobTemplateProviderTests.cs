@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Azure;
 using Azure.Storage.Blobs;
@@ -19,6 +20,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
     public class BlobTemplateProviderTests
     {
         [Fact]
+
         public async Task GivenBlobTemplateProvider_WhenGetTemplateCollectionFromTemplateProvider_ThenTemplatesAreReturned()
         {
             var templateConfiguration = new TemplateCollectionConfiguration();
@@ -61,7 +63,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             var mockResponse = new Mock<Response>();
 
             mock
-                .Setup(x => x.DownloadContentAsync())
+                .Setup(x => x.DownloadContentAsync(It.IsAny<CancellationToken>()))
                 .Returns(
                     Task.FromResult(
                         Response.FromValue(
