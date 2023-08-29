@@ -33,7 +33,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
         private readonly AsyncRetryPolicy _downloadRetryPolicy;
 
-
         public BlobTemplateProvider(BlobContainerClient blobContainerClient, IMemoryCache templateCache, TemplateCollectionConfiguration templateConfiguration)
         {
             _blobContainerClient = blobContainerClient;
@@ -93,7 +92,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
         {
             var blobClient = blobContainerClient.GetBlobClient(blobName);
 
-            PolicyResult<Response<BlobDownloadResult>> policyResponse = await _downloadRetryPolicy.ExecuteAndCaptureAsync(async() => await blobClient.DownloadContentAsync(ct));
+            PolicyResult<Response<BlobDownloadResult>> policyResponse = await _downloadRetryPolicy.ExecuteAndCaptureAsync(async () => await blobClient.DownloadContentAsync(ct));
 
             if (policyResponse.FinalException == null)
             {
