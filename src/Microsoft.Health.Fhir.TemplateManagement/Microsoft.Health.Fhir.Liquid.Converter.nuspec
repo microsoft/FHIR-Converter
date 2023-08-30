@@ -9,7 +9,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Package Description</description>
     <dependencies>
-      <group targetFramework="net7.0">
+      <group targetFramework="net6.0">
         <dependency id="Antlr4.Runtime.Standard" version="4.8.0" exclude="Build,Analyzers" />
         <dependency id="DotLiquid" version="2.2.580" exclude="Build,Analyzers" />
         <dependency id="Ensure.That" version="9.2.0" exclude="Build,Analyzers" />
@@ -29,7 +29,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\net7.0\Microsoft.Health.Fhir.Liquid.Converter.dll" target="lib\net7.0" />
-    <file src="bin\Release\net7.0\Microsoft.Health.Fhir.TemplateManagement.dll" target="lib\net7.0" />
+    <file src="bin\Release\net6.0\Microsoft.Health.Fhir.Liquid.Converter.dll" target="lib\net6.0" />
+    <file src="bin\Release\net6.0\Microsoft.Health.Fhir.TemplateManagement.dll" target="lib\net6.0" />
   </files>
 </package>
