@@ -1,5 +1,18 @@
 <Project>
 
+  <!--Product related property configurations-->
+  <PropertyGroup>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
+    <Authors>Microsoft Health Team</Authors>
+    <Company>Microsoft Corporation</Company>
+    <Copyright>Copyright © Microsoft Corporation. All rights reserved.</Copyright>
+    <Deterministic>true</Deterministic>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Product>Microsoft Health</Product>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <RepoRootPath>$(MSBuildThisFileDirectory)</RepoRootPath>
+  </PropertyGroup>
+
   <PropertyGroup>
     <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\CustomAnalysisRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -10,6 +23,10 @@
 
   <ItemGroup>
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118" PrivateAssets="All" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(RepoRootPath)NOTICE" Pack="true" PackagePath="" Visible="false" Condition=" Exists('$(RepoRootPath)NOTICE') " />
   </ItemGroup>
 
 </Project>
