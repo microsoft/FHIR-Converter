@@ -67,6 +67,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         public TemplateCollectionFunctionalTests(ITestOutputHelper outputHelper)
         {
+            _telemetryLogger = new XunitTelemetryLogger(outputHelper);
+
             _containerRegistryInfo = _containerRegistry.GetTestContainerRegistryInfo();
             if (_containerRegistryInfo == null)
             {
@@ -85,8 +87,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             {
                 Environment.SetEnvironmentVariable(_orasCacheEnvironmentVariableName, _defaultOrasCacheEnvironmentVariable);
             }
-
-            _telemetryLogger = new XunitTelemetryLogger(outputHelper);
         }
 
         public async Task InitializeAsync()
