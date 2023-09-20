@@ -96,7 +96,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
             // Step: Retrieve Template
             Template template;
-            using (ITimed templateRetrivalTime = TelemetryLogger.TrackDuration(ConverterMetrics.TemplateRetrivalDuration))
+            using (ITimed templateRetrievalTime = TelemetryLogger.TrackDuration(ConverterMetrics.TemplateRetrievalDuration))
             {
                template = templateProvider.GetTemplate(rootTemplate);
             }

@@ -26,7 +26,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             object ccdaData;
-            using (ITimed templateRetrivalTime = TelemetryLogger.TrackDuration(ConverterMetrics.InputDeserializationDuration))
+            using (ITimed inputDeserializationTime = TelemetryLogger.TrackDuration(ConverterMetrics.InputDeserializationDuration))
             {
                 ccdaData = _parser.Parse(data);
             }

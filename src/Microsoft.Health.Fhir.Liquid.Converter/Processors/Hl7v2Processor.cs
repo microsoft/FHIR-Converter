@@ -28,7 +28,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             object hl7v2Data;
-            using (ITimed templateRetrivalTime = TelemetryLogger.TrackDuration(ConverterMetrics.InputDeserializationDuration))
+            using (ITimed inputDeserializationTime = TelemetryLogger.TrackDuration(ConverterMetrics.InputDeserializationDuration))
             {
                 hl7v2Data = _parser.Parse(data);
             }

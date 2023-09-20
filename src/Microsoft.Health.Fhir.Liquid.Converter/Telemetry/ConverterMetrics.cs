@@ -10,14 +10,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Telemetry
 {
     public sealed class ConverterMetrics
     {
-        public static Metric TotalDuration { get => new Metric(nameof(TotalDuration), new Dictionary<string, object> { }); }
+        public static Metric TotalDuration { get => new Metric(nameof(TotalDuration), dimensions: new Dictionary<string, object> { }); }
 
-        public static Metric InputDeserializationDuration { get => new Metric(nameof(InputDeserializationDuration), new Dictionary<string, object> { }); }
+        public static Metric InputDeserializationDuration { get => new Metric(nameof(InputDeserializationDuration), dimensions: new Dictionary<string, object> { }); }
 
-        public static Metric TemplateRetrivalDuration { get => new Metric(nameof(TemplateRetrivalDuration), new Dictionary<string, object> { }); }
+        public static Metric TemplateRetrievalDuration { get => new Metric(nameof(TemplateRetrievalDuration), dimensions: new Dictionary<string, object> { }); }
 
-        public static Metric TemplateRenderDuration { get => new Metric(nameof(TemplateRenderDuration), new Dictionary<string, object> { }); }
+        public static Metric TemplateRenderDuration { get => new Metric(nameof(TemplateRenderDuration), dimensions: new Dictionary<string, object> { }); }
 
-        public static Metric PostProcessDuration { get => new Metric(nameof(PostProcessDuration), new Dictionary<string, object> { }); }
+        public static Metric PostProcessDuration { get => new Metric(nameof(PostProcessDuration), dimensions: new Dictionary<string, object> { }); }
     }
 }

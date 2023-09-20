@@ -30,7 +30,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             object jsonData;
-            using (ITimed templateRetrivalTime = TelemetryLogger.TrackDuration(ConverterMetrics.InputDeserializationDuration))
+            using (ITimed inputDeserializationTime = TelemetryLogger.TrackDuration(ConverterMetrics.InputDeserializationDuration))
             {
                 jsonData = _parser.Parse(data);
             }
