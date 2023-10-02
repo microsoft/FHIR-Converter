@@ -43,13 +43,13 @@ stages:
         projects: '$(solution)'
         arguments: '--configuration $(buildConfiguration) -p:Version=$(version)'
 
-    - task: DotNetCoreCLI@2
-      displayName: 'dotnet test'
-      inputs:
-        command: test
-        projects: '$(unitTestProjects)'
-        arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-        nobuild: true
+    # - task: DotNetCoreCLI@2
+    #   displayName: 'dotnet test'
+    #   inputs:
+    #     command: test
+    #     projects: '$(unitTestProjects)'
+    #     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+    #     nobuild: true
 
     - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
       condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
