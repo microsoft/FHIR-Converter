@@ -30,10 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="$(RepoRootPath)\data\Templates\**">
-      <Pack>true</Pack>
-      <PackagePath>content</PackagePath>
-    </None>
+    <None Include="$(MSBuildThisFileDirectory)\data\Templates\**" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
