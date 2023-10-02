@@ -30,9 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="data\Templates\**\*.*">
+    <None Update="data\Templates\**">
       <Pack>true</Pack>
-      <PackagePath>data\Templates</PackagePath>
+      <PackagePath>content</PackagePath>
     </None>
   </ItemGroup>
 
