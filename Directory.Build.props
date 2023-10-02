@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="data\Templates\**\*.*">
+    <None Update="$(RepoRootPath)\data\Templates\**">
       <Pack>true</Pack>
       <PackagePath>content</PackagePath>
     </None>
