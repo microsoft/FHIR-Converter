@@ -29,4 +29,11 @@
     <None Include="$(RepoRootPath)NOTICE" Pack="true" PackagePath="" Visible="false" Condition=" Exists('$(RepoRootPath)NOTICE') " />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="data\Templates\**">
+      <Pack>true</Pack>
+      <PackagePath>data\Templates</PackagePath>
+    </None>
+  </ItemGroup>
+
 </Project>
