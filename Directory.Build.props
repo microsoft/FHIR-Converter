@@ -29,8 +29,4 @@
     <None Include="$(RepoRootPath)NOTICE" Pack="true" PackagePath="" Visible="false" Condition=" Exists('$(RepoRootPath)NOTICE') " />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="$(MSBuildStartupDirectory)\data\Templates\**\*.*" Pack="true" PackagePath="" />
-  </ItemGroup>
-
 </Project>
