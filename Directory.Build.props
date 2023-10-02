@@ -30,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="$(MSBuildThisFileDirectory)\data\Templates\**" Pack="true" PackagePath="" />
+    <None Include="$(Build.SourcesDirectory)\data\Templates\**" Pack="true" PackagePath="" />
   </ItemGroup>
 
 </Project>
