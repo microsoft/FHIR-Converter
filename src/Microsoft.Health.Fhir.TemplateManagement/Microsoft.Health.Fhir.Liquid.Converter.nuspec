@@ -26,10 +26,10 @@
         <dependency id="System.Runtime" version="4.3.1" exclude="Build,Analyzers" />
         <dependency id="System.Runtime.Caching" version="4.7.0" exclude="Build,Analyzers" />
       </group>
-      <contentFiles>
-        <files include="data/Templates/**/*.*" buildAction="Content" copyToOutput="true" />
-      </contentFiles>
     </dependencies>
+    <contentFiles>
+      <files include="data/Templates/**/*.*" buildAction="Content" copyToOutput="true" />
+    </contentFiles>
   </metadata>
   <files>
     <file src="bin\Release\net6.0\Microsoft.Health.Fhir.Liquid.Converter.dll" target="lib\net6.0" />
