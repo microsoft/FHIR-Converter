@@ -15,7 +15,7 @@ variables:
   minor: 1
   patch: 0
   buildnum: $[counter(format('{0}.{1}.{2}',variables['major'],variables['minor'], variables['patch']), 1)]
-  version: $(major).$(minor).$(patch).$(buildnum)
+  version: $(major).$(minor).$(patch).$(buildnum)-prtest
 
 stages:
 - stage: Build
@@ -69,15 +69,15 @@ stages:
     #     artifactName: 'NOTICE.txt'
     #     downloadPath: '$(Build.SourcesDirectory)/bin/notice'
 
-    # - task: DotNetCoreCLI@2
-    #   displayName: 'publish bin'
-    #   inputs:
-    #     command: 'publish'
-    #     projects: '$(publishProject)'
-    #     arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/publish'
-    #     nobuild: true
-    #     publishWebProjects: false
-    #     zipAfterPublish: false
+    - task: DotNetCoreCLI@2
+      displayName: 'publish bin'
+      inputs:
+        command: 'publish'
+        projects: '$(publishProject)'
+        arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/publish'
+        nobuild: true
+        publishWebProjects: false
+        zipAfterPublish: false
 
     # - task: DotNetCoreCLI@2
     #   displayName: 'publish github release bin'
