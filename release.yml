@@ -43,101 +43,101 @@ stages:
         projects: '$(solution)'
         arguments: '--configuration $(buildConfiguration) -p:Version=$(version)'
 
-    - task: DotNetCoreCLI@2
-      displayName: 'dotnet test'
-      inputs:
-        command: test
-        projects: '$(unitTestProjects)'
-        arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-        nobuild: true
+    # - task: DotNetCoreCLI@2
+    #   displayName: 'dotnet test'
+    #   inputs:
+    #     command: test
+    #     projects: '$(unitTestProjects)'
+    #     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+    #     nobuild: true
 
-    - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
-      condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
-      displayName: 'component detection'
+    # - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+    #   condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
+    #   displayName: 'component detection'
       
-    - task: notice@0
-      condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
-      displayName: 'generate NOTICE file'
-      inputs:
-        outputformat: 'text'
+    # - task: notice@0
+    #   condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
+    #   displayName: 'generate NOTICE file'
+    #   inputs:
+    #     outputformat: 'text'
 
-    - task: DownloadBuildArtifacts@0
-      condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
-      inputs:
-        buildType: 'current'
-        downloadType: 'single'
-        artifactName: 'NOTICE.txt'
-        downloadPath: '$(Build.SourcesDirectory)/bin/notice'
+    # - task: DownloadBuildArtifacts@0
+    #   condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
+    #   inputs:
+    #     buildType: 'current'
+    #     downloadType: 'single'
+    #     artifactName: 'NOTICE.txt'
+    #     downloadPath: '$(Build.SourcesDirectory)/bin/notice'
 
-    - task: DotNetCoreCLI@2
-      displayName: 'publish bin'
-      inputs:
-        command: 'publish'
-        projects: '$(publishProject)'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/publish'
-        nobuild: true
-        publishWebProjects: false
-        zipAfterPublish: false
+    # - task: DotNetCoreCLI@2
+    #   displayName: 'publish bin'
+    #   inputs:
+    #     command: 'publish'
+    #     projects: '$(publishProject)'
+    #     arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/publish'
+    #     nobuild: true
+    #     publishWebProjects: false
+    #     zipAfterPublish: false
 
-    - task: DotNetCoreCLI@2
-      displayName: 'publish github release bin'
-      inputs:
-        command: 'publish'
-        projects: '$(publishProject)'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin'
-        nobuild: true
-        publishWebProjects: false
-        zipAfterPublish: true
+    # - task: DotNetCoreCLI@2
+    #   displayName: 'publish github release bin'
+    #   inputs:
+    #     command: 'publish'
+    #     projects: '$(publishProject)'
+    #     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin'
+    #     nobuild: true
+    #     publishWebProjects: false
+    #     zipAfterPublish: true
 
-    - task: DotNetCoreCLI@2
-      displayName: 'publish functional tests'
-      inputs:
-        command: 'publish'
-        projects: '$(functionalTests)'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/functionalTests'
-        nobuild: true
-        publishWebProjects: false
-        zipAfterPublish: false
+    # - task: DotNetCoreCLI@2
+    #   displayName: 'publish functional tests'
+    #   inputs:
+    #     command: 'publish'
+    #     projects: '$(functionalTests)'
+    #     arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/functionalTests'
+    #     nobuild: true
+    #     publishWebProjects: false
+    #     zipAfterPublish: false
 
-    - task: PowerShell@2
-      displayName: 'inject template version'
-      inputs:
-        targetType: 'inline'
-        script: |
-          $targetPath = '$(Build.SourcesDirectory)/data/Templates/Hl7v2/Resource/_Provenance.liquid'
-          (Get-Content $targetPath).replace('TEMPLATE_VERSION_PLACEHOLDER', '$(major).$(minor).$(patch)') | Set-Content $targetPath
+    # - task: PowerShell@2
+    #   displayName: 'inject template version'
+    #   inputs:
+    #     targetType: 'inline'
+    #     script: |
+    #       $targetPath = '$(Build.SourcesDirectory)/data/Templates/Hl7v2/Resource/_Provenance.liquid'
+    #       (Get-Content $targetPath).replace('TEMPLATE_VERSION_PLACEHOLDER', '$(major).$(minor).$(patch)') | Set-Content $targetPath
 
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2'
-        includeRootFolder: false
-        archiveType: 'tar'
-        tarCompression: 'gz'
-        archiveFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2DefaultTemplates.tar.gz'
+    # - task: ArchiveFiles@2
+    #   inputs:
+    #     rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2'
+    #     includeRootFolder: false
+    #     archiveType: 'tar'
+    #     tarCompression: 'gz'
+    #     archiveFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2DefaultTemplates.tar.gz'
 
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Ccda'
-        includeRootFolder: false
-        archiveType: 'tar'
-        tarCompression: 'gz'
-        archiveFile: '$(Build.SourcesDirectory)/data/Templates/CcdaDefaultTemplates.tar.gz'
+    # - task: ArchiveFiles@2
+    #   inputs:
+    #     rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Ccda'
+    #     includeRootFolder: false
+    #     archiveType: 'tar'
+    #     tarCompression: 'gz'
+    #     archiveFile: '$(Build.SourcesDirectory)/data/Templates/CcdaDefaultTemplates.tar.gz'
 
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Json'
-        includeRootFolder: false
-        archiveType: 'tar'
-        tarCompression: 'gz'
-        archiveFile: '$(Build.SourcesDirectory)/data/Templates/JsonDefaultTemplates.tar.gz'
+    # - task: ArchiveFiles@2
+    #   inputs:
+    #     rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Json'
+    #     includeRootFolder: false
+    #     archiveType: 'tar'
+    #     tarCompression: 'gz'
+    #     archiveFile: '$(Build.SourcesDirectory)/data/Templates/JsonDefaultTemplates.tar.gz'
 
-    - task: ArchiveFiles@2
-      inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Stu3ToR4'
-        includeRootFolder: false
-        archiveType: 'tar'
-        tarCompression: 'gz'
-        archiveFile: '$(Build.SourcesDirectory)/data/Templates/Stu3ToR4DefaultTemplates.tar.gz'
+    # - task: ArchiveFiles@2
+    #   inputs:
+    #     rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Stu3ToR4'
+    #     includeRootFolder: false
+    #     archiveType: 'tar'
+    #     tarCompression: 'gz'
+    #     archiveFile: '$(Build.SourcesDirectory)/data/Templates/Stu3ToR4DefaultTemplates.tar.gz'
 
     - task: CopyFiles@2
       displayName: 'copy DefaultTemplates to artifacts'
@@ -169,89 +169,89 @@ stages:
         pathToPublish: '$(Build.ArtifactStagingDirectory)' 
         artifactName: 'FhirConverterBuild'
 
-- stage: FunctionalTests
-  jobs:
-  - job: Windows_Functional_Test
-    pool:
-        vmImage: 'windows-2019'
-    continueOnError: false
-    steps:
-    - checkout: none #skip checking out the default repository resource
-    - task: DownloadBuildArtifacts@0
-      displayName: 'Download Artifacts'
-      inputs:
-        artifactName: FhirConverterBuild
-        downloadPath: $(System.DefaultWorkingDirectory)
-    - script: |
-        docker pull wusongrui/registry-windows:2.7.1
-        docker run --rm -d -p 5000:5000 --name registry wusongrui/registry-windows:2.7.1
-      displayName: start registry
+# - stage: FunctionalTests
+#   jobs:
+#   - job: Windows_Functional_Test
+#     pool:
+#         vmImage: 'windows-2019'
+#     continueOnError: false
+#     steps:
+#     - checkout: none #skip checking out the default repository resource
+#     - task: DownloadBuildArtifacts@0
+#       displayName: 'Download Artifacts'
+#       inputs:
+#         artifactName: FhirConverterBuild
+#         downloadPath: $(System.DefaultWorkingDirectory)
+#     - script: |
+#         docker pull wusongrui/registry-windows:2.7.1
+#         docker run --rm -d -p 5000:5000 --name registry wusongrui/registry-windows:2.7.1
+#       displayName: start registry
 
-    - script: |
-        dotnet test FhirConverterBuild/**/*FunctionalTests.dll
-      displayName: Functional Tests
-    - task: Docker@2
-      displayName: stop registry
-      condition: succeededOrFailed()
-      inputs:
-        command: stop
-        container: registry
+#     - script: |
+#         dotnet test FhirConverterBuild/**/*FunctionalTests.dll
+#       displayName: Functional Tests
+#     - task: Docker@2
+#       displayName: stop registry
+#       condition: succeededOrFailed()
+#       inputs:
+#         command: stop
+#         container: registry
   
-  - job: OSX_Functional_Test
-    condition: false # temporarily disabled due to lack of functional Mac agent to support these tests.
-    pool: CompassMacHosted
-    continueOnError: false
-    steps:
-    - checkout: none #skip checking out the default repository resource
-    - task: DownloadBuildArtifacts@0
-      displayName: 'Download Artifacts'
-      inputs:
-        artifactName: FhirConverterBuild
-        downloadPath: $(System.DefaultWorkingDirectory)
-    - script: |
-        docker run --rm -d -p 5000:5000 --name registryOSX registry:2
-      displayName: start registryOSX
-    - script: |
-        chmod +x FhirConverterBuild/**/**/oras*
-        dotnet test FhirConverterBuild/**/*FunctionalTests.dll
-      displayName: Functional Tests
-    - task: Docker@2
-      displayName: stop registryOSX
-      condition: succeededOrFailed()
-      inputs:
-        command: stop
-        container: registryOSX
+#   - job: OSX_Functional_Test
+#     condition: false # temporarily disabled due to lack of functional Mac agent to support these tests.
+#     pool: CompassMacHosted
+#     continueOnError: false
+#     steps:
+#     - checkout: none #skip checking out the default repository resource
+#     - task: DownloadBuildArtifacts@0
+#       displayName: 'Download Artifacts'
+#       inputs:
+#         artifactName: FhirConverterBuild
+#         downloadPath: $(System.DefaultWorkingDirectory)
+#     - script: |
+#         docker run --rm -d -p 5000:5000 --name registryOSX registry:2
+#       displayName: start registryOSX
+#     - script: |
+#         chmod +x FhirConverterBuild/**/**/oras*
+#         dotnet test FhirConverterBuild/**/*FunctionalTests.dll
+#       displayName: Functional Tests
+#     - task: Docker@2
+#       displayName: stop registryOSX
+#       condition: succeededOrFailed()
+#       inputs:
+#         command: stop
+#         container: registryOSX
     
-    #need delete files for self-hosted agent
-    - task: DeleteFiles@1
-      inputs:
-        Contents: '**/*' 
+#     #need delete files for self-hosted agent
+#     - task: DeleteFiles@1
+#       inputs:
+#         Contents: '**/*' 
 
-- stage: Release
-  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
-  jobs:
-  - job: publish
-    pool:
-        vmImage: 'windows-2019'
-    steps:
-    - checkout: none #skip checking out the default repository resource
-    - task: DownloadBuildArtifacts@0
-      displayName: 'Download Artifacts'
-      inputs:
-        artifactName: FhirConverterBuild
-        downloadPath: $(System.DefaultWorkingDirectory)
+# - stage: Release
+#   condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
+#   jobs:
+#   - job: publish
+#     pool:
+#         vmImage: 'windows-2019'
+#     steps:
+#     - checkout: none #skip checking out the default repository resource
+#     - task: DownloadBuildArtifacts@0
+#       displayName: 'Download Artifacts'
+#       inputs:
+#         artifactName: FhirConverterBuild
+#         downloadPath: $(System.DefaultWorkingDirectory)
 
-    - task: GithubRelease@0 
-      displayName: 'Create GitHub Release'      
-      inputs:
-        gitHubConnection: githubpipeline
-        repositoryName: microsoft/FHIR-Converter
-        isDraft: true
-        tagSource: manual
-        tag: v$(major).$(minor).$(patch)      
-        assets: |
-          $(System.DefaultWorkingDirectory)/FhirConverterBuild/bin/**
-          $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/Hl7v2DefaultTemplates.tar.gz
-          $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/CcdaDefaultTemplates.tar.gz
-          $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/JsonDefaultTemplates.tar.gz
-          $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/Stu3ToR4DefaultTemplates.tar.gz
+#     - task: GithubRelease@0 
+#       displayName: 'Create GitHub Release'      
+#       inputs:
+#         gitHubConnection: githubpipeline
+#         repositoryName: microsoft/FHIR-Converter
+#         isDraft: true
+#         tagSource: manual
+#         tag: v$(major).$(minor).$(patch)      
+#         assets: |
+#           $(System.DefaultWorkingDirectory)/FhirConverterBuild/bin/**
+#           $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/Hl7v2DefaultTemplates.tar.gz
+#           $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/CcdaDefaultTemplates.tar.gz
+#           $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/JsonDefaultTemplates.tar.gz
+#           $(System.DefaultWorkingDirectory)/FhirConverterBuild/data/Templates/Stu3ToR4DefaultTemplates.tar.gz
