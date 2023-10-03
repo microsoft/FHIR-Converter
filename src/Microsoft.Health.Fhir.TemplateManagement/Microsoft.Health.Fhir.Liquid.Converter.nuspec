@@ -28,12 +28,12 @@
       </group>
     </dependencies>
     <contentFiles>
-      <files include="lib/net6.0/data/Templates/**/*.*" buildAction="Content" copyToOutput="true" />
+      <files include="data/Templates/**/*.*" buildAction="Content" copyToOutput="true" />
     </contentFiles>
   </metadata>
   <files>
     <file src="bin\Release\net6.0\Microsoft.Health.Fhir.Liquid.Converter.dll" target="lib\net6.0" />
     <file src="bin\Release\net6.0\Microsoft.Health.Fhir.TemplateManagement.dll" target="lib\net6.0" />
-    <file src="..\..\data\Templates\**" target="lib\net6.0\data\Templates" />
+    <file src="..\..\data\Templates\**" target="contentFiles\data\Templates" />
   </files>
 </package>
