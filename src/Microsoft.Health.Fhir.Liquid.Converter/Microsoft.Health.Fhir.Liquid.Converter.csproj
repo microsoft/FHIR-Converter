@@ -20,13 +20,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="SampleData\Hl7v2\**\*.*">
+    <None Include="SampleData\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   
   <ItemGroup>
-    <None Include="Templates\Hl7v2\**\*.*">
+    <None Include="Templates\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -48,6 +48,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Include data files in the NuGet package -->
+    <None Include="data\**\*.*">
+      <Pack>true</Pack>
+      <PackagePath>content\data</PackagePath>
+      <CopyToOutputDirectory>true</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   
 </Project>
