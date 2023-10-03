@@ -27,9 +27,6 @@
         <dependency id="System.Runtime.Caching" version="4.7.0" exclude="Build,Analyzers" />
       </group>
     </dependencies>
-    <contentFiles>
-      <files include="data/Templates/**/*.*" buildAction="Content" copyToOutput="true" />
-    </contentFiles>
   </metadata>
   <files>
     <file src="bin\Release\net6.0\Microsoft.Health.Fhir.Liquid.Converter.dll" target="lib\net6.0" />
