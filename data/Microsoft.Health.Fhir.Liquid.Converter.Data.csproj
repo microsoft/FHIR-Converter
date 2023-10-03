@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <None Update="data\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Include data files in the NuGet package -->
+    <None Include="data\**\*.*">
+      <Pack>true</Pack>
+      <PackagePath>content\data</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
