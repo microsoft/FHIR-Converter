@@ -15,7 +15,7 @@ variables:
   minor: 1
   patch: 0
   buildnum: $[counter(format('{0}.{1}.{2}',variables['major'],variables['minor'], variables['patch']), 1)]
-  version: $(major).$(minor).$(patch).$(buildnum)
+  version: $(major).$(minor).$(patch).$(buildnum)-prtest
 
 stages:
 - stage: Build
