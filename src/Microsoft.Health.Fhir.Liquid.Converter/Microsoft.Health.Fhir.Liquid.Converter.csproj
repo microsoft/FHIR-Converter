@@ -50,13 +50,4 @@
     </EmbeddedResource>
   </ItemGroup>
 
-  <ItemGroup>
-    <!-- Include data files in the NuGet package -->
-    <None Include="data\**\*.*">
-      <Pack>true</Pack>
-      <PackagePath>content\data</PackagePath>
-      <CopyToOutputDirectory>true</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  
 </Project>
