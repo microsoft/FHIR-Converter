@@ -10,6 +10,12 @@
     "resource":{
         "resourceType" : "Appointment",
         "id": "{{ ID }}",
+        "description": "{%- if firstSegments.SCH.2 and firstSegments.SCH.2.value != "" -%}
+        {{- firstSegments.SCH.2.Value }} -{% endif -%}
+        {%- if firstSegments.SCH.19.2 and firstSegments.SCH.19.2.value != "" -%}
+        {{- firstSegments.SCH.19.2.Value }} -{% endif -%}
+        {%- if firstSegments.SCH.19.7 and firstSegments.SCH.19.7.value != "" -%}
+        {{- firstSegments.SCH.19.7.Value }}{% endif -%}",
         "identifier":
         [    
             {% if SCH.1 -%}       
