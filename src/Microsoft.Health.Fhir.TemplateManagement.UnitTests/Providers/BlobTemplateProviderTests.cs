@@ -20,19 +20,33 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
     public class BlobTemplateProviderTests
     {
         [Fact]
-
         public async Task GivenBlobTemplateProvider_WhenGetTemplateCollectionFromTemplateProvider_ThenTemplatesAreReturned()
         {
             var templateConfiguration = new TemplateCollectionConfiguration();
 
-            var blobTemplateProvider = new BlobTemplateProvider(GetBlobContainerClientMock(), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
+            int templateCount = 1;
+            var blobTemplateProvider = new BlobTemplateProvider(GetBlobContainerClientMock(templateCount), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
 
-            var templateColllection = await blobTemplateProvider.GetTemplateCollectionAsync();
+            var templateCollection = await blobTemplateProvider.GetTemplateCollectionAsync();
 
-            Assert.NotEmpty(templateColllection);
+            Assert.NotEmpty(templateCollection);
+            Assert.Single(templateCollection);
+            Assert.Equal(templateCount, templateCollection[0].Count);
         }
 
-        public static BlobContainerClient GetBlobContainerClientMock()
+        [Fact]
+        public async Task GivenBlobTemplateProviderWithoutTemplates_WhenGetTemplateCollectionFromTemplateProvider_ThenEmptyTemplateCollectionReturned()
+        {
+            var templateConfiguration = new TemplateCollectionConfiguration();
+
+            var blobTemplateProvider = new BlobTemplateProvider(GetBlobContainerClientMock(templateCount: 0), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
+
+            var templateCollection = await blobTemplateProvider.GetTemplateCollectionAsync();
+
+            Assert.Empty(templateCollection);
+        }
+
+        public static BlobContainerClient GetBlobContainerClientMock(int templateCount = 1)
         {
             var mock = new Mock<BlobContainerClient>();
 
@@ -40,10 +54,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
                 .Setup(x => x.GetBlobClient(It.IsAny<string>()))
                 .Returns(GetBlobClientMock());
 
-            var blobs = new BlobItem[]
+            BlobItem[] blobs = new BlobItem[templateCount];
+
+            for (int i = 0; i < templateCount; i++)
             {
-                BlobsModelFactory.BlobItem("blob_name"),
-            };
+                blobs[i] = BlobsModelFactory.BlobItem($"blob_name-{i}.liquid");
+            }
 
             Page<BlobItem> page = Page<BlobItem>.FromValues(blobs, null, Mock.Of<Response>());
 
