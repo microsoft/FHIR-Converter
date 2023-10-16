@@ -4,10 +4,13 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
+using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
+using Microsoft.Health.Logging.Telemetry;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
@@ -15,15 +18,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
     {
         private readonly IDataParser _parser = new CcdaDataParser();
 
-        public CcdaProcessor(ProcessorSettings processorSettings)
-            : base(processorSettings)
+        public CcdaProcessor(ProcessorSettings processorSettings, ITelemetryLogger telemetryLogger)
+            : base(processorSettings, telemetryLogger)
         {
         }
 
-        public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
-            var ccdaData = _parser.Parse(data);
-            return Convert(ccdaData, rootTemplate, templateProvider, traceInfo);
+            object ccdaData;
+            using (ITimed inputDeserializationTime = TelemetryLogger.TrackDuration(ConverterMetrics.InputDeserializationDuration))
+            {
+                ccdaData = _parser.Parse(data);
+            }
+
+            return InternalConvertFromObject(ccdaData, rootTemplate, templateProvider, traceInfo);
         }
 
         protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
