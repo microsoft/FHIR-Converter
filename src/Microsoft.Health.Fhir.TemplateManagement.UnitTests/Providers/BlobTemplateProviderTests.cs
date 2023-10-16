@@ -29,7 +29,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
             var templateCollection = await blobTemplateProvider.GetTemplateCollectionAsync();
 
-            Assert.NotEmpty(templateCollection);
             Assert.Single(templateCollection);
             Assert.Equal(templateCount, templateCollection[0].Count);
         }
