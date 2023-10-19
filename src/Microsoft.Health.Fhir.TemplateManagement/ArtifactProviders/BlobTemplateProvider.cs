@@ -5,6 +5,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure;
@@ -63,7 +64,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
             var parsedtemplates = TemplateUtility.ParseTemplates(templates);
 
-            var templateCollection = new List<Dictionary<string, Template>> { parsedtemplates };
+            var templateCollection = new List<Dictionary<string, Template>>();
+
+            if (parsedtemplates.Any())
+            {
+                templateCollection.Add(parsedtemplates);
+            }
 
             _templateCache.Set(_blobTemplateCacheKey, templateCollection, _templateCollectionConfiguration.ShortCacheTimeSpan);
 
