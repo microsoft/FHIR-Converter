@@ -44,7 +44,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
         /// </summary>
         /// <param name="templates">A dictionary, key is the name, value is the template content in string format</param>
         /// <returns>A dictionary, key is the name, value is Template</returns>
-        public static Dictionary<string, Template> ParseTemplates(Dictionary<string, string> templates)
+        public static Dictionary<string, Template> ParseTemplates(IDictionary<string, string> templates)
         {
             var parsedTemplates = new Dictionary<string, Template>();
             foreach (var entry in templates)

@@ -4,7 +4,9 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure;
@@ -33,6 +35,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
         private readonly AsyncRetryPolicy _downloadRetryPolicy;
 
+        private readonly int _maxParallelism = 50;
 
         public BlobTemplateProvider(BlobContainerClient blobContainerClient, IMemoryCache templateCache, TemplateCollectionConfiguration templateConfiguration)
         {
@@ -54,17 +57,40 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
             var templateNames = await ListBlobsFlatListing(_blobContainerClient, _segmentSize, cancellationToken);
 
-            var templates = new Dictionary<string, string>();
+            var templates = new ConcurrentDictionary<string, string>();
+
+            // download blobs in parallel
+            var semaphore = new SemaphoreSlim(_maxParallelism);
+            var downloadTasks = new List<Task>();
 
             foreach (var templateName in templateNames)
             {
-                var template = await DownloadBlobToStringAsync(_blobContainerClient, templateName, cancellationToken);
-                templates.Add(templateName, template);
+                await semaphore.WaitAsync();
+
+                downloadTasks.Add(Task.Run(async () =>
+                {
+                    try
+                    {
+                        var template = await DownloadBlobToStringAsync(_blobContainerClient, templateName, cancellationToken);
+                        templates.TryAdd(templateName, template);
+                    }
+                    finally
+                    {
+                        semaphore.Release();
+                    }
+                }));
             }
+
+            await Task.WhenAll(downloadTasks);
 
             var parsedtemplates = TemplateUtility.ParseTemplates(templates);
 
-            var templateCollection = new List<Dictionary<string, Template>> { parsedtemplates };
+            var templateCollection = new List<Dictionary<string, Template>>();
+
+            if (parsedtemplates.Any())
+            {
+                templateCollection.Add(parsedtemplates);
+            }
 
             _templateCache.Set(_blobTemplateCacheKey, templateCollection, _templateCollectionConfiguration.ShortCacheTimeSpan);
 
@@ -93,7 +119,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
         {
             var blobClient = blobContainerClient.GetBlobClient(blobName);
 
-            PolicyResult<Response<BlobDownloadResult>> policyResponse = await _downloadRetryPolicy.ExecuteAndCaptureAsync(async() => await blobClient.DownloadContentAsync(ct));
+            PolicyResult<Response<BlobDownloadResult>> policyResponse = await _downloadRetryPolicy.ExecuteAndCaptureAsync(async () => await blobClient.DownloadContentAsync(ct));
 
             if (policyResponse.FinalException == null)
             {
