@@ -18,12 +18,15 @@ using Microsoft.Health.Fhir.Liquid.Converter;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
+using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
 using Microsoft.Health.Fhir.TemplateManagement.Client;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Microsoft.Health.Fhir.TemplateManagement.Utilities;
+using Microsoft.Health.Logging.Telemetry;
 using Newtonsoft.Json.Linq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 {
@@ -60,9 +63,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
         private readonly string _orasErrorMessage = "Oras tool invalid.";
         private const string _orasCacheEnvironmentVariableName = "ORAS_CACHE";
         private const string _defaultOrasCacheEnvironmentVariable = ".oras/cache";
+        private readonly ITelemetryLogger _telemetryLogger;
 
-        public TemplateCollectionFunctionalTests()
+        public TemplateCollectionFunctionalTests(ITestOutputHelper outputHelper)
         {
+            _telemetryLogger = new XunitTelemetryLogger(outputHelper);
+
             _containerRegistryInfo = _containerRegistry.GetTestContainerRegistryInfo();
             if (_containerRegistryInfo == null)
             {
@@ -445,7 +451,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultHl7v2TemplateImageReference, string.Empty);
             var imageTemplateProvider = new TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
-            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
+            var hl7v2Processor = new Hl7v2Processor(_processorSettings, _telemetryLogger);
             var inputContent = File.ReadAllText(inputFile);
 
             var imageResult = hl7v2Processor.Convert(inputContent, rootTemplate, imageTemplateProvider);
@@ -468,7 +474,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultCcdaTemplateImageReference, string.Empty);
             var imageTemplateProvider = new TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
-            var ccdaProcessor = new CcdaProcessor(_processorSettings);
+            var ccdaProcessor = new CcdaProcessor(_processorSettings, _telemetryLogger);
             var inputContent = File.ReadAllText(inputFile);
 
             var imageResult = ccdaProcessor.Convert(inputContent, rootTemplate, imageTemplateProvider);
@@ -494,7 +500,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultJsonTemplateImageReference, string.Empty);
             var imageTemplateProvider = new TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
-            var jsonProcessor = new JsonProcessor(_processorSettings);
+            var jsonProcessor = new JsonProcessor(_processorSettings, _telemetryLogger);
             var inputContent = File.ReadAllText(inputFile);
 
             var imageResult = jsonProcessor.Convert(inputContent, rootTemplate, imageTemplateProvider);
@@ -516,7 +522,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             var templateProvider = templateProviderFactory.CreateTemplateCollectionProvider(_defaultStu3ToR4TemplateImageReference, string.Empty);
             var imageTemplateProvider = new TemplateProvider(await templateProvider.GetTemplateCollectionAsync(CancellationToken.None));
 
-            var fhirProcessor = new FhirProcessor(_processorSettings);
+            var fhirProcessor = new FhirProcessor(_processorSettings, _telemetryLogger);
             var inputContent = File.ReadAllText(inputFile);
 
             var imageResult = fhirProcessor.Convert(inputContent, rootTemplate, imageTemplateProvider);
@@ -530,7 +536,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
 
         private void TestByTemplate(string inputFile, string entryTemplate, List<Dictionary<string, Template>> templateProvider)
         {
-            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
+            var hl7v2Processor = new Hl7v2Processor(_processorSettings, _telemetryLogger);
             var inputContent = File.ReadAllText(inputFile);
             var actualContent = hl7v2Processor.Convert(inputContent, entryTemplate, new TemplateProvider(templateProvider));
 

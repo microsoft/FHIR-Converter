@@ -10,7 +10,9 @@ using System.Linq;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
+using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
 using Microsoft.Health.Fhir.Liquid.Converter.Tool.Models;
+using Microsoft.Health.Logging.Telemetry;
 using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
@@ -20,6 +22,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
         private const string MetadataFileName = "metadata.json";
         private static readonly List<string> CcdaExtensions = new List<string> { ".ccda", ".xml" };
         private static readonly ProcessorSettings DefaultProcessorSettings = new ProcessorSettings();
+        private static readonly ITelemetryLogger _telemetryLogger = new ConsoleTelemetryLogger();
 
         internal static void Convert(ConverterOptions options)
         {
@@ -97,10 +100,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
         {
             return dataType switch
             {
-                DataType.Hl7v2 => new Hl7v2Processor(DefaultProcessorSettings),
-                DataType.Ccda => new CcdaProcessor(DefaultProcessorSettings),
-                DataType.Json => new JsonProcessor(DefaultProcessorSettings),
-                DataType.Fhir => new FhirProcessor(DefaultProcessorSettings),
+                DataType.Hl7v2 => new Hl7v2Processor(DefaultProcessorSettings, _telemetryLogger),
+                DataType.Ccda => new CcdaProcessor(DefaultProcessorSettings, _telemetryLogger),
+                DataType.Json => new JsonProcessor(DefaultProcessorSettings, _telemetryLogger),
+                DataType.Fhir => new FhirProcessor(DefaultProcessorSettings, _telemetryLogger),
                 _ => throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported")
             };
         }

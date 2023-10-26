@@ -1,4 +1,10 @@
-﻿using System;
+﻿// -------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
+// -------------------------------------------------------------------------------------------------
+
+using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Azure;
 using Azure.Storage.Blobs;
@@ -18,14 +24,28 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
         {
             var templateConfiguration = new TemplateCollectionConfiguration();
 
-            var blobTemplateProvider = new BlobTemplateProvider(GetBlobContainerClientMock(), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
+            int templateCount = 1;
+            var blobTemplateProvider = new BlobTemplateProvider(GetBlobContainerClientMock(templateCount), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
 
-            var templateColllection = await blobTemplateProvider.GetTemplateCollectionAsync();
+            var templateCollection = await blobTemplateProvider.GetTemplateCollectionAsync();
 
-            Assert.NotEmpty(templateColllection);
+            Assert.Single(templateCollection);
+            Assert.Equal(templateCount, templateCollection[0].Count);
         }
 
-        public static BlobContainerClient GetBlobContainerClientMock()
+        [Fact]
+        public async Task GivenBlobTemplateProviderWithoutTemplates_WhenGetTemplateCollectionFromTemplateProvider_ThenEmptyTemplateCollectionReturned()
+        {
+            var templateConfiguration = new TemplateCollectionConfiguration();
+
+            var blobTemplateProvider = new BlobTemplateProvider(GetBlobContainerClientMock(templateCount: 0), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
+
+            var templateCollection = await blobTemplateProvider.GetTemplateCollectionAsync();
+
+            Assert.Empty(templateCollection);
+        }
+
+        public static BlobContainerClient GetBlobContainerClientMock(int templateCount = 1)
         {
             var mock = new Mock<BlobContainerClient>();
 
@@ -33,10 +53,12 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
                 .Setup(x => x.GetBlobClient(It.IsAny<string>()))
                 .Returns(GetBlobClientMock());
 
-            var blobs = new BlobItem[]
+            BlobItem[] blobs = new BlobItem[templateCount];
+
+            for (int i = 0; i < templateCount; i++)
             {
-                BlobsModelFactory.BlobItem("blob_name"),
-            };
+                blobs[i] = BlobsModelFactory.BlobItem($"blob_name-{i}.liquid");
+            }
 
             Page<BlobItem> page = Page<BlobItem>.FromValues(blobs, null, Mock.Of<Response>());
 
@@ -56,7 +78,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             var mockResponse = new Mock<Response>();
 
             mock
-                .Setup(x => x.DownloadContentAsync())
+                .Setup(x => x.DownloadContentAsync(It.IsAny<CancellationToken>()))
                 .Returns(
                     Task.FromResult(
                         Response.FromValue(
