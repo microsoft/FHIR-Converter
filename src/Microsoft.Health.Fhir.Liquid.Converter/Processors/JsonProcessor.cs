@@ -5,11 +5,14 @@
 
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Extensions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
+using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
+using Microsoft.Health.Logging.Telemetry;
 using Newtonsoft.Json.Linq;
 using NJsonSchema;
 
@@ -19,35 +22,40 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
     {
         private readonly IDataParser _parser = new JsonDataParser();
 
-        public JsonProcessor(ProcessorSettings processorSettings)
-            : base(processorSettings)
+        public JsonProcessor(ProcessorSettings processorSettings, ITelemetryLogger telemetryLogger)
+            : base(processorSettings, telemetryLogger)
         {
         }
 
-        public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
-            var jsonData = _parser.Parse(data);
-            return Convert(jsonData, rootTemplate, templateProvider, traceInfo);
+            object jsonData;
+            using (ITimed inputDeserializationTime = TelemetryLogger.TrackDuration(ConverterMetrics.InputDeserializationDuration))
+            {
+                jsonData = _parser.Parse(data);
+            }
+
+            return InternalConvertFromObject(jsonData, rootTemplate, templateProvider, traceInfo);
         }
 
         public string Convert(JObject data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             var jsonData = data.ToObject();
-            return Convert(jsonData, rootTemplate, templateProvider, traceInfo);
+            return InternalConvertFromObject(jsonData, rootTemplate, templateProvider, traceInfo);
         }
 
         protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load data and templates
-            var timeout = Settings.TimeOut;
+            var cancellationToken = Settings.TimeOut > 0 ? new CancellationTokenSource(Settings.TimeOut).Token : CancellationToken.None;
             var context = new JSchemaContext(
                 environments: new List<Hash> { Hash.FromDictionary(data) },
                 outerScope: new Hash(),
                 registers: Hash.FromDictionary(new Dictionary<string, object> { { "file_system", templateProvider.GetTemplateFileSystem() } }),
                 errorsOutputMode: ErrorsOutputMode.Rethrow,
                 maxIterations: Settings.MaxIterations,
-                timeout: timeout,
-                formatProvider: CultureInfo.InvariantCulture)
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: cancellationToken)
             {
                 ValidateSchemas = new List<JsonSchema>(),
             };

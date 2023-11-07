@@ -21,6 +21,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
     {
         private readonly IMemoryCache _templateCache;
         private readonly TemplateCollectionConfiguration _configuration;
+        private SemaphoreSlim _manifestSemaphore;
+        private SemaphoreSlim _layerSemaphore;
 
         public TemplateCollectionProvider(ImageInfo imageInfo, IOciClient client, IMemoryCache templateCache, TemplateCollectionConfiguration configuration)
             : base(imageInfo, client)
@@ -32,6 +34,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
             _templateCache = templateCache;
             _configuration = configuration;
+            _manifestSemaphore = new SemaphoreSlim(1, 1);
+            _layerSemaphore = new SemaphoreSlim(1, 1);
         }
 
         public async Task<List<Dictionary<string, Template>>> GetTemplateCollectionAsync(CancellationToken cancellationToken = default)
@@ -83,9 +87,22 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             var manifestInfo = _templateCache.Get(cacheKey) as ManifestWrapper;
             if (manifestInfo == null)
             {
-                manifestInfo = await base.GetManifestAsync(cancellationToken);
-                ValidateImageSize(manifestInfo, _configuration.TemplateCollectionSizeLimitMegabytes);
-                AddToCache(cacheKey, manifestInfo, Constants.ManifestObjectSizeInByte, cachePolicy);
+                await _manifestSemaphore.WaitAsync(cancellationToken);
+                try
+                {
+                    // try to read from cache one last time after entering the semaphoreslim
+                    manifestInfo = _templateCache.Get(cacheKey) as ManifestWrapper;
+                    if (manifestInfo == null)
+                    {
+                        manifestInfo = await base.GetManifestAsync(cancellationToken);
+                        ValidateImageSize(manifestInfo, _configuration.TemplateCollectionSizeLimitMegabytes);
+                        AddToCache(cacheKey, manifestInfo, Constants.ManifestObjectSizeInByte, cachePolicy);
+                    }
+                }
+                finally
+                {
+                    _manifestSemaphore.Release();
+                }
             }
 
             return manifestInfo;
@@ -98,8 +115,22 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             var oneTemplateLayer = _templateCache.Get(layerDigest) as TemplateLayer;
             if (oneTemplateLayer == null)
             {
-                var artifactsLayer = await base.GetLayerAsync(layerDigest, cancellationToken);
-                oneTemplateLayer = TemplateLayerParser.ParseArtifactsLayerToTemplateLayer(artifactsLayer as ArtifactBlob);
+                await _layerSemaphore.WaitAsync(cancellationToken);
+                try
+                {
+                    // try to read from cache one last time after entering the semaphoreslim
+                    oneTemplateLayer = _templateCache.Get(layerDigest) as TemplateLayer;
+                    if (oneTemplateLayer == null)
+                    {
+                        var artifactsLayer = await base.GetLayerAsync(layerDigest, cancellationToken);
+                        oneTemplateLayer = TemplateLayerParser.ParseArtifactsLayerToTemplateLayer(artifactsLayer as ArtifactBlob);
+                        AddToCache(oneTemplateLayer.Digest, oneTemplateLayer, oneTemplateLayer.Size, CachePolicy.ShortExpire);
+                    }
+                }
+                finally
+                {
+                    _layerSemaphore.Release();
+                }
             }
 
             return oneTemplateLayer;

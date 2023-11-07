@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using Hl7.Fhir.Serialization;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
+using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
+using Microsoft.Health.Logging.Telemetry;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
@@ -39,10 +41,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         private static readonly bool _skipValidator = true;
 
         private readonly ITestOutputHelper _output;
+        private readonly ITelemetryLogger _telemetryLogger;
 
         public RuleBasedTests(ITestOutputHelper output)
         {
-            this._output = output;
+            _output = output;
+            _telemetryLogger = new XunitTelemetryLogger(output);
         }
 
         public static IEnumerable<object[]> GetHL7V2Cases()
@@ -452,10 +456,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             switch (dataType)
             {
                 case DataType.Hl7v2:
-                    return JObject.Parse(new Hl7v2Processor(_processorSettings)
+                    return JObject.Parse(new Hl7v2Processor(_processorSettings, _telemetryLogger)
                 .Convert(await File.ReadAllTextAsync(samplePath, Encoding.UTF8), templateName, _hl7TemplateProvider));
                 case DataType.Ccda:
-                    return JObject.Parse(new CcdaProcessor(_processorSettings)
+                    return JObject.Parse(new CcdaProcessor(_processorSettings, _telemetryLogger)
                 .Convert(await File.ReadAllTextAsync(samplePath, Encoding.UTF8), templateName, _ccdaTemplateProvider));
                 default:
                     return null;
