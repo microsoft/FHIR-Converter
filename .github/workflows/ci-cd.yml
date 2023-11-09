@@ -6,7 +6,7 @@ on:
     workflow_dispatch: # disbale this trigger after testing
     push:
             branches:
-              - 'ci-cd-test'  # change to main after testing and push the changes to main branch.
+              - 'main'  # change to main after testing and push the changes to main branch.
             paths:
               - 'data/Templates/Hl7v2/**'
 jobs:
