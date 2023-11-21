@@ -17,6 +17,9 @@ pr:
     - docs
     - data
 
+variables:
+  buildConfiguration: 'Release'
+
 stages:
 - stage: UpdateVersion
   displayName: 'Determine Semantic Version'
