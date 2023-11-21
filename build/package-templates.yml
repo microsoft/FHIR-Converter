@@ -1,0 +1,51 @@
+steps:
+
+  - task: PowerShell@2
+    displayName: 'inject template version'
+    inputs:
+      targetType: 'inline'
+      script: |
+        $targetPath = '$(Build.SourcesDirectory)/data/Templates/Hl7v2/Resource/_Provenance.liquid'
+        (Get-Content $targetPath).replace('TEMPLATE_VERSION_PLACEHOLDER', '$(nuGetVersion)') | Set-Content $targetPath
+
+  - task: ArchiveFiles@2
+    displayName: 'package Hl7v2 Default Templates'
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2'
+      includeRootFolder: false
+      archiveType: 'tar'
+      tarCompression: 'gz'
+      archiveFile: '$(Build.SourcesDirectory)/data/Templates/Hl7v2DefaultTemplates.tar.gz'
+
+  - task: ArchiveFiles@2
+    displayName: 'package Ccda Default Templates'
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Ccda'
+      includeRootFolder: false
+      archiveType: 'tar'
+      tarCompression: 'gz'
+      archiveFile: '$(Build.SourcesDirectory)/data/Templates/CcdaDefaultTemplates.tar.gz'
+
+  - task: ArchiveFiles@2
+    displayName: 'package Json Default Templates'
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Json'
+      includeRootFolder: false
+      archiveType: 'tar'
+      tarCompression: 'gz'
+      archiveFile: '$(Build.SourcesDirectory)/data/Templates/JsonDefaultTemplates.tar.gz'
+
+  - task: ArchiveFiles@2
+    displayName: 'package Stu3ToR4 Default Templates'
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/Stu3ToR4'
+      includeRootFolder: false
+      archiveType: 'tar'
+      tarCompression: 'gz'
+      archiveFile: '$(Build.SourcesDirectory)/data/Templates/Stu3ToR4DefaultTemplates.tar.gz'
+
+  - task: CopyFiles@2
+    displayName: 'copy DefaultTemplates to artifacts'
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)/data'
+      targetFolder: '$(Build.ArtifactStagingDirectory)/data'

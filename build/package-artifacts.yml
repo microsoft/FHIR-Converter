@@ -1,0 +1,32 @@
+steps:
+
+# Package artifacts (binaries, tools and templates)
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet publish tool'
+    inputs:
+      command: publish
+      projects: '**/*Tool/*.csproj'
+      arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin'
+      nobuild: true
+      publishWebProjects: false
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet publish functional tests'
+    inputs:
+      command: publish
+      projects: '**/*FunctionalTests/*.csproj'
+      arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/functionalTests'
+      nobuild: true
+      publishWebProjects: false
+      zipAfterPublish: false
+
+  - template: package-templates.yml
+
+# Publish artifacts
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'publish artifacts'
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)' 
+      artifactName: 'FhirConverterBuild'
