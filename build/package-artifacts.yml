@@ -3,13 +3,11 @@ steps:
 # Package artifacts (binaries, tools and templates)
 
   - task: notice@0
-    condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
     displayName: 'generate NOTICE file'
     inputs:
       outputformat: 'text'
 
   - task: DownloadBuildArtifacts@0
-    condition: eq(variables['build.sourceBranch'], 'refs/heads/main')
     inputs:
       buildType: 'current'
       downloadType: 'single'
