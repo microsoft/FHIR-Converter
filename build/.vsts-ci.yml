@@ -29,7 +29,7 @@ stages:
 - stage: UpdateVersion
   displayName: 'Determine Semantic Version'
   jobs:
-  - job: GitVersion
+  - job: Semver
     variables:
       skipComponentGovernanceDetection: true
     pool:
