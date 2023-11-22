@@ -1,11 +1,14 @@
-# DESCRIPTION: 
-# Builds, tests and packages the solution for all PR requests.
+# DESCRIPTION:
+# Builds, tests and packages the solution for the CI build configuration.
+name: $(SourceBranchName)-$(Date:yyyyMMdd)$(Rev:-r)
 
-name: $(Date:yyyyMMdd)$(Rev:.r)
+parameters:
+- name: push
+  displayName: Push
+  type: boolean
+  default: true
 
-trigger: none
-
-pr:
+trigger:
   branches:
     include:
     - main
@@ -16,6 +19,8 @@ pr:
     - '*.md'
     - docs
     - data
+
+pr: none
 
 variables:
   buildConfiguration: 'Release'
@@ -58,9 +63,6 @@ stages:
       vmImage: 'windows-latest'
     steps:
     - template: build.yml
-      parameters:
-          packageArtifacts: true
-          packageNugets: false
 
 - stage: FunctionalTests
   displayName: 'Run functional tests'
@@ -68,3 +70,16 @@ stages:
   - BuildRunUnitTests
   jobs:
   - template: run-functional-tests.yml
+
+- stage: PublishNugets
+  displayName: 'Publish FHIR Converter nuget packages'
+  condition: eq(${{ parameters.push }}, true)
+  dependsOn:
+  - FunctionalTests
+  jobs:
+  - job: PublishNugets
+    displayName: 'publish nugets'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: publish-nugets.yml

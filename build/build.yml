@@ -1,3 +1,7 @@
+parameters:
+  packageArtifacts: true
+  packageNugets: true
+
 steps:
   - task: UseDotNet@2
     displayName: 'Use .NET Core sdk 6.0.x'
@@ -37,5 +41,12 @@ steps:
       verbosity: 'Verbose'
       alertWarningLevel: 'High'
       failOnAlert: true
+
+  - ${{ if eq(parameters.packageArtifacts, 'true') }}:
+    - template: package-artifacts.yml
+
+  - ${{ if eq(parameters.packageNugets, 'true') }}:
+    - template: package-nugets.yml
+
 
 
