@@ -58,13 +58,24 @@ stages:
       vmImage: 'windows-latest'
     steps:
     - template: build.yml
-      parameters:
-          packageArtifacts: true
-          packageNugets: false
+
+- stage: PackageArtifacts
+  displayName: 'Package FHIR Converter artifacts'
+  dependsOn:
+  - BuildRunUnitTests
+  variables:
+    nuGetVersion: $[stageDependencies.UpdateVersion.Semver.outputs['ConvertVersion.GitVersion.SemVer']]
+  jobs:
+  - job: PackageArtifacts
+    displayName: 'Package artifacts'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: package-artifacts.yml
 
 - stage: FunctionalTests
   displayName: 'Run functional tests'
   dependsOn:
-  - BuildRunUnitTests
+  - PackageArtifacts
   jobs:
   - template: run-functional-tests.yml
