@@ -65,6 +65,6 @@ stages:
 - stage: FunctionalTests
   displayName: 'Run functional tests'
   dependsOn:
-  - BuildTestDeployPackages
+  - BuildRunUnitTests
   jobs:
   - template: run-functional-tests.yml
