@@ -9,7 +9,7 @@ steps:
       custom: pack
       arguments: >
         --configuration $(buildConfiguration)
-        --output $(Build.BinariesDirectory)/nupkgs
+        --output $(Build.artifactStagingDirectory)/nupkgs
         --no-build
         -p:NuspecProperties="version=$(nuGetVersion)"
 
