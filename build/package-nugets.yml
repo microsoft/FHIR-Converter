@@ -6,12 +6,12 @@ steps:
     displayName: 'dotnet pack nugets'
     inputs:
       command: custom
-        custom: pack
-        arguments: >
-          --configuration $(buildConfiguration)
-          --output $(Build.BinariesDirectory)/nupkgs
-          --no-build
-          -p:NuspecProperties="version=$(nuGetVersion)"
+      custom: pack
+      arguments: >
+        --configuration $(buildConfiguration)
+        --output $(Build.BinariesDirectory)/nupkgs
+        --no-build
+        -p:NuspecProperties="version=$(nuGetVersion)"
 
 # Publish nugets
 
