@@ -5,12 +5,13 @@ steps:
   - task: DotNetCoreCLI@2
     displayName: 'dotnet pack nugets'
     inputs:
-      command: pack
-      configuration: '$(buildConfiguration)'
-      packDirectory: '$(build.artifactStagingDirectory)/nupkgs'
-      versioningScheme: byEnvVar
-      versionEnvVar: 'nuGetVersion'
-      nobuild: true
+      command: custom
+        custom: pack
+        arguments: >
+          --configuration $(buildConfiguration)
+          --output $(Build.BinariesDirectory)/nupkgs
+          --no-build
+          -p:NuspecProperties="version=$(nuGetVersion)"
 
 # Publish nugets
 
