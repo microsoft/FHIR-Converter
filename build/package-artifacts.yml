@@ -15,7 +15,17 @@ steps:
       downloadPath: '$(Build.SourcesDirectory)/bin/notice'
 
   - task: DotNetCoreCLI@2
-    displayName: 'dotnet publish tool'
+    displayName: 'dotnet publish tool bin'
+    inputs:
+      command: publish
+      projects: '**/*Tool/*.csproj'
+      arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/publish'
+      nobuild: true
+      publishWebProjects: false
+      zipAfterPublish: false
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet publish tool artifact'
     inputs:
       command: publish
       projects: '**/*Tool/*.csproj'
