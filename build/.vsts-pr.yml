@@ -41,8 +41,8 @@ stages:
           fi
         displayName: 'Update build number'
 
-- stage: BuildTestDeployPackages
-  displayName: 'Build, run unit tests and deploy nuget packages'
+- stage: BuildRunUnitTests
+  displayName: 'Build FHIR Converter projects and run unit tests'
   dependsOn:
   - UpdateVersion
   variables:
@@ -52,9 +52,10 @@ stages:
     majorMinorPatch: $[stageDependencies.UpdateVersion.Semver.outputs['ConvertVersion.GitVersion.MajorMinorPatch']]
     nuGetVersion: $[stageDependencies.UpdateVersion.Semver.outputs['ConvertVersion.GitVersion.SemVer']]
   jobs:
-  - job: Windows
+  - job: BuildRunUnitTests
+    displayName: 'Build projects and run unit tests'
     pool:
-      vmImage: 'windows-2019'
+      vmImage: 'windows-latest'
     steps:
     - template: build.yml
       parameters:
