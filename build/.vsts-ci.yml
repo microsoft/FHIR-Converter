@@ -73,7 +73,7 @@ stages:
 
 - stage: PublishNugets
   displayName: 'Publish FHIR Converter nuget packages'
-  condition: eq(${{ parameters.push }}, true)
+  condition: and(succeeded(), eq(${{ parameters.push }}, true))
   dependsOn:
   - FunctionalTests
   jobs:
