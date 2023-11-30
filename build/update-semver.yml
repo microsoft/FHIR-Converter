@@ -1,0 +1,17 @@
+parameters:
+  configFilePath: $(Build.SourcesDirectory)/GitVersion.yml
+
+steps:
+- task: gitversion/setup@0
+  displayName: 'Setup GitVersion'
+  inputs:
+    versionSpec: '5.x'
+
+# All variables from the GitVersion task are prefixed by "GitVersion." (eg. GitVersion.SemVer)
+- task: gitversion/execute@0
+  name: 'ConvertVersion'
+  displayName: 'Run GitVersion'
+  inputs:
+    configFilePath: '${{ parameters.configFilePath }}'
+    targetPath: '$(Build.SourcesDirectory)'
+    useConfigFile: true

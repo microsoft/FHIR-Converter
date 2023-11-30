@@ -1,0 +1,52 @@
+parameters:
+  packageArtifacts: true
+  packageNugets: true
+
+steps:
+  - task: UseDotNet@2
+    displayName: 'Use .NET Core sdk 6.0.x'
+    inputs:
+      version: 6.0.x
+      selectOrConfig: configs
+      nugetConfigPath: nuget.config
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet restore'
+    inputs:
+      command: 'restore'
+      projects: '**/*.csproj'
+      arguments: '--configuration $(buildConfiguration)'
+      feedsToUse: 'select'
+      vstsFeed: '7621b231-1a7d-4364-935b-2f72b911c43d/a60b7c8b-c6ae-4a8e-bd15-a526b603a1f2'
+      restoreArguments: '--disable-parallel'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet build $(buildConfiguration)'
+    inputs:
+      command: 'build'
+      projects: '**/*.csproj'
+      arguments: '--configuration $(buildConfiguration) --version-suffix $(build.buildNumber) -p:AssemblyVersion="$(assemblySemVer)" -p:FileVersion="$(assemblySemFileVer)"'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet test'
+    inputs:
+      command: test
+      projects: '**/*UnitTests/*.csproj'
+      arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+      nobuild: true
+
+  - task: ComponentGovernanceComponentDetection@0
+    inputs:
+      scanType: 'Register'
+      verbosity: 'Verbose'
+      alertWarningLevel: 'High'
+      failOnAlert: true
+
+  - ${{ if eq(parameters.packageArtifacts, 'true') }}:
+    - template: package-artifacts.yml
+
+  - ${{ if eq(parameters.packageNugets, 'true') }}:
+    - template: package-nugets.yml
+
+
+
