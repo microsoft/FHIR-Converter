@@ -62,7 +62,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             // validate that the template has a messageDefinition section
             if (transformations["messageDefinition"] == null)
             {
-                throw new RenderException(FhirConverterErrorCode.TemplateRenderingError, "The messageDefinition section was not found in the conversion template");
+                throw new RenderException(
+                    FhirConverterErrorCode.TemplateRenderingError,
+                    "The messageDefinition section was not found in the conversion template");
             }
 
             // create HL7v2 segments
