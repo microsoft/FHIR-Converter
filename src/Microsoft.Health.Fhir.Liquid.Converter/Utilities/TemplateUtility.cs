@@ -190,8 +190,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
 
         public static bool IsCodeMappingTemplate(string templateKey)
         {
-            return templateKey.Contains("CodeSystem/CodeSystem", StringComparison.InvariantCultureIgnoreCase) ||
-                   templateKey.Contains("ValueSet/ValueSet", StringComparison.InvariantCultureIgnoreCase);
+            return templateKey.EndsWith("CodeSystem/CodeSystem", StringComparison.InvariantCultureIgnoreCase) ||
+                   templateKey.EndsWith("ValueSet/ValueSet", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public static bool IsJsonSchemaTemplate(string templateKey)
