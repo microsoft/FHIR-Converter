@@ -10,7 +10,7 @@ using DotLiquid;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 {
-    public interface IConvertDataTemplateProvider
+    public interface IConvertDataTemplateCollectionProvider
     {
         public Task<List<Dictionary<string, Template>>> GetTemplateCollectionAsync(CancellationToken cancellationToken);
     }

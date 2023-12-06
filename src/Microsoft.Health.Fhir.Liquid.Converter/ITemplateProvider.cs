@@ -10,6 +10,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 {
     public interface ITemplateProvider
     {
+        public bool IsDefaultTemplateProvider { get; }
+
         public Template GetTemplate(string templateName);
 
         public ITemplateFileSystem GetTemplateFileSystem();

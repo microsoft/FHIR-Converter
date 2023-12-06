@@ -13,6 +13,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
@@ -27,6 +28,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         protected virtual string DataKey { get; set; } = "msg";
 
+        protected virtual DataType DataType { get; set; }
+
         public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, CancellationToken cancellationToken, TraceInfo traceInfo = null)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -35,7 +38,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         public abstract string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
 
-        protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
+        protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data, string rootTemplate)
         {
             // Load data and templates
             var cancellationToken = Settings.TimeOut > 0 ? new CancellationTokenSource(Settings.TimeOut).Token : CancellationToken.None;
@@ -50,6 +53,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
             // Load filters
             context.AddFilters(typeof(Filters));
+
+            // Add root template's parent path to context.
+            AddRootTemplatePathScope(context, templateProvider, rootTemplate);
 
             return context;
         }
@@ -70,6 +76,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
             }
 
+            rootTemplate = templateProvider.IsDefaultTemplateProvider ? string.Format("{0}/{1}", DataType, rootTemplate) : rootTemplate;
             var template = templateProvider.GetTemplate(rootTemplate);
             if (template == null)
             {
@@ -77,7 +84,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             }
 
             var dictionary = new Dictionary<string, object> { { DataKey, data } };
-            var context = CreateContext(templateProvider, dictionary);
+            var context = CreateContext(templateProvider, dictionary, rootTemplate);
             var rawResult = RenderTemplates(template, context);
             var result = PostProcessor.Process(rawResult);
             CreateTraceInfo(data, context, traceInfo);
@@ -108,6 +115,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateRenderingError, string.Format(Resources.TemplateRenderingError, ex.Message), ex);
             }
+        }
+
+        protected void AddRootTemplatePathScope(Context context, ITemplateProvider templateProvider, string rootTemplate)
+        {
+            // Add path to root template's parent. In case of default template provider, use the data type as the parent path, else use the parent path set in the context.
+            context[TemplateUtility.RootTemplateParentPathScope] = templateProvider.IsDefaultTemplateProvider ? DataType : TemplateUtility.GetRootTemplateParentPath(rootTemplate);
         }
     }
 }

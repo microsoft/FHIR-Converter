@@ -14,6 +14,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
         }
 
+        protected override DataType DataType { get; set; } = DataType.Fhir;
         public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             // TO DO For FHIR Specific Logic

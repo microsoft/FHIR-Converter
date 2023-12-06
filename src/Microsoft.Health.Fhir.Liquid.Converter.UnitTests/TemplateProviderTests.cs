@@ -47,6 +47,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
 
             var collectionTemplateProvider = new TemplateProvider(collection);
             Assert.NotNull(collectionTemplateProvider.GetTemplate("foo"));
+            Assert.False(collectionTemplateProvider.IsDefaultTemplateProvider);
+        }
+
+        [Fact]
+        public void GivenDefaultTemplateProviderFromMemoryFileSystem_WhenGetTemplate_CorrectResultsShouldBeReturned()
+        {
+            var collection = new List<Dictionary<string, Template>>
+            {
+                new Dictionary<string, Template>
+                {
+                    { "Hl7v2/foo", Template.Parse("bar") },
+                },
+            };
+
+            var collectionTemplateProvider = new TemplateProvider(collection, isDefaultTemplateProvider: true);
+            Assert.NotNull(collectionTemplateProvider.GetTemplate("Hl7v2/foo"));
+            Assert.True(collectionTemplateProvider.IsDefaultTemplateProvider);
         }
 
         [Theory]

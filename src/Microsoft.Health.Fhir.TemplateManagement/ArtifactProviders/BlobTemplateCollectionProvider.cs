@@ -20,7 +20,7 @@ using Polly.Retry;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 {
-    public class BlobTemplateProvider : IConvertDataTemplateProvider
+    public class BlobTemplateCollectionProvider : IConvertDataTemplateCollectionProvider
     {
         private BlobContainerClient _blobContainerClient;
 
@@ -34,7 +34,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
         private readonly AsyncRetryPolicy _downloadRetryPolicy;
 
-        public BlobTemplateProvider(BlobContainerClient blobContainerClient, IMemoryCache templateCache, TemplateCollectionConfiguration templateConfiguration)
+        public BlobTemplateCollectionProvider(BlobContainerClient blobContainerClient, IMemoryCache templateCache, TemplateCollectionConfiguration templateConfiguration)
         {
             _blobContainerClient = blobContainerClient;
             _templateCache = templateCache;

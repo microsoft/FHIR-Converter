@@ -21,31 +21,31 @@ using Xunit.Abstractions;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 {
-    public class RuleBasedTests
+    public class BaseRuleBasedFunctionalTests
     {
-        private static readonly string _hl7TemplateFolder = Path.Combine(Constants.TemplateDirectory, "Hl7v2");
         private static readonly string _hl7DataFolder = Path.Combine(Constants.SampleDataDirectory, "Hl7v2");
-        private static readonly string _ccdaTemplateFolder = Path.Combine(Constants.TemplateDirectory, "Ccda");
         private static readonly string _ccdaDataFolder = Path.Combine(Constants.SampleDataDirectory, "Ccda");
 
         private static readonly ProcessorSettings _processorSettings = new ProcessorSettings();
-
-        private static readonly ITemplateProvider _hl7TemplateProvider = new TemplateProvider(_hl7TemplateFolder, DataType.Hl7v2);
-        private static readonly ITemplateProvider _ccdaTemplateProvider = new TemplateProvider(_ccdaTemplateFolder, DataType.Ccda);
-
         private static readonly FhirJsonParser _fhirParser = new FhirJsonParser();
+
+        private readonly Hl7v2Processor _hl7v2Processor;
+        private readonly CcdaProcessor _ccdaProcessor;
 
         private static readonly int _maxRevealDepth = 1 << 7;
         private static readonly bool _skipValidator = true;
 
         private readonly ITestOutputHelper _output;
 
-        public RuleBasedTests(ITestOutputHelper output)
+        public BaseRuleBasedFunctionalTests(ITestOutputHelper output)
         {
             this._output = output;
+
+            _hl7v2Processor = new Hl7v2Processor(_processorSettings);
+            _ccdaProcessor = new CcdaProcessor(_processorSettings);
         }
 
-        public static IEnumerable<object[]> GetHL7V2Cases()
+        public static IEnumerable<object[]> GetHL7V2RuleBasedTestCases()
         {
             var cases = new List<object[]>
             {
@@ -196,7 +196,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
-        public static IEnumerable<object[]> GetCcdaCases()
+        public static IEnumerable<object[]> GetCcdaRuleBasedTestCases()
         {
             var cases = new List<object[]>
             {
@@ -249,12 +249,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
-        [Theory]
-        [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCcdaCases))]
-        public async Task CheckOnePatient(string templateName, string samplePath, DataType dataType)
+        public async Task ConvertAndValidatePatientCount(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
-            var result = await ConvertData(templateName, samplePath, dataType);
+            var result = await ConvertData(templateProvider, templateName, samplePath, dataType);
             var patients = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Patient')].resource.id");
 
             if (ResourceFilter.NonPatientTemplates.All(func => func(templateName)))
@@ -271,15 +268,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             }
         }
 
-        [Theory]
-        [MemberData(nameof(GetCcdaCases))]
-        public async Task CheckReferenceResourceId(string templateName, string samplePath, DataType dataType)
+        public async Task ConvertAndValidateReferenceResourceId(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
             HashSet<string> referenceResources = new HashSet<string>();
-            var result = await ConvertData(templateName, samplePath, dataType);
+            var result = await ConvertData(templateProvider, templateName, samplePath, dataType);
             var resources = result.SelectTokens("$.entry..resource");
 
-            // Check resource id uniqueness
+            // Validate resource id uniqueness
             foreach (var resource in resources)
             {
                 var resourceId = resource.SelectTokens("$.id").First().ToString();
@@ -289,19 +284,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 referenceResources.Add(referenceStr);
             }
 
-            // check reference resouce id exists
+            // Validate reference resouce id exists
             foreach (var resource in resources)
             {
                 RevealReferences(resource, 0, referenceResources);
             }
         }
 
-        [Theory]
-        [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCcdaCases))]
-        public async Task CheckNonemptyResource(string templateName, string samplePath, DataType dataType)
+        public async Task ConvertAndValidateNonemptyResource(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
-            var result = await ConvertData(templateName, samplePath, dataType);
+            var result = await ConvertData(templateProvider, templateName, samplePath, dataType);
             var resources = result.SelectTokens("$.entry..resource");
             foreach (var resource in resources)
             {
@@ -311,30 +303,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             }
         }
 
-        [Theory]
-        [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCcdaCases))]
-        public async Task CheckNonidenticalResources(string templateName, string samplePath, DataType dataType)
+        public async Task ConvertAndValidateNonidenticalResources(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
-            var result = await ConvertData(templateName, samplePath, dataType);
+            var result = await ConvertData(templateProvider, templateName, samplePath, dataType);
             var resourceIds = result.SelectTokens("$.entry..resource.id");
             var uniqueResourceIds = resourceIds.Select(Convert.ToString).Distinct();
             Assert.Equal(uniqueResourceIds.Count(), resourceIds.Count());
         }
 
-        [Theory]
-        [MemberData(nameof(GetHL7V2Cases))]
-        public async Task CheckValuesRevealInOrigin(string templateName, string samplePath, DataType dataType)
+        public async Task ConvertAndValidateValuesRevealInOrigin(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
             var sampleContent = await File.ReadAllTextAsync(samplePath, Encoding.UTF8);
-            var result = await ConvertData(templateName, samplePath, dataType);
+            var result = await ConvertData(templateProvider, templateName, samplePath, dataType);
             RevealObjectValues(sampleContent, result, 0);
         }
 
-        [Theory]
-        [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCcdaCases))]
-        public async Task CheckPassOfficialValidator(string templateName, string samplePath, DataType dataType)
+        public async Task ConvertAndValidatePassOfficialValidator(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
             if (_skipValidator)
             {
@@ -344,7 +328,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             (bool javaStatus, string javaMessage) = await ExecuteCommand("-version");
             Assert.True(javaStatus, javaMessage);
 
-            var result = await ConvertData(templateName, samplePath, dataType);
+            var result = await ConvertData(templateProvider, templateName, samplePath, dataType);
             var resultFolder = Path.GetFullPath(Path.Combine(@"AppData", "Temp"));
             var resultPath = Path.Combine(resultFolder, $"{Guid.NewGuid().ToString("N")}.json");
             if (!Directory.Exists(resultFolder))
@@ -372,7 +356,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         }
 
         [Fact]
-        public async Task CheckParserFunctionality()
+        public async Task ConvertAndValidateParserFunctionality()
         {
             var jsonResult = await Task.FromResult(@"{
                 ""resourceType"": ""Observation"",
@@ -397,12 +381,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             }
         }
 
-        [Theory]
-        [MemberData(nameof(GetHL7V2Cases))]
-        [MemberData(nameof(GetCcdaCases))]
-        public async Task CheckPassFhirParser(string templateName, string samplePath, DataType dataType)
+        public async Task ConvertAndValidatePassFhirParser(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
-            var result = await ConvertData(templateName, samplePath, dataType);
+            var result = await ConvertData(templateProvider, templateName, samplePath, dataType);
             var jsonResult = JsonConvert.SerializeObject(result, Formatting.Indented);
             try
             {
@@ -447,16 +428,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             }
         }
 
-        private async Task<JObject> ConvertData(string templateName, string samplePath, DataType dataType)
+        private async Task<JObject> ConvertData(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
             switch (dataType)
             {
                 case DataType.Hl7v2:
-                    return JObject.Parse(new Hl7v2Processor(_processorSettings)
-                .Convert(await File.ReadAllTextAsync(samplePath, Encoding.UTF8), templateName, _hl7TemplateProvider));
+                    return JObject.Parse(_hl7v2Processor.Convert(await File.ReadAllTextAsync(samplePath, Encoding.UTF8), templateName, templateProvider));
                 case DataType.Ccda:
-                    return JObject.Parse(new CcdaProcessor(_processorSettings)
-                .Convert(await File.ReadAllTextAsync(samplePath, Encoding.UTF8), templateName, _ccdaTemplateProvider));
+                    return JObject.Parse(_ccdaProcessor.Convert(await File.ReadAllTextAsync(samplePath, Encoding.UTF8), templateName, templateProvider));
                 default:
                     return null;
             }

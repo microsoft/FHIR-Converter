@@ -10,6 +10,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 {
     public interface IFhirConverterTemplateFileSystem : ITemplateFileSystem
     {
-        public Template GetTemplate(string templateName);
+        public Template GetTemplate(string templateName, string rootTemplatePath = "");
     }
 }
