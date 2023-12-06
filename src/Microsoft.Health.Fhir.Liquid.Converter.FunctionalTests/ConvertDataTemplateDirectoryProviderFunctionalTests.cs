@@ -11,7 +11,6 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Newtonsoft.Json;
 using Xunit;
 using Xunit.Abstractions;
@@ -24,7 +23,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         private readonly ITestOutputHelper _outputHelper;
 
         public ConvertDataTemplateDirectoryProviderFunctionalTests(ITestOutputHelper outputHelper)
-            : base()
         {
             _outputHelper = outputHelper;
         }

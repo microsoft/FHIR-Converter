@@ -20,7 +20,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         private readonly ITestOutputHelper _outputHelper;
 
         public ConvertDataTemplateCollectionProviderFunctionalTests(ITestOutputHelper outputHelper, TemplateCollectionProviderTestFixture fixture)
-            : base()
         {
             _outputHelper = outputHelper;
             _fixture = fixture;

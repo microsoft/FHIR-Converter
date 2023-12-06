@@ -20,10 +20,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
     {
         private static readonly ProcessorSettings _processorSettings = new ProcessorSettings();
 
-        public BaseConvertDataFunctionalTests()
-        {
-        }
-
         public static IEnumerable<object[]> GetDataForHl7v2()
         {
             var data = new List<string[]>

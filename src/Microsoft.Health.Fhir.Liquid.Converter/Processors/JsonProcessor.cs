@@ -26,6 +26,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         }
 
         protected override DataType DataType { get; set; } = DataType.Json;
+
         public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             var jsonData = _parser.Parse(data);
