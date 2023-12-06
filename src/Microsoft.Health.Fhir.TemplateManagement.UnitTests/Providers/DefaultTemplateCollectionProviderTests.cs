@@ -3,13 +3,14 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DotLiquid;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Health.Common;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
@@ -23,6 +24,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
         private readonly IMemoryCache _cache;
         private readonly IConvertDataTemplateCollectionProvider _defaultTemplateCollectionProvider;
 
+        private static readonly string _templateDirectory = Path.Join("../../../../../", "data", "Templates");
+
+        private static Dictionary<DataType, string> _defaultTemplatesFolderInfo = new ()
+        {
+            { DataType.Hl7v2, "Hl7v2" },
+            { DataType.Ccda, "Ccda" },
+            { DataType.Json, "Json" },
+            { DataType.Fhir, "Stu3ToR4" },
+        };
+
         public DefaultTemplateCollectionProviderTests()
         {
             _config = new TemplateCollectionConfiguration();
@@ -31,18 +42,35 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
         }
 
         [Fact]
-        public async Task GivenDefaultTemplateProvider_WhenGetTemplateCollectionAsync_ThenDefaultTemplatesAreReturned()
+        public async Task GivenDefaultTemplateProvider_WhenGetTemplateCollectionAsync_ThenExpectedDefaultTemplatesAreReturned()
         {
             var templateCollection = await _defaultTemplateCollectionProvider.GetTemplateCollectionAsync(CancellationToken.None);
 
             Assert.Single(templateCollection);
 
             // Verify expected number of templates per data type as per templates packaged from the data/Templates directory.
-            Assert.Equal(2002, templateCollection[0].Count);
-            Assert.Equal(915, templateCollection[0].Where(x => x.Key.StartsWith(DataType.Hl7v2.ToString())).Count());
-            Assert.Equal(821, templateCollection[0].Where(x => x.Key.StartsWith(DataType.Ccda.ToString())).Count());
-            Assert.Equal(2, templateCollection[0].Where(x => x.Key.StartsWith(DataType.Json.ToString())).Count());
-            Assert.Equal(264, templateCollection[0].Where(x => x.Key.StartsWith(DataType.Fhir.ToString())).Count());
+            foreach (var dataType in Enum.GetValues<DataType>())
+            {
+                var templateFolder = _defaultTemplatesFolderInfo[dataType];
+
+                // 'metadata.json' and 'Json/Schema/meta-schema.json' will not be returned as templates.
+                var excludeFiles = new HashSet<string>()
+                {
+                    Path.Join(_templateDirectory, templateFolder, "metadata.json"),
+                    Path.Join(_templateDirectory, templateFolder, "Schema", "meta-schema.json"),
+                };
+                var expectedTemplateFiles = Directory.GetFiles(Path.Join(_templateDirectory, templateFolder), "*", SearchOption.AllDirectories)
+                    .Where(file => !excludeFiles.Contains(file)).ToList();
+                Assert.Equal(expectedTemplateFiles.Count, templateCollection.First().Where(template => template.Key.StartsWith(dataType.ToString())).Count());
+            }
+        }
+
+        [Fact]
+        public async Task GivenDefaultTemplateProvider_WhenGetTemplateCollectionAsync_ThenTemplatesAreCached()
+        {
+            var templateCollection = await _defaultTemplateCollectionProvider.GetTemplateCollectionAsync(CancellationToken.None);
+
+            Assert.Single(templateCollection);
 
             // Verify templates are cached
             Assert.True(_cache.TryGetValue("cached-default-templates", out List<Dictionary<string, Template>> cachedTemplateCollection));

@@ -23,6 +23,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
     /// <summary>
     /// Template collection provider that provides all the default templates (under data/Templates) packaged as embedded resources,
     /// as a template collection to be used by the converter.
+    /// Templates are added to the collection under the respective 'DataType' path, i.e., each template under data/Templates/Hl7v2/ will be added as Hl7v2/*templateName*.liquid
     /// </summary>
     public class DefaultTemplateCollectionProvider : IConvertDataTemplateCollectionProvider
     {
