@@ -8,8 +8,6 @@ using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
-using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
-using Microsoft.Health.Logging.Telemetry;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -18,13 +16,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
     public class ConvertDataTemplateCollectionProviderFunctionalTests : BaseConvertDataFunctionalTests, IClassFixture<TemplateCollectionProviderTestFixture>
     {
         private static readonly ProcessorSettings _processorSettings = new ProcessorSettings();
-        private readonly ITelemetryLogger _telemetryLogger;
         private readonly TemplateCollectionProviderTestFixture _fixture;
+        private readonly ITestOutputHelper _outputHelper;
 
         public ConvertDataTemplateCollectionProviderFunctionalTests(ITestOutputHelper outputHelper, TemplateCollectionProviderTestFixture fixture)
-            : base(outputHelper)
+            : base()
         {
-            _telemetryLogger = new XunitTelemetryLogger(outputHelper);
+            _outputHelper = outputHelper;
             _fixture = fixture;
         }
 
@@ -59,7 +57,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         [Fact]
         public void GivenAnInvalidTemplate_WhenConvertCalled_ExceptionsShouldBeThrown()
         {
-            var hl7v2Processor = new Hl7v2Processor(_processorSettings, _telemetryLogger);
+            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
             var templateCollection = new List<Dictionary<string, Template>>
             {
                 new Dictionary<string, Template>

@@ -7,8 +7,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
-using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
-using Microsoft.Health.Logging.Telemetry;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -29,13 +27,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         };
 
         private readonly ITestOutputHelper _output;
-        private readonly ITelemetryLogger _telemetryLogger;
 
         public RuleBasedTemplateDirectoryProviderTests(ITestOutputHelper output)
             : base(output)
         {
             _output = output;
-            _telemetryLogger = new XunitTelemetryLogger(output);
         }
 
         [Theory]

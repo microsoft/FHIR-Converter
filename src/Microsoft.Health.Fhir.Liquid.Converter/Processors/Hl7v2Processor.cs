@@ -9,6 +9,7 @@ using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {

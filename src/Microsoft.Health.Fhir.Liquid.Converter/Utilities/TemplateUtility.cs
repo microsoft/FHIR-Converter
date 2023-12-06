@@ -11,7 +11,6 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using DotLiquid;
 using DotLiquid.Exceptions;
-using Microsoft.Health.Common.Extension;
 using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;

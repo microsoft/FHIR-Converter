@@ -5,8 +5,6 @@
 
 using System.Threading.Tasks;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
-using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
-using Microsoft.Health.Logging.Telemetry;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -16,13 +14,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
     {
         private readonly TemplateCollectionProviderTestFixture _fixture;
         private readonly ITestOutputHelper _output;
-        private readonly ITelemetryLogger _telemetryLogger;
 
         public RuleBasedTemplateCollectionProviderTests(ITestOutputHelper output, TemplateCollectionProviderTestFixture fixture)
             : base(output)
         {
             _output = output;
-            _telemetryLogger = new XunitTelemetryLogger(output);
             _fixture = fixture;
         }
 

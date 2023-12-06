@@ -16,21 +16,13 @@ using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 {
-<<<<<<<< HEAD:src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/FunctionalTests.cs
-    public class FunctionalTests
-    {
-        private static readonly ProcessorSettings _processorSettings = new ProcessorSettings();
-========
     public class BaseConvertDataFunctionalTests
     {
         private static readonly ProcessorSettings _processorSettings = new ProcessorSettings();
-        private readonly ITelemetryLogger _telemetryLogger;
 
-        public BaseConvertDataFunctionalTests(ITestOutputHelper outputHelper)
+        public BaseConvertDataFunctionalTests()
         {
-            _telemetryLogger = new XunitTelemetryLogger(outputHelper);
         }
->>>>>>>> 3cd4eb1 (bug fixes, default template provider, tests):src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/BaseConvertDataFunctionalTests.cs
 
         public static IEnumerable<object[]> GetDataForHl7v2()
         {
@@ -297,8 +289,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         protected void ConvertHl7v2MessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
-            var hl7v2Processor = new Hl7v2Processor(_processorSettings, _telemetryLogger);
->>>>>>>> 3cd4eb1 (bug fixes, default template provider, tests):src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/BaseConvertDataFunctionalTests.cs
+            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
             var traceInfo = new Hl7v2TraceInfo();
@@ -323,13 +314,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         protected void ConvertCCDAMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
-<<<<<<<< HEAD:src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/FunctionalTests.cs
             var ccdaProcessor = new CcdaProcessor(_processorSettings);
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Ccda");
-
-========
-            var ccdaProcessor = new CcdaProcessor(_processorSettings, _telemetryLogger);
->>>>>>>> 3cd4eb1 (bug fixes, default template provider, tests):src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/BaseConvertDataFunctionalTests.cs
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
             var actualContent = ccdaProcessor.Convert(inputContent, rootTemplate, templateProvider);
@@ -346,13 +331,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         protected void ConvertFHIRMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
-<<<<<<<< HEAD:src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/FunctionalTests.cs
             var fhirProcessor = new FhirProcessor(_processorSettings);
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Stu3ToR4");
-
-========
-            var fhirProcessor = new FhirProcessor(_processorSettings, _telemetryLogger);
->>>>>>>> 3cd4eb1 (bug fixes, default template provider, tests):src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/BaseConvertDataFunctionalTests.cs
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
             var actualContent = fhirProcessor.Convert(inputContent, rootTemplate, templateProvider);
@@ -365,13 +344,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         protected void ConvertJsonMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
-<<<<<<<< HEAD:src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/FunctionalTests.cs
             var jsonProcessor = new JsonProcessor(_processorSettings);
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Json");
-
-========
-            var jsonProcessor = new JsonProcessor(_processorSettings, _telemetryLogger);
->>>>>>>> 3cd4eb1 (bug fixes, default template provider, tests):src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/BaseConvertDataFunctionalTests.cs
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
             var actualContent = jsonProcessor.Convert(inputContent, rootTemplate, templateProvider);

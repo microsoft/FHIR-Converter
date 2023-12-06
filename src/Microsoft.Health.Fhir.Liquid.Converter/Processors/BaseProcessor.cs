@@ -12,6 +12,7 @@ using EnsureThat;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
