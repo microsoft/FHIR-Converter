@@ -1,0 +1,70 @@
+{
+  "messageDefinition": [
+  {
+    "FHS": {
+      "1": "^~\\&",
+      "2": "TestSystem"
+    }
+  },
+  {
+    "BHS": {
+      "1": "^~\\&",
+      "2": "TestSystem"
+    }
+  },
+
+  {% for entry in msg.entry %}
+  {% if entry.resource.resourceType == "Observation" %}
+  {
+    "MSH": {
+      "1": "^~\\&",
+      "3": "TestSystem",
+      "4": "",
+      "5": "TransformationAgent",
+      "6": "",
+      "7": "123",
+      "8": "",
+      "9": "ORU^R01",
+      "10": "1",
+      "11": "T",
+      "12": "2.5",
+    }
+  },
+  {
+    "PID": {
+      "3": "12345",
+      "5": "{{entry.resource.subject.display}}"
+    }
+  },
+  {
+    "OBR": {
+      "2": "{{entry.resource.identifier[0].value}}",
+      "3": "{{entry.resource.code.coding[0].code}}^{{entry.resource.code.coding[0].display}}^LN",
+
+      {% if entry.resource.status == "final" %}
+        "25": "F"
+      {% endif %}
+    }
+  },
+  {
+    "OBX": {
+      "5": "{{entry.resource.valueQuantity.value}}",
+      "6": "{{entry.resource.valueQuantity.unit}}",
+      "7": "{{entry.resource.referenceRange[0].low.value}}-{{entry.resource.referenceRange[0].high.value}}",
+      "8": "{{entry.resource.interpretation[0].coding[0].code}}"
+    }
+  },
+  {% endif %}
+  {% endfor %}
+
+  {
+    "FHS": {
+      "1": "1"
+    }
+  },
+  {
+    "BHS": {
+      "1": "1"
+    }
+  }]
+}

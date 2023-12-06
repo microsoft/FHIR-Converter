@@ -25,6 +25,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         private static readonly string _jsonTestData;
         private static readonly string _jsonExpectData;
         private static readonly string _fhirStu3TestData;
+        private static readonly string _fhirBundleTestData;
+        private static readonly string _fhirBundleExpectedData;
         private static readonly ProcessorSettings _processorSettings;
         private static readonly ITelemetryLogger _telemetryLogger;
 
@@ -35,6 +37,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             _jsonTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Json", "ExamplePatient.json"));
             _jsonExpectData = File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, "ExamplePatient.json"));
             _fhirStu3TestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Stu3", "Patient.json"));
+            _fhirBundleTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Json", "Bundle.json"));
+            _fhirBundleExpectedData = File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, "Bundle.hl7"));
             _processorSettings = new ProcessorSettings();
             _telemetryLogger = new ConsoleTelemetryLogger();
         }
@@ -267,6 +271,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             var testData = JObject.Parse(_jsonTestData);
             var result = processor.Convert(testData, "ExamplePatient", templateProvider);
             Assert.True(JToken.DeepEquals(JObject.Parse(_jsonExpectData), JToken.Parse(result)));
+        }
+
+        [Fact]
+        public void GivenJObjectInput_WhenConvertWithJsonToHl7v2Processor_CorrectResultShouldBeReturned()
+        {
+            var processor = new JsonToHl7v2Processor(_processorSettings, _telemetryLogger);
+            var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
+            var testData = JObject.Parse(_fhirBundleTestData);
+            var result = processor.Convert(testData, "Bundle", templateProvider);
+            Assert.Equal(_fhirBundleExpectedData, result);
         }
     }
 }

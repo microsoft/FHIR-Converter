@@ -52,7 +52,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
             var jsonData = data.ToObject();
             var result = InternalConvertFromObject(jsonData, rootTemplate, templateProvider, traceInfo);
-            return result.ToString();
+            var hl7Message = GenerateHL7Message(JObject.Parse(result));
+            var hl7String = ConvertHl7MessageToString(hl7Message);
+            return hl7String;
         }
 
         public MinimalHl7v2Message GenerateHL7Message(JObject transformations)
