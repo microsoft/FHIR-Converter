@@ -249,7 +249,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
-        public async Task ConvertAndValidatePatientCount(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
+        protected async Task ConvertAndValidatePatientCount(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
             var result = await ConvertData(templateProvider, templateName, samplePath, dataType);
             var patients = result.SelectTokens("$.entry[?(@.resource.resourceType == 'Patient')].resource.id");
@@ -268,7 +268,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             }
         }
 
-        public async Task ConvertAndValidateReferenceResourceId(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
+        protected async Task ConvertAndValidateReferenceResourceId(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
             HashSet<string> referenceResources = new HashSet<string>();
             var result = await ConvertData(templateProvider, templateName, samplePath, dataType);
@@ -291,7 +291,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             }
         }
 
-        public async Task ConvertAndValidateNonemptyResource(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
+        protected async Task ConvertAndValidateNonemptyResource(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
             var result = await ConvertData(templateProvider, templateName, samplePath, dataType);
             var resources = result.SelectTokens("$.entry..resource");
@@ -303,7 +303,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             }
         }
 
-        public async Task ConvertAndValidateNonidenticalResources(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
+        protected async Task ConvertAndValidateNonidenticalResources(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
             var result = await ConvertData(templateProvider, templateName, samplePath, dataType);
             var resourceIds = result.SelectTokens("$.entry..resource.id");
@@ -311,14 +311,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             Assert.Equal(uniqueResourceIds.Count(), resourceIds.Count());
         }
 
-        public async Task ConvertAndValidateValuesRevealInOrigin(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
+        protected async Task ConvertAndValidateValuesRevealInOrigin(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
             var sampleContent = await File.ReadAllTextAsync(samplePath, Encoding.UTF8);
             var result = await ConvertData(templateProvider, templateName, samplePath, dataType);
             RevealObjectValues(sampleContent, result, 0);
         }
 
-        public async Task ConvertAndValidatePassOfficialValidator(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
+        protected async Task ConvertAndValidatePassOfficialValidator(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
             if (_skipValidator)
             {
@@ -355,8 +355,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             Directory.Delete(resultFolder, true);
         }
 
-        [Fact]
-        public async Task ConvertAndValidateParserFunctionality()
+        protected async Task ConvertAndValidateParserFunctionality()
         {
             var jsonResult = await Task.FromResult(@"{
                 ""resourceType"": ""Observation"",
@@ -381,7 +380,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             }
         }
 
-        public async Task ConvertAndValidatePassFhirParser(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
+        protected async Task ConvertAndValidatePassFhirParser(ITemplateProvider templateProvider, string templateName, string samplePath, DataType dataType)
         {
             var result = await ConvertData(templateProvider, templateName, samplePath, dataType);
             var jsonResult = JsonConvert.SerializeObject(result, Formatting.Indented);
@@ -502,7 +501,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             return (process.ExitCode == 0, string.Join(Environment.NewLine, messages));
         }
 
-        internal static class ResourceFilter
+        protected static class ResourceFilter
         {
             private static readonly HashSet<string> _explicitProps = new HashSet<string>
             {

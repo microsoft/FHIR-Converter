@@ -295,57 +295,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
-<<<<<<<< HEAD:src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/FunctionalTests.cs
-        [Fact]
-        public void GivenCcdaMessageForTimezoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
-        {
-            var inputFile = Path.Combine("TestData", "TimezoneHandling", "Input", "CcdaTestTimezoneInput.ccda");
-            var ccdaProcessor = new CcdaProcessor(_processorSettings);
-            var templateDirectory = Path.Join("TestData", "TimezoneHandling", "Template");
-
-            var inputContent = File.ReadAllText(inputFile);
-            var actualContent = ccdaProcessor.Convert(inputContent, "CcdaTestTimezoneTemplate", new TemplateProvider(templateDirectory, DataType.Ccda));
-
-            var actualObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(actualContent);
-
-            Assert.Equal("2001-01", actualObject["datetime1"]);
-            Assert.Equal("2001-01-01", actualObject["datetime2"]);
-            Assert.Equal("2001-01-01", actualObject["datetime3"]);
-            Assert.Contains("2001-11-11T12:00:00", actualObject["datetime4"].ToString());
-            Assert.Contains("2001-11-11T12:23:00", actualObject["datetime5"].ToString());
-            Assert.Equal("2020-01-01T01:01:01+08:00", actualObject["datetime6"]);
-        }
-
-        [Fact]
-        public void GivenHl7v2MessageForTimeZoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
-        {
-            var inputFile = Path.Combine("TestData", "TimezoneHandling", "Input", "Hl7v2TestTimezoneInput.hl7v2");
-            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
-            var templateDirectory = Path.Join("TestData", "TimezoneHandling", "Template");
-
-            var inputContent = File.ReadAllText(inputFile);
-            var traceInfo = new Hl7v2TraceInfo();
-            var actualContent = hl7v2Processor.Convert(inputContent, "Hl7v2TestTimezoneTemplate", new TemplateProvider(templateDirectory, DataType.Hl7v2), traceInfo);
-
-            var actualObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(actualContent);
-
-            Assert.Equal("2001-01", actualObject["datetime1"]);
-            Assert.Equal("2001-01-01", actualObject["datetime2"]);
-            Assert.Equal("2001-01-01", actualObject["datetime3"]);
-            Assert.Contains("2001-11-11T12:00:00", actualObject["datetime4"].ToString());
-            Assert.Contains("2001-11-11T12:23:00", actualObject["datetime5"].ToString());
-            Assert.Equal("2020-01-01T01:01:01+08:00", actualObject["datetime6"]);
-        }
-
-        [Theory]
-        [MemberData(nameof(GetDataForHl7v2))]
-        public void GivenHl7v2Message_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
-        {
-            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Hl7v2");
-
-========
-        public void ConvertHl7v2MessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
+        protected void ConvertHl7v2MessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
             var hl7v2Processor = new Hl7v2Processor(_processorSettings, _telemetryLogger);
 >>>>>>>> 3cd4eb1 (bug fixes, default template provider, tests):src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/BaseConvertDataFunctionalTests.cs
@@ -371,7 +321,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             Assert.True(traceInfo.UnusedSegments.Count > 0);
         }
 
-        public void ConvertCCDAMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
+        protected void ConvertCCDAMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
 <<<<<<<< HEAD:src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/FunctionalTests.cs
             var ccdaProcessor = new CcdaProcessor(_processorSettings);
@@ -394,7 +344,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
         }
 
-        public void ConvertFHIRMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
+        protected void ConvertFHIRMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
 <<<<<<<< HEAD:src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/FunctionalTests.cs
             var fhirProcessor = new FhirProcessor(_processorSettings);
@@ -413,7 +363,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
         }
 
-        public void ConvertJsonMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
+        protected void ConvertJsonMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
 <<<<<<<< HEAD:src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/FunctionalTests.cs
             var jsonProcessor = new JsonProcessor(_processorSettings);
@@ -431,24 +381,5 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
         }
-
-<<<<<<<< HEAD:src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/FunctionalTests.cs
-        [Fact]
-        public void GivenAnInvalidTemplate_WhenConverting_ExceptionsShouldBeThrown()
-        {
-            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
-            var templateCollection = new List<Dictionary<string, Template>>
-            {
-                new Dictionary<string, Template>
-                {
-                    { "template", Template.Parse("{% include 'template' -%}") },
-                },
-            };
-
-            var exception = Assert.Throws<RenderException>(() => hl7v2Processor.Convert(@"MSH|^~\&|", "template", new TemplateProvider(templateCollection)));
-            Assert.True(exception.InnerException is DotLiquid.Exceptions.StackLevelException);
-        }
-========
->>>>>>>> 3cd4eb1 (bug fixes, default template provider, tests):src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/BaseConvertDataFunctionalTests.cs
     }
 }
