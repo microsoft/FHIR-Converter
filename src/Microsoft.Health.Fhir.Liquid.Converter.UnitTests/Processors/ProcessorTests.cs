@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             _jsonExpectData = File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, "ExamplePatient.json"));
             _fhirStu3TestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Stu3", "Patient.json"));
             _fhirBundleTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Json", "Bundle.json"));
-            _fhirBundleExpectedData = File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, "Bundle.hl7"));
+            _fhirBundleExpectedData = File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, "BundleToHl7v2.hl7"));
             _processorSettings = new ProcessorSettings();
             _telemetryLogger = new ConsoleTelemetryLogger();
         }
@@ -279,7 +279,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             var processor = new JsonToHl7v2Processor(_processorSettings, _telemetryLogger);
             var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
             var testData = JObject.Parse(_fhirBundleTestData);
-            var result = processor.Convert(testData, "Bundle", templateProvider);
+            var result = processor.Convert(testData, "BundleToHl7v2", templateProvider);
             Assert.Equal(_fhirBundleExpectedData, result);
         }
     }

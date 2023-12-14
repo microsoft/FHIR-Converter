@@ -2,14 +2,14 @@
   "messageDefinition": [
   {
     "FHS": {
-      "1": "^~\\&",
-      "2": "TestSystem"
+      "2": "^~\\&",
+      "3": "TestSystem"
     }
   },
   {
     "BHS": {
-      "1": "^~\\&",
-      "2": "TestSystem"
+      "2": "^~\\&",
+      "3": "TestSystem"
     }
   },
 
@@ -17,7 +17,7 @@
   {% if entry.resource.resourceType == "Observation" %}
   {
     "MSH": {
-      "1": "^~\\&",
+      "2": "^~\\&",
       "3": "TestSystem",
       "4": "",
       "5": "TransformationAgent",
@@ -32,8 +32,7 @@
   },
   {
     "PID": {
-      "3": "12345",
-      "5": "{{entry.resource.subject.display}}"
+      "3": "{{ msg | to_json_string | evaluate: "$.entry[?(@resource.resourceType == 'Patient')].resource.identifier[0].value" }}"
     }
   },
   {
@@ -58,12 +57,12 @@
   {% endfor %}
 
   {
-    "FHS": {
+    "BTS": {
       "1": "1"
     }
   },
   {
-    "BHS": {
+    "FTS": {
       "1": "1"
     }
   }]
