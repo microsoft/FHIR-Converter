@@ -1,0 +1,54 @@
+steps:
+
+# Package artifacts (binaries, tools and templates)
+
+  - task: notice@0
+    displayName: 'generate NOTICE file'
+    inputs:
+      outputformat: 'text'
+
+  - task: DownloadBuildArtifacts@0
+    inputs:
+      buildType: 'current'
+      downloadType: 'single'
+      artifactName: 'NOTICE.txt'
+      downloadPath: '$(Build.SourcesDirectory)/bin/notice'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet publish tool bin'
+    inputs:
+      command: publish
+      projects: '**/*Tool/*.csproj'
+      arguments: '--configuration $(buildConfiguration) --output $(Build.SourcesDirectory)/bin/publish'
+      nobuild: true
+      publishWebProjects: false
+      zipAfterPublish: false
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet publish tool artifact'
+    inputs:
+      command: publish
+      projects: '**/*Tool/*.csproj'
+      arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/bin'
+      nobuild: true
+      publishWebProjects: false
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet publish functional tests'
+    inputs:
+      command: publish
+      projects: '**/*FunctionalTests/*.csproj'
+      arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/functionalTests'
+      nobuild: true
+      publishWebProjects: false
+      zipAfterPublish: false
+
+  - template: package-templates.yml
+
+# Publish artifacts
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'publish artifacts'
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)' 
+      artifactName: 'FhirConverterBuild'

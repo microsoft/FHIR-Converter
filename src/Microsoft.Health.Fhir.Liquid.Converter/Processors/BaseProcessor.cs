@@ -12,52 +12,28 @@ using EnsureThat;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors;
-using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
-using Microsoft.Health.Logging.Telemetry;
-using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public abstract class BaseProcessor : IFhirConverter
     {
-        private readonly ITelemetryLogger _telemetryLogger;
-
-        protected BaseProcessor(ProcessorSettings processorSettings, ITelemetryLogger telemetryLogger)
+        protected BaseProcessor(ProcessorSettings processorSettings)
         {
             Settings = EnsureArg.IsNotNull(processorSettings, nameof(processorSettings));
-            _telemetryLogger = EnsureArg.IsNotNull(telemetryLogger, nameof(telemetryLogger));
         }
 
         public ProcessorSettings Settings { get; }
-
-        protected ITelemetryLogger TelemetryLogger { get => _telemetryLogger; }
 
         protected virtual string DataKey { get; set; } = "msg";
 
         public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, CancellationToken cancellationToken, TraceInfo traceInfo = null)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string result;
-            using (ITimed totalConversionTime = TelemetryLogger.TrackDuration(ConverterMetrics.TotalDuration))
-            {
-                result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
-            }
-
-            return result;
+            return Convert(data, rootTemplate, templateProvider, traceInfo);
         }
 
-        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
-        {
-            string result;
-            using (ITimed totalConversionTime = TelemetryLogger.TrackDuration(ConverterMetrics.TotalDuration))
-            {
-                result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
-            }
-
-            return result;
-        }
-
-        protected abstract string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
+        public abstract string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
 
         protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
@@ -82,7 +58,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
         }
 
-        protected string InternalConvertFromObject(object data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        protected string Convert(object data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             if (string.IsNullOrEmpty(rootTemplate))
             {
@@ -94,13 +70,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
             }
 
-            // Step: Retrieve Template
-            Template template;
-            using (ITimed templateRetrievalTime = TelemetryLogger.TrackDuration(ConverterMetrics.TemplateRetrievalDuration))
-            {
-               template = templateProvider.GetTemplate(rootTemplate);
-            }
-
+            var template = templateProvider.GetTemplate(rootTemplate);
             if (template == null)
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
@@ -108,24 +78,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
             var dictionary = new Dictionary<string, object> { { DataKey, data } };
             var context = CreateContext(templateProvider, dictionary);
-
-            // Step: Render Template
-            string rawResult;
-            using (ITimed templateRenderTime = TelemetryLogger.TrackDuration(ConverterMetrics.TemplateRenderDuration))
-            {
-                rawResult = RenderTemplates(template, context);
-            }
-
-            // Step: Post-Process
-            JObject result;
-            using (ITimed postProcessTime = TelemetryLogger.TrackDuration(ConverterMetrics.PostProcessDuration))
-            {
-                result = PostProcessor.Process(rawResult);
-            }
-
+            var rawResult = RenderTemplates(template, context);
+            var result = PostProcessor.Process(rawResult);
             CreateTraceInfo(data, context, traceInfo);
 
-            return result.ToString();
+            return result.ToString(Formatting.Indented);
         }
 
         protected string RenderTemplates(Template template, Context context)

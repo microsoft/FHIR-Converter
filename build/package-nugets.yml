@@ -1,0 +1,23 @@
+steps:
+
+# Package nugets
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet pack nugets'
+    inputs:
+      command: custom
+      custom: pack
+      arguments: >
+        --configuration $(buildConfiguration)
+        --output $(Build.artifactStagingDirectory)/nupkgs
+        --no-build
+        -p:NuspecProperties="version=$(nuGetVersion)"
+
+# Publish nugets
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'publish nuget artifacts'
+    inputs:
+      pathToPublish: '$(build.artifactStagingDirectory)/nupkgs'
+      artifactName: 'nuget'
+      publishLocation: 'container'

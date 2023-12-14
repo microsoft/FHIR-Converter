@@ -11,8 +11,6 @@ using Microsoft.Health.Fhir.Liquid.Converter.Extensions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
-using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
-using Microsoft.Health.Logging.Telemetry;
 using Newtonsoft.Json.Linq;
 using NJsonSchema;
 
@@ -22,26 +20,21 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
     {
         private readonly IDataParser _parser = new JsonDataParser();
 
-        public JsonProcessor(ProcessorSettings processorSettings, ITelemetryLogger telemetryLogger)
-            : base(processorSettings, telemetryLogger)
+        public JsonProcessor(ProcessorSettings processorSettings)
+            : base(processorSettings)
         {
         }
 
-        protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
-            object jsonData;
-            using (ITimed inputDeserializationTime = TelemetryLogger.TrackDuration(ConverterMetrics.InputDeserializationDuration))
-            {
-                jsonData = _parser.Parse(data);
-            }
-
-            return InternalConvertFromObject(jsonData, rootTemplate, templateProvider, traceInfo);
+            var jsonData = _parser.Parse(data);
+            return Convert(jsonData, rootTemplate, templateProvider, traceInfo);
         }
 
         public string Convert(JObject data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             var jsonData = data.ToObject();
-            return InternalConvertFromObject(jsonData, rootTemplate, templateProvider, traceInfo);
+            return Convert(jsonData, rootTemplate, templateProvider, traceInfo);
         }
 
         protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
