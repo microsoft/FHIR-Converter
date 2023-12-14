@@ -26,6 +26,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
     {
         private readonly IDataParser _parser = new JsonDataParser();
 
+        private string[] _segmentsWithFieldSeparator = new string[] { "MSH", "BHS", "FHS" };
+
         public JsonToHl7v2Processor(ProcessorSettings processorSettings, ITelemetryLogger telemetryLogger)
             : base(processorSettings, telemetryLogger)
         {
@@ -53,13 +55,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             var jsonData = data.ToObject();
             var result = InternalConvertFromObject(jsonData, rootTemplate, templateProvider, traceInfo);
             var hl7Message = GenerateHL7Message(JObject.Parse(result));
+
             var hl7String = ConvertHl7MessageToString(hl7Message);
             return hl7String;
         }
 
-        public MinimalHl7v2Message GenerateHL7Message(JObject transformations)
+        public Hl7v2Data GenerateHL7Message(JObject transformations)
         {
-            var hl7Segments = new List<MinimalHl7v2Segment>();
+            var hl7Segments = new List<Hl7v2Segment>();
 
             // validate that the template has a messageDefinition section
             if (transformations["messageDefinition"] == null)
@@ -75,7 +78,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 var dataResolution = transformations["messageDefinition"][i] as JObject;
                 var segmentName = dataResolution.Properties().First().Name;
 
-                var fields = new List<string>();
+                var fields = new List<Hl7v2Field>();
 
                 JObject mappingsForSegment = dataResolution.Properties().First().Value as JObject;
 
@@ -94,7 +97,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
                 for (int filler = 0; filler < highestField; filler++)
                 {
-                    fields.Add(string.Empty);
+                    fields.Add(new Hl7v2Field() { Value = string.Empty });
                 }
 
                 // replace any field values with the actual data resolved from the template
@@ -104,25 +107,41 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                     var fieldValue = mapping.Value?.ToString();
                     var fieldPositionIndex = int.Parse(fieldPosition) - 1;
 
-                    fields[fieldPositionIndex] = fieldValue;
+                    if (!_segmentsWithFieldSeparator.Contains(segmentName))
+                    {
+                        fields[fieldPositionIndex] = new Hl7v2Field() { Value = fieldValue };
+                    }
+                    else
+                    {
+                        // the fields in segments with field separators should have a fieldPositionIndex of fieldPositionIndex - 1
+                        if (fieldPositionIndex >= 1)
+                        {
+                            fields[fieldPositionIndex - 1] = new Hl7v2Field() { Value = fieldValue };
+                        }
+
+                        if (fieldPositionIndex == fields.Count - 1)
+                        {
+                            fields.RemoveAt(fieldPositionIndex);
+                        }
+                    }
                 }
 
-                hl7Segments.Add(new MinimalHl7v2Segment(segmentName, fields));
+                hl7Segments.Add(new Hl7v2Segment(string.Empty, fields) { SegmentName = segmentName });
             }
 
-            return new MinimalHl7v2Message(hl7Segments);
+            return new Hl7v2Data() { Data = hl7Segments, EncodingCharacters = new Hl7v2EncodingCharacters() };
         }
 
-        public string ConvertHl7MessageToString(MinimalHl7v2Message message)
+        public string ConvertHl7MessageToString(Hl7v2Data message)
         {
             StringBuilder sb = new StringBuilder();
-            foreach (MinimalHl7v2Segment segment in message.Segments)
+            foreach (Hl7v2Segment segment in message.Data)
             {
-                sb.Append(segment.SegmentName + message.Hl7v2EncodingCharacters.FieldSeparator);
-                foreach (var field in segment.Fields)
+                sb.Append(segment.SegmentName + message.EncodingCharacters.FieldSeparator);
+                foreach (Hl7v2Field field in segment.Fields)
                 {
-                    sb.Append(field);
-                    sb.Append(message.Hl7v2EncodingCharacters.FieldSeparator);
+                    sb.Append(field.Value);
+                    sb.Append(message.EncodingCharacters.FieldSeparator);
                 }
 
                 sb.AppendLine();
