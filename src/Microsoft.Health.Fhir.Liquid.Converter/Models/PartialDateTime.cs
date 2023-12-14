@@ -129,5 +129,39 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 
             return resultDateTime.ToString(dateTimeFormat);
         }
+
+        public string ToHl7v2Date(TimeZoneHandlingMethod timeZoneHandling = TimeZoneHandlingMethod.Preserve)
+        {
+            var resultDateTime = timeZoneHandling switch
+            {
+                TimeZoneHandlingMethod.Preserve => DateTimeValue,
+                TimeZoneHandlingMethod.Utc => DateTimeValue.ToUniversalTime(),
+                TimeZoneHandlingMethod.Local => DateTimeValue.ToLocalTime(),
+                _ => throw new ArgumentException(Resources.InvalidTimeZoneHandling),
+            };
+
+            if (Precision <= DateTimePrecision.Day)
+            {
+                return Precision switch
+                {
+                    DateTimePrecision.Day => resultDateTime.ToString("yyyyMMdd"),
+                    DateTimePrecision.Month => resultDateTime.ToString("yyyyMM"),
+                    DateTimePrecision.Year => resultDateTime.ToString("yyyy"),
+                    _ => throw new ArgumentException("Invalid dateTimeObject with empty Year field.")
+                };
+            }
+
+            string dateTimeFormat;
+            if (Precision < DateTimePrecision.Milliseconds)
+            {
+                dateTimeFormat = "yyyyMMddHHmmssK";
+            }
+            else
+            {
+                dateTimeFormat = MillisecondString == null ? "yyyyMMddHHmmssK" : $"yyyyMMddHHmmss{MillisecondString}K";
+            }
+
+            return resultDateTime.ToString(dateTimeFormat).Replace(":", string.Empty);
+        }
     }
 }
