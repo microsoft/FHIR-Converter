@@ -270,7 +270,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [Fact]
         public void GivenJObjectInput_WhenConvertWithJsonToHl7v2Processor_CorrectResultShouldBeReturned()
         {
-            var processor = new JsonToHl7v2Processor(_processorSettings, _telemetryLogger);
+            var processor = new JsonToHl7v2Processor(_processorSettings);
             var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
             var testData = JObject.Parse(_fhirBundleTestData);
             var result = processor.Convert(testData, "BundleToHl7v2", templateProvider);
