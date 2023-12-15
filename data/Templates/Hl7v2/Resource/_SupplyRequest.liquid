@@ -83,7 +83,7 @@ Task_ReasonReference_ID: A resource Id, used to fill "reasonReference.reference"
 
             "requester": {
                 {% if ORC.12.Repeats[0] -%}
-                    {% evaluate practitionerRole_ID_ORC_12 using 'ID/practitionerRole' XCN: ORC.12.Repeats[0] -%}
+                    {% evaluate practitionerRole_ID_ORC_12 using 'ID/PractitionerRole' XCN: ORC.12.Repeats[0] -%}
                     "reference":"PractitionerRole/{{ practitionerRole_ID_ORC_12 }}",
                 {% elsif ORC.21.Repeats[0] %}
                     {% evaluate practitionerRoleId_ORC_21 using 'ID/PractitionerRole' XCN: ORC.21.Repeats[0] -%}
