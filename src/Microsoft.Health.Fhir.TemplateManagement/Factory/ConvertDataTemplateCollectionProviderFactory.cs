@@ -30,7 +30,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Factory
 
         /// <summary>
         /// Returns the appropriate template collection provider based on the configuration.
-        /// E.g., If storage account configuration is provided, then a blob template collection provider is returned. Otherwise, the default template collection provider is returned.
+        /// E.g., If storage account configuration is provided, then a blob template collection provider is returned.
+        /// Otherwise, the default template collection provider is returned.
         /// </summary>
         /// <returns>Returns a template collection provider based on the configuration.</returns>
         public IConvertDataTemplateCollectionProvider CreateTemplateCollectionProvider()
