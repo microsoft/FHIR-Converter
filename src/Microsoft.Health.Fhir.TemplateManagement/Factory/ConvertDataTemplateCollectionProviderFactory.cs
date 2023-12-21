@@ -39,7 +39,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Factory
 
             if (templateHostingConfiguration?.StorageAccountConfiguration != null)
             {
-                return CreateStorageTemplateCollectionProvider(templateHostingConfiguration.StorageAccountConfiguration);
+                return CreateBlobTemplateCollectionProvider(templateHostingConfiguration.StorageAccountConfiguration);
             }
 
             return CreateDefaultTemplateCollectionProvider();
@@ -67,7 +67,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Factory
         /// </summary>
         /// <param name="storageAccountConfiguration">Storage account configuration containing information of the blob container to load the templates from.</param>
         /// <returns>Returns a blob template collection provider, <see cref="BlobTemplateCollectionProvider">.</returns>
-        private IConvertDataTemplateCollectionProvider CreateStorageTemplateCollectionProvider(StorageAccountConfiguration storageAccountConfiguration)
+        private IConvertDataTemplateCollectionProvider CreateBlobTemplateCollectionProvider(StorageAccountConfiguration storageAccountConfiguration)
         {
             EnsureArg.IsNotNull(storageAccountConfiguration, nameof(storageAccountConfiguration));
             EnsureArg.IsNotNull(storageAccountConfiguration.ContainerUrl, nameof(storageAccountConfiguration.ContainerUrl));
