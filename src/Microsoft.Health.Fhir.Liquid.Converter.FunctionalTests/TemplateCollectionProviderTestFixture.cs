@@ -6,14 +6,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Azure.Core;
-using Azure.Identity;
-using Azure.Storage.Blobs;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
+using Microsoft.Health.Fhir.TemplateManagement.Configurations;
 using Microsoft.Health.Fhir.TemplateManagement.Factory;
-using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
@@ -27,6 +24,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         public TemplateCollectionProviderTestFixture()
         {
             _config = new TemplateCollectionConfiguration();
+
+            if (!string.IsNullOrWhiteSpace(TemplateCollectionStorageContainerUri))
+            {
+                _config.TemplateHostingConfiguration = new TemplateHostingConfiguration()
+                {
+                    StorageAccountConfiguration = new StorageAccountConfiguration()
+                    {
+                        ContainerUrl = new Uri(TemplateCollectionStorageContainerUri),
+                    },
+                };
+            }
+
             _cache = new MemoryCache(new MemoryCacheOptions());
             _convertDataTemplateCollectionProviderFactory = new ConvertDataTemplateCollectionProviderFactory(_cache, Options.Create(_config));
         }
@@ -42,7 +51,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         public virtual async Task InitializeAsync()
         {
-            ConvertDataTemplateCollectionProvider = GetTemplateCollectionProvider();
+            ConvertDataTemplateCollectionProvider = _convertDataTemplateCollectionProviderFactory.CreateTemplateCollectionProvider();
 
             var templateCollection = await ConvertDataTemplateCollectionProvider.GetTemplateCollectionAsync(CancellationToken.None);
 
@@ -52,20 +61,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         public Task DisposeAsync()
         {
             return Task.CompletedTask;
-        }
-
-        private IConvertDataTemplateCollectionProvider GetTemplateCollectionProvider()
-        {
-            // If no storage account container URI is specified, the default template collection provider is used.
-            if (string.IsNullOrEmpty(TemplateCollectionStorageContainerUri))
-            {
-                return _convertDataTemplateCollectionProviderFactory.CreateTemplateCollectionProvider();
-            }
-
-            TokenCredential tokenCredential = new DefaultAzureCredential();
-            var blobContainerClient = new BlobContainerClient(new Uri(TemplateCollectionStorageContainerUri), tokenCredential);
-
-            return _convertDataTemplateCollectionProviderFactory.CreateTemplateCollectionProvider(blobContainerClient);
         }
     }
 }

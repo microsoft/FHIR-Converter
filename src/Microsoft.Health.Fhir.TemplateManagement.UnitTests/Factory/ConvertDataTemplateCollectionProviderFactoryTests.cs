@@ -4,12 +4,11 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using Azure.Storage.Blobs;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
+using Microsoft.Health.Fhir.TemplateManagement.Configurations;
 using Microsoft.Health.Fhir.TemplateManagement.Factory;
-using Microsoft.Health.Fhir.TemplateManagement.Models;
 using NSubstitute;
 using Xunit;
 
@@ -17,60 +16,74 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Factory
 {
     public class ConvertDataTemplateCollectionProviderFactoryTests
     {
-        private readonly TemplateCollectionConfiguration _config;
-        private readonly IMemoryCache _cache;
-        private readonly IConvertDataTemplateCollectionProviderFactory _factory;
-
-        public ConvertDataTemplateCollectionProviderFactoryTests()
-        {
-            _config = new TemplateCollectionConfiguration();
-            _cache = new MemoryCache(new MemoryCacheOptions());
-            _factory = new ConvertDataTemplateCollectionProviderFactory(_cache, Options.Create(_config));
-        }
-
         [Fact]
-        public void GivenValidMockBlobClient_WhenCreateTemplateCollectionProvider_ThenBlobTemplateCollectionProviderReturned()
+        public void GivenValidStorageAccountConfiguration_WhenCreateTemplateCollectionProvider_ThenBlobTemplateCollectionProviderReturned()
         {
-            var blobClient = Substitute.For<BlobContainerClient>();
-            blobClient.Name.Returns("test");
+            var config = new TemplateCollectionConfiguration()
+            {
+                TemplateHostingConfiguration = new TemplateHostingConfiguration()
+                {
+                    StorageAccountConfiguration = new StorageAccountConfiguration()
+                    {
+                        ContainerUrl = new Uri("https://test.blob.core.windows.net/test"),
+                    },
+                },
+            };
 
-            var templateCollectionProvider = _factory.CreateTemplateCollectionProvider(blobClient);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var factory = new ConvertDataTemplateCollectionProviderFactory(cache, Options.Create(config));
+
+            var templateCollectionProvider = factory.CreateTemplateCollectionProvider();
 
             Assert.NotNull(templateCollectionProvider);
             Assert.True(templateCollectionProvider is BlobTemplateCollectionProvider);
-            Assert.True(_cache.TryGetValue("storage-template-provider-test", out IConvertDataTemplateCollectionProvider cachedTemplateCollectionProvider));
+            Assert.True(cache.TryGetValue("storage-template-provider-test", out IConvertDataTemplateCollectionProvider cachedTemplateCollectionProvider));
             Assert.Equal(templateCollectionProvider, cachedTemplateCollectionProvider);
 
             // Call again to test cache
-            cachedTemplateCollectionProvider = _factory.CreateTemplateCollectionProvider(blobClient);
+            cachedTemplateCollectionProvider = factory.CreateTemplateCollectionProvider();
 
             Assert.NotNull(cachedTemplateCollectionProvider);
             Assert.Equal(templateCollectionProvider, cachedTemplateCollectionProvider);
         }
 
         [Fact]
-        public void GivenInvalidBlobClient_WhenCreateTemplateCollectionProvider_ThenBlobTemplateCollectionProviderReturned()
+        public void GivenInvalidStorageAccountConfiguration_WhenCreateTemplateCollectionProvider_ThenExceptionThrown()
         {
-            // Null blob container client
-            Assert.Throws<ArgumentNullException>(() => _factory.CreateTemplateCollectionProvider(blobContainerClient: null));
+            var config = new TemplateCollectionConfiguration()
+            {
+                TemplateHostingConfiguration = new TemplateHostingConfiguration()
+                {
+                    StorageAccountConfiguration = new StorageAccountConfiguration()
+                    {
+                        ContainerUrl = null,
+                    },
+                },
+            };
 
-            // Invalid name blob container client
-            var blobClient = Substitute.For<BlobContainerClient>();
-            Assert.Throws<ArgumentException>(() => _factory.CreateTemplateCollectionProvider(blobClient));
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var factory = new ConvertDataTemplateCollectionProviderFactory(cache, Options.Create(config));
+
+            // Null blob container url
+            Assert.Throws<ArgumentNullException>(() => factory.CreateTemplateCollectionProvider());
         }
 
         [Fact]
-        public void GivenNoClientConfiguration_WhenCreateTemplateCollectionProvider_ThenDefaultTemplateCollectionProviderReturned()
+        public void GivenNoTemplateHostingConfiguration_WhenCreateTemplateCollectionProvider_ThenDefaultTemplateCollectionProviderReturned()
         {
-            var templateCollectionProvider = _factory.CreateTemplateCollectionProvider();
+            var config = new TemplateCollectionConfiguration();
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            var factory = new ConvertDataTemplateCollectionProviderFactory(cache, Options.Create(config));
+
+            var templateCollectionProvider = factory.CreateTemplateCollectionProvider();
 
             Assert.NotNull(templateCollectionProvider);
             Assert.True(templateCollectionProvider is DefaultTemplateCollectionProvider);
-            Assert.True(_cache.TryGetValue("default-template-provider", out IConvertDataTemplateCollectionProvider cachedTemplateCollectionProvider));
+            Assert.True(cache.TryGetValue("default-template-provider", out IConvertDataTemplateCollectionProvider cachedTemplateCollectionProvider));
             Assert.Equal(templateCollectionProvider, cachedTemplateCollectionProvider);
 
             // Call again to test cache
-            cachedTemplateCollectionProvider = _factory.CreateTemplateCollectionProvider();
+            cachedTemplateCollectionProvider = factory.CreateTemplateCollectionProvider();
 
             Assert.NotNull(cachedTemplateCollectionProvider);
             Assert.Equal(templateCollectionProvider, cachedTemplateCollectionProvider);

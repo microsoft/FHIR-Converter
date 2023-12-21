@@ -3,12 +3,14 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using Azure.Core;
+using Azure.Identity;
 using Azure.Storage.Blobs;
 using EnsureThat;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
-using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Configurations;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Factory
 {
@@ -27,10 +29,27 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Factory
         }
 
         /// <summary>
+        /// Returns the appropriate template collection provider based on the configuration.
+        /// E.g., If storage account configuration is provided, then a blob template collection provider is returned. Otherwise, the default template collection provider is returned.
+        /// </summary>
+        /// <returns>Returns a template collection provider based on the configuration.</returns>
+        public IConvertDataTemplateCollectionProvider CreateTemplateCollectionProvider()
+        {
+            var templateHostingConfiguration = _templateCollectionConfiguration.TemplateHostingConfiguration;
+
+            if (templateHostingConfiguration?.StorageAccountConfiguration != null)
+            {
+                return CreateStorageTemplateCollectionProvider(templateHostingConfiguration.StorageAccountConfiguration);
+            }
+
+            return CreateDefaultTemplateCollectionProvider();
+        }
+
+        /// <summary>
         /// Returns the default template collection provider, i.e., template provider that references the default templates packaged within the project.
         /// </summary>
         /// <returns>Returns the default template collection provider, <see cref="DefaultTemplateCollectionProvider">.</returns>
-        public IConvertDataTemplateCollectionProvider CreateTemplateCollectionProvider()
+        private IConvertDataTemplateCollectionProvider CreateDefaultTemplateCollectionProvider()
         {
             var cacheKey = _defaultTemplateProviderCacheKey;
             if (_memoryCache.TryGetValue(cacheKey, out var templateProviderCache))
@@ -46,12 +65,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Factory
         /// <summary>
         /// Returns a blob template collection provider, i.e., template provider that references the templates stored in a blob container.
         /// </summary>
-        /// <param name="blobContainerClient">Blob container client for the blob container to load the templates from.</param>
+        /// <param name="storageAccountConfiguration">Storage account configuration containing information of the blob container to load the templates from.</param>
         /// <returns>Returns a blob template collection provider, <see cref="BlobTemplateCollectionProvider">.</returns>
-        public IConvertDataTemplateCollectionProvider CreateTemplateCollectionProvider(BlobContainerClient blobContainerClient)
+        private IConvertDataTemplateCollectionProvider CreateStorageTemplateCollectionProvider(StorageAccountConfiguration storageAccountConfiguration)
         {
-            EnsureArg.IsNotNull(blobContainerClient, nameof(blobContainerClient));
-            EnsureArg.IsNotNullOrWhiteSpace(blobContainerClient.Name, nameof(blobContainerClient.Name));
+            EnsureArg.IsNotNull(storageAccountConfiguration, nameof(storageAccountConfiguration));
+            EnsureArg.IsNotNull(storageAccountConfiguration.ContainerUrl, nameof(storageAccountConfiguration.ContainerUrl));
+
+            TokenCredential tokenCredential = new DefaultAzureCredential();
+            var blobContainerClient = new BlobContainerClient(storageAccountConfiguration.ContainerUrl, tokenCredential);
 
             var cacheKey = _storageTemplateProviderCachePrefix + blobContainerClient.Name;
             if (_memoryCache.TryGetValue(cacheKey, out var templateProviderCache))

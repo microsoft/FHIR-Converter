@@ -11,7 +11,5 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Factory
     public interface IConvertDataTemplateCollectionProviderFactory
     {
         public IConvertDataTemplateCollectionProvider CreateTemplateCollectionProvider();
-
-        public IConvertDataTemplateCollectionProvider CreateTemplateCollectionProvider(BlobContainerClient blobContainerClient);
     }
 }

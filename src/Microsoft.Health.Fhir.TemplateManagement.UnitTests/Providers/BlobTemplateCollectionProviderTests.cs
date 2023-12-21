@@ -11,7 +11,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
-using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Configurations;
 using Moq;
 using Xunit;
 

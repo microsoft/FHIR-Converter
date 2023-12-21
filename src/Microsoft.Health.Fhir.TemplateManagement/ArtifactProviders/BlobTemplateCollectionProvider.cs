@@ -14,7 +14,7 @@ using Azure.Storage.Blobs.Models;
 using DotLiquid;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
-using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Configurations;
 using Polly;
 using Polly.Retry;
 
