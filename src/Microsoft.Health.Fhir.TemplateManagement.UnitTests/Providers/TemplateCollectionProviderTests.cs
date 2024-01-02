@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.Azure.ContainerRegistry.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
+using Microsoft.Health.Fhir.TemplateManagement.Configurations;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Newtonsoft.Json;

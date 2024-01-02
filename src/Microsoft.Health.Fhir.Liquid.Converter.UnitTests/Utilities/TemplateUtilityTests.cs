@@ -10,6 +10,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
@@ -138,6 +139,61 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
 
             templates = new Dictionary<string, string> { { "InvalidSchema.schema.json", null } };
             exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
+        }
+
+        [Fact]
+        public void GivenNestedTemplates_WhenParseTemplates_CorrectResultShouldBeReturned()
+        {
+            var templates = new Dictionary<string, string>
+            {
+                { "Hl7v2/ADT_A01.liquid", "a" },
+                { "Hl7v2/Resource/_Patient.liquid", "b" },
+                { @"Hl7v2/Resource\_Encounter.liquid", "c" },
+                { "Hl7v2/CodeSystem/CodeSystem.json", @"{""mapping"": {""a"": {""b"": {""c"": ""d""}}}}" },
+            };
+            var parsedTemplates = TemplateUtility.ParseTemplates(templates);
+            Assert.Equal("a", parsedTemplates["Hl7v2/ADT_A01"].Render());
+            Assert.Equal("b", parsedTemplates["Hl7v2/Resource/Patient"].Render());
+            Assert.Equal("c", parsedTemplates["Hl7v2/Resource/Encounter"].Render());
+
+            var codeMapping = (CodeMapping)parsedTemplates["Hl7v2/CodeSystem/CodeSystem"].Root.NodeList.First();
+            Assert.Equal("d", codeMapping.Mapping["a"]["b"]["c"]);
+
+            templates["Hl7v2/Resource/_Patient.liquid"] = null;
+            templates["Hl7v2/CodeSystem/CodeSystem.json"] = null;
+            parsedTemplates = TemplateUtility.ParseTemplates(templates);
+            Assert.Null(parsedTemplates["Hl7v2/Resource/Patient"]);
+            Assert.Null(parsedTemplates["Hl7v2/CodeSystem/CodeSystem"]);
+        }
+
+        [Theory]
+        [InlineData("ADT_A01.liquid", false)]
+        [InlineData("CodeSystem/CodeSystem.json", false)]
+        [InlineData("CodeSystem/CodeSystemUrl", false)]
+        [InlineData("CodeSystem/CodeSystem", true)]
+        [InlineData("Hl7v2/CodeSystem/CodeSystem", true)]
+        public void GivenTemplate_WhenIsCodeMappingTemplate_CorrectResultShouldBeReturned(string template, bool expectedResult)
+        {
+            Assert.Equal(expectedResult, TemplateUtility.IsCodeMappingTemplate(template));
+        }
+
+        [Theory]
+        [InlineData("ADT_A01.liquid", "")]
+        [InlineData("Hl7v2/ADT_A01.liquid", "Hl7v2")]
+        [InlineData("Hl7v2/Hl7v21/ADT_A01.liquid", "Hl7v2/Hl7v21")]
+        public void GivenRootTemplate_WhenGetRootTemplateParentPath_CorrectResultShouldBeReturned(string rootTemplate, string expectedRootTemplateParentPath)
+        {
+            Assert.Equal(expectedRootTemplateParentPath, TemplateUtility.GetRootTemplateParentPath(rootTemplate));
+        }
+
+        [Theory]
+        [InlineData("ADT_A01.liquid", "", "ADT_A01.liquid")]
+        [InlineData("ADT_A01.liquid", "Hl7v2", "Hl7v2/ADT_A01.liquid")]
+        [InlineData("ADT_A01.liquid", "Hl7v2/Hl7v21", "Hl7v2/Hl7v21/ADT_A01.liquid")]
+        [InlineData("Hl7v21/ADT_A01.liquid", "Hl7v2", "Hl7v2/Hl7v21/ADT_A01.liquid")]
+        public void GivenRootTemplate_WhenGetFormattedTemplatePath_CorrectResultShouldBeReturned(string templateName, string rootTemplateParentPath, string expectedFormattedTemplatePath)
+        {
+            Assert.Equal(expectedFormattedTemplatePath, TemplateUtility.GetFormattedTemplatePath(templateName, rootTemplateParentPath));
         }
     }
 }

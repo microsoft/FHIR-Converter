@@ -1,4 +1,4 @@
-// -------------------------------------------------------------------------------------------------
+﻿// -------------------------------------------------------------------------------------------------
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
@@ -7,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using DotLiquid;
-using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
@@ -18,7 +16,7 @@ using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 {
-    public class FunctionalTests
+    public class BaseConvertDataFunctionalTests
     {
         private static readonly ProcessorSettings _processorSettings = new ProcessorSettings();
 
@@ -285,58 +283,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
-        [Fact]
-        public void GivenCcdaMessageForTimezoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
-        {
-            var inputFile = Path.Combine("TestData", "TimezoneHandling", "Input", "CcdaTestTimezoneInput.ccda");
-            var ccdaProcessor = new CcdaProcessor(_processorSettings);
-            var templateDirectory = Path.Join("TestData", "TimezoneHandling", "Template");
-
-            var inputContent = File.ReadAllText(inputFile);
-            var actualContent = ccdaProcessor.Convert(inputContent, "CcdaTestTimezoneTemplate", new TemplateProvider(templateDirectory, DataType.Ccda));
-
-            var actualObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(actualContent);
-
-            Assert.Equal("2001-01", actualObject["datetime1"]);
-            Assert.Equal("2001-01-01", actualObject["datetime2"]);
-            Assert.Equal("2001-01-01", actualObject["datetime3"]);
-            Assert.Contains("2001-11-11T12:00:00", actualObject["datetime4"].ToString());
-            Assert.Contains("2001-11-11T12:23:00", actualObject["datetime5"].ToString());
-            Assert.Equal("2020-01-01T01:01:01+08:00", actualObject["datetime6"]);
-        }
-
-        [Fact]
-        public void GivenHl7v2MessageForTimeZoneTesting_WhenConvert_ExpectedResultShouldBeReturned()
-        {
-            var inputFile = Path.Combine("TestData", "TimezoneHandling", "Input", "Hl7v2TestTimezoneInput.hl7v2");
-            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
-            var templateDirectory = Path.Join("TestData", "TimezoneHandling", "Template");
-
-            var inputContent = File.ReadAllText(inputFile);
-            var traceInfo = new Hl7v2TraceInfo();
-            var actualContent = hl7v2Processor.Convert(inputContent, "Hl7v2TestTimezoneTemplate", new TemplateProvider(templateDirectory, DataType.Hl7v2), traceInfo);
-
-            var actualObject = JsonConvert.DeserializeObject<Dictionary<string, string>>(actualContent);
-
-            Assert.Equal("2001-01", actualObject["datetime1"]);
-            Assert.Equal("2001-01-01", actualObject["datetime2"]);
-            Assert.Equal("2001-01-01", actualObject["datetime3"]);
-            Assert.Contains("2001-11-11T12:00:00", actualObject["datetime4"].ToString());
-            Assert.Contains("2001-11-11T12:23:00", actualObject["datetime5"].ToString());
-            Assert.Equal("2020-01-01T01:01:01+08:00", actualObject["datetime6"]);
-        }
-
-        [Theory]
-        [MemberData(nameof(GetDataForHl7v2))]
-        public void GivenHl7v2Message_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
+        protected void ConvertHl7v2MessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
             var hl7v2Processor = new Hl7v2Processor(_processorSettings);
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Hl7v2");
-
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
             var traceInfo = new Hl7v2TraceInfo();
-            var actualContent = hl7v2Processor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Hl7v2), traceInfo);
+            var actualContent = hl7v2Processor.Convert(inputContent, rootTemplate, templateProvider, traceInfo);
 
             JsonSerializer serializer = new JsonSerializer();
             var expectedObject = serializer.Deserialize<JObject>(new JsonTextReader(new StringReader(expectedContent)));
@@ -355,16 +308,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             Assert.True(traceInfo.UnusedSegments.Count > 0);
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForCcda))]
-        public void GivenCcdaDocument_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
+        protected void ConvertCCDAMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
             var ccdaProcessor = new CcdaProcessor(_processorSettings);
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Ccda");
-
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
-            var actualContent = ccdaProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Ccda));
+            var actualContent = ccdaProcessor.Convert(inputContent, rootTemplate, templateProvider);
 
             var expectedObject = JObject.Parse(expectedContent);
             var actualObject = JObject.Parse(actualContent);
@@ -376,16 +325,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForStu3ToR4))]
-        public void GivenStu3FhirData_WhenConverting_ExpectedR4FhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
+        protected void ConvertFHIRMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
             var fhirProcessor = new FhirProcessor(_processorSettings);
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Stu3ToR4");
-
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
-            var actualContent = fhirProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Fhir));
+            var actualContent = fhirProcessor.Convert(inputContent, rootTemplate, templateProvider);
 
             var expectedObject = JObject.Parse(expectedContent);
             var actualObject = JObject.Parse(actualContent);
@@ -393,37 +338,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
         }
 
-        [Theory]
-        [MemberData(nameof(GetDataForJson))]
-        public void GivenJsonData_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
+        protected void ConvertJsonMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
             var jsonProcessor = new JsonProcessor(_processorSettings);
-            var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "Json");
-
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
-            var actualContent = jsonProcessor.Convert(inputContent, rootTemplate, new TemplateProvider(templateDirectory, DataType.Json));
+            var actualContent = jsonProcessor.Convert(inputContent, rootTemplate, templateProvider);
 
             var expectedObject = JObject.Parse(expectedContent);
             var actualObject = JObject.Parse(actualContent);
 
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
-        }
-
-        [Fact]
-        public void GivenAnInvalidTemplate_WhenConverting_ExceptionsShouldBeThrown()
-        {
-            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
-            var templateCollection = new List<Dictionary<string, Template>>
-            {
-                new Dictionary<string, Template>
-                {
-                    { "template", Template.Parse("{% include 'template' -%}") },
-                },
-            };
-
-            var exception = Assert.Throws<RenderException>(() => hl7v2Processor.Convert(@"MSH|^~\&|", "template", new TemplateProvider(templateCollection)));
-            Assert.True(exception.InnerException is DotLiquid.Exceptions.StackLevelException);
         }
     }
 }

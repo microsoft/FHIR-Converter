@@ -39,6 +39,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             MetaJsonSchema = LoadEmbeddedMetaJsonSchema();
         }
 
+        public static string RootTemplateParentPathScope => "RootTemplateParentPath";
+
         /// <summary>
         /// Parse templates from string, "CodeSystem/CodeSystem.json" and "ValueSet/ValueSet.json" are used for Hl7v2 and C-CDA data type code mapping respectively
         /// </summary>
@@ -72,8 +74,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
         /// <returns>A template key</returns>
         public static string GetTemplateKey(string templatePath)
         {
-            if (string.Equals(templatePath, "CodeSystem/CodeSystem.json", StringComparison.InvariantCultureIgnoreCase)
-                || string.Equals(templatePath, "ValueSet/ValueSet.json", StringComparison.InvariantCultureIgnoreCase)
+            if (templatePath.Contains("CodeSystem/CodeSystem.json", StringComparison.InvariantCultureIgnoreCase)
+                || templatePath.Contains("ValueSet/ValueSet.json", StringComparison.InvariantCultureIgnoreCase)
                 || string.Equals(Path.GetExtension(templatePath), LiquidTemplateFileExtension, StringComparison.InvariantCultureIgnoreCase))
             {
                 return Path.ChangeExtension(templatePath, null);
@@ -187,8 +189,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
 
         public static bool IsCodeMappingTemplate(string templateKey)
         {
-            return string.Equals("CodeSystem/CodeSystem", templateKey, StringComparison.InvariantCultureIgnoreCase) ||
-                   string.Equals("ValueSet/ValueSet", templateKey, StringComparison.InvariantCultureIgnoreCase);
+            return templateKey.EndsWith("CodeSystem/CodeSystem", StringComparison.InvariantCultureIgnoreCase) ||
+                   templateKey.EndsWith("ValueSet/ValueSet", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public static bool IsJsonSchemaTemplate(string templateKey)
@@ -209,6 +211,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             }
 
             return JsonSchema.FromJsonAsync(metaSchemaContent).GetAwaiter().GetResult();
+        }
+
+        public static string GetRootTemplateParentPath(string rootTemplate)
+        {
+            string[] rootTemplateParts = rootTemplate.Split('/');
+            return string.Join("/", rootTemplateParts, 0, rootTemplateParts.Length - 1);
+        }
+
+        public static string GetFormattedTemplatePath(string templateName, string rootTemplateParentPath = "")
+        {
+            return string.IsNullOrEmpty(rootTemplateParentPath) ? templateName : string.Format("{0}/{1}", rootTemplateParentPath, templateName);
         }
     }
 }
