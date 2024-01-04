@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -60,31 +61,89 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
             var hl7Segments = new List<Hl7v2Segment>();
 
-            // validate that the template has a messageDefinition section
+            // Validate that the template has a messageDefinition section
             if (transformations["messageDefinition"] == null)
             {
                 throw new RenderException(
-                    FhirConverterErrorCode.TemplateRenderingError,
-                    "The messageDefinition section was not found in the conversion template");
+                    FhirConverterErrorCode.PropertyNotFound,
+                    "The messageDefinition JSON property was not found in the conversion template");
             }
 
-            // create HL7v2 segments
+            // Create HL7v2 segments based on the liquid template the user supplied
             for (int i = 0; i < transformations["messageDefinition"].Count(); i++)
             {
-                var dataResolution = transformations["messageDefinition"][i] as JObject;
-                var segmentName = dataResolution.Properties().First().Name;
+                var dataResolutionForSegment = transformations["messageDefinition"][i] as JObject;
 
-                var fields = new List<Hl7v2Field>();
+                if (dataResolutionForSegment == null)
+                {
+                    throw new RenderException(
+                        FhirConverterErrorCode.TemplateSyntaxError,
+                        $"The segment mapping in position {i} specified in the messageDefinition is not a valid object");
+                }
 
-                JObject mappingsForSegment = dataResolution.Properties().First().Value as JObject;
+                var segmentName = string.Empty;
+                try
+                {
+                    segmentName = dataResolutionForSegment.Properties().First().Name;
+                    segmentName = segmentName.ToUpper();
+                }
+                catch
+                {
+                    throw new RenderException(
+                        FhirConverterErrorCode.TemplateSyntaxError,
+                        $"The segment name in position {i} specified in the messageDefinition does not exist or is invalid");
+                }
+
+                // Validate that the name of the segment is 3 characters long
+                if (!segmentName.Length.Equals(3))
+                {
+                    throw new RenderException(
+                        FhirConverterErrorCode.TemplateSyntaxError,
+                        $"The segment name {segmentName} in position {i} is invalid. It must be 3 characters long");
+                }
+
+                JObject mappingsForSegment = null;
+                try
+                {
+                    mappingsForSegment = dataResolutionForSegment.Properties().First().Value as JObject;
+
+                    if (mappingsForSegment == null)
+                    {
+                        throw new Exception("The segment mapping for the template is invalid");
+                    }
+                }
+                catch
+                {
+                    throw new RenderException(
+                        FhirConverterErrorCode.TemplateSyntaxError,
+                        $"The segment mapping in position {i} specified in the messageDefinition is not a valid object, or is empty");
+                }
 
                 // Fill in any gaps in fields for the given segment
                 //   - For example if PID-3 is populated but not PID-1 or PID-2 then we should fill in placeholders up until and including PID-3
                 //   - Get highest field position in each segment and fill in lower fields with blank fields
+                var fields = new List<Hl7v2Field>();
+
                 int highestField = 0;
                 foreach (var mapping in mappingsForSegment)
                 {
-                    var fieldPosition = int.Parse(mapping.Key);
+                    var fieldPosition = 0;
+                    try
+                    {
+                        fieldPosition = int.Parse(mapping.Key);
+
+                        if (fieldPosition < 1)
+                        {
+                            throw new Exception("Invalid field number");
+                        }
+                    }
+                    catch
+                    {
+                        throw new RenderException(
+                            FhirConverterErrorCode.TemplateSyntaxError,
+                            $"The field number for the segment {segmentName} in position {i} is not valid. The value supplied was: {mapping.Key}");
+                    }
+
                     if (fieldPosition > highestField)
                     {
                         highestField = fieldPosition;

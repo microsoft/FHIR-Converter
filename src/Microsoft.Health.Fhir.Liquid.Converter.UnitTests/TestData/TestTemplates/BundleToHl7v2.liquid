@@ -15,6 +15,9 @@
 
   {% for entry in msg.entry %}
   {% if entry.resource.resourceType == "Observation" %}
+
+  {% assign patient_reference =  msg | to_json_string | get_object: "$.entry[?(@resource.resourceType == 'Patient')].resource" %}
+
   {
     "MSH": {
       "2": "^~\\&",
@@ -32,7 +35,7 @@
   },
   {
     "PID": {
-      "3": "{{ msg | to_json_string | evaluate: "$.entry[?(@resource.resourceType == 'Patient')].resource.identifier[0].value" }}"
+      "3": {{ patient_reference | evaluate: "$.identifier[0].value" }}
     }
   },
   {

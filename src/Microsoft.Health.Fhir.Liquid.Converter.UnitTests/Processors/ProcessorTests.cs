@@ -276,5 +276,35 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             var result = processor.Convert(testData, "BundleToHl7v2", templateProvider);
             Assert.Equal(_fhirBundleExpectedData, result);
         }
+
+        [Fact]
+        public void GivenJObjectInput_WhenConvertWithJsonToHl7v2ProcessorWithInvalidTemplate_CorrectExceptionShouldBeThrown()
+        {
+            var processor = new JsonToHl7v2Processor(_processorSettings);
+            var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
+            var testData = JObject.Parse(_fhirBundleTestData);
+            var exception = Assert.Throws<RenderException>(() => processor.Convert(testData, "BundleToHl7v2_MissingRequiredProperty", templateProvider));
+            Assert.Equal(FhirConverterErrorCode.PropertyNotFound, exception.FhirConverterErrorCode);
+        }
+
+        [Fact]
+        public void GivenJObjectInput_WhenConvertWithJsonToHl7v2ProcessorWithInvalidMessageDefinitionSegment_CorrectExceptionShouldBeThrown()
+        {
+            var processor = new JsonToHl7v2Processor(_processorSettings);
+            var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
+            var testData = JObject.Parse(_fhirBundleTestData);
+            var exception = Assert.Throws<RenderException>(() => processor.Convert(testData, "BundleToHl7v2_InvalidSegmentObject", templateProvider));
+            Assert.Equal(FhirConverterErrorCode.TemplateSyntaxError, exception.FhirConverterErrorCode);
+        }
+
+        [Fact]
+        public void GivenJObjectInput_WhenConvertWithJsonToHl7v2ProcessorWithInvalidFieldNumber_CorrectExceptionShouldBeThrown()
+        {
+            var processor = new JsonToHl7v2Processor(_processorSettings);
+            var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
+            var testData = JObject.Parse(_fhirBundleTestData);
+            var exception = Assert.Throws<RenderException>(() => processor.Convert(testData, "BundleToHl7v2_InvalidFieldNumber", templateProvider));
+            Assert.Equal(FhirConverterErrorCode.TemplateSyntaxError, exception.FhirConverterErrorCode);
+        }
     }
 }

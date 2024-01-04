@@ -152,13 +152,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
             }
 
             string dateTimeFormat;
-            if (Precision < DateTimePrecision.Milliseconds)
+            if (Precision < DateTimePrecision.Milliseconds || MillisecondString == null)
             {
                 dateTimeFormat = "yyyyMMddHHmmssK";
             }
             else
             {
-                dateTimeFormat = MillisecondString == null ? "yyyyMMddHHmmssK" : $"yyyyMMddHHmmss{MillisecondString}K";
+                dateTimeFormat = $"yyyyMMddHHmmss{MillisecondString}K";
             }
 
             return resultDateTime.ToString(dateTimeFormat).Replace(":", string.Empty);
