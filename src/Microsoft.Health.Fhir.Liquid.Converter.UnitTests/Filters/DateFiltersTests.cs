@@ -155,6 +155,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { @"1970-12-31T11:59:59.1234Z", @"197012311159591234+0000" };
         }
 
+        public static IEnumerable<object[]> GetInvalidFhirToHl7v2TimeZoneHandling()
+        {
+            yield return new object[] { @"2011-01-03T14:34:28-abc", @"20110103143428-0800" };
+            yield return new object[] { @"1970-12-31T11:59:59+36:00", @"19701231115959+0600" };
+        }
+
+        public static IEnumerable<object[]> GetInvalidFhirToHl7v2DataForFormatAsDateTime()
+        {
+            yield return new object[] { @"20badinput"};
+            yield return new object[] { @"2011-01-03T14:34:28--08:00" };
+            yield return new object[] { @"1970.12-31T11:59:59+06:00" };
+            yield return new object[] { @"19701231T11:59:59Z" };
+            yield return new object[] { @"19701231115959" };
+            yield return new object[] { @"1970.12-31T11:59:59.06:00" };
+        }
+
         public static IEnumerable<object[]> GetInvalidDataForAddHyphensDate()
         {
             yield return new object[] { @"20badInput" };
@@ -323,6 +339,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             var result = Filters.FormatAsHl7v2DateTime(input);
             Assert.Equal(expectedDateTime, result);
         }
+
+        [Theory]
+        [MemberData(nameof(GetInvalidFhirToHl7v2TimeZoneHandling))]
+        public void GivenAnInvalidTimeZoneHandling_WhenFormatAsHl7DateTime_ExceptionShouldBeThrown(string input, string timeZoneHandling)
+        {
+            var exception = Assert.Throws<RenderException>(() => Filters.FormatAsHl7v2DateTime(input, timeZoneHandling));
+            Assert.Equal(FhirConverterErrorCode.InvalidTimeZoneHandling, exception.FhirConverterErrorCode);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInvalidFhirToHl7v2DataForFormatAsDateTime))]
+        public void GivenAnInvalidDateTime_WhenFormatAsHl7DateTime_ExceptionShouldBeThrown(string input)
+        {
+            var exception = Assert.Throws<RenderException>(() => Filters.FormatAsHl7v2DateTime(input));
+            Assert.Equal(FhirConverterErrorCode.InvalidDateTimeFormat, exception.FhirConverterErrorCode);
+        }
+
 
         [Fact]
         public void NowTest()
