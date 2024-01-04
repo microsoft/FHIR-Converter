@@ -163,7 +163,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         public static IEnumerable<object[]> GetInvalidFhirToHl7v2DataForFormatAsDateTime()
         {
-            yield return new object[] { @"20badinput"};
+            yield return new object[] { @"20badinput" };
             yield return new object[] { @"2011-01-03T14:34:28--08:00" };
             yield return new object[] { @"1970.12-31T11:59:59+06:00" };
             yield return new object[] { @"19701231T11:59:59Z" };
@@ -355,7 +355,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             var exception = Assert.Throws<RenderException>(() => Filters.FormatAsHl7v2DateTime(input));
             Assert.Equal(FhirConverterErrorCode.InvalidDateTimeFormat, exception.FhirConverterErrorCode);
         }
-
 
         [Fact]
         public void NowTest()
