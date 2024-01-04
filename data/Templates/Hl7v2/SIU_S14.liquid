@@ -469,7 +469,7 @@
 
             {% for aipSegment in aipSegmentLists.AIP -%}
                 {% if aipSegment.3 -%}
-                    {% if aipSegment.3.9.1 != "" and aipSegment.3.9.1 != null and aipSegment.3.9.2 != "" and aipSegment.3.2 != null and aipSegment.3.9.3 != "" and aipSegment.3.9.3 != null -%}
+                    {% if aipSegment.3.9.1 != "" and aipSegment.3.9.1 != null and aipSegment.3.9.2 != "" and aipSegment.3.9.2 != null and aipSegment.3.9.3 != "" and aipSegment.3.9.3 != null -%}
                         {% evaluate organization_ID_AIP_3_9 using 'ID/Organization' HDORG: aipSegment.3.9 -%}
                         {% include 'Resource/Organization', AIP: aipSegment.3.9, ID: organization_ID_AIP_3_9 -%}
                     {% endif -%} 

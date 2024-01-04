@@ -14,16 +14,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     public class TemplateProvider : ITemplateProvider
     {
         private readonly IFhirConverterTemplateFileSystem _fileSystem;
+        private readonly bool _isDefaultTemplateProvider = false;
 
         public TemplateProvider(string templateDirectory, DataType dataType)
         {
             _fileSystem = new TemplateLocalFileSystem(templateDirectory, dataType);
         }
 
-        public TemplateProvider(List<Dictionary<string, Template>> templateCollection)
+        public TemplateProvider(List<Dictionary<string, Template>> templateCollection, bool isDefaultTemplateProvider = false)
         {
             _fileSystem = new MemoryFileSystem(templateCollection);
+            _isDefaultTemplateProvider = isDefaultTemplateProvider;
         }
+
+        public bool IsDefaultTemplateProvider => _isDefaultTemplateProvider;
 
         public Template GetTemplate(string templateName)
         {

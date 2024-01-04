@@ -12,6 +12,7 @@ using DotLiquid.Exceptions;
 using DotLiquid.Util;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NJsonSchema;
@@ -94,7 +95,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
                 throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
             }
 
-            if (!(fileSystem.GetTemplate(_schemaFileName)?.Root is JSchemaDocument jSchemaDocument))
+            if (!(fileSystem.GetTemplate(_schemaFileName, context[TemplateUtility.RootTemplateParentPathScope]?.ToString())?.Root is JSchemaDocument jSchemaDocument))
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, _schemaFileName));
             }

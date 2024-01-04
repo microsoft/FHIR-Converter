@@ -589,27 +589,27 @@
         "requester": {
             {% if ORC.12.Repeats[0] == null or ORC.12.Repeats[0] == "" -%}
                 {% if RXO.14.Repeats[0] -%}
-                    {% evaluate practitionerRole_ID_RXO_14 using 'ID/practitionerRole' XCN: RXO.14.Repeats[0] -%}
+                    {% evaluate practitionerRole_ID_RXO_14 using 'ID/PractitionerRole' XCN: RXO.14.Repeats[0] -%}
                     "reference":"PractitionerRole/{{ practitionerRole_ID_RXO_14 }}",
                 {% elsif RXE.13.Repeats[0] %}
-                    {% evaluate practitionerRole_ID_RXE_13 using 'ID/practitionerRole' XCN: RXE.13.Repeats[0] -%}
+                    {% evaluate practitionerRole_ID_RXE_13 using 'ID/PractitionerRole' XCN: RXE.13.Repeats[0] -%}
                     "reference":"PractitionerRole/{{ practitionerRole_ID_RXE_13 }}"
                 {% elsif ORC.21.Repeats[0] %}
-                    {% evaluate practitionerRole_ID_ORC_21 using 'ID/practitionerRole' XCN: ORC.21.Repeats[0] -%}
+                    {% evaluate practitionerRole_ID_ORC_21 using 'ID/PractitionerRole' XCN: ORC.21.Repeats[0] -%}
                     "reference":"PractitionerRole/{{ practitionerRole_ID_ORC_21 }}"
                 {% endif -%}
             {% endif -%}
             {% if ORC.12.Repeats[0] %}
-                {% evaluate practitionerRole_ID_ORC_12 using 'ID/practitionerRole' XCN: ORC.12.Repeats[0] -%}
+                {% evaluate practitionerRole_ID_ORC_12 using 'ID/PractitionerRole' XCN: ORC.12.Repeats[0] -%}
                 "reference":"PractitionerRole/{{ practitionerRole_ID_ORC_12 }}",
             {% endif %}
         },
         "recorder": {
             {% if ORC.10 -%}
-                {% evaluate practitionerRole_ID_ORC_10 using 'ID/practitionerRole' XCN: ORC.10.Repeats[0] -%}
+                {% evaluate practitionerRole_ID_ORC_10 using 'ID/PractitionerRole' XCN: ORC.10.Repeats[0] -%}
                 "reference":"PractitionerRole/{{ practitionerRole_ID_ORC_10 }}",
             {% elsif ORC.19 %}
-                {% evaluate practitionerRole_ID_ORC_19 using 'ID/practitionerRole' XCN: ORC.19.Repeats[0] -%}
+                {% evaluate practitionerRole_ID_ORC_19 using 'ID/PractitionerRole' XCN: ORC.19.Repeats[0] -%}
                 "reference":"PractitionerRole/{{ practitionerRole_ID_ORC_19 }}",
             {% endif %}
         },

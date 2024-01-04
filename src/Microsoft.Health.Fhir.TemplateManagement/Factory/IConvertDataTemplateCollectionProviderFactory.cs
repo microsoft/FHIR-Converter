@@ -3,12 +3,13 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using Azure.Storage.Blobs;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.Factory
 {
-    public interface ITemplateProviderFactory
+    public interface IConvertDataTemplateCollectionProviderFactory
     {
-        public IConvertDataTemplateProvider GetTemplateProvider();
+        public IConvertDataTemplateCollectionProvider CreateTemplateCollectionProvider();
     }
 }

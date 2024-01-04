@@ -25,6 +25,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
         }
 
+        protected override DataType DataType { get; set; } = DataType.Json;
+
         public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             var jsonData = _parser.Parse(data);
@@ -37,7 +39,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             return Convert(jsonData, rootTemplate, templateProvider, traceInfo);
         }
 
-        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
+        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data, string rootTemplate)
         {
             // Load data and templates
             var cancellationToken = Settings.TimeOut > 0 ? new CancellationTokenSource(Settings.TimeOut).Token : CancellationToken.None;
@@ -55,6 +57,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
             // Load filters
             context.AddFilters(typeof(Filters));
+
+            // Add root template's parent path to context.
+            AddRootTemplatePathScope(context, templateProvider, rootTemplate);
 
             return context;
         }

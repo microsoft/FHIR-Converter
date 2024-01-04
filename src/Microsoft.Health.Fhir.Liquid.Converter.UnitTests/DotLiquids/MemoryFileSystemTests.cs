@@ -9,6 +9,8 @@ using System.Globalization;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
@@ -138,6 +140,89 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.DotLiquids
             var context = new Context(CultureInfo.InvariantCulture);
             context["hello"] = "hello";
             Assert.Throws<NotImplementedException>(() => memoryFileSystem.ReadTemplateFile(context, "hello"));
+        }
+
+        [Theory]
+        [InlineData(null, null, null)]
+        [InlineData("", null, null)]
+        [InlineData("invalidtemplate", null, null)]
+        [InlineData("template0", null, "template0")]
+        [InlineData("template0", "TC0", null)]
+        [InlineData("template1", null, null)]
+        [InlineData("TC1/template1", null, "TC1/template1")]
+        [InlineData("template1", "TC1", "TC1/template1")]
+        [InlineData("template1/subtemplate1", null, null)]
+        [InlineData("TC1/template1/subtemplate1", null, "TC1/template1/subtemplate1")]
+        [InlineData("template1/subtemplate1", "TC1", "TC1/template1/subtemplate1")]
+        [InlineData("template2/subtemplate1", "TC1", "TC1/template2/subtemplate1")]
+        [InlineData("template1", "TC2", "TC2/template1")]
+        [InlineData("template2/subtemplate1", "TC2", "TC2/template2/subtemplate1")]
+        public void GivenValidTemplateCollection_WhenGetTemplateWithRootTemplatePath_CorrectResultShouldBeReturned(string templateName, string rootTemplateParentPath, string expectedTemplate)
+        {
+            var templateCollection = GetMockTemplateCollection();
+            var memoryFileSystem = new MemoryFileSystem(templateCollection);
+
+            var template = memoryFileSystem.GetTemplate(templateName, rootTemplateParentPath);
+            Assert.Equal(expectedTemplate, template?.Render());
+        }
+
+        [Theory]
+        [InlineData(null, null, null)]
+        [InlineData("", null, null)]
+        [InlineData("invalidtemplate", null, null)]
+        [InlineData("template0", null, "template0")]
+        [InlineData("template0", "TC0", null)]
+        [InlineData("template1", null, null)]
+        [InlineData("'TC1/template1'", null, "TC1/template1")]
+        [InlineData("template1", "TC1", "TC1/template1")]
+        [InlineData("template1/subtemplate1", null, null)]
+        [InlineData("'TC1/template1/subtemplate1'", null, "TC1/template1/subtemplate1")]
+        [InlineData("'template1/subtemplate1'", "TC1", "TC1/template1/subtemplate1")]
+        [InlineData("'template2/subtemplate1'", "TC1", "TC1/template2/subtemplate1")]
+        [InlineData("template1", "TC2", "TC2/template1")]
+        [InlineData("'template2/subtemplate1'", "TC2", "TC2/template2/subtemplate1")]
+        public void GivenValidTemplateCollection_WhenGetTemplateWithRootTemplatePathAndContext_CorrectResultShouldBeReturned(string templateName, string rootTemplateParentPath, string expectedTemplate)
+        {
+            var templateCollection = GetMockTemplateCollection();
+            var memoryFileSystem = new MemoryFileSystem(templateCollection);
+
+            var context = new Context(CultureInfo.InvariantCulture);
+            context[TemplateUtility.RootTemplateParentPathScope] = rootTemplateParentPath;
+
+            if (!string.IsNullOrWhiteSpace(templateName))
+            {
+                context[templateName] = templateName;
+            }
+
+            if (string.IsNullOrEmpty(expectedTemplate))
+            {
+                var exception = Assert.Throws<RenderException>(() => memoryFileSystem.GetTemplate(context, templateName));
+                Assert.Equal(FhirConverterErrorCode.TemplateNotFound, exception.FhirConverterErrorCode);
+            }
+            else
+            {
+                var template = memoryFileSystem.GetTemplate(context, templateName);
+                Assert.Equal(expectedTemplate, template.Render());
+            }
+        }
+
+        private List<Dictionary<string, Template>> GetMockTemplateCollection()
+        {
+            return new List<Dictionary<string, Template>>
+            {
+                new ()
+                {
+                    { "template0", Template.Parse("template0") },
+                    { "TC1/template1", Template.Parse("TC1/template1") },
+                    { "TC1/template1/subtemplate1", Template.Parse("TC1/template1/subtemplate1") },
+                    { "TC1/template1/subtemplate2", Template.Parse("TC1/template1/subtemplate2") },
+                    { "TC1/template2/subtemplate1", Template.Parse("TC1/template2/subtemplate1") },
+                    { "TC2/template1", Template.Parse("TC2/template1") },
+                    { "TC2/template1/subtemplate1", Template.Parse("TC2/template1/subtemplate1") },
+                    { "TC2/template1/subtemplate2", Template.Parse("TC2/template1/subtemplate2") },
+                    { "TC2/template2/subtemplate1", Template.Parse("TC2/template2/subtemplate1") },
+                },
+            };
         }
     }
 }
