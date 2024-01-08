@@ -95,5 +95,30 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             return DateTime.UtcNow.ToString(format);
         }
+
+        public static string FormatAsHl7v2DateTime(string input, string timeZoneHandling = "preserve")
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return input;
+            }
+
+            if (!Enum.TryParse(timeZoneHandling, true, out TimeZoneHandlingMethod outputTimeZoneHandling))
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidTimeZoneHandling, Resources.InvalidTimeZoneHandling);
+            }
+
+            PartialDateTime dateTimeObject;
+            try
+            {
+                dateTimeObject = new PartialDateTime(input, DateTimeType.Fhir);
+            }
+            catch (Exception)
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
+            }
+
+            return dateTimeObject.ToHl7v2Date(outputTimeZoneHandling);
+        }
     }
 }

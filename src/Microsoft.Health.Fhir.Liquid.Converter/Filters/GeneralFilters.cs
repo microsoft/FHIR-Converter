@@ -44,6 +44,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return memberToken?.Value<string>();
         }
 
+        public static string GetObject(string input, string path)
+        {
+            if (string.IsNullOrEmpty(input) || string.IsNullOrEmpty(path))
+            {
+                return null;
+            }
+
+            var obj = JObject.Parse(input);
+            var memberToken = obj.SelectToken(path);
+
+            return memberToken.ToString();
+        }
+
         public static string GenerateIdInput(string segment, string resourceType, bool isBaseIdRequired, string baseId = null)
         {
             if (string.IsNullOrWhiteSpace(segment))

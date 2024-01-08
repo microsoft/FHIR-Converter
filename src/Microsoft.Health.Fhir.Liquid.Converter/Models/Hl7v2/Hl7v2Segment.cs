@@ -19,6 +19,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2
             Fields = new SafeList<Hl7v2Field>(fields);
         }
 
+        public string SegmentName { get; set; }
+
         public string Value { get; set; }
 
         public SafeList<Hl7v2Field> Fields { get; set; }
