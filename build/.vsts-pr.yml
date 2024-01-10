@@ -1,0 +1,70 @@
+# DESCRIPTION: 
+# Builds, tests and packages the solution for all PR requests.
+
+name: $(Date:yyyyMMdd)$(Rev:.r)
+
+trigger: none
+
+pr:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - '*'
+    exclude:
+    - '*.md'
+    - docs
+    - data
+
+variables:
+  buildConfiguration: 'Release'
+
+stages:
+- stage: UpdateVersion
+  displayName: 'Determine Semantic Version'
+  jobs:
+  - job: Semver
+    variables:
+      skipComponentGovernanceDetection: true
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - template: update-semver.yml
+
+        # The following script is used to update the build name depending on the availability of the SYSTEM_PULLREQUEST_PULLREQUESTID variable
+      - script: |
+          if [ -n "$SYSTEM_PULLREQUEST_PULLREQUESTID" ]; then
+            echo "##vso[build.updatebuildnumber]pr$SYSTEM_PULLREQUEST_PULLREQUESTID-$BUILD_BUILDNUMBER"
+          else
+            echo "##vso[build.updatebuildnumber]$BUILD_SOURCEBRANCHNAME-$BUILD_BUILDNUMBER"
+          fi
+        displayName: 'Update build number'
+
+- stage: BuildRunUnitTests
+  displayName: 'Build FHIR Converter projects and run unit tests'
+  dependsOn:
+  - UpdateVersion
+  variables:
+    assemblySemVer: $[stageDependencies.UpdateVersion.Semver.outputs['ConvertVersion.GitVersion.AssemblySemVer']]
+    assemblySemFileVer: $[stageDependencies.UpdateVersion.Semver.outputs['ConvertVersion.GitVersion.AssemblySemFileVer']]
+    informationalVersion: $[stageDependencies.UpdateVersion.Semver.outputs['ConvertVersion.GitVersion.InformationalVersion']]
+    majorMinorPatch: $[stageDependencies.UpdateVersion.Semver.outputs['ConvertVersion.GitVersion.MajorMinorPatch']]
+    nuGetVersion: $[stageDependencies.UpdateVersion.Semver.outputs['ConvertVersion.GitVersion.SemVer']]
+  jobs:
+  - job: BuildRunUnitTests
+    displayName: 'Build projects and run unit tests'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: build.yml
+      parameters:
+          packageArtifacts: true
+          packageNugets: false
+
+- stage: FunctionalTests
+  displayName: 'Run functional tests'
+  dependsOn:
+  - BuildRunUnitTests
+  jobs:
+  - template: run-functional-tests.yml

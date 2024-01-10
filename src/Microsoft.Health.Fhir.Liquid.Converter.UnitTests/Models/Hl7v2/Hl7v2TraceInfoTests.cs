@@ -8,7 +8,6 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
-using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Models.Hl7v2
@@ -60,7 +59,7 @@ PID|1||10006579^^^1^MR^1||DUCK^DONALD^D||19241010|M||1|111 DUCK ST^^FOWL^CA^9999
             Assert.Equal(15, traceInfo.UnusedSegments[0].Components[0].End);
 
             // Valid Hl7v2Data after render
-            var processor = new Hl7v2Processor(new ProcessorSettings(), new ConsoleTelemetryLogger());
+            var processor = new Hl7v2Processor(new ProcessorSettings());
             var templateProvider = new TemplateProvider(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2);
             _ = processor.Convert(content, "ADT_A01", templateProvider, traceInfo);
             Assert.Equal(2, traceInfo.UnusedSegments.Count);

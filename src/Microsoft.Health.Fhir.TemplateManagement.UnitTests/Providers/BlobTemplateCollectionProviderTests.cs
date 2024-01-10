@@ -11,13 +11,13 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
-using Microsoft.Health.Fhir.TemplateManagement.Models;
+using Microsoft.Health.Fhir.TemplateManagement.Configurations;
 using Moq;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 {
-    public class BlobTemplateProviderTests
+    public class BlobTemplateCollectionProviderTests
     {
         [Fact]
         public async Task GivenBlobTemplateProvider_WhenGetTemplateCollectionFromTemplateProvider_ThenTemplatesAreReturned()
@@ -25,7 +25,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             var templateConfiguration = new TemplateCollectionConfiguration();
 
             int templateCount = 1;
-            var blobTemplateProvider = new BlobTemplateProvider(GetBlobContainerClientMock(templateCount), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
+            var blobTemplateProvider = new BlobTemplateCollectionProvider(GetBlobContainerClientMock(templateCount), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
 
             var templateCollection = await blobTemplateProvider.GetTemplateCollectionAsync();
 
@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
         {
             var templateConfiguration = new TemplateCollectionConfiguration();
 
-            var blobTemplateProvider = new BlobTemplateProvider(GetBlobContainerClientMock(templateCount: 0), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
+            var blobTemplateProvider = new BlobTemplateCollectionProvider(GetBlobContainerClientMock(templateCount: 0), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
 
             var templateCollection = await blobTemplateProvider.GetTemplateCollectionAsync();
 

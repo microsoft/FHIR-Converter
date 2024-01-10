@@ -12,54 +12,33 @@ using EnsureThat;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors;
-using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
-using Microsoft.Health.Logging.Telemetry;
-using Newtonsoft.Json.Linq;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
+using Newtonsoft.Json;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public abstract class BaseProcessor : IFhirConverter
     {
-        private readonly ITelemetryLogger _telemetryLogger;
-
-        protected BaseProcessor(ProcessorSettings processorSettings, ITelemetryLogger telemetryLogger)
+        protected BaseProcessor(ProcessorSettings processorSettings)
         {
             Settings = EnsureArg.IsNotNull(processorSettings, nameof(processorSettings));
-            _telemetryLogger = EnsureArg.IsNotNull(telemetryLogger, nameof(telemetryLogger));
         }
 
         public ProcessorSettings Settings { get; }
 
-        protected ITelemetryLogger TelemetryLogger { get => _telemetryLogger; }
-
         protected virtual string DataKey { get; set; } = "msg";
+
+        protected virtual DataType DataType { get; set; }
 
         public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, CancellationToken cancellationToken, TraceInfo traceInfo = null)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            string result;
-            using (ITimed totalConversionTime = TelemetryLogger.TrackDuration(ConverterMetrics.TotalDuration))
-            {
-                result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
-            }
-
-            return result;
+            return Convert(data, rootTemplate, templateProvider, traceInfo);
         }
 
-        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
-        {
-            string result;
-            using (ITimed totalConversionTime = TelemetryLogger.TrackDuration(ConverterMetrics.TotalDuration))
-            {
-                result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
-            }
+        public abstract string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
 
-            return result;
-        }
-
-        protected abstract string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
-
-        protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
+        protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data, string rootTemplate)
         {
             // Load data and templates
             var cancellationToken = Settings.TimeOut > 0 ? new CancellationTokenSource(Settings.TimeOut).Token : CancellationToken.None;
@@ -75,6 +54,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             // Load filters
             context.AddFilters(typeof(Filters));
 
+            // Add root template's parent path to context.
+            AddRootTemplatePathScope(context, templateProvider, rootTemplate);
+
             return context;
         }
 
@@ -82,7 +64,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
         }
 
-        protected string InternalConvertFromObject(object data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        protected string Convert(object data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             if (string.IsNullOrEmpty(rootTemplate))
             {
@@ -94,38 +76,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
             }
 
-            // Step: Retrieve Template
-            Template template;
-            using (ITimed templateRetrievalTime = TelemetryLogger.TrackDuration(ConverterMetrics.TemplateRetrievalDuration))
-            {
-               template = templateProvider.GetTemplate(rootTemplate);
-            }
-
+            rootTemplate = templateProvider.IsDefaultTemplateProvider ? string.Format("{0}/{1}", DataType, rootTemplate) : rootTemplate;
+            var template = templateProvider.GetTemplate(rootTemplate);
             if (template == null)
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
             }
 
             var dictionary = new Dictionary<string, object> { { DataKey, data } };
-            var context = CreateContext(templateProvider, dictionary);
-
-            // Step: Render Template
-            string rawResult;
-            using (ITimed templateRenderTime = TelemetryLogger.TrackDuration(ConverterMetrics.TemplateRenderDuration))
-            {
-                rawResult = RenderTemplates(template, context);
-            }
-
-            // Step: Post-Process
-            JObject result;
-            using (ITimed postProcessTime = TelemetryLogger.TrackDuration(ConverterMetrics.PostProcessDuration))
-            {
-                result = PostProcessor.Process(rawResult);
-            }
-
+            var context = CreateContext(templateProvider, dictionary, rootTemplate);
+            var rawResult = RenderTemplates(template, context);
+            var result = PostProcessor.Process(rawResult);
             CreateTraceInfo(data, context, traceInfo);
 
-            return result.ToString();
+            return result.ToString(Formatting.Indented);
         }
 
         protected string RenderTemplates(Template template, Context context)
@@ -151,6 +115,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateRenderingError, string.Format(Resources.TemplateRenderingError, ex.Message), ex);
             }
+        }
+
+        protected void AddRootTemplatePathScope(Context context, ITemplateProvider templateProvider, string rootTemplate)
+        {
+            // Add path to root template's parent. In case of default template provider, use the data type as the parent path, else use the parent path set in the context.
+            context[TemplateUtility.RootTemplateParentPathScope] = templateProvider.IsDefaultTemplateProvider ? DataType : TemplateUtility.GetRootTemplateParentPath(rootTemplate);
         }
     }
 }

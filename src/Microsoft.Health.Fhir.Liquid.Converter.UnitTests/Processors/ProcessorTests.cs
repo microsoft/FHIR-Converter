@@ -5,14 +5,14 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
-using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
-using Microsoft.Health.Logging.Telemetry;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
@@ -25,8 +25,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         private static readonly string _jsonTestData;
         private static readonly string _jsonExpectData;
         private static readonly string _fhirStu3TestData;
+        private static readonly string _fhirBundleTestData;
+        private static readonly string _fhirBundleExpectedData;
         private static readonly ProcessorSettings _processorSettings;
-        private static readonly ITelemetryLogger _telemetryLogger;
+        private static readonly Hl7v2Processor _hl7v2Processor;
+        private static readonly CcdaProcessor _ccdaProcessor;
+        private static readonly JsonProcessor _jsonProcessor;
+        private static readonly FhirProcessor _fhirProcessor;
 
         static ProcessorTests()
         {
@@ -35,16 +40,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             _jsonTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Json", "ExamplePatient.json"));
             _jsonExpectData = File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, "ExamplePatient.json"));
             _fhirStu3TestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Stu3", "Patient.json"));
+            _fhirBundleTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Json", "Bundle.json"));
+            _fhirBundleExpectedData = File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, "BundleToHl7v2.hl7"));
             _processorSettings = new ProcessorSettings();
-            _telemetryLogger = new ConsoleTelemetryLogger();
+
+            _hl7v2Processor = new Hl7v2Processor(_processorSettings);
+            _ccdaProcessor = new CcdaProcessor(_processorSettings);
+            _jsonProcessor = new JsonProcessor(_processorSettings);
+            _fhirProcessor = new FhirProcessor(_processorSettings);
         }
 
         public static IEnumerable<object[]> GetValidInputsWithTemplateDirectory()
         {
-            yield return new object[] { new Hl7v2Processor(_processorSettings, _telemetryLogger), new TemplateProvider(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2), _hl7v2TestData, "ORU_R01" };
-            yield return new object[] { new CcdaProcessor(_processorSettings, _telemetryLogger), new TemplateProvider(TestConstants.CcdaTemplateDirectory, DataType.Ccda), _ccdaTestData, "CCD" };
-            yield return new object[] { new JsonProcessor(_processorSettings, _telemetryLogger), new TemplateProvider(TestConstants.JsonTemplateDirectory, DataType.Json), _jsonTestData, "ExamplePatient" };
-            yield return new object[] { new FhirProcessor(_processorSettings, _telemetryLogger), new TemplateProvider(TestConstants.FhirStu3TemplateDirectory, DataType.Fhir), _fhirStu3TestData, "Patient" };
+            yield return new object[] { _hl7v2Processor, new TemplateProvider(TestConstants.Hl7v2TemplateDirectory, DataType.Hl7v2), _hl7v2TestData, "ORU_R01" };
+            yield return new object[] { _ccdaProcessor, new TemplateProvider(TestConstants.CcdaTemplateDirectory, DataType.Ccda), _ccdaTestData, "CCD" };
+            yield return new object[] { _jsonProcessor, new TemplateProvider(TestConstants.JsonTemplateDirectory, DataType.Json), _jsonTestData, "ExamplePatient" };
+            yield return new object[] { _fhirProcessor, new TemplateProvider(TestConstants.FhirStu3TemplateDirectory, DataType.Fhir), _fhirStu3TestData, "Patient" };
         }
 
         public static IEnumerable<object[]> GetValidInputsWithTemplateCollection()
@@ -57,10 +68,65 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
                 },
             };
 
-            yield return new object[] { new Hl7v2Processor(_processorSettings, _telemetryLogger), new TemplateProvider(templateCollection), _hl7v2TestData };
-            yield return new object[] { new CcdaProcessor(_processorSettings, _telemetryLogger), new TemplateProvider(templateCollection), _ccdaTestData };
-            yield return new object[] { new JsonProcessor(_processorSettings, _telemetryLogger), new TemplateProvider(templateCollection), _jsonTestData };
-            yield return new object[] { new FhirProcessor(_processorSettings, _telemetryLogger), new TemplateProvider(templateCollection), _fhirStu3TestData };
+            yield return new object[] { _hl7v2Processor, new TemplateProvider(templateCollection), _hl7v2TestData };
+            yield return new object[] { _ccdaProcessor, new TemplateProvider(templateCollection), _ccdaTestData };
+            yield return new object[] { _jsonProcessor, new TemplateProvider(templateCollection), _jsonTestData };
+            yield return new object[] { _fhirProcessor, new TemplateProvider(templateCollection), _fhirStu3TestData };
+        }
+
+        public static IEnumerable<object[]> GetMockDefaultTemplateCollection()
+        {
+            var rootTemplate = @"{% include 'Sub/Template1' -%}";
+            var hl7v2SubTemplate = @"{""Hl7v2"":""subtemplate1""}";
+            var ccdaSubTemplate = @"{""Ccda"":""subtemplate1""}";
+            var jsonSubTemplate = @"{""Json"":""subtemplate1""}";
+            var fhirSubTemplate = @"{""Fhir"":""subtemplate1""}";
+
+            var templateCollection = new List<Dictionary<string, Template>>
+            {
+                new Dictionary<string, Template>
+                {
+                    { "Hl7v2/Template1", Template.Parse(rootTemplate) },
+                    { "Hl7v2/Sub/Template1", Template.Parse(hl7v2SubTemplate) },
+                    { "Ccda/Template1", Template.Parse(rootTemplate) },
+                    { "Ccda/Sub/Template1", Template.Parse(ccdaSubTemplate) },
+                    { "Json/Template1", Template.Parse(rootTemplate) },
+                    { "Json/Sub/Template1", Template.Parse(jsonSubTemplate) },
+                    { "Fhir/Template1", Template.Parse(rootTemplate) },
+                    { "Fhir/Sub/Template1", Template.Parse(fhirSubTemplate) },
+                },
+            };
+
+            yield return new object[] { _hl7v2Processor, new TemplateProvider(templateCollection, isDefaultTemplateProvider: true), _hl7v2TestData, hl7v2SubTemplate };
+            yield return new object[] { _ccdaProcessor, new TemplateProvider(templateCollection, isDefaultTemplateProvider: true), _ccdaTestData, ccdaSubTemplate };
+            yield return new object[] { _jsonProcessor, new TemplateProvider(templateCollection, isDefaultTemplateProvider: true), _jsonTestData, jsonSubTemplate };
+            yield return new object[] { _fhirProcessor, new TemplateProvider(templateCollection, isDefaultTemplateProvider: true), _fhirStu3TestData, fhirSubTemplate };
+        }
+
+        public static IEnumerable<object[]> GetNestedTemplateCollection()
+        {
+            var rootTemplate = @"{% include 'Sub/Template1' -%}";
+            var subTemplate = @"{""root"":""subtemplate1""}";
+            var folder1SubTemplate = @"{""Folder1"":""subtemplate1""}";
+            var folder2SubTemplate = @"{""Folder2"":""subtemplate1""}";
+
+            var templateCollection = new List<Dictionary<string, Template>>
+            {
+                new Dictionary<string, Template>
+                {
+                    { "Template1", Template.Parse(rootTemplate) },
+                    { "Sub/Template1", Template.Parse(subTemplate) },
+                    { "Folder1/Template1", Template.Parse(rootTemplate) },
+                    { "Folder1/Sub/Template1", Template.Parse(folder1SubTemplate) },
+                    { "Folder2/Template1", Template.Parse(rootTemplate) },
+                    { "Folder2/Sub/Template1", Template.Parse(folder2SubTemplate) },
+                },
+            };
+
+            yield return new object[] { _hl7v2Processor, new TemplateProvider(templateCollection), _hl7v2TestData, subTemplate, folder1SubTemplate, folder2SubTemplate };
+            yield return new object[] { _ccdaProcessor, new TemplateProvider(templateCollection), _ccdaTestData, subTemplate, folder1SubTemplate, folder2SubTemplate };
+            yield return new object[] { _jsonProcessor, new TemplateProvider(templateCollection), _jsonTestData, subTemplate, folder1SubTemplate, folder2SubTemplate };
+            yield return new object[] { _fhirProcessor, new TemplateProvider(templateCollection), _fhirStu3TestData, subTemplate, folder1SubTemplate, folder2SubTemplate };
         }
 
         public static IEnumerable<object[]> GetValidInputsWithProcessSettings()
@@ -75,26 +141,24 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
                 TimeOut = -1, // expect operation to not timeout
             };
 
-            var telemetryLogger = new ConsoleTelemetryLogger();
-
             yield return new object[]
             {
-                new Hl7v2Processor(new ProcessorSettings(), telemetryLogger), new Hl7v2Processor(positiveTimeOutSettings, telemetryLogger), new Hl7v2Processor(negativeTimeOutSettings, telemetryLogger),
+                new Hl7v2Processor(new ProcessorSettings()), new Hl7v2Processor(positiveTimeOutSettings), new Hl7v2Processor(negativeTimeOutSettings),
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Hl7v2), _hl7v2TestData,
             };
             yield return new object[]
             {
-                new CcdaProcessor(new ProcessorSettings(), telemetryLogger), new CcdaProcessor(positiveTimeOutSettings, telemetryLogger), new CcdaProcessor(negativeTimeOutSettings, telemetryLogger),
+                new CcdaProcessor(new ProcessorSettings()), new CcdaProcessor(positiveTimeOutSettings), new CcdaProcessor(negativeTimeOutSettings),
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Ccda), _ccdaTestData,
             };
             yield return new object[]
             {
-                new JsonProcessor(new ProcessorSettings(), telemetryLogger), new JsonProcessor(positiveTimeOutSettings, telemetryLogger), new JsonProcessor(negativeTimeOutSettings, telemetryLogger),
+                new JsonProcessor(new ProcessorSettings()), new JsonProcessor(positiveTimeOutSettings), new JsonProcessor(negativeTimeOutSettings),
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json), _jsonTestData,
             };
             yield return new object[]
             {
-                new FhirProcessor(new ProcessorSettings(), telemetryLogger), new FhirProcessor(positiveTimeOutSettings, telemetryLogger), new FhirProcessor(negativeTimeOutSettings, telemetryLogger),
+                new FhirProcessor(new ProcessorSettings()), new FhirProcessor(positiveTimeOutSettings), new FhirProcessor(negativeTimeOutSettings),
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Fhir), _fhirStu3TestData,
             };
         }
@@ -103,25 +167,25 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         {
             yield return new object[]
             {
-                new Hl7v2Processor(_processorSettings, _telemetryLogger),
+                _hl7v2Processor,
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Hl7v2),
                 _hl7v2TestData,
             };
             yield return new object[]
             {
-                new CcdaProcessor(_processorSettings, _telemetryLogger),
+                _ccdaProcessor,
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Ccda),
                 _ccdaTestData,
             };
             yield return new object[]
             {
-                new JsonProcessor(_processorSettings, _telemetryLogger),
+                _jsonProcessor,
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json),
                 _jsonTestData,
             };
             yield return new object[]
             {
-                new FhirProcessor(_processorSettings, _telemetryLogger),
+                _fhirProcessor,
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Fhir),
                 _fhirStu3TestData,
             };
@@ -131,25 +195,25 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         {
             yield return new object[]
             {
-                new Hl7v2Processor(_processorSettings, _telemetryLogger),
+                _hl7v2Processor,
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Hl7v2),
                 _hl7v2TestData,
             };
             yield return new object[]
             {
-                new CcdaProcessor(_processorSettings, _telemetryLogger),
+                _ccdaProcessor,
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Ccda),
                 _ccdaTestData,
             };
             yield return new object[]
             {
-                new JsonProcessor(_processorSettings, _telemetryLogger),
+                _jsonProcessor,
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json),
                 _jsonTestData,
             };
             yield return new object[]
             {
-                new FhirProcessor(_processorSettings, _telemetryLogger),
+                _fhirProcessor,
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Fhir),
                 _fhirStu3TestData,
             };
@@ -169,6 +233,40 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         {
             var result = processor.Convert(data, "TemplateName", templateProvider);
             Assert.True(result.Length > 0);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetMockDefaultTemplateCollection))]
+        public void GivenDefaultTemplateCollection_WhenConvert_CorrectResultShouldBeReturned(IFhirConverter processor, ITemplateProvider templateProvider, string data, string expectedTemplate)
+        {
+            var result = processor.Convert(data, "Template1", templateProvider);
+            Assert.Equal(expectedTemplate, Regex.Replace(result, @"\s", string.Empty));
+
+            result = processor.Convert(data, "Sub/Template1", templateProvider);
+            Assert.Equal(expectedTemplate, Regex.Replace(result, @"\s", string.Empty));
+
+            var exception = Assert.Throws<RenderException>(() => processor.Convert(data, "NonExistentTemplateName", templateProvider));
+            Assert.Equal(FhirConverterErrorCode.TemplateNotFound, exception.FhirConverterErrorCode);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetNestedTemplateCollection))]
+        public void GivenNestedTemplateCollection_WhenConvert_CorrectResultShouldBeReturned(IFhirConverter processor, ITemplateProvider templateProvider, string data, string expectedSubTemplate, string expectedFolder1SubTemplate, string expectedFolder2SubTemplate)
+        {
+            var result = processor.Convert(data, "Template1", templateProvider);
+            Assert.Equal(expectedSubTemplate, Regex.Replace(result, @"\s", string.Empty));
+
+            result = processor.Convert(data, "Folder1/Template1", templateProvider);
+            Assert.Equal(expectedFolder1SubTemplate, Regex.Replace(result, @"\s", string.Empty));
+
+            result = processor.Convert(data, "Folder2/Template1", templateProvider);
+            Assert.Equal(expectedFolder2SubTemplate, Regex.Replace(result, @"\s", string.Empty));
+
+            result = processor.Convert(data, "Folder2/Sub/Template1", templateProvider);
+            Assert.Equal(expectedFolder2SubTemplate, Regex.Replace(result, @"\s", string.Empty));
+
+            var exception = Assert.Throws<RenderException>(() => processor.Convert(data, "NonExistentTemplateName", templateProvider));
+            Assert.Equal(FhirConverterErrorCode.TemplateNotFound, exception.FhirConverterErrorCode);
         }
 
         [Theory]
@@ -262,11 +360,51 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [Fact]
         public void GivenJObjectInput_WhenConvertWithJsonProcessor_CorrectResultShouldBeReturned()
         {
-            var processor = new JsonProcessor(_processorSettings, _telemetryLogger);
+            var processor = _jsonProcessor;
             var templateProvider = new TemplateProvider(TestConstants.JsonTemplateDirectory, DataType.Json);
             var testData = JObject.Parse(_jsonTestData);
             var result = processor.Convert(testData, "ExamplePatient", templateProvider);
             Assert.True(JToken.DeepEquals(JObject.Parse(_jsonExpectData), JToken.Parse(result)));
+        }
+
+        [Fact]
+        public void GivenJObjectInput_WhenConvertWithJsonToHl7v2Processor_CorrectResultShouldBeReturned()
+        {
+            var processor = new JsonToHl7v2Processor(_processorSettings);
+            var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
+            var testData = JObject.Parse(_fhirBundleTestData);
+            var result = processor.Convert(testData, "BundleToHl7v2", templateProvider);
+            Assert.Equal(_fhirBundleExpectedData, result);
+        }
+
+        [Fact]
+        public void GivenJObjectInput_WhenConvertWithJsonToHl7v2ProcessorWithInvalidTemplate_CorrectExceptionShouldBeThrown()
+        {
+            var processor = new JsonToHl7v2Processor(_processorSettings);
+            var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
+            var testData = JObject.Parse(_fhirBundleTestData);
+            var exception = Assert.Throws<RenderException>(() => processor.Convert(testData, "BundleToHl7v2_MissingRequiredProperty", templateProvider));
+            Assert.Equal(FhirConverterErrorCode.PropertyNotFound, exception.FhirConverterErrorCode);
+        }
+
+        [Fact]
+        public void GivenJObjectInput_WhenConvertWithJsonToHl7v2ProcessorWithInvalidMessageDefinitionSegment_CorrectExceptionShouldBeThrown()
+        {
+            var processor = new JsonToHl7v2Processor(_processorSettings);
+            var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
+            var testData = JObject.Parse(_fhirBundleTestData);
+            var exception = Assert.Throws<RenderException>(() => processor.Convert(testData, "BundleToHl7v2_InvalidSegmentObject", templateProvider));
+            Assert.Equal(FhirConverterErrorCode.TemplateSyntaxError, exception.FhirConverterErrorCode);
+        }
+
+        [Fact]
+        public void GivenJObjectInput_WhenConvertWithJsonToHl7v2ProcessorWithInvalidFieldNumber_CorrectExceptionShouldBeThrown()
+        {
+            var processor = new JsonToHl7v2Processor(_processorSettings);
+            var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
+            var testData = JObject.Parse(_fhirBundleTestData);
+            var exception = Assert.Throws<RenderException>(() => processor.Convert(testData, "BundleToHl7v2_InvalidFieldNumber", templateProvider));
+            Assert.Equal(FhirConverterErrorCode.TemplateSyntaxError, exception.FhirConverterErrorCode);
         }
     }
 }

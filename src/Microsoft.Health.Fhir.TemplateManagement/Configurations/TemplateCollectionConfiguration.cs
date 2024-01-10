@@ -5,7 +5,7 @@
 
 using System;
 
-namespace Microsoft.Health.Fhir.TemplateManagement.Models
+namespace Microsoft.Health.Fhir.TemplateManagement.Configurations
 {
     public class TemplateCollectionConfiguration
     {
@@ -14,5 +14,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         public TimeSpan LongCacheTimeSpan { get; set; } = TimeSpan.FromMinutes(60);
 
         public int TemplateCollectionSizeLimitMegabytes { get; set; } = 10;
+
+        public TemplateHostingConfiguration TemplateHostingConfiguration { get; set; }
     }
 }

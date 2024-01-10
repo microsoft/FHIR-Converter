@@ -47,7 +47,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             return GetTemplate(templateKey) ?? throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, templateKey));
         }
 
-        public Template GetTemplate(string templateKey)
+        public Template GetTemplate(string templateKey, string rootTemplateParentPath = "")
         {
             if (string.IsNullOrEmpty(templateKey))
             {

@@ -1,0 +1,72 @@
+{
+  "messageDefinition": [
+  {
+    "FHS": {
+      "2": "^~\\&",
+      "3": "TestSystem"
+    }
+  },
+  {
+    "BHS": {
+      "2": "^~\\&",
+      "3": "TestSystem"
+    }
+  },
+
+  {% for entry in msg.entry %}
+  {% if entry.resource.resourceType == "Observation" %}
+
+  {% assign patient_reference =  msg | to_json_string | get_object: "$.entry[?(@resource.resourceType == 'Patient')].resource" %}
+
+  {
+    "MSH": {
+      "2": "^~\\&",
+      "3": "TestSystem",
+      "4": "",
+      "5": "TransformationAgent",
+      "6": "",
+      "7": "123",
+      "8": "",
+      "9": "ORU^R01",
+      "10": "1",
+      "11": "T",
+      "12": "2.5",
+    }
+  },
+  {
+    "PID": {
+      "3": {{ patient_reference | evaluate: "$.identifier[0].value" }}
+    }
+  },
+  {
+    "OBR": {
+      "2": "{{entry.resource.identifier[0].value}}",
+      "3": "{{entry.resource.code.coding[0].code}}^{{entry.resource.code.coding[0].display}}^LN",
+
+      {% if entry.resource.status == "final" %}
+        "25": "F"
+      {% endif %}
+    }
+  },
+  {
+    "OBX": {
+      "5": "{{entry.resource.valueQuantity.value}}",
+      "6": "{{entry.resource.valueQuantity.unit}}",
+      "7": "{{entry.resource.referenceRange[0].low.value}}-{{entry.resource.referenceRange[0].high.value}}",
+      "8": "{{entry.resource.interpretation[0].coding[0].code}}"
+    }
+  },
+  {% endif %}
+  {% endfor %}
+
+  {
+    "BTS": {
+      "1": "1"
+    }
+  },
+  {
+    "FTS": {
+      "1": "1"
+    }
+  }]
+}

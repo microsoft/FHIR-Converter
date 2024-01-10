@@ -4,13 +4,11 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
-using Microsoft.Health.Fhir.Liquid.Converter.Telemetry;
-using Microsoft.Health.Logging.Telemetry;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
@@ -18,33 +16,36 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
     {
         private readonly IDataParser _parser = new CcdaDataParser();
 
-        public CcdaProcessor(ProcessorSettings processorSettings, ITelemetryLogger telemetryLogger)
-            : base(processorSettings, telemetryLogger)
+        public CcdaProcessor(ProcessorSettings processorSettings)
+            : base(processorSettings)
         {
         }
 
-        protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        protected override DataType DataType { get; set; } = DataType.Ccda;
+        public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
-            object ccdaData;
-            using (ITimed inputDeserializationTime = TelemetryLogger.TrackDuration(ConverterMetrics.InputDeserializationDuration))
-            {
-                ccdaData = _parser.Parse(data);
-            }
-
-            return InternalConvertFromObject(ccdaData, rootTemplate, templateProvider, traceInfo);
+            var ccdaData = _parser.Parse(data);
+            return Convert(ccdaData, rootTemplate, templateProvider, traceInfo);
         }
 
-        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
+        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data, string rootTemplate)
         {
             // Load value set mapping
-            var context = base.CreateContext(templateProvider, data);
-            var codeMapping = templateProvider.GetTemplate("ValueSet/ValueSet");
+            var context = base.CreateContext(templateProvider, data, rootTemplate);
+            var codeMapping = templateProvider.GetTemplate(GetCodeMappingTemplatePath(context));
             if (codeMapping?.Root?.NodeList?.First() != null)
             {
                 context["CodeMapping"] = codeMapping.Root.NodeList.First();
             }
 
             return context;
+        }
+
+        private string GetCodeMappingTemplatePath(Context context)
+        {
+            var rootTemplateParentPath = context[TemplateUtility.RootTemplateParentPathScope]?.ToString();
+            var codeSystemTemplateName = "ValueSet/ValueSet";
+            return TemplateUtility.GetFormattedTemplatePath(codeSystemTemplateName, rootTemplateParentPath);
         }
     }
 }

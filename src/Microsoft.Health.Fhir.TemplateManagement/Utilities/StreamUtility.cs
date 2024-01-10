@@ -20,7 +20,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
 {
     public class StreamUtility
     {
-        public static Dictionary<string, byte[]> DecompressFromTarGz(Stream tarGzStream)
+        public static Dictionary<string, byte[]> DecompressFromTarGz(Stream tarGzStream, string artifactFolder = "")
         {
             try
             {
@@ -41,7 +41,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
                         }
                         else
                         {
-                            artifacts.Add(Path.GetRelativePath("./", fileName).Replace("\\", "/"), byteContent);
+                            var artifactName = Path.GetRelativePath("./", fileName).Replace("\\", "/");
+                            artifactName = string.IsNullOrWhiteSpace(artifactFolder) ? artifactName : string.Format("{0}/{1}", artifactFolder, artifactName);
+
+                            artifacts.Add(artifactName, byteContent);
                         }
                     }
                 }

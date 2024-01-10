@@ -15,7 +15,7 @@
     },
     {% endif -%}
   ],
-  "occurrenceDateTime" : "{{msg.date}}",
+  "occurrenceDateTime" : "{{ msg.date | date: "yyyy-MM-ddTHH:mm:ss.fff%K" }}",
   "performer" : [ {{ msg.practitioner | to_array | batch_render: 'Immunization/Practitioner', 'msg' }} ],
   "reasonCode" : {{msg.explanation.reason | to_json_string | default : '""'}},
   "reasonCode" : {{msg.explanation.reasonNotGiven | to_json_string | default : '""'}},
@@ -27,4 +27,3 @@
   "notGiven" : ""
 }
 {% endmergeDiff -%}
-

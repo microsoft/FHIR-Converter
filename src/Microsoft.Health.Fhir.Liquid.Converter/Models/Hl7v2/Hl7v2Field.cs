@@ -20,6 +20,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2
             Repeats = new SafeList<Hl7v2Field>();
         }
 
+        public Hl7v2Field()
+        {
+        }
+
         public string Value { get; set; }
 
         public SafeList<Hl7v2Component> Components { get; set; }

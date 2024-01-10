@@ -1,0 +1,85 @@
+# DESCRIPTION:
+# Builds, tests and packages the solution for the CI build configuration.
+name: $(SourceBranchName)-$(Date:yyyyMMdd)$(Rev:-r)
+
+parameters:
+- name: push
+  displayName: Push
+  type: boolean
+  default: true
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - '*'
+    exclude:
+    - '*.md'
+    - docs
+    - data
+
+pr: none
+
+variables:
+  buildConfiguration: 'Release'
+
+stages:
+- stage: UpdateVersion
+  displayName: 'Determine Semantic Version'
+  jobs:
+  - job: Semver
+    variables:
+      skipComponentGovernanceDetection: true
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+      - template: update-semver.yml
+
+        # The following script is used to update the build name depending on the availability of the SYSTEM_PULLREQUEST_PULLREQUESTID variable
+      - script: |
+          if [ -n "$SYSTEM_PULLREQUEST_PULLREQUESTID" ]; then
+            echo "##vso[build.updatebuildnumber]pr$SYSTEM_PULLREQUEST_PULLREQUESTID-$BUILD_BUILDNUMBER"
+          else
+            echo "##vso[build.updatebuildnumber]$BUILD_SOURCEBRANCHNAME-$BUILD_BUILDNUMBER"
+          fi
+        displayName: 'Update build number'
+
+- stage: BuildRunUnitTests
+  displayName: 'Build FHIR Converter projects and run unit tests'
+  dependsOn:
+  - UpdateVersion
+  variables:
+    assemblySemVer: $[stageDependencies.UpdateVersion.Semver.outputs['ConvertVersion.GitVersion.AssemblySemVer']]
+    assemblySemFileVer: $[stageDependencies.UpdateVersion.Semver.outputs['ConvertVersion.GitVersion.AssemblySemFileVer']]
+    informationalVersion: $[stageDependencies.UpdateVersion.Semver.outputs['ConvertVersion.GitVersion.InformationalVersion']]
+    majorMinorPatch: $[stageDependencies.UpdateVersion.Semver.outputs['ConvertVersion.GitVersion.MajorMinorPatch']]
+    nuGetVersion: $[stageDependencies.UpdateVersion.Semver.outputs['ConvertVersion.GitVersion.SemVer']]
+  jobs:
+  - job: BuildRunUnitTests
+    displayName: 'Build projects and run unit tests'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: build.yml
+
+- stage: FunctionalTests
+  displayName: 'Run functional tests'
+  dependsOn:
+  - BuildRunUnitTests
+  jobs:
+  - template: run-functional-tests.yml
+
+- stage: PublishNugets
+  displayName: 'Publish FHIR Converter nuget packages'
+  condition: and(succeeded(), eq(${{ parameters.push }}, true))
+  dependsOn:
+  - FunctionalTests
+  jobs:
+  - job: PublishNugets
+    displayName: 'publish nugets'
+    pool:
+      vmImage: 'windows-latest'
+    steps:
+    - template: publish-nugets.yml

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 {
@@ -31,7 +32,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
 
         public Template GetTemplate(Context context, string templateName)
         {
-            var templatePath = (string)context[templateName];
+            var templatePath = GetTemplatePath(context, templateName);
             if (templatePath == null)
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, templateName));
@@ -40,12 +41,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             return GetTemplate(templatePath) ?? throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, templatePath));
         }
 
-        public Template GetTemplate(string templateName)
+        public Template GetTemplate(string templateName, string rootTemplateParentPath = "")
         {
             if (string.IsNullOrEmpty(templateName))
             {
                 return null;
             }
+
+            templateName = TemplateUtility.GetFormattedTemplatePath(templateName, rootTemplateParentPath);
 
             foreach (var templates in _templateCollection)
             {
@@ -56,6 +59,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.DotLiquids
             }
 
             return null;
+        }
+
+        private string GetTemplatePath(Context context, string templateName)
+        {
+            // Get root template's parent path. This to account for cases where the root template is in a subfolder.
+            var rootTemplateParentPath = context[TemplateUtility.RootTemplateParentPathScope]?.ToString();
+
+            var templatePath = context[templateName]?.ToString();
+
+            return TemplateUtility.GetFormattedTemplatePath(templatePath, rootTemplateParentPath);
         }
     }
 }

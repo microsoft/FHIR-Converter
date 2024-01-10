@@ -4,25 +4,26 @@
 // -------------------------------------------------------------------------------------------------
 
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
-using Microsoft.Health.Logging.Telemetry;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public class FhirProcessor : JsonProcessor
     {
-        public FhirProcessor(ProcessorSettings processorSettings, ITelemetryLogger telemetryLogger)
-            : base(processorSettings, telemetryLogger)
+        public FhirProcessor(ProcessorSettings processorSettings)
+            : base(processorSettings)
         {
         }
 
-        protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        protected override DataType DataType { get; set; } = DataType.Fhir;
+
+        public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             // TO DO For FHIR Specific Logic
             // 1. Add FHIR related checks for pre-processor and post-processor.
             // 2. Add log for version conversion.
             // 3. Add logic to process "extension" and "contained" fields.
 
-            return base.InternalConvert(data, rootTemplate, templateProvider, traceInfo);
+            return base.Convert(data, rootTemplate, templateProvider, traceInfo);
         }
     }
 }

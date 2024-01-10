@@ -11,6 +11,7 @@ using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
 {
@@ -37,7 +38,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         public static string BatchRender(Context context, List<object> collection, string templateName, string variableName)
         {
             var templateFileSystem = context.Registers["file_system"] as IFhirConverterTemplateFileSystem;
-            var template = templateFileSystem?.GetTemplate(templateName);
+            var template = templateFileSystem?.GetTemplate(templateName, context[TemplateUtility.RootTemplateParentPathScope]?.ToString());
 
             if (template == null)
             {
