@@ -7,24 +7,31 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
+using System.Timers;
 using DotLiquid;
 using EnsureThat;
+using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors;
 using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
+using Microsoft.Health.MeasurementUtility;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public abstract class BaseProcessor : IFhirConverter
     {
-        protected BaseProcessor(ProcessorSettings processorSettings)
+        protected BaseProcessor(ProcessorSettings processorSettings, ILogger<BaseProcessor> logger)
         {
             Settings = EnsureArg.IsNotNull(processorSettings, nameof(processorSettings));
+            Logger = EnsureArg.IsNotNull(logger, nameof(logger));
         }
 
         public ProcessorSettings Settings { get; }
+
+        protected ILogger<BaseProcessor> Logger { get; }
 
         protected virtual string DataKey { get; set; } = "msg";
 
@@ -33,10 +40,29 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, CancellationToken cancellationToken, TraceInfo traceInfo = null)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return Convert(data, rootTemplate, templateProvider, traceInfo);
+            string result;
+            using (ITimed totalConversionTime =
+                Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.TotalDuration, duration)))
+            {
+                result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
+            }
+
+            return result;
         }
 
-        public abstract string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
+        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        {
+            string result;
+            using (ITimed totalConversionTime = 
+                Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.TotalDuration, duration)))
+            {
+                result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
+            }
+
+            return result;
+        }
+
+        protected abstract string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
 
         protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data, string rootTemplate)
         {
@@ -64,7 +90,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
         }
 
-        protected string Convert(object data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        protected string InternalConvertFromObject(object data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             if (string.IsNullOrEmpty(rootTemplate))
             {
@@ -77,7 +103,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             }
 
             rootTemplate = templateProvider.IsDefaultTemplateProvider ? string.Format("{0}/{1}", DataType, rootTemplate) : rootTemplate;
-            var template = templateProvider.GetTemplate(rootTemplate);
+
+            // Step: Retrieve Template
+            Template template;
+            using (ITimed totalConversionTime =
+                Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.TemplateRetrievalDuration, duration)))
+            {
+                template = templateProvider.GetTemplate(rootTemplate);
+            }
+
             if (template == null)
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
@@ -85,8 +119,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
             var dictionary = new Dictionary<string, object> { { DataKey, data } };
             var context = CreateContext(templateProvider, dictionary, rootTemplate);
-            var rawResult = RenderTemplates(template, context);
-            var result = PostProcessor.Process(rawResult);
+
+            // Step: Render Template
+            string rawResult;
+            using (ITimed templateRenderTime =
+                Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.TemplateRenderDuration, duration)))
+            {
+                rawResult = RenderTemplates(template, context);
+            }
+
+            // Step: Post-Process
+            JObject result;
+            using (ITimed postProcessTime =
+                Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.PostProcessDuration, duration)))
+            {
+                result = PostProcessor.Process(rawResult);
+            }
+
             CreateTraceInfo(data, context, traceInfo);
 
             return result.ToString(Formatting.Indented);

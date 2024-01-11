@@ -14,6 +14,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
 
         public static ILogger CreateLogger(Type type) => LoggerFactory.CreateLogger(type);
 
-        public static ILogger CreateLogger<T>() => LoggerFactory.CreateLogger<T>();
+        public static ILogger<T> CreateLogger<T>() => LoggerFactory.CreateLogger<T>();
     }
 }

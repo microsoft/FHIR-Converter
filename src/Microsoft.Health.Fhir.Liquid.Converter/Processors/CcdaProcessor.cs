@@ -6,9 +6,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using DotLiquid;
+using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
 using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
+using Microsoft.Health.MeasurementUtility;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
@@ -16,16 +18,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
     {
         private readonly IDataParser _parser = new CcdaDataParser();
 
-        public CcdaProcessor(ProcessorSettings processorSettings)
-            : base(processorSettings)
+        public CcdaProcessor(ProcessorSettings processorSettings, ILogger<CcdaProcessor> logger)
+            : base(processorSettings, logger)
         {
         }
 
         protected override DataType DataType { get; set; } = DataType.Ccda;
-        public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+
+        protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
-            var ccdaData = _parser.Parse(data);
-            return Convert(ccdaData, rootTemplate, templateProvider, traceInfo);
+            object ccdaData;
+            using (ITimed inputDeserializationTime =
+                Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.InputDeserializationDuration, duration)))
+            {
+                ccdaData = _parser.Parse(data);
+            }
+
+            return InternalConvertFromObject(ccdaData, rootTemplate, templateProvider, traceInfo);
         }
 
         protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data, string rootTemplate)

@@ -10,12 +10,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using DotLiquid;
+using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Extensions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
+using Microsoft.Health.MeasurementUtility;
 using Newtonsoft.Json.Linq;
 using NJsonSchema;
 
@@ -27,18 +29,21 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         private string[] _segmentsWithFieldSeparator = new string[] { "MSH", "BHS", "FHS" };
 
-        public JsonToHl7v2Processor(ProcessorSettings processorSettings)
-            : base(processorSettings)
+        public JsonToHl7v2Processor(ProcessorSettings processorSettings, ILogger<JsonToHl7v2Processor> logger)
+            : base(processorSettings, logger)
         {
         }
 
-        public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             object jsonData;
+            using (ITimed inputDeserializationTime =
+    Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.InputDeserializationDuration, duration)))
+            {
+                jsonData = _parser.Parse(data);
+            }
 
-            jsonData = _parser.Parse(data);
-
-            var result = Convert(jsonData, rootTemplate, templateProvider, traceInfo);
+            var result = InternalConvertFromObject(jsonData, rootTemplate, templateProvider, traceInfo);
 
             var hl7Message = GenerateHL7Message(JObject.Parse(result));
 
@@ -50,7 +55,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         public string Convert(JObject data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             var jsonData = data.ToObject();
-            var result = Convert(jsonData, rootTemplate, templateProvider, traceInfo);
+            var result = InternalConvertFromObject(jsonData, rootTemplate, templateProvider, traceInfo);
             var hl7Message = GenerateHL7Message(JObject.Parse(result));
 
             var hl7String = ConvertHl7MessageToString(hl7Message);

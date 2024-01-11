@@ -6,10 +6,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using DotLiquid;
+using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
 using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
+using Microsoft.Health.MeasurementUtility;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
@@ -17,8 +19,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
     {
         private readonly IDataParser _parser = new Hl7v2DataParser();
 
-        public Hl7v2Processor(ProcessorSettings processorSettings)
-            : base(processorSettings)
+        public Hl7v2Processor(ProcessorSettings processorSettings, ILogger<Hl7v2Processor> logger)
+            : base(processorSettings, logger)
         {
         }
 
@@ -26,10 +28,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         protected override DataType DataType { get; set; } = DataType.Hl7v2;
 
-        public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
+        protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
-            var hl7v2Data = _parser.Parse(data);
-            return Convert(hl7v2Data, rootTemplate, templateProvider, traceInfo);
+            object hl7v2Data;
+            using (ITimed inputDeserializationTime =
+    Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.InputDeserializationDuration, duration)))
+            {
+                hl7v2Data = _parser.Parse(data);
+            }
+
+            return InternalConvertFromObject(hl7v2Data, rootTemplate, templateProvider, traceInfo);
         }
 
         protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data, string rootTemplate)
