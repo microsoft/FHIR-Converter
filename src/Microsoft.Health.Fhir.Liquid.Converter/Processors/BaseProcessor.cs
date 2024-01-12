@@ -53,7 +53,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             string result;
-            using (ITimed totalConversionTime = 
+            using (ITimed totalConversionTime =
                 Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.TotalDuration, duration)))
             {
                 result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);

@@ -285,7 +285,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         protected void ConvertHl7v2MessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
-            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
+            var hl7v2Processor = new Hl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<Hl7v2Processor>());
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
             var traceInfo = new Hl7v2TraceInfo();
@@ -310,7 +310,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         protected void ConvertCCDAMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
-            var ccdaProcessor = new CcdaProcessor(_processorSettings);
+            var ccdaProcessor = new CcdaProcessor(_processorSettings, FhirConverterLogging.CreateLogger<CcdaProcessor>());
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
             var actualContent = ccdaProcessor.Convert(inputContent, rootTemplate, templateProvider);
@@ -327,7 +327,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         protected void ConvertFHIRMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
-            var fhirProcessor = new FhirProcessor(_processorSettings);
+            var fhirProcessor = new FhirProcessor(_processorSettings, FhirConverterLogging.CreateLogger<FhirProcessor>());
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
             var actualContent = fhirProcessor.Convert(inputContent, rootTemplate, templateProvider);
@@ -340,7 +340,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
 
         protected void ConvertJsonMessageAndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
         {
-            var jsonProcessor = new JsonProcessor(_processorSettings);
+            var jsonProcessor = new JsonProcessor(_processorSettings, FhirConverterLogging.CreateLogger<JsonProcessor>());
             var inputContent = File.ReadAllText(inputFile);
             var expectedContent = File.ReadAllText(expectedFile);
             var actualContent = jsonProcessor.Convert(inputContent, rootTemplate, templateProvider);

@@ -41,8 +41,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         {
             this._output = output;
 
-            _hl7v2Processor = new Hl7v2Processor(_processorSettings);
-            _ccdaProcessor = new CcdaProcessor(_processorSettings);
+            _hl7v2Processor = new Hl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<Hl7v2Processor>());
+            _ccdaProcessor = new CcdaProcessor(_processorSettings, FhirConverterLogging.CreateLogger<CcdaProcessor>());
         }
 
         public static IEnumerable<object[]> GetHL7V2RuleBasedTestCases()
