@@ -42,7 +42,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             cancellationToken.ThrowIfCancellationRequested();
             string result;
             using (ITimed totalConversionTime =
-                Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.TotalDuration, duration)))
+                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.TotalDuration, duration)))
             {
                 result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
             }
@@ -54,7 +54,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
             string result;
             using (ITimed totalConversionTime =
-                Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.TotalDuration, duration)))
+                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.TotalDuration, duration)))
             {
                 result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
             }
@@ -107,7 +107,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             // Step: Retrieve Template
             Template template;
             using (ITimed totalConversionTime =
-                Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.TemplateRetrievalDuration, duration)))
+                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.TemplateRetrievalDuration, duration)))
             {
                 template = templateProvider.GetTemplate(rootTemplate);
             }
@@ -123,7 +123,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             // Step: Render Template
             string rawResult;
             using (ITimed templateRenderTime =
-                Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.TemplateRenderDuration, duration)))
+                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.TemplateRenderDuration, duration)))
             {
                 rawResult = RenderTemplates(template, context);
             }
@@ -131,7 +131,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             // Step: Post-Process
             JObject result;
             using (ITimed postProcessTime =
-                Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.PostProcessDuration, duration)))
+                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.PostProcessDuration, duration)))
             {
                 result = PostProcessor.Process(rawResult);
             }
@@ -170,6 +170,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
             // Add path to root template's parent. In case of default template provider, use the data type as the parent path, else use the parent path set in the context.
             context[TemplateUtility.RootTemplateParentPathScope] = templateProvider.IsDefaultTemplateProvider ? DataType : TemplateUtility.GetRootTemplateParentPath(rootTemplate);
+        }
+
+        protected void LogTelemetry(string telemetryName, double duration)
+        {
+            if (Settings.EnableTelemetryLogger)
+            {
+                Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.TemplateRenderDuration, duration);
+            }
         }
     }
 }

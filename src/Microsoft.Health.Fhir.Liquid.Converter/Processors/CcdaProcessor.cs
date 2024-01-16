@@ -29,7 +29,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
             object ccdaData;
             using (ITimed inputDeserializationTime =
-                Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.InputDeserializationDuration, duration)))
+                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.InputDeserializationDuration, duration)))
             {
                 ccdaData = _parser.Parse(data);
             }

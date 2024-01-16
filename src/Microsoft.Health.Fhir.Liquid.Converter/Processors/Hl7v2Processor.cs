@@ -32,7 +32,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
             object hl7v2Data;
             using (ITimed inputDeserializationTime =
-    Performance.TrackDuration(duration => Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.InputDeserializationDuration, duration)))
+                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.InputDeserializationDuration, duration)))
             {
                 hl7v2Data = _parser.Parse(data);
             }

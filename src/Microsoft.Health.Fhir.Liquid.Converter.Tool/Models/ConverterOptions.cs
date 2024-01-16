@@ -33,5 +33,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool.Models
 
         [Option('t', "IsTraceInfo", Required = false, HelpText = "Provide trace information in the output")]
         public bool IsTraceInfo { get; set; }
+
+        [Option('v', "Verbose", Required = false, HelpText = "Output detailed processor diagnostics and performance data.")]
+        public bool IsVerboseEnabled { get; set; }
     }
 }
