@@ -4,6 +4,8 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Globalization;
+using System.Linq;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
@@ -94,6 +96,31 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         public static string Now(string input, string format = "yyyy-MM-ddTHH:mm:ss.FFFZ")
         {
             return DateTime.UtcNow.ToString(format);
+        }
+
+        /* Converts an HL7v2 time interval to the FHIR format for time
+        /    HL7v2 - 2.8.35.2 Explicit time interval (ST)
+        /    FHIR  - time https://build.fhir.org/datatypes.html#time
+        */
+        public static string FormatTimeWithColon(string input, string inputFormat = "HHmm")
+        {
+            // For backwards compatibility, if the input is not a 4 digit numeric value then just return the value
+            if (string.IsNullOrEmpty(input) || (!(input.All(char.IsDigit) && (input.Length == 4))))
+            {
+                return input;
+            }
+
+            var dt = TimeSpan.Zero;
+            try
+            {
+                dt = DateTime.ParseExact(input, inputFormat, CultureInfo.InvariantCulture).TimeOfDay;
+            }
+            catch (Exception)
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
+            }
+
+            return dt.ToString();
         }
 
         public static string FormatAsHl7v2DateTime(string input, string timeZoneHandling = "preserve")

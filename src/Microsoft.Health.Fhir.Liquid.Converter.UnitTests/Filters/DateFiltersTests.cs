@@ -220,6 +220,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { @"2001-01T" };
         }
 
+        public static IEnumerable<object[]> GetValidDataForTimeHandling()
+        {
+            yield return new object[] { @"0730", "07:30:00" };
+            yield return new object[] { @"1730", "17:30:00" };
+            yield return new object[] { @"18:45", "18:45" };
+            yield return new object[] { @"09:45:50", "09:45:50" };
+            yield return new object[] { @"1", "1" };
+            yield return new object[] { @"abc", "abc" };
+            yield return new object[] { null, null };
+        }
+
+        public static IEnumerable<object[]> GetInvalidDataForTimeHandling()
+        {
+            yield return new object[] { @"9999" };
+        }
+
         [Theory]
         [MemberData(nameof(GetValidDataForAddSeconds))]
         public void GivenSeconds_WhenAddOnValidDateTime_CorrectDateTimeStringShouldBeReturned(string originalDateTime, double seconds, string timeZoneHandling, string expectedDateTime)
@@ -353,6 +369,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         public void GivenAnInvalidDateTime_WhenFormatAsHl7DateTime_ExceptionShouldBeThrown(string input)
         {
             var exception = Assert.Throws<RenderException>(() => Filters.FormatAsHl7v2DateTime(input));
+            Assert.Equal(FhirConverterErrorCode.InvalidDateTimeFormat, exception.FhirConverterErrorCode);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidDataForTimeHandling))]
+        public void GivenAValidData_WhenFormatTimeWithColon_FormattedTimeOrOriginalInputShouldBeReturned(string input, string expectedDateTime)
+        {
+            var result = Filters.FormatTimeWithColon(input);
+            Assert.Equal(expectedDateTime, result);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInvalidDataForTimeHandling))]
+        public void GivenInvalidData_WhenFormatAsTimeInterval_InputTimeShouldBeReturnedAndNoExceptionThrown(string input)
+        {
+            var exception = Assert.Throws<RenderException>(() => Filters.FormatTimeWithColon(input));
             Assert.Equal(FhirConverterErrorCode.InvalidDateTimeFormat, exception.FhirConverterErrorCode);
         }
 
