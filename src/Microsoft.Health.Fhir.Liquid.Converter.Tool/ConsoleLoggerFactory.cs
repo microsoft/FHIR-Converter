@@ -6,14 +6,14 @@
 using System;
 using Microsoft.Extensions.Logging;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter
+namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
 {
-    public static class FhirConverterLogging
+    public class ConsoleLoggerFactory
     {
-        public static ILoggerFactory LoggerFactory { get; set; } = new LoggerFactory();
+        private static ILoggerFactory loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
 
-        public static ILogger CreateLogger(Type type) => LoggerFactory.CreateLogger(type);
+        public static ILogger CreateLogger(Type type) => loggerFactory.CreateLogger(type);
 
-        public static ILogger<T> CreateLogger<T>() => LoggerFactory.CreateLogger<T>();
+        public static ILogger<T> CreateLogger<T>() => loggerFactory.CreateLogger<T>();
     }
 }

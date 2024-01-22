@@ -56,7 +56,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         [Fact]
         public void GivenAnInvalidTemplate_WhenConvertCalled_ExceptionsShouldBeThrown()
         {
-            var hl7v2Processor = new Hl7v2Processor(_processorSettings);
+            var hl7v2Processor = new Hl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<Hl7v2Processor>());
             var templateCollection = new List<Dictionary<string, Template>>
             {
                 new Dictionary<string, Template>

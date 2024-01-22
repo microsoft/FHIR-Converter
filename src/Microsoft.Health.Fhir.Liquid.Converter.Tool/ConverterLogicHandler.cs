@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
@@ -31,6 +32,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             var dataType = GetDataTypes(options.TemplateDirectory);
             var dataProcessor = CreateDataProcessor(dataType);
             var templateProvider = CreateTemplateProvider(dataType, options.TemplateDirectory);
+            DefaultProcessorSettings.EnableTelemetryLogger = options.IsVerboseEnabled;
 
             if (!string.IsNullOrEmpty(options.InputDataContent))
             {
@@ -97,10 +99,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
         {
             return dataType switch
             {
-                DataType.Hl7v2 => new Hl7v2Processor(DefaultProcessorSettings),
-                DataType.Ccda => new CcdaProcessor(DefaultProcessorSettings),
-                DataType.Json => new JsonProcessor(DefaultProcessorSettings),
-                DataType.Fhir => new FhirProcessor(DefaultProcessorSettings),
+                DataType.Hl7v2 => new Hl7v2Processor(DefaultProcessorSettings, ConsoleLoggerFactory.CreateLogger<Hl7v2Processor>()),
+                DataType.Ccda => new CcdaProcessor(DefaultProcessorSettings, ConsoleLoggerFactory.CreateLogger<CcdaProcessor>()),
+                DataType.Json => new JsonProcessor(DefaultProcessorSettings, ConsoleLoggerFactory.CreateLogger<JsonProcessor>()),
+                DataType.Fhir => new FhirProcessor(DefaultProcessorSettings, ConsoleLoggerFactory.CreateLogger<FhirProcessor>()),
                 _ => throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported")
             };
         }

@@ -44,10 +44,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             _fhirBundleExpectedData = File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, "BundleToHl7v2.hl7"));
             _processorSettings = new ProcessorSettings();
 
-            _hl7v2Processor = new Hl7v2Processor(_processorSettings);
-            _ccdaProcessor = new CcdaProcessor(_processorSettings);
-            _jsonProcessor = new JsonProcessor(_processorSettings);
-            _fhirProcessor = new FhirProcessor(_processorSettings);
+            _hl7v2Processor = new Hl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<Hl7v2Processor>());
+            _ccdaProcessor = new CcdaProcessor(_processorSettings, FhirConverterLogging.CreateLogger<CcdaProcessor>());
+            _jsonProcessor = new JsonProcessor(_processorSettings, FhirConverterLogging.CreateLogger<JsonProcessor>());
+            _fhirProcessor = new FhirProcessor(_processorSettings, FhirConverterLogging.CreateLogger<FhirProcessor>());
         }
 
         public static IEnumerable<object[]> GetValidInputsWithTemplateDirectory()
@@ -143,22 +143,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
 
             yield return new object[]
             {
-                new Hl7v2Processor(new ProcessorSettings()), new Hl7v2Processor(positiveTimeOutSettings), new Hl7v2Processor(negativeTimeOutSettings),
+                new Hl7v2Processor(new ProcessorSettings(), FhirConverterLogging.CreateLogger<Hl7v2Processor>()), new Hl7v2Processor(positiveTimeOutSettings, FhirConverterLogging.CreateLogger<Hl7v2Processor>()), new Hl7v2Processor(negativeTimeOutSettings, FhirConverterLogging.CreateLogger<Hl7v2Processor>()),
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Hl7v2), _hl7v2TestData,
             };
             yield return new object[]
             {
-                new CcdaProcessor(new ProcessorSettings()), new CcdaProcessor(positiveTimeOutSettings), new CcdaProcessor(negativeTimeOutSettings),
+                new CcdaProcessor(new ProcessorSettings(), FhirConverterLogging.CreateLogger<CcdaProcessor>()), new CcdaProcessor(positiveTimeOutSettings, FhirConverterLogging.CreateLogger<CcdaProcessor>()), new CcdaProcessor(negativeTimeOutSettings, FhirConverterLogging.CreateLogger<CcdaProcessor>()),
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Ccda), _ccdaTestData,
             };
             yield return new object[]
             {
-                new JsonProcessor(new ProcessorSettings()), new JsonProcessor(positiveTimeOutSettings), new JsonProcessor(negativeTimeOutSettings),
+                new JsonProcessor(new ProcessorSettings(), FhirConverterLogging.CreateLogger<JsonProcessor>()), new JsonProcessor(positiveTimeOutSettings, FhirConverterLogging.CreateLogger<JsonProcessor>()), new JsonProcessor(negativeTimeOutSettings, FhirConverterLogging.CreateLogger<JsonProcessor>()),
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json), _jsonTestData,
             };
             yield return new object[]
             {
-                new FhirProcessor(new ProcessorSettings()), new FhirProcessor(positiveTimeOutSettings), new FhirProcessor(negativeTimeOutSettings),
+                new FhirProcessor(new ProcessorSettings(), FhirConverterLogging.CreateLogger<FhirProcessor>()), new FhirProcessor(positiveTimeOutSettings, FhirConverterLogging.CreateLogger<FhirProcessor>()), new FhirProcessor(negativeTimeOutSettings, FhirConverterLogging.CreateLogger<FhirProcessor>()),
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Fhir), _fhirStu3TestData,
             };
         }
@@ -370,7 +370,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [Fact]
         public void GivenJObjectInput_WhenConvertWithJsonToHl7v2Processor_CorrectResultShouldBeReturned()
         {
-            var processor = new JsonToHl7v2Processor(_processorSettings);
+            var processor = new JsonToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<JsonToHl7v2Processor>());
             var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
             var testData = JObject.Parse(_fhirBundleTestData);
             var result = processor.Convert(testData, "BundleToHl7v2", templateProvider);
@@ -380,7 +380,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [Fact]
         public void GivenJObjectInput_WhenConvertWithJsonToHl7v2ProcessorWithInvalidTemplate_CorrectExceptionShouldBeThrown()
         {
-            var processor = new JsonToHl7v2Processor(_processorSettings);
+            var processor = new JsonToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<JsonToHl7v2Processor>());
             var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
             var testData = JObject.Parse(_fhirBundleTestData);
             var exception = Assert.Throws<RenderException>(() => processor.Convert(testData, "BundleToHl7v2_MissingRequiredProperty", templateProvider));
@@ -390,7 +390,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [Fact]
         public void GivenJObjectInput_WhenConvertWithJsonToHl7v2ProcessorWithInvalidMessageDefinitionSegment_CorrectExceptionShouldBeThrown()
         {
-            var processor = new JsonToHl7v2Processor(_processorSettings);
+            var processor = new JsonToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<JsonToHl7v2Processor>());
             var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
             var testData = JObject.Parse(_fhirBundleTestData);
             var exception = Assert.Throws<RenderException>(() => processor.Convert(testData, "BundleToHl7v2_InvalidSegmentObject", templateProvider));
@@ -400,7 +400,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [Fact]
         public void GivenJObjectInput_WhenConvertWithJsonToHl7v2ProcessorWithInvalidFieldNumber_CorrectExceptionShouldBeThrown()
         {
-            var processor = new JsonToHl7v2Processor(_processorSettings);
+            var processor = new JsonToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<JsonToHl7v2Processor>());
             var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
             var testData = JObject.Parse(_fhirBundleTestData);
             var exception = Assert.Throws<RenderException>(() => processor.Convert(testData, "BundleToHl7v2_InvalidFieldNumber", templateProvider));

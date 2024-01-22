@@ -12,5 +12,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 
         // Max iterations for rendering templates.
         public int MaxIterations { get; set; } = 100000;
+
+        // Enable the Telemetry Logger in the processor.
+        public bool EnableTelemetryLogger { get; set; } = false;
     }
 }
