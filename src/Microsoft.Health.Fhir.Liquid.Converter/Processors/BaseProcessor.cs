@@ -176,7 +176,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
             if (Settings.EnableTelemetryLogger)
             {
-                Logger.LogInformation("{Metric}: {Duration} milliseconds.", FhirConverterMetrics.TemplateRenderDuration, duration);
+                Logger.LogInformation("{Metric}: {Duration} milliseconds.", telemetryName, duration);
             }
         }
     }
