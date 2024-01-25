@@ -7,9 +7,8 @@ using System;
 using EnsureThat;
 using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
-using Microsoft.Health.Fhir.Liquid.Converter.Processors;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Factories
+namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public class ConvertProcessorFactory : IConvertProcessorFactory
     {
