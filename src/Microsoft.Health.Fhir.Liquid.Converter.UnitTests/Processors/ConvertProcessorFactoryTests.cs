@@ -11,7 +11,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
 using Xunit;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Factories
+namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
 {
     public class ConvertProcessorFactoryTests
     {
