@@ -33,8 +33,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Factories
             yield return new object[] { DataType.Ccda, ConvertDataOutputFormat.Fhir, typeof(CcdaProcessor) };
             yield return new object[] { DataType.Fhir, ConvertDataOutputFormat.Fhir, typeof(FhirProcessor) };
             yield return new object[] { DataType.Hl7v2, ConvertDataOutputFormat.Fhir, typeof(Hl7v2Processor) };
-            yield return new object[] { DataType.Ccda, ConvertDataOutputFormat.Fhir, typeof(CcdaProcessor) };
-            yield return new object[] { DataType.Ccda, ConvertDataOutputFormat.Fhir, typeof(CcdaProcessor) };
+            yield return new object[] { DataType.Json, ConvertDataOutputFormat.Fhir, typeof(JsonProcessor) };
+            yield return new object[] { DataType.Fhir, ConvertDataOutputFormat.Hl7v2, typeof(JsonToHl7v2Processor) };
         }
 
         [Theory]
