@@ -198,6 +198,7 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
         ],
         "meta":
         {
+            "lastUpdated":"{{ PID.33.Value | format_as_date_time }}",
             "security":
             [
                 {% if ARV.2 %}
@@ -453,10 +454,6 @@ Patient_ManagingOrganization_ID: A resource Id, used to fill "managingOrganizati
                 {% endif -%}
             {% endunless -%}
         {% endunless -%}
-        "meta":
-        {
-            "lastUpdated":"{{ PID.33.Value | format_as_date_time }}",
-        },
         {% if PD1.16.1 -%}
             "active":{{ PD1.16.1.Value | get_property: 'CodeSystem/RegistryStatus', 'code' }},
         {% endif -%}
