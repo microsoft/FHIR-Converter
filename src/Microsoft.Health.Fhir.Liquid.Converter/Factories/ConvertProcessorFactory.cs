@@ -14,39 +14,35 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Factories
     public class ConvertProcessorFactory : IConvertProcessorFactory
     {
         private readonly ILoggerFactory _loggerFactory;
-        private readonly ConvertTelemetryConfiguration _convertTelemetryConfiguration;
 
-        public ConvertProcessorFactory(ILoggerFactory loggerFactory, ConvertTelemetryConfiguration convertDataConfiguration)
+        public ConvertProcessorFactory(ILoggerFactory loggerFactory)
         {
             _loggerFactory = EnsureArg.IsNotNull(loggerFactory, nameof(loggerFactory));
-            _convertTelemetryConfiguration = EnsureArg.IsNotNull(convertDataConfiguration, nameof(convertDataConfiguration));
         }
 
-        public IFhirConverter GetProcessor(DataType inputDataType, ConvertDataOutputFormat outputFormat)
+        public IFhirConverter GetProcessor(DataType inputDataType, ConvertDataOutputFormat outputFormat, ProcessorSettings processorSettings = null)
         {
-            var processorSetting = new ProcessorSettings
-            {
-                EnableTelemetryLogger = _convertTelemetryConfiguration.EnableTelemetryLogger,
-            };
+
+            processorSettings ??= new ProcessorSettings();
 
             IFhirConverter converter;
 
             switch (inputDataType, outputFormat)
             {
                 case (DataType.Ccda, ConvertDataOutputFormat.Fhir):
-                    converter = new CcdaProcessor(processorSetting, _loggerFactory.CreateLogger<CcdaProcessor>());
+                    converter = new CcdaProcessor(processorSettings, _loggerFactory.CreateLogger<CcdaProcessor>());
                     break;
                 case (DataType.Fhir, ConvertDataOutputFormat.Fhir):
-                    converter = new FhirProcessor(processorSetting, _loggerFactory.CreateLogger<FhirProcessor>());
+                    converter = new FhirProcessor(processorSettings, _loggerFactory.CreateLogger<FhirProcessor>());
                     break;
                 case (DataType.Hl7v2, ConvertDataOutputFormat.Fhir):
-                    converter = new Hl7v2Processor(processorSetting, _loggerFactory.CreateLogger<Hl7v2Processor>());
+                    converter = new Hl7v2Processor(processorSettings, _loggerFactory.CreateLogger<Hl7v2Processor>());
                     break;
                 case (DataType.Json, ConvertDataOutputFormat.Fhir):
-                    converter = new JsonProcessor(processorSetting, _loggerFactory.CreateLogger<JsonProcessor>());
+                    converter = new JsonProcessor(processorSettings, _loggerFactory.CreateLogger<JsonProcessor>());
                     break;
                 case (DataType.Fhir, ConvertDataOutputFormat.Hl7v2):
-                    converter = new JsonToHl7v2Processor(processorSetting, _loggerFactory.CreateLogger<JsonToHl7v2Processor>());
+                    converter = new JsonToHl7v2Processor(processorSettings, _loggerFactory.CreateLogger<JsonToHl7v2Processor>());
                     break;
                 default:
                     throw new InvalidOperationException($"Input Data Type {inputDataType} and Output Format {outputFormat} pairing is not supported.");
