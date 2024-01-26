@@ -6,10 +6,10 @@
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
 
-namespace Microsoft.Health.Fhir.Liquid.Converter.Factories
+namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public interface IConvertProcessorFactory
     {
-        public IFhirConverter GetProcessor(DataType inputDataType, ConvertDataOutputFormat outputFormat);
+        public IFhirConverter GetProcessor(DataType inputDataType, ConvertDataOutputFormat outputFormat, ProcessorSettings processorSettings = null);
     }
 }
