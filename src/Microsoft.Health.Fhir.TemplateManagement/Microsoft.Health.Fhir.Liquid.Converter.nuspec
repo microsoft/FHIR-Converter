@@ -11,6 +11,8 @@
     <dependencies>
       <group targetFramework="net6.0">
         <dependency id="Antlr4.Runtime.Standard" version="4.8.0" exclude="Build,Analyzers" />
+        <dependency id="Azure.Identity" version="1.10.3" exclude="Build,Analyzers" />
+        <dependency id="Azure.Storage.Blobs" version="12.17.0" exclude="Build,Analyzers" />
         <dependency id="DotLiquid" version="2.2.580" exclude="Build,Analyzers" />
         <dependency id="Ensure.That" version="9.2.0" exclude="Build,Analyzers" />
         <dependency id="Microsoft.IdentityModel.Protocols" version="6.8.0" exclude="Build,Analyzers" />
@@ -23,6 +25,7 @@
         <dependency id="Microsoft.Health.MeasurementUtility" version="7.1.12" exclude="Build,Analyzers" />
         <dependency id="Newtonsoft.Json" version="13.0.1" exclude="Build,Analyzers" />
         <dependency id="NJsonSchema" version="10.7.2" exclude="Build,Analyzers" />
+        <dependency id="Polly" version="7.2.4" exclude="Build,Analyzers" />
         <dependency id="SharpCompress" version="0.29.0" exclude="Build,Analyzers" />
         <dependency id="System.Runtime" version="4.3.1" exclude="Build,Analyzers" />
         <dependency id="System.Runtime.Caching" version="4.7.0" exclude="Build,Analyzers" />
