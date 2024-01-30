@@ -231,6 +231,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { null, null };
         }
 
+        public static IEnumerable<object[]> GetValidDataAndFormatForTimeHandling()
+        {
+            yield return new object[] { @"0730", "HHmm", "07:30:00" };
+            yield return new object[] { @"1730", "HHmm", "17:30:00" };
+            yield return new object[] { @"12010000", "HHmmssff", "12:01:00" };
+            yield return new object[] { @"12010001", "HHmmssff", "12:01:00.0100000" };
+            yield return new object[] { @"094010", "HHmmss", "09:40:10" };
+            yield return new object[] { @"09:45:50", "HH:mm:ss", "09:45:50" };
+            yield return new object[] { @"18:45", "HHmm", "18:45" }; // time format does not match format string
+        }
+
         public static IEnumerable<object[]> GetInvalidDataForTimeHandling()
         {
             yield return new object[] { @"9999" };
@@ -377,6 +388,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         public void GivenAValidData_WhenFormatTimeWithColon_FormattedTimeOrOriginalInputShouldBeReturned(string input, string expectedDateTime)
         {
             var result = Filters.FormatTimeWithColon(input);
+            Assert.Equal(expectedDateTime, result);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidDataAndFormatForTimeHandling))]
+        public void GivenAValidData_WhenFormatTimeWithColonAndInputFormatProvided_FormattedTimeOrOriginalInputShouldBeReturned(string input, string inputFormat, string expectedDateTime)
+        {
+            var result = Filters.FormatTimeWithColon(input, inputFormat);
             Assert.Equal(expectedDateTime, result);
         }
 

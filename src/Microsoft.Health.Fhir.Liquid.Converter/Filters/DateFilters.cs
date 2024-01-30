@@ -98,14 +98,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return DateTime.UtcNow.ToString(format);
         }
 
-        /* Converts an HL7v2 time interval to the FHIR format for time
-        /    HL7v2 - 2.8.35.2 Explicit time interval (ST)
+        /* Converts an HL7v2 time to the FHIR format for time
+        /    HL7v2 - 2.8.35.2 Explicit time interval (ST). Format: HHmm
+        /    HL7v2 - 2.4.5.6 TM time. Format: HHMM[SS[.SSSS]][+/-ZZZZ]
         /    FHIR  - time https://build.fhir.org/datatypes.html#time
         */
         public static string FormatTimeWithColon(string input, string inputFormat = "HHmm")
         {
-            // For backwards compatibility, if the input is not a 4 digit numeric value then just return the value
-            if (string.IsNullOrEmpty(input) || (!(input.All(char.IsDigit) && (input.Length == 4))))
+            // For backwards compatibility
+            if (string.IsNullOrEmpty(input) || (input.Length != inputFormat.Length))
             {
                 return input;
             }
