@@ -220,31 +220,21 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { @"2001-01T" };
         }
 
-        public static IEnumerable<object[]> GetValidDataForTimeHandling()
-        {
-            yield return new object[] { @"0730", "07:30:00" };
-            yield return new object[] { @"1730", "17:30:00" };
-            yield return new object[] { @"18:45", "18:45" };
-            yield return new object[] { @"09:45:50", "09:45:50" };
-            yield return new object[] { @"1", "1" };
-            yield return new object[] { @"abc", "abc" };
-            yield return new object[] { null, null };
-        }
-
         public static IEnumerable<object[]> GetValidDataAndFormatForTimeHandling()
         {
-            yield return new object[] { @"0730", "HHmm", "07:30:00" };
-            yield return new object[] { @"1730", "HHmm", "17:30:00" };
-            yield return new object[] { @"12010000", "HHmmssff", "12:01:00" };
-            yield return new object[] { @"12010001", "HHmmssff", "12:01:00.0100000" };
-            yield return new object[] { @"094010", "HHmmss", "09:40:10" };
-            yield return new object[] { @"09:45:50", "HH:mm:ss", "09:45:50" };
-            yield return new object[] { @"18:45", "HHmm", "18:45" }; // time format does not match format string
+            yield return new object[] { @"0730", "HHmm", false, "07:30:00" };
+            yield return new object[] { @"1730", "HHmm", false, "17:30:00" };
+            yield return new object[] { @"12010000", "HHmmssff", false, "12:01:00" };
+            yield return new object[] { @"12010001", "HHmmssff", false, "12:01:00.0100000" };
+            yield return new object[] { @"094010", "HHmmss", false, "09:40:10" };
+            yield return new object[] { @"09:45:50", "HH:mm:ss", false, "09:45:50" };
+            yield return new object[] { @"144100.0000+0300", "HHmmss.ffffzzzz", false, "06:41:00" };
+            yield return new object[] { @"18:45", "HHmm", true, "18:45" }; // time format does not match format string, but date parsing error is suppressed
         }
 
         public static IEnumerable<object[]> GetInvalidDataForTimeHandling()
         {
-            yield return new object[] { @"9999" };
+            yield return new object[] { @"9999", "HHmm" };
         }
 
         [Theory]
@@ -384,26 +374,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         }
 
         [Theory]
-        [MemberData(nameof(GetValidDataForTimeHandling))]
-        public void GivenAValidData_WhenFormatTimeWithColon_FormattedTimeOrOriginalInputShouldBeReturned(string input, string expectedDateTime)
-        {
-            var result = Filters.FormatTimeWithColon(input);
-            Assert.Equal(expectedDateTime, result);
-        }
-
-        [Theory]
         [MemberData(nameof(GetValidDataAndFormatForTimeHandling))]
-        public void GivenAValidData_WhenFormatTimeWithColonAndInputFormatProvided_FormattedTimeOrOriginalInputShouldBeReturned(string input, string inputFormat, string expectedDateTime)
+        public void GivenAValidData_WhenFormatTimeWithColonAndInputFormatProvided_FormattedTimeOrOriginalInputShouldBeReturned(string input, string inputFormat, bool suppressParsingError, string expectedDateTime)
         {
-            var result = Filters.FormatTimeWithColon(input, inputFormat);
+            var result = Filters.FormatTimeWithColon(input, inputFormat, suppressParsingError);
             Assert.Equal(expectedDateTime, result);
         }
 
         [Theory]
         [MemberData(nameof(GetInvalidDataForTimeHandling))]
-        public void GivenInvalidData_WhenFormatAsTimeInterval_InputTimeShouldBeReturnedAndNoExceptionThrown(string input)
+        public void GivenInvalidData_WhenFormatAsTimeInterval_ExceptionThrown(string input, string inputFormat)
         {
-            var exception = Assert.Throws<RenderException>(() => Filters.FormatTimeWithColon(input));
+            var exception = Assert.Throws<RenderException>(() => Filters.FormatTimeWithColon(input, inputFormat));
             Assert.Equal(FhirConverterErrorCode.InvalidDateTimeFormat, exception.FhirConverterErrorCode);
         }
 
