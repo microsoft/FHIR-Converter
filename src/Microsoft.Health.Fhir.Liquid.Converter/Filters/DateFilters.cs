@@ -103,12 +103,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         /    HL7v2 - 2.4.5.6 TM time. Format: HHMM[SS[.SSSS]][+/-ZZZZ]
         /    FHIR  - time https://build.fhir.org/datatypes.html#time
         */
-        public static string FormatTimeWithColon(string input, string inputFormat, bool suppressParsingError = false)
+        public static string FormatTimeWithColon(string input, string inputFormat, string timeZoneHandling = "preserve", bool suppressParsingError = false)
         {
+            if (!Enum.TryParse(timeZoneHandling, true, out TimeZoneHandlingMethod outputTimeZoneHandling))
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidTimeZoneHandling, Resources.InvalidTimeZoneHandling);
+            }
+
             var dt = TimeSpan.Zero;
             try
             {
-                dt = DateTime.ParseExact(input, inputFormat, CultureInfo.InvariantCulture).TimeOfDay;
+                dt = outputTimeZoneHandling switch
+                {
+                    TimeZoneHandlingMethod.Preserve => DateTimeOffset.ParseExact(input, inputFormat, CultureInfo.InvariantCulture).TimeOfDay,
+                    TimeZoneHandlingMethod.Utc => DateTimeOffset.ParseExact(input, inputFormat, CultureInfo.InvariantCulture).ToUniversalTime().TimeOfDay,
+                    _ => throw new ArgumentException(Resources.InvalidTimeZoneHandling),
+                };
             }
             catch (Exception)
             {

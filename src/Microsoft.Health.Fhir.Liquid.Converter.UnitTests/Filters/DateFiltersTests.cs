@@ -222,14 +222,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         public static IEnumerable<object[]> GetValidDataAndFormatForTimeHandling()
         {
-            yield return new object[] { @"0730", "HHmm", false, "07:30:00" };
-            yield return new object[] { @"1730", "HHmm", false, "17:30:00" };
-            yield return new object[] { @"12010000", "HHmmssff", false, "12:01:00" };
-            yield return new object[] { @"12010001", "HHmmssff", false, "12:01:00.0100000" };
-            yield return new object[] { @"094010", "HHmmss", false, "09:40:10" };
-            yield return new object[] { @"09:45:50", "HH:mm:ss", false, "09:45:50" };
-            yield return new object[] { @"144100.0000+0300", "HHmmss.ffffzzzz", false, "06:41:00" };
-            yield return new object[] { @"18:45", "HHmm", true, "18:45" }; // time format does not match format string, but date parsing error is suppressed
+            yield return new object[] { @"0730", "HHmm", "preserve", false, "07:30:00" };
+            yield return new object[] { @"1730", "HHmm", "preserve", false, "17:30:00" };
+            yield return new object[] { @"12010000", "HHmmssff", "preserve", false, "12:01:00" };
+            yield return new object[] { @"12010001", "HHmmssff", "preserve", false, "12:01:00.0100000" };
+            yield return new object[] { @"094010", "HHmmss", "preserve", false, "09:40:10" };
+            yield return new object[] { @"09:45:50", "HH:mm:ss", "preserve", false, "09:45:50" };
+            yield return new object[] { @"144100.0000+0300", "HHmmss.ffffzzz", "utc", false, "11:41:00" };
+            yield return new object[] { @"144100.0000+0300", "HHmmss.ffffzzz", "preserve", false, "14:41:00" };
+            yield return new object[] { @"18:45", "HHmm", "preserve", true, "18:45" }; // time format does not match format string, but date parsing error is suppressed
         }
 
         public static IEnumerable<object[]> GetInvalidDataForTimeHandling()
@@ -375,9 +376,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 
         [Theory]
         [MemberData(nameof(GetValidDataAndFormatForTimeHandling))]
-        public void GivenAValidData_WhenFormatTimeWithColonAndInputFormatProvided_FormattedTimeOrOriginalInputShouldBeReturned(string input, string inputFormat, bool suppressParsingError, string expectedDateTime)
+        public void GivenAValidData_WhenFormatTimeWithColonAndInputFormatProvided_FormattedTimeOrOriginalInputShouldBeReturned(string input, string inputFormat, string timeZoneHandling, bool suppressParsingError, string expectedDateTime)
         {
-            var result = Filters.FormatTimeWithColon(input, inputFormat, suppressParsingError);
+            var result = Filters.FormatTimeWithColon(input, inputFormat, timeZoneHandling, suppressParsingError);
             Assert.Equal(expectedDateTime, result);
         }
 
