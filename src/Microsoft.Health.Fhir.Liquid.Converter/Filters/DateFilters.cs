@@ -103,14 +103,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         /    HL7v2 - 2.4.5.6 TM time. Format: HHMM[SS[.SSSS]][+/-ZZZZ]
         /    FHIR  - time https://build.fhir.org/datatypes.html#time
         */
-        public static string FormatTimeWithColon(string input, string inputFormat = "HHmm")
+        public static string FormatTimeWithColon(string input, string inputFormat, bool suppressParsingError = false)
         {
-            // For backwards compatibility
-            if (string.IsNullOrEmpty(input) || (input.Length != inputFormat.Length))
-            {
-                return input;
-            }
-
             var dt = TimeSpan.Zero;
             try
             {
@@ -118,6 +112,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             }
             catch (Exception)
             {
+                if (suppressParsingError)
+                {
+                    return input;
+                }
+
                 throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
             }
 
