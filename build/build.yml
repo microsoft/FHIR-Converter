@@ -42,6 +42,11 @@ steps:
       alertWarningLevel: 'High'
       failOnAlert: true
 
+  - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+    displayName: 'Generation Task Binaries'
+    inputs:
+      BuildDropPath: '$(Build.ArtifactStagingDirectory)/bin'
+
   - ${{ if eq(parameters.packageArtifacts, 'true') }}:
     - template: package-artifacts.yml
 
