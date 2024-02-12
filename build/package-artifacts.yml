@@ -52,3 +52,8 @@ steps:
     inputs:
       pathToPublish: '$(Build.ArtifactStagingDirectory)' 
       artifactName: 'FhirConverterBuild'
+
+  - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
+    displayName: 'Generation Task Binaries'
+    inputs:
+      BuildDropPath: '$(Build.ArtifactStagingDirectory)/bin'
