@@ -45,15 +45,15 @@ steps:
 
   - template: package-templates.yml
 
-# Publish artifacts
+# Generate SBOM
+  - task: ManifestGeneratorTask@0
+    displayName: 'SBOM Manifest Generator'
+    inputs:
+      BuildDropPath: '$(Build.ArtifactStagingDirectory)'
 
+# Publish artifacts
   - task: PublishBuildArtifacts@1
     displayName: 'publish artifacts'
     inputs:
       pathToPublish: '$(Build.ArtifactStagingDirectory)' 
       artifactName: 'FhirConverterBuild'
-
-  - task: AzureArtifacts.manifest-generator-task.manifest-generator-task.ManifestGeneratorTask@0
-    displayName: 'Generation Task Binaries'
-    inputs:
-      BuildDropPath: '$(Build.ArtifactStagingDirectory)/bin'
