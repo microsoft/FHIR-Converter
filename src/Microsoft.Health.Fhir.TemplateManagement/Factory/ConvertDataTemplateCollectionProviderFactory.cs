@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Factory
         {
             var templateHostingConfiguration = _templateCollectionConfiguration.TemplateHostingConfiguration;
 
-            if (templateHostingConfiguration?.StorageAccountConfiguration != null)
+            if (templateHostingConfiguration?.StorageAccountConfiguration?.ContainerUrl != null)
             {
                 return CreateBlobTemplateCollectionProvider(templateHostingConfiguration.StorageAccountConfiguration);
             }
