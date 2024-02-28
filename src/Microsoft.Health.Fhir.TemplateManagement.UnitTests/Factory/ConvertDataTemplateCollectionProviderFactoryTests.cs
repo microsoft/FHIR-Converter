@@ -48,7 +48,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Factory
         }
 
         [Fact]
-        public void GivenInvalidStorageAccountConfiguration_WhenCreateTemplateCollectionProvider_ThenExceptionThrown()
+        public void GivenEmptyStorageAccountConfiguration_WhenCreateTemplateCollectionProvider_ThenDefaultTemplateProviderReturned()
         {
             var config = new TemplateCollectionConfiguration()
             {
@@ -64,8 +64,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Factory
             var cache = new MemoryCache(new MemoryCacheOptions());
             var factory = new ConvertDataTemplateCollectionProviderFactory(cache, Options.Create(config));
 
-            // Null blob container url
-            Assert.Throws<ArgumentNullException>(() => factory.CreateTemplateCollectionProvider());
+            var templateCollectionProvider = factory.CreateTemplateCollectionProvider();
+
+            Assert.NotNull(templateCollectionProvider);
+            Assert.True(templateCollectionProvider is DefaultTemplateCollectionProvider);
         }
 
         [Fact]
