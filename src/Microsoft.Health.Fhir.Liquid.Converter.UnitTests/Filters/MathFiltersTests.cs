@@ -13,10 +13,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         [Fact]
         public void IsNaNTest()
         {
-            Assert.True(Filters.IsNaN("2019.6"));
-            Assert.False(Filters.IsNaN(true));
-            Assert.False(Filters.IsNaN(string.Empty));
-            Assert.False(Filters.IsNaN(new Hl7v2Data()));
+            Assert.False(Filters.IsNan("2019.6"));
+            Assert.True(Filters.IsNan(true));
+            Assert.True(Filters.IsNan(string.Empty));
+            Assert.True(Filters.IsNan(new Hl7v2Data()));
         }
 
         [Fact]
