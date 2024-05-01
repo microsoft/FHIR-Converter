@@ -13,9 +13,12 @@ using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using DotLiquid;
+using EnsureThat;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 using Microsoft.Health.Fhir.TemplateManagement.Configurations;
+using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
+using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Polly;
 using Polly.Retry;
 
@@ -37,14 +40,18 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
         private readonly int _maxParallelism = 50;
 
+        private readonly int _maxTemplateCollectionSizeInBytes;
+
         public BlobTemplateCollectionProvider(BlobContainerClient blobContainerClient, IMemoryCache templateCache, TemplateCollectionConfiguration templateConfiguration)
         {
-            _blobContainerClient = blobContainerClient;
-            _templateCache = templateCache;
-            _templateCollectionConfiguration = templateConfiguration;
+            _blobContainerClient = EnsureArg.IsNotNull(blobContainerClient, nameof(blobContainerClient));
+            _templateCache = EnsureArg.IsNotNull(templateCache, nameof(templateCache));
+            _templateCollectionConfiguration = EnsureArg.IsNotNull(templateConfiguration, nameof(templateConfiguration));
             _downloadRetryPolicy = Policy
                     .Handle<Exception>()
                     .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromMilliseconds(10));
+
+            _maxTemplateCollectionSizeInBytes = _templateCollectionConfiguration.TemplateCollectionSizeLimitMegabytes * 1024 * 1024;
         }
 
         public async Task<List<Dictionary<string, Template>>> GetTemplateCollectionAsync(CancellationToken cancellationToken = default)
@@ -97,18 +104,27 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             return templateCollection;
         }
 
-        private static async Task<List<string>> ListBlobsFlatListing(BlobContainerClient blobContainerClient, int? segmentSize, CancellationToken ct)
+        private async Task<List<string>> ListBlobsFlatListing(BlobContainerClient blobContainerClient, int? segmentSize, CancellationToken ct)
         {
             var blobs = new List<string>();
 
             var resultSegment = blobContainerClient.GetBlobsAsync(default, default, null, ct)
                 .AsPages(default, segmentSize);
 
+            long totalBlobsSize = 0;
+
             await foreach (Page<BlobItem> blobPage in resultSegment)
             {
                 foreach (BlobItem blobItem in blobPage.Values)
                 {
                     blobs.Add(blobItem.Name);
+
+                    totalBlobsSize += blobItem.Properties.ContentLength ?? 0;
+
+                    if (totalBlobsSize > _maxTemplateCollectionSizeInBytes)
+                    {
+                        throw new TemplateCollectionExceedsSizeLimitException(TemplateManagementErrorCode.BlobTemplateCollectionTooLarge, $"Total blob template collection size is larger than the size limit: {_templateCollectionConfiguration.TemplateCollectionSizeLimitMegabytes}MB.");
+                    }
                 }
             }
 
