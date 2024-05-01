@@ -12,6 +12,8 @@ using Azure.Storage.Blobs.Models;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders;
 using Microsoft.Health.Fhir.TemplateManagement.Configurations;
+using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
+using Microsoft.Health.Fhir.TemplateManagement.Models;
 using Moq;
 using Xunit;
 
@@ -25,12 +27,27 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             var templateConfiguration = new TemplateCollectionConfiguration();
 
             int templateCount = 1;
-            var blobTemplateProvider = new BlobTemplateCollectionProvider(GetBlobContainerClientMock(templateCount), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
+            var blobItemProperties = BlobsModelFactory.BlobItemProperties(accessTierInferred: true, contentLength: 100);
+            var blobTemplateProvider = new BlobTemplateCollectionProvider(GetBlobContainerClientMock(templateCount, blobItemProperties), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
 
             var templateCollection = await blobTemplateProvider.GetTemplateCollectionAsync();
 
             Assert.Single(templateCollection);
             Assert.Equal(templateCount, templateCollection[0].Count);
+        }
+
+        [Fact]
+        public async Task GivenBlobTemplateProviderWithLargeTemplates_WhenGetTemplateCollectionFromTemplateProvider_ThenTemplatesAreReturned()
+        {
+            var templateConfiguration = new TemplateCollectionConfiguration();
+
+            int templateCount = 2;
+            var blobItemProperties = BlobsModelFactory.BlobItemProperties(accessTierInferred: true, contentLength: 10 * 1024 * 1024);
+            var blobTemplateProvider = new BlobTemplateCollectionProvider(GetBlobContainerClientMock(templateCount, blobItemProperties), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
+
+            var ex = await Assert.ThrowsAsync<TemplateCollectionExceedsSizeLimitException>(async() => await blobTemplateProvider.GetTemplateCollectionAsync());
+
+            Assert.Equal(TemplateManagementErrorCode.BlobTemplateCollectionTooLarge, ex.TemplateManagementErrorCode);
         }
 
         [Fact]
@@ -45,7 +62,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             Assert.Empty(templateCollection);
         }
 
-        public static BlobContainerClient GetBlobContainerClientMock(int templateCount = 1)
+        public static BlobContainerClient GetBlobContainerClientMock(int templateCount = 1, BlobItemProperties blobItemProperties = null)
         {
             var mock = new Mock<BlobContainerClient>();
 
@@ -57,7 +74,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
             for (int i = 0; i < templateCount; i++)
             {
-                blobs[i] = BlobsModelFactory.BlobItem($"blob_name-{i}.liquid");
+                blobs[i] = BlobsModelFactory.BlobItem($"blob_name-{i}.liquid", properties: blobItemProperties);
             }
 
             Page<BlobItem> page = Page<BlobItem>.FromValues(blobs, null, Mock.Of<Response>());

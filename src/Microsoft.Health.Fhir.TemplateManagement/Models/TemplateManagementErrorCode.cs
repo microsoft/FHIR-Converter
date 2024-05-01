@@ -29,8 +29,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
         InvalidManifestInfo = 2601,
         InvalidBlobContent = 2602,
 
-        // ImageTooLargeException
+        // TemplateCollectionTooLargeException
         ImageSizeTooLarge = 2701,
+        BlobTemplateCollectionTooLarge = 2702,
 
         // ArtifactArchiveException
         DecompressArtifactFailed = 2801,
