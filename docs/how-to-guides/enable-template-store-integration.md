@@ -1,10 +1,10 @@
 # Template Store Integration
 
-This how-to-guide shows you how to configure the template store for the FHIR Converter service in Azure. This is needed to support the ability to use custom Liquid templates for your conversion requests.
+This how-to-guide shows you how to configure the template store for the FHIR converter service in Azure. This is needed to support the ability to use custom Liquid templates for your conversion requests.
 
 The service currently supports the integration with Storage Accounts to pull custom templates hosted within the blob container.
 
-If you are using the quickstart deployment options, your FHIR Converter service will be automatically configured to pull templates from a newly created Storage Account by specifying (**TODO** insert instructions and link).
+If you are using the quickstart deployment options, your FHIR converter service will be automatically configured to pull templates from a newly created Storage Account by specifying (**TODO** insert instructions and link).
 
 Alternatively, to configure a pre-existing storage account, follow the steps in this document.
 
@@ -26,7 +26,7 @@ The configurable template store settings are :
 
 ### Prerequisites
 
-To configure your template store with your FHIR Converter service, you need to have an Azure Storage Account created with a blob container.
+To configure your template store with your FHIR converter service, you need to have an Azure Storage Account created with a blob container.
 
 Refer [Create a Storage Account](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal) for instructions to create one.
 
@@ -47,12 +47,12 @@ Refer [Assign an Azure role for access to blob data](https://learn.microsoft.com
 
 ![Convert template store permissions](../images/converttemplatestorepermissions.png)
 
-### Set the template store configuration of your FHIR Converter service
+### Set the template store configuration of your FHIR converter service
 
-1. If you have deployed the FHIR Converter service to Azure, provide the configuration:
+1. If you have deployed the FHIR converter service to Azure, provide the configuration:
     * Use the deployment option (**TODO** insert instructions)
 
-    * Alternatively, you can directly provide the configuration via environment variables in your Azure Container App running the  FHIR Converter service:
+    * Alternatively, you can directly provide the configuration via environment variables in your Azure Container App running the  FHIR converter service:
         1. **TemplateHosting__StorageAccountConfiguration__ContainerUrl** - the url to the blob container.
 
          Refer [Configure environment variables](https://learn.microsoft.com/en-us/azure/container-apps/environment-variables?tabs=portal) for more information.
@@ -61,7 +61,7 @@ Refer [Assign an Azure role for access to blob data](https://learn.microsoft.com
 
 ### Verify template store health check
 
-To verify your FHIR Converter service is setup correctly to pull the custom templates from the configured storage account, use the below health check endpoint:
+To verify your FHIR converter service is setup correctly to pull the custom templates from the configured storage account, use the below health check endpoint:
 
 GET https://\<CONTAINER APP ENDPOINT URL\>/health/check
 
@@ -83,10 +83,10 @@ Sample response body
 
 ## Summary
 
-In this how-to-guide, you learned how to configure the template store settings for the FHIR Converter service to be able to use custom Liquid templates for conversion.
+In this how-to-guide, you learned how to configure the template store settings for the FHIR converter service to be able to use custom Liquid templates for conversion.
 
-To get started using your FHIR Converter service, refer to the following documents:
+To get started using your FHIR converter service, refer to the following documents:
 
 * [Customize Liquid templates](customize-templates.md)
-* [Use FHIR Converter APIs](use-convert-web-apis.md)
-* [Monitor FHIR Converter service](monitoring.md)
+* [Use FHIR converter APIs](use-convert-web-apis.md)
+* [Monitor FHIR converter service](monitoring.md)
