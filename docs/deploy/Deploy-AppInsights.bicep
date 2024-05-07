@@ -1,4 +1,4 @@
-@description('Location where the resources are deployed. For list of Azure regions where application insights is available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=monitor,container-apps).')
+@description('Location where the resources are deployed. For list of Azure regions where application insights is available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=monitor).')
 @allowed([
   'australiacentral'
   'australiaeast'
