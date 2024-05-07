@@ -5,7 +5,7 @@ This How-to-guide shows you how to configure the authentication settings for the
 To complete this configuration, you will:
 
 1. **Create a resource application in Azure AD**: This resource application will be a representation of the FHIR converter service that can be used to authenticate and obtain tokens. In order for an application to interact with Azure AD, it needs to be registered.
-1. **Provide app registration details to your Convert web service**: Once the resource application is registered, you will set the authentication configuration of your  FHIR converter web service. This ensures that any client that is able to authenticate with the above resource application will be able to access your  FHIR converter APIs.
+1. **Provide app registration details to your FHIR converter web service**: Once the resource application is registered, you will set the authentication configuration of your  FHIR converter web service. This ensures that any client that is able to authenticate with the above resource application will be able to access your  FHIR converter APIs.
 1. **Create a service client application in Azure AD**: Client application registrations are Azure AD representations of applications that can be used to authenticate and obtain tokens. A service client is intended to be used by an application to obtain an access token without interactive authentication of a user. It will have certain application permissions and use an application secret (password) when obtaining access tokens.
 1. **Retrieve Access Token via Postman or Azure CLI**: With your service client application enabled, you can obtain an access token to authenticate your application.
 
@@ -39,7 +39,7 @@ The configurable authentication settings are :
 
 ## Authentication with Azure AD
 
-### Create a Resource Application in Azure AD for your Convert service
+### Create a Resource Application in Azure AD for your FHIR converter service
 
 1. Sign into the [Azure Portal](https://ms.portal.azure.com/).
 2. Select **Azure Active Directory** > **App Registrations** > **New registration**:
@@ -55,10 +55,10 @@ The configurable authentication settings are :
 ### Set the Authentication configuration of your FHIR converter service
 
 1. If you have deployed the FHIR converter service to Azure, provide the configuration:
-    * If you are using **Deploy-ConvertService** using the powershell scripts (**TODO: insert link to deployment instructions) to deploy your Convert service to an Azure Container App, provide the below params:
-        1. **-SecurityEnabled**
-        2. **-SecurityAuthenticationAudiences** with the **Application ID URI** created above (also supports multiple audiences).
-        3. **-SecurityAuthenticationAuthority** with the tenant your application exists in, for example: ```https://login.microsoftonline.com/<tenant-name>.onmicrosoft.com``` or ```https://login.microsoftonline.com/<tenant-id>```.
+    * If you are using the [deployment options](deployment-options.md) to deploy your service, use the following parameters:
+
+        (**TODO** add instructions for options)
+
     * Alternatively, you can directly provide the configuration via environment variables in your Azure Container App running the  FHIR converter service:
         1. **ConvertService__Security__Enabled** - True
         2. **ConvertService__Security__Authentication__Audiences__0** - the **Application ID URI** created above.
@@ -66,7 +66,7 @@ The configurable authentication settings are :
 
         Refer [Configure environment variables](https://learn.microsoft.com/en-us/azure/container-apps/environment-variables?tabs=portal) for more information.
 
-        ![convertsecurityconfigaca](../images/convertsecurityconfig.png)
+        ![convertsecurityconfigaca](../images/convert-security-config.png)
 
 ### Create a Service Client Application
 
@@ -76,7 +76,7 @@ The configurable authentication settings are :
 1. Copy the **Application (client) ID** and the **Directory (tenant) ID** for later.
 1. Select **API Permissions** to provide your service client permission to your resource application:
     1. Select **Add a permission**.
-    1. Under **My APIs**, select the resource application you created above for your Convert Service.
+    1. Under **My APIs**, select the resource application you created above for your FHIR converter service.
     1. Under **Select Permissions**, select the application roles from the ones that you defined on the resource application.
     1. Select **Add permissions**.
 1. Select **Certificates & secrets** to generate a secret for obtaining tokens:
@@ -113,3 +113,9 @@ The configurable authentication settings are :
 ## Summary
 
 In this How-to Guide, you learned how to configure the authentication settings for the FHIR converter service using AAD as the identity provider.
+
+To get started with your FHIR converter service, refer to the following documents:
+
+* [Use FHIR converter APIs](use-convert-web-apis.md)
+* [Monitor FHIR converter service](monitoring.md)
+* [Troubleshooting guide](troubleshoot.md)

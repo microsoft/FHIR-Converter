@@ -4,7 +4,7 @@ This how-to-guide shows you how to configure the template store for the FHIR con
 
 The service currently supports the integration with Storage Accounts to pull custom templates hosted within the blob container.
 
-If you are using the quickstart deployment options, your FHIR converter service will be automatically configured to pull templates from a newly created Storage Account by specifying (**TODO** insert instructions and link).
+If you are using the quickstart deployment options with default settings, your FHIR converter service will be automatically configured to pull templates from a newly created Storage Account.
 
 Alternatively, to configure a pre-existing storage account, follow the steps in this document.
 
@@ -22,13 +22,18 @@ The configurable template store settings are :
 }
 ```
 
+| Element                    | Description |
+| -------------------------- | --- |
+| StorageAccountConfiguration:ContainerUrl | The URL of the storage account blob container containing the Liquid templates. |
+
 ## Configure storage account details
 
 ### Prerequisites
 
-To configure your template store with your FHIR converter service, you need to have an Azure Storage Account created with a blob container.
+To configure your template store with your FHIR converter service, you need to have an Azure Storage Account created with a blob container. Refer [Create a Storage Account](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal) for instructions to create one.
 
-Refer [Create a Storage Account](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal) for instructions to create one.
+The custom Liquid templates need to be uploaded to the storage account blob container that will be configured with the service.
+For guidance on how to create custom Liquid templates, refer [Customize templates](customize-templates.md).
 
 ### Grant permissions to the storage account
 
@@ -39,13 +44,13 @@ In order for the service to be able to load the custom templates from the storag
 
 Refer [Managed Identities in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/managed-identity?tabs=portal%2Cdotnet) for more information.
 
-![Convert identity](../images/convertidentity.png)
+![Convert identity](../images/convert-identity.png)
 
 1. Assign the identity created above,[`Storage Blob Data Reader`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/storage#storage-blob-data-reader) role priveleges on the storage account container being configured with the service.
 
 Refer [Assign an Azure role for access to blob data](https://learn.microsoft.com/en-us/azure/storage/blobs/assign-azure-role-data-access?tabs=portal) for more information.
 
-![Convert template store permissions](../images/converttemplatestorepermissions.png)
+![Convert template store permissions](../images/convert-template-store-permissions.png)
 
 ### Set the template store configuration of your FHIR converter service
 
@@ -57,7 +62,7 @@ Refer [Assign an Azure role for access to blob data](https://learn.microsoft.com
 
          Refer [Configure environment variables](https://learn.microsoft.com/en-us/azure/container-apps/environment-variables?tabs=portal) for more information.
 
-        ![Convert template store config](../images/converttemplatestoreconfig.png)
+        ![Convert template store config](../images/convert-template-store-config.png)
 
 ### Verify template store health check
 
@@ -85,7 +90,7 @@ Sample response body
 
 In this how-to-guide, you learned how to configure the template store settings for the FHIR converter service to be able to use custom Liquid templates for conversion.
 
-To get started using your FHIR converter service, refer to the following documents:
+To get started with your FHIR converter service, refer to the following documents:
 
 * [Customize Liquid templates](customize-templates.md)
 * [Use FHIR converter APIs](use-convert-web-apis.md)

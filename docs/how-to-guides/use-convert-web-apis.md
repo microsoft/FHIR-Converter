@@ -8,7 +8,7 @@ In order to use the FHIR converter APIs, you must have an instance of the FHIR c
 
 Refer [Setup FHIR converter Service](setup-convert-service.md) for detailed instructions to create a web service to target your conversion requests to.
 
-## FHIR converter Endpoint
+## FHIR converter endpoint
 
 If you have setup your FHIR converter service using the provided [deployment options](deployment-options.md), an Azure Container App is deployed to run the FHIR converter container and serves as the web service that clients can send conversion requests to.
 
@@ -34,17 +34,17 @@ A list of supported versions for the requested API is returned as a response hea
 
 ### APIs
 
-#### Swagger
+#### - Swagger
 
 The swagger document for the supported versions can be found at the following url:
 
-GET `https://<service_url>/<api-version>/swagger.yaml`
+**GET `https://<service_url>/<api-version>/swagger.yaml`**
 
-#### Health check
+#### - Health check
 
 The health status of the service which indicates if the service is configured correctly and is running and available to service requests, can be queried using the following API:
 
-GET `https://<service_url>/health/check`
+**GET `https://<service_url>/health/check`**
 
 * Sample response body
 
@@ -63,7 +63,7 @@ GET `https://<service_url>/health/check`
 
 ```
 
-#### Convert to FHIR R4
+#### - Convert to FHIR R4
 
 Supports conversion of legacy healthcare formats such as Hl7v2, C-CCDA, Json and FHIR STU3 to FHIR R4 format.
 
@@ -83,7 +83,7 @@ The API response is a json object which contains the converted FHIR bundle under
 
 * Sample:
 
-  POST `https://<service_url>/convertToFhir?api-version=<version>`
+  **POST `https://<service_url>/convertToFhir?api-version=<version>`**
 
   Request Body
 
@@ -133,7 +133,7 @@ The API response is a json object which contains the converted FHIR bundle under
     }
   ```
 
-#### Convert to HL7v2
+#### - Convert to HL7v2
 
 Supports conversion of FHIR R4 data to HL7v2 format.
 
@@ -153,7 +153,7 @@ The API response is a json object which contains the converted HL7v2 message und
 
 * Sample:
 
-  POST `https://<service_url>/convertToHl7v2?api-version=<version>`
+  **POST `https://<service_url>/convertToHl7v2?api-version=<version>`**
 
   Request Body
 
@@ -161,7 +161,7 @@ The API response is a json object which contains the converted HL7v2 message und
     {
         "InputDataFormat": "Fhir",
         "RootTemplateName": "Fhir/BundleToHL7v2",
-        "InputData": "InputDataString": "{\"resourceType\":\"Bundle\",\"id\":\"bundle-response-medsallergies\",\"type\":\"batch-response\",\"entry\":[{\"resource\":{\"resourceType\":\"Patient\",\"id\":\"example\",\"meta\":{\"versionId\":\"1\",\"lastUpdated\":\"2018-11-12T03:35:20.715Z\"},\"identifier\":[{\"use\":\"usual\",\"type\":{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/v2-0203\",\"code\":\"MR\"}]},\"system\":\"urn:oid:1.2.36.146.595.217.0.1\",\"value\":\"12345\",\"period\":{\"start\":\"2001-05-06\"},\"assigner\":{\"display\":\"AcmeHealthcare\"}}],\"active\":true,\"name\":[{\"use\":\"official\",\"family\":\"Chalmers\",\"given\":[\"Peter\",\"James\"]},{\"use\":\"usual\",\"given\":[\"Jim\"]},{\"use\":\"maiden\",\"family\":\"Windsor\",\"given\":[\"Peter\",\"James\"],\"period\":{\"end\":\"2002\"}}],\"telecom\":[{\"use\":\"home\"},{\"system\":\"phone\",\"value\":\"(03)55556473\",\"use\":\"work\",\"rank\":1},{\"system\":\"phone\",\"value\":\"(03)34105613\",\"use\":\"mobile\",\"rank\":2},{\"system\":\"phone\",\"value\":\"(03)55558834\",\"use\":\"old\",\"period\":{\"end\":\"2014\"}}],\"gender\":\"male\",\"birthDate\":\"1974-12-25\",\"_birthDate\":{\"extension\":[{\"url\":\"http://hl7.org/fhir/StructureDefinition/patient-birthTime\",\"valueDateTime\":\"1974-12-25T14:35:45-05:00\"}]},\"deceasedBoolean\":false,\"address\":[{\"use\":\"home\",\"type\":\"both\",\"text\":\"534ErewhonStPeasantVille,Rainbow,Vic3999\",\"line\":[\"534ErewhonSt\"],\"city\":\"PleasantVille\",\"district\":\"Rainbow\",\"state\":\"Vic\",\"postalCode\":\"3999\",\"period\":{\"start\":\"1974-12-25\"}}],\"contact\":[{\"relationship\":[{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/v2-0131\",\"code\":\"N\"}]}],\"name\":{\"family\":\"duMarché\",\"_family\":{\"extension\":[{\"url\":\"http://hl7.org/fhir/StructureDefinition/humanname-own-prefix\",\"valueString\":\"VV\"}]},\"given\":[\"Bénédicte\"]},\"telecom\":[{\"system\":\"phone\",\"value\":\"+33(237)998327\"}],\"address\":{\"use\":\"home\",\"type\":\"both\",\"line\":[\"534ErewhonSt\"],\"city\":\"PleasantVille\",\"district\":\"Rainbow\",\"state\":\"Vic\",\"postalCode\":\"3999\",\"period\":{\"start\":\"1974-12-25\"}},\"gender\":\"female\",\"period\":{\"start\":\"2012\"}}],\"managingOrganization\":{\"reference\":\"Organization/1\"}}},{\"resource\":{\"resourceType\":\"Observation\",\"id\":\"f001\",\"identifier\":[{\"use\":\"official\",\"system\":\"http://www.bmc.nl/zorgportal/identifiers/observations\",\"value\":\"6323\"}],\"status\":\"final\",\"code\":{\"coding\":[{\"system\":\"http://loinc.org\",\"code\":\"15074-8\",\"display\":\"Glucose[Moles/volume]inBlood\"}]},\"subject\":{\"reference\":\"Patient/f001\",\"display\":\"P.vandeHeuvel\"},\"effectiveDateTime\":\"2013-04-02T09:30:10+01:00\",\"issued\":\"2013-04-03T15:30:10+01:00\",\"performer\":[{\"reference\":\"Practitioner/f005\",\"display\":\"A.Langeveld\"}],\"valueQuantity\":{\"value\":6.3,\"unit\":\"mmol/l\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"mmol/L\"},\"interpretation\":[{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation\",\"code\":\"H\",\"display\":\"High\"}]}],\"referenceRange\":[{\"low\":{\"value\":3.1,\"unit\":\"mmol/l\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"mmol/L\"},\"high\":{\"value\":6.2,\"unit\":\"mmol/l\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"mmol/L\"}}]}},{\"resource\":{\"resourceType\":\"Observation\",\"id\":\"f001\",\"identifier\":[{\"use\":\"official\",\"system\":\"http://www.bmc.nl/zorgportal/identifiers/observations\",\"value\":\"6324\"}],\"status\":\"final\",\"code\":{\"coding\":[{\"system\":\"http://loinc.org\",\"code\":\"11111-1\",\"display\":\"Another test\"}]},\"subject\":{\"reference\":\"Patient/f001\",\"display\":\"P.vandeHeuvel\"},\"effectiveDateTime\":\"2013-04-02T09:30:10+01:00\",\"issued\":\"2013-04-03T15:30:10+01:00\",\"performer\":[{\"reference\":\"Practitioner/f005\",\"display\":\"A.Langeveld\"}],\"valueQuantity\":{\"value\":8.0,\"unit\":\"mmol/l\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"mmol/L\"},\"interpretation\":[{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation\",\"code\":\"H\",\"display\":\"High\"}]}],\"referenceRange\":[{\"low\":{\"value\":3.1,\"unit\":\"mmol/l\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"mmol/L\"},\"high\":{\"value\":6.2,\"unit\":\"mmol/l\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"mmol/L\"}}]}}]}"
+        "InputDataString": "{\"resourceType\":\"Bundle\",\"id\":\"bundle-response-medsallergies\",\"type\":\"batch-response\",\"entry\":[{\"resource\":{\"resourceType\":\"Patient\",\"id\":\"example\",\"meta\":{\"versionId\":\"1\",\"lastUpdated\":\"2018-11-12T03:35:20.715Z\"},\"identifier\":[{\"use\":\"usual\",\"type\":{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/v2-0203\",\"code\":\"MR\"}]},\"system\":\"urn:oid:1.2.36.146.595.217.0.1\",\"value\":\"12345\",\"period\":{\"start\":\"2001-05-06\"},\"assigner\":{\"display\":\"AcmeHealthcare\"}}],\"active\":true,\"name\":[{\"use\":\"official\",\"family\":\"Chalmers\",\"given\":[\"Peter\",\"James\"]},{\"use\":\"usual\",\"given\":[\"Jim\"]},{\"use\":\"maiden\",\"family\":\"Windsor\",\"given\":[\"Peter\",\"James\"],\"period\":{\"end\":\"2002\"}}],\"telecom\":[{\"use\":\"home\"},{\"system\":\"phone\",\"value\":\"(03)55556473\",\"use\":\"work\",\"rank\":1},{\"system\":\"phone\",\"value\":\"(03)34105613\",\"use\":\"mobile\",\"rank\":2},{\"system\":\"phone\",\"value\":\"(03)55558834\",\"use\":\"old\",\"period\":{\"end\":\"2014\"}}],\"gender\":\"male\",\"birthDate\":\"1974-12-25\",\"_birthDate\":{\"extension\":[{\"url\":\"http://hl7.org/fhir/StructureDefinition/patient-birthTime\",\"valueDateTime\":\"1974-12-25T14:35:45-05:00\"}]},\"deceasedBoolean\":false,\"address\":[{\"use\":\"home\",\"type\":\"both\",\"text\":\"534ErewhonStPeasantVille,Rainbow,Vic3999\",\"line\":[\"534ErewhonSt\"],\"city\":\"PleasantVille\",\"district\":\"Rainbow\",\"state\":\"Vic\",\"postalCode\":\"3999\",\"period\":{\"start\":\"1974-12-25\"}}],\"contact\":[{\"relationship\":[{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/v2-0131\",\"code\":\"N\"}]}],\"name\":{\"family\":\"duMarché\",\"_family\":{\"extension\":[{\"url\":\"http://hl7.org/fhir/StructureDefinition/humanname-own-prefix\",\"valueString\":\"VV\"}]},\"given\":[\"Bénédicte\"]},\"telecom\":[{\"system\":\"phone\",\"value\":\"+33(237)998327\"}],\"address\":{\"use\":\"home\",\"type\":\"both\",\"line\":[\"534ErewhonSt\"],\"city\":\"PleasantVille\",\"district\":\"Rainbow\",\"state\":\"Vic\",\"postalCode\":\"3999\",\"period\":{\"start\":\"1974-12-25\"}},\"gender\":\"female\",\"period\":{\"start\":\"2012\"}}],\"managingOrganization\":{\"reference\":\"Organization/1\"}}},{\"resource\":{\"resourceType\":\"Observation\",\"id\":\"f001\",\"identifier\":[{\"use\":\"official\",\"system\":\"http://www.bmc.nl/zorgportal/identifiers/observations\",\"value\":\"6323\"}],\"status\":\"final\",\"code\":{\"coding\":[{\"system\":\"http://loinc.org\",\"code\":\"15074-8\",\"display\":\"Glucose[Moles/volume]inBlood\"}]},\"subject\":{\"reference\":\"Patient/f001\",\"display\":\"P.vandeHeuvel\"},\"effectiveDateTime\":\"2013-04-02T09:30:10+01:00\",\"issued\":\"2013-04-03T15:30:10+01:00\",\"performer\":[{\"reference\":\"Practitioner/f005\",\"display\":\"A.Langeveld\"}],\"valueQuantity\":{\"value\":6.3,\"unit\":\"mmol/l\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"mmol/L\"},\"interpretation\":[{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation\",\"code\":\"H\",\"display\":\"High\"}]}],\"referenceRange\":[{\"low\":{\"value\":3.1,\"unit\":\"mmol/l\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"mmol/L\"},\"high\":{\"value\":6.2,\"unit\":\"mmol/l\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"mmol/L\"}}]}},{\"resource\":{\"resourceType\":\"Observation\",\"id\":\"f001\",\"identifier\":[{\"use\":\"official\",\"system\":\"http://www.bmc.nl/zorgportal/identifiers/observations\",\"value\":\"6324\"}],\"status\":\"final\",\"code\":{\"coding\":[{\"system\":\"http://loinc.org\",\"code\":\"11111-1\",\"display\":\"Another test\"}]},\"subject\":{\"reference\":\"Patient/f001\",\"display\":\"P.vandeHeuvel\"},\"effectiveDateTime\":\"2013-04-02T09:30:10+01:00\",\"issued\":\"2013-04-03T15:30:10+01:00\",\"performer\":[{\"reference\":\"Practitioner/f005\",\"display\":\"A.Langeveld\"}],\"valueQuantity\":{\"value\":8.0,\"unit\":\"mmol/l\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"mmol/L\"},\"interpretation\":[{\"coding\":[{\"system\":\"http://terminology.hl7.org/CodeSystem/v3-ObservationInterpretation\",\"code\":\"H\",\"display\":\"High\"}]}],\"referenceRange\":[{\"low\":{\"value\":3.1,\"unit\":\"mmol/l\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"mmol/L\"},\"high\":{\"value\":6.2,\"unit\":\"mmol/l\",\"system\":\"http://unitsofmeasure.org\",\"code\":\"mmol/L\"}}]}}]}"
     }
   ```
 
