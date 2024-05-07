@@ -26,11 +26,11 @@ The version of the REST API must be explicitly specified in the request URL in a
 
 #### Supported versions
 
+A list of supported versions for the requested API is returned as a response header `api-supported-versions`.
+
 Currently the supported versions are:
 
 * 2024-05-01-preview
-
-A list of supported versions for the requested API is returned as a response header `api-supported-versions`.
 
 ### APIs
 
@@ -69,12 +69,20 @@ Supports conversion of legacy healthcare formats such as Hl7v2, C-CCDA, Json and
 
 * API Route: `convertToFhir`
 
+* Request headers:
+
+  * Authorization
+
+    If your service was setup with authentication enabled, you need to provide the bearer token in the authorization header.
+
+    Refer [get access token](enable-authentication.md#get-access-token) to authenticate with your FHIR converter service which has security enabled, i.e., restricted access to APIs using the provided security configuration (audience and authority).
+
 * Request parameters
 
 | Name | Optionality | Default | Description | Accepted values |
 | ----- | ----- | ----- |----- |----- |
 | InputDataFormat | Required | - | Type of data input. | `Hl7v2`, `Ccda`, `Json`, `Fhir_STU3` |
-| RootTemplateName | Required | - | Name of root template to be used for conversion. | For use of **default templates**, this will be the name of template provided in [here](https://github.com/microsoft/FHIR-Converter/tree/main/data/Templates) for each of the supported data formats.<br><br> **HL7v2 to FHIR** (57 templates): "ADT_A01", "ADT_A02", "ADT_A03", "ADT_A04", "ADT_A05", "ADT_A06". "ADT_A07", "ADT_A08", "ADT_A09", "ADT_A10", "ADT_A11", "ADT_A13", "ADT_A14", "ADT_A15", "ADT_A16", "ADT_A25", "ADT_A26", "ADT_A27", "ADT_A28", "ADT_A29", "ADT_A31", "ADT_A40", "ADT_A41", "ADT_A45", "ADT_A47", "ADT_A60", "BAR_P01", "BAR_P02", "BAR_B12", "DFT_P03", "DFT_P11", "MDM_T01", "MDM_T02", "MDM_T05", "MDM_T06", "MDM_T09", "MDM_T10", "OMG_O19" "OML_O21", "ORM_O01", "ORU_R01", "OUL_R22", "OUL_R23", "OUL_R24", "RDE_O11", "RDE_O25", "RDS_O13", "REF_I12", "REF_I14", "SIU_S12", "SIU_S13", "SIU_S14", "SIU_S15", "SIU_S16", "SIU_S17", "SIU_S26", "VXU_V04" <br><br>**C-CDA to FHIR** (9 templates): "CCD", "ConsultationNote", "DischargeSummary", "HistoryandPhysical", "OperativeNote", "ProcedureNote", "ProgressNote", "ReferralNote", "TransferSummary" <br><br> **JSON to FHIR**: "Stu3ChargeItem", "ExamplePatient" <br> (*These JSON templates are sample templates for use, not default templates that adhere to any pre-defined JSON message types. JSON does not have any standardized message types, unlike HL7v2 messages or C-CDA documents. Therefore, instead of "default" templates we provide you with some sample templates that you can use as a starting guide for you to modify and customize.*) <br><br> **FHIR STU3 to R4**: Name of the root template that is the same as the STU3 resource name e.g., "Patient", "Observation", "Organization". Some of the STU3 resources are renamed or removed from R4. Please refer to [Resource differences and constraints for STU3 to R4](docs/Stu3R4-resources-differences.md).<br><br> For use of **custom templates**, this will be the name of the blob file containing the Liquid template in the storage account configured with this service. The path to the blob file relative to the blob container must be specified. <br> For instance, if the template named "ADT_A01" exists in a folder in the container named "Hl7v2", the value should include the folder path - "Hl7v2/ADT_A01" |
+| RootTemplateName | Required | - | Name of root template to be used for conversion. | For use of **default templates**, this will be the name of template provided in [here](https://github.com/microsoft/FHIR-Converter/tree/main/data/Templates) for each of the supported data formats.<br><br> **HL7v2 to FHIR** (57 templates): "ADT_A01", "ADT_A02", "ADT_A03", "ADT_A04", "ADT_A05", "ADT_A06". "ADT_A07", "ADT_A08", "ADT_A09", "ADT_A10", "ADT_A11", "ADT_A13", "ADT_A14", "ADT_A15", "ADT_A16", "ADT_A25", "ADT_A26", "ADT_A27", "ADT_A28", "ADT_A29", "ADT_A31", "ADT_A40", "ADT_A41", "ADT_A45", "ADT_A47", "ADT_A60", "BAR_P01", "BAR_P02", "BAR_B12", "DFT_P03", "DFT_P11", "MDM_T01", "MDM_T02", "MDM_T05", "MDM_T06", "MDM_T09", "MDM_T10", "OMG_O19" "OML_O21", "ORM_O01", "ORU_R01", "OUL_R22", "OUL_R23", "OUL_R24", "RDE_O11", "RDE_O25", "RDS_O13", "REF_I12", "REF_I14", "SIU_S12", "SIU_S13", "SIU_S14", "SIU_S15", "SIU_S16", "SIU_S17", "SIU_S26", "VXU_V04" <br><br>**C-CDA to FHIR** (9 templates): "CCD", "ConsultationNote", "DischargeSummary", "HistoryandPhysical", "OperativeNote", "ProcedureNote", "ProgressNote", "ReferralNote", "TransferSummary" <br><br> **JSON to FHIR**: "Stu3ChargeItem", "ExamplePatient" <br> (*These JSON templates are sample templates for use, not default templates that adhere to any pre-defined JSON message types. JSON does not have any standardized message types, unlike HL7v2 messages or C-CDA documents. Therefore, instead of "default" templates we provide you with some sample templates that you can use as a starting guide for you to modify and customize.*) <br><br> **FHIR STU3 to R4**: Name of the root template that is the same as the STU3 resource name e.g., "Patient", "Observation", "Organization". Some of the STU3 resources are renamed or removed from R4. Please refer to [Resource differences and constraints for STU3 to R4](docs/Stu3R4-resources-differences.md).<br><br> For use of **custom templates**, this will be the name of the blob file containing the Liquid template in the storage account configured with this service. The path to the blob file relative to the blob container must be specified. <br> For instance, if the template named "ADT_A01" exists in a folder named "Hl7v2" in the container, the value should include the folder path - "Hl7v2/ADT_A01" |
 | InputDataString | Required | - | Input data content to be converted in string format. | String representation of the data to be converted. |
 
 * Response body
@@ -139,12 +147,20 @@ Supports conversion of FHIR R4 data to HL7v2 format.
 
 * API Route: `convertToHl7v2`
 
+* Request headers:
+
+  * Authorization
+
+    If your service was setup with authentication enabled, you need to provide the bearer token in the authorization header.
+
+    Refer [get access token](enable-authentication.md#get-access-token) to authenticate with your FHIR converter service which has security enabled, i.e., restricted access to APIs using the provided security configuration (audience and authority).
+
 * Request parameters
 
 | Name | Optionality | Default | Description | Accepted values |
 | ----- | ----- | ----- |----- |----- |
 | InputDataFormat | Required | - | Type of data input. | `Fhir` |
-| RootTemplateName | Required | - | Name of root template to be used for conversion. | For use of **default templates**, this will be the name of template provided in [here](https://github.com/microsoft/FHIR-Converter/tree/main/data/Templates) for each of the supported data formats.<br><br> **FHIR to HL7v2** : **TODO add references**(*These JSON templates are sample templates for use, not default templates that adhere to any pre-defined JSON message types. JSON does not have any standardized message types, unlike HL7v2 messages or C-CDA documents. Therefore, instead of "default" templates we provide you with some sample templates that you can use as a starting guide for you to modify and customize.*).<br><br> For use of **custom templates**, this will be the name of the blob file containing the Liquid template in the storage account configured with this service. The path to the blob file relative to the blob container must be specified. <br> For instance, if the template named "BundleToHL7v2" exists in a folder in the container named "Fhir", the value should include the folder path - "Fhir/BundleToHL7v2" |
+| RootTemplateName | Required | - | Name of root template to be used for conversion. | For use of **default templates**, this will be the name of template provided in [here](https://github.com/microsoft/FHIR-Converter/tree/main/data/Templates) for each of the supported data formats.<br><br> **FHIR to HL7v2** : **TODO add references**(*These JSON templates are sample templates for use, not default templates that adhere to any pre-defined JSON message types. JSON does not have any standardized message types, unlike HL7v2 messages or C-CDA documents. Therefore, instead of "default" templates we provide you with some sample templates that you can use as a starting guide for you to modify and customize.*).<br><br> For use of **custom templates**, this will be the name of the blob file containing the Liquid template in the storage account configured with this service. The path to the blob file relative to the blob container must be specified. <br> For instance, if the template named "BundleToHL7v2" exists in a folder named "Fhir" in the container, the value should include the folder path - "Fhir/BundleToHL7v2" |
 | InputDataString | Required | - | Input data content to be converted in string format. | String representation of the data to be converted. |
 
 * Response body
@@ -188,7 +204,7 @@ The API response is a json object which contains the converted HL7v2 message und
 
 In this how-to-guide, you learned how to use the FHIR converter APIs against the service endpoint setup in Azure, to be able to perform health data conversions.
 
-To monitor/troubleshoot your service, refer to the following documents:
+To monitor or troubleshoot your service, refer to the following documents:
 
 * [Monitor FHIR converter service](monitoring.md)
 * [Troubleshooting guide](troubleshoot.md)

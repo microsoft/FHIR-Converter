@@ -2,11 +2,11 @@
 
 This how-to-guide shows you how to configure the template store for the FHIR converter service in Azure. This is needed to support the ability to use custom Liquid templates for your conversion requests.
 
-The service currently supports the integration with Storage Accounts to pull custom templates hosted within the blob container.
+The service currently supports integration with Azure Storage Accounts to pull custom templates hosted within the blob container.
 
-If you are using the quickstart deployment options with default settings, your FHIR converter service will be automatically configured to pull templates from a newly created Storage Account.
+If you are using the quickstart version of the [deployment options](deployment-options.md#default-settings) with default settings, your FHIR converter service will be automatically configured to pull templates from a newly created Storage Account.
 
-Alternatively, to configure a pre-existing storage account, follow the steps in this document.
+Alternatively, to configure a different/pre-existing storage account, follow the steps in this document.
 
 ## Template store settings overview
 
@@ -42,13 +42,13 @@ In order for the service to be able to load the custom templates from the storag
 1. Enable managed identity on your Azure Container App.
     * Your container app can be granted either a system-assigned identity or a user-assigned identity.
 
-Refer [Managed Identities in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/managed-identity?tabs=portal%2Cdotnet) for more information.
+   Refer [Managed Identities in Azure Container Apps](https://learn.microsoft.com/en-us/azure/container-apps/managed-identity?tabs=portal%2Cdotnet) for more information.
 
 ![Convert identity](../images/convert-identity.png)
 
 1. Assign the identity created above,[`Storage Blob Data Reader`](https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles/storage#storage-blob-data-reader) role priveleges on the storage account container being configured with the service.
 
-Refer [Assign an Azure role for access to blob data](https://learn.microsoft.com/en-us/azure/storage/blobs/assign-azure-role-data-access?tabs=portal) for more information.
+   Refer [Assign an Azure role for access to blob data](https://learn.microsoft.com/en-us/azure/storage/blobs/assign-azure-role-data-access?tabs=portal) for more information.
 
 ![Convert template store permissions](../images/convert-template-store-permissions.png)
 
@@ -57,8 +57,8 @@ Refer [Assign an Azure role for access to blob data](https://learn.microsoft.com
 1. If you have deployed the FHIR converter service to Azure, provide the configuration:
     * Use the deployment option (**TODO** insert instructions)
 
-    * Alternatively, you can directly provide the configuration via environment variables in your Azure Container App running the  FHIR converter service:
-        1. **TemplateHosting__StorageAccountConfiguration__ContainerUrl** - the url to the blob container.
+    * Alternatively, you can directly provide the configuration via environment variables in your Azure Container App running the FHIR converter service by editing the container:
+        1. **TemplateHosting__StorageAccountConfiguration__ContainerUrl** - the blob container URL hosting the custom templates.
 
          Refer [Configure environment variables](https://learn.microsoft.com/en-us/azure/container-apps/environment-variables?tabs=portal) for more information.
 
@@ -68,7 +68,7 @@ Refer [Assign an Azure role for access to blob data](https://learn.microsoft.com
 
 To verify your FHIR converter service is setup correctly to pull the custom templates from the configured storage account, use the below health check endpoint:
 
-GET https://\<CONTAINER APP ENDPOINT URL\>/health/check
+**GET `https://<CONTAINER APP ENDPOINT URL>/health/check`**
 
 Sample response body
 
