@@ -57,38 +57,50 @@ param cpuLimit string = '1.0'
 @description('Memory usage limit in Gi.')
 param memoryLimit string = '2Gi'
 
-@description('If set to true, security will be enabled on the API endpoint.')
-param securityEnabled bool = false
+@description('If set to true, authentication will be enabled on the API endpoint.')
+param authenticationEnabled bool = false
 
-@description('List of audiences that the security token is intended for.')
-param securityAuthenticationAudiences array = []
+@description('List of audiences that the authentication token is intended for.')
+param authenticationAudiences array = []
 
 @description('Issuing authority of the JWT token.')
-param securityAuthenticationAuthority string = ''
+param authenticationAuthority string = ''
 
-@description('Tag of the image to deploy.')
+@description('Tag of the image to deploy. To see available image versions, visit the [FHIR Converter MCR page](https://mcr.microsoft.com/en-us/product/healthcareapis/fhir-converter/tags)')
 param imageTag string
 
 @description('Timestamp to append to container name. Defaults to time of deployment.')
 param timestamp string = utcNow('yyyyMMddHHmmss')
 
-// Security configuration
-var securityEnabledConfigName = 'ConvertService__Security__Enabled'
-var securityAuthenticationAudiencesConfigNamePrefix = 'ConvertService__Security__Authentication__Audiences__'
-var securityAuthenticationAuthorityConfigName = 'ConvertService__Security__Authentication__Authority'
-var securityConfiguration = [
+@description('The connection string to the application insights instance to be used for collecting application telemetry.')
+param applicationInsightsConnectionString string = ''
+
+@description('The client ID of the user-assigned managed identity used to access the application insights instance.')
+param applicationInsightsUAMIClientId string = ''
+
+@description('The resource ID of the user-assigned managed identity used to access the application insights instance.')
+param applicationInsightsUAMIResourceId string = ''
+
+@description('The ID of the container apps environment where the container app should be deployed to.')
+param containerAppEnvironmentId string
+
+// API endpoint authentication configuration
+var authenticationEnabledConfigName = 'ConvertService__Security__Enabled'
+var authenticationAudiencesConfigNamePrefix = 'ConvertService__Security__Authentication__Audiences__'
+var authenticationAuthorityConfigName = 'ConvertService__Security__Authentication__Authority'
+var authenticationConfiguration = [
   {
-    name: securityEnabledConfigName
-    value: string(securityEnabled)
+    name: authenticationEnabledConfigName
+    value: string(authenticationEnabled)
   }
   {
-    name: securityAuthenticationAuthorityConfigName
-    value: securityAuthenticationAuthority
+    name: authenticationAuthorityConfigName
+    value: authenticationAuthority
   }
 ]
 
-var securityAuthenticationAudiencesConfig = [for (audience, i) in securityAuthenticationAudiences: {
-    name: '${securityAuthenticationAudiencesConfigNamePrefix}${i}'
+var authenticationAudiencesConfig = [for (audience, i) in authenticationAudiences: {
+    name: '${authenticationAudiencesConfigNamePrefix}${i}'
     value: audience
 }]
 
@@ -103,52 +115,36 @@ var blobTemplateHostingConfiguration = [
   }
 ]
 
-// Telemetry configuration
-var applicationInsightsName = '${envName}-ai'
-resource applicationInsights 'Microsoft.Insights/components@2020-02-02' existing = {
-  name: applicationInsightsName
-}
-
-resource applicationInsightsUAMI 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
-  name: '${applicationInsightsName}-mi'
-}
-
-var appInsightsConnectionStringConfigurationName = 'ConvertService__Telemetry__AzureMonitor__ApplicationInsightsConnectionString'
-var appInsightsConnectionString = applicationInsights.properties.ConnectionString
-var appInsightsUAMIClientIdConfigurationName = 'ConvertService__Telemetry__AzureMonitor__ManagedIdentityClientId'
-var appInsightsUAMIClientId = applicationInsightsUAMI.properties.clientId
+// Application insights configuration
+var applicationInsightsConnectionStringConfigurationName = 'ConvertService__Telemetry__AzureMonitor__ApplicationInsightsConnectionString'
+var applicationInsightsUAMIClientIdConfigurationName = 'ConvertService__Telemetry__AzureMonitor__ManagedIdentityClientId'
 var telemetryConfiguration = [
     {
-        name: appInsightsConnectionStringConfigurationName
-        value: appInsightsConnectionString
+        name: applicationInsightsConnectionStringConfigurationName
+        value: applicationInsightsConnectionString
     }
     {
-        name: appInsightsUAMIClientIdConfigurationName
-        value: appInsightsUAMIClientId
+        name: applicationInsightsUAMIClientIdConfigurationName
+        value: applicationInsightsUAMIClientId
     }
 ]
 
-// Get Container Apps Environment
-resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
-  name: envName
-}
-
 // Environment Variables for Container App
-var envConfiguration =  concat(securityConfiguration, securityAuthenticationAudiencesConfig, telemetryConfiguration, empty(templateStorageAccountName) ? [] : blobTemplateHostingConfiguration)
+var envConfiguration =  concat(authenticationConfiguration, authenticationAudiencesConfig, telemetryConfiguration, empty(templateStorageAccountName) ? [] : blobTemplateHostingConfiguration)
 
 var imageName = 'healthcareapis/fhir-converter'
 
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: appName
   location: location
-  identity: {
+  identity: !empty(applicationInsightsUAMIResourceId) ? {
     type: 'SystemAssigned, UserAssigned'
     userAssignedIdentities: {
-      '${applicationInsightsUAMI.id}': {}
+      '${applicationInsightsUAMIResourceId}': {}
     }
-  }
+  } : null
   properties:{
-    managedEnvironmentId: containerAppEnvironment.id
+    managedEnvironmentId: containerAppEnvironmentId
     configuration: {
       ingress: {
         targetPort: 8080
@@ -174,7 +170,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
     }
   }
   tags: {
-	fhirConverterEnvName: envName
+    fhirConverterEnvName: envName
     fhirConverterAppName: appName
     fhirConverterImageName: imageName
     fhirConverterImageVersion: imageTag

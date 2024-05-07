@@ -35,14 +35,8 @@ param location string
 @description('Name of the container apps environment.')
 param envName string
 
-@description('For deployment tracking only. Leave blank if referencing this template directly.')
-param appName string = ''
-
-@description('For deployment tracking only. Leave blank if referencing this template directly.')
-param appImageName string = ''
-
-@description('For deployment tracking only. Leave blank if referencing this template directly.')
-param appImageTag string = ''
+@description('If set to true, Application Insights logs and metrics collection will be enabled for the container app.')
+param enableApplicationInsights bool
 
 // Deploy log analytics workspace
 var logAnalyticsWorkspaceName = '${envName}-logsws'
@@ -60,36 +54,14 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03
   })
 }
 
-// Deploy application insights for receiving azure monitor telemetry
-var applicationInsightsName = '${envName}-ai'
-resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = {
-  name: applicationInsightsName
-  location: location
-  kind: 'web'
-  properties: {
-    Application_Type: 'web'
-    WorkspaceResourceId: logAnalyticsWorkspace.id
-    DisableLocalAuth: true
-  }
-}
-
-// Create user-assigned managed identity to authenticate with Application Insights
-var applicationInsightsUAMIName = '${applicationInsightsName}-mi'
-resource applicationInsightsUAMI 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: applicationInsightsUAMIName
-  location: location
-}
-
-// Grant Monitoring Metrics Publisher role to applicationInsightsUAMI on applicationInsights
-var monitoringMetricsPublisherRoleAssignmentName = guid(applicationInsightsUAMIName, applicationInsightsName)
-var monitoringMetricsPublisherRoleDefinitionId = resourceId('Microsoft.Authorization/roleDefinitions', '3913510d-42f4-4e42-8a64-420c390055eb') // Monitoring Metrics Publisher role
-resource monitoringMetricsPublisherRole 'Microsoft.Authorization/roleAssignments@2020-08-01-preview' = {
-  name: monitoringMetricsPublisherRoleAssignmentName
-  scope: applicationInsights
-  properties: {
-    principalId: applicationInsightsUAMI.properties.principalId
-    principalType: 'ServicePrincipal'
-    roleDefinitionId: monitoringMetricsPublisherRoleDefinitionId
+// Deploy application insights for collection of application logs and metrics
+module applicationInsightsDeploy 'Deploy-AppInsights.bicep' = if (enableApplicationInsights) {
+  name: 'applicationInsightsDeploy'
+  scope: resourceGroup()
+  params: {
+    location: location
+    envName: envName
+    logAnalyticsWorkspaceId: logAnalyticsWorkspace.id
   }
 }
 
@@ -108,14 +80,12 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
       }
     }
   }
-  tags: {
-	fhirConverterEnvName: envName
-    fhirConverterAppName: appName
-    fhirConverterImageName: appImageName
-    fhirConverterImageVersion: appImageTag
-  }
 }
 
 output containerAppEnvironmentName string = containerAppEnvironment.name
+output containerAppEnvironmentId string = containerAppEnvironment.id
 output logAnalyticsWorkspaceName string = logAnalyticsWorkspace.name
-output applicationInsightsName string = applicationInsights.name
+output applicationInsightsName string = enableApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsName : ''
+output applicationInsightsConnectionString string = enableApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsConnectionString : ''
+output applicationInsightsUAMIClientId string = enableApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsUAMIClientId : ''
+output applicationInsightsUAMIResourceId string = enableApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsUAMIResourceId : ''
