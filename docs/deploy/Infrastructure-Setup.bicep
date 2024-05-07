@@ -54,7 +54,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03
   })
 }
 
-// Deploy application insights for collection of application logs and metrics
+// Deploy application insights for collection application logs and metrics
 module applicationInsightsDeploy 'Deploy-AppInsights.bicep' = if (enableApplicationInsights) {
   name: 'applicationInsightsDeploy'
   scope: resourceGroup()
