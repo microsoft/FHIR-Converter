@@ -7,7 +7,7 @@ To complete this configuration, you will:
 1. **Create a resource application in Azure AD**: This resource application will be a representation of the FHIR converter service that can be used to authenticate and obtain tokens. In order for an application to interact with Azure AD, it needs to be registered.
 1. **Provide app registration details to your FHIR converter web service**: Once the resource application is registered, you will set the authentication configuration of your  FHIR converter web service. This ensures that any client that is able to authenticate with the above resource application will be able to access your  FHIR converter APIs.
 1. **Create a service client application in Azure AD**: Client application registrations are Azure AD representations of applications that can be used to authenticate and obtain tokens. A service client is intended to be used by an application to obtain an access token without interactive authentication of a user. It will have certain application permissions and use an application secret (password) when obtaining access tokens.
-1. **Retrieve Access Token via Postman or Azure CLI**: With your service client application enabled, you can obtain an access token to authenticate your application.
+1. **Retrieve Access Token via Insomnia or Azure CLI**: With your service client application enabled, you can obtain an access token to authenticate your application.
 
 ## Prerequisites
 
@@ -59,7 +59,7 @@ The configurable authentication settings are :
 
         (**TODO** add instructions for options)
 
-    * Alternatively, you can directly provide the configuration via environment variables in your Azure Container App running the  FHIR converter service:
+    * Alternatively, you can directly provide the configuration via environment variables in your Azure Container App running the  FHIR converter service by editing the container:
         1. **ConvertService__Security__Enabled** - True
         2. **ConvertService__Security__Authentication__Audiences__0** - the **Application ID URI** created above.
         3. **ConvertService__Security__Authentication__Authority** - the tenant your application exists in, for example: ```https://login.microsoftonline.com/<tenant-name>.onmicrosoft.com``` or ```https://login.microsoftonline.com/<tenant-id>```.
@@ -97,10 +97,10 @@ The configurable authentication settings are :
 1. Login to Azure: ```az account```
 1. Request access token using the **Application ID URI** set above: ```az account get-access-token --resource=<APP-ID-URI>```
 
-#### Using Postman
+#### Using Insomnia
 
-1. [Install Postman](https://www.postman.com/downloads/) or use the [Postman Web App](https://web.postman.co/).
-1. Create a new **Post** Request with the following form-data:
+1. [Install Insomnia](https://insomnia.rest/).
+1. Create a new **Post** Request or use the **OAuth 2** option in the Auth tab for the API request you wish to authenticate with and provide the access token for, with the following form-data:
     1. URL: ```<Authority>/<tenant-ID>/oauth2/token``` where **Authority** is the tenant your application exists in, configured above, and **Tenant ID** is from your Azure App Registration.
         1. If using Azure Active Directory V2 then instead use URL: ```<Authority>/<tenant-ID>/oauth2/v2.0/token```.
     1. *client_id*: the **Client ID** for your Service Client.
@@ -108,7 +108,7 @@ The configurable authentication settings are :
     1. *client_secret*: the **Client secret** for your Service Client.
     1. *resource*: the **Application ID URI** for your Resource Application.
         1. If using Azure Active Directory V2 then instead of setting *resource*, set *scope*: ```<Application ID URI>/.default``` where Application ID URI is for your Resource Application.
-1. Select **Send** to retrieve the access token.
+1. Select **Send** (or **Fetch Tokens** in case you are using the Auth tab in the API request) to retrieve the access token.
 
 ## Summary
 

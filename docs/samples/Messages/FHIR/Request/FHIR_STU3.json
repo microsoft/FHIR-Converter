@@ -1,15 +1,5 @@
 {
-  "resourceType": "Patient",
-  "id": 12434,
-  "animal": {
-    "species": {
-      "coding": [
-        {
-          "system": "http://hl7.org/fhir/animal-species",
-          "code": "canislf",
-          "display": "Dog"
-        }
-      ]
-    }
-  }
+  "InputDataString": "{\"resourceType\": \"Patient\", \"id\": 12434, \"animal\": {\"species\": {\"coding\": [ {\"system\": \"http://hl7.org/fhir/animal-species\", \"code\": \"canislf\", \"display\": \"Dog\"}]}}}",
+  "InputDataFormat": "Fhir_STU3",
+  "RootTemplateName": "Patient"
 }

@@ -15,8 +15,8 @@ To learn more about the various options available to customize your service to m
 
 ## 3. [Optional] Configure custom Liquid templates
 
-The FHIR converter APIs come pre-packaged with [default Liquid templates](../../data/Templates) for the supported conversion scenarios. 
-However, to support custom transformations requirements, the APIs also have the capability to use custom templates provided for conversion.
+The FHIR converter APIs come pre-packaged with [default Liquid templates](../../data/Templates) for the supported conversion scenarios.
+However, to support custom transformation requirements, the APIs also have the capability to use custom templates provided for conversion.
 To learn more about how to customize Liquid templates to use for your conversion requests, see [Customize templates](customize-templates.md).
 
 These templates need to be uploaded to the template store configured with your FHIR converter service. Refer [Enable template store integration](enable-template-store-integration.md) for detailed instructions on configuring the service to use custom templates.
