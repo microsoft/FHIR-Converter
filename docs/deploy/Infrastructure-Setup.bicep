@@ -1,9 +1,13 @@
-@description('Location where the resources are deployed.')
+@description('Location where the resources are deployed. For list of Azure regions where the below resources are available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=monitor,container-apps).')
 @allowed([
   'australiaeast'
+  'brazilsouth'
   'canadacentral'
+  'canadaeast'
   'centralindia'
   'centralus'
+  'chinanorth3'
+  'eastasia'
   'eastus'
   'eastus2'
   'francecentral'
@@ -12,12 +16,17 @@
   'koreacentral'
   'northcentralus'
   'northeurope'
+  'norwayeast'
+  'southafricanorth'
   'southcentralus'
   'southeastasia'
   'swedencentral'
   'switzerlandnorth'
+  'uaenorth'
   'uksouth'
+  'ukwest'
   'westeurope'
+  'westus'
   'westus2'
   'westus3'
 ])
