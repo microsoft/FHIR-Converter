@@ -126,7 +126,6 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
 // Environment Variables for Container App
 var envConfiguration =  concat(securityConfiguration, securityAuthenticationAudiencesConfig, telemetryConfiguration, empty(templateStorageAccountName) ? [] : blobTemplateHostingConfiguration)
 
-var microsoftCR = ''
 var imageName = 'healthcareapis/fhir-converter'
 
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
@@ -163,6 +162,12 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
         maxReplicas: maxReplicas
       }
     }
+  }
+  tags: {
+	fhirConverterEnvName: envName
+    fhirConverterAppName: appName
+    fhirConverterImageName: imageName
+    fhirConverterImageVersion: imageTag
   }
 }
 

@@ -26,6 +26,15 @@ param location string
 @description('Name of the container apps environment.')
 param envName string
 
+@description('For deployment tracking only. Leave blank if referencing this template directly.')
+param appName string = ''
+
+@description('For deployment tracking only. Leave blank if referencing this template directly.')
+param appImageName string = ''
+
+@description('For deployment tracking only. Leave blank if referencing this template directly.')
+param appImageTag string = ''
+
 // Deploy log analytics workspace
 var logAnalyticsWorkspaceName = '${envName}-logsws'
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview' = {
@@ -89,6 +98,12 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
     }
+  }
+  tags: {
+	fhirConverterEnvName: envName
+    fhirConverterAppName: appName
+    fhirConverterImageName: appImageName
+    fhirConverterImageVersion: appImageTag
   }
 }
 
