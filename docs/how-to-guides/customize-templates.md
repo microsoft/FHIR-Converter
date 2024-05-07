@@ -3,6 +3,8 @@ This how-to-guide shows you how to customize the liquid templates for the FHIR C
 
 The default templates for the FHIR Converter service are located [here](https://github.com/microsoft/FHIR-Converter/tree/main/data/), and are a recommended starting point for creating customized templates.
 
+The templates use the liquid template language, which is documented [here](https://shopify.github.io/liquid/).
+
 ## Transforming data to FHIR
 
 ### HL7v2 to FHIR
@@ -21,6 +23,8 @@ The default templates are a good starting point for creating a custom CCD transf
 There are some [sample templates](https://github.com/microsoft/FHIR-Converter/tree/main/data/Templates/Json) that map JSON values to a Patient resource.
 
 ## Transforming from FHIR to HL7v2
+The documentation for HL7v2 message structures can be found on https://www.hl7.org/.
+
 When transforming FHIR to HL7v2, the templates are written such that the input FHIR resource is transformed into a JSON representation of an HL7v2 message. When the /convertToHl7v2 API is called, the API will transform the input FHIR resource into the JSON representation of an HL7 message. But before the result is returned to the user, the JSON representation of an HL7v2 message is transformed into the normal HL7v2 format with line breaks, and is returned to the user.
 
 To represent HL7v2 in JSON, the transformation uses an array called messageDefinition, which is an ordered array of HL7v2 message segments.
