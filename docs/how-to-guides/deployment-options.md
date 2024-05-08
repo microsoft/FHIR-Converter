@@ -78,11 +78,23 @@ az deployment sub create --location <Location> --template-file FhirConverter-Sin
 
 **3. Template store integration is disabled**
 
-When template store integration is disabled, the FHIR Converter service will use the provided default templates. To use custom templates, template store integration must be enabled so that custom templates can be stored in the deployed storage account; to achieve this, include the `--parameters templateStoreEnabled=true` argument in the deployment command:
+When template store integration is disabled, a storage account will not be provisioned with the deployment and the FHIR Converter service will use the provided default templates. To use custom templates, template store integration must be enabled so that custom templates can be stored in the deployed storage account; to deploy a new storage account, include the `--parameters templateStoreEnabled=true` argument in the deployment command:
 
 ```
 az deployment sub create --location <Location> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters deployTemplateStore=true
 
+```
+
+When no custom storage account and storage container names are provided, default names will be generated using the *serviceName* you provide. If you want to customize the storage account and storage container names, include the `--parameters templateStorageAccountName=<StorageAccountName> templateStorageAccountContainerName=<StorageContainerName>` arguments in the deployment command:
+
+```
+az deployment sub create --location <Location> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters deployTemplateStore=true templateStorageAccountName=<StorageAccountName> templateStorageAccountContainerName=<StorageContainerName>
+```
+
+Alternatively, if you want to enable template store integration but already have a storage account and storage container that you want to use, include the `--parameters storageAccountName=<StorageAccountName> storageContainerName=<StorageContainerName>` arguments in the deployment command, leaving the *deployTemplateStore* parameter as false:
+
+```
+az deployment sub create --location <Location> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters storageAccountName=<StorageAccountName> storageContainerName=<StorageContainerName>
 ```
 
 Additional customizations are described in the [Configuration Settings](configuration-settings.md) document.
