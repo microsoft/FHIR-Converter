@@ -57,14 +57,14 @@ param cpuLimit string = '1.0'
 @description('Memory usage limit in Gi.')
 param memoryLimit string = '2Gi'
 
-@description('If set to true, authentication will be enabled on the API endpoint.')
-param authenticationEnabled bool = false
+@description('If set to true, security will be enabled on the API endpoint.')
+param securityEnabled bool = false
 
 @description('List of audiences that the authentication token is intended for.')
-param authenticationAudiences array = []
+param securityAuthenticationAudiences array = []
 
 @description('Issuing authority of the JWT token.')
-param authenticationAuthority string = ''
+param securityAuthenticationAuthority string = ''
 
 @description('Tag of the image to deploy. To see available image versions, visit the [FHIR Converter MCR page](https://mcr.microsoft.com/en-us/product/healthcareapis/fhir-converter/tags)')
 param imageTag string
@@ -84,23 +84,23 @@ param applicationInsightsUAMIResourceId string = ''
 @description('The ID of the container apps environment where the container app should be deployed to.')
 param containerAppEnvironmentId string
 
-// API endpoint authentication configuration
-var authenticationEnabledConfigName = 'ConvertService__Security__Enabled'
-var authenticationAudiencesConfigNamePrefix = 'ConvertService__Security__Authentication__Audiences__'
-var authenticationAuthorityConfigName = 'ConvertService__Security__Authentication__Authority'
-var authenticationConfiguration = [
+// Security configuration
+var securityEnabledConfigName = 'ConvertService__Security__Enabled'
+var securityAuthenticationAudiencesConfigNamePrefix = 'ConvertService__Security__Authentication__Audiences__'
+var securityAuthenticationAuthorityConfigName = 'ConvertService__Security__Authentication__Authority'
+var securityConfiguration = [
   {
-    name: authenticationEnabledConfigName
-    value: string(authenticationEnabled)
+    name: securityEnabledConfigName
+    value: string(securityEnabled)
   }
   {
-    name: authenticationAuthorityConfigName
-    value: authenticationAuthority
+    name: securityAuthenticationAuthorityConfigName
+    value: securityAuthenticationAuthority
   }
 ]
 
-var authenticationAudiencesConfig = [for (audience, i) in authenticationAudiences: {
-    name: '${authenticationAudiencesConfigNamePrefix}${i}'
+var securityAuthenticationAudiencesConfig = [for (audience, i) in securityAuthenticationAudiences: {
+    name: '${securityAuthenticationAudiencesConfigNamePrefix}${i}'
     value: audience
 }]
 
@@ -130,19 +130,19 @@ var telemetryConfiguration = [
 ]
 
 // Environment Variables for Container App
-var envConfiguration =  concat(authenticationConfiguration, authenticationAudiencesConfig, telemetryConfiguration, empty(templateStorageAccountName) ? [] : blobTemplateHostingConfiguration)
+var envConfiguration =  concat(securityConfiguration, securityAuthenticationAudiencesConfig, telemetryConfiguration, empty(templateStorageAccountName) ? [] : blobTemplateHostingConfiguration)
 
 var imageName = 'healthcareapis/fhir-converter'
 
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: appName
   location: location
-  identity: !empty(applicationInsightsUAMIResourceId) ? {
-    type: 'SystemAssigned, UserAssigned'
-    userAssignedIdentities: {
+  identity: {
+    type: !empty(applicationInsightsUAMIResourceId) ? 'SystemAssigned, UserAssigned' : 'SystemAssigned'
+    userAssignedIdentities: !empty(applicationInsightsUAMIResourceId) ? {
       '${applicationInsightsUAMIResourceId}': {}
-    }
-  } : null
+    } : null
+  }
   properties:{
     managedEnvironmentId: containerAppEnvironmentId
     configuration: {

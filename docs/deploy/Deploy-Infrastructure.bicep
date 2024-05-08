@@ -36,7 +36,7 @@ param location string
 param envName string
 
 @description('If set to true, Application Insights logs and metrics collection will be enabled for the container app.')
-param enableApplicationInsights bool
+param deployApplicationInsights bool
 
 // Deploy log analytics workspace
 var logAnalyticsWorkspaceName = '${envName}-logsws'
@@ -55,7 +55,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03
 }
 
 // Deploy application insights for collection of application logs and metrics
-module applicationInsightsDeploy 'Deploy-AppInsights.bicep' = if (enableApplicationInsights) {
+module applicationInsightsDeploy 'Deploy-AppInsights.bicep' = if (deployApplicationInsights) {
   name: 'applicationInsightsDeploy'
   scope: resourceGroup()
   params: {
@@ -85,7 +85,6 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
 output containerAppEnvironmentName string = containerAppEnvironment.name
 output containerAppEnvironmentId string = containerAppEnvironment.id
 output logAnalyticsWorkspaceName string = logAnalyticsWorkspace.name
-output applicationInsightsName string = enableApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsName : ''
-output applicationInsightsConnectionString string = enableApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsConnectionString : ''
-output applicationInsightsUAMIClientId string = enableApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsUAMIClientId : ''
-output applicationInsightsUAMIResourceId string = enableApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsUAMIResourceId : ''
+output applicationInsightsConnectionString string = deployApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsConnectionString : ''
+output applicationInsightsUAMIClientId string = deployApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsUAMIClientId : ''
+output applicationInsightsUAMIResourceId string = deployApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsUAMIResourceId : ''
