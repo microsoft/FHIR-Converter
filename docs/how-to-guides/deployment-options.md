@@ -14,7 +14,34 @@ The following Azure resources will be provisioned once the deployment has comple
 
 ## Prerequisites
 
-(**TODO** add prereqs - Az sub, privileges, etc.)
+To run any of these deployment options, the following items must be set up before execution:
+ 
+* Contributor and User Access Administrator OR Owner permissions on your Azure subscription
+ 
+For local deployments (Options 2 and 3), the following additional steps must be performed:
+ 
+* Install the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) module
+ 
+* Log into your Azure account:
+ 
+```PowerShell
+az login 
+```
+ 
+* If you have more than one subscription, select the subscription you would like to deploy to:
+ 
+```PowerShell
+az account set --subscription <SubscriptionId>
+```
+ 
+* Clone this repo and navigate to the Bicep deployment folder:
+ 
+```PowerShell
+git clone https://github.com/microsoft/FHIR-Converter.git
+cd docs/deploy
+```
+
+```PowerShell"
 
 ## Deployment
 
@@ -37,6 +64,66 @@ To learn more about the various options available to customize your service, and
 #### Option 1: Single-click Deploy to Azure via ARM template generated from Bicep Template
 
 #### Option 2: Deploy a single Bicep file locally
+
+Deploy the [Single Deploy Bicep Template](../deploy/FhirConverter-SingleAzureDeploy.bicep) by running the following command:
+
+```
+az deployment sub create --location <Location> --template-file FhirConverter-SingleAzureDeploy.bicep
+```
+
+Note: See [region availability](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=monitor,storage,container-apps) for the required resources to select a valid location for the resources to be deployed in.
+
+You will need to provide a *serviceName* that will be used to generate a name for each of the resources provisioned, and the *containerAppImageTag*, which is the tag of the FHIR Converter image version to be pulled from MCR. To see available image tags, visit the [FHIR Converter MCR page](https://mcr.microsoft.com/en-us/product/healthcareapis/fhir-converter/tags).
+
+You have the option specify custom values for any of the resources created by adding parameters to the command. For example, the containerAppName can be customized to be 'containerapp-test1' by specifying a value for the containerAppName parameter in the command:
+```
+az deployment sub create --location westus3 --template-file FhirConverter-SingleAzureDeploy.bicep --parameters containerAppName=containerapp-test1
+```
+
+For help, type '?' to see a description of a parameter.
+
+By default, the Single Deploy Bicep Template will result in a FHIR Converter deployment with the following settings:
+
+
+The deployment will create an Application Insights instance that will receive application logs and metrics for the FHIR Converter service. See the [Monitoring Overview](monitoring.md) for more information on how to view these logs and metrics.						
+To disable Application Insights deployment for your service, or if you initially deployed your service with Application Insights and now want to disable telemetry export to Application Insights, run the deployment command with `--parameters deployApplicationInsights=false` included:
+
+```
+az deployment sub create --location <Location> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters deployApplicationInsights=false
+```
+
+Note: for any time when the service is running while Application Insights is disabled, you will not have access to metrics and request logs that were captured during that time.
+
+**2. Security settings for the API endpoints are disabled.**
+
+It is **strongly** recommended to enable security for your FHIR Converter service. To enable security settings for the APIs, include `--parameters securityEnabled=true` and additional relevant security arguments in the deployment command (see more details in the [Configuration Settings](configuration-settings.md) document):
+
+```
+az deployment sub create --location <Location> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters securityEnabled=true securityAuthenticationAudiences=<Audiences> securityAuthenticationAuthority=<Authority>
+```
+
+**3. Template store integration is disabled**
+
+When template store integration is disabled, a storage account will not be provisioned with the deployment and the FHIR Converter service will use the provided default templates. To use custom templates, template store integration must be enabled so that custom templates can be stored in the deployed storage account; to deploy a new storage account, include the `--parameters templateStoreEnabled=true` argument in the deployment command:
+```
+az deployment sub create --location <Location> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters deployTemplateStore=true
+
+```
+
+When no custom storage account and storage container names are provided, default names will be generated using the serviceName you provide. If you want to customize the storage account and storage container names, include the --parameters templateStorageAccountName=<StorageAccountName> templateStorageAccountContainerName=<StorageContainerName> arguments in the deployment command:
+
+```
+az deployment sub create --location <Location> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters deployTemplateStore=true templateStorageAccountName=<StorageAccountName> templateStorageAccountContainerName=<StorageContainerName>
+```
+
+Alternatively, if you want to enable template store integration but already have a storage account and storage container that you want to use, include the --parameters storageAccountName=<StorageAccountName> storageContainerName=<StorageContainerName> arguments in the deployment command, leaving the deployTemplateStore parameter as false:
+
+```
+az deployment sub create --location <Location> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters storageAccountName=<StorageAccountName> storageContainerName=<StorageContainerName>
+```
+
+Additional customizations are described in the [Configuration Settings](configuration-settings.md) document.
+
 
 #### Option 3: Execute a single PowerShell deployment script locally
 
