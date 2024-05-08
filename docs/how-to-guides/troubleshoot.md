@@ -160,7 +160,7 @@ The following query may be helpful in viewing the latencies of the convert opera
 AppTraces
 | where TimeGenerated > ago(3hours)
 | where Properties contains <latency_metric_name>
-| project TimeGenerated, tostring(Properties.Metric), tostring(Properties.Duration), OperationId
+| project TimeGenerated, Metric = tostring(Properties.Metric), Latency = tostring(Properties.Duration), OperationId
 ```
 
 Replace the `latency_metric_name` in the query above with the metric of interest from the list below. Compare the latency to that of successful requests to identify any step(s) running longer than normal:
