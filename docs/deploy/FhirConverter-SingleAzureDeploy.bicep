@@ -103,7 +103,7 @@ module templateStoreDeploy 'Deploy-TemplateStore.bicep' = if (deployTemplateStor
   }
 }
 
-module convertInfrastructureDeploy 'DeployInfrastructure.bicep' = {
+module convertInfrastructureDeploy 'Deploy-Infrastructure.bicep' = {
   name: 'convertInfrastructureDeploy'
   scope: resourceGroup
   params: {
