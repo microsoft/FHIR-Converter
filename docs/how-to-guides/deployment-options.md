@@ -14,7 +14,34 @@ The following Azure resources will be provisioned once the deployment has comple
 
 ## Prerequisites
 
-(**TODO** add prereqs - Az sub, privileges, etc.)
+To run any of these deployment options, the following items must be set up before execution:
+ 
+* Contributor and User Access Administrator OR Owner permissions on your Azure subscription
+ 
+For local deployments (Options 2 and 3), the following additional steps must be performed:
+ 
+* Install the [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) module
+ 
+* Log into your Azure account:
+ 
+```PowerShell
+az login 
+```
+ 
+* If you have more than one subscription, select the subscription you would like to deploy to:
+ 
+```PowerShell
+az account set --subscription <SubscriptionId>
+```
+ 
+* Clone this repo and navigate to the Bicep deployment folder:
+ 
+```PowerShell
+git clone https://github.com/microsoft/FHIR-Converter.git
+cd docs/deploy
+```
+
+```PowerShell"
 
 ## Deployment
 
