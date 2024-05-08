@@ -41,8 +41,6 @@ git clone https://github.com/microsoft/FHIR-Converter.git
 cd docs/deploy
 ```
 
-```PowerShell"
-
 ## Deployment
 
 ### Deployment settings
