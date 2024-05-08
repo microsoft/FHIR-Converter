@@ -78,13 +78,8 @@ resource monitoringMetricsPublisherRole 'Microsoft.Authorization/roleAssignments
     principalType: 'ServicePrincipal'
     roleDefinitionId: monitoringMetricsPublisherRoleDefinitionId
   }
-  dependsOn: [
-      applicationInsights
-      applicationInsightsUAMI
-  ]
 }
 
-output applicationInsightsName string = applicationInsights.name
 output applicationInsightsConnectionString string = applicationInsights.properties.ConnectionString
 output applicationInsightsUAMIClientId string = applicationInsightsUAMI.properties.clientId
 output applicationInsightsUAMIResourceId string = applicationInsightsUAMI.id

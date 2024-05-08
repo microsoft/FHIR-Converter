@@ -58,12 +58,12 @@ resource templateStorageAccountCreated 'Microsoft.Storage/storageAccounts@2022-0
   properties: {}
 }
 
-resource templateStorageAccount 'Microsoft.Storage/storageAccounts/blobServices@2021-06-01' = {
+resource templateStorageAccount 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01' = {
   name: 'default'
   parent: templateStorageAccountCreated
 }
 
-resource templateStorageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-04-01' = {
+resource templateStorageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01' = {
   name: templateStorageAccountContainerName
   parent: templateStorageAccount
 }
