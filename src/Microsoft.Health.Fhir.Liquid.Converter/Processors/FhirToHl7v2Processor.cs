@@ -23,16 +23,18 @@ using NJsonSchema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
-    public class JsonToHl7v2Processor : BaseProcessor
+    public class FhirToHl7v2Processor : BaseProcessor
     {
         private readonly IDataParser _parser = new JsonDataParser();
 
         private string[] _segmentsWithFieldSeparator = new string[] { "MSH", "BHS", "FHS" };
 
-        public JsonToHl7v2Processor(ProcessorSettings processorSettings, ILogger<JsonToHl7v2Processor> logger)
+        public FhirToHl7v2Processor(ProcessorSettings processorSettings, ILogger<FhirToHl7v2Processor> logger)
             : base(processorSettings, logger)
         {
         }
+
+        protected override DataType DataType { get; set; } = DataType.Fhir;
 
         protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
