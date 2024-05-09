@@ -88,11 +88,14 @@ param containerAppEnvironmentId string
 var securityEnabledConfigName = 'ConvertService__Security__Enabled'
 var securityAuthenticationAudiencesConfigNamePrefix = 'ConvertService__Security__Authentication__Audiences__'
 var securityAuthenticationAuthorityConfigName = 'ConvertService__Security__Authentication__Authority'
-var securityConfiguration = [
+var securityEnabledConfiguration = [
   {
     name: securityEnabledConfigName
     value: string(securityEnabled)
   }
+]
+
+var securityAuthenticationAuthorityConfig = [
   {
     name: securityAuthenticationAuthorityConfigName
     value: securityAuthenticationAuthority
@@ -103,6 +106,8 @@ var securityAuthenticationAudiencesConfig = [for (audience, i) in securityAuthen
     name: '${securityAuthenticationAudiencesConfigNamePrefix}${i}'
     value: audience
 }]
+
+var securityConfiguration = concat(securityEnabledConfiguration, securityEnabled ? concat(securityAuthenticationAuthorityConfig, securityAuthenticationAudiencesConfig) : [])
 
 // Template hosting configuration
 var storageEnvironmentSuffix = az.environment().suffixes.storage
@@ -130,7 +135,7 @@ var telemetryConfiguration = [
 ]
 
 // Environment Variables for Container App
-var envConfiguration =  concat(securityConfiguration, securityAuthenticationAudiencesConfig, telemetryConfiguration, empty(templateStorageAccountName) ? [] : blobTemplateHostingConfiguration)
+var envConfiguration =  concat(securityConfiguration, telemetryConfiguration, empty(templateStorageAccountName) ? [] : blobTemplateHostingConfiguration)
 
 var imageName = 'healthcareapis/fhir-converter'
 
