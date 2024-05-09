@@ -1,4 +1,4 @@
-# Deployment options to setup FHIR converter service in Azure
+# Deployment options to set up FHIR converter service in Azure
 
 This article details various deployment options for provisioning a FHIR converter service in Azure using the [MCR container image](https://mcr.microsoft.com/en-us/product/healthcareapis/fhir-converter/tags).
 
@@ -45,7 +45,7 @@ cd docs/deploy
 
 ### Deployment settings
 
-The deployment options below provide a quickstart version which will setup your service with the default configuration, which is typically intended for testing or initial setup. The deployment options also allow for specifying specific configurations as needed for your service, during deployment.
+The deployment options below provide a quickstart version which will set up your service with the default configuration, which is typically intended for testing or initial setup. The deployment options also allow for specifying specific configurations as needed for your service, during deployment.
 
 Note: You are also able to update the service configuration post initial deployment, by redeploying with the updated settings.
 
@@ -73,7 +73,7 @@ Note: See [region availability](https://azure.microsoft.com/en-us/explore/global
 
 You will need to provide a *serviceName* that will be used to generate a name for each of the resources provisioned, and the *containerAppImageTag*, which is the tag of the FHIR Converter image version to be pulled from MCR. To see available image tags, visit the [FHIR Converter MCR page](https://mcr.microsoft.com/en-us/product/healthcareapis/fhir-converter/tags).
 
-You have the option specify custom values for any of the resources created by adding parameters to the command. For example, the containerAppName can be customized to be 'containerapp-test1' by specifying a value for the containerAppName parameter in the command:
+You have the option to specify custom values for any of the resources created by adding parameters to the command. For example, the containerAppName can be customized to be 'containerapp-test1' by specifying a value for the containerAppName parameter in the command:
 ```
 az deployment sub create --location westus3 --template-file FhirConverter-SingleAzureDeploy.bicep --parameters containerAppName=containerapp-test1
 ```
@@ -127,9 +127,9 @@ Additional customizations are described in the [Configuration Settings](configur
 
 ### Redeployment scenarios
 
-The following scenarios will require a redeployment of your service using anyone of the above options:
+The following scenarios will require a redeployment of your service using any one of the above options:
 
-* Update container image tag - If you intend to update your service to use the latest container image tag available, a redeployment will setup your service to pull the correct image tag specified.
+* Update container image tag - If you intend to update your service to use the latest container image tag available, a redeployment will set up your service to pull the correct image tag specified.
 
 * Updated settings - If you choose to update any configuration, a redeployment is required for the changes to take effect. Some examples are:
 

@@ -66,7 +66,7 @@ In order for the service to be able to load the custom templates from the storag
 
 ### Verify template store health check
 
-To verify your FHIR converter service is setup correctly to pull the custom templates from the configured storage account, use the below health check endpoint:
+To verify your FHIR converter service is set up correctly to pull the custom templates from the configured storage account, use the below health check endpoint:
 
 **GET `https://<CONTAINER APP ENDPOINT URL>/health/check`**
 

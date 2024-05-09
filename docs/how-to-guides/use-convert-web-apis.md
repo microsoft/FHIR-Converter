@@ -6,11 +6,11 @@ This how-to-guide explains how to use the FHIR converter APIs using the service 
 
 In order to use the FHIR converter APIs, you must have an instance of the FHIR converter service deployed to Azure.
 
-Refer [Setup FHIR converter Service](setup-convert-service.md) for detailed instructions to create a web service to target your conversion requests to.
+Refer [Set up FHIR converter Service](setup-convert-service.md) for detailed instructions to create a web service to target your conversion requests to.
 
 ## FHIR converter endpoint
 
-If you have setup your FHIR converter service using the provided [deployment options](deployment-options.md), an Azure Container App is deployed to run the FHIR converter container and serves as the web service that clients can send conversion requests to.
+If you have set up your FHIR converter service using the provided [deployment options](deployment-options.md), an Azure Container App is deployed to run the FHIR converter container and serves as the web service that clients can send conversion requests to.
 
 ### Service URL
 
@@ -73,7 +73,7 @@ Supports conversion of legacy healthcare formats such as Hl7v2, C-CCDA, Json and
 
   * Authorization
 
-    If your service was setup with authentication enabled, you need to provide the bearer token in the authorization header.
+    If your service was set up with authentication enabled, you need to provide the bearer token in the authorization header.
 
     Refer [get access token](enable-authentication.md#get-access-token) to authenticate with your FHIR converter service which has security enabled, i.e., restricted access to APIs using the provided security configuration (audience and authority).
 
@@ -151,7 +151,7 @@ Supports conversion of FHIR R4 data to HL7v2 format.
 
   * Authorization
 
-    If your service was setup with authentication enabled, you need to provide the bearer token in the authorization header.
+    If your service was set up with authentication enabled, you need to provide the bearer token in the authorization header.
 
     Refer [get access token](enable-authentication.md#get-access-token) to authenticate with your FHIR converter service which has security enabled, i.e., restricted access to APIs using the provided security configuration (audience and authority).
 
@@ -202,7 +202,7 @@ The API response is a json object which contains the converted HL7v2 message und
 
 ## Summary
 
-In this how-to-guide, you learned how to use the FHIR converter APIs against the service endpoint setup in Azure, to be able to perform health data conversions.
+In this how-to-guide, you learned how to use the FHIR converter APIs against the service endpoint set up in Azure, to be able to perform health data conversions.
 
 To monitor or troubleshoot your service, refer to the following documents:
 

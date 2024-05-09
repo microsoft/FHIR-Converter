@@ -33,7 +33,7 @@ Refer [Application Insights Overview](https://docs.microsoft.com/azure/azure-mon
 
 ### Azure Container App
 
-The provided [deployment options](deployment-options.md) setup the FHIR converter service to run on Azure Container Apps, which is configured with basic settings intended for testing.
+The provided [deployment options](deployment-options.md) set up the FHIR converter service to run on an Azure Container App, which is configured with basic settings intended for testing.
 Azure Container Apps offers various configurable options for your app, that you can update to better suit your requirements:
 
 * To manage hardware requirements that meet your workload requirements, refer [Workload profiles](https://learn.microsoft.com/en-us/azure/container-apps/workload-profiles-overview)
@@ -45,7 +45,7 @@ Azure Container Apps offers various configurable options for your app, that you 
 
 In this how-to-guide, you learned how to configure your FHIR converter service in Azure, with your desired settings.
 
-Once the service is setup, you can use the endpoint corresponding to the application url of your Container App running the web service.
+Once the service is set up, you can use the endpoint corresponding to the application url of your Container App running the web service.
 
 To get started using your newly deployed FHIR converter service, refer to the following documents:
 

@@ -1,4 +1,4 @@
-# Setup FHIR converter service
+# Set up FHIR converter service
 
 The FHIR converter APIs are packaged as a containerized application and made available as an image in [Microsoft Container Registry](https://github.com/microsoft/containerregistry).
 
@@ -6,11 +6,11 @@ This how-to-guide details instructions on how to deploy the FHIR converter as a 
 
 ## 1. Deploy FHIR converter service in Azure
 
-To deploy your FHIR converter service in Azure using the MCR artifact, see [Deployment options to setup FHIR converter service in Azure](deployment-options.md).
+To deploy your FHIR converter service in Azure using the MCR artifact, see [Deployment options to set up FHIR converter service in Azure](deployment-options.md).
 
 ## 2. Configure FHIR converter service settings
 
-The quickstart version of the deployment options will setup your service with the default configuration, which is ideal for testing or initial setup.
+The quickstart version of the deployment options will set up your service with the default configuration, which is ideal for testing or initial setup.
 To learn more about the various options available to customize your service to meet your needs, and to configure the settings of your FHIR converter service in Azure, see [Configure FHIR converter service settings](configuration-settings.md).
 
 ## 3. [Optional] Configure custom Liquid templates
@@ -23,13 +23,13 @@ These templates need to be uploaded to the template store configured with your F
 
 ## 4. Verify FHIR converter service health
 
-Once you have setup your service, you can check it's health status which indicates if the service is configured correctly, is running and available to service requests, using the health check endpoint. Refer [Health check](use-convert-web-apis.md#health-check) for more information.
+Once you have set up your service, you can check its health status by using the health check endpoint. The health status indicates if the service is configured correctly, is running, and is available to service requests. Refer to [Health check](use-convert-web-apis.md#health-check) for more information.
 
 In case of any issues with the setup, refer [Troubleshooting guide](troubleshoot.md) for information on how to debug and resolve the issue.
 
 ## Summary
 
-In this how-to-guide, you learned how to setup your FHIR converter service in Azure using the MCR container image.
+In this how-to-guide, you learned how to set up your FHIR converter service in Azure using the MCR container image.
 
 Once the setup is complete, you can use the endpoint corresponding to the application url of your Container App running the web service.
 
