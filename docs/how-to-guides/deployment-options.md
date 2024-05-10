@@ -94,7 +94,7 @@ The table below outlines the parameters that can be configured through any of th
 
 #### Option 1: Single-click Deploy to Azure via ARM template generated from Bicep Template
 
-![Deploy to Azure](https://aka.ms/deploytoazurebutton)(https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FFHIR-Converter%2Fshared%2Fconvert-api-documentation-update%2Fdocs%2Fdeploy%2FFhirConverter-SingleAzureDeploy.json)
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FFHIR-Converter%2Fshared%2Fconvert-api-documentation-update%2Fdocs%2Fdeploy%2FFhirConverter-SingleAzureDeploy.json)
 
 Click the button above to provision the FHIR converter via Azure Portal. This button deploys a [remote ARM template](https://github.com/microsoft/FHIR-Converter/blob/shared/convert-api-documentation-update/docs/deploy/FhirConverter-SingleAzureDeploy.json) generated from the [single Bicep template](https://github.com/microsoft/FHIR-Converter/blob/shared/convert-api-documentation-update/docs/deploy/FhirConverter-SingleAzureDeploy.bicep) entry point for provisioning all necessary Azure resources and role assignments in Option 2.
 
