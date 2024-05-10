@@ -55,22 +55,22 @@ param location string
 param deployTemplateStore bool
 
 @description('Name of the storage account to be deployed.')
-param templateStorageAccountName string
+param templateStorageAccountName string = ''
 
 @description('Name of the storage account container to be deployed.')
-param templateStorageAccountContainerName string
+param templateStorageAccountContainerName string = ''
 
 @description('If set to true, a key vault and user assigned managed identity will be deployed with the specified names.')
 param deployKeyVault bool
 
 @description('Name of the key vault to be deployed.')
-param keyVaultName string
+param keyVaultName string = ''
 
 @description('Name of the user-assigned managed identity to be deployed for accessing the key vault.')
-param keyVaultUserAssignedIdentityName string
+param keyVaultUserAssignedIdentityName string = ''
 
 resource templateStorageAccountCreated 'Microsoft.Storage/storageAccounts@2022-09-01' = if (deployTemplateStore) {
-  name: templateStorageAccountName
+  name: deployTemplateStore ? templateStorageAccountName : 'default'
   location: location
   sku: {
     name: 'Standard_LRS'
@@ -85,12 +85,12 @@ resource templateStorageAccount 'Microsoft.Storage/storageAccounts/blobServices@
 }
 
 resource templateStorageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01' = if (deployTemplateStore) {
-  name: templateStorageAccountContainerName
+  name: deployTemplateStore ? templateStorageAccountContainerName : 'default'
   parent: templateStorageAccount
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2021-04-01-preview' = if (deployKeyVault) {
-  name: keyVaultName
+  name: deployKeyVault ? keyVaultName : 'default'
   location: location
   properties: {
     sku: {
@@ -103,7 +103,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-04-01-preview' = if (deployKey
 }
 
 resource keyVaultUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = if (deployKeyVault) {
-	name: keyVaultUserAssignedIdentityName
+	name: deployKeyVault ? keyVaultUserAssignedIdentityName : 'default'
 	location: location
 }
 

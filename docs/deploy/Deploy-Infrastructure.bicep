@@ -47,7 +47,8 @@ param envName string
 @description('If set to true, Application Insights logs and metrics collection will be enabled for the container app.')
 param deployApplicationInsights bool
 
-param keyVaultName string
+@description('The name of the Key Vault to store the Application Insights connection string secret.')
+param keyVaultName string = ''
 
 // Deploy log analytics workspace
 var logAnalyticsWorkspaceName = '${envName}-logsws'
@@ -68,7 +69,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03
 // Deploy application insights for receiving azure monitor telemetry
 var applicationInsightsName = '${envName}-ai'
 resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = if (deployApplicationInsights) {
-  name: applicationInsightsName
+  name: deployApplicationInsights ? applicationInsightsName : 'default'
   location: location
   kind: 'web'
   properties: {
@@ -82,7 +83,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-04-01-preview' existing = if (
   name: keyVaultName
 }
 
-var applicationInsightsConnectionStringSecretName = '${applicationInsightsName}-conn-string'
+var applicationInsightsConnectionStringSecretName = '${applicationInsightsName}ConnectionString'
 resource applicationInsightsConnectionStringSecret 'Microsoft.KeyVault/vaults/secrets@2021-04-01-preview' = if (deployApplicationInsights) {
   parent: keyVault
   name: applicationInsightsConnectionStringSecretName

@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.54.24096",
-      "templateHash": "13346935103740485399"
+      "templateHash": "5774547851017890218"
     }
   },
   "parameters": {
@@ -234,7 +234,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.54.24096",
-              "templateHash": "16519811489557143706"
+              "templateHash": "18404091950647462215"
             }
           },
           "parameters": {
@@ -293,12 +293,14 @@
             },
             "templateStorageAccountName": {
               "type": "string",
+              "defaultValue": "",
               "metadata": {
                 "description": "Name of the storage account to be deployed."
               }
             },
             "templateStorageAccountContainerName": {
               "type": "string",
+              "defaultValue": "",
               "metadata": {
                 "description": "Name of the storage account container to be deployed."
               }
@@ -311,12 +313,14 @@
             },
             "keyVaultName": {
               "type": "string",
+              "defaultValue": "",
               "metadata": {
                 "description": "Name of the key vault to be deployed."
               }
             },
             "keyVaultUserAssignedIdentityName": {
               "type": "string",
+              "defaultValue": "",
               "metadata": {
                 "description": "Name of the user-assigned managed identity to be deployed for accessing the key vault."
               }
@@ -330,7 +334,7 @@
               "condition": "[parameters('deployTemplateStore')]",
               "type": "Microsoft.Storage/storageAccounts",
               "apiVersion": "2022-09-01",
-              "name": "[parameters('templateStorageAccountName')]",
+              "name": "[if(parameters('deployTemplateStore'), parameters('templateStorageAccountName'), 'default')]",
               "location": "[parameters('location')]",
               "sku": {
                 "name": "Standard_LRS"
@@ -342,25 +346,25 @@
               "condition": "[parameters('deployTemplateStore')]",
               "type": "Microsoft.Storage/storageAccounts/blobServices",
               "apiVersion": "2022-09-01",
-              "name": "[format('{0}/{1}', parameters('templateStorageAccountName'), 'default')]",
+              "name": "[format('{0}/{1}', if(parameters('deployTemplateStore'), parameters('templateStorageAccountName'), 'default'), 'default')]",
               "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts', parameters('templateStorageAccountName'))]"
+                "[resourceId('Microsoft.Storage/storageAccounts', if(parameters('deployTemplateStore'), parameters('templateStorageAccountName'), 'default'))]"
               ]
             },
             {
               "condition": "[parameters('deployTemplateStore')]",
               "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
               "apiVersion": "2022-09-01",
-              "name": "[format('{0}/{1}/{2}', parameters('templateStorageAccountName'), 'default', parameters('templateStorageAccountContainerName'))]",
+              "name": "[format('{0}/{1}/{2}', if(parameters('deployTemplateStore'), parameters('templateStorageAccountName'), 'default'), 'default', if(parameters('deployTemplateStore'), parameters('templateStorageAccountContainerName'), 'default'))]",
               "dependsOn": [
-                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', parameters('templateStorageAccountName'), 'default')]"
+                "[resourceId('Microsoft.Storage/storageAccounts/blobServices', if(parameters('deployTemplateStore'), parameters('templateStorageAccountName'), 'default'), 'default')]"
               ]
             },
             {
               "condition": "[parameters('deployKeyVault')]",
               "type": "Microsoft.KeyVault/vaults",
               "apiVersion": "2021-04-01-preview",
-              "name": "[parameters('keyVaultName')]",
+              "name": "[if(parameters('deployKeyVault'), parameters('keyVaultName'), 'default')]",
               "location": "[parameters('location')]",
               "properties": {
                 "sku": {
@@ -375,42 +379,42 @@
               "condition": "[parameters('deployKeyVault')]",
               "type": "Microsoft.ManagedIdentity/userAssignedIdentities",
               "apiVersion": "2023-01-31",
-              "name": "[parameters('keyVaultUserAssignedIdentityName')]",
+              "name": "[if(parameters('deployKeyVault'), parameters('keyVaultUserAssignedIdentityName'), 'default')]",
               "location": "[parameters('location')]"
             },
             {
               "condition": "[parameters('deployKeyVault')]",
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "scope": "[format('Microsoft.KeyVault/vaults/{0}', parameters('keyVaultName'))]",
-              "name": "[guid(resourceGroup().id, resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('keyVaultUserAssignedIdentityName')), variables('kvSecretUserRole'))]",
+              "scope": "[format('Microsoft.KeyVault/vaults/{0}', if(parameters('deployKeyVault'), parameters('keyVaultName'), 'default'))]",
+              "name": "[guid(resourceGroup().id, resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', if(parameters('deployKeyVault'), parameters('keyVaultUserAssignedIdentityName'), 'default')), variables('kvSecretUserRole'))]",
               "properties": {
                 "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('kvSecretUserRole'))]",
-                "principalId": "[if(parameters('deployKeyVault'), reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('keyVaultUserAssignedIdentityName')), '2023-01-31').principalId, 'default')]",
+                "principalId": "[if(parameters('deployKeyVault'), reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', if(parameters('deployKeyVault'), parameters('keyVaultUserAssignedIdentityName'), 'default')), '2023-01-31').principalId, 'default')]",
                 "principalType": "ServicePrincipal"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.KeyVault/vaults', parameters('keyVaultName'))]",
-                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('keyVaultUserAssignedIdentityName'))]"
+                "[resourceId('Microsoft.KeyVault/vaults', if(parameters('deployKeyVault'), parameters('keyVaultName'), 'default'))]",
+                "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', if(parameters('deployKeyVault'), parameters('keyVaultUserAssignedIdentityName'), 'default'))]"
               ]
             }
           ],
           "outputs": {
             "templateStorageAccountName": {
               "type": "string",
-              "value": "[if(parameters('deployTemplateStore'), parameters('templateStorageAccountName'), '')]"
+              "value": "[if(parameters('deployTemplateStore'), if(parameters('deployTemplateStore'), parameters('templateStorageAccountName'), 'default'), '')]"
             },
             "templateStorageAccountContainerName": {
               "type": "string",
-              "value": "[if(parameters('deployTemplateStore'), parameters('templateStorageAccountContainerName'), '')]"
+              "value": "[if(parameters('deployTemplateStore'), if(parameters('deployTemplateStore'), parameters('templateStorageAccountContainerName'), 'default'), '')]"
             },
             "keyVaultName": {
               "type": "string",
-              "value": "[if(parameters('deployKeyVault'), parameters('keyVaultName'), '')]"
+              "value": "[if(parameters('deployKeyVault'), if(parameters('deployKeyVault'), parameters('keyVaultName'), 'default'), '')]"
             },
             "keyVaultUAMIName": {
               "type": "string",
-              "value": "[if(parameters('deployKeyVault'), parameters('keyVaultUserAssignedIdentityName'), '')]"
+              "value": "[if(parameters('deployKeyVault'), if(parameters('deployKeyVault'), parameters('keyVaultUserAssignedIdentityName'), 'default'), '')]"
             }
           }
         }
@@ -450,7 +454,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.54.24096",
-              "templateHash": "7980299419676440291"
+              "templateHash": "4686481051176763048"
             }
           },
           "parameters": {
@@ -504,13 +508,17 @@
               }
             },
             "keyVaultName": {
-              "type": "string"
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "The name of the Key Vault to store the Application Insights connection string secret."
+              }
             }
           },
           "variables": {
             "logAnalyticsWorkspaceName": "[format('{0}-logsws', parameters('envName'))]",
             "applicationInsightsName": "[format('{0}-ai', parameters('envName'))]",
-            "applicationInsightsConnectionStringSecretName": "[format('{0}-conn-string', variables('applicationInsightsName'))]",
+            "applicationInsightsConnectionStringSecretName": "[format('{0}ConnectionString', variables('applicationInsightsName'))]",
             "applicationInsightsUAMIName": "[format('{0}-mi', variables('applicationInsightsName'))]",
             "monitoringMetricsPublisherRoleDefinition": "3913510d-42f4-4e42-8a64-420c390055eb",
             "containerAppEnvironmentName": "[parameters('envName')]"
@@ -535,7 +543,7 @@
               "condition": "[parameters('deployApplicationInsights')]",
               "type": "Microsoft.Insights/components",
               "apiVersion": "2020-02-02",
-              "name": "[variables('applicationInsightsName')]",
+              "name": "[if(parameters('deployApplicationInsights'), variables('applicationInsightsName'), 'default')]",
               "location": "[parameters('location')]",
               "kind": "web",
               "properties": {
@@ -553,10 +561,10 @@
               "apiVersion": "2021-04-01-preview",
               "name": "[format('{0}/{1}', parameters('keyVaultName'), variables('applicationInsightsConnectionStringSecretName'))]",
               "properties": {
-                "value": "[if(parameters('deployApplicationInsights'), reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').ConnectionString, 'default')]"
+                "value": "[if(parameters('deployApplicationInsights'), reference(resourceId('Microsoft.Insights/components', if(parameters('deployApplicationInsights'), variables('applicationInsightsName'), 'default')), '2020-02-02').ConnectionString, 'default')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
+                "[resourceId('Microsoft.Insights/components', if(parameters('deployApplicationInsights'), variables('applicationInsightsName'), 'default'))]"
               ]
             },
             {
@@ -570,14 +578,14 @@
               "condition": "[parameters('deployApplicationInsights')]",
               "type": "Microsoft.Authorization/roleAssignments",
               "apiVersion": "2022-04-01",
-              "name": "[guid(resourceGroup().id, resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), variables('monitoringMetricsPublisherRoleDefinition'))]",
+              "name": "[guid(resourceGroup().id, resourceId('Microsoft.Insights/components', if(parameters('deployApplicationInsights'), variables('applicationInsightsName'), 'default')), variables('monitoringMetricsPublisherRoleDefinition'))]",
               "properties": {
                 "principalId": "[if(parameters('deployApplicationInsights'), reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('applicationInsightsUAMIName')), '2023-01-31').principalId, 'default')]",
                 "principalType": "ServicePrincipal",
                 "roleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', variables('monitoringMetricsPublisherRoleDefinition'))]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
+                "[resourceId('Microsoft.Insights/components', if(parameters('deployApplicationInsights'), variables('applicationInsightsName'), 'default'))]",
                 "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', variables('applicationInsightsUAMIName'))]"
               ]
             },
