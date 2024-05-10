@@ -518,7 +518,7 @@
           "variables": {
             "logAnalyticsWorkspaceName": "[format('{0}-logsws', parameters('envName'))]",
             "applicationInsightsName": "[format('{0}-ai', parameters('envName'))]",
-            "applicationInsightsConnectionStringSecretName": "[format('{0}ConnectionString', variables('applicationInsightsName'))]",
+            "applicationInsightsConnectionStringSecretName": "[format('{0}-connection-string', variables('applicationInsightsName'))]",
             "applicationInsightsUAMIName": "[format('{0}-mi', variables('applicationInsightsName'))]",
             "monitoringMetricsPublisherRoleDefinition": "3913510d-42f4-4e42-8a64-420c390055eb",
             "containerAppEnvironmentName": "[parameters('envName')]"
@@ -733,7 +733,7 @@
                 "westus3"
               ],
               "metadata": {
-                "description": "Location where the resources are deployed. For list of Azure regions where Container Apps is available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=container-apps)"
+                "description": "Location where the resources are deployed. Note that a Container App can only be provisioned in the same region as its parent Container Apps Environment. For list of Azure regions where Container Apps is available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=container-apps)"
               }
             },
             "appName": {

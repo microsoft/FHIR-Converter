@@ -4,7 +4,7 @@ This template deploys the following:
 * Role assignment for the container app to read custom templates from the storage container (if the template storage account and container names are specified)
 */
 
-@description('Location where the resources are deployed. For list of Azure regions where Container Apps is available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=container-apps)')
+@description('Location where the resources are deployed. Note that a Container App can only be provisioned in the same region as its parent Container Apps Environment. For list of Azure regions where Container Apps is available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=container-apps)')
 @allowed([
   'australiaeast'
   'brazilsouth'
