@@ -1,3 +1,12 @@
+/*
+This template deploys the following:
+* Azure Log Analytics workspace
+* Azure Application Insights (if deployApplicationInsights is set to true)
+* A Key Vault secret containing the connection string to the Application Insights instance (if deployApplicationInsights is set to true)
+* A user-assigned managed identity granted the "Monitoring Metrics Publisher" role to authenticate with Application Insights (if deployApplicationInsights is set to true)
+* Azure Container Apps environment
+*/
+
 @description('Location where the resources are deployed. For list of Azure regions where the below resources are available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=monitor,container-apps).')
 @allowed([
   'australiaeast'
