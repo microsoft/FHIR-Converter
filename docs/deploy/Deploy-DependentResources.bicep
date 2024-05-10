@@ -90,15 +90,15 @@ resource templateStorageAccountContainer 'Microsoft.Storage/storageAccounts/blob
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2021-04-01-preview' = if (deployKeyVault) {
-    name: keyVaultName
-    location: location
-    properties: {
-		sku: {
-			family: 'A'
-			name: 'standard'
-		}
-		tenantId: subscription().tenantId
-		enableRbacAuthorization: true
+  name: keyVaultName
+  location: location
+  properties: {
+    sku: {
+      family: 'A'
+      name: 'standard'
+    }
+    tenantId: subscription().tenantId
+    enableRbacAuthorization: true
 	}
 }
 
