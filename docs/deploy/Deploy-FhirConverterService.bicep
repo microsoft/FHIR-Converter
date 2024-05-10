@@ -45,6 +45,12 @@ param templateStorageAccountName string = ''
 @description('Name of the container in the storage account containing custom templates. Leave blank if using default templates.')
 param templateStorageAccountContainerName string = ''
 
+@description('Name of the key vault containing the application insights connection string secret.')
+param keyVaultName string = ''
+
+@description('Name of the user-assigned managed identity to be used by the container app to access key vault secrets.')
+param keyVaultUAMIName string = ''
+
 @description('Minimum possible number of replicas per revision as the container app scales.')
 param minReplicas int = 0
 
@@ -72,17 +78,19 @@ param imageTag string
 @description('Timestamp to append to container name. Defaults to time of deployment.')
 param timestamp string = utcNow('yyyyMMddHHmmss')
 
-@description('The connection string to the application insights instance to be used for collecting application telemetry.')
-param applicationInsightsConnectionString string = ''
+@description('The ID of the user-assigned managed identity to be used by the container app to access application insights.')
+param applicationInsightsUAMIName string = ''
 
-@description('The client ID of the user-assigned managed identity used to access the application insights instance.')
-param applicationInsightsUAMIClientId string = ''
-
-@description('The resource ID of the user-assigned managed identity used to access the application insights instance.')
-param applicationInsightsUAMIResourceId string = ''
+param applicationInsightsConnectionStringSecretName string = ''
 
 @description('The ID of the container apps environment where the container app should be deployed to.')
 param containerAppEnvironmentId string
+
+var configureApplicationInsights = !empty(applicationInsightsUAMIName)
+
+resource applicationInsightsUAMI 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (configureApplicationInsights) {
+  name: applicationInsightsUAMIName
+}
 
 // Security configuration
 var securityEnabledConfigName = 'ConvertService__Security__Enabled'
@@ -118,30 +126,41 @@ var blobTemplateHostingConfiguration = [
 // Application insights configuration
 var applicationInsightsConnectionStringConfigurationName = 'ConvertService__Telemetry__AzureMonitor__ApplicationInsightsConnectionString'
 var applicationInsightsUAMIClientIdConfigurationName = 'ConvertService__Telemetry__AzureMonitor__ManagedIdentityClientId'
-var telemetryConfiguration = [
+var telemetryConfiguration = configureApplicationInsights ? [
     {
         name: applicationInsightsConnectionStringConfigurationName
-        value: applicationInsightsConnectionString
+        secretRef: applicationInsightsConnectionStringSecretName
     }
     {
         name: applicationInsightsUAMIClientIdConfigurationName
-        value: applicationInsightsUAMIClientId
+        value: applicationInsightsUAMI.properties.clientId
     }
-]
+] : []
 
 // Environment Variables for Container App
 var envConfiguration =  concat(securityConfiguration, securityAuthenticationAudiencesConfig, telemetryConfiguration, empty(templateStorageAccountName) ? [] : blobTemplateHostingConfiguration)
 
 var imageName = 'healthcareapis/fhir-converter'
 
+// Configure identities
+var applicationInsightsUAMIResourceId = configureApplicationInsights ? applicationInsightsUAMI.id : ''
+var keyVaultUAMIResourceId = resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', keyVaultUAMIName)
+var userAssignedIdentities = configureApplicationInsights ? {
+  '${applicationInsightsUAMIResourceId}' : {}
+  '${keyVaultUAMIResourceId}' : {}
+} : {}
+
+var akvEnvironmentSuffix = az.environment().suffixes.keyvaultDns
+var applicationInsightsConnStringAKVSecretUrl = 'https://${keyVaultName}${akvEnvironmentSuffix}/secrets/${applicationInsightsConnectionStringSecretName}'
+
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   name: appName
   location: location
-  identity: {
-    type: !empty(applicationInsightsUAMIResourceId) ? 'SystemAssigned, UserAssigned' : 'SystemAssigned'
-    userAssignedIdentities: !empty(applicationInsightsUAMIResourceId) ? {
-      '${applicationInsightsUAMIResourceId}': {}
-    } : null
+  identity: (configureApplicationInsights) ? {
+    type: 'SystemAssigned, UserAssigned'
+    userAssignedIdentities: userAssignedIdentities
+  } : {
+    type: 'SystemAssigned'
   }
   properties:{
     managedEnvironmentId: containerAppEnvironmentId
@@ -150,6 +169,13 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
         targetPort: 8080
         external: true
       }
+      secrets: configureApplicationInsights ? [
+        {
+          name: applicationInsightsConnectionStringSecretName
+          keyVaultUrl: applicationInsightsConnStringAKVSecretUrl
+          identity: keyVaultUAMIResourceId
+        }
+      ] : []
     }
     template: {
       containers: [
