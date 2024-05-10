@@ -83,7 +83,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-04-01-preview' existing = if (
   name: keyVaultName
 }
 
-var applicationInsightsConnectionStringSecretName = '${applicationInsightsName}ConnectionString'
+var applicationInsightsConnectionStringSecretName = '${applicationInsightsName}-connection-string'
 resource applicationInsightsConnectionStringSecret 'Microsoft.KeyVault/vaults/secrets@2021-04-01-preview' = if (deployApplicationInsights) {
   parent: keyVault
   name: applicationInsightsConnectionStringSecretName
