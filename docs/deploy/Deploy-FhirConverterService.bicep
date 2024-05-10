@@ -1,3 +1,9 @@
+/*
+This template deploys the following:
+* A container app running the FHIR-Converter
+* Role assignment for the container app to read custom templates from the storage container (if the template storage account and container names are specified)
+*/
+
 @description('Location where the resources are deployed. For list of Azure regions where Container Apps is available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=container-apps)')
 @allowed([
   'australiaeast'
@@ -96,32 +102,35 @@ resource applicationInsightsUAMI 'Microsoft.ManagedIdentity/userAssignedIdentiti
 var securityEnabledConfigName = 'ConvertService__Security__Enabled'
 var securityAuthenticationAudiencesConfigNamePrefix = 'ConvertService__Security__Authentication__Audiences__'
 var securityAuthenticationAuthorityConfigName = 'ConvertService__Security__Authentication__Authority'
-var securityConfiguration = [
+var securityConfiguration = union([
   {
     name: securityEnabledConfigName
     value: string(securityEnabled)
   }
+], (securityEnabled ? [
   {
     name: securityAuthenticationAuthorityConfigName
     value: securityAuthenticationAuthority
   }
-]
+] : []))
 
 var securityAuthenticationAudiencesConfig = [for (audience, i) in securityAuthenticationAudiences: {
     name: '${securityAuthenticationAudiencesConfigNamePrefix}${i}'
     value: audience
 }]
 
+var integrateTemplateStore = !empty(templateStorageAccountName) && !empty(templateStorageAccountContainerName)
+
 // Template hosting configuration
 var storageEnvironmentSuffix = az.environment().suffixes.storage
 var blobTemplateHostingConfigurationName = 'TemplateHosting__StorageAccountConfiguration__ContainerUrl'
 var blobTemplateHostingConfigurationValue = 'https://${templateStorageAccountName}.blob.${storageEnvironmentSuffix}/${templateStorageAccountContainerName}'
-var blobTemplateHostingConfiguration = [
+var blobTemplateHostingConfiguration = integrateTemplateStore ? [
   {
     name: blobTemplateHostingConfigurationName
     value: blobTemplateHostingConfigurationValue
   }
-]
+] : []
 
 // Application insights configuration
 var applicationInsightsConnectionStringConfigurationName = 'ConvertService__Telemetry__AzureMonitor__ApplicationInsightsConnectionString'
@@ -138,7 +147,7 @@ var telemetryConfiguration = configureApplicationInsights ? [
 ] : []
 
 // Environment Variables for Container App
-var envConfiguration =  concat(securityConfiguration, securityAuthenticationAudiencesConfig, telemetryConfiguration, empty(templateStorageAccountName) ? [] : blobTemplateHostingConfiguration)
+var envConfiguration =  concat(securityConfiguration, securityAuthenticationAudiencesConfig, telemetryConfiguration, blobTemplateHostingConfiguration)
 
 var imageName = 'healthcareapis/fhir-converter'
 
@@ -203,16 +212,28 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
   }
 }
 
-// Grant container app's system MI to read from storage account
-resource templateStorageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = if (!empty(templateStorageAccountName)) {
+// Reference the existing storage account
+resource templateStorageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' existing = if (integrateTemplateStore) {
   name: templateStorageAccountName
 }
 
-var roleAssignmentName = guid(templateStorageAccount.id, appName, storageBlobDataReaderRoleDefinitionId)
+// Reference the existing blob service
+resource templateBlobService 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01' existing = if (integrateTemplateStore) {
+  name: 'default'
+  parent: templateStorageAccount
+}
+
+// Reference the existing container
+resource templateStorageAccountContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01' existing = if (integrateTemplateStore) {
+  name: templateStorageAccountContainerName
+  parent: templateBlobService
+}
+
+var roleAssignmentName = guid(templateStorageAccountContainer.id, appName, storageBlobDataReaderRoleDefinitionId)
 var storageBlobDataReaderRoleDefinitionId = resourceId('Microsoft.Authorization/roleDefinitions', '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (!empty(templateStorageAccountName)) {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (integrateTemplateStore) {
   name: guid(roleAssignmentName)
-  scope: templateStorageAccount
+  scope: templateStorageAccountContainer
   properties: {
     principalId: containerApp.identity.principalId
     principalType: 'ServicePrincipal'

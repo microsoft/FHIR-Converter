@@ -1,9 +1,10 @@
 /*
 This template deploys the following:
-* Storage account
-* Storage account container
-* Key vault
-* User assigned identity with Key Vault Secrets User role on the Key Vault
+* Storage account (if enableTemplateStoreIntegration is set to true)
+* Storage account container (if enableTemplateStoreIntegration is set to true)
+* Key vault (if deployKeyVault is set to true)
+* User assigned identity with Key Vault Secrets User role on the Key Vault (if deployKeyVault is set to true)
+* Role assignment for the user assigned identity to access the Key Vault (if deployKeyVault is set to true)
 */
 
 @description('Location where the storage account is deployed. For list of Azure regions where Blob Storage is available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=storage).')
