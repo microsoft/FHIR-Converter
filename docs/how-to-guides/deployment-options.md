@@ -122,8 +122,17 @@ az deployment sub create --location <Location> --template-file FhirConverter-Sin
 
 Additional customizations are described in the [Configuration Settings](configuration-settings.md) document.
 
-
 #### Option 3: Execute a single PowerShell deployment script locally
+
+Run the following command to run the PowerShell deployment script:
+
+```PowerShell
+./Deploy-FhirConverterService.ps1
+```
+
+This [PowerShell deployment script](../deploy/Deploy-FhirConverterService.ps1) sets up all necessary Azure resources for running the FHIR converter service by deploying Bicep templates via Azure CLI commands.
+
+Refer [Parameters](#parameters) for more information on the required parameters to be provided and the default values used for optional parameters.
 
 ### Redeployment scenarios
 
@@ -141,7 +150,9 @@ The following scenarios will require a redeployment of your service using any on
 
 * Custom template collection update - If you add/update any custom template in your storage account, a redeployment is required for the service to pick up the latest template collection and use that for conversion.
 
-### Note
+### Additional Deployment Notes
+
+* To view the progress of a deployment, navigate to the resource group in Azure Portal and select the 'Deployments' tab under 'Settings' in the left panel.
 
 * Container App supports [zero downtime deployment](https://learn.microsoft.com/en-us/azure/container-apps/revisions#zero-downtime-deployment).
 
