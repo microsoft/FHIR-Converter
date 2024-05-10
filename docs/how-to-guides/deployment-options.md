@@ -61,6 +61,8 @@ To learn more about the various options available to customize your service, and
 
 #### Option 1: Single-click Deploy to Azure via ARM template generated from Bicep Template
 
+![Deploy to Azure](https://aka.ms/deploytoazurebutton) **todo: reference ARM template once it is checked in**
+
 #### Option 2: Deploy a single Bicep file locally
 
 Deploy the [Single Deploy Bicep Template](../deploy/FhirConverter-SingleAzureDeploy.bicep) by running the following command:

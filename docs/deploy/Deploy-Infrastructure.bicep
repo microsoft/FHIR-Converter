@@ -1,3 +1,12 @@
+/*
+This template deploys the following:
+* Azure Log Analytics workspace
+* Azure Application Insights (if deployApplicationInsights is set to true)
+* A Key Vault secret containing the connection string to the Application Insights instance (if deployApplicationInsights is set to true)
+* A user-assigned managed identity granted the "Monitoring Metrics Publisher" role to authenticate with Application Insights (if deployApplicationInsights is set to true)
+* Azure Container Apps environment
+*/
+
 @description('Location where the resources are deployed. For list of Azure regions where the below resources are available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=monitor,container-apps).')
 @allowed([
   'australiaeast'
@@ -38,6 +47,9 @@ param envName string
 @description('If set to true, Application Insights logs and metrics collection will be enabled for the container app.')
 param deployApplicationInsights bool
 
+@description('The name of the Key Vault to store the Application Insights connection string secret.')
+param keyVaultName string = 'default'
+
 // Deploy log analytics workspace
 var logAnalyticsWorkspaceName = '${envName}-logsws'
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview' = {
@@ -54,14 +66,48 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03
   })
 }
 
-// Deploy application insights for collection of application logs and metrics
-module applicationInsightsDeploy 'Deploy-AppInsights.bicep' = if (deployApplicationInsights) {
-  name: 'applicationInsightsDeploy'
-  scope: resourceGroup()
-  params: {
-    location: location
-    envName: envName
-    logAnalyticsWorkspaceId: logAnalyticsWorkspace.id
+// Deploy application insights for receiving azure monitor telemetry
+var applicationInsightsName = '${envName}-ai'
+resource applicationInsights 'Microsoft.Insights/components@2020-02-02' = if (deployApplicationInsights) {
+  name: deployApplicationInsights ? applicationInsightsName : 'default'
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+    WorkspaceResourceId: logAnalyticsWorkspace.id
+    DisableLocalAuth: true
+  }
+}
+
+resource keyVault 'Microsoft.KeyVault/vaults@2021-04-01-preview' existing = if (deployApplicationInsights) {
+  name: keyVaultName
+}
+
+var applicationInsightsConnectionStringSecretName = '${applicationInsightsName}ConnectionString'
+resource applicationInsightsConnectionStringSecret 'Microsoft.KeyVault/vaults/secrets@2021-04-01-preview' = if (deployApplicationInsights) {
+  parent: keyVault
+  name: applicationInsightsConnectionStringSecretName
+  properties: {
+    value: deployApplicationInsights ? applicationInsights.properties.ConnectionString : 'default'
+  }
+}
+
+// Create user-assigned managed identity to authenticate with Application Insights
+var applicationInsightsUAMIName = '${applicationInsightsName}-mi'
+resource applicationInsightsUAMI 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = if (deployApplicationInsights) {
+  name: applicationInsightsUAMIName
+  location: location
+}
+
+// Grant Monitoring Metrics Publisher role to applicationInsightsUAMI on applicationInsights
+var monitoringMetricsPublisherRoleDefinition = '3913510d-42f4-4e42-8a64-420c390055eb'
+resource monitoringMetricsPublisherRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (deployApplicationInsights) {
+  name: guid(resourceGroup().id, applicationInsights.id, monitoringMetricsPublisherRoleDefinition)
+  scope: deployApplicationInsights ? applicationInsights : resourceGroup()
+  properties: {
+    principalId: deployApplicationInsights ? applicationInsightsUAMI.properties.principalId : 'default'
+    principalType: 'ServicePrincipal'
+    roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', monitoringMetricsPublisherRoleDefinition)
   }
 }
 
@@ -85,6 +131,5 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
 output containerAppEnvironmentName string = containerAppEnvironment.name
 output containerAppEnvironmentId string = containerAppEnvironment.id
 output logAnalyticsWorkspaceName string = logAnalyticsWorkspace.name
-output applicationInsightsConnectionString string = deployApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsConnectionString : ''
-output applicationInsightsUAMIClientId string = deployApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsUAMIClientId : ''
-output applicationInsightsUAMIResourceId string = deployApplicationInsights ? applicationInsightsDeploy.outputs.applicationInsightsUAMIResourceId : ''
+output applicationInsightsUAMIName string = deployApplicationInsights ? applicationInsightsUAMI.name : ''
+output applicationInsightsConnStringSecretName string = deployApplicationInsights ? applicationInsightsConnectionStringSecret.name : ''

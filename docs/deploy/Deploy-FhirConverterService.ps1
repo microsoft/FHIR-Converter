@@ -50,13 +50,9 @@ param
     [Parameter(Mandatory = $true)]
     [string]$containerAppImageTag,
 
-    [string]$resourceGroupName = "$serviceName-rg",
+    [string]$timestamp = (Get-Date -Format "yyyyMMddHHmmss"),
 
-    [switch]$deployTemplateStore = $false,
-
-    [string]$templateStorageAccountName = $deployTemplateStore ? "$($serviceName)templatestorage" : "",
-
-    [string]$templateStorageAccountContainerName = $deployTemplateStore ? "$($serviceName)templatecontainer" : "",
+    [string]$resourceGroupName = "$($serviceName)-rg",
 
     [string]$containerAppEnvName = "$($serviceName)-app-env",
 
@@ -70,13 +66,23 @@ param
 
     [string]$memoryLimit = '2Gi',
 
-    [switch]$securityEnabled = $false,
+    [bool]$templateStoreIntegrationEnabled = $false,
+
+    [string]$templateStorageAccountName = "$($serviceName)templatestorage",
+
+    [string]$templateStorageAccountContainerName = "$($serviceName)templatecontainer",
+
+    [bool]$applicationInsightsEnabled=$true,
+
+    [string]$keyVaultName = "$($serviceName)-kv",
+
+    [string]$keyVaultUserAssignedIdentityName = "$($serviceName)-kv-identity",
+
+    [bool]$securityEnabled = $false,
 
     [string[]]$securityAuthenticationAudiences = @(),
 
-    [string]$securityAuthenticationAuthority = "",
-
-    [bool]$deployApplicationInsights = $true
+    [string]$securityAuthenticationAuthority = ""
 )
 
 Set-StrictMode -Version Latest
@@ -113,7 +119,6 @@ if ($securityEnabled -and ((-not $securityAuthenticationAudiences) -or (-not $se
 
 Write-Host "Deploying FHIR converter service..."
 
-$timestamp = Get-Date -Format "yyyyMMddHHmmss"
 $templateFile = "FhirConverter-SingleAzureDeploy.bicep"
 $securityAuthenticationAudiencesArray = "['" + ($securityAuthenticationAudiences -join "','") + "']"
 
@@ -125,19 +130,22 @@ az deployment sub create `
         serviceName=$serviceName `
         location=$location `
         containerAppImageTag=$containerAppImageTag `
+        timestamp=$timestamp `
         resourceGroupName=$resourceGroupName `
-        deployTemplateStore=$deployTemplateStore `
-        templateStorageAccountName=$templateStorageAccountName `
-        templateStorageAccountContainerName=$templateStorageAccountContainerName `
         containerAppEnvName=$containerAppEnvName `
         containerAppName=$containerAppName `
         minReplicas=$minReplicas `
         maxReplicas=$maxReplicas `
         cpuLimit=$cpuLimit `
         memoryLimit=$memoryLimit `
+        applicationInsightsEnabled=$applicationInsightsEnabled `
+        templateStoreIntegrationEnabled=$templateStoreIntegrationEnabled `
+        templateStorageAccountName=$templateStorageAccountName `
+        templateStorageAccountContainerName=$templateStorageAccountContainerName `
+        keyVaultName=$keyVaultName `
+        keyVaultUserAssignedIdentityName=$keyVaultUserAssignedIdentityName `
         securityEnabled=$securityEnabled `
         securityAuthenticationAudiences=$securityAuthenticationAudiencesArray `
-        securityAuthenticationAuthority=$securityAuthenticationAuthority `
-        deployApplicationInsights=$deployApplicationInsights
+        securityAuthenticationAuthority=$securityAuthenticationAuthority
 
 Write-Host "Deployment complete."
