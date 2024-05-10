@@ -2,7 +2,7 @@
 
 The FHIR converter APIs generate custom logs and metrics when invoked, which can be utilized for gaining insights or aiding in troubleshooting.
 
-If you have deployed your FHIR converter service using the provided [deployment options](deployment-options.md), a Log Analytics workspace and Application Insights resource will be created by default. The authentication with the application insights instance is set up such that only telemetry from authorized container apps reaches the application insights instance before being forwarded to the log analytics workspace.
+If you have deployed your FHIR converter service using the provided [deployment options](deployment-options.md), a Log Analytics workspace and Application Insights resource will be created by default. The authentication with the Appplication Insights instance is set up such that only telemetry from authorized container apps reaches the Appplication Insights instance before being forwarded to the Log Analytics workspace.
 
 ## Telemetry
 
