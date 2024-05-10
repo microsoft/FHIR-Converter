@@ -87,18 +87,18 @@ param timestamp string = utcNow('yyyyMMddHHmmss')
 @description('The ID of the user-assigned managed identity to be used by the container app to access application insights.')
 param applicationInsightsUAMIName string = ''
 
+@description('The name of the secret in the key vault containing the application insights connection string.')
 param applicationInsightsConnectionStringSecretName string = ''
-
-var configureApplicationInsights = !empty(applicationInsightsUAMIName)
-
-// Get the UAMI with access to application insights
-resource applicationInsightsUAMI 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (configureApplicationInsights) {
-  name: applicationInsightsUAMIName
-}
 
 // Get the container apps environment
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
   name: envName
+}
+
+var configureApplicationInsights = !empty(applicationInsightsUAMIName)
+
+resource applicationInsightsUAMI 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (configureApplicationInsights) {
+  name: applicationInsightsUAMIName
 }
 
 // Security configuration
@@ -126,7 +126,6 @@ var securityAuthenticationAudiencesConfig = [for (audience, i) in securityAuthen
 }]
 
 var securityConfiguration = concat(securityEnabledConfiguration, securityEnabled ? concat(securityAuthenticationAuthorityConfig, securityAuthenticationAudiencesConfig) : [])
-
 var integrateTemplateStore = !empty(templateStorageAccountName) && !empty(templateStorageAccountContainerName)
 
 // Template hosting configuration

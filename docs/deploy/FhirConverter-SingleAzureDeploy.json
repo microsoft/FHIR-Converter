@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.54.24096",
-      "templateHash": "10532997812708309797"
+      "templateHash": "6910545938532656207"
     }
   },
   "parameters": {
@@ -686,7 +686,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.54.24096",
-              "templateHash": "5841181406966371603"
+              "templateHash": "2888348515167810107"
             }
           },
           "parameters": {
@@ -839,7 +839,10 @@
             },
             "applicationInsightsConnectionStringSecretName": {
               "type": "string",
-              "defaultValue": ""
+              "defaultValue": "",
+              "metadata": {
+                "description": "The name of the secret in the key vault containing the application insights connection string."
+              }
             }
           },
           "variables": {
