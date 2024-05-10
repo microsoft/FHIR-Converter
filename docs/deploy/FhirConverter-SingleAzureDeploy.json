@@ -518,7 +518,7 @@
           "variables": {
             "logAnalyticsWorkspaceName": "[format('{0}-logsws', parameters('envName'))]",
             "applicationInsightsName": "[format('{0}-ai', parameters('envName'))]",
-            "applicationInsightsConnectionStringSecretName": "[format('{0}ConnectionString', variables('applicationInsightsName'))]",
+            "applicationInsightsConnectionStringSecretName": "[format('{0}-connection-string', variables('applicationInsightsName'))]",
             "applicationInsightsUAMIName": "[format('{0}-mi', variables('applicationInsightsName'))]",
             "monitoringMetricsPublisherRoleDefinition": "3913510d-42f4-4e42-8a64-420c390055eb",
             "containerAppEnvironmentName": "[parameters('envName')]"
