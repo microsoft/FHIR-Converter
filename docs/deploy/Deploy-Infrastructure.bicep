@@ -48,7 +48,7 @@ param envName string
 param deployApplicationInsights bool
 
 @description('The name of the Key Vault to store the Application Insights connection string secret.')
-param keyVaultName string = ''
+param keyVaultName string = 'default'
 
 // Deploy log analytics workspace
 var logAnalyticsWorkspaceName = '${envName}-logsws'
