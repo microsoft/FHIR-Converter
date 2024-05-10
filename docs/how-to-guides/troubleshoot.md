@@ -198,37 +198,6 @@ Replace the `latency_metric_name` in the query above with the metric of interest
 
 **Troubleshooting:** If you have had previously successful requests with smaller templates, you can use the query under "InnerError: CancellationError" above with `latency_metric_name` set to `TemplateRenderDuration` to compare the latency of the Template Rendering step for your successful requests vs. your failed requests. If the template rendering timeout seems to be the likely cause, re-attempt the request with a smaller template.
 
-## 404 - Not Found
-
-This error is usually received if the request is made against an invalid endpoint.
-
-**Root Cause(s):**
-
-* The requested API route does not exist.
-  * Troubleshooting:
-    * Verify the API route is correct.
-      Refer [FHIR converter APIs](use-convert-web-apis.md#apis) to get the exact API names.
-
-* The service URL does not exist.
-  * Troubleshooting:
-    * Verify the service URL provided in the request URL corresponds to the actual service endpoint.  Refer [Endpoint](use-convert-web-apis.md#fhir-converter-endpoint) to learn how to get this URL.
-
-## 405 - Method Not Allowed
-
-**Root Cause(s):**
-
-* The service URL used for the request is an HTTP endpoint.
-  * Troubleshooting:
-    * Update the service URL used in the request to start with `https://`.
-
-## 415 - Unsupported Media Type
-
-**Root Cause(s):**
-
-* The request body provided is not in the supported JSON format.
-  * Troubleshooting:
-    * Ensure the request body is provided as a JSON object in the request.
-
 ## 400 - Bad request
 
 ### Top-level error code
@@ -267,6 +236,37 @@ Ensure the steps outlined in [Azure Active Directory Authentication](enable-auth
 * The token used was intended for a different audience. This happens if the scope used when getting the access token is incorrect.
   * Troubleshooting:
     * Ensure the scope value provided when getting the access token is in the list of audiences configured with the service. Refer [Access token](enable-authentication.md#get-access-token) for more information.
+
+## 404 - Not Found
+
+This error is usually received if the request is made against an invalid endpoint.
+
+**Root Cause(s):**
+
+* The requested API route does not exist.
+  * Troubleshooting:
+    * Verify the API route is correct.
+      Refer [FHIR converter APIs](use-convert-web-apis.md#apis) to get the exact API names.
+
+* The service URL does not exist.
+  * Troubleshooting:
+    * Verify the service URL provided in the request URL corresponds to the actual service endpoint.  Refer [Endpoint](use-convert-web-apis.md#fhir-converter-endpoint) to learn how to get this URL.
+
+## 405 - Method Not Allowed
+
+**Root Cause(s):**
+
+* The service URL used for the request is an HTTP endpoint.
+  * Troubleshooting:
+    * Update the service URL used in the request to start with `https://`.
+
+## 415 - Unsupported Media Type
+
+**Root Cause(s):**
+
+* The request body provided is not in the supported JSON format.
+  * Troubleshooting:
+    * Ensure the request body is provided as a JSON object in the request.
 
 ## 500 - Server Error
 
