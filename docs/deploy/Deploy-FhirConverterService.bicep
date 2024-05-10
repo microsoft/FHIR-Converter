@@ -89,13 +89,16 @@ param applicationInsightsUAMIName string = ''
 
 param applicationInsightsConnectionStringSecretName string = ''
 
-@description('The ID of the container apps environment where the container app should be deployed to.')
-param containerAppEnvironmentId string
-
 var configureApplicationInsights = !empty(applicationInsightsUAMIName)
 
+// Get the UAMI with access to application insights
 resource applicationInsightsUAMI 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (configureApplicationInsights) {
   name: applicationInsightsUAMIName
+}
+
+// Get the container apps environment
+resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
+  name: envName
 }
 
 // Security configuration
@@ -177,7 +180,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
     type: 'SystemAssigned'
   }
   properties:{
-    managedEnvironmentId: containerAppEnvironmentId
+    managedEnvironmentId: containerAppsEnvironment.id
     configuration: {
       ingress: {
         targetPort: 8080

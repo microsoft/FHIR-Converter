@@ -87,7 +87,7 @@ resource applicationInsightsConnectionStringSecret 'Microsoft.KeyVault/vaults/se
   parent: keyVault
   name: applicationInsightsConnectionStringSecretName
   properties: {
-    value: applicationInsights.properties.ConnectionString
+    value: deployApplicationInsights ? applicationInsights.properties.ConnectionString : 'default'
   }
 }
 
@@ -102,9 +102,9 @@ resource applicationInsightsUAMI 'Microsoft.ManagedIdentity/userAssignedIdentiti
 var monitoringMetricsPublisherRoleDefinition = '3913510d-42f4-4e42-8a64-420c390055eb'
 resource monitoringMetricsPublisherRole 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (deployApplicationInsights) {
   name: guid(resourceGroup().id, applicationInsights.id, monitoringMetricsPublisherRoleDefinition)
-  scope: applicationInsights
+  scope: deployApplicationInsights ? applicationInsights : resourceGroup()
   properties: {
-    principalId: applicationInsightsUAMI.properties.principalId
+    principalId: deployApplicationInsights ? applicationInsightsUAMI.properties.principalId : 'default'
     principalType: 'ServicePrincipal'
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', monitoringMetricsPublisherRoleDefinition)
   }

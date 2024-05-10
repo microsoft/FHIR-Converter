@@ -113,12 +113,12 @@ resource keyVaultSecretsUserRoleAssignment 'Microsoft.Authorization/roleAssignme
   scope: keyVault
   properties: {
     roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', kvSecretUserRole)
-    principalId: keyVaultUserAssignedIdentity.properties.principalId
+    principalId: deployKeyVault ? keyVaultUserAssignedIdentity.properties.principalId : 'default'
     principalType: 'ServicePrincipal'
   }
 }
 
-output templateStorageAccountName string = templateStorageAccountCreated.name
-output templateStorageAccountContainerName string = templateStorageAccountContainer.name
-output keyVaultName string = keyVault.name
-output keyVaultUAMIName string = keyVaultUserAssignedIdentity.name
+output templateStorageAccountName string = deployTemplateStore ? templateStorageAccountCreated.name : ''
+output templateStorageAccountContainerName string = deployTemplateStore ? templateStorageAccountContainer.name : ''
+output keyVaultName string = deployKeyVault ? keyVault.name : ''
+output keyVaultUAMIName string = deployKeyVault ? keyVaultUserAssignedIdentity.name : ''
