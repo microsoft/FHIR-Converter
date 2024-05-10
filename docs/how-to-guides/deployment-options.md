@@ -52,35 +52,40 @@ Note: You are also able to update the service configuration post initial deploym
 
 #### Default settings
 
-* **Security** - Security settings for the API endpoints are disabled by default. It is **strongly recommended** to enable security for your FHIR Converter service.
-* **Template store integration** - Template store integration is disabled by default. When template store integration is disabled, a storage account will not be provisioned with the deployment and the FHIR converter service will use the provided default templates. To use custom templates, template store integration must be enabled so that custom templates can be stored in the deployed storage account.
+* **Security** - Security settings for the API endpoints are disabled by default. It is **strongly recommended** to enable security for your FHIR converter service.
+* **Template store integration** - Template store integration is disabled by default. When template store integration is disabled, a Storage Account will not be provisioned with the deployment.
+* **Default templates only** - When template store integration is disabled, the FHIR converter service will only have access to the provided default templates, with no access to custom templates.
 * **Application Insights** - Application Insights is enabled by default. Application Insights will receive application logs and metrics for the FHIR converter service to be used for debugging/monitoring.
+
+See [Parameters](#parameters) for details on the parameters that can be use to configure the deployment. 
 
 #### Configurable settings
 
-To learn more about the various options available to customize your service, and to configure the settings of your FHIR converter service in Azure, refer [Configure FHIR converter service settings](configuration-settings.md).
+See [Parameters](#parameters) for details on the parameters that can be used to configure the deployment. To learn more about the various options available to customize your service, and to configure the settings of your FHIR converter service in Azure, refer [Configure FHIR converter service settings](configuration-settings.md).
+
+#### Parameters
 
 The table below outlines the parameters that can be configured through any of the 3 deployment options:
 
 | Parameter | Type | Required | Description | Default Value |
 | --- | --- | --- | --- | --- |
 | serviceName | string | Yes | Used to generate a name for each of the resources provisioned wherever a name is not specified. | N/A |
-| containerAppImageTag | string | Yes | The tag of the FHIR Converter image version to be pulled from MCR. Visit the [FHIR Converter MCR page](https://mcr.microsoft.com/en-us/product/healthcareapis/fhir-converter/tags) to see available image tags. | N/A |
+| containerAppImageTag | string | Yes | The tag of the FHIR converter image version to be pulled from MCR. Visit the [FHIR converter MCR page](https://mcr.microsoft.com/en-us/product/healthcareapis/fhir-converter/tags) to see available image tags. | N/A |
 | location | string | Yes | The Azure region where the resources will be deployed. See [region availability](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=key-vault,monitor,storage,container-apps) for the relevant resources to select a valid location. | N/A |
 | timestamp | string | No | A timestamp to append to each deployment name to make it unique. | current date-time in 'yyyyMMddHHmmss' format |
-| resourceGroupName | string | No | The name of the resource group where the resources will be deployed. | serviceName + "-rg" |
+| resourceGroupName | string | No | The name of the Resource Group where the resources will be deployed. | serviceName + "-rg" |
 | containerAppEnvName | string | No | The name of the Container Apps environment. | serviceName + "-app-env" |
 | containerAppName | string | No | The name of the Azure Container App to run the FHIR converter. | serviceName + "-app" |
 | minReplicas | int | No | The minimum number of replicas for the Azure Container App. | 0 |
 | maxReplicas | int | No | The maximum number of replicas for the Azure Container App. | 30 |
 | cpuLimit | string | No | The CPU limit for the Azure Container App. | "1.0" |
 | memoryLimit | string | No | The memory limit for the Azure Container App. | "2Gi" |
-| templateStoreIntegrationEnabled | boolean | No | Enable or disable template store integration for the FHIR Converter service. If disabled, only default templates can be used for conversion. If enabled, only custom templates can be used. | false |
-| templateStorageAccountName | string | No | The name of the storage account to store custom templates. | serviceName + "templatestorage" |
-| templateStorageAccountContainerName | string | No | The name of the blob container to store custom templates. | serviceName + "templatecontainer" |
-| applicationInsightsEnabled | boolean | No | Enable or disable Application Insights deployment for your service. Application metrics and request logs will be unavailable for any time period where Application Insights is disabled. | true |
+| templateStoreIntegrationEnabled | boolean | No | Enable or disable template store integration for the FHIR converter service. If disabled, only default templates can be used for conversion. If enabled, the necessary storage resources will be deployed only custom templates can be used. | false |
+| templateStorageAccountName | string | No | The name of the Storage Account to store custom templates. | serviceName + "templatestorage" |
+| templateStorageAccountContainerName | string | No | The name of the Storage Blob Container to store custom templates. | serviceName + "templatecontainer" |
+| applicationInsightsEnabled | boolean | No | Enable or disable Application Insights deployment for your service. If enabled, the necessary resources for telemetry export will be deployed. Application metrics and request logs will be unavailable for any time period where Application Insights is disabled. | true |
 | keyVaultName | string | No | The name of the Key Vault to store secrets. | serviceName + "-kv" |
-| keyVaultUserAssignedIdentityName | string | No | The name of the user-assigned managed identity to be used to access secrets in the Key Vault. | serviceName + "-kv-identity" |
+| keyVaultUserAssignedIdentityName | string | No | The name of the User-Assigned Managed Identity to be used to access secrets in the Key Vault. | serviceName + "-kv-identity" |
 | securityEnabled | boolean | No | Enable or disable security settings for the APIs. | false |
 | securityAuthenticationAudiences | array of strings | No | The audiences for the API authentication. If securityEnabled is set to true, this parameter must have a value provided. | empty array |
 | securityAuthenticationAuthority | string | No | The authority for the API authentication. If securityEnabled is set to true, this parameter must have a value provided. | empty string |
@@ -89,7 +94,7 @@ The table below outlines the parameters that can be configured through any of th
 
 #### Option 1: Single-click Deploy to Azure via ARM template generated from Bicep Template
 
-![Deploy to Azure](https://aka.ms/deploytoazurebutton) **todo: reference ARM template once it is checked in**
+![Deploy to Azure](https://aka.ms/deploytoazurebutton)(https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmicrosoft%2FFHIR-Converter%2Fshared%2Fconvert-api-documentation-update%2Fdocs%2Fdeploy%2FFhirConverter-SingleAzureDeploy.json)
 
 Click the button above to provision the FHIR converter via Azure Portal. This button deploys a [remote ARM template](https://github.com/microsoft/FHIR-Converter/blob/shared/convert-api-documentation-update/docs/deploy/FhirConverter-SingleAzureDeploy.json) generated from the [single Bicep template](https://github.com/microsoft/FHIR-Converter/blob/shared/convert-api-documentation-update/docs/deploy/FhirConverter-SingleAzureDeploy.bicep) entry point for provisioning all necessary Azure resources and role assignments in Option 2.
 
@@ -103,6 +108,11 @@ Deploy the [Single Deploy Bicep Template](../deploy/FhirConverter-SingleAzureDep
 az deployment sub create --location <Location> --name <A custom name for your deployment> --template-file FhirConverter-SingleAzureDeploy.bicep
 ```
 
+See the following command for sample syntax to use when customizing parameter values in your deployment:
+```
+az deployment sub create --location <Location> --name <A custom name for your deployment> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters containerAppName="<Custom_Container_App_name>"
+```
+
 To see a description of a given parameter after being prompted to provide a value, type '?'. Refer to [Configurable Settings](#configurable-settings) for more information on the required parameters to be provided and the default values used for optional parameters.
 
 #### Option 3: Execute a single PowerShell deployment script locally
@@ -111,6 +121,12 @@ Run the following command to run the PowerShell deployment script:
 
 ```PowerShell
 ./Deploy-FhirConverterService.ps1
+```
+
+See the following command for sample syntax to use when customizing parameter values in your deployment:
+
+```PowerShell
+./Deploy-FhirConverterService.ps1 -containerAppName "<Custom_Container_App_name>"
 ```
 
 This [PowerShell deployment script](../deploy/Deploy-FhirConverterService.ps1) sets up all necessary Azure resources for running the FHIR converter service by deploying Bicep templates via Azure CLI commands.
@@ -128,10 +144,10 @@ The following scenarios will require a redeployment of your service using any on
   * Enable or disable authentication
   * To update authentication audience/authority.
   * Switch to default templates or custom templates usage.
-  * To update the storage account to pull custom templates from.
-  * Enable or disable app insights telemetry.
+  * To update the Storage Account to pull custom templates from.
+  * Enable or disable Application Insights telemetry.
 
-* Custom template collection update - If you add/update any custom template in your storage account, a redeployment is required for the service to pick up the latest template collection and use that for conversion.
+* Custom template collection update - If you add/update any custom template in your Storage Account, a redeployment is required for the service to pick up the latest template collection and use that for conversion. You can redeploy using one of the options above, or manually restart your revision in the Azure Portal. To do the latter, go to your Container App's page in the Azure Portal, navigate to the "Revisions and replicas" blade under "Application", click on your revision name, and at the top of the "Revision Details" pane on the right, click "Restart".
 
 ### Additional Deployment Notes
 
