@@ -51,7 +51,7 @@ This template deploys the following:
 ])
 param location string
 
-@description('If set to true, a storage account and container will be deployed with the specified names for storing custom templates.')
+@description('If set to true, a storage account and blob container will be deployed with the specified names for storing custom templates.')
 param deployTemplateStore bool
 
 @description('Name of the storage account to be deployed.')
@@ -99,7 +99,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2021-04-01-preview' = if (deployKey
     }
     tenantId: subscription().tenantId
     enableRbacAuthorization: true
-	}
+  }
 }
 
 resource keyVaultUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = if (deployKeyVault) {

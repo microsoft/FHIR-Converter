@@ -80,9 +80,9 @@ param
 
     [bool]$securityEnabled = $false,
 
-    [string[]]$securityAuthenticationAudiences,
+    [string[]]$securityAuthenticationAudiences = @(),
 
-    [string]$securityAuthenticationAuthority
+    [string]$securityAuthenticationAuthority = ""
 )
 
 Set-StrictMode -Version Latest

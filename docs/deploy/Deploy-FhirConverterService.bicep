@@ -126,9 +126,9 @@ var securityAuthenticationAudiencesConfig = [for (audience, i) in securityAuthen
 }]
 
 var securityConfiguration = concat(securityEnabledConfiguration, securityEnabled ? concat(securityAuthenticationAuthorityConfig, securityAuthenticationAudiencesConfig) : [])
-var integrateTemplateStore = !empty(templateStorageAccountName) && !empty(templateStorageAccountContainerName)
 
 // Template hosting configuration
+var integrateTemplateStore = !empty(templateStorageAccountName) && !empty(templateStorageAccountContainerName)
 var storageEnvironmentSuffix = az.environment().suffixes.storage
 var blobTemplateHostingConfigurationName = 'TemplateHosting__StorageAccountConfiguration__ContainerUrl'
 var blobTemplateHostingConfigurationValue = 'https://${templateStorageAccountName}.blob.${storageEnvironmentSuffix}/${templateStorageAccountContainerName}'
