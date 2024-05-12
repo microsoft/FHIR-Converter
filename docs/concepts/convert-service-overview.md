@@ -1,6 +1,6 @@
 # FHIR Converter Overview
 
-The FHIR converter enables healthcare record format conversion scenarios from various source formats (such as Hl7v2, CCDA, Json, FHIR STU3) to destination formats (such as FHIR R4) using Liquid templates (to specify the transformation rules to be applied).
+The FHIR converter enables healthcare record format conversion scenarios from various source formats (such as Hl7v2, CCDA, JSON, FHIR STU3) to destination formats (such as FHIR R4) using Liquid templates (to specify the transformation rules to be applied).
 
 The latest offering provides REST based APIs to perform conversion requests.
 

@@ -1,7 +1,5 @@
 # HL7v2 Templates
 
-*This document applies to the Liquid engine only. Follow [this](https://github.com/microsoft/FHIR-Converter/tree/handlebars) link for the documentation on Handlebars engine.*
-
 For HL7v2 to FHIR conversion, we provide a total of **57 HL7v2 conversion templates**. Here, you can find a detailed information about each template, such as the mapped FHIR resource types, segments, and extensions.
 
 ## Templates

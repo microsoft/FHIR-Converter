@@ -191,9 +191,9 @@ The API response is a json object which contains the converted HL7v2 message und
 
 ### Samples
 
-* [Insomnia](https://insomnia.rest/) is a tool to debug and test APIs. Once you download it, refer [API Collection Examples](../samples/APICollectionEamples) to try some test conversion requests.
+* [Insomnia](https://insomnia.rest/) is a tool to debug and test APIs. Once you download it, refer [API Collection Examples](../samples/APICollectionSamples) to try some test conversion requests.
 
-  * Import [Insomnia-Examples.json](../samples/APICollectionEamples/Insomnia-Examples.json) template in Insomnia.
+  * Import [Insomnia-Examples.json](../samples/APICollectionSamples/Insomnia-Examples.json) template in Insomnia.
   * Provide the values for the "Base Environment" variables:
     * `serviceUrl` with your service endpoint. Refer [Service URL](#service-url).
     * `api-version` with the api version to target for your requests. Refer [API versions](#api-versions).
