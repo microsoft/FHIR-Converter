@@ -7,7 +7,7 @@ This template deploys the following:
 * Role assignment for the user assigned identity to access the Key Vault (if deployKeyVault is set to true)
 */
 
-@description('Location where the storage account is deployed. For list of Azure regions where Blob Storage is available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=storage).')
+@description('Location where the storage account is deployed. For list of Azure regions where Blob Storage is available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=key-vault,storage).')
 @allowed([
   'australiacentral'
   'australiaeast'
