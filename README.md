@@ -1,15 +1,15 @@
 # FHIR Converter
 
-FHIR Converter is an open source project that enables conversion of health data from legacy formats to and from FHIR.  The FHIR Converter uses the [Liquid template language](https://shopify.github.io/liquid/) and the .NET runtime.
+FHIR converter is an open source project that enables conversion of health data from legacy formats to and from FHIR.  The FHIR converter uses the [Liquid template language](https://shopify.github.io/liquid/) and the .NET runtime.
 
-The FHIR Converter supports the following conversions: **HL7v2 to FHIR**, **C-CDA to FHIR**, **JSON to FHIR**, **FHIR STU3 to R4**, and **FHIR to HL7v2** (*Preview*).
+The FHIR converter supports the following conversions: **HL7v2 to FHIR**, **C-CDA to FHIR**, **JSON to FHIR**, **FHIR STU3 to R4**, and **FHIR to HL7v2** (*Preview*).
 
 The converter uses templates that define mappings between these different data formats. The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/Filters-and-Tags.md).  
 
 The converter comes with a few ready-to-use templates. If needed, you can create a new template, or modify existing templates to meet your specific conversion requirements. The provided templates are based off of HL7 v2.8. Other versions may require you to make modifications to these templates on your own. See [Templates & Authoring](#templates--authoring) for specifics.
 
 ## What's New?
-The latest iteration of the *Preview* FHIR Converter makes some sigifigant changes over [previous versions](#previous-versions).
+The latest iteration of the *Preview* FHIR converter makes some significant changes over [previous versions](#previous-versions).
 
 Some of the changes include:
  * Containerized API
@@ -17,31 +17,27 @@ Some of the changes include:
  * Removal of Azure Container repository dependency for custom templates.
  * Support for FHIR to HL7v2 conversion.
 
- All the documentation for the new *preview* FHIR Converter API can be found in the [How to Guides](docs/how-to-guides/) folder.
+ All the documentation for the new *preview* FHIR converter API can be found in the [How to Guides](docs/how-to-guides/) folder.
 
 ## Architecture
 
-The FHIR converter enables healthcare record format conversion scenarios from various source formats (such as Hl7v2, CCDA, JSON, FHIR STU3) to destination formats (such as FHIR R4) using Liquid templates (to specify the transformation rules to be applied).
+The FHIR converter API *preview* provides [REST based APIs](#api) to perform conversion requests.
 
-The latest offering provides [REST based APIs](#api) to perform conversion requests.
-
-### As a container
-
-The FHIR converter APIs are being offered as a container artifact in [Microsoft Container Registry](https://github.com/microsoft/containerregistry).
+The FHIR converter APIs are offered as a container artifact in [Microsoft Container Registry](https://github.com/microsoft/containerregistry).
 This image can be downloaded and run as a web service on a container hosting platform in your Azure tenant; that clients can target for conversion requests.
 
 ![Convert setup](/docs/images/convert-setup.png)
 
 ## Templates & Authoring
 
-The FHIR Converter API comes with several pre-built templates you can use as reference as to create your own.
+The FHIR converter API comes with several pre-built templates you can use as reference as to create your own.
 
 | Conversion | Notes |
 | ----- | ----- |
 | [HL7v2 to FHIR](/docs/HL7v2-templates.md)| Important points to note for HL7v2 to FHIR conversion: [see here](docs/HL7v2-ImportantPoints.md) <br> Common FHIR Validator errors/warning you might run into, and their explanations: [see here](docs/HL7v2-FHIRValidator.md) | 
 | [C-CDA to FHIR](/data/Templates/Ccda/) | | 
 | [JSON to FHIR](/data/Templates/Json/) | | 
-| [FHIR STU3 to R4](/data/Templates/Stu3ToR4/) | [Diferences between STU3 & R4](/docs/Stu3R4-resources-differences.md) | 
+| [FHIR STU3 to R4](/data/Templates/Stu3ToR4/) | [Differences between STU3 & R4](/docs/Stu3R4-resources-differences.md) | 
 | FHIR to HL7v2 (*Preview*) | |
 
 ### Concepts
@@ -52,11 +48,11 @@ In addition to the example [templates](data/Templates) provided there are severa
 - [Resource Id generation](docs/concepts/resource-id-generation.md)
 - [Validation & post processing](docs/concepts/validation-and-postprocessing.md)
 
-To use your custom templates, the FHIR Converter API offers robust support for storing and retrieving your templates from Azure storage. For more information see: [Template Store Integration](/docs/how-to-guides/enable-template-store-integration.md).
+To use your custom templates, the FHIR converter API offers robust support for storing and retrieving your templates from Azure storage. For more information see: [Template Store Integration](/docs/how-to-guides/enable-template-store-integration.md).
 
 ## Deployment
 
-You can deploy the FHIR Converter API using the instructions found [here](/docs/how-to-guides/deployment-options.md).  The default deployment will deploy the FHIR Conventer API container hosted on Azure Container Apps.
+You can deploy the FHIR converter API using the instructions found [here](/docs/how-to-guides/deployment-options.md).  The default deployment will deploy the FHIR Conventer API container hosted on Azure Container Apps.
 
 ## API
 
@@ -64,7 +60,7 @@ The conversion APIs process the provided input data of the specified format and 
 
 ![Convert API summary](docs/images/convert-api-summary.png)
 
-Complete details on the FHIR Converter APIs and examples can be found [here](/docs/how-to-guides/use-convert-web-apis.md).
+Complete details on the FHIR converter APIs and examples can be found [here](/docs/how-to-guides/use-convert-web-apis.md).
 
 ## Troubleshooting
 
@@ -72,9 +68,9 @@ Some key concepts to consider:
 * Processing time is related to both the input message size, template, and logic contained in the template.  If your template is taking a long time to execute make sure you don't have any unnecessary loops.
 * The output of the template is expected to be JSON when the target is FHIR.
 * When converting data to FHIR, [post processing](https://github.com/microsoft/FHIR-Converter/blob/main/src/Microsoft.Health.Fhir.Liquid.Converter/OutputProcessors/PostProcessor.cs) is performed.  If you are seeing unexpected results, double check the post processing logic. 
-* If you want a deeper understanding on how data is converter, look at the functional tests found [here](https://github.com/microsoft/FHIR-Converter/blob/main/src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/ConvertDataTemplateCollectionProviderFunctionalTests.cs)
+* If you want a deeper understanding on how data is converted, look at the functional tests found [here](https://github.com/microsoft/FHIR-Converter/blob/main/src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/ConvertDataTemplateCollectionProviderFunctionalTests.cs)
 
-Detailed troubleshooting options for your deployed FHIR Converter API can be found [here](docs/how-to-guides/troubleshoot.md).
+Detailed troubleshooting options for your deployed FHIR converter API can be found [here](docs/how-to-guides/troubleshoot.md).
 
 ## Previous Versions
 Detailed documentation of prior Converter release is covered in the table below.
