@@ -80,13 +80,13 @@ An unexpected internal server error has occurred. Please see the application log
 
 The InputData value is not null or empty, but is invalid or cannot be parsed.
 
-#### __InnerError code: InputParsingError__
+__InnerError code: InputParsingError__
 
-  **Root Cause:** InputData parsing logic is specific to the expected format. If you are encountering this error, it is likely the result of a mismatch between the InputData and the specified InputDataFormat.
+> **Root Cause:** InputData parsing logic is specific to the expected format. If you are encountering this error, it is likely the result of a mismatch between the InputData and the specified InputDataFormat.
 
-  **Troubleshooting:** Ensure that the InputDataFormat field value in the request body aligns with the format of the InputData field. For more information on authoring the request body, view the sample request bodies in the [Use FHIR converter APIs](use-convert-web-apis) document and the sample InputData [here](../../data/SampleData).
+> **Troubleshooting:** Ensure that the InputDataFormat field value in the request body aligns with the format of the InputData field. For more information on authoring the request body, view the sample request bodies in the [Use FHIR converter APIs](use-convert-web-apis) document and the sample InputData [here](../../data/SampleData).
 
-#### __InnerError code: InvalidInputDataContent__
+__InnerError code: InvalidInputDataContent
 
   **Root Cause:** The content of the InputData string passed by the user is invalid.
 
