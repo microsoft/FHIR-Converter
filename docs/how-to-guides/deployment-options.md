@@ -150,12 +150,12 @@ In addition to the parameters listed for the [FhirConverter-SingleAzureDeploy](.
 | applicationInsightsUserAssignedIdentityName | string | The name of the User-Assigned Managed Identity to be used by the Container App to access Application Insights | If using Application Insights to collect logs and metrics, then yes. Otherwise, no. | empty string |
 | applicationInsightsConnectionStringSecretName | string | The resource **name** of the [secret](https://learn.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal) in the Key Vault containing the [Application Insights connection string](https://learn.microsoft.com/en-us/azure/azure-monitor/app/sdk-connection-string?tabs=dotnet5#find-your-connection-string). | If using Application Insights to collect logs and metrics, then yes. Otherwise, no. | empty string |
 
-Note a few small differences in the parameters passed to the Deploy-FhirConverterService template as compared to the FhirConverter-SingleAzureDeploy bicep template:
-* 'serviceName' is not accepted as a parameter.
-* 'resourceGroupName' is not accepted as a parameter (this is determined by the scope of the deployment specified in the --resource-group parameter of the az deployment command).
-* 'templateStoreIntegrationEnabled' is not accepted as a parameter; to enable template store integration, provide the name of an existing Storage Account ('templateStorageAccountName') and Storage Blob Container ('templateStorageAccountContainerName') to store the custom templates.
-* If using Application Insights, the name of an existing Key Vault ('keyVaultName') storing the Application Insights connection string as a Key Vault Secret and User-Assigned Managed Identity for accessing the secret ('keyVaultUserAssignedIdentityName') must be provided.
-* 'location' of the Container App must be the same as that of the Container App Environment for the deployment to succeed.
+> [!Note]
+> * 'serviceName' is not accepted as a parameter.
+> * 'resourceGroupName' is not accepted as a parameter (this is determined by the scope of the deployment specified in the --resource-group parameter of the az deployment command).
+> * 'templateStoreIntegrationEnabled' is not accepted as a parameter; to enable template store integration, provide the name of an existing Storage Account ('templateStorageAccountName') and Storage Blob Container ('templateStorageAccountContainerName') to store the custom templates.
+> * If using Application Insights, the name of an existing Key Vault ('keyVaultName') storing the Application Insights connection string as a Key Vault Secret and User-Assigned Managed Identity for accessing the secret ('keyVaultUserAssignedIdentityName') must be provided.
+> * 'location' of the Container App must be the same as that of the Container App Environment for the deployment to succeed.
 
 ### Redeployment scenarios
 
