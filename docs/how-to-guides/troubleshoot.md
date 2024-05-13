@@ -69,10 +69,8 @@ See the [Monitoring](monitoring.md) document for more information on accessing t
 This error is observed if the template used for conversion and the input data being converted are technically valid, but the converted result produced is poorly formed.
 
 __*InnerError code: JsonParsingError*__
-
- **Root Cause:** For convertToFhir requests, the output produced by the template cannot be parsed into valid JSON format. For convertToHl7v2 requests, the InputData value cannot be parsed into valid JSON format.
-
- **Troubleshooting:** In the case of a convertToFhir request, ensure that the template is properly formatted to generate a valid JSON object. Refer to the provided [sample templates](../../data/Templates) as valid examples or see more information on template authoring [here](customize-templates.md). In the case of a convertToHl7v2 request, ensure that the InputData string is of a format that can be correctly parsed into a JSON object.
+ * **Root Cause:** For convertToFhir requests, the output produced by the template cannot be parsed into valid JSON format. For convertToHl7v2 requests, the InputData value cannot be parsed into valid JSON format.
+ * **Troubleshooting:** In the case of a convertToFhir request, ensure that the template is properly formatted to generate a valid JSON object. Refer to the provided [sample templates](../../data/Templates) as valid examples or see more information on template authoring [here](customize-templates.md). In the case of a convertToHl7v2 request, ensure that the InputData string is of a format that can be correctly parsed into a JSON object.
 
 __*InnerError code: JsonMergingError*__
 
