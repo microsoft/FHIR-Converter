@@ -1,0 +1,25 @@
+{
+  "result": {
+    "resourceType": "Patient",
+    "id": 12434,
+    "extension": [
+      {
+        "url": "http://hl7.org/fhir/r4/StructureDefinition/patient-animal",
+        "extension": [
+          {
+            "url": "species",
+            "valueCodeableConcept": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/animal-species",
+                  "code": "canislf",
+                  "display": "Dog"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

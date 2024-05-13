@@ -1,215 +1,89 @@
 # FHIR Converter
 
-FHIR Converter is an open source project that enables conversion of health data from legacy formats to FHIR.
+FHIR converter is an open source project that enables conversion of health data from legacy formats to and from FHIR.  The FHIR converter uses the [Liquid template language](https://shopify.github.io/liquid/) and the .NET runtime.
 
-The first version of the FHIR Converter released to open source on Mar 6th, 2020. It used Handlebars template language and Javascript runtime. A new converter engine was released on Nov 13, 2020 that uses Liquid templating language and .Net runtime.
+The FHIR converter supports the following conversions: **HL7v2 to FHIR**, **C-CDA to FHIR**, **JSON to FHIR**, **FHIR STU3 to R4**, and **FHIR to HL7v2** (*Preview*).
 
-Currently, Microsoft supports two types of converter engines, Handlebars engine and Liquid engine, along with templates and filters. **We strongly recommend using the Liquid converter** for a better alignment with [Azure Healthcare APIs](https://docs.microsoft.com/azure/healthcare-apis/), [Azure Health Data Services](https://azure.microsoft.com/en-us/services/health-data-services/#overview), [FHIR Server for Azure](https://github.com/microsoft/fhir-server), and [Microsoft Logic Apps](https://azure.microsoft.com/services/logic-apps/).
+The converter uses templates that define mappings between these different data formats. The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/Filters-and-Tags.md).  
 
-The following table shows the differences between two converter engines:
+The converter comes with a few ready-to-use templates. If needed, you can create a new template, or modify existing templates to meet your specific conversion requirements. The provided templates are based off of HL7 v2.8. Other versions may require you to make modifications to these templates on your own. See [Templates & Authoring](#templates--authoring) for specifics.
 
-|  | Handlebars engine | Liquid engine | 
-| ----- | ----- | ----- |
-| **Template language** | [Handlebars](https://handlebarsjs.com/) | [Liquid](https://shopify.github.io/liquid/) |
-| **Template authoring tool** | Self-hosted web-app | [VS Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-health-fhir-converter)|
-| **Supported conversions** | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR | 1. HL7v2 to FHIR <br> 2. C-CDA to FHIR <br> 3. JSON to FHIR <br> 4. FHIR STU3 to FHIR R4 **(new!)** |
-| **Available as** | 1. Self-deployed web service <br> (on-prem or on Azure)| 1. Command line tool <br> 2. $convert-data operation in  [FHIR Server for Azure (OSS)](https://github.com/microsoft/fhir-server/blob/main/docs/ConvertDataOperation.md) <br> 3. $convert-data operation in both [Azure Health Data Services](https://docs.microsoft.com/en-us/azure/healthcare-apis/fhir/convert-data) and [Azure API for FHIR](https://docs.microsoft.com/azure/healthcare-apis/azure-api-for-fhir/convert-data)|
+## What's New?
+The latest iteration of the *Preview* FHIR converter makes some significant changes over [previous versions](#previous-versions).
 
-⚠ Rest of this document is about the Liquid converter. For the Handlebars converter, please refer to the [Handlebars branch](https://github.com/microsoft/FHIR-Converter/tree/handlebars).
+Some of the changes include:
+ * Containerized API
+ * Support Azure Storage for customer templates.
+ * Removal of Azure Container repository dependency for custom templates.
+ * Support for FHIR to HL7v2 conversion.
 
-Currently, FHIR Converter supports four types of conversions, **HL7v2 to FHIR**, **C-CDA to FHIR**, **JSON to FHIR** and **FHIR STU3 to R4**. The converter uses templates that define mappings between these different data formats. The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/Filters-and-Tags.md).
+ All the documentation for the new *preview* FHIR converter API can be found in the [How to Guides](docs/how-to-guides/) folder.
 
-The converter comes with a few ready-to-use templates. If needed, you can create a new template, or modify existing templates to meet your specific conversion requirements. The provided templates are based off of HL7 v2.8. Other versions may require you to make modifications to these templates on your own. 
+## Architecture
 
-FHIR Converter with DotLiquid engine transforms the input data into FHIR bundles that are persisted to a FHIR server. The converter is integrated into both [Azure Health Data Services](https://azure.microsoft.com/en-us/services/health-data-services/#overview) and [Azure API for FHIR](https://docs.microsoft.com/azure/healthcare-apis/azure-api-for-fhir/), as well as in the open-source [FHIR Server](https://github.com/microsoft/fhir-server) as a [`$convert-data`] #using-convert-data-in-fhir-server) operation. It is also available as a [command line tool](#using-command-line-tool).
+The FHIR converter API *preview* provides [REST based APIs](#api) to perform conversion requests.
 
-NOTE: **FHIR STU3 to R4** conversion is only available in the open-source [FHIR Server](https://github.com/microsoft/fhir-server) as a [`$convert-data`](#using-convert-data-in-fhir-server) operation. It is also available as a [command line tool](#using-command-line-tool).
+The FHIR converter APIs are offered as a container artifact in [Microsoft Container Registry](https://github.com/microsoft/containerregistry).
+This image can be downloaded and run as a web service on a container hosting platform in your Azure tenant; that clients can target for conversion requests.
 
-## Using $convert-data in FHIR server
+![Convert setup](/docs/images/convert-setup.png)
 
-The `$convert-data` operation is integrated into Azure Health Data Services, Azure API for FHIR and FHIR server to run as part of the service. After enabling `$convert-data` in your server, you can make API calls in the form of ```<<your FHIR server URL>>/$convert-data``` to the server to convert your data into FHIR. In the API call request body, you would include parameters such as `inputData`, `inputDataType`, `templateCollectionReference`, and `rootTemplate`, to specify the message and the type of message you are converting. 
+## Templates & Authoring
 
-For more information on configuring and using `$convert-data` operation on your server, please refer to these documentation:
+The FHIR converter API comes with several pre-built templates you can use as reference as to create your own.
 
-- [$convert-data for Azure Health Data Services](https://docs.microsoft.com/en-us/azure/healthcare-apis/fhir/convert-data)
-- [$convert-data for Azure API for FHIR](https://docs.microsoft.com/azure/healthcare-apis/azure-api-for-fhir/convert-data)
-- [$convert-data for FHIR Server](https://github.com/microsoft/fhir-server/blob/main/docs/ConvertDataOperation.md)
+| Conversion | Notes |
+| ----- | ----- |
+| [HL7v2 to FHIR](/docs/HL7v2-templates.md)| Important points to note for HL7v2 to FHIR conversion: [see here](docs/HL7v2-ImportantPoints.md) <br> Common FHIR Validator errors/warning you might run into, and their explanations: [see here](docs/HL7v2-FHIRValidator.md) | 
+| [C-CDA to FHIR](/data/Templates/Ccda/) | | 
+| [JSON to FHIR](/data/Templates/Json/) | | 
+| [FHIR STU3 to R4](/data/Templates/Stu3ToR4/) | [Differences between STU3 & R4](/docs/Stu3R4-resources-differences.md) | 
+| FHIR to HL7v2 (*Preview*) | |
 
-## Using Command line tool
+### Concepts
 
-### Supported parameters
-
-The command line tool is another way of converting data, as well as managing templates. The tool converts a folder containing input messages (HL7v2, C-CDA, JSON or FHIR STU3) into FHIR R4 resources. It accepts the following parameters in the command line:
-
-| Option | Name | Optionality | Default | Description |
-| ----- | ----- | ----- |----- |----- |
-| -d | TemplateDirectory | Required | | Root directory of templates. |
-| -r | RootTemplate | Required | | Name of root template.<br><br> **HL7v2 to FHIR** (57 templates): "ADT_A01", "ADT_A02", "ADT_A03", "ADT_A04", "ADT_A05", "ADT_A06". "ADT_A07", "ADT_A08", "ADT_A09", "ADT_A10", "ADT_A11", "ADT_A13", "ADT_A14", "ADT_A15", "ADT_A16", "ADT_A25", "ADT_A26", "ADT_A27", "ADT_A28", "ADT_A29", "ADT_A31", "ADT_A40", "ADT_A41", "ADT_A45", "ADT_A47", "ADT_A60", "BAR_P01", "BAR_P02", "BAR_B12", "DFT_P03", "DFT_P11", "MDM_T01", "MDM_T02", "MDM_T05", "MDM_T06", "MDM_T09", "MDM_T10", "OMG_O19" "OML_O21", "ORM_O01", "ORU_R01", "OUL_R22", "OUL_R23", "OUL_R24", "RDE_O11", "RDE_O25", "RDS_O13", "REF_I12", "REF_I14", "SIU_S12", "SIU_S13", "SIU_S14", "SIU_S15", "SIU_S16", "SIU_S17", "SIU_S26", "VXU_V04" <br><br>**C-CDA to FHIR** (9 templates): "CCD", "ConsultationNote", "DischargeSummary", "HistoryandPhysical", "OperativeNote", "ProcedureNote", "ProgressNote", "ReferralNote", "TransferSummary" <br><br> **JSON to FHIR**: "Stu3ChargeItem", "ExamplePatient" <br> (*These JSON templates are sample templates for use, not default templates that adhere to any pre-defined JSON message types. JSON does not have any standardized message types, unlike HL7v2 messages or C-CDA documents. Therefore, instead of "default" templates we provide you with some sample templates that you can use as a starting guide for you to modify and customize.*) <br><br> **FHIR STU3 to R4**: Name of the root template that is the same as the STU3 resource name e.g., "Patient", "Observation", "Organization". Some of the STU3 resources are renamed or removed from R4. Please refer to [Resource differences and constraints for STU3 to R4](docs/Stu3R4-resources-differences.md). |
-| -c | InputDataContent | Optional| | Input data content. Specify OutputDataFile to get the results. |
-| -n | InputDataFile | Optional| | Input data file. Specify OutputDataFile to get the results. |
-| -f | OutputDataFile | Optional | | Output data file. |
-| -i | InputDataFolder | Optional | | Input data folder. Specify OutputDataFolder to get the results. |
-| -o | OutputDataFolder | Optional | | Output data folder. |
-| -t | IsTraceInfo | Optional | | Provide trace information in the output if "-t" is set. **This parameter is only supported in HL7v2 to FHIR conversion.** |
-| --version | Version | Optional | | Display version information. |
-| --help | Help | Optional | | Display usage information of this tool. |
-
-### Command line example
-
-First, build the executable file, `Microsoft.Health.Fhir.Liquid.Converter.Tool.exe`, in your local directory. Have the input data, as well as the conversion templates, saved in separate folders.
-
-#### Converting data inside folders
-
-You can run the built .exe file in your terminal by running the following command line and specifying the directories:
-
-```
->.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d myTemplateDirectory -r myRootTemplate -i myInputDataFolder -o myOutputDataFolder
-```
-
-For example, you can run a command like below to convert all C-CDA sample documents inside the `SampleData\Ccda` folder using the default `CCD` template:
-
-```
->.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -d {path}\Templates\Ccda -r CCD -i {path}\SampleData\Ccda -o {path to your output folder}
-```
-
-After running the command line, there will be a series of "Processing..." lines being written in the terminal window. When the conversion is complete, you will see "Conversion completed!" message.
-
-For example, if you were doing the C-CDA to FHIR conversion in a folder as in the command above, you will see something like this:
-
-![Conversion running on the terminal (screenshot)](docs/conversion-terminal-screenshot.png)
-
-#### Converting individual files
-
-Instead of converting multiples messages and documents inside a folder, you can also convert single files using the parameters in the table above. For example, if you were to convert a C-CDA document into a FHIR resource using the `CCD` template:
-```
->.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe convert -n {path}\SampleData\Ccda\CCD.ccda -d {path}\Templates\Ccda -f {path to your output json file} -r CCD
-```
-
-## Using Templates
-
-The command line tool supports managing different versions of templates from Azure Container Registry (ACR). You can customize templates and store them in your ACR if default templates are not sufficient for meeting conversion requirements. After [ACR authentication](docs/TemplateManagementCLI.md#authentication), you can pull templates from ACR or push templates to ACR using our command line tool.
-
-> Note: Template version is aligned with the version of FHIR Converter.
-
-### Command line example
-
-Example command to push a collection of templates to ACR image from a folder:
-```
->.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe push testacr.azurecr.io/templatetest:default myInputFolder
-```
-Example usage of pulling an image of templates in a folder:
-```
->.\Microsoft.Health.Fhir.Liquid.Converter.Tool.exe pull testacr.azurecr.io/templatetest@sha256:412ea84f1bb1a9d98345efb7b427ba89616ec29ac332d543eff9a2161ca12a58 myOutputFolder
-```
-
-For more details on how to push and pull template collections, please refer to the documentation on [Template Management CLI tool](docs/TemplateManagementCLI.md).
-
-To see the current version of templates we support, check out the complete list of [templates](data/Templates).
-
-There are other versions released by Microsoft that are stored in a public ACR `healthplatformregistry.azurecr.io`. You can directly pull templates from ``` healthplatformregistry.azurecr.io/hl7v2defaulttemplates:<version> ``` without ACR authentication.
-
-### HL7v2 to FHIR conversion templates
-
-There are three documentations to note for HL7v2 to FHIR conversion. Please make sure to reference these as you use our HL7v2 default templates:
-
-* **A complete list and explanation of each of the 57 HL7v2 to FHIR conversion templates:** [see here](docs/HL7v2-templates.md)
-* **Important points to note for HL7v2 to FHIR conversion:** [see here](docs/HL7v2-ImportantPoints.md)
-* **Common FHIR Validator errors/warning you might run into, and their explanations:** [see here](docs/HL7v2-FHIRValidator.md)
-
-## Resource ID generation
-
-The default templates provided with the Converter computes Resource IDs using the input data fields. In order to preserve the generated Resource IDs, the converter creates **PUT requests**, instead of POST requests in the generated bundles.
-
-For **HL7v2 to FHIR conversion**, [HL7v2 DotLiquid templates](data/Templates/Hl7v2/ID) help generate FHIR resource IDs from HL7v2 messages. An ID generation template does three things: 1) extract identifiers from the input segment or field; 2) combine the identifers with resource type and base ID (optional) as hash seed; 3) compute hash as output ID.
-
-For **C-CDA to FHIR conversion**, [C-CDA DotLiquid templates](data/Templates/Ccda/Utils) generate FHIR resource IDs in two ways: 1) [ID generation template](data/Templates/Ccda/Utils/_GenerateId.liquid) helps generate Patient ID and Practitioner ID; 2) the resource IDs for other resources are generated from the resource object directly.
-
-For **JSON to FHIR conversion**, there is no standardized JSON input message types unlike HL7v2 messages or C-CDA documents. Therefore, instead of default templates we provide you with some sample JSON DotLiquid templates that you can use as a starting guide for your custom JSON conversion templates. You can decide how to generate the resource IDs according to your own inputs, and use our sample templates as a reference.
-
-For **FHIR STU3 to R4 conversion**, the Resource ID from STU3 resource is copied over to corresponding R4 resource.
-
-The Converter introduces a concept of "base resource/base ID". Base resources are independent entities, like Patient, Organization, Device, etc, whose IDs are defined as base ID. Base IDs could be used to generate IDs for other resources that relate to them. It helps enrich the input for hash and thus reduce ID collision.
-For example, a Patient ID is used as part of hash input for an AllergyIntolerance ID, as this resource is closely related with a specific patient.
-
-Below is an example where an AllergyIntolerance ID is generated, using ID/AllergyIntolerance template, AL1 segment and patient ID as its base ID.
-The syntax is `{% evaluate [id] using [template] [variables] -%}`.
-
-```liquid
-{% evaluate allergyIntoleranceId using 'ID/AllergyIntolerance' AL1: al1Segment, baseId: patientId -%}
-```
-
-## Resource validation and post-processing
-
-The output of converter depends on the templates as well as the quality and richness of input messages. Therefore, it is important that you review and validate the Converter output before using those in production.
-
-In general, you can use [HL7 FHIR validator](https://wiki.hl7.org/Using_the_FHIR_Validator) to validate a FHIR resource. You may be able to fix some of the conversion issues by appropriately changing the templates. For other issues, you may need to have a post-processing step in your pipeline.
-
-In some cases, due to lack of field level data in the incoming messages, the Converter may produce resources without useful information or even without ID. You can use `Hl7.Fhir.R4` .NET library to filter such resources in your pipeline. Here is the sample code for such purpose.
-
-```C#
-using Hl7.Fhir.Model;
-using Hl7.Fhir.Serialization;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-public class PostProcessor
-{
-    private readonly FhirJsonParser _parser = new FhirJsonParser();
-
-    public IEnumerable<Resource> FilterResources(IEnumerable<string> fhirResources)
-    {
-        return fhirResources
-            .Select(fhirResource => _parser.Parse<Resource>(fhirResource))
-            .Where(resource => !IsEmptyResource(resource))
-            .Where(resource => !IsIdAbsentResource(resource));
-    }
-
-    public bool IsEmptyResource(Resource resource)
-    {
-        try
-        {
-            var fhirResource = resource.ToJObject();
-            var properties = fhirResource.Properties().Select(property => property.Name);
-            // an empty resource contains no properties other than "resourceType" and "id"
-            return !properties
-                .Where(property => !property.Equals("resourceType"))
-                .Where(property => !property.Equals("id"))
-                .Any();
-        }
-        catch (Exception e)
-        {
-            Console.Error.WriteLine(e.Message);
-            // deal with the exception...
-        }
-
-        return false;
-    }
-
-    public bool IsIdAbsentResource(Resource resource)
-    {
-        try
-        {
-            return string.IsNullOrWhiteSpace(resource.Id);
-        }
-        catch (Exception e)
-        {
-            Console.Error.WriteLine(e.Message);
-            // deal with the exception...
-        }
-        return false;
-    }
-}
-```
-
-## Reference documentation
-
+In addition to the example [templates](data/Templates) provided there are several important concepts to review and consider when creating your own templates, including:
 - [Filters summary](docs/Filters-and-Tags.md)
 - [Snippet concept](docs/SnippetConcept.md)
+- [Resource Id generation](docs/concepts/resource-id-generation.md)
+- [Validation & post processing](docs/concepts/validation-and-postprocessing.md)
+
+To use your custom templates, the FHIR converter API offers robust support for storing and retrieving your templates from Azure storage. For more information see: [Template Store Integration](/docs/how-to-guides/enable-template-store-integration.md).
+
+## Deployment
+
+You can deploy the FHIR converter API using the instructions found [here](/docs/how-to-guides/deployment-options.md).  The default deployment will deploy the FHIR Conventer API container hosted on Azure Container Apps.
+
+## API
+
+The conversion APIs process the provided input data of the specified format and use the specified Liquid template (default or custom) and return the converted result as per the transformations in the template.
+
+![Convert API summary](docs/images/convert-api-summary.png)
+
+Complete details on the FHIR converter APIs and examples can be found [here](/docs/how-to-guides/use-convert-web-apis.md).
+
+## Troubleshooting
+
+Some key concepts to consider:
+* Processing time is related to both the input message size, template, and logic contained in the template.  If your template is taking a long time to execute make sure you don't have any unnecessary loops.
+* The output of the template is expected to be JSON when the target is FHIR.
+* When converting data to FHIR, [post processing](https://github.com/microsoft/FHIR-Converter/blob/main/src/Microsoft.Health.Fhir.Liquid.Converter/OutputProcessors/PostProcessor.cs) is performed.  If you are seeing unexpected results, double check the post processing logic. 
+* If you want a deeper understanding on how data is converted, look at the functional tests found [here](https://github.com/microsoft/FHIR-Converter/blob/main/src/Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests/ConvertDataTemplateCollectionProviderFunctionalTests.cs)
+
+Detailed troubleshooting options for your deployed FHIR converter API can be found [here](docs/how-to-guides/troubleshoot.md).
+
+## Previous Versions
+Detailed documentation of prior Converter release is covered in the table below.
+
+|  Version | Summary | 
+| ----- |  ----- |
+| [5.x Liquid](https://github.com/microsoft/FHIR-Converter/tree/e49b56f165e5607726063c681e90a28e68e39133) | Liquid engine release covers: <br> 1. HL7v2, CCDA, and JSON to FHIR transformations. <br> 2. Command Line utility. <br> 3. VS Code authoring extension. <br> 4. FHIR Service $convert integration. <br> 5. ACR template storage. |
+| [3.x Handlebars](https://github.com/microsoft/FHIR-Converter/tree/handlebars) | Previous handlebars base solution.  No longer supported. See full comparision [here](https://github.com/microsoft/FHIR-Converter/tree/e49b56f165e5607726063c681e90a28e68e39133?tab=readme-ov-file#fhir-converter).
 
 ## External resources
 
 - [DotLiquid wiki](https://github.com/dotliquid/dotliquid/wiki)
+- [Liquid wiki](https://github.com/Shopify/liquid/wiki)
 - [HL7 Community 2-To-FHIR-Project](https://confluence.hl7.org/display/OO/2-To-FHIR+Project)
  
 ## Contributing
