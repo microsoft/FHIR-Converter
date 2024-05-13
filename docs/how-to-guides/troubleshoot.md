@@ -1,4 +1,4 @@
-# FHIR Converter Troubleshooting Guide
+# FHIR converter Troubleshooting Guide
 
 This how-to-guide provides information and steps to help you troubleshoot issues you may encounter while using the FHIR Converter.
 
@@ -45,7 +45,7 @@ Application logs can provide detailed debugging information on the errors encoun
 Error logs conform to the following format:
 
 ```text
-Failed conversion request with HTTP Status {HTTP status}; TOP-LEVEL-ERROR: {error code} - {top-level error message}.; INNER ERROR: Code: {inner error code}, Message: {inner error code}, Exception: {the outer exception that causes the Inner Error}; InnerException: {the inner exception of the Inner Error} - Code: {error code of the inner exception}, Message: {inner exception message}.
+Failed conversion request with HTTP Status {HTTP status}; TOP-LEVEL-ERROR: {error code} - {top-level error message}.; INNER ERROR: Code: {inner error code}, Message: {inner error message}, Exception: {the exception that causes the Inner Error}; InnerException: {the inner exception of the Inner Error} - Code: {error code of the inner exception}, Message: {inner exception message}.
 ```
 
 The top-level error information in the error log aligns with the top-level error fields in the response body. If the inner error details are present in the response body, they align with the inner error details of the log message, though the log message will likely provide more details than the response body.
@@ -60,19 +60,17 @@ This section describes potential causes for each top-level error code, root caus
 
 This error is observed if the template used for conversion and the input data being converted are technically valid, but the converted result produced is poorly formed.
 
-#### <u>InnerError code: JsonParsingError</u>
+#### __InnerError code: JsonParsingError__
 
-**Root Cause:** For convertToFhir requests, the output produced by the template cannot be parsed into valid JSON format. For convertToHl7v2 requests, the InputData value cannot be parsed into valid JSON format.
+ **Root Cause:** For convertToFhir requests, the output produced by the template cannot be parsed into valid JSON format. For convertToHl7v2 requests, the InputData value cannot be parsed into valid JSON format.
 
-**Troubleshooting:**
-In the case of a convertToFhir request, ensure that the template is properly formatted to generate a valid JSON object. Refer to the provided [sample templates](../../data/Templates) as valid examples or see more information on template authoring [here](customize-templates.md). In the case of a convertToHl7v2 request, ensure that the InputData string is of a format that can be correctly parsed into a JSON object.
+ **Troubleshooting:** In the case of a convertToFhir request, ensure that the template is properly formatted to generate a valid JSON object. Refer to the provided [sample templates](../../data/Templates) as valid examples or see more information on template authoring [here](customize-templates.md). In the case of a convertToHl7v2 request, ensure that the InputData string is of a format that can be correctly parsed into a JSON object.
 
-#### <u>InnerError code: JsonMergingError</u>
+#### __InnerError code: JsonMergingError__
 
-**Root Cause:** The conversion produced an output payload that can be parsed to a JSON object, but this JSON object does not have the expected structure or contains invalid data.
+ **Root Cause:** The conversion produced an output payload that can be parsed to a JSON object, but this JSON object does not have the expected structure or contains invalid data.
 
-**Troubleshooting:**
-Ensure that the template structures the data to align with the expected output format and does not contain any invalid data. Refer to the provided [sample templates](../../data/Templates) and [sample InputData](../../data/SampleData) for valid examples or see more information on template authoring [here](customize-templates.md).
+ **Troubleshooting:** Ensure that the template structures the data to align with the expected output format and does not contain any invalid data. Refer to the provided [sample templates](../../data/Templates) and [sample InputData](../../data/SampleData) for valid examples or see more information on template authoring [here](customize-templates.md).
 
 ### InternalServerError
 
@@ -82,27 +80,27 @@ An unexpected internal server error has occurred. Please see the application log
 
 The InputData value is not null or empty, but is invalid or cannot be parsed.
 
-#### <u>InnerError code: InputParsingError</u>
+#### __InnerError code: InputParsingError__
 
-**Root Cause:** InputData parsing logic is specific to the expected format. If you are encountering this error, it is likely the result of a mismatch between the InputData and the specified InputDataFormat.
+  **Root Cause:** InputData parsing logic is specific to the expected format. If you are encountering this error, it is likely the result of a mismatch between the InputData and the specified InputDataFormat.
 
-**Troubleshooting:** Ensure that the InputDataFormat field value in the request body aligns with the format of the InputData field. For more information on authoring the request body, view the sample request bodies in the [Use FHIR converter APIs](use-convert-web-apis) document and the sample InputData [here](../../data/SampleData).
+  **Troubleshooting:** Ensure that the InputDataFormat field value in the request body aligns with the format of the InputData field. For more information on authoring the request body, view the sample request bodies in the [Use FHIR converter APIs](use-convert-web-apis) document and the sample InputData [here](../../data/SampleData).
 
-#### <u>InnerError code: InvalidInputDataContent</u>
+#### __InnerError code: InvalidInputDataContent__
 
-**Root Cause:** The content of the InputData string passed by the user is invalid.
+  **Root Cause:** The content of the InputData string passed by the user is invalid.
 
-**Troubleshooting:** Examples of known causes for this error for an Hl7v2 to FHIR request are missing or duplicate Hl7v2 separators, an invalid Hl7v2 message, or an invalid Hl7v2 escape character. See the logs for specific details on why the InputData value for the failed request is invalid. You can find examples of valid InputData [here](../../data/SampleData).
+  **Troubleshooting:** Examples of known causes for this error for an Hl7v2 to FHIR request are missing or duplicate Hl7v2 separators, an invalid Hl7v2 message, or an invalid Hl7v2 escape character. See the logs for specific details on why the InputData value for the failed request is invalid. You can find examples of valid InputData [here](../../data/SampleData).
 
 ### InvalidRequestBody
 
 The request body does not match the required format. See the [Use FHIR converter APIs](use-convert-web-apis) document for examples of valid request bodies.
 
-#### <u>InnerError: InvalidInputDataRequestValue</u>
+#### __InnerError: InvalidInputDataRequestValue__
 
-**Root Cause:** The InputData field is required but is missing or empty.
+  **Root Cause:** The InputData field is required but is missing or empty.
 
-**Troubleshooting:** Examine the request body to ensure that the InputData field is present and is not null or empty.
+  **Troubleshooting:** Examine the request body to ensure that the InputData field is present and is not null or empty.
 
 #### <u>InnerError: InvalidInputDataFormat</u>
 
