@@ -133,6 +133,30 @@ This [PowerShell deployment script](../deploy/Deploy-FhirConverterService.ps1) s
 
 Refer to [Configurable Settings](#configurable-settings) for more information on the required parameters to be provided and the default values used for optional parameters.
 
+### Deploy a Container App to an existing Container Apps Environment
+
+To deploy a Container App to an existing Container Apps environment, use the [Deploy-FhirConvertService.bicep](../deploy/Deploy-FhirConverterService.bicep) template using the following command:
+
+```
+az deployment group create --resource-group <Resource Group containing existing Container Apps Environment> --template-file Deploy-FhirConverterService.bicep --parameters location=<Location of Container App Environment> appName=<Container App name> envName=<Name of existing Container Apps Environment> imageTag=<Image tag from MCR> 
+```
+
+In addition to the parameters listed for the [FhirConverter-SingleAzureDeploy](../deploy/FhirConverter-SingleAzureDeploy.bicep) in [Parameters](#parameters), the Deploy-FhirConvertService bicep template takes the following parameters:
+
+| Parameter | Type | Required | Description | Default Value |
+| --- | --- | --- | --- | --- |
+| containerAppEnvName | string | Yes | The name of an existing Container Apps Environment to deploy the Container App to. | N/A |
+| containerAppName | string | Yes | The name of the Container App to provision. | N/A |
+| applicationInsightsUserAssignedIdentityName | string | The name of the User-Assigned Managed Identity to be used by the Container App to access Application Insights | If using Application Insights to collect logs and metrics, then yes. Otherwise, no. | empty string |
+| applicationInsightsConnectionStringSecretName | string | The resource **name** of the [secret](https://learn.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal) in the Key Vault containing the [Application Insights connection string](https://learn.microsoft.com/en-us/azure/azure-monitor/app/sdk-connection-string?tabs=dotnet5#find-your-connection-string). | If using Application Insights to collect logs and metrics, then yes. Otherwise, no. | empty string |
+
+Note a few small differences in the parameters passed to the Deploy-FhirConverterService template as compared to the FhirConverter-SingleAzureDeploy bicep template:
+* 'serviceName' is not accepted as a parameter.
+* 'resourceGroupName' is not accepted as a parameter (this is determined by the scope of the deployment specified in the --resource-group parameter of the az deployment command).
+* 'templateStoreIntegrationEnabled' is not accepted as a parameter; to enable template store integration, provide the name of an existing Storage Account ('templateStorageAccountName') and Storage Blob Container ('templateStorageAccountContainerName') to store the custom templates.
+* If using Application Insights, the name of an existing Key Vault ('keyVaultName') storing the Application Insights connection string as a Key Vault Secret and User-Assigned Managed Identity for accessing the secret ('keyVaultUserAssignedIdentityName') must be provided.
+* 'location' of the Container App must be the same as that of the Container App Environment for the deployment to succeed.
+
 ### Redeployment scenarios
 
 The following scenarios will require a redeployment of your service using any one of the above options:

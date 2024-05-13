@@ -40,10 +40,16 @@ This template deploys the following:
 param location string
 
 @description('The name of the container app running the FHIR-Converter service.')
-param appName string
+param containerAppName string
 
 @description('The name of the container apps environment where the app will run.')
-param envName string
+param containerAppEnvName string
+
+@description('Tag of the image to deploy. To see available image versions, visit the [FHIR Converter MCR page](https://mcr.microsoft.com/en-us/product/healthcareapis/fhir-converter/tags)')
+param containerAppImageTag string
+
+@description('Timestamp to append to container name. Defaults to time of deployment.')
+param timestamp string = utcNow('yyyyMMddHHmmss')
 
 @description('Name of storage account containing custom templates. Leave blank if using default templates.')
 param templateStorageAccountName string = ''
@@ -55,7 +61,7 @@ param templateStorageAccountContainerName string = ''
 param keyVaultName string = ''
 
 @description('Name of the user-assigned managed identity to be used by the container app to access key vault secrets.')
-param keyVaultUAMIName string = ''
+param keyVaultUserAssignedIdentityName string = ''
 
 @description('Minimum possible number of replicas per revision as the container app scales.')
 param minReplicas int = 0
@@ -78,27 +84,21 @@ param securityAuthenticationAudiences array = []
 @description('Issuing authority of the JWT token.')
 param securityAuthenticationAuthority string = ''
 
-@description('Tag of the image to deploy. To see available image versions, visit the [FHIR Converter MCR page](https://mcr.microsoft.com/en-us/product/healthcareapis/fhir-converter/tags)')
-param imageTag string
-
-@description('Timestamp to append to container name. Defaults to time of deployment.')
-param timestamp string = utcNow('yyyyMMddHHmmss')
-
-@description('The ID of the user-assigned managed identity to be used by the container app to access application insights.')
-param applicationInsightsUAMIName string = ''
+@description('The name of the user-assigned managed identity to be used by the container app to access application insights.')
+param applicationInsightsUserAssignedIdentityName string = ''
 
 @description('The name of the secret in the key vault containing the application insights connection string.')
 param applicationInsightsConnectionStringSecretName string = ''
 
 // Get the container apps environment
 resource containerAppsEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' existing = {
-  name: envName
+  name: containerAppEnvName
 }
 
-var configureApplicationInsights = !empty(applicationInsightsUAMIName)
+var configureApplicationInsights = !empty(applicationInsightsUserAssignedIdentityName)
 
 resource applicationInsightsUAMI 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = if (configureApplicationInsights) {
-  name: applicationInsightsUAMIName
+  name: applicationInsightsUserAssignedIdentityName
 }
 
 // Security configuration
@@ -160,7 +160,7 @@ var imageName = 'healthcareapis/fhir-converter'
 
 // Configure identities
 var applicationInsightsUAMIResourceId = configureApplicationInsights ? applicationInsightsUAMI.id : ''
-var keyVaultUAMIResourceId = resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', keyVaultUAMIName)
+var keyVaultUAMIResourceId = resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', keyVaultUserAssignedIdentityName)
 var userAssignedIdentities = configureApplicationInsights ? {
   '${applicationInsightsUAMIResourceId}' : {}
   '${keyVaultUAMIResourceId}' : {}
@@ -170,7 +170,7 @@ var akvEnvironmentSuffix = az.environment().suffixes.keyvaultDns
 var applicationInsightsConnStringAKVSecretUrl = 'https://${keyVaultName}${akvEnvironmentSuffix}/secrets/${applicationInsightsConnectionStringSecretName}'
 
 resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
-  name: appName
+  name: containerAppName
   location: location
   identity: (configureApplicationInsights) ? {
     type: 'SystemAssigned, UserAssigned'
@@ -196,7 +196,7 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
     template: {
       containers: [
         {
-          image: 'mcr.microsoft.com/${imageName}:${imageTag}'
+          image: 'mcr.microsoft.com/${imageName}:${containerAppImageTag}'
           name: 'fhir-converter-${timestamp}'
           env: envConfiguration
           resources: {
@@ -212,10 +212,10 @@ resource containerApp 'Microsoft.App/containerApps@2023-05-01' = {
     }
   }
   tags: {
-    fhirConverterEnvName: envName
-    fhirConverterAppName: appName
+    fhirConverterEnvName: containerAppEnvName
+    fhirConverterAppName: containerAppName
     fhirConverterImageName: imageName
-    fhirConverterImageVersion: imageTag
+    fhirConverterImageVersion: containerAppImageTag
   }
 }
 
@@ -236,7 +236,7 @@ resource templateStorageAccountContainer 'Microsoft.Storage/storageAccounts/blob
   parent: templateBlobService
 }
 
-var roleAssignmentName = guid(templateStorageAccountContainer.id, appName, storageBlobDataReaderRoleDefinitionId)
+var roleAssignmentName = guid(templateStorageAccountContainer.id, containerAppName, storageBlobDataReaderRoleDefinitionId)
 var storageBlobDataReaderRoleDefinitionId = resourceId('Microsoft.Authorization/roleDefinitions', '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = if (integrateTemplateStore) {
   name: guid(roleAssignmentName)

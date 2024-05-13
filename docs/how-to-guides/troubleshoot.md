@@ -62,7 +62,7 @@ This captures errors related to improperly formed API requests or invalid templa
 
 | Top-level error code | InnerError code | Root Cause | Troubleshooting/Resolution |
 | --- | --- | --- | --- |
-| ApiVersionUnspecified | | The request URL is missing the `api-version` query parameter or has an empty value provided. | Provide the `api-version` query parameter in the request URL. Refer [API versions](use-convert-web-apis.md#api-versions) for more information. |
+| ApiVersionUnspecified | N/A | The request URL is missing the `api-version` query parameter or has an empty value provided. | Provide the `api-version` query parameter in the request URL. Refer [API versions](use-convert-web-apis.md#api-versions) for more information. |
 | IncompatibleDataError | JsonParsingError | For convertToFhir requests, the output produced by the template cannot be parsed into valid JSON format. For convertToHl7v2 requests, the InputData value cannot be parsed into valid JSON format. | In the case of a convertToFhir request, ensure that the template is properly formatted to generate a valid JSON object. Refer to the provided [sample templates](../../data/Templates) as valid examples or see more information on template authoring [here](customize-templates.md). In the case of a convertToHl7v2 request, ensure that the InputData string is of a format that can be correctly parsed into a JSON object. |
 | IncompatibleDataError | JsonMergingError |  The conversion produced an output payload that can be parsed to a JSON object, but this JSON object does not have the expected structure or contains invalid data. | Ensure that the template structures the data to align with the expected output format and does not contain any invalid data. Refer to the provided [sample templates](../../data/Templates) and [sample InputData](../../data/SampleData) for valid examples or see more information on template authoring [here](customize-templates.md). |
 | InvalidApiVersion | | The `api-version` query parameter value specified is not supported. | Provide the `api-version` query parameter value in the request URL with any supported api-version listed in the response header `api-supported-versions`. Refer [API versions](use-convert-web-apis.md#api-versions) for more information. |
@@ -87,7 +87,7 @@ This captures errors if the client making the request is not authenticated with 
 Ensure the steps outlined in [Azure Active Directory Authentication](enable-authentication.md) guide were followed.
 
 | Root Cause | Troubleshooting/Resolution |
-| --- | --- | --- |
+| --- | --- |
 | Missing/invalid `Authorization` request header provided in the request. | Provide the  `Authorization` request header containing valid bearer token. Refer [Access token](enable-authentication.md#get-access-token) for more information. |
 | Client ID used to get credentials was not granted API permissions required by the service. | Add the required API permissions in the client application and then request the bearer token. Refer [Create a Client Application](enable-authentication.md#create-a-service-client-application) for more information. |
 | The token used was intended for a different audience. This happens if the scope used when getting the access token is incorrect. | Ensure the scope value provided when getting the access token is in the list of audiences configured with the service. Refer [Access token](enable-authentication.md#get-access-token) for more information.|
