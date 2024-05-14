@@ -52,6 +52,7 @@ The top-level error information in the error log aligns with the top-level error
 
 See the [Monitoring](monitoring.md) document for more information on accessing these logs and sample queries that may be helpful for debugging.
 
+<<<<<<< HEAD
 ## Error response codes and troubleshooting
 
 The following tables describe the potential root cause and troubleshooting guidance for errors that may result in a given HTTP status code.
