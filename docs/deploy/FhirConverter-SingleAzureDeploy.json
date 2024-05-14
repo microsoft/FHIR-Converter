@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.54.24096",
-      "templateHash": "12546413749549776811"
+      "templateHash": "9877835084032514114"
     }
   },
   "parameters": {
@@ -650,13 +650,13 @@
           "location": {
             "value": "[parameters('location')]"
           },
-          "containerAppImageTag": {
+          "imageTag": {
             "value": "[parameters('containerAppImageTag')]"
           },
-          "containerAppName": {
+          "appName": {
             "value": "[parameters('containerAppName')]"
           },
-          "containerAppEnvName": {
+          "envName": {
             "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('convertInfrastructureDeploy_{0}', parameters('timestamp'))), '2022-09-01').outputs.containerAppEnvironmentName.value]"
           },
           "minReplicas": {
@@ -683,8 +683,8 @@
           "templateStorageAccountName": "[if(parameters('templateStoreIntegrationEnabled'), createObject('value', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('dependentResourceDeploy_{0}', parameters('timestamp'))), '2022-09-01').outputs.templateStorageAccountName.value), createObject('value', ''))]",
           "templateStorageAccountContainerName": "[if(parameters('templateStoreIntegrationEnabled'), createObject('value', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('dependentResourceDeploy_{0}', parameters('timestamp'))), '2022-09-01').outputs.templateStorageAccountContainerName.value), createObject('value', ''))]",
           "keyVaultName": "[if(variables('deployKeyVault'), createObject('value', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('dependentResourceDeploy_{0}', parameters('timestamp'))), '2022-09-01').outputs.keyVaultName.value), createObject('value', ''))]",
-          "keyVaultUserAssignedIdentityName": "[if(variables('deployKeyVault'), createObject('value', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('dependentResourceDeploy_{0}', parameters('timestamp'))), '2022-09-01').outputs.keyVaultUAMIName.value), createObject('value', ''))]",
-          "applicationInsightsUserAssignedIdentityName": "[if(parameters('applicationInsightsEnabled'), createObject('value', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('convertInfrastructureDeploy_{0}', parameters('timestamp'))), '2022-09-01').outputs.applicationInsightsUAMIName.value), createObject('value', ''))]",
+          "keyVaultUAMIName": "[if(variables('deployKeyVault'), createObject('value', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('dependentResourceDeploy_{0}', parameters('timestamp'))), '2022-09-01').outputs.keyVaultUAMIName.value), createObject('value', ''))]",
+          "applicationInsightsUAMIName": "[if(parameters('applicationInsightsEnabled'), createObject('value', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('convertInfrastructureDeploy_{0}', parameters('timestamp'))), '2022-09-01').outputs.applicationInsightsUAMIName.value), createObject('value', ''))]",
           "applicationInsightsConnectionStringSecretName": "[if(parameters('applicationInsightsEnabled'), createObject('value', reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('convertInfrastructureDeploy_{0}', parameters('timestamp'))), '2022-09-01').outputs.applicationInsightsConnStringSecretName.value), createObject('value', ''))]"
         },
         "template": {
@@ -694,7 +694,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.54.24096",
-              "templateHash": "7072297402308187622"
+              "templateHash": "12579018430935248750"
             }
           },
           "parameters": {
@@ -736,29 +736,16 @@
                 "description": "Location where the resources are deployed. Note that a Container App can only be provisioned in the same region as its parent Container Apps Environment. For list of Azure regions where Container Apps is available, see [Products available by region](https://azure.microsoft.com/en-us/explore/global-infrastructure/products-by-region/?products=container-apps)"
               }
             },
-            "containerAppName": {
+            "appName": {
               "type": "string",
               "metadata": {
                 "description": "The name of the container app running the FHIR-Converter service."
               }
             },
-            "containerAppEnvName": {
+            "envName": {
               "type": "string",
               "metadata": {
                 "description": "The name of the container apps environment where the app will run."
-              }
-            },
-            "containerAppImageTag": {
-              "type": "string",
-              "metadata": {
-                "description": "Tag of the image to deploy. To see available image versions, visit the [FHIR Converter MCR page](https://mcr.microsoft.com/en-us/product/healthcareapis/fhir-converter/tags)"
-              }
-            },
-            "timestamp": {
-              "type": "string",
-              "defaultValue": "[utcNow('yyyyMMddHHmmss')]",
-              "metadata": {
-                "description": "Timestamp to append to container name. Defaults to time of deployment."
               }
             },
             "templateStorageAccountName": {
@@ -782,7 +769,7 @@
                 "description": "Name of the key vault containing the application insights connection string secret."
               }
             },
-            "keyVaultUserAssignedIdentityName": {
+            "keyVaultUAMIName": {
               "type": "string",
               "defaultValue": "",
               "metadata": {
@@ -838,11 +825,24 @@
                 "description": "Issuing authority of the JWT token."
               }
             },
-            "applicationInsightsUserAssignedIdentityName": {
+            "imageTag": {
+              "type": "string",
+              "metadata": {
+                "description": "Tag of the image to deploy. To see available image versions, visit the [FHIR Converter MCR page](https://mcr.microsoft.com/en-us/product/healthcareapis/fhir-converter/tags)"
+              }
+            },
+            "timestamp": {
+              "type": "string",
+              "defaultValue": "[utcNow('yyyyMMddHHmmss')]",
+              "metadata": {
+                "description": "Timestamp to append to container name. Defaults to time of deployment."
+              }
+            },
+            "applicationInsightsUAMIName": {
               "type": "string",
               "defaultValue": "",
               "metadata": {
-                "description": "The name of the user-assigned managed identity to be used by the container app to access application insights."
+                "description": "The ID of the user-assigned managed identity to be used by the container app to access application insights."
               }
             },
             "applicationInsightsConnectionStringSecretName": {
@@ -864,7 +864,7 @@
                 }
               }
             ],
-            "configureApplicationInsights": "[not(empty(parameters('applicationInsightsUserAssignedIdentityName')))]",
+            "configureApplicationInsights": "[not(empty(parameters('applicationInsightsUAMIName')))]",
             "securityEnabledConfigName": "ConvertService__Security__Enabled",
             "securityAuthenticationAudiencesConfigNamePrefix": "ConvertService__Security__Authentication__Audiences__",
             "securityAuthenticationAuthorityConfigName": "ConvertService__Security__Authentication__Authority",
@@ -889,23 +889,23 @@
             "applicationInsightsConnectionStringConfigurationName": "ConvertService__Telemetry__AzureMonitor__ApplicationInsightsConnectionString",
             "applicationInsightsUAMIClientIdConfigurationName": "ConvertService__Telemetry__AzureMonitor__ManagedIdentityClientId",
             "imageName": "healthcareapis/fhir-converter",
-            "applicationInsightsUAMIResourceId": "[if(variables('configureApplicationInsights'), resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('applicationInsightsUserAssignedIdentityName')), '')]",
-            "keyVaultUAMIResourceId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('keyVaultUserAssignedIdentityName'))]",
+            "applicationInsightsUAMIResourceId": "[if(variables('configureApplicationInsights'), resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('applicationInsightsUAMIName')), '')]",
+            "keyVaultUAMIResourceId": "[resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('keyVaultUAMIName'))]",
             "userAssignedIdentities": "[if(variables('configureApplicationInsights'), createObject(format('{0}', variables('applicationInsightsUAMIResourceId')), createObject(), format('{0}', variables('keyVaultUAMIResourceId')), createObject()), createObject())]",
             "akvEnvironmentSuffix": "[environment().suffixes.keyvaultDns]",
             "applicationInsightsConnStringAKVSecretUrl": "[format('https://{0}{1}/secrets/{2}', parameters('keyVaultName'), variables('akvEnvironmentSuffix'), parameters('applicationInsightsConnectionStringSecretName'))]",
-            "roleAssignmentName": "[guid(resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', parameters('templateStorageAccountName'), 'default', parameters('templateStorageAccountContainerName')), parameters('containerAppName'), variables('storageBlobDataReaderRoleDefinitionId'))]",
+            "roleAssignmentName": "[guid(resourceId('Microsoft.Storage/storageAccounts/blobServices/containers', parameters('templateStorageAccountName'), 'default', parameters('templateStorageAccountContainerName')), parameters('appName'), variables('storageBlobDataReaderRoleDefinitionId'))]",
             "storageBlobDataReaderRoleDefinitionId": "[resourceId('Microsoft.Authorization/roleDefinitions', '2a2b9908-6ea1-4ae2-8e65-a410df84e7d1')]"
           },
           "resources": [
             {
               "type": "Microsoft.App/containerApps",
               "apiVersion": "2023-05-01",
-              "name": "[parameters('containerAppName')]",
+              "name": "[parameters('appName')]",
               "location": "[parameters('location')]",
               "identity": "[if(variables('configureApplicationInsights'), createObject('type', 'SystemAssigned, UserAssigned', 'userAssignedIdentities', variables('userAssignedIdentities')), createObject('type', 'SystemAssigned'))]",
               "properties": {
-                "managedEnvironmentId": "[resourceId('Microsoft.App/managedEnvironments', parameters('containerAppEnvName'))]",
+                "managedEnvironmentId": "[resourceId('Microsoft.App/managedEnvironments', parameters('envName'))]",
                 "configuration": {
                   "ingress": {
                     "targetPort": 8080,
@@ -916,9 +916,9 @@
                 "template": {
                   "containers": [
                     {
-                      "image": "[format('mcr.microsoft.com/{0}:{1}', variables('imageName'), parameters('containerAppImageTag'))]",
+                      "image": "[format('mcr.microsoft.com/{0}:{1}', variables('imageName'), parameters('imageTag'))]",
                       "name": "[format('fhir-converter-{0}', parameters('timestamp'))]",
-                      "env": "[concat(variables('securityConfiguration'), if(variables('configureApplicationInsights'), createArray(createObject('name', variables('applicationInsightsConnectionStringConfigurationName'), 'secretRef', parameters('applicationInsightsConnectionStringSecretName')), createObject('name', variables('applicationInsightsUAMIClientIdConfigurationName'), 'value', reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('applicationInsightsUserAssignedIdentityName')), '2023-01-31').clientId)), createArray()), variables('blobTemplateHostingConfiguration'))]",
+                      "env": "[concat(variables('securityConfiguration'), if(variables('configureApplicationInsights'), createArray(createObject('name', variables('applicationInsightsConnectionStringConfigurationName'), 'secretRef', parameters('applicationInsightsConnectionStringSecretName')), createObject('name', variables('applicationInsightsUAMIClientIdConfigurationName'), 'value', reference(resourceId('Microsoft.ManagedIdentity/userAssignedIdentities', parameters('applicationInsightsUAMIName')), '2023-01-31').clientId)), createArray()), variables('blobTemplateHostingConfiguration'))]",
                       "resources": {
                         "cpu": "[json(parameters('cpuLimit'))]",
                         "memory": "[parameters('memoryLimit')]"
@@ -932,10 +932,10 @@
                 }
               },
               "tags": {
-                "fhirConverterEnvName": "[parameters('containerAppEnvName')]",
-                "fhirConverterAppName": "[parameters('containerAppName')]",
+                "fhirConverterEnvName": "[parameters('envName')]",
+                "fhirConverterAppName": "[parameters('appName')]",
                 "fhirConverterImageName": "[variables('imageName')]",
-                "fhirConverterImageVersion": "[parameters('containerAppImageTag')]"
+                "fhirConverterImageVersion": "[parameters('imageTag')]"
               }
             },
             {
@@ -945,23 +945,23 @@
               "scope": "[format('Microsoft.Storage/storageAccounts/{0}/blobServices/{1}/containers/{2}', parameters('templateStorageAccountName'), 'default', parameters('templateStorageAccountContainerName'))]",
               "name": "[guid(variables('roleAssignmentName'))]",
               "properties": {
-                "principalId": "[reference(resourceId('Microsoft.App/containerApps', parameters('containerAppName')), '2023-05-01', 'full').identity.principalId]",
+                "principalId": "[reference(resourceId('Microsoft.App/containerApps', parameters('appName')), '2023-05-01', 'full').identity.principalId]",
                 "principalType": "ServicePrincipal",
                 "roleDefinitionId": "[variables('storageBlobDataReaderRoleDefinitionId')]"
               },
               "dependsOn": [
-                "[resourceId('Microsoft.App/containerApps', parameters('containerAppName'))]"
+                "[resourceId('Microsoft.App/containerApps', parameters('appName'))]"
               ]
             }
           ],
           "outputs": {
             "containerAppFQDN": {
               "type": "string",
-              "value": "[reference(resourceId('Microsoft.App/containerApps', parameters('containerAppName')), '2023-05-01').configuration.ingress.fqdn]"
+              "value": "[reference(resourceId('Microsoft.App/containerApps', parameters('appName')), '2023-05-01').configuration.ingress.fqdn]"
             },
             "containerAppLatestRevisionName": {
               "type": "string",
-              "value": "[reference(resourceId('Microsoft.App/containerApps', parameters('containerAppName')), '2023-05-01').latestRevisionName]"
+              "value": "[reference(resourceId('Microsoft.App/containerApps', parameters('appName')), '2023-05-01').latestRevisionName]"
             }
           }
         }
