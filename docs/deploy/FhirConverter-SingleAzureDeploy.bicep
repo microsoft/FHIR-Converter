@@ -145,9 +145,9 @@ module fhirConverterDeploy 'Deploy-FhirConverterService.bicep' = {
   scope: resourceGroup
   params: {
     location: location
-    imageTag: containerAppImageTag
-    appName: containerAppName
-    envName: convertInfrastructureDeploy.outputs.containerAppEnvironmentName
+    containerAppImageTag: containerAppImageTag
+    containerAppName: containerAppName
+    containerAppEnvName: convertInfrastructureDeploy.outputs.containerAppEnvironmentName
     minReplicas: minReplicas
     maxReplicas: maxReplicas
     cpuLimit: cpuLimit
@@ -158,8 +158,8 @@ module fhirConverterDeploy 'Deploy-FhirConverterService.bicep' = {
     templateStorageAccountName: templateStoreIntegrationEnabled ? dependentResourceDeploy.outputs.templateStorageAccountName : ''
     templateStorageAccountContainerName: templateStoreIntegrationEnabled ? dependentResourceDeploy.outputs.templateStorageAccountContainerName : ''
     keyVaultName: deployKeyVault ? dependentResourceDeploy.outputs.keyVaultName : ''
-    keyVaultUAMIName: deployKeyVault ? dependentResourceDeploy.outputs.keyVaultUAMIName : ''
-    applicationInsightsUAMIName: applicationInsightsEnabled ? convertInfrastructureDeploy.outputs.applicationInsightsUAMIName: ''
+    keyVaultUserAssignedIdentityName: deployKeyVault ? dependentResourceDeploy.outputs.keyVaultUAMIName : ''
+    applicationInsightsUserAssignedIdentityName: applicationInsightsEnabled ? convertInfrastructureDeploy.outputs.applicationInsightsUAMIName: ''
     applicationInsightsConnectionStringSecretName: applicationInsightsEnabled ? convertInfrastructureDeploy.outputs.applicationInsightsConnStringSecretName : ''
   }
   dependsOn: [
