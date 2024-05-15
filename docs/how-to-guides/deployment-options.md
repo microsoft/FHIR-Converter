@@ -120,13 +120,13 @@ To see a description of a given parameter after being prompted to provide a valu
 Run the following command to run the PowerShell deployment script:
 
 ```PowerShell
-./Deploy-FhirConverterService.ps1
+./FhirConverter-SingleAzureDeploy.ps1
 ```
 
 See the following command for sample syntax to use when customizing parameter values in your deployment:
 
 ```PowerShell
-./Deploy-FhirConverterService.ps1 -containerAppName "<Custom_Container_App_name>"
+./FhirConverter-SingleAzureDeploy.ps1 -containerAppName "<Custom_Container_App_name>"
 ```
 
 This [PowerShell deployment script](../deploy/Deploy-FhirConverterService.ps1) sets up all necessary Azure resources for running the FHIR converter service by deploying Bicep templates via Azure CLI commands.
