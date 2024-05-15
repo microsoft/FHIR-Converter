@@ -15,7 +15,7 @@ az deployment sub create --location <Location> --name <A custom name for your de
 
 Option 3 (PowerShell):
 ```PowerShell
-./Deploy-FhirConverterService.ps1 -securityEnabled $true -securityAuthenticationAudiences @('<Audience1>','<Audience2>','<etc...>') -securityAuthenticationAuthority "<Authority>"
+./FhirConverter-SingleAzureDeploy.ps1 -securityEnabled $true -securityAuthenticationAudiences @('<Audience1>','<Audience2>','<etc...>') -securityAuthenticationAuthority "<Authority>"
 ```
 
 ## Template store integration
@@ -36,7 +36,7 @@ az deployment sub create --location <Location> --name <A custom name for your de
 
 Option 3 (PowerShell):
 ```PowerShell
-./Deploy-FhirConverterService.ps1 -templateStoreIntegrationEnabled $true -templateStorageAccountName "<Storage_Account_name>" -templateStorageAccountContainerName "<Storage_Account_Container_name>"
+./FhirConverter-SingleAzureDeploy.ps1 -templateStoreIntegrationEnabled $true -templateStorageAccountName "<Storage_Account_name>" -templateStorageAccountContainerName "<Storage_Account_Container_name>"
 ```
 
 ## Monitoring
@@ -57,12 +57,11 @@ Application Insights is enabled by default when deploying the FHIR converter usi
 Option 2 (bicep):
 ```
 az deployment sub create --location <Location> --name <A custom name for your deployment> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters applicationInsightsEnabled=false
--Container_name>"
 ```
 
 Option 3 (PowerShell):
 ```PowerShell
-./Deploy-FhirConverterService.ps1 -applicationInsightsEnabled $false
+./FhirConverter-SingleAzureDeploy.ps1 -applicationInsightsEnabled $false
 ```
 
 ## Additional configurations
@@ -86,7 +85,7 @@ az deployment sub create --location <Location> --name <A custom name for your de
 
 Option 3 (PowerShell):
 ```PowerShell
-./Deploy-FhirConverterService.ps1 -containerAppName "<Custom_Container_App_name>" -minReplicas "<min_replicas>" -maxReplicas "<max_replicas>" -cpuLimit "<cpu_limit>" -memoryLimit "<memory_limit>"
+./FhirConverter-SingleAzureDeploy.ps1 -containerAppName "<Custom_Container_App_name>" -minReplicas "<min_replicas>" -maxReplicas "<max_replicas>" -cpuLimit "<cpu_limit>" -memoryLimit "<memory_limit>"
 ```
 
 ## Summary
