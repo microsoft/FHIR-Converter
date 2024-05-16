@@ -70,6 +70,17 @@ Telemetry can be accessed from [Log Analytics](https://learn.microsoft.com/azure
     | where OperationId == "<enter-operation-id>"
     | where Properties contains "Metric" and Properties contains "Duration"
     | project OperationId, Metric = tostring(Properties.Metric), Latency = tostring(Properties.Duration)
+
+    // get the latency of one of the convert operation steps (latency_metric_name options are "InputDeserializationDuration", "TemplateRetrievalDuration", "TemplateRenderDuration", and "PostProcessDuration") for multiple requests
+    AppTraces
+    | where TimeGenerated > ago(3hours)
+    | where Properties contains <latency_metric_name>
+    | project TimeGenerated, Metric = tostring(Properties.Metric), Latency = tostring(Properties.Duration), OperationId
+
+    // in the case of multiple Container Apps deployed to the same Container Apps Environment, get traces associated with one specific Container App
+    AppTraces
+    | where TimeGenerated > ago(3hours)
+    | where cloud_RoleInstance contains <Container App name> // may also replace with a specific Revision name, found in the "Revisions and Replicas" blade of the Container App
     ```
 
   * Sample KQL queries for metrics:
