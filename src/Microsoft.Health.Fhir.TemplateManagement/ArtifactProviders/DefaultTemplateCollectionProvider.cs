@@ -55,8 +55,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
             var ccdaDefaultTemplatesTask = Task.Run(() => templates.Add(ExtractTemplatesFromResource(DefaultTemplateInfo.CcdaDefaultTemplatesResource, DataType.Ccda.ToString())), cancellationToken);
             var jsonDefaultTemplatesTask = Task.Run(() => templates.Add(ExtractTemplatesFromResource(DefaultTemplateInfo.JsonDefaultTemplatesResource, DataType.Json.ToString())), cancellationToken);
             var stu3ToR4DefaultTemplatesTask = Task.Run(() => templates.Add(ExtractTemplatesFromResource(DefaultTemplateInfo.Stu3ToR4DefaultTemplatesResource, DataType.Fhir.ToString())), cancellationToken);
+            var fhirToHl7v2DefaultTemplatesTask = Task.Run(() => templates.Add(ExtractTemplatesFromResource(DefaultTemplateInfo.FhirToHl7v2DefaultTemplatesResource, "FhirToHl7v2")), cancellationToken);
 
-            await Task.WhenAll(hl7v2DefaultTemplatesTask, ccdaDefaultTemplatesTask, jsonDefaultTemplatesTask, stu3ToR4DefaultTemplatesTask);
+            await Task.WhenAll(hl7v2DefaultTemplatesTask, ccdaDefaultTemplatesTask, jsonDefaultTemplatesTask, stu3ToR4DefaultTemplatesTask, fhirToHl7v2DefaultTemplatesTask);
 
             var templatesDict = templates
                 .SelectMany(dict => dict)

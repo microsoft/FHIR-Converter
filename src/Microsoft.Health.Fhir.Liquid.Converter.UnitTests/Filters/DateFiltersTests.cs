@@ -151,8 +151,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { @"2011-01-03T14:34:28-08:00", @"20110103143428-0800" };
             yield return new object[] { @"1970-12-31T11:59:59+06:00", @"19701231115959+0600" };
             yield return new object[] { @"1970-12-31T11:59:59Z", @"19701231115959+0000" };
-            yield return new object[] { @"1970-12-31T11:59:59.000Z", @"19701231115959000+0000" };
-            yield return new object[] { @"1970-12-31T11:59:59.1234Z", @"197012311159591234+0000" };
+            yield return new object[] { @"1970-12-31T11:59:59.000Z", @"19701231115959.000+0000" };
+            yield return new object[] { @"1970-12-31T11:59:59.1234Z", @"19701231115959.1234+0000" };
         }
 
         public static IEnumerable<object[]> GetInvalidFhirToHl7v2TimeZoneHandling()

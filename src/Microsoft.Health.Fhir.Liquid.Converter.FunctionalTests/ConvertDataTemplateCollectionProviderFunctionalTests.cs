@@ -53,6 +53,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             ConvertJsonMessageAndValidateExpectedResponse(_fixture.TemplateProvider, rootTemplate, inputFile, expectedFile);
         }
 
+        [Theory]
+        [MemberData(nameof(GetDataForFhirToHl7v2))]
+        public void GivenFhirDataAndDefaultTemplateProvider_WhenConvertCalled_ExpectedHl7v2MessageShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
+        {
+            ConvertFhirBundleToHl7v2AndValidateExpectedResponse(_fixture.TemplateProvider, rootTemplate, inputFile, expectedFile);
+        }
+
         [Fact]
         public void GivenAnInvalidTemplate_WhenConvertCalled_ExceptionsShouldBeThrown()
         {

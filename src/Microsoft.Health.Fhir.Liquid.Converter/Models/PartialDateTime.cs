@@ -158,7 +158,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
             }
             else
             {
-                dateTimeFormat = $"yyyyMMddHHmmss{MillisecondString}K";
+                dateTimeFormat = $"yyyyMMddHHmmss.{MillisecondString}K";
             }
 
             return resultDateTime.ToString(dateTimeFormat).Replace(":", string.Empty);

@@ -26,6 +26,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public static string Stu3ToR4DefaultTemplatesResource => "Stu3ToR4DefaultTemplates.tar.gz";
 
+        public static string FhirToHl7v2DefaultTemplatesResource => "FhirToHl7v2DefaultTemplates.tar.gz";
+
         /// <summary>
         /// The default templates map, key is image reference, value is default templates information.
         /// </summary>
@@ -36,6 +38,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
             { "microsofthealth/ccdatemplates:default", new DefaultTemplateInfo(DataType.Ccda, "microsofthealth/ccdatemplates:default", CcdaDefaultTemplatesResource) },
             { "microsofthealth/jsontemplates:default", new DefaultTemplateInfo(DataType.Json, "microsofthealth/jsontemplates:default", JsonDefaultTemplatesResource) },
             { "microsofthealth/stu3tor4templates:default", new DefaultTemplateInfo(DataType.Fhir, "microsofthealth/stu3tor4templates:default", Stu3ToR4DefaultTemplatesResource) },
+            { "microsofthealth/fhirtohl7v2templates:default", new DefaultTemplateInfo(DataType.Fhir, "microsofthealth/fhirtohl7v2templates:default", FhirToHl7v2DefaultTemplatesResource) },
         };
 
         public DataType DataType { get; set; }

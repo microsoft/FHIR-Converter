@@ -26,7 +26,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         protected override string DataKey { get; set; } = "hl7v2Data";
 
-        protected override DataType DataType { get; set; } = DataType.Hl7v2;
+        protected override DefaultRootTemplateParentPath DefaultRootTemplateParentPath { get; set; } = DefaultRootTemplateParentPath.Hl7v2;
 
         protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {

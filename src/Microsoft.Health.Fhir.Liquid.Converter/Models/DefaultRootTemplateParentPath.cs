@@ -3,12 +3,14 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using Microsoft.Health.Fhir.Liquid.Converter.Models;
-
-namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
+namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 {
-    public interface IConvertProcessorFactory
+    public enum DefaultRootTemplateParentPath
     {
-        public IFhirConverter GetProcessor(DataType inputDataType, ConvertDataOutputFormat outputFormat, ProcessorSettings processorSettings = null);
+        Hl7v2,
+        Ccda,
+        Json,
+        Fhir,
+        FhirToHl7v2,
     }
 }

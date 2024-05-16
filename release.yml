@@ -139,6 +139,14 @@ stages:
         tarCompression: 'gz'
         archiveFile: '$(Build.SourcesDirectory)/data/Templates/Stu3ToR4DefaultTemplates.tar.gz'
 
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/FhirToHl7v2'
+        includeRootFolder: false
+        archiveType: 'tar'
+        tarCompression: 'gz'
+        archiveFile: '$(Build.SourcesDirectory)/data/Templates/FhirToHl7v2.tar.gz'
+
     - task: CopyFiles@2
       displayName: 'copy DefaultTemplates to artifacts'
       inputs:

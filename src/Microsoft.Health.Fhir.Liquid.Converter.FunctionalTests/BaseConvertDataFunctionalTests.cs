@@ -3,7 +3,6 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -229,6 +228,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
+        public static IEnumerable<object[]> GetDataForFhirToHl7v2()
+        {
+            var data = new List<string[]>
+            {
+                new[] { @"ObservationBundle", @"ObservationBundle.json", @"ObservationBundle-expected.hl7" },
+            };
+            return data.Select(item => new[]
+            {
+                item[0],
+                Path.Join(Constants.SampleDataDirectory, "Fhir", item[1]),
+                Path.Join(Constants.ExpectedDataFolder, "FhirToHl7v2", item[0], item[2]),
+            });
+        }
+
         public static IEnumerable<object[]> GetDataForStu3ToR4()
         {
             var data = new List<string>
@@ -349,6 +362,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             var actualObject = JObject.Parse(actualContent);
 
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
+        }
+
+        protected void ConvertFhirBundleToHl7v2AndValidateExpectedResponse(ITemplateProvider templateProvider, string rootTemplate, string inputFile, string expectedFile)
+        {
+            var jsonProcessor = new FhirToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<FhirToHl7v2Processor>());
+            var inputContent = File.ReadAllText(inputFile);
+            var expectedContent = File.ReadAllText(expectedFile);
+            var actualContent = jsonProcessor.Convert(inputContent, rootTemplate, templateProvider);
+
+            var fieldValues = actualContent.Split("|");
+
+            // remove MSH-7 timestamp
+            fieldValues[6] = string.Empty;
+            var validatedContent = string.Join("|", fieldValues);
+
+            Assert.Equal(expectedContent, validatedContent);
         }
     }
 }
