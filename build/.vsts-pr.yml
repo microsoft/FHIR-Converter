@@ -4,8 +4,6 @@
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
 trigger:
-  include:
-    - main
   paths:
     include:
     - '*'
