@@ -50,6 +50,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
         [MemberData(nameof(GetDataForJson))]
         public void GivenJsonDataAndDefaultTemplateProvider_WhenConvertCalled_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
         {
+            // Debug here
+
             ConvertJsonMessageAndValidateExpectedResponse(_fixture.TemplateProvider, rootTemplate, inputFile, expectedFile);
         }
 

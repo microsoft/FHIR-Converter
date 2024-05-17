@@ -22,7 +22,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
 
             try
             {
-                return JToken.Parse(json).ToObject();
+                var jObject = JToken.Parse(json);
+                var obj = jObject.ToObject();
+                return obj;
             }
             catch (Exception ex)
             {
