@@ -2,7 +2,7 @@
 
 ## Filters
 
-By default, Liquid provides a set of [standard filters](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers#standard-filters) to assist template creation.
+By default, **Liquid** provides a set of [standard filters](https://github.com/Shopify/liquid/wiki/Liquid-for-Designers#standard-filters) to assist template creation.
 Besides these filters, FHIR Converter also provides some other filters that are useful in conversion, which are listed below.
 If these filters do not meet your needs, you can also write your own filters.
 
