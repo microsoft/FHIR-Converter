@@ -54,15 +54,17 @@ In order for the service to be able to load the custom templates from the storag
 
 ### Set the template store configuration of your FHIR converter service
 
-1. If you have deployed the FHIR converter service to Azure, provide the configuration:
-    * Use the deployment option (**TODO** insert instructions)
+  * Use one of the provided deployment options outlined in [Deployment Options](deployment-options.md) to either deploy or redeploy your FHIR converter service, providing values for the following parameters:
+    * ```templateStoreIntegrationEnabled```: This must be set to true.
+    * ```templateStorageAccountName```: Can be left blank to use the default value or set to a custom name. If no Storage Account exists with the provided custom name, a new one will be provisioned.
+    * ```templateStorageAccountContainerName```: Can be left blank to use the default value or set to a custom name. If no Blob Container exists with the provided custom name, a new one will be provisioned.
 
-    * Alternatively, you can directly provide the configuration via environment variables in your Azure Container App running the FHIR converter service by editing the container:
-        1. **TemplateHosting__StorageAccountConfiguration__ContainerUrl** - the blob container URL hosting the custom templates.
+  * Alternatively, you can directly provide the configuration via environment variables in your Azure Container App running the FHIR converter service by editing the container:
+      1. **TemplateHosting__StorageAccountConfiguration__ContainerUrl** - the blob container URL hosting the custom templates.
 
-         Refer [Configure environment variables](https://learn.microsoft.com/en-us/azure/container-apps/environment-variables?tabs=portal) for more information.
+        Refer [Configure environment variables](https://learn.microsoft.com/en-us/azure/container-apps/environment-variables?tabs=portal) for more information.
 
-        ![Convert template store config](../images/convert-template-store-config.png)
+      ![Convert template store config](../images/convert-template-store-config.png)
 
 ### Verify template store health check
 
@@ -85,6 +87,16 @@ Sample response body
     ]
 }
 ```
+
+## Upload Custom Templates to the Storage Account
+
+Templates should be uploaded to the Blob Container as ```.liquid``` files. They can be stored in the root of the container, or organized in directories. The value passed in to the ```RootTemplateName``` field of the request body represents the path of the template file from the root of the Blob Container.
+
+For example, if the user intends to reference a custom template called "sampleCustomTemplate.liquid", which is located within the "customTemplates1" directory inside the "template" Storage Blob, as shown below, the ```RootTemplateName``` should have value "customTemplates1/sampleCustomTemplate".
+
+![Blob Container](../images/convert-blobcontainer.png)
+
+![Blob Container directory](../images/convert-blobcontainerdir.png)
 
 ## Summary
 
