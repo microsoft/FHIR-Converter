@@ -97,9 +97,9 @@ Templates should be uploaded to the blob container as ```.liquid``` files. They 
 
 For example, if the user intends to reference a custom template called ```sampleCustomTemplate.liquid```, which is located within the ```customTemplates1``` directory inside the ```template``` blob container, as shown below, the ```RootTemplateName``` should have value ```customTemplates1/sampleCustomTemplate```.
 
-![Blob Container](../images/convert-blobcontainer.png)
+![Blob Container](../images/convert-storagecontainer.png)
 
-![Blob Container directory](../images/convert-blobcontainerdir.png)
+![Blob Container directory](../images/convert-storagecontainerdir.png)
 
 ## Summary
 
