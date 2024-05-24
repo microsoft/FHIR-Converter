@@ -45,8 +45,8 @@ There are two options for configuring your FHIR converter to pull templates from
     | templateStorageAccountName | Name of the Storage Account from which to pull the custom templates. This can be set to a custom name, or it can be left blank to use an automatically calculated value. If no Storage Account exists with the provided name, a new one will be provisioned.|
     | templateStorageAccountContainerName | Name of the blob container from which to pull the custom templates. This can be set to a custom name, or it can be left blank to use the default value. If no blob container exists with the provided custom name, a new one will be provisioned.|
 
-  2. Alternatively, if you already have a deployed Storage Account and blob container that you you can directly provide the configuration via environment variables in your Azure Container App running the FHIR converter service by editing the container:
-      1. ```TemplateHosting__StorageAccountConfiguration__ContainerUrl```: the blob container URL hosting the custom templates.
+  1. Alternatively, if you already have a deployed Storage Account and blob container that you you can directly provide the configuration via environment variables in your Azure Container App running the FHIR converter service by editing the container:
+      * ```TemplateHosting__StorageAccountConfiguration__ContainerUrl```: the blob container URL hosting the custom templates.
 
         Refer [Configure environment variables](https://learn.microsoft.com/en-us/azure/container-apps/environment-variables?tabs=portal) for more information.
 
