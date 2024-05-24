@@ -99,7 +99,7 @@ For example, if the user intends to reference a custom template called ```sample
 
 ![Blob Container](../images/convert-storagecontainer.png)
 
-![Blob Container directory](../images/convert-storagecontainerdir.png)
+![Blob Container directory](../images/convert-storagecontainerdirectory.png)
 
 ## Summary
 
