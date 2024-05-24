@@ -22,9 +22,9 @@ The configurable template store settings are :
 
 | Element                    | Description |
 | -------------------------- | --- |
-| StorageAccountConfiguration:ContainerUrl | The URL of the storage account blob container containing the Liquid templates. |
+| StorageAccountConfiguration:ContainerUrl | The URL of the Storage Account blob container containing the Liquid templates. |
 
-## Configure storage account details
+## Configure Storage Account details
 
 ### Prerequisites
 
@@ -71,7 +71,7 @@ In order for the service to be able to load the custom templates from the Storag
 
 ### Verify template store health check
 
-To verify your FHIR converter service is set up correctly to pull the custom templates from the configured storage account, use the below health check endpoint:
+To verify your FHIR converter service is set up correctly to pull the custom templates from the configured Storage Account, use the below health check endpoint:
 
 **GET `https://<CONTAINER APP ENDPOINT URL>/health/check`**
 
@@ -84,7 +84,7 @@ Sample response body
         {
             "name": "TemplateStoreHealthCheck",
             "status": "Healthy",
-            "description": "Sucessfully connected to blob template store.",
+            "description": "Successfully connected to blob template store.",
             "data": {}
         }
     ]
