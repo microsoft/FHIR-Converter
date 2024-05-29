@@ -4,7 +4,6 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
-using System.IO;
 using EnsureThat;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Extensions;
@@ -16,22 +15,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
 {
     public class JsonDataParser : IDataParser
     {
-        private static Func<string, JsonReader> _defaultJsonReaderGenerator = (json) => new JsonTextReader(new StringReader(json))
+        private static readonly JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings()
         {
             DateParseHandling = DateParseHandling.None,
         };
 
         public JsonDataParser()
-        : this(_defaultJsonReaderGenerator)
+        : this(DefaultSerializerSettings)
         {
         }
 
-        public JsonDataParser(Func<string, JsonReader> jsonReaderGenerator)
+        public JsonDataParser(JsonSerializerSettings jsonSerializerSettings)
         {
-            this.JsonReaderGenerator = EnsureArg.IsNotNull(jsonReaderGenerator, nameof(jsonReaderGenerator));
+            JsonSerializerSettings = EnsureArg.IsNotNull(jsonSerializerSettings, nameof(jsonSerializerSettings));
         }
 
-        protected Func<string, JsonReader> JsonReaderGenerator { get; }
+        protected JsonSerializerSettings JsonSerializerSettings { get; private set; }
 
         public object Parse(string json)
         {
@@ -42,8 +41,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
 
             try
             {
-                using var reader = JsonReaderGenerator.Invoke(json);
-                return JToken.ReadFrom(reader).ToObject();
+                return JsonConvert.DeserializeObject<JObject>(json, JsonSerializerSettings).ToObject();
             }
             catch (Exception ex)
             {
