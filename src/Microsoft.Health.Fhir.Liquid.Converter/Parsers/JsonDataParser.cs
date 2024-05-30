@@ -41,7 +41,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
 
             try
             {
-                return JsonConvert.DeserializeObject<JObject>(json, JsonSerializerSettings).ToObject();
+                return JsonConvert.DeserializeObject<JToken>(json, JsonSerializerSettings).ToObject();
             }
             catch (Exception ex)
             {
