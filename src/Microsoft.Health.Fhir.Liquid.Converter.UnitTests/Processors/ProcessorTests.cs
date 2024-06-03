@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -13,6 +12,7 @@ using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
@@ -362,7 +362,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         {
             var processor = _jsonProcessor;
             var templateProvider = new TemplateProvider(TestConstants.JsonTemplateDirectory, DataType.Json);
-            var testData = JObject.Parse(_jsonTestData);
+            var testData = JsonConvert.DeserializeObject<JObject>(_jsonTestData, new JsonSerializerSettings() { DateParseHandling = DateParseHandling.None });
             var result = processor.Convert(testData, "ExamplePatient", templateProvider);
             Assert.True(JToken.DeepEquals(JObject.Parse(_jsonExpectData), JToken.Parse(result)));
         }
