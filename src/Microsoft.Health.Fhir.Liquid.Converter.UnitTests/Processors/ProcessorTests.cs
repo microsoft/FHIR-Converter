@@ -362,8 +362,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         {
             var processor = _jsonProcessor;
             var templateProvider = new TemplateProvider(TestConstants.JsonTemplateDirectory, DataType.Json);
-            var testData = JObject.ReadFrom(new JsonTextReader(new StringReader(_jsonTestData)) { DateParseHandling = DateParseHandling.None });
-            var result = processor.Convert(testData as JObject, "ExamplePatient", templateProvider);
+            var testData = JsonConvert.DeserializeObject<JObject>(_jsonTestData, new JsonSerializerSettings() { DateParseHandling = DateParseHandling.None });
+            var result = processor.Convert(testData, "ExamplePatient", templateProvider);
             Assert.True(JToken.DeepEquals(JObject.Parse(_jsonExpectData), JToken.Parse(result)));
         }
 
