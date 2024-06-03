@@ -145,7 +145,7 @@ stages:
         includeRootFolder: false
         archiveType: 'tar'
         tarCompression: 'gz'
-        archiveFile: '$(Build.SourcesDirectory)/data/Templates/FhirToHl7v2.tar.gz'
+        archiveFile: '$(Build.SourcesDirectory)/data/Templates/FhirToHl7v2DefaultTemplates.tar.gz'
 
     - task: CopyFiles@2
       displayName: 'copy DefaultTemplates to artifacts'
