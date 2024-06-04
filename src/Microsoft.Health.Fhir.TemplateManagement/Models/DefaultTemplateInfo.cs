@@ -38,7 +38,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
             { "microsofthealth/ccdatemplates:default", new DefaultTemplateInfo(DataType.Ccda, "microsofthealth/ccdatemplates:default", CcdaDefaultTemplatesResource) },
             { "microsofthealth/jsontemplates:default", new DefaultTemplateInfo(DataType.Json, "microsofthealth/jsontemplates:default", JsonDefaultTemplatesResource) },
             { "microsofthealth/stu3tor4templates:default", new DefaultTemplateInfo(DataType.Fhir, "microsofthealth/stu3tor4templates:default", Stu3ToR4DefaultTemplatesResource) },
-            { "microsofthealth/fhirtohl7v2templates:default", new DefaultTemplateInfo(DataType.Fhir, "microsofthealth/fhirtohl7v2templates:default", FhirToHl7v2DefaultTemplatesResource) },
         };
 
         public DataType DataType { get; set; }
