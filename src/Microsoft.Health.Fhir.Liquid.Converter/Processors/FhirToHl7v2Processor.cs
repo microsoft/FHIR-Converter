@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using DotLiquid;
+using EnsureThat;
 using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Extensions;
@@ -18,6 +19,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
 using Microsoft.Health.MeasurementUtility;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NJsonSchema;
 
@@ -25,13 +27,24 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public class FhirToHl7v2Processor : BaseProcessor
     {
-        private readonly IDataParser _parser = new JsonDataParser();
+        private static readonly JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings()
+        {
+            DateParseHandling = DateParseHandling.None,
+        };
+
+        private readonly IDataParser _parser;
 
         private string[] _segmentsWithFieldSeparator = new string[] { "MSH", "BHS", "FHS" };
 
         public FhirToHl7v2Processor(ProcessorSettings processorSettings, ILogger<FhirToHl7v2Processor> logger)
+            : this(processorSettings, new JsonDataParser(), logger)
+        {
+        }
+
+        public FhirToHl7v2Processor(ProcessorSettings processorSettings, IDataParser parser, ILogger<FhirToHl7v2Processor> logger)
             : base(processorSettings, logger)
         {
+            _parser = EnsureArg.IsNotNull(parser, nameof(parser));
         }
 
         protected override DefaultRootTemplateParentPath DefaultRootTemplateParentPath { get; set; } = DefaultRootTemplateParentPath.FhirToHl7v2;
@@ -47,7 +60,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
             var result = InternalConvertFromObject(jsonData, rootTemplate, templateProvider, traceInfo);
 
-            var hl7Message = GenerateHL7Message(JObject.Parse(result));
+            var hl7Message = GenerateHL7Message(ConvertToJObject(result));
 
             var hl7String = ConvertHl7MessageToString(hl7Message);
 
@@ -58,7 +71,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
             var jsonData = data.ToObject();
             var result = InternalConvertFromObject(jsonData, rootTemplate, templateProvider, traceInfo);
-            var hl7Message = GenerateHL7Message(JObject.Parse(result));
+            var hl7Message = GenerateHL7Message(ConvertToJObject(result));
 
             var hl7String = ConvertHl7MessageToString(hl7Message);
             return hl7String;
@@ -240,6 +253,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             {
                 jsonTraceInfo.ValidateSchemas = jsonContext.ValidateSchemas;
             }
+        }
+
+        private JObject ConvertToJObject(string input)
+        {
+            return JsonConvert.DeserializeObject<JObject>(input, DefaultSerializerSettings);
         }
     }
 }

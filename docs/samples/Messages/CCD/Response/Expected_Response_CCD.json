@@ -1,0 +1,188 @@
+{
+  "result": {
+    "resourceType": "Bundle",
+    "type": "batch",
+    "entry": [
+      {
+        "fullUrl": "urn:uuid:8a380dfe-677f-ca39-ea5a-be89a7d1fe11",
+        "resource": {
+          "resourceType": "Composition",
+          "id": "8a380dfe-677f-ca39-ea5a-be89a7d1fe11",
+          "identifier": {
+            "use": "official",
+            "value": "2.16.840.1.113883.3.109"
+          },
+          "status": "final",
+          "type": {
+            "coding": [
+              {
+                "code": "34133-9",
+                "display": "SUMMARIZATION OF EPISODE NOTE",
+                "system": "http://loinc.org"
+              }
+            ]
+          },
+          "date": "2017-05-28T15:02:00-04:00",
+          "title": "Continuity of Care Document (C-CDA)",
+          "confidentiality": "N",
+          "subject": {
+            "reference": "Patient/44b52cd8-5266-7209-ab40-15fb16fc9ba9"
+          }
+        },
+        "request": {
+          "method": "PUT",
+          "url": "Composition/8a380dfe-677f-ca39-ea5a-be89a7d1fe11"
+        }
+      },
+      {
+        "fullUrl": "urn:uuid:44b52cd8-5266-7209-ab40-15fb16fc9ba9",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "44b52cd8-5266-7209-ab40-15fb16fc9ba9",
+          "meta": {
+            "profile": [
+              "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient"
+            ]
+          },
+          "identifier": [
+            {
+              "system": "urn:oid:1.3.6.1.4.1.41179.2.4",
+              "value": "lisarnelson@direct.myphd.us"
+            },
+            {
+              "system": "urn:oid:2.16.840.1.113883.1.111.12345",
+              "value": "12345-0828",
+              "assigner": {
+                "display": "River Valley Health Services local patient Medical Record Number"
+              }
+            }
+          ],
+          "name": [
+            {
+              "use": "usual",
+              "family": "Nelson",
+              "given": [
+                "Lisa"
+              ]
+            }
+          ],
+          "birthDate": "1962-08-28",
+          "gender": "female",
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+              "extension": [
+                {
+                  "url": "ombCategory",
+                  "valueCoding": {
+                    "code": "2106-3",
+                    "display": "White"
+                  }
+                },
+                {
+                  "url": "text",
+                  "valueString": "White"
+                }
+              ]
+            },
+            {
+              "url": "http://hl7.org/fhir/us/core/StructureDefinition/us-core-ethnicity",
+              "extension": [
+                {
+                  "url": "ombCategory",
+                  "valueCoding": {
+                    "code": "2186-5",
+                    "display": "Not Hispanic or Latino"
+                  }
+                },
+                {
+                  "url": "text",
+                  "valueString": "Not Hispanic or Latino"
+                }
+              ]
+            }
+          ],
+          "address": [
+            {
+              "line": [
+                "1 Happy Valley Road"
+              ],
+              "city": "Westerly",
+              "state": "RI",
+              "postalCode": "02891"
+            }
+          ],
+          "telecom": [
+            {
+              "system": "phone",
+              "value": "+1-4013482345",
+              "use": "work"
+            },
+            {
+              "system": "phone",
+              "value": "+1-4016412345",
+              "use": "home"
+            },
+            {
+              "system": "email",
+              "value": "lisanelson@gmail.com"
+            },
+            {
+              "system": "email",
+              "value": "lisarnelson@direct.myphd.us"
+            }
+          ],
+          "communication": [
+            {
+              "language": {
+                "coding": [
+                  {
+                    "system": "urn:ietf:bcp:47",
+                    "code": "en",
+                    "display": "English"
+                  }
+                ]
+              },
+              "preferred": true
+            }
+          ]
+        },
+        "request": {
+          "method": "PUT",
+          "url": "Patient/44b52cd8-5266-7209-ab40-15fb16fc9ba9"
+        }
+      },
+      {
+        "fullUrl": "urn:uuid:9629b055-681d-b1ec-df70-a7e6678ba6f4",
+        "resource": {
+          "resourceType": "DocumentReference",
+          "id": "9629b055-681d-b1ec-df70-a7e6678ba6f4",
+          "type": {
+            "coding": [
+              {
+                "code": "34133-9",
+                "display": "SUMMARIZATION OF EPISODE NOTE",
+                "system": "http://loinc.org"
+              }
+            ]
+          },
+          "date": "2024-02-22T15:35:13.238Z",
+          "status": "current",
+          "content": [
+            {
+              "attachment": {
+                "contentType": "text/plain",
+                "data": "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",
+                "hash": "ODQ0NzVhZTBjOTNjODM5YTk3MjVlNDAzNDY2ZWM4Zjc1MmMxNjYzNg=="
+              }
+            }
+          ]
+        },
+        "request": {
+          "method": "PUT",
+          "url": "DocumentReference/9629b055-681d-b1ec-df70-a7e6678ba6f4"
+        }
+      }
+    ]
+  }
+}
