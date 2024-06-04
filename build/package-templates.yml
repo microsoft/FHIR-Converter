@@ -44,6 +44,16 @@ steps:
       tarCompression: 'gz'
       archiveFile: '$(Build.SourcesDirectory)/data/Templates/Stu3ToR4DefaultTemplates.tar.gz'
 
+  - task: ArchiveFiles@2
+    displayName: 'package FhirToHl7v2 Default Templates'
+    inputs:
+      rootFolderOrFile: '$(Build.SourcesDirectory)/data/Templates/FhirToHl7v2'
+      includeRootFolder: false
+      archiveType: 'tar'
+      tarCompression: 'gz'
+      archiveFile: '$(Build.SourcesDirectory)/data/Templates/FhirToHl7v2DefaultTemplates.tar.gz'
+
+
   - task: CopyFiles@2
     displayName: 'copy DefaultTemplates to artifacts'
     inputs:

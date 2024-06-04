@@ -58,6 +58,9 @@
     <EmbeddedResource Include="$(BinFolder)Stu3ToR4DefaultTemplates.tar.gz">
       <Link>Stu3ToR4DefaultTemplates.tar.gz</Link>
     </EmbeddedResource>
+    <EmbeddedResource Include="$(BinFolder)FhirToHl7v2DefaultTemplates.tar.gz">
+      <Link>FhirToHl7v2DefaultTemplates.tar.gz</Link>
+    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -83,6 +86,7 @@
     <Exec Command="tar -zcvf $(BinFolder)CcdaDefaultTemplates.tar.gz -C $(DataFolder)Templates/Ccda ." />
     <Exec Command="tar -zcvf $(BinFolder)JsonDefaultTemplates.tar.gz -C $(DataFolder)Templates/Json ." />
     <Exec Command="tar -zcvf $(BinFolder)Stu3ToR4DefaultTemplates.tar.gz -C $(DataFolder)Templates/Stu3ToR4 ." />
+    <Exec Command="tar -zcvf $(BinFolder)FhirToHl7v2DefaultTemplates.tar.gz -C $(DataFolder)Templates/FhirToHl7v2 ." />
   </Target>
 
   <Target Name="DownloadWinOrasFile" BeforeTargets="Build">

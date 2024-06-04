@@ -1,0 +1,42 @@
+{
+  "messageDefinition": [
+
+  {% assign patient_reference =  msg | to_json_string | get_object: "$.entry[?(@resource.resourceType == 'Patient')].resource" %}
+  {% assign observation_reference =  msg | to_json_string | get_object: "$.entry[?(@resource.resourceType == 'Observation')].resource" %}
+
+  {
+    "MSH": {
+      "2": "^~\\&",
+      "7": "{{ "" | now | format_as_hl7v2_date_time }}",
+      "9": "ORU^R01",
+      "10": "1",
+      "11": "T",
+      "12": "2.5",
+    }
+  },
+  {
+    "PID": {
+      "3": "{{ patient_reference | evaluate: "$.identifier[0].value" }}"
+    }
+  },
+  {
+    "OBR": {
+      "3": "{{ observation_reference | evaluate: "$.identifier[0].value" }}",
+    }
+  },
+  {
+    "OBX": {
+      "3": "{{ observation_reference | evaluate: "$.code.coding[0].code" }}^{{ observation_reference | evaluate: "$.code.coding[0].display" }}^LN",
+      "5": "{{ observation_reference | evaluate: "$.valueQuantity.value" }}",
+      "6": "{{ observation_reference | evaluate: "$.valueQuantity.unit" }}",
+      "7": "{{ observation_reference | evaluate: "$.referenceRange[0].low.value" }}-{{ observation_reference | evaluate: "$.referenceRange[0].high.value" }}",
+      "8": "{{ observation_reference | evaluate: "$.interpretation[0].coding[0].code" }}",
+
+      {% assign observation_status = observation_reference | evaluate: "$.status" %}
+      {% if observation_status == "final" %}
+        "11": "F"
+      {% endif %}
+    }
+  }
+]
+}

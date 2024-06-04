@@ -34,7 +34,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             _parser = EnsureArg.IsNotNull(parser, nameof(parser));
         }
 
-        protected override DataType DataType { get; set; } = DataType.Json;
+        protected override DefaultRootTemplateParentPath DefaultRootTemplateParentPath { get; set; } = DefaultRootTemplateParentPath.Json;
 
         protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {

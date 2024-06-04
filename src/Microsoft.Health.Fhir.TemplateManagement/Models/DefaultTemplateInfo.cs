@@ -26,6 +26,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Models
 
         public static string Stu3ToR4DefaultTemplatesResource => "Stu3ToR4DefaultTemplates.tar.gz";
 
+        public static string FhirToHl7v2DefaultTemplatesResource => "FhirToHl7v2DefaultTemplates.tar.gz";
+
         /// <summary>
         /// The default templates map, key is image reference, value is default templates information.
         /// </summary>

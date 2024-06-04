@@ -25,7 +25,7 @@ using NJsonSchema;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
-    public class JsonToHl7v2Processor : BaseProcessor
+    public class FhirToHl7v2Processor : BaseProcessor
     {
         private static readonly JsonSerializerSettings DefaultSerializerSettings = new JsonSerializerSettings()
         {
@@ -36,16 +36,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         private string[] _segmentsWithFieldSeparator = new string[] { "MSH", "BHS", "FHS" };
 
-        public JsonToHl7v2Processor(ProcessorSettings processorSettings, ILogger<JsonToHl7v2Processor> logger)
+        public FhirToHl7v2Processor(ProcessorSettings processorSettings, ILogger<FhirToHl7v2Processor> logger)
             : this(processorSettings, new JsonDataParser(), logger)
         {
         }
 
-        public JsonToHl7v2Processor(ProcessorSettings processorSettings, IDataParser parser, ILogger<JsonToHl7v2Processor> logger)
+        public FhirToHl7v2Processor(ProcessorSettings processorSettings, IDataParser parser, ILogger<FhirToHl7v2Processor> logger)
             : base(processorSettings, logger)
         {
             _parser = EnsureArg.IsNotNull(parser, nameof(parser));
         }
+
+        protected override DefaultRootTemplateParentPath DefaultRootTemplateParentPath { get; set; } = DefaultRootTemplateParentPath.FhirToHl7v2;
 
         protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {

@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
-using System.Timers;
 using DotLiquid;
 using EnsureThat;
 using Microsoft.Extensions.Logging;
@@ -35,7 +34,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         protected virtual string DataKey { get; set; } = "msg";
 
-        protected virtual DataType DataType { get; set; }
+        protected virtual DefaultRootTemplateParentPath DefaultRootTemplateParentPath { get; set; }
 
         public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, CancellationToken cancellationToken, TraceInfo traceInfo = null)
         {
@@ -102,7 +101,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
             }
 
-            rootTemplate = templateProvider.IsDefaultTemplateProvider ? string.Format("{0}/{1}", DataType, rootTemplate) : rootTemplate;
+            rootTemplate = templateProvider.IsDefaultTemplateProvider ? string.Format("{0}/{1}", DefaultRootTemplateParentPath, rootTemplate) : rootTemplate;
 
             // Step: Retrieve Template
             Template template;
@@ -169,7 +168,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         protected void AddRootTemplatePathScope(Context context, ITemplateProvider templateProvider, string rootTemplate)
         {
             // Add path to root template's parent. In case of default template provider, use the data type as the parent path, else use the parent path set in the context.
-            context[TemplateUtility.RootTemplateParentPathScope] = templateProvider.IsDefaultTemplateProvider ? DataType : TemplateUtility.GetRootTemplateParentPath(rootTemplate);
+            context[TemplateUtility.RootTemplateParentPathScope] = templateProvider.IsDefaultTemplateProvider ? DefaultRootTemplateParentPath : TemplateUtility.GetRootTemplateParentPath(rootTemplate);
         }
 
         protected void LogTelemetry(string telemetryName, double duration)
