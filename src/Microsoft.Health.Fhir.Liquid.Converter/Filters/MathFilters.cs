@@ -15,9 +15,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     {
         private static readonly Random RandomGenerator = new Random();
 
-        public static bool IsNaN(object data)
+        public static bool IsNan(object data)
         {
-            return double.TryParse(Convert.ToString(data, CultureInfo.InvariantCulture), NumberStyles.Any, NumberFormatInfo.InvariantInfo, out _);
+            return !double.TryParse(Convert.ToString(data, CultureInfo.InvariantCulture), NumberStyles.Any, NumberFormatInfo.InvariantInfo, out _);
         }
 
         public static double Abs(double data)
