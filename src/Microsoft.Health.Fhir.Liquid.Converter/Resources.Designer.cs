@@ -313,7 +313,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to A template parsing error occurred while rendering the template: {0}.
+        ///   Looks up a localized string similar to Error happened while using the template to parse the input: {0}.
         /// </summary>
         internal static string TemplateParsingError {
             get {
