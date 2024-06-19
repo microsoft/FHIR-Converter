@@ -15,7 +15,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
         }
 
-        protected override DataType DataType { get; set; } = DataType.Fhir;
+        protected override DefaultRootTemplateParentPath DefaultRootTemplateParentPath { get; set; } = DefaultRootTemplateParentPath.Fhir;
 
         protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {

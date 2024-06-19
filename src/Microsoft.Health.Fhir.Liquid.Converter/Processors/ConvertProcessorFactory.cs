@@ -21,7 +21,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         public IFhirConverter GetProcessor(DataType inputDataType, ConvertDataOutputFormat outputFormat, ProcessorSettings processorSettings = null)
         {
-
             processorSettings ??= new ProcessorSettings();
 
             IFhirConverter converter;
@@ -41,7 +40,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                     converter = new JsonProcessor(processorSettings, _loggerFactory.CreateLogger<JsonProcessor>());
                     break;
                 case (DataType.Fhir, ConvertDataOutputFormat.Hl7v2):
-                    converter = new JsonToHl7v2Processor(processorSettings, _loggerFactory.CreateLogger<JsonToHl7v2Processor>());
+                    converter = new FhirToHl7v2Processor(processorSettings, _loggerFactory.CreateLogger<FhirToHl7v2Processor>());
                     break;
                 default:
                     throw new InvalidOperationException($"Input Data Type {inputDataType} and Output Format {outputFormat} pairing is not supported.");

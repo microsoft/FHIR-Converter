@@ -5,7 +5,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -13,6 +12,7 @@ using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
@@ -362,7 +362,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         {
             var processor = _jsonProcessor;
             var templateProvider = new TemplateProvider(TestConstants.JsonTemplateDirectory, DataType.Json);
-            var testData = JObject.Parse(_jsonTestData);
+            var testData = JsonConvert.DeserializeObject<JObject>(_jsonTestData, new JsonSerializerSettings() { DateParseHandling = DateParseHandling.None });
             var result = processor.Convert(testData, "ExamplePatient", templateProvider);
             Assert.True(JToken.DeepEquals(JObject.Parse(_jsonExpectData), JToken.Parse(result)));
         }
@@ -370,7 +370,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [Fact]
         public void GivenJObjectInput_WhenConvertWithJsonToHl7v2Processor_CorrectResultShouldBeReturned()
         {
-            var processor = new JsonToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<JsonToHl7v2Processor>());
+            var processor = new FhirToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<FhirToHl7v2Processor>());
             var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
             var testData = JObject.Parse(_fhirBundleTestData);
             var result = processor.Convert(testData, "BundleToHl7v2", templateProvider);
@@ -380,7 +380,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [Fact]
         public void GivenJObjectInput_WhenConvertWithJsonToHl7v2ProcessorWithInvalidTemplate_CorrectExceptionShouldBeThrown()
         {
-            var processor = new JsonToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<JsonToHl7v2Processor>());
+            var processor = new FhirToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<FhirToHl7v2Processor>());
             var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
             var testData = JObject.Parse(_fhirBundleTestData);
             var exception = Assert.Throws<RenderException>(() => processor.Convert(testData, "BundleToHl7v2_MissingRequiredProperty", templateProvider));
@@ -390,7 +390,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [Fact]
         public void GivenJObjectInput_WhenConvertWithJsonToHl7v2ProcessorWithInvalidMessageDefinitionSegment_CorrectExceptionShouldBeThrown()
         {
-            var processor = new JsonToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<JsonToHl7v2Processor>());
+            var processor = new FhirToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<FhirToHl7v2Processor>());
             var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
             var testData = JObject.Parse(_fhirBundleTestData);
             var exception = Assert.Throws<RenderException>(() => processor.Convert(testData, "BundleToHl7v2_InvalidSegmentObject", templateProvider));
@@ -400,7 +400,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [Fact]
         public void GivenJObjectInput_WhenConvertWithJsonToHl7v2ProcessorWithInvalidFieldNumber_CorrectExceptionShouldBeThrown()
         {
-            var processor = new JsonToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<JsonToHl7v2Processor>());
+            var processor = new FhirToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<FhirToHl7v2Processor>());
             var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
             var testData = JObject.Parse(_fhirBundleTestData);
             var exception = Assert.Throws<RenderException>(() => processor.Convert(testData, "BundleToHl7v2_InvalidFieldNumber", templateProvider));

@@ -26,12 +26,13 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
 
         private static readonly string _templateDirectory = Path.Join("../../../../../", "data", "Templates");
 
-        private static Dictionary<DataType, string> _defaultTemplatesFolderInfo = new ()
+        private static Dictionary<DefaultRootTemplateParentPath, string> _defaultTemplatesFolderInfo = new ()
         {
-            { DataType.Hl7v2, "Hl7v2" },
-            { DataType.Ccda, "Ccda" },
-            { DataType.Json, "Json" },
-            { DataType.Fhir, "Stu3ToR4" },
+            { DefaultRootTemplateParentPath.Hl7v2, "Hl7v2" },
+            { DefaultRootTemplateParentPath.Ccda, "Ccda" },
+            { DefaultRootTemplateParentPath.Json, "Json" },
+            { DefaultRootTemplateParentPath.Fhir, "Stu3ToR4" },
+            { DefaultRootTemplateParentPath.FhirToHl7v2, "FhirToHl7v2" },
         };
 
         public DefaultTemplateCollectionProviderTests()
@@ -49,9 +50,9 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             Assert.Single(templateCollection);
 
             // Verify expected number of templates per data type as per templates packaged from the data/Templates directory.
-            foreach (var dataType in Enum.GetValues<DataType>())
+            foreach (var defaultRootTemplateParentPath in Enum.GetValues<DefaultRootTemplateParentPath>())
             {
-                var templateFolder = _defaultTemplatesFolderInfo[dataType];
+                var templateFolder = _defaultTemplatesFolderInfo[defaultRootTemplateParentPath];
 
                 // 'metadata.json' and 'Json/Schema/meta-schema.json' will not be returned as templates.
                 var excludeFiles = new HashSet<string>()
@@ -61,7 +62,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
                 };
                 var expectedTemplateFiles = Directory.GetFiles(Path.Join(_templateDirectory, templateFolder), "*", SearchOption.AllDirectories)
                     .Where(file => !excludeFiles.Contains(file)).ToList();
-                Assert.Equal(expectedTemplateFiles.Count, templateCollection.First().Where(template => template.Key.StartsWith(dataType.ToString())).Count());
+
+                Assert.Equal(expectedTemplateFiles.Count, templateCollection.First().Where(template => template.Key.StartsWith(defaultRootTemplateParentPath.ToString() + "/")).Count());
             }
         }
 

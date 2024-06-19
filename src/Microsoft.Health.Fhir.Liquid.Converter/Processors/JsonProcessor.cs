@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using DotLiquid;
+using EnsureThat;
 using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Extensions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
@@ -20,14 +21,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
     public class JsonProcessor : BaseProcessor
     {
-        private readonly IDataParser _parser = new JsonDataParser();
+        private readonly IDataParser _parser;
 
         public JsonProcessor(ProcessorSettings processorSettings, ILogger<JsonProcessor> logger)
-            : base(processorSettings, logger)
+            : this(processorSettings, new JsonDataParser(), logger)
         {
         }
 
-        protected override DataType DataType { get; set; } = DataType.Json;
+        public JsonProcessor(ProcessorSettings processorSettings, IDataParser parser, ILogger<JsonProcessor> logger)
+            : base(processorSettings, logger)
+        {
+            _parser = EnsureArg.IsNotNull(parser, nameof(parser));
+        }
+
+        protected override DefaultRootTemplateParentPath DefaultRootTemplateParentPath { get; set; } = DefaultRootTemplateParentPath.Json;
 
         protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
