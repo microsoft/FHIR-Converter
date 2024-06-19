@@ -191,34 +191,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             };
         }
 
-        public static IEnumerable<object[]> GetValidInputWithMultipleElementsOfSameType()
-        {
-            yield return new object[]
-            {
-                _hl7v2Processor,
-                new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Hl7v2),
-                _hl7v2TestData,
-            };
-            yield return new object[]
-            {
-                _ccdaProcessor,
-                new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Ccda),
-                _ccdaTestData,
-            };
-            yield return new object[]
-            {
-                _jsonProcessor,
-                new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json),
-                _jsonTestData,
-            };
-            yield return new object[]
-            {
-                _fhirProcessor,
-                new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Fhir),
-                _fhirStu3TestData,
-            };
-        }
-
         public static IEnumerable<object[]> GetValidInputsWithNestingTooDeep()
         {
             yield return new object[]
@@ -406,7 +378,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         }
 
         [Fact]
-        public void GivenTemplateSeekingSingleElement_WhenConvertWithTwoObservations_CorrectExceptionShouldBeThrown()
+        public void GivenJObjectInputWithTwoObservations_WhenConvertTemplateRequiringSingleObservation_CorrectExceptionShouldBeThrown()
         {
             var processor = new FhirToHl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<FhirToHl7v2Processor>());
             var templateProvider = new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Json);
