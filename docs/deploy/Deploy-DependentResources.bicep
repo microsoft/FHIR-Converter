@@ -76,7 +76,9 @@ resource templateStorageAccountCreated 'Microsoft.Storage/storageAccounts@2022-0
     name: 'Standard_LRS'
   }
   kind: 'StorageV2'
-  properties: {}
+  properties: {
+    allowSharedKeyAccess: false
+  }
 }
 
 resource templateStorageAccount 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01' = if (deployTemplateStore) {
