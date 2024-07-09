@@ -99,6 +99,12 @@ param securityAuthenticationAudiences array = []
 @description('Authority for the api authentication.')
 param securityAuthenticationAuthority string = ''
 
+@description('The name of the Virtual Network linked to the Container Apps Environment and used to isolate the Storage Account.')
+param vnetName string = '${serviceName}-vnet'
+
+@description('The name of the subnet in the virtual network.')
+param subnetName string = 'default'
+
 var deploymentTemplateVersion = '1'
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2020-06-01' = {
@@ -124,6 +130,8 @@ module dependentResourceDeploy 'Deploy-DependentResources.bicep' = if (templateS
     deployKeyVault: deployKeyVault
     keyVaultName: keyVaultName
     keyVaultUserAssignedIdentityName: keyVaultUserAssignedIdentityName
+    vnetName: vnetName
+    subnetName: subnetName
   }
 }
 
@@ -136,7 +144,12 @@ module convertInfrastructureDeploy 'Deploy-Infrastructure.bicep' = {
     envName: containerAppEnvName
     deployApplicationInsights: applicationInsightsEnabled
     keyVaultName: keyVaultName
+    vnetName: vnetName
+    subnetName: subnetName
   }
+  dependsOn: [
+    dependentResourceDeploy
+  ]
 }
 
 // Deploy the container app
@@ -170,3 +183,4 @@ module fhirConverterDeploy 'Deploy-FhirConverterService.bicep' = {
 
 output fhirConverterApiEndpoint string = fhirConverterDeploy.outputs.containerAppFQDN
 output resourceGroupName string = resourceGroup.name
+output subnetId string = dependentResourceDeploy.outputs.subnetResourceId

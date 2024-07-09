@@ -50,6 +50,12 @@ param deployApplicationInsights bool
 @description('The name of the Key Vault to store the Application Insights connection string secret.')
 param keyVaultName string = 'default'
 
+@description('The name of the Virtual Network linked to the Container Apps Environment.')
+param vnetName string = '${envName}-vnet'
+
+@description('The name of the subnet in the virtual network.')
+param subnetName string = 'default'
+
 // Deploy log analytics workspace
 var logAnalyticsWorkspaceName = '${envName}-logsws'
 resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-03-01-preview' = {
@@ -124,6 +130,13 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
         customerId: logAnalyticsWorkspace.properties.customerId
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
+    }
+    vnetConfiguration: {
+      internal: false
+      infrastructureSubnetId: resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
+      dockerBridgeCidr: null
+      platformReservedCidr: '10.0.16.0/24'
+      platformReservedDnsIP: '10.0.16.4'
     }
   }
 }
