@@ -93,20 +93,32 @@ param keyVaultUserAssignedIdentityName string = '${serviceName}-kv-identity'
 @description('If set to true, security requirements will be enabled on the API endpoint. This is strongly recommended.')
 param securityEnabled bool = false
 
-@description('Audiences for the api authentication.')
+@description('Audiences for the api authentication. Only applicable when securityEnabled is set to true.')
 param securityAuthenticationAudiences array = []
 
-@description('Authority for the api authentication.')
+@description('Authority for the api authentication. Only applicable when securityEnabled is set to true.')
 param securityAuthenticationAuthority string = ''
 
 @description('When set to true, the template Storage Account will only accept network traffic from within a Virtual Network, which the Container Apps environment will be onboarded to.')
 param storageAccountNetworkIsolationEnabled bool = false
 
-@description('The name of the Virtual Network linked to the Container Apps Environment and used to isolate the Storage Account.')
+@description('The name of the Virtual Network linked to the Container Apps Environment and used to isolate the Storage Account. Only applicable when storageAccountNetworkIsolationEnabled is set to true.')
 param vnetName string = '${serviceName}-vnet'
 
-@description('The name of the subnet in the virtual network.')
+@description('A list of address blocks reserved for the VirtualNetwork in CIDR notation. Must not overlap with the address blocks of any other Virtual Network in the Resource Group. Only applicable when storageAccountNetworkIsolationEnabled is set to true.')
+param vnetAddressPrefixes array = [ '10.0.0.0/20' ]
+
+@description('The name of the subnet in the virtual network. Only applicable when storageAccountNetworkIsolationEnabled is set to true.')
 param subnetName string = 'default'
+
+@description('The address prefix(es) for the subnet. Must be within the address space of the Virtual Network. Only applicable when storageAccountNetworkIsolationEnabled is set to true')
+param subnetAddressPrefix string = '10.0.0.0/23'
+
+@description('IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must be within the VNet address space as defined by vnetAddressPrefixes, but not overlapping with any subnets within the VNet. Used for configuring the Container Apps environment on the Virtual Network, and only applicable when storageAccountNetworkIsolationEnabled is set to true.')
+param cAppEnvVnetPlatformReservedCidr string = '10.0.16.0/24'
+
+@description('IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server. Used for configuring the Container Apps environment on the Virtual Network, and only applicable when storageAccountNetworkIsolationEnabled is set to true.')
+param cAppEnvVnetPlatformReservedDnsIP string = '10.0.16.4'
 
 var deploymentTemplateVersion = '1'
 
@@ -135,7 +147,9 @@ module dependentResourceDeploy 'Deploy-DependentResources.bicep' = if (templateS
     keyVaultUserAssignedIdentityName: keyVaultUserAssignedIdentityName
     configureNetworkIsolation: storageAccountNetworkIsolationEnabled
     vnetName: vnetName
+    vnetAddressPrefixes: vnetAddressPrefixes
     subnetName: subnetName
+    subnetAddressPrefix: subnetAddressPrefix
   }
 }
 
@@ -147,10 +161,12 @@ module convertInfrastructureDeploy 'Deploy-Infrastructure.bicep' = {
     location: location
     envName: containerAppEnvName
     deployApplicationInsights: applicationInsightsEnabled
-    keyVaultName: keyVaultName
+    keyVaultName: dependentResourceDeploy.outputs.keyVaultName
     linkToVnet: storageAccountNetworkIsolationEnabled
-    vnetName: vnetName
-    subnetName: subnetName
+    cAppEnvVnetName: vnetName
+    cAppEnvSubnetName: subnetName
+    cAppEnvVnetPlatformReservedCidr: cAppEnvVnetPlatformReservedCidr
+    cAppEnvVnetPlatformReservedDnsIP: cAppEnvVnetPlatformReservedDnsIP
   }
   dependsOn: [
     dependentResourceDeploy

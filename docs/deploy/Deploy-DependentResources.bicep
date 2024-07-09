@@ -75,8 +75,14 @@ param configureNetworkIsolation bool
 @description('Name of the virtual network used to isolate the storage account.')
 param vnetName string = ''
 
-@description('Name of the subnet in the virtual network.')
+@description('A list of address blocks reserved for the VirtualNetwork in CIDR notation. Must not overlap with the address blocks of any other Virtual Network in the Resource Group.')
+param vnetAddressPrefixes array = [ '10.0.0.0/20' ]
+
+@description('Name of the subnet in the virtual network with a Service Endpoint enabled for Storage Accounts.')
 param subnetName string = ''
+
+@description('The address prefix(es) for the subnet. Must be within the address space of the Virtual Network.')
+param subnetAddressPrefix string = '10.0.0.0/23'
 
 // Create Virtual Network for Container Apps Environment to enable Storage Account network isolation
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-11-01' = if (configureNetworkIsolation) {
@@ -84,15 +90,13 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-11-01' = if (con
   location: location
   properties: {
     addressSpace: {
-      addressPrefixes: [
-        '10.0.0.0/20'
-      ]
+      addressPrefixes: vnetAddressPrefixes
     }
     subnets: [
       {
         name: subnetName
         properties: {
-          addressPrefix: '10.0.0.0/23'
+          addressPrefix: subnetAddressPrefix
           serviceEndpoints:[
             {
               service: 'Microsoft.Storage'
@@ -115,7 +119,7 @@ resource templateStorageAccountCreated 'Microsoft.Storage/storageAccounts@2022-0
   properties: configureNetworkIsolation ? {
     networkAcls: {
       defaultAction: 'Deny'
-      bypass: 'AzureServices'
+      bypass: 'None'
       virtualNetworkRules: [
         {
           id: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetwork.name, subnetName)
@@ -169,4 +173,5 @@ output templateStorageAccountName string = deployTemplateStore ? templateStorage
 output templateStorageAccountContainerName string = deployTemplateStore ? templateStorageAccountContainer.name : ''
 output keyVaultName string = deployKeyVault ? keyVault.name : ''
 output keyVaultUAMIName string = deployKeyVault ? keyVaultUserAssignedIdentity.name : ''
-output virtualNetworkName string = virtualNetwork.name
+output virtualNetworkName string = configureNetworkIsolation ? virtualNetwork.name : ''
+output subnetName string = configureNetworkIsolation ? subnetName : ''
