@@ -99,6 +99,9 @@ param securityAuthenticationAudiences array = []
 @description('Authority for the api authentication.')
 param securityAuthenticationAuthority string = ''
 
+@description('When set to true, the template Storage Account will only accept network traffic from within a Virtual Network, which the Container Apps environment will be onboarded to.')
+param storageAccountNetworkIsolationEnabled bool = false
+
 @description('The name of the Virtual Network linked to the Container Apps Environment and used to isolate the Storage Account.')
 param vnetName string = '${serviceName}-vnet'
 
@@ -130,6 +133,7 @@ module dependentResourceDeploy 'Deploy-DependentResources.bicep' = if (templateS
     deployKeyVault: deployKeyVault
     keyVaultName: keyVaultName
     keyVaultUserAssignedIdentityName: keyVaultUserAssignedIdentityName
+    configureNetworkIsolation: storageAccountNetworkIsolationEnabled
     vnetName: vnetName
     subnetName: subnetName
   }
@@ -144,6 +148,7 @@ module convertInfrastructureDeploy 'Deploy-Infrastructure.bicep' = {
     envName: containerAppEnvName
     deployApplicationInsights: applicationInsightsEnabled
     keyVaultName: keyVaultName
+    linkToVnet: storageAccountNetworkIsolationEnabled
     vnetName: vnetName
     subnetName: subnetName
   }
@@ -183,4 +188,3 @@ module fhirConverterDeploy 'Deploy-FhirConverterService.bicep' = {
 
 output fhirConverterApiEndpoint string = fhirConverterDeploy.outputs.containerAppFQDN
 output resourceGroupName string = resourceGroup.name
-output subnetId string = dependentResourceDeploy.outputs.subnetResourceId

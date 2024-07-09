@@ -69,6 +69,9 @@ param keyVaultName string = ''
 @description('Name of the user-assigned managed identity to be deployed for accessing the key vault.')
 param keyVaultUserAssignedIdentityName string = ''
 
+@description('When set to true, a virtual network will be created to isolate the storage account.')
+param configureNetworkIsolation bool
+
 @description('Name of the virtual network used to isolate the storage account.')
 param vnetName string = ''
 
@@ -76,7 +79,7 @@ param vnetName string = ''
 param subnetName string = ''
 
 // Create Virtual Network for Container Apps Environment to enable Storage Account network isolation
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-11-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-11-01' = if (configureNetworkIsolation) {
   name: vnetName
   location: location
   properties: {
@@ -109,7 +112,7 @@ resource templateStorageAccountCreated 'Microsoft.Storage/storageAccounts@2022-0
     name: 'Standard_LRS'
   }
   kind: 'StorageV2'
-  properties: {
+  properties: configureNetworkIsolation ? {
     networkAcls: {
       defaultAction: 'Deny'
       bypass: 'AzureServices'
@@ -120,7 +123,7 @@ resource templateStorageAccountCreated 'Microsoft.Storage/storageAccounts@2022-0
         }
       ]
     }
-  }
+  } : {}
 }
 
 resource templateStorageAccount 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01' = if (deployTemplateStore) {
@@ -162,7 +165,6 @@ resource keyVaultSecretsUserRoleAssignment 'Microsoft.Authorization/roleAssignme
   }
 }
 
-output subnetResourceId string = resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetwork.name, subnetName)
 output templateStorageAccountName string = deployTemplateStore ? templateStorageAccountCreated.name : ''
 output templateStorageAccountContainerName string = deployTemplateStore ? templateStorageAccountContainer.name : ''
 output keyVaultName string = deployKeyVault ? keyVault.name : ''

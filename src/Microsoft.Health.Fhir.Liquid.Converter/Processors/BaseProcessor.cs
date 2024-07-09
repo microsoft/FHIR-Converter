@@ -155,10 +155,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             {
                 throw new RenderException(FhirConverterErrorCode.TimeoutError, Resources.TimeoutError, ex);
             }
-            catch (JsonException ex)
-            {
-                throw new RenderException(FhirConverterErrorCode.TemplateParsingError, string.Format(Resources.TemplateParsingError, ex.Message), ex);
-            }
             catch (RenderException)
             {
                 throw;
