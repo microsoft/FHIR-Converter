@@ -311,15 +311,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("TemplateNotFound", resourceCulture);
             }
         }
-
-        /// <summary>
-        ///   Looks up a localized string similar to A template parsing error occurred while rendering the template: {0}.
-        /// </summary>
-        internal static string TemplateParsingError {
-            get {
-                return ResourceManager.GetString("TemplateParsingError", resourceCulture);
-            }
-        }
         
         /// <summary>
         ///   Looks up a localized string similar to Error happened when rendering templates: {0}.

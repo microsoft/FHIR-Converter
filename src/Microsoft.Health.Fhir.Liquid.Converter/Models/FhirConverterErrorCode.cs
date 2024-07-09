@@ -44,7 +44,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
         InvalidInputOfMergeDiffBlock = 1311,
         InvalidValidateBlockContent = 1312,
         UnmatchedValidateBlockContent = 1313,
-        TemplateParsingError = 1314,
 
         // PostprocessException
         JsonParsingError = 1401,

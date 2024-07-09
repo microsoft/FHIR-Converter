@@ -50,10 +50,13 @@ param deployApplicationInsights bool
 @description('The name of the Key Vault to store the Application Insights connection string secret.')
 param keyVaultName string = 'default'
 
-@description('The name of the Virtual Network linked to the Container Apps Environment.')
+@description('If set to true, the Container Apps Environment will be linked to the Virtual Network.')
+param linkToVnet bool = false
+
+@description('The name of the Virtual Network linked to the Container Apps Environment. Only applicable if linkToVnet is set to true.')
 param vnetName string = '${envName}-vnet'
 
-@description('The name of the subnet in the virtual network.')
+@description('The name of the subnet in the virtual network. Only applicable if linkToVnet is set to true.')
 param subnetName string = 'default'
 
 // Deploy log analytics workspace
@@ -131,13 +134,15 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
     }
-    vnetConfiguration: {
-      internal: false
-      infrastructureSubnetId: resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
-      dockerBridgeCidr: null
-      platformReservedCidr: '10.0.16.0/24'
-      platformReservedDnsIP: '10.0.16.4'
-    }
+    ...(linkToVnet ? {
+      vnetConfiguration: {
+        internal: false
+        infrastructureSubnetId: resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
+        dockerBridgeCidr: null
+        platformReservedCidr: '10.0.16.0/24'
+        platformReservedDnsIP: '10.0.16.4'
+      }
+    } : {})
   }
 }
 
