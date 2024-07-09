@@ -54,10 +54,16 @@ param keyVaultName string = 'default'
 param linkToVnet bool = false
 
 @description('The name of the Virtual Network linked to the Container Apps Environment. Only applicable if linkToVnet is set to true.')
-param vnetName string = '${envName}-vnet'
+param cAppEnvVnetName string = '${envName}-vnet'
 
 @description('The name of the subnet in the virtual network. Only applicable if linkToVnet is set to true.')
-param subnetName string = 'default'
+param cAppEnvSubnetName string = 'default'
+
+@description('IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must be within the VNet address space, but not overlapping with any subnets within the VNet. Only applicable when linkToVnet is set to true.')
+param cAppEnvVnetPlatformReservedCidr string = '10.0.16.0/24'
+
+@description('IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server. Only applicable when linkToVnet is set to true.')
+param cAppEnvVnetPlatformReservedDnsIP string = '10.0.16.4'
 
 // Deploy log analytics workspace
 var logAnalyticsWorkspaceName = '${envName}-logsws'
@@ -122,6 +128,7 @@ resource monitoringMetricsPublisherRole 'Microsoft.Authorization/roleAssignments
 
 // Deploy the container app environment
 // https://github.com/Azure/azure-rest-api-specs/blob/Microsoft.App-2022-03-01/specification/app/resource-manager/Microsoft.App/preview/2022-01-01-preview/ManagedEnvironments.json
+
 var containerAppEnvironmentName = envName
 resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: containerAppEnvironmentName
@@ -134,15 +141,13 @@ resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' 
         sharedKey: logAnalyticsWorkspace.listKeys().primarySharedKey
       }
     }
-    ...(linkToVnet ? {
-      vnetConfiguration: {
-        internal: false
-        infrastructureSubnetId: resourceId('Microsoft.Network/virtualNetworks/subnets', vnetName, subnetName)
-        dockerBridgeCidr: null
-        platformReservedCidr: '10.0.16.0/24'
-        platformReservedDnsIP: '10.0.16.4'
-      }
-    } : {})
+    vnetConfiguration: linkToVnet ? {
+      internal: false
+      infrastructureSubnetId: resourceId('Microsoft.Network/virtualNetworks/subnets', cAppEnvVnetName, cAppEnvSubnetName)
+      dockerBridgeCidr: null
+      platformReservedCidr: cAppEnvVnetPlatformReservedCidr
+      platformReservedDnsIP: cAppEnvVnetPlatformReservedDnsIP
+    } : null
   }
 }
 
