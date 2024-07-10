@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.54.24096",
-      "templateHash": "12546413749549776811"
+      "templateHash": "15710849531731186105"
     }
   },
   "parameters": {
@@ -168,14 +168,65 @@
       "type": "array",
       "defaultValue": [],
       "metadata": {
-        "description": "Audiences for the api authentication."
+        "description": "Audiences for the api authentication. Only applicable when securityEnabled is set to true."
       }
     },
     "securityAuthenticationAuthority": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Authority for the api authentication."
+        "description": "Authority for the api authentication. Only applicable when securityEnabled is set to true."
+      }
+    },
+    "storageAccountNetworkIsolationEnabled": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "When set to true, the template Storage Account will only accept network traffic from within the specified Virtual Network, which the Container Apps environment will be onboarded to."
+      }
+    },
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "[format('{0}-vnet', parameters('serviceName'))]",
+      "metadata": {
+        "description": "The name of the Virtual Network linked to the Container Apps Environment and used to isolate the Storage Account. Only applicable when storageAccountNetworkIsolationEnabled is set to true."
+      }
+    },
+    "vnetAddressPrefixes": {
+      "type": "array",
+      "defaultValue": [
+        "10.0.0.0/20"
+      ],
+      "metadata": {
+        "description": "A list of address blocks reserved for the VirtualNetwork in CIDR notation. Only applicable when storageAccountNetworkIsolationEnabled is set to true. If using a custom value, be sure to review the important considerations for Virtual Network address blocks to avoid routing issues: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "defaultValue": "default",
+      "metadata": {
+        "description": "The name of the subnet in the virtual network. Only applicable when storageAccountNetworkIsolationEnabled is set to true."
+      }
+    },
+    "subnetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/23",
+      "metadata": {
+        "description": "The address prefix for the subnet. Only applicable when storageAccountNetworkIsolationEnabled is set to true. If using a custom value, be sure to review the important considerations for Virtual Network address blocks to avoid routing issues: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+      }
+    },
+    "cAppEnvVnetPlatformReservedCidr": {
+      "type": "string",
+      "defaultValue": "10.0.16.0/24",
+      "metadata": {
+        "description": "IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must be within the VNet address space as defined by vnetAddressPrefixes, but not overlapping with any subnets within the VNet. Used for configuring the Container Apps environment on the Virtual Network, and only applicable when storageAccountNetworkIsolationEnabled is set to true. Additional information on Virtual Networks for Container Apps environments: https://learn.microsoft.com/en-us/azure/container-apps/vnet-custom?tabs=bash&pivots=azure-portal"
+      }
+    },
+    "cAppEnvVnetPlatformReservedDnsIP": {
+      "type": "string",
+      "defaultValue": "10.0.16.4",
+      "metadata": {
+        "description": "IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server. Used for configuring the Container Apps environment on the Virtual Network, and only applicable when storageAccountNetworkIsolationEnabled is set to true. Additional information for Container Apps environments: https://learn.microsoft.com/en-us/azure/container-apps/vnet-custom?tabs=bash&pivots=azure-portal"
       }
     }
   },
@@ -225,6 +276,21 @@
           },
           "keyVaultUserAssignedIdentityName": {
             "value": "[parameters('keyVaultUserAssignedIdentityName')]"
+          },
+          "configureNetworkIsolation": {
+            "value": "[parameters('storageAccountNetworkIsolationEnabled')]"
+          },
+          "vnetName": {
+            "value": "[parameters('vnetName')]"
+          },
+          "vnetAddressPrefixes": {
+            "value": "[parameters('vnetAddressPrefixes')]"
+          },
+          "subnetName": {
+            "value": "[parameters('subnetName')]"
+          },
+          "subnetAddressPrefix": {
+            "value": "[parameters('subnetAddressPrefix')]"
           }
         },
         "template": {
@@ -234,7 +300,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.54.24096",
-              "templateHash": "5567454211566534226"
+              "templateHash": "15144028743261731710"
             }
           },
           "parameters": {
@@ -324,12 +390,73 @@
               "metadata": {
                 "description": "Name of the user-assigned managed identity to be deployed for accessing the key vault."
               }
+            },
+            "configureNetworkIsolation": {
+              "type": "bool",
+              "metadata": {
+                "description": "When set to true, a virtual network will be created to isolate the storage account."
+              }
+            },
+            "vnetName": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Name of the virtual network used to isolate the storage account."
+              }
+            },
+            "vnetAddressPrefixes": {
+              "type": "array",
+              "defaultValue": [
+                "10.0.0.0/20"
+              ],
+              "metadata": {
+                "description": "A list of address blocks reserved for the VirtualNetwork in CIDR notation. If using a custom value, be sure to review the important considerations for Virtual Network address blocks to avoid routing issues: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+              }
+            },
+            "subnetName": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Name of the subnet in the virtual network with a Service Endpoint enabled for Storage Accounts."
+              }
+            },
+            "subnetAddressPrefix": {
+              "type": "string",
+              "defaultValue": "10.0.0.0/23",
+              "metadata": {
+                "description": "The address prefix(es) for the subnet. Must be within the address space of the Virtual Network. If using a custom value, be sure to review the important considerations for Virtual Network address blocks to avoid routing issues: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+              }
             }
           },
           "variables": {
             "kvSecretUserRole": "4633458b-17de-408a-b874-0445c86b69e6"
           },
           "resources": [
+            {
+              "condition": "[parameters('configureNetworkIsolation')]",
+              "type": "Microsoft.Network/virtualNetworks",
+              "apiVersion": "2023-11-01",
+              "name": "[parameters('vnetName')]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "addressSpace": {
+                  "addressPrefixes": "[parameters('vnetAddressPrefixes')]"
+                },
+                "subnets": [
+                  {
+                    "name": "[parameters('subnetName')]",
+                    "properties": {
+                      "addressPrefix": "[parameters('subnetAddressPrefix')]",
+                      "serviceEndpoints": [
+                        {
+                          "service": "Microsoft.Storage"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
             {
               "condition": "[parameters('deployTemplateStore')]",
               "type": "Microsoft.Storage/storageAccounts",
@@ -340,7 +467,10 @@
                 "name": "Standard_LRS"
               },
               "kind": "StorageV2",
-              "properties": {}
+              "properties": "[if(parameters('configureNetworkIsolation'), createObject('networkAcls', createObject('defaultAction', 'Deny', 'bypass', 'None', 'virtualNetworkRules', createArray(createObject('id', resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName')), 'action', 'Allow')))), createObject())]",
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+              ]
             },
             {
               "condition": "[parameters('deployTemplateStore')]",
@@ -415,6 +545,14 @@
             "keyVaultUAMIName": {
               "type": "string",
               "value": "[if(parameters('deployKeyVault'), if(parameters('deployKeyVault'), parameters('keyVaultUserAssignedIdentityName'), 'default'), '')]"
+            },
+            "virtualNetworkName": {
+              "type": "string",
+              "value": "[if(parameters('configureNetworkIsolation'), parameters('vnetName'), '')]"
+            },
+            "subnetName": {
+              "type": "string",
+              "value": "[if(parameters('configureNetworkIsolation'), parameters('subnetName'), '')]"
             }
           }
         }
@@ -444,7 +582,22 @@
             "value": "[parameters('applicationInsightsEnabled')]"
           },
           "keyVaultName": {
-            "value": "[parameters('keyVaultName')]"
+            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('dependentResourceDeploy_{0}', parameters('timestamp'))), '2022-09-01').outputs.keyVaultName.value]"
+          },
+          "linkToVnet": {
+            "value": "[parameters('storageAccountNetworkIsolationEnabled')]"
+          },
+          "cAppEnvVnetName": {
+            "value": "[parameters('vnetName')]"
+          },
+          "cAppEnvSubnetName": {
+            "value": "[parameters('subnetName')]"
+          },
+          "cAppEnvVnetPlatformReservedCidr": {
+            "value": "[parameters('cAppEnvVnetPlatformReservedCidr')]"
+          },
+          "cAppEnvVnetPlatformReservedDnsIP": {
+            "value": "[parameters('cAppEnvVnetPlatformReservedDnsIP')]"
           }
         },
         "template": {
@@ -454,7 +607,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.54.24096",
-              "templateHash": "12144000305921329618"
+              "templateHash": "3386457949873382483"
             }
           },
           "parameters": {
@@ -512,6 +665,41 @@
               "defaultValue": "default",
               "metadata": {
                 "description": "The name of the Key Vault to store the Application Insights connection string secret."
+              }
+            },
+            "linkToVnet": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "If set to true, the Container Apps Environment will be linked to the Virtual Network."
+              }
+            },
+            "cAppEnvVnetName": {
+              "type": "string",
+              "defaultValue": "[format('{0}-vnet', parameters('envName'))]",
+              "metadata": {
+                "description": "The name of the Virtual Network linked to the Container Apps Environment. Only applicable if linkToVnet is set to true."
+              }
+            },
+            "cAppEnvSubnetName": {
+              "type": "string",
+              "defaultValue": "default",
+              "metadata": {
+                "description": "The name of the subnet in the virtual network. Only applicable if linkToVnet is set to true."
+              }
+            },
+            "cAppEnvVnetPlatformReservedCidr": {
+              "type": "string",
+              "defaultValue": "10.0.16.0/24",
+              "metadata": {
+                "description": "IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must be within the VNet address space, but not overlapping with any subnets within the VNet. Only applicable when linkToVnet is set to true. Additional information for Container Apps environments: https://learn.microsoft.com/en-us/azure/container-apps/vnet-custom?tabs=bash&pivots=azure-portal"
+              }
+            },
+            "cAppEnvVnetPlatformReservedDnsIP": {
+              "type": "string",
+              "defaultValue": "10.0.16.4",
+              "metadata": {
+                "description": "IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server. Only applicable when linkToVnet is set to true. Additional information for Container Apps environments: https://learn.microsoft.com/en-us/azure/container-apps/vnet-custom?tabs=bash&pivots=azure-portal"
               }
             }
           },
@@ -601,7 +789,8 @@
                     "customerId": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName')), '2020-03-01-preview').customerId]",
                     "sharedKey": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName')), '2020-03-01-preview').primarySharedKey]"
                   }
-                }
+                },
+                "vnetConfiguration": "[if(parameters('linkToVnet'), createObject('internal', false(), 'infrastructureSubnetId', resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('cAppEnvVnetName'), parameters('cAppEnvSubnetName')), 'dockerBridgeCidr', null(), 'platformReservedCidr', parameters('cAppEnvVnetPlatformReservedCidr'), 'platformReservedDnsIP', parameters('cAppEnvVnetPlatformReservedDnsIP')), null())]"
               },
               "dependsOn": [
                 "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
@@ -633,6 +822,7 @@
         }
       },
       "dependsOn": [
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('dependentResourceDeploy_{0}', parameters('timestamp')))]",
         "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
       ]
     },

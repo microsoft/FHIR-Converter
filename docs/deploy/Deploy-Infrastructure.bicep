@@ -59,10 +59,10 @@ param cAppEnvVnetName string = '${envName}-vnet'
 @description('The name of the subnet in the virtual network. Only applicable if linkToVnet is set to true.')
 param cAppEnvSubnetName string = 'default'
 
-@description('IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must be within the VNet address space, but not overlapping with any subnets within the VNet. Only applicable when linkToVnet is set to true.')
+@description('IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must be within the VNet address space, but not overlapping with any subnets within the VNet. Only applicable when linkToVnet is set to true. Additional information for Container Apps environments: https://learn.microsoft.com/en-us/azure/container-apps/vnet-custom?tabs=bash&pivots=azure-portal')
 param cAppEnvVnetPlatformReservedCidr string = '10.0.16.0/24'
 
-@description('IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server. Only applicable when linkToVnet is set to true.')
+@description('IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server. Only applicable when linkToVnet is set to true. Additional information for Container Apps environments: https://learn.microsoft.com/en-us/azure/container-apps/vnet-custom?tabs=bash&pivots=azure-portal')
 param cAppEnvVnetPlatformReservedDnsIP string = '10.0.16.4'
 
 // Deploy log analytics workspace
