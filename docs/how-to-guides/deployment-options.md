@@ -93,7 +93,7 @@ The table below outlines the parameters that can be configured through any of th
 | vnetName | string | No | The name of the Virtual Network that the Storage Account and Container Apps environment will be linked to if storageAccountNetworkIsolationEnabled is set to true. If the specified Virtual Network doesn't already exist, one will be created. | serviceName + "-vnet" | 
 | vnetAddressPrefixes | array of strings | No | A list of address blocks reserved for the Virtual Network in CIDR notation. Only applicable when storageAccountNetworkIsolationEnabled is set to true. If using a custom value, be sure to review the important considerations outlined in [Storage Account Network Isolation](./storage-account-network-isolation.md).| [ '10.0.0.0/20' ] |
 | subnetName | string | No | The name of the subnet in the Virtual Network to be linked to the Storage Account and Container Apps environment. If no subnet with the specified name exists, one will be created. Only applicable when storageAccountNetworkIsolationEnabled is set to true. | "default" |
-| subnetAddressPrefix | string | No | The address prefix for the subnet in CIDR notation. Only applicable when storageAccountNetworkIsolationEnabled is set to true. If using a custom value, be sure to review the important considerations outlined in [Storage Account Network Isolation](./storage-account-network-isolation.md). | | "10.0.0.0/23" |
+| subnetAddressPrefix | string | No | The address prefix for the subnet in CIDR notation. Only applicable when storageAccountNetworkIsolationEnabled is set to true. If using a custom value, be sure to review the important considerations outlined in [Storage Account Network Isolation](./storage-account-network-isolation.md). | "10.0.0.0/23" |
 
 ### Deployment options
 
