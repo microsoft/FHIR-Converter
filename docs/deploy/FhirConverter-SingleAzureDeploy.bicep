@@ -105,13 +105,13 @@ param storageAccountNetworkIsolationEnabled bool = false
 @description('The name of the Virtual Network linked to the Container Apps Environment and used to isolate the Storage Account. Only applicable when storageAccountNetworkIsolationEnabled is set to true.')
 param vnetName string = '${serviceName}-vnet'
 
-@description('A list of address blocks reserved for the VirtualNetwork in CIDR notation. Only applicable when storageAccountNetworkIsolationEnabled is set to true. If using a custom value, be sure to review the important considerations for Virtual Network address blocks to avoid routing issues: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq')
+@description('A list of address blocks reserved for the VirtualNetwork in CIDR notation. Only applicable when storageAccountNetworkIsolationEnabled is set to true. Be sure to review the FHIR Converter documentation on Enabling Storage Account Network Isolation is selecting a custom value.')
 param vnetAddressPrefixes array = [ '10.0.0.0/20' ]
 
 @description('The name of the subnet in the virtual network. Only applicable when storageAccountNetworkIsolationEnabled is set to true.')
 param subnetName string = 'default'
 
-@description('The address prefix for the subnet. Only applicable when storageAccountNetworkIsolationEnabled is set to true. If using a custom value, be sure to review the important considerations for Virtual Network address blocks to avoid routing issues: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq')
+@description('The address prefix for the subnet. Only applicable when storageAccountNetworkIsolationEnabled is set to true. Be sure to review the FHIR Converter documentation on Enabling Storage Account Network Isolation is selecting a custom value.')
 param subnetAddressPrefix string = '10.0.0.0/23'
 
 var deploymentTemplateVersion = '1'
@@ -155,7 +155,7 @@ module convertInfrastructureDeploy 'Deploy-Infrastructure.bicep' = {
     location: location
     envName: containerAppEnvName
     deployApplicationInsights: applicationInsightsEnabled
-    keyVaultName: dependentResourceDeploy.outputs.keyVaultName
+    keyVaultName: keyVaultName
     linkToVnet: storageAccountNetworkIsolationEnabled
     cAppEnvVnetName: vnetName
     cAppEnvSubnetName: subnetName

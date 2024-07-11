@@ -56,7 +56,7 @@ param linkToVnet bool = false
 @description('The name of the Virtual Network linked to the Container Apps Environment. Only applicable if linkToVnet is set to true.')
 param cAppEnvVnetName string = '${envName}-vnet'
 
-@description('The name of the subnet in the virtual network. Only applicable if linkToVnet is set to true.')
+@description('The name of the subnet in the Virtual Network. Only applicable if linkToVnet is set to true.')
 param cAppEnvSubnetName string = 'default'
 
 // Deploy log analytics workspace
@@ -122,7 +122,6 @@ resource monitoringMetricsPublisherRole 'Microsoft.Authorization/roleAssignments
 
 // Deploy the container app environment
 // https://github.com/Azure/azure-rest-api-specs/blob/Microsoft.App-2022-03-01/specification/app/resource-manager/Microsoft.App/preview/2022-01-01-preview/ManagedEnvironments.json
-
 var containerAppEnvironmentName = envName
 resource containerAppEnvironment 'Microsoft.App/managedEnvironments@2023-05-01' = {
   name: containerAppEnvironmentName

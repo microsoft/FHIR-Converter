@@ -11,9 +11,19 @@ Option 2 (bicep):
 az deployment sub create --location <Location> --name <A custom name for your deployment> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters templateStoreIntegrationEnabled=true storageAccountNetworkIsolationEnabled=true
 ```
 
+Option 2 (bicep) with added Virtual Network customization:
+```
+az deployment sub create --location <Location> --name <A custom name for your deployment> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters templateStoreIntegrationEnabled=true storageAccountNetworkIsolationEnabled=true vnetName="<Custom_Virtual_Network_Name>" vnetAddressPrefixes="['<Prefix1>','<Prefix2>','<etc...>']" subnetName="<Custom_Subnet_Name>" subnetAddressPrefix="<Custom_Prefix>"
+```
+
 Option 3 (PowerShell):
 ```PowerShell
 ./FhirConverter-SingleAzureDeploy.ps1 -templateStoreIntegrationEnabled $true -storageAccountNetworkIsolationEnabled $true
+```
+
+Option 3 (PowerShell) with added Virtual Network customization:
+```PowerShell
+./FhirConverter-SingleAzureDeploy.ps1 -templateStoreIntegrationEnabled $true -storageAccountNetworkIsolationEnabled $true -vnetName "<Custom_Virtual_Network_Name>" -vnetAddressPrefixes @('<Prefix1>','<Prefix2>','<etc...>') -subnetName "<Custom_Subnet_Name>" -subnetAddressPrefix "<Custom_Prefix>"
 ```
 
 # Virtual Network and Subnet address blocks

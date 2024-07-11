@@ -69,19 +69,19 @@ param keyVaultName string = ''
 @description('Name of the user-assigned managed identity to be deployed for accessing the key vault.')
 param keyVaultUserAssignedIdentityName string = ''
 
-@description('When set to true, a virtual network will be created to isolate the storage account.')
+@description('If set to true, a Virtual Network will be created and the Storage Account that is created will only be accessible by resources within the Virtual Network.')
 param configureNetworkIsolation bool
 
-@description('Name of the virtual network used to isolate the storage account.')
+@description('Name of the Virtual Network.')
 param vnetName string = ''
 
-@description('A list of address blocks reserved for the VirtualNetwork in CIDR notation. If using a custom value, be sure to review the important considerations for Virtual Network address blocks to avoid routing issues: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq')
+@description('A list of address blocks reserved for the VirtualNetwork in CIDR notation. See the FHIR Converter documentation for more information if choosing a custom value.')
 param vnetAddressPrefixes array = [ '10.0.0.0/20' ]
 
-@description('Name of the subnet in the virtual network with a Service Endpoint enabled for Storage Accounts.')
+@description('Name of the subnet in the Virtual Network with a Service Endpoint enabled for Storage Accounts.')
 param subnetName string = ''
 
-@description('The address prefix(es) for the subnet. Must be within the address space of the Virtual Network. If using a custom value, be sure to review the important considerations for Virtual Network address blocks to avoid routing issues: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq')
+@description('The address prefix(es) for the subnet. See the FHIR Converter documentation for more information if choosing a custom value.')
 param subnetAddressPrefix string = '10.0.0.0/23'
 
 // Create Virtual Network for Container Apps Environment to enable Storage Account network isolation
