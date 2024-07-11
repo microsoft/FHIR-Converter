@@ -114,12 +114,6 @@ param subnetName string = 'default'
 @description('The address prefix for the subnet. Only applicable when storageAccountNetworkIsolationEnabled is set to true. If using a custom value, be sure to review the important considerations for Virtual Network address blocks to avoid routing issues: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq')
 param subnetAddressPrefix string = '10.0.0.0/23'
 
-@description('IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must be within the VNet address space as defined by vnetAddressPrefixes, but not overlapping with any subnets within the VNet. Used for configuring the Container Apps environment on the Virtual Network, and only applicable when storageAccountNetworkIsolationEnabled is set to true. Additional information on Virtual Networks for Container Apps environments: https://learn.microsoft.com/en-us/azure/container-apps/vnet-custom?tabs=bash&pivots=azure-portal')
-param cAppEnvVnetPlatformReservedCidr string = '10.0.16.0/24'
-
-@description('IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server. Used for configuring the Container Apps environment on the Virtual Network, and only applicable when storageAccountNetworkIsolationEnabled is set to true. Additional information for Container Apps environments: https://learn.microsoft.com/en-us/azure/container-apps/vnet-custom?tabs=bash&pivots=azure-portal')
-param cAppEnvVnetPlatformReservedDnsIP string = '10.0.16.4'
-
 var deploymentTemplateVersion = '1'
 
 resource resourceGroup 'Microsoft.Resources/resourceGroups@2020-06-01' = {
