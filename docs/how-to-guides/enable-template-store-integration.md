@@ -101,6 +101,10 @@ For example, if the user intends to reference a custom template called ```sample
 
 ![Blob Container directory](../images/convert-storagecontainerdirectory.png)
 
+> **_NOTE:_** If you have network isolation enabled on your Storage Account, as outlined [here](./storage-account-network-isolation.md), you must manually configure a Firewall rule on your Storage Account to allow your Azure Portal client IP address access to the Storage Account so that you can upload templates to the Storage Account. To do so, first navigate to your Storage Account and click on the ```Networking``` blade under ```Security + networking```. Then in the ```Firewalls and virtual networks``` tab, under the ```Firewall``` section of the page, check the box next to "Add your client IP address" and press ```Save```. This will allow you to upload templates manually from your specific Azure Portal client.
+
+![Storage Account Client IP Firewall Rule](../images/client-ip-enabled.png)
+
 ## Summary
 
 In this how-to-guide, you learned how to configure the template store settings for the FHIR converter service to be able to use custom Liquid templates for conversion.

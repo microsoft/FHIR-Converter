@@ -165,8 +165,6 @@ module convertInfrastructureDeploy 'Deploy-Infrastructure.bicep' = {
     linkToVnet: storageAccountNetworkIsolationEnabled
     cAppEnvVnetName: vnetName
     cAppEnvSubnetName: subnetName
-    cAppEnvVnetPlatformReservedCidr: cAppEnvVnetPlatformReservedCidr
-    cAppEnvVnetPlatformReservedDnsIP: cAppEnvVnetPlatformReservedDnsIP
   }
   dependsOn: [
     dependentResourceDeploy

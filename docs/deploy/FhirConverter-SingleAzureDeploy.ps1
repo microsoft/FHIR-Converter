@@ -92,11 +92,7 @@ param
 
     [string]$subnetName = "default",
 
-    [string]$subnetAddressPrefix = "10.0.0.0/23",
-
-    [string]$cAppEnvVnetPlatformReservedCidr = "10.0.16.0/24",
-
-    [string]$cAppEnvVnetPlatformReservedDnsIP = "10.0.16.4"
+    [string]$subnetAddressPrefix = "10.0.0.0/23"
 )
 
 Set-StrictMode -Version Latest
@@ -167,7 +163,5 @@ az deployment sub create `
         vnetAddressPrefixes=$vnetAddressPrefixesArray `
         subnetName=$subnetName `
         subnetAddressPrefix=$subnetAddressPrefix `
-        cAppEnvVnetPlatformReservedCidr=$cAppEnvVnetPlatformReservedCidr `
-        cAppEnvVnetPlatformReservedDnsIP=$cAppEnvVnetPlatformReservedDnsIP `
 
 Write-Host "Deployment complete."

@@ -116,8 +116,9 @@ resource templateStorageAccountCreated 'Microsoft.Storage/storageAccounts@2022-0
     name: 'Standard_LRS'
   }
   kind: 'StorageV2'
-  properties: configureNetworkIsolation ? {
-    networkAcls: {
+  properties: {
+    allowSharedKeyAccess: false
+    networkAcls: configureNetworkIsolation ? {
       defaultAction: 'Deny'
       bypass: 'None'
       virtualNetworkRules: [
@@ -126,8 +127,10 @@ resource templateStorageAccountCreated 'Microsoft.Storage/storageAccounts@2022-0
           action: 'Allow'
         }
       ]
+    } : {
+      defaultAction: 'Allow'
     }
-  } : {}
+  }
 }
 
 resource templateStorageAccount 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01' = if (deployTemplateStore) {
