@@ -93,6 +93,8 @@ Sample response body
 
 ## Uploading Custom Templates to the Storage Account
 
+> **_NOTE:_** If using a Storage Account with Network Isolation enabled, see instructions [here](./storage-account-network-isolation.md#template-upload) on how to gain access to manually upload templates.
+
 Templates should be uploaded to the blob container as ```.liquid``` files. They can be stored in the root of the container, or organized into directories. The value passed in to the ```RootTemplateName``` field of the request body represents the path of the template file from the root of the blob container.
 
 For example, if the user intends to reference a custom template called ```sampleCustomTemplate.liquid```, which is located within the ```customTemplates1``` directory inside the ```template``` blob container, as shown below, the ```RootTemplateName``` should have value ```customTemplates1/sampleCustomTemplate```.
@@ -100,10 +102,6 @@ For example, if the user intends to reference a custom template called ```sample
 ![Blob Container](../images/convert-storagecontainer.png)
 
 ![Blob Container directory](../images/convert-storagecontainerdirectory.png)
-
-> **_NOTE:_** If you have network isolation enabled on your Storage Account, as outlined [here](./storage-account-network-isolation.md), you must manually configure a Firewall rule on your Storage Account to allow your Azure Portal client IP address access to the Storage Account so that you can upload templates to the Storage Account. To do so, first navigate to your Storage Account and click on the ```Networking``` blade under ```Security + networking```. Then in the ```Firewalls and virtual networks``` tab, under the ```Firewall``` section of the page, check the box next to "Add your client IP address" and press ```Save```. This will allow you to upload templates manually from your specific Azure Portal client.
-
-![Storage Account Client IP Firewall Rule](../images/client-ip-enabled.png)
 
 ## Summary
 

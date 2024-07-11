@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.54.24096",
-      "templateHash": "15707174306865936348"
+      "templateHash": "8166784596195198212"
     }
   },
   "parameters": {
@@ -198,7 +198,7 @@
         "10.0.0.0/20"
       ],
       "metadata": {
-        "description": "A list of address blocks reserved for the VirtualNetwork in CIDR notation. Only applicable when storageAccountNetworkIsolationEnabled is set to true. If using a custom value, be sure to review the important considerations for Virtual Network address blocks to avoid routing issues: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+        "description": "A list of address blocks reserved for the VirtualNetwork in CIDR notation. Only applicable when storageAccountNetworkIsolationEnabled is set to true. Be sure to review the FHIR Converter documentation on Enabling Storage Account Network Isolation is selecting a custom value."
       }
     },
     "subnetName": {
@@ -212,7 +212,7 @@
       "type": "string",
       "defaultValue": "10.0.0.0/23",
       "metadata": {
-        "description": "The address prefix for the subnet. Only applicable when storageAccountNetworkIsolationEnabled is set to true. If using a custom value, be sure to review the important considerations for Virtual Network address blocks to avoid routing issues: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+        "description": "The address prefix for the subnet. Only applicable when storageAccountNetworkIsolationEnabled is set to true. Be sure to review the FHIR Converter documentation on Enabling Storage Account Network Isolation is selecting a custom value."
       }
     }
   },
@@ -286,7 +286,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.54.24096",
-              "templateHash": "3439234684974520281"
+              "templateHash": "15129625204682629272"
             }
           },
           "parameters": {
@@ -380,14 +380,14 @@
             "configureNetworkIsolation": {
               "type": "bool",
               "metadata": {
-                "description": "When set to true, a virtual network will be created to isolate the storage account."
+                "description": "If set to true, a Virtual Network will be created and the Storage Account that is created will only be accessible by resources within the Virtual Network."
               }
             },
             "vnetName": {
               "type": "string",
               "defaultValue": "",
               "metadata": {
-                "description": "Name of the virtual network used to isolate the storage account."
+                "description": "Name of the Virtual Network."
               }
             },
             "vnetAddressPrefixes": {
@@ -396,21 +396,21 @@
                 "10.0.0.0/20"
               ],
               "metadata": {
-                "description": "A list of address blocks reserved for the VirtualNetwork in CIDR notation. If using a custom value, be sure to review the important considerations for Virtual Network address blocks to avoid routing issues: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+                "description": "A list of address blocks reserved for the VirtualNetwork in CIDR notation. See the FHIR Converter documentation for more information if choosing a custom value."
               }
             },
             "subnetName": {
               "type": "string",
               "defaultValue": "",
               "metadata": {
-                "description": "Name of the subnet in the virtual network with a Service Endpoint enabled for Storage Accounts."
+                "description": "Name of the subnet in the Virtual Network with a Service Endpoint enabled for Storage Accounts."
               }
             },
             "subnetAddressPrefix": {
               "type": "string",
               "defaultValue": "10.0.0.0/23",
               "metadata": {
-                "description": "The address prefix(es) for the subnet. Must be within the address space of the Virtual Network. If using a custom value, be sure to review the important considerations for Virtual Network address blocks to avoid routing issues: https://learn.microsoft.com/en-us/azure/virtual-network/virtual-networks-faq"
+                "description": "The address prefix(es) for the subnet. See the FHIR Converter documentation for more information if choosing a custom value."
               }
             }
           },
@@ -571,7 +571,7 @@
             "value": "[parameters('applicationInsightsEnabled')]"
           },
           "keyVaultName": {
-            "value": "[reference(extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('dependentResourceDeploy_{0}', parameters('timestamp'))), '2022-09-01').outputs.keyVaultName.value]"
+            "value": "[parameters('keyVaultName')]"
           },
           "linkToVnet": {
             "value": "[parameters('storageAccountNetworkIsolationEnabled')]"
@@ -668,7 +668,7 @@
               "type": "string",
               "defaultValue": "default",
               "metadata": {
-                "description": "The name of the subnet in the virtual network. Only applicable if linkToVnet is set to true."
+                "description": "The name of the subnet in the Virtual Network. Only applicable if linkToVnet is set to true."
               }
             }
           },
