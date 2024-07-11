@@ -89,6 +89,11 @@ The table below outlines the parameters that can be configured through any of th
 | securityEnabled | boolean | No | Enable or disable security settings for the APIs. | false |
 | securityAuthenticationAudiences | array of strings | No | The audiences for the API authentication. If securityEnabled is set to true, this parameter must have a value provided. | empty array |
 | securityAuthenticationAuthority | string | No | The authority for the API authentication. If securityEnabled is set to true, this parameter must have a value provided. | empty string |
+| storageAccountNetworkIsolationEnabled | boolean | No | This is an optional security enhancement. If set to true, the template Storage Account will only be accessible to resources within a specified Virtual Network (one will be created if it doesn't already exist), and the Container Apps environment will be deployed on the Virtual Network so that it can access the Storage Account. | false |
+| vnetName | string | No | The name of the Virtual Network that the Storage Account and Container Apps environment will be linked to if storageAccountNetworkIsolationEnabled is set to true. If the specified Virtual Network doesn't already exist, one will be created. | serviceName + "-vnet" | 
+| vnetAddressPrefixes | array of strings | No | A list of address blocks reserved for the Virtual Network in CIDR notation. Only applicable when storageAccountNetworkIsolationEnabled is set to true. If using a custom value or provisioning multiple Virtual Networks within the same Resource Group, be sure to review the [important considerations](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-vnet-plan-design-arm). | [ '10.0.0.0/20' ] |
+| subnetName | string | No | The name of the subnet in the Virtual Network to be linked to the Storage Account and Container Apps environment. If no subnet with the specified name exists, one will be created. Only applicable when storageAccountNetworkIsolationEnabled is set to true. | "default" |
+| subnetAddressPrefix | string | No | The address prefix for the subnet in CIDR notation. Only applicable when storageAccountNetworkIsolationEnabled is set to true. If using a custom value, be sure to review the [important considerations](https://learn.microsoft.com/en-us/azure/virtual-network/virtual-network-vnet-plan-design-arm). | | "10.0.0.0/23" |
 
 ### Deployment options
 
@@ -147,8 +152,8 @@ In addition to the parameters listed for the [FhirConverter-SingleAzureDeploy](.
 | --- | --- | --- | --- | --- |
 | containerAppEnvName | string | Yes | The name of an existing Container Apps Environment to deploy the Container App to. | N/A |
 | containerAppName | string | Yes | The name of the Container App to provision. | N/A |
-| applicationInsightsUserAssignedIdentityName | string | The name of the User-Assigned Managed Identity to be used by the Container App to access Application Insights | If using Application Insights to collect logs and metrics, then yes. Otherwise, no. | empty string |
-| applicationInsightsConnectionStringSecretName | string | The resource **name** of the [secret](https://learn.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal) in the Key Vault containing the [Application Insights connection string](https://learn.microsoft.com/en-us/azure/azure-monitor/app/sdk-connection-string?tabs=dotnet5#find-your-connection-string). | If using Application Insights to collect logs and metrics, then yes. Otherwise, no. | empty string |
+| applicationInsightsUserAssignedIdentityName | string | If using Application Insights to collect logs and metrics, then yes. Otherwise, no. | The name of the User-Assigned Managed Identity to be used by the Container App to access Application Insights | empty string |
+| applicationInsightsConnectionStringSecretName | string | If using Application Insights to collect logs and metrics, then yes. Otherwise, no. | The resource **name** of the [secret](https://learn.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal) in the Key Vault containing the [Application Insights connection string](https://learn.microsoft.com/en-us/azure/azure-monitor/app/sdk-connection-string?tabs=dotnet5#find-your-connection-string). | empty string |
 
 > [!Note]
 > * 'serviceName' is not accepted as a parameter.

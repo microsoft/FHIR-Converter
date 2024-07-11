@@ -118,18 +118,19 @@ resource templateStorageAccountCreated 'Microsoft.Storage/storageAccounts@2022-0
   kind: 'StorageV2'
   properties: {
     allowSharedKeyAccess: false
-    properties: configureNetworkIsolation ? {
-      networkAcls: {
-        defaultAction: 'Deny'
-        bypass: 'AzureServices'
-        virtualNetworkRules: [
-          {
-            id: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetwork.name, subnetName)
-            action: 'Allow'
-          }
-        ]
-      }
-    } : {}
+    networkAcls: configureNetworkIsolation ? {
+      defaultAction: 'Deny'
+      bypass: 'None'
+      virtualNetworkRules: [
+        {
+          id: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetwork.name, subnetName)
+          action: 'Allow'
+        }
+      ]
+    } : {
+      defaultAction: 'Allow'
+    }
+  }
 }
 
 resource templateStorageAccount 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01' = if (deployTemplateStore) {
