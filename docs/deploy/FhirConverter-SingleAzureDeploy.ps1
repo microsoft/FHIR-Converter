@@ -88,7 +88,7 @@ param
 
     [string]$vnetName = "$($serviceName)-vnet",
 
-    [string[]]$vnetAddressPrefixes = @('10.0.0.0/20'),
+    [string[]]$vnetAddressPrefixes = @("10.0.0.0/20"),
 
     [string]$subnetName = "default",
 
