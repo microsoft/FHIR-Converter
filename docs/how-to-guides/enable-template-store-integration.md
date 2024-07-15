@@ -93,6 +93,8 @@ Sample response body
 
 ## Uploading Custom Templates to the Storage Account
 
+> **_NOTE:_** If using a Storage Account with Network Isolation enabled, see instructions [here](./storage-account-network-isolation.md#template-upload) on how to gain access to manually upload templates.
+
 Templates should be uploaded to the blob container as ```.liquid``` files. They can be stored in the root of the container, or organized into directories. The value passed in to the ```RootTemplateName``` field of the request body represents the path of the template file from the root of the blob container.
 
 For example, if the user intends to reference a custom template called ```sampleCustomTemplate.liquid```, which is located within the ```customTemplates1``` directory inside the ```template``` blob container, as shown below, the ```RootTemplateName``` should have value ```customTemplates1/sampleCustomTemplate```.

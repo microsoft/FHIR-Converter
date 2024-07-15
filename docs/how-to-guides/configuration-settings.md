@@ -30,8 +30,7 @@ The following are sample deployment commands for configuring template store inte
 
 Option 2 (bicep):
 ```
-az deployment sub create --location <Location> --name <A custom name for your deployment> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters templateStoreIntegrationEnabled=true templateStorageAccountName="<Storage_Account_name>" templateStorageAccountContainerName="<Storage_Account
--Container_name>"
+az deployment sub create --location <Location> --name <A custom name for your deployment> --template-file FhirConverter-SingleAzureDeploy.bicep --parameters templateStoreIntegrationEnabled=true templateStorageAccountName="<Storage_Account_name>" templateStorageAccountContainerName="<Storage_Account_Container_name>"
 ```
 
 Option 3 (PowerShell):

@@ -82,7 +82,17 @@ param
 
     [string[]]$securityAuthenticationAudiences = @(),
 
-    [string]$securityAuthenticationAuthority = ""
+    [string]$securityAuthenticationAuthority = "",
+
+    [bool]$storageAccountNetworkIsolationEnabled = $false,
+
+    [string]$vnetName = "$($serviceName)-vnet",
+
+    [string[]]$vnetAddressPrefixes = @("10.0.0.0/20"),
+
+    [string]$subnetName = "default",
+
+    [string]$subnetAddressPrefix = "10.0.0.0/23"
 )
 
 Set-StrictMode -Version Latest
@@ -121,6 +131,7 @@ Write-Host "Deploying FHIR converter service..."
 
 $templateFile = "FhirConverter-SingleAzureDeploy.bicep"
 $securityAuthenticationAudiencesArray = "['" + ($securityAuthenticationAudiences -join "','") + "']"
+$vnetAddressPrefixesArray = "['" + ($vnetAddressPrefixes -join "','") + "']"
 
 az deployment sub create `
     --location $location `
@@ -146,6 +157,11 @@ az deployment sub create `
         keyVaultUserAssignedIdentityName=$keyVaultUserAssignedIdentityName `
         securityEnabled=$securityEnabled `
         securityAuthenticationAudiences=$securityAuthenticationAudiencesArray `
-        securityAuthenticationAuthority=$securityAuthenticationAuthority
+        securityAuthenticationAuthority=$securityAuthenticationAuthority `
+        storageAccountNetworkIsolationEnabled=$storageAccountNetworkIsolationEnabled `
+        vnetName=$vnetName `
+        vnetAddressPrefixes=$vnetAddressPrefixesArray `
+        subnetName=$subnetName `
+        subnetAddressPrefix=$subnetAddressPrefix `
 
 Write-Host "Deployment complete."

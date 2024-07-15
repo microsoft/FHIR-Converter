@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.26.54.24096",
-      "templateHash": "12546413749549776811"
+      "templateHash": "8166784596195198212"
     }
   },
   "parameters": {
@@ -168,14 +168,51 @@
       "type": "array",
       "defaultValue": [],
       "metadata": {
-        "description": "Audiences for the api authentication."
+        "description": "Audiences for the api authentication. Only applicable when securityEnabled is set to true."
       }
     },
     "securityAuthenticationAuthority": {
       "type": "string",
       "defaultValue": "",
       "metadata": {
-        "description": "Authority for the api authentication."
+        "description": "Authority for the api authentication. Only applicable when securityEnabled is set to true."
+      }
+    },
+    "storageAccountNetworkIsolationEnabled": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "When set to true, the template Storage Account will only accept network traffic from within the specified Virtual Network, which the Container Apps environment will be onboarded to."
+      }
+    },
+    "vnetName": {
+      "type": "string",
+      "defaultValue": "[format('{0}-vnet', parameters('serviceName'))]",
+      "metadata": {
+        "description": "The name of the Virtual Network linked to the Container Apps Environment and used to isolate the Storage Account. Only applicable when storageAccountNetworkIsolationEnabled is set to true."
+      }
+    },
+    "vnetAddressPrefixes": {
+      "type": "array",
+      "defaultValue": [
+        "10.0.0.0/20"
+      ],
+      "metadata": {
+        "description": "A list of address blocks reserved for the VirtualNetwork in CIDR notation. Only applicable when storageAccountNetworkIsolationEnabled is set to true. Be sure to review the FHIR Converter documentation on Enabling Storage Account Network Isolation is selecting a custom value."
+      }
+    },
+    "subnetName": {
+      "type": "string",
+      "defaultValue": "default",
+      "metadata": {
+        "description": "The name of the subnet in the virtual network. Only applicable when storageAccountNetworkIsolationEnabled is set to true."
+      }
+    },
+    "subnetAddressPrefix": {
+      "type": "string",
+      "defaultValue": "10.0.0.0/23",
+      "metadata": {
+        "description": "The address prefix for the subnet. Only applicable when storageAccountNetworkIsolationEnabled is set to true. Be sure to review the FHIR Converter documentation on Enabling Storage Account Network Isolation is selecting a custom value."
       }
     }
   },
@@ -225,6 +262,21 @@
           },
           "keyVaultUserAssignedIdentityName": {
             "value": "[parameters('keyVaultUserAssignedIdentityName')]"
+          },
+          "configureNetworkIsolation": {
+            "value": "[parameters('storageAccountNetworkIsolationEnabled')]"
+          },
+          "vnetName": {
+            "value": "[parameters('vnetName')]"
+          },
+          "vnetAddressPrefixes": {
+            "value": "[parameters('vnetAddressPrefixes')]"
+          },
+          "subnetName": {
+            "value": "[parameters('subnetName')]"
+          },
+          "subnetAddressPrefix": {
+            "value": "[parameters('subnetAddressPrefix')]"
           }
         },
         "template": {
@@ -234,7 +286,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.54.24096",
-              "templateHash": "5567454211566534226"
+              "templateHash": "15129625204682629272"
             }
           },
           "parameters": {
@@ -324,12 +376,73 @@
               "metadata": {
                 "description": "Name of the user-assigned managed identity to be deployed for accessing the key vault."
               }
+            },
+            "configureNetworkIsolation": {
+              "type": "bool",
+              "metadata": {
+                "description": "If set to true, a Virtual Network will be created and the Storage Account that is created will only be accessible by resources within the Virtual Network."
+              }
+            },
+            "vnetName": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Name of the Virtual Network."
+              }
+            },
+            "vnetAddressPrefixes": {
+              "type": "array",
+              "defaultValue": [
+                "10.0.0.0/20"
+              ],
+              "metadata": {
+                "description": "A list of address blocks reserved for the VirtualNetwork in CIDR notation. See the FHIR Converter documentation for more information if choosing a custom value."
+              }
+            },
+            "subnetName": {
+              "type": "string",
+              "defaultValue": "",
+              "metadata": {
+                "description": "Name of the subnet in the Virtual Network with a Service Endpoint enabled for Storage Accounts."
+              }
+            },
+            "subnetAddressPrefix": {
+              "type": "string",
+              "defaultValue": "10.0.0.0/23",
+              "metadata": {
+                "description": "The address prefix(es) for the subnet. See the FHIR Converter documentation for more information if choosing a custom value."
+              }
             }
           },
           "variables": {
             "kvSecretUserRole": "4633458b-17de-408a-b874-0445c86b69e6"
           },
           "resources": [
+            {
+              "condition": "[parameters('configureNetworkIsolation')]",
+              "type": "Microsoft.Network/virtualNetworks",
+              "apiVersion": "2023-11-01",
+              "name": "[parameters('vnetName')]",
+              "location": "[parameters('location')]",
+              "properties": {
+                "addressSpace": {
+                  "addressPrefixes": "[parameters('vnetAddressPrefixes')]"
+                },
+                "subnets": [
+                  {
+                    "name": "[parameters('subnetName')]",
+                    "properties": {
+                      "addressPrefix": "[parameters('subnetAddressPrefix')]",
+                      "serviceEndpoints": [
+                        {
+                          "service": "Microsoft.Storage"
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
             {
               "condition": "[parameters('deployTemplateStore')]",
               "type": "Microsoft.Storage/storageAccounts",
@@ -340,7 +453,13 @@
                 "name": "Standard_LRS"
               },
               "kind": "StorageV2",
-              "properties": {}
+              "properties": {
+                "allowSharedKeyAccess": false,
+                "networkAcls": "[if(parameters('configureNetworkIsolation'), createObject('defaultAction', 'Deny', 'bypass', 'None', 'virtualNetworkRules', createArray(createObject('id', resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName')), 'action', 'Allow'))), createObject('defaultAction', 'Allow'))]"
+              },
+              "dependsOn": [
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('vnetName'))]"
+              ]
             },
             {
               "condition": "[parameters('deployTemplateStore')]",
@@ -415,6 +534,14 @@
             "keyVaultUAMIName": {
               "type": "string",
               "value": "[if(parameters('deployKeyVault'), if(parameters('deployKeyVault'), parameters('keyVaultUserAssignedIdentityName'), 'default'), '')]"
+            },
+            "virtualNetworkName": {
+              "type": "string",
+              "value": "[if(parameters('configureNetworkIsolation'), parameters('vnetName'), '')]"
+            },
+            "subnetName": {
+              "type": "string",
+              "value": "[if(parameters('configureNetworkIsolation'), parameters('subnetName'), '')]"
             }
           }
         }
@@ -445,6 +572,15 @@
           },
           "keyVaultName": {
             "value": "[parameters('keyVaultName')]"
+          },
+          "linkToVnet": {
+            "value": "[parameters('storageAccountNetworkIsolationEnabled')]"
+          },
+          "cAppEnvVnetName": {
+            "value": "[parameters('vnetName')]"
+          },
+          "cAppEnvSubnetName": {
+            "value": "[parameters('subnetName')]"
           }
         },
         "template": {
@@ -454,7 +590,7 @@
             "_generator": {
               "name": "bicep",
               "version": "0.26.54.24096",
-              "templateHash": "12144000305921329618"
+              "templateHash": "7505711516672190922"
             }
           },
           "parameters": {
@@ -512,6 +648,27 @@
               "defaultValue": "default",
               "metadata": {
                 "description": "The name of the Key Vault to store the Application Insights connection string secret."
+              }
+            },
+            "linkToVnet": {
+              "type": "bool",
+              "defaultValue": false,
+              "metadata": {
+                "description": "If set to true, the Container Apps Environment will be linked to the Virtual Network."
+              }
+            },
+            "cAppEnvVnetName": {
+              "type": "string",
+              "defaultValue": "[format('{0}-vnet', parameters('envName'))]",
+              "metadata": {
+                "description": "The name of the Virtual Network linked to the Container Apps Environment. Only applicable if linkToVnet is set to true."
+              }
+            },
+            "cAppEnvSubnetName": {
+              "type": "string",
+              "defaultValue": "default",
+              "metadata": {
+                "description": "The name of the subnet in the Virtual Network. Only applicable if linkToVnet is set to true."
               }
             }
           },
@@ -601,7 +758,8 @@
                     "customerId": "[reference(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName')), '2020-03-01-preview').customerId]",
                     "sharedKey": "[listKeys(resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName')), '2020-03-01-preview').primarySharedKey]"
                   }
-                }
+                },
+                "vnetConfiguration": "[if(parameters('linkToVnet'), createObject('internal', false(), 'infrastructureSubnetId', resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('cAppEnvVnetName'), parameters('cAppEnvSubnetName'))), null())]"
               },
               "dependsOn": [
                 "[resourceId('Microsoft.OperationalInsights/workspaces', variables('logAnalyticsWorkspaceName'))]"
@@ -633,6 +791,7 @@
         }
       },
       "dependsOn": [
+        "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', subscription().subscriptionId, parameters('resourceGroupName')), 'Microsoft.Resources/deployments', format('dependentResourceDeploy_{0}', parameters('timestamp')))]",
         "[subscriptionResourceId('Microsoft.Resources/resourceGroups', parameters('resourceGroupName'))]"
       ]
     },

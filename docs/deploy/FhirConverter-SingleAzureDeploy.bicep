@@ -93,11 +93,26 @@ param keyVaultUserAssignedIdentityName string = '${serviceName}-kv-identity'
 @description('If set to true, security requirements will be enabled on the API endpoint. This is strongly recommended.')
 param securityEnabled bool = false
 
-@description('Audiences for the api authentication.')
+@description('Audiences for the api authentication. Only applicable when securityEnabled is set to true.')
 param securityAuthenticationAudiences array = []
 
-@description('Authority for the api authentication.')
+@description('Authority for the api authentication. Only applicable when securityEnabled is set to true.')
 param securityAuthenticationAuthority string = ''
+
+@description('When set to true, the template Storage Account will only accept network traffic from within the specified Virtual Network, which the Container Apps environment will be onboarded to.')
+param storageAccountNetworkIsolationEnabled bool = false
+
+@description('The name of the Virtual Network linked to the Container Apps Environment and used to isolate the Storage Account. Only applicable when storageAccountNetworkIsolationEnabled is set to true.')
+param vnetName string = '${serviceName}-vnet'
+
+@description('A list of address blocks reserved for the VirtualNetwork in CIDR notation. Only applicable when storageAccountNetworkIsolationEnabled is set to true. Be sure to review the FHIR Converter documentation on Enabling Storage Account Network Isolation is selecting a custom value.')
+param vnetAddressPrefixes array = [ '10.0.0.0/20' ]
+
+@description('The name of the subnet in the virtual network. Only applicable when storageAccountNetworkIsolationEnabled is set to true.')
+param subnetName string = 'default'
+
+@description('The address prefix for the subnet. Only applicable when storageAccountNetworkIsolationEnabled is set to true. Be sure to review the FHIR Converter documentation on Enabling Storage Account Network Isolation is selecting a custom value.')
+param subnetAddressPrefix string = '10.0.0.0/23'
 
 var deploymentTemplateVersion = '1'
 
@@ -124,6 +139,11 @@ module dependentResourceDeploy 'Deploy-DependentResources.bicep' = if (templateS
     deployKeyVault: deployKeyVault
     keyVaultName: keyVaultName
     keyVaultUserAssignedIdentityName: keyVaultUserAssignedIdentityName
+    configureNetworkIsolation: storageAccountNetworkIsolationEnabled
+    vnetName: vnetName
+    vnetAddressPrefixes: vnetAddressPrefixes
+    subnetName: subnetName
+    subnetAddressPrefix: subnetAddressPrefix
   }
 }
 
@@ -136,7 +156,13 @@ module convertInfrastructureDeploy 'Deploy-Infrastructure.bicep' = {
     envName: containerAppEnvName
     deployApplicationInsights: applicationInsightsEnabled
     keyVaultName: keyVaultName
+    linkToVnet: storageAccountNetworkIsolationEnabled
+    cAppEnvVnetName: vnetName
+    cAppEnvSubnetName: subnetName
   }
+  dependsOn: [
+    dependentResourceDeploy
+  ]
 }
 
 // Deploy the container app

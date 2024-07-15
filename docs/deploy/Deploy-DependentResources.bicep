@@ -69,6 +69,46 @@ param keyVaultName string = ''
 @description('Name of the user-assigned managed identity to be deployed for accessing the key vault.')
 param keyVaultUserAssignedIdentityName string = ''
 
+@description('If set to true, a Virtual Network will be created and the Storage Account that is created will only be accessible by resources within the Virtual Network.')
+param configureNetworkIsolation bool
+
+@description('Name of the Virtual Network.')
+param vnetName string = ''
+
+@description('A list of address blocks reserved for the VirtualNetwork in CIDR notation. See the FHIR Converter documentation for more information if choosing a custom value.')
+param vnetAddressPrefixes array = [ '10.0.0.0/20' ]
+
+@description('Name of the subnet in the Virtual Network with a Service Endpoint enabled for Storage Accounts.')
+param subnetName string = ''
+
+@description('The address prefix(es) for the subnet. See the FHIR Converter documentation for more information if choosing a custom value.')
+param subnetAddressPrefix string = '10.0.0.0/23'
+
+// Create Virtual Network for Container Apps Environment to enable Storage Account network isolation
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-11-01' = if (configureNetworkIsolation) {
+  name: vnetName
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: vnetAddressPrefixes
+    }
+    subnets: [
+      {
+        name: subnetName
+        properties: {
+          addressPrefix: subnetAddressPrefix
+          serviceEndpoints:[
+            {
+              service: 'Microsoft.Storage'
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
+
+// create Storage Account
 resource templateStorageAccountCreated 'Microsoft.Storage/storageAccounts@2022-09-01' = if (deployTemplateStore) {
   name: deployTemplateStore ? templateStorageAccountName : 'default'
   location: location
@@ -78,6 +118,18 @@ resource templateStorageAccountCreated 'Microsoft.Storage/storageAccounts@2022-0
   kind: 'StorageV2'
   properties: {
     allowSharedKeyAccess: false
+    networkAcls: configureNetworkIsolation ? {
+      defaultAction: 'Deny'
+      bypass: 'None'
+      virtualNetworkRules: [
+        {
+          id: resourceId('Microsoft.Network/virtualNetworks/subnets', virtualNetwork.name, subnetName)
+          action: 'Allow'
+        }
+      ]
+    } : {
+      defaultAction: 'Allow'
+    }
   }
 }
 
@@ -124,3 +176,5 @@ output templateStorageAccountName string = deployTemplateStore ? templateStorage
 output templateStorageAccountContainerName string = deployTemplateStore ? templateStorageAccountContainer.name : ''
 output keyVaultName string = deployKeyVault ? keyVault.name : ''
 output keyVaultUAMIName string = deployKeyVault ? keyVaultUserAssignedIdentity.name : ''
+output virtualNetworkName string = configureNetworkIsolation ? virtualNetwork.name : ''
+output subnetName string = configureNetworkIsolation ? subnetName : ''
