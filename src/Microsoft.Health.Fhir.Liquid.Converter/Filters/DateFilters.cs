@@ -4,6 +4,8 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Globalization;
+using System.Linq;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 
@@ -94,6 +96,41 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         public static string Now(string input, string format = "yyyy-MM-ddTHH:mm:ss.FFFZ")
         {
             return DateTime.UtcNow.ToString(format);
+        }
+
+        /* Converts an HL7v2 time to the FHIR format for time
+        /    HL7v2 - 2.8.35.2 Explicit time interval (ST). Format: HHmm
+        /    HL7v2 - 2.4.5.6 TM time. Format: HHMM[SS[.SSSS]][+/-ZZZZ]
+        /    FHIR  - time https://build.fhir.org/datatypes.html#time
+        */
+        public static string FormatTimeWithColon(string input, string inputFormat, string timeZoneHandling = "preserve", bool suppressParsingError = false)
+        {
+            if (!Enum.TryParse(timeZoneHandling, true, out TimeZoneHandlingMethod outputTimeZoneHandling))
+            {
+                throw new RenderException(FhirConverterErrorCode.InvalidTimeZoneHandling, Resources.InvalidTimeZoneHandling);
+            }
+
+            var dt = TimeSpan.Zero;
+            try
+            {
+                dt = outputTimeZoneHandling switch
+                {
+                    TimeZoneHandlingMethod.Preserve => DateTimeOffset.ParseExact(input, inputFormat, CultureInfo.InvariantCulture).TimeOfDay,
+                    TimeZoneHandlingMethod.Utc => DateTimeOffset.ParseExact(input, inputFormat, CultureInfo.InvariantCulture).ToUniversalTime().TimeOfDay,
+                    _ => throw new ArgumentException(Resources.InvalidTimeZoneHandling),
+                };
+            }
+            catch (Exception)
+            {
+                if (suppressParsingError)
+                {
+                    return input;
+                }
+
+                throw new RenderException(FhirConverterErrorCode.InvalidDateTimeFormat, string.Format(Resources.InvalidDateTimeFormat, input));
+            }
+
+            return dt.ToString();
         }
 
         public static string FormatAsHl7v2DateTime(string input, string timeZoneHandling = "preserve")
