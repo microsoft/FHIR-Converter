@@ -24,6 +24,71 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Health.Fhir.Templ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Microsoft.Health.Fhir.Liquid.Converter.Benchmark", "src\Microsoft.Health.Fhir.Liquid.Converter.Benchmark\Microsoft.Health.Fhir.Liquid.Converter.Benchmark.csproj", "{14F6E697-008A-4BB6-944A-2568B667E72A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "data", "data", "{ECCE1F6D-8D37-4403-AA0F-7DCBFC9FE752}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{A5D1F9E4-69EB-4B80-B358-2C43C4014DD0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Hl7v2", "Hl7v2", "{6EBAFD2D-240C-4044-B2AD-6CD69BE24981}"
+	ProjectSection(SolutionItems) = preProject
+		data\Templates\Hl7v2\ADT_A01.liquid = data\Templates\Hl7v2\ADT_A01.liquid
+		data\Templates\Hl7v2\ADT_A02.liquid = data\Templates\Hl7v2\ADT_A02.liquid
+		data\Templates\Hl7v2\ADT_A03.liquid = data\Templates\Hl7v2\ADT_A03.liquid
+		data\Templates\Hl7v2\ADT_A04.liquid = data\Templates\Hl7v2\ADT_A04.liquid
+		data\Templates\Hl7v2\ADT_A05.liquid = data\Templates\Hl7v2\ADT_A05.liquid
+		data\Templates\Hl7v2\ADT_A06.liquid = data\Templates\Hl7v2\ADT_A06.liquid
+		data\Templates\Hl7v2\ADT_A07.liquid = data\Templates\Hl7v2\ADT_A07.liquid
+		data\Templates\Hl7v2\ADT_A08.liquid = data\Templates\Hl7v2\ADT_A08.liquid
+		data\Templates\Hl7v2\ADT_A09.liquid = data\Templates\Hl7v2\ADT_A09.liquid
+		data\Templates\Hl7v2\ADT_A10.liquid = data\Templates\Hl7v2\ADT_A10.liquid
+		data\Templates\Hl7v2\ADT_A11.liquid = data\Templates\Hl7v2\ADT_A11.liquid
+		data\Templates\Hl7v2\ADT_A13.liquid = data\Templates\Hl7v2\ADT_A13.liquid
+		data\Templates\Hl7v2\ADT_A14.liquid = data\Templates\Hl7v2\ADT_A14.liquid
+		data\Templates\Hl7v2\ADT_A15.liquid = data\Templates\Hl7v2\ADT_A15.liquid
+		data\Templates\Hl7v2\ADT_A16.liquid = data\Templates\Hl7v2\ADT_A16.liquid
+		data\Templates\Hl7v2\ADT_A25.liquid = data\Templates\Hl7v2\ADT_A25.liquid
+		data\Templates\Hl7v2\ADT_A26.liquid = data\Templates\Hl7v2\ADT_A26.liquid
+		data\Templates\Hl7v2\ADT_A27.liquid = data\Templates\Hl7v2\ADT_A27.liquid
+		data\Templates\Hl7v2\ADT_A28.liquid = data\Templates\Hl7v2\ADT_A28.liquid
+		data\Templates\Hl7v2\ADT_A29.liquid = data\Templates\Hl7v2\ADT_A29.liquid
+		data\Templates\Hl7v2\ADT_A31.liquid = data\Templates\Hl7v2\ADT_A31.liquid
+		data\Templates\Hl7v2\ADT_A40.liquid = data\Templates\Hl7v2\ADT_A40.liquid
+		data\Templates\Hl7v2\ADT_A41.liquid = data\Templates\Hl7v2\ADT_A41.liquid
+		data\Templates\Hl7v2\ADT_A45.liquid = data\Templates\Hl7v2\ADT_A45.liquid
+		data\Templates\Hl7v2\ADT_A47.liquid = data\Templates\Hl7v2\ADT_A47.liquid
+		data\Templates\Hl7v2\ADT_A60.liquid = data\Templates\Hl7v2\ADT_A60.liquid
+		data\Templates\Hl7v2\BAR_P01.liquid = data\Templates\Hl7v2\BAR_P01.liquid
+		data\Templates\Hl7v2\BAR_P02.liquid = data\Templates\Hl7v2\BAR_P02.liquid
+		data\Templates\Hl7v2\BAR_P12.liquid = data\Templates\Hl7v2\BAR_P12.liquid
+		data\Templates\Hl7v2\DFT_P03.liquid = data\Templates\Hl7v2\DFT_P03.liquid
+		data\Templates\Hl7v2\DFT_P11.liquid = data\Templates\Hl7v2\DFT_P11.liquid
+		data\Templates\Hl7v2\MDM_T01.liquid = data\Templates\Hl7v2\MDM_T01.liquid
+		data\Templates\Hl7v2\MDM_T02.liquid = data\Templates\Hl7v2\MDM_T02.liquid
+		data\Templates\Hl7v2\MDM_T05.liquid = data\Templates\Hl7v2\MDM_T05.liquid
+		data\Templates\Hl7v2\MDM_T06.liquid = data\Templates\Hl7v2\MDM_T06.liquid
+		data\Templates\Hl7v2\MDM_T09.liquid = data\Templates\Hl7v2\MDM_T09.liquid
+		data\Templates\Hl7v2\MDM_T10.liquid = data\Templates\Hl7v2\MDM_T10.liquid
+		data\Templates\Hl7v2\OMG_O19.liquid = data\Templates\Hl7v2\OMG_O19.liquid
+		data\Templates\Hl7v2\OML_O21.liquid = data\Templates\Hl7v2\OML_O21.liquid
+		data\Templates\Hl7v2\ORM_O01.liquid = data\Templates\Hl7v2\ORM_O01.liquid
+		data\Templates\Hl7v2\ORU_R01.liquid = data\Templates\Hl7v2\ORU_R01.liquid
+		data\Templates\Hl7v2\OUL_R22.liquid = data\Templates\Hl7v2\OUL_R22.liquid
+		data\Templates\Hl7v2\OUL_R23.liquid = data\Templates\Hl7v2\OUL_R23.liquid
+		data\Templates\Hl7v2\OUL_R24.liquid = data\Templates\Hl7v2\OUL_R24.liquid
+		data\Templates\Hl7v2\RDE_O11.liquid = data\Templates\Hl7v2\RDE_O11.liquid
+		data\Templates\Hl7v2\RDE_O25.liquid = data\Templates\Hl7v2\RDE_O25.liquid
+		data\Templates\Hl7v2\RDS_O13.liquid = data\Templates\Hl7v2\RDS_O13.liquid
+		data\Templates\Hl7v2\REF_I12.liquid = data\Templates\Hl7v2\REF_I12.liquid
+		data\Templates\Hl7v2\REF_I14.liquid = data\Templates\Hl7v2\REF_I14.liquid
+		data\Templates\Hl7v2\SIU_S12.liquid = data\Templates\Hl7v2\SIU_S12.liquid
+		data\Templates\Hl7v2\SIU_S13.liquid = data\Templates\Hl7v2\SIU_S13.liquid
+		data\Templates\Hl7v2\SIU_S14.liquid = data\Templates\Hl7v2\SIU_S14.liquid
+		data\Templates\Hl7v2\SIU_S15.liquid = data\Templates\Hl7v2\SIU_S15.liquid
+		data\Templates\Hl7v2\SIU_S16.liquid = data\Templates\Hl7v2\SIU_S16.liquid
+		data\Templates\Hl7v2\SIU_S17.liquid = data\Templates\Hl7v2\SIU_S17.liquid
+		data\Templates\Hl7v2\SIU_S26.liquid = data\Templates\Hl7v2\SIU_S26.liquid
+		data\Templates\Hl7v2\VXU_V04.liquid = data\Templates\Hl7v2\VXU_V04.liquid
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +130,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ECCE1F6D-8D37-4403-AA0F-7DCBFC9FE752} = {FB441B10-F38D-40E7-B2B4-D8424DA1D595}
+		{A5D1F9E4-69EB-4B80-B358-2C43C4014DD0} = {ECCE1F6D-8D37-4403-AA0F-7DCBFC9FE752}
+		{6EBAFD2D-240C-4044-B2AD-6CD69BE24981} = {A5D1F9E4-69EB-4B80-B358-2C43C4014DD0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DF59726B-5E9A-43A5-B927-F2ECF15508AC}

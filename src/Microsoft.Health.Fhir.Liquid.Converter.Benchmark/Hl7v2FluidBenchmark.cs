@@ -4,39 +4,29 @@
 // -------------------------------------------------------------------------------------------------
 
 using BenchmarkDotNet.Attributes;
-using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
+using Fluid;
+using Microsoft.Health.Fhir.Liquid.Converter.Fluid;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
-using Microsoft.Health.Fhir.Liquid.Converter.Processors;
-using Microsoft.Health.Fhir.TemplateManagement.Configurations;
-using Microsoft.Health.Fhir.TemplateManagement.Factory;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Benchmark
 {
-    [SimpleJob(launchCount: 1, warmupCount: 1, iterationCount: 10, invocationCount: 10)]
-    [MemoryDiagnoser]
-    public class Hl7v2Benchmark
+    // [SimpleJob(launchCount: 1, warmupCount: 1, iterationCount: 10, invocationCount: 10)]
+    // [MemoryDiagnoser]
+    public class Hl7v2FluidBenchmark
     {
         private string? _template;
         private string? _data;
         private readonly Hl7v2TraceInfo _traceInfo;
-        private readonly Hl7v2Processor _processor;
-        private readonly ITemplateProvider _templateProvider;
+        private readonly FluidHl7v2Processor _processor;
+        private readonly ITemplateProvider<IFluidTemplate> _templateProvider;
 
-        public Hl7v2Benchmark()
+        public Hl7v2FluidBenchmark()
         {
             _traceInfo = new Hl7v2TraceInfo();
-            _processor = new Hl7v2Processor(new ProcessorSettings(), FhirConverterLogging.CreateLogger<Hl7v2Processor>());
+            _processor = new FluidHl7v2Processor(new ProcessorSettings(), FhirConverterLogging.CreateLogger<FluidHl7v2Processor>());
 
-            // Build template collection from embedded default template resources
-            var templateCollection = new ConvertDataTemplateCollectionProviderFactory(new MemoryCache(new MemoryCacheOptions()), Options.Create(new TemplateCollectionConfiguration()))
-                .CreateTemplateCollectionProvider()
-                .GetTemplateCollectionAsync(CancellationToken.None)
-                .GetAwaiter()
-                .GetResult();
-
-            _templateProvider = new TemplateProvider(templateCollection, isDefaultTemplateProvider: true);
+            _templateProvider = new SimpleFileSystemTemplateProvider(new DirectoryInfo(BenchmarkUtils.Hl7v2TemplateDirectory));
         }
 
         [ParamsSource(nameof(GetTests))]

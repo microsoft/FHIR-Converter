@@ -7,8 +7,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Benchmark
 {
     public static class BenchmarkUtils
     {
-        private static readonly string DataDirectory = GetDataDirectory();
-        private static readonly string SampleDataDirectory = Path.Join(DataDirectory, "SampleData");
+        public static readonly string DataDirectory = GetDataDirectory();
+        public static readonly string TemplateDirectory = Path.Join(DataDirectory, "Templates");
+        public static readonly string Hl7v2TemplateDirectory = Path.Join(TemplateDirectory, "Hl7v2");
+        public static readonly string SampleDataDirectory = Path.Join(DataDirectory, "SampleData");
+
         private static readonly Dictionary<string, (string template, string datafile)> Hl7v2TemplatesAndData = GetHl7v2TemplatesAndDataFilenames();
 
         private const string DataDirectoryName = "data";
