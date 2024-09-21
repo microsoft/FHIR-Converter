@@ -3,19 +3,16 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
-using System;
-using System.Threading.Tasks;
-using Fluid;
-using Fluid.Ast;
-using Fluid.Values;
+using System.Collections.Generic;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Fluid.Tags
 {
-    internal class Evaluate : Expression
+    internal struct EvaluateTag
     {
-        public override ValueTask<FluidValue> EvaluateAsync(TemplateContext context)
-        {
-            throw new NotImplementedException();
-        }
+        public string OutputVariable { get; set; }
+
+        public string TargetTemplate { get; set; }
+
+        public List<(string, string)> Attributes { get; set; }
     }
 }

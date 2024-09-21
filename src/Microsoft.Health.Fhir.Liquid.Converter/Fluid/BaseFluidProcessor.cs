@@ -16,8 +16,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Fluid
 {
     public abstract class BaseFluidProcessor : IFhirConverter<IFluidTemplate>
     {
-        public static readonly string TemplateProviderKey = "file_system";
-
         protected BaseFluidProcessor(ProcessorSettings processorSettings, ILogger<BaseFluidProcessor> logger)
         {
             Settings = EnsureArg.IsNotNull(processorSettings, nameof(processorSettings));
@@ -37,8 +35,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Fluid
         {
             using ITimed totalConversionTime = Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.TotalDuration, duration));
             var template = templateProvider.GetTemplate(templateName);
-            var dataModel = CreateDataModel(data, traceInfo);
-            var context = CreateContext(templateProvider, dataModel);
+            var context = CreateContext(templateProvider);
+            PopulateContext(data, context, traceInfo);
             return template.Render(context);
         }
 
@@ -48,20 +46,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Fluid
             return Convert(data, templateName, templateProvider, traceInfo);
         }
 
-        protected abstract IDictionary<string, object> CreateDataModel(string data, TraceInfo traceInfo = null);
+        protected abstract void PopulateContext(string data, TemplateContext context, TraceInfo traceInfo = null);
 
-        protected virtual TemplateContext CreateContext(ITemplateProvider<IFluidTemplate> templateProvider, IDictionary<string, object> dataModel)
+        protected virtual TemplateContext CreateContext(ITemplateProvider<IFluidTemplate> templateProvider)
         {
-            var context = new TemplateContext();
-
-            foreach (var item in dataModel)
-            {
-                context.SetValue(item.Key, item.Value);
-            }
-
-            context.SetValue(TemplateProviderKey, templateProvider);
-
-            return context;
+            return new TemplateContext()
+                .SetTemplateProvider(templateProvider);
         }
 
         protected void LogTelemetry(string telemetryName, double duration)

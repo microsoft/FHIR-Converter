@@ -4,10 +4,12 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using EnsureThat;
 using Fluid;
 using Fluid.Values;
+using Microsoft.Health.Fhir.Liquid.Converter.Fluid.Value;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using FilterImpl = Microsoft.Health.Fhir.Liquid.Converter;
 
@@ -34,7 +36,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Fluid.Filters
             var hl7v2Data = input.ToObjectValue() as Hl7v2Data;
             var segementIdContent = arguments.At(0).ToStringValue();
 
-            return new ValueTask<FluidValue>(new ObjectValue(FilterImpl.Filters.GetFirstSegments(hl7v2Data, segementIdContent)));
+            var finalValue = FilterImpl.Filters.GetFirstSegments(hl7v2Data, segementIdContent)
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value
+                    .Select((v, i) => (i, v))
+                    .ToDictionary(kvp => kvp.i.ToString(), kvp => kvp.v)
+                    .ToDictionaryValue())
+                .ToDictionaryValue();
+
+            return new ValueTask<FluidValue>(finalValue);
         }
 
         private static ValueTask<FluidValue> GetSegmentLists(FluidValue input, FilterArguments arguments, TemplateContext context)
@@ -42,7 +51,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Fluid.Filters
             var hl7v2Data = input.ToObjectValue() as Hl7v2Data;
             var segementIdContent = arguments.At(0).ToStringValue();
 
-            return new ValueTask<FluidValue>(new ObjectValue(FilterImpl.Filters.GetSegmentLists(hl7v2Data, segementIdContent)));
+            return new ValueTask<FluidValue>(FilterImpl.Filters.GetSegmentLists(hl7v2Data, segementIdContent).ToDictionaryValue());
         }
 
         private static ValueTask<FluidValue> GetRelatedSegmentList(FluidValue input, FilterArguments arguments, TemplateContext context)

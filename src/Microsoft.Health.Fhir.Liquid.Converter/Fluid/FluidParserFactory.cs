@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Fluid;
 using Fluid.Ast;
 using Microsoft.Health.Fhir.Liquid.Converter.Fluid.Filters;
+using Microsoft.Health.Fhir.Liquid.Converter.Fluid.Tags;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Fluid
 {
@@ -25,7 +26,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Fluid
                 .RegisterSegmentFilter()
                 .RegisterStringFilter();
 
-            TemplateOptions.Default.MemberAccessStrategy = UnsafeMemberAccessStrategy.Instance;
+            TemplateOptions.Default.MemberAccessStrategy = new UnsafeMemberAccessStrategy()
+            {
+                IgnoreCasing = true,
+            };
 
             // TemplateOptions.Default.FileProvider =
         }
@@ -39,17 +43,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Fluid
             var options = new FluidParserOptions { AllowFunctions = true };
             var parser = new FluidParser(options);
 
-            // {% evaluate patientId using 'ID/Patient' PID: firstSegments.PID, type: 'First' -%}
-            // {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
-            // {% evaluate messageHeaderId using 'ID/MessageHeader' MSH: firstSegments.MSH -%}
+            parser.RegisterParserTag("evaluate", EvaluateTagParser.Instance, EvaluateHandler);
 
-            parser.RegisterExpressionTag("evaluate", GenericExpressionHandler);
             return parser;
         }
 
-        private static ValueTask<Completion> GenericExpressionHandler(Expression expression, TextWriter textWriter, TextEncoder textEncoder, TemplateContext context)
+        private static async ValueTask<Completion> EvaluateHandler(EvaluateTag tag, TextWriter textWriter, TextEncoder textEncoder, TemplateContext context)
         {
-            return new ValueTask<Completion>(Completion.Normal);
+            await Task.Delay(0);
+
+            return Completion.Normal;
         }
     }
 }

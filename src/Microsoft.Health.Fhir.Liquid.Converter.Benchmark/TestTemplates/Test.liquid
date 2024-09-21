@@ -1,0 +1,30 @@
+{% assign firstSegments = hl7v2Data | get_first_segments: 'PID|PD1|PV1|PV2|MSH|UAC|EVN|ACC|PDA' -%}
+{% assign sftSegmentLists = hl7v2Data | get_segment_lists: 'SFT' -%}
+{% assign arvSegmentLists = hl7v2Data | get_segment_lists: 'ARV' -%}
+{% assign nk1SegmentLists = hl7v2Data | get_segment_lists: 'NK1' -%}
+{% assign db1SegmentLists = hl7v2Data | get_segment_lists: 'DB1' -%}
+{% assign obxSegmentLists = hl7v2Data | get_segment_lists: 'OBX' -%}
+{% assign al1SegmentLists = hl7v2Data | get_segment_lists: 'AL1' -%}
+{% assign dg1SegmentLists = hl7v2Data | get_segment_lists: 'DG1' -%}
+{% assign drgSegmentLists = hl7v2Data | get_segment_lists: 'DRG' -%}
+{% assign pr1SegmentLists = hl7v2Data | get_segment_lists: 'PR1' -%}
+{% assign gt1SegmentLists = hl7v2Data | get_segment_lists: 'GT1' -%}
+{% assign in1SegmentLists = hl7v2Data | get_segment_lists: 'IN1' -%}
+{% assign in2SegmentLists = hl7v2Data | get_segment_lists: 'IN2' -%}
+{% assign in3SegmentLists = hl7v2Data | get_segment_lists: 'IN3' -%}
+{% assign autSegmentLists = hl7v2Data | get_segment_lists: 'AUT' -%}
+{% assign rf1SegmentLists = hl7v2Data | get_segment_lists: 'RF1' -%}
+{% assign ub1SegmentLists = hl7v2Data | get_segment_lists: 'UB1' -%}
+{% assign ub2SegmentLists = hl7v2Data | get_segment_lists: 'UB2' -%}
+        
+{
+    "resourceType": "Bundle",
+    "type": "batch",
+    "identifier":
+    {
+        "value":"{{ firstSegments.MSH.10.Value }}",
+    },
+    "id":"",
+    "entry": [
+    ] 
+}

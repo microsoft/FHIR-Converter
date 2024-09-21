@@ -4,6 +4,7 @@
 // -------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using DotLiquid;
 using Microsoft.Health.Fhir.Liquid.Converter.DotLiquids;
@@ -11,7 +12,7 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2
 {
-    public class Hl7v2Segment : Drop
+    public class Hl7v2Segment : Drop, IEnumerable, IEnumerable<Hl7v2Field>
     {
         public Hl7v2Segment(string value, IEnumerable<Hl7v2Field> fields)
         {
@@ -70,6 +71,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2
                         }
                     }
                 }
+            }
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return Fields.GetEnumerator();
+        }
+
+        IEnumerator<Hl7v2Field> IEnumerable<Hl7v2Field>.GetEnumerator()
+        {
+            foreach (var field in Fields)
+            {
+                yield return (Hl7v2Field)field;
             }
         }
     }

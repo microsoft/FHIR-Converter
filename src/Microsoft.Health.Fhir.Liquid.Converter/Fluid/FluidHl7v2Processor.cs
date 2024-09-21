@@ -4,6 +4,8 @@
 // -------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using DotLiquid;
+using Fluid;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
 
@@ -18,13 +20,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Fluid
         {
         }
 
-        protected override IDictionary<string, object> CreateDataModel(string data, TraceInfo traceInfo = null)
+        protected override void PopulateContext(string data, TemplateContext context, TraceInfo traceInfo = null)
         {
             object parsedHl7Data = _parser.Parse(data);
-            return new Dictionary<string, object>
-            {
-                { "hl7v2Data", parsedHl7Data },
-            };
+
+            context.SetValue("hl7v2Data", parsedHl7Data);
+            context.RegisterCodeMapping(context.GetTemplateProvider());
         }
     }
 }

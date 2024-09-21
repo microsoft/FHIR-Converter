@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
+		<PackageReference Include="Fluid.Core" Version="547.0.0" />
 		<PackageReference Include="Hl7.Fhir.R4" Version="2.0.3" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" NoWarn="NU1605" />
 	</ItemGroup>
@@ -20,6 +21,13 @@
 
 	<ItemGroup>
 	  <Folder Include="BenchmarkDotNet.Artifacts\results\" />
+	  <Folder Include="TestTemplates\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="TestTemplates\Test.liquid">
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 
 	<!--<ItemGroup>

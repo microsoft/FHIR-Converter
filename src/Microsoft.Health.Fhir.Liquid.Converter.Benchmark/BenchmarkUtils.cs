@@ -11,6 +11,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Benchmark
         public static readonly string TemplateDirectory = Path.Join(DataDirectory, "Templates");
         public static readonly string Hl7v2TemplateDirectory = Path.Join(TemplateDirectory, "Hl7v2");
         public static readonly string SampleDataDirectory = Path.Join(DataDirectory, "SampleData");
+        public static readonly string LocalTestTemplates = Path.Join(Environment.CurrentDirectory, "TestTemplates");
 
         private static readonly Dictionary<string, (string template, string datafile)> Hl7v2TemplatesAndData = GetHl7v2TemplatesAndDataFilenames();
 
