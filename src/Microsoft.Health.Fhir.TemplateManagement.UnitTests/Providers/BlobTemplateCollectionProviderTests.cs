@@ -37,7 +37,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
         }
 
         [Fact]
-        public async Task GivenBlobTemplateProviderWithLargeTemplates_WhenGetTemplateCollectionFromTemplateProvider_ThenTemplatesAreReturned()
+        public async Task GivenBlobTemplateProviderWithLargeTemplates_WhenGetTemplateCollectionFromTemplateProvider_ThenExceptionThrown()
         {
             var templateConfiguration = new TemplateCollectionConfiguration();
 
@@ -48,6 +48,28 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             var ex = await Assert.ThrowsAsync<TemplateCollectionExceedsSizeLimitException>(async() => await blobTemplateProvider.GetTemplateCollectionAsync());
 
             Assert.Equal(TemplateManagementErrorCode.BlobTemplateCollectionTooLarge, ex.TemplateManagementErrorCode);
+        }
+
+        [Fact]
+        public async Task GivenBlobTemplateProviderWithEmptyTemplates_WhenGetTemplateCollectionFromTemplateProvider_ThenEmptyTemplatesAreReturned()
+        {
+            var templateConfiguration = new TemplateCollectionConfiguration();
+
+            int templateCount = 1;
+            var blobItemProperties = BlobsModelFactory.BlobItemProperties(accessTierInferred: true, contentLength: 0);
+            var blobTemplateProvider = new BlobTemplateCollectionProvider(GetBlobContainerClientMock(templateCount, blobItemProperties, templateContent: string.Empty), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
+
+            var templateCollection = await blobTemplateProvider.GetTemplateCollectionAsync();
+
+            Assert.Single(templateCollection);
+            Assert.Equal(templateCount, templateCollection[0].Count);
+
+            blobTemplateProvider = new BlobTemplateCollectionProvider(GetBlobContainerClientMock(templateCount, blobItemProperties, templateContent: null), new MemoryCache(new MemoryCacheOptions()), templateConfiguration);
+
+            templateCollection = await blobTemplateProvider.GetTemplateCollectionAsync();
+
+            Assert.Single(templateCollection);
+            Assert.Equal(templateCount, templateCollection[0].Count);
         }
 
         [Fact]
@@ -62,13 +84,16 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             Assert.Empty(templateCollection);
         }
 
-        public static BlobContainerClient GetBlobContainerClientMock(int templateCount = 1, BlobItemProperties blobItemProperties = null)
+        public static BlobContainerClient GetBlobContainerClientMock(
+            int templateCount = 1,
+            BlobItemProperties blobItemProperties = null,
+            string templateContent = "sample_content")
         {
             var mock = new Mock<BlobContainerClient>();
 
             mock
                 .Setup(x => x.GetBlobClient(It.IsAny<string>()))
-                .Returns(GetBlobClientMock());
+                .Returns(GetBlobClientMock(templateContent));
 
             BlobItem[] blobs = new BlobItem[templateCount];
 
@@ -88,9 +113,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             return mock.Object;
         }
 
-        public static BlobClient GetBlobClientMock()
+        public static BlobClient GetBlobClientMock(string templateContent = null)
         {
             var mock = new Mock<BlobClient>();
+            var mockBlobData = templateContent == null ? new BinaryData(new ReadOnlyMemory<byte>(null)) : new BinaryData(templateContent);
 
             var mockResponse = new Mock<Response>();
 
@@ -99,8 +125,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
                 .Returns(
                     Task.FromResult(
                         Response.FromValue(
-                            BlobsModelFactory.BlobDownloadResult(
-                                new BinaryData("sample_template")), mockResponse.Object)));
+                            BlobsModelFactory.BlobDownloadResult(mockBlobData), mockResponse.Object)));
 
             return mock.Object;
         }
