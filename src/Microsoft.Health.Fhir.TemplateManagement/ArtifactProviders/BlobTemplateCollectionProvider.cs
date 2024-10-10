@@ -7,6 +7,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Azure;
@@ -139,12 +140,11 @@ namespace Microsoft.Health.Fhir.TemplateManagement.ArtifactProviders
 
             if (policyResponse.FinalException == null)
             {
-                return policyResponse.Result.Value.Content.ToString();
+                var contentBytes = policyResponse.Result.Value.Content.ToArray();
+                return Encoding.UTF8.GetString(contentBytes);
             }
-            else
-            {
-                throw policyResponse.FinalException;
-            }
+
+            throw policyResponse.FinalException;
         }
     }
 }
