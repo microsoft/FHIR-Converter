@@ -12,5 +12,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
         Json,
         Fhir,
         FhirToHl7v2,
+        FhirNormalization,
     }
 }

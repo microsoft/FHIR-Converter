@@ -103,6 +103,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 DataType.Ccda => new CcdaProcessor(DefaultProcessorSettings, ConsoleLoggerFactory.CreateLogger<CcdaProcessor>()),
                 DataType.Json => new JsonProcessor(DefaultProcessorSettings, ConsoleLoggerFactory.CreateLogger<JsonProcessor>()),
                 DataType.Fhir => new FhirProcessor(DefaultProcessorSettings, ConsoleLoggerFactory.CreateLogger<FhirProcessor>()),
+                DataType.FhirNormalization => new FhirNormalizationProcessor(DefaultProcessorSettings, ConsoleLoggerFactory.CreateLogger<FhirNormalizationProcessor>()),
                 _ => throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported")
             };
         }

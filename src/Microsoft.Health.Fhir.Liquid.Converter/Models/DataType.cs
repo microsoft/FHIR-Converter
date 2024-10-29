@@ -14,5 +14,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
         Ccda,
         Json,
         Fhir,
+        FhirNormalization,
     }
 }
