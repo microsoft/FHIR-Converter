@@ -6,8 +6,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Newtonsoft.Json;
@@ -37,6 +39,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
                 var namespaces = xDocument.Root?.Attributes()
                     .Where(x => x.IsNamespaceDeclaration && x.Value != defaultNamespace);
                 NormalizeNamespacePrefix(xDocument?.Root, namespaces);
+
+                // Serialize contents of `text` elements as string in `_innerText` child element
+                StringifyTextNodeContents(xDocument?.Root);
 
                 // Change XText to XElement with name "_" to avoid serializing depth difference, e.g., given="foo" and given.#text="foo"
                 ReplaceTextWithElement(xDocument?.Root);
@@ -110,6 +115,40 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
                     case XElement elementNode:
                         ReplaceTextWithElement(elementNode);
                         break;
+                }
+            }
+        }
+
+        private static void StringifyTextNodeContents(XElement element)
+        {
+            if (element == null)
+            {
+                return;
+            }
+
+            System.Xml.XmlWriterSettings xws = new ()
+            {
+                OmitXmlDeclaration = true,
+                ConformanceLevel = System.Xml.ConformanceLevel.Fragment,
+            };
+
+            foreach (var el in element.Descendants())
+            {
+                if (el.Name.LocalName == "text")
+                {
+                    System.Text.StringBuilder sb = new ();
+
+                    using (System.Xml.XmlWriter xw = System.Xml.XmlWriter.Create(sb, xws))
+                    {
+                        foreach (var node in el.Nodes())
+                        {
+                            node.WriteTo(xw);
+                        }
+                    }
+
+                    var content = sb.ToString();
+                    Console.WriteLine(content);
+                    el.SetAttributeValue("_innerText", content);
                 }
             }
         }
