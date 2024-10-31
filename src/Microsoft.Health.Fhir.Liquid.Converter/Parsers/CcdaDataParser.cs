@@ -29,6 +29,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
             {
                 var xDocument = XDocument.Parse(document);
 
+                // Serialize contents of `text` elements as string in `_innerText` child element
+                StringifyTextNodeContents(xDocument?.Root);
+
                 // Remove redundant namespaces to avoid appending namespace prefix before elements
                 var defaultNamespace = xDocument.Root?.GetDefaultNamespace().NamespaceName;
                 xDocument.Root?.Attributes()
@@ -39,9 +42,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
                 var namespaces = xDocument.Root?.Attributes()
                     .Where(x => x.IsNamespaceDeclaration && x.Value != defaultNamespace);
                 NormalizeNamespacePrefix(xDocument?.Root, namespaces);
-
-                // Serialize contents of `text` elements as string in `_innerText` child element
-                StringifyTextNodeContents(xDocument?.Root);
 
                 // Change XText to XElement with name "_" to avoid serializing depth difference, e.g., given="foo" and given.#text="foo"
                 ReplaceTextWithElement(xDocument?.Root);
@@ -147,7 +147,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
                     }
 
                     var content = sb.ToString();
-                    Console.WriteLine(content);
                     el.SetAttributeValue("_innerText", content);
                 }
             }
