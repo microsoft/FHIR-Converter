@@ -155,7 +155,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             {
                 throw new RenderException(FhirConverterErrorCode.TimeoutError, Resources.TimeoutError, ex);
             }
-            catch (RenderException)
+            catch (RenderException ex)
             {
                 Console.WriteLine("Ex: {1} StackTrace: '{0}'", Environment.StackTrace, ex);
                 throw;
