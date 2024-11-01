@@ -1,0 +1,36 @@
+name: Test fhir-converter
+
+on:
+  pull_request:
+    branches:
+      - "**"
+  push:
+    branches:
+      - main
+
+jobs:
+  unit-test-dotnet-fhir-converter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "6.0.x"
+      - name: Run tests
+        working-directory: ./containers/${{env.CONTAINER}}
+        run: dotnet test --filter FullyQualifiedName~Converter.UnitTests
+  
+  functional-test-dotnet-fhir-converter:
+    runs-on: ubuntu-latest
+     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: "6.0.x"
+      - name: Run tests
+        working-directory: ./containers/${{env.CONTAINER}}
+        run: dotnet test --filter FullyQualifiedName~Converter.FunctionalTests
