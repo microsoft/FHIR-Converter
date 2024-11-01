@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Text.RegularExpressions;
 using DotLiquid.Util;
@@ -502,6 +503,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     public static string? GetLoincName(string loinc)
     {
       var outDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+      Console.WriteLine(outDir);
       loincDict ??= CSVMapDictionary(Path.Combine(outDir, @"Loinc.csv"));
       loincDict.TryGetValue(loinc ?? string.Empty, out string? element);
       return element;
@@ -515,6 +517,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     public static string? GetRxnormName(string rxnorm)
     {
       var outDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+      Console.WriteLine(outDir);
       rxnormDict ??= CSVMapDictionary(Path.Combine(outDir, @"rxnorm.csv"));
       rxnormDict.TryGetValue(rxnorm ?? string.Empty, out string? element);
       return element;
