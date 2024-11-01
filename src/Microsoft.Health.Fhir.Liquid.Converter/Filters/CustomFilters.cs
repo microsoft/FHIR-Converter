@@ -684,5 +684,65 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
       IConvertible convert = input;
       return convert.ToDouble(null).ToString("0.###");
     }
+
+    /// <summary>
+    /// Creates dictionary of diagnosis codes from list of entries
+    /// Only collects diagnoses from most recent encounter
+    /// </summary>
+    /// <param name="entries">The list of entries to parse.</param>
+    /// <returns>A dictionary of codes found in the entries, with the value being true.</returns>
+    public static IDictionary<string, bool> GetDiagnosisDictionary(IList<object> entries)
+    {
+      var result = new Dictionary<string, bool>();
+      var entryDicts = ProcessItem(entries);
+
+      if (entryDicts.Count == 0)
+      {
+        return result;
+      }
+
+      var latestEffectiveTime = DateTime.UnixEpoch;
+      var latestEncounterIndex = 0;
+
+      // Find most recent encounter
+      for (int i = 0; i < entryDicts.Count; i++)
+      {
+        var effectiveTimes = DrillDown(entryDicts[i], new List<string> { "encounter", "effectiveTime", "low", "value" });
+        if (effectiveTimes != null && effectiveTimes.Count > 0)
+        {
+          var effectiveTimeDatetime = Convert.ToDateTime(effectiveTimes[0].ToString());
+          if (effectiveTimeDatetime.CompareTo(latestEffectiveTime) > 0)
+          {
+            latestEffectiveTime = effectiveTimeDatetime;
+            latestEncounterIndex = i;
+          }
+        }
+      }
+
+      var encounterEntryRelationships = DrillDown(entryDicts[latestEncounterIndex], new List<string> { "encounter", "entryRelationship" });
+
+      if (encounterEntryRelationships != null)
+      {
+        foreach (var encounterER in encounterEntryRelationships)
+        {
+          var actEntryRelationships = DrillDown(encounterER, new List<string> { "act", "entryRelationship" });
+
+          if (actEntryRelationships != null)
+          {
+            foreach (var actER in actEntryRelationships)
+            {
+              // There will only be one but DrillDown returns a list
+              var value = DrillDown(actER, new List<string> { "observation", "value" });
+              if (value != null && value.Count > 0 && value.First().TryGetValue("code", out object? code) && code != null)
+              {
+                result.TryAdd(code.ToString(), true);
+              }
+            }
+          }
+        }
+      }
+
+      return result;
+    }
   }
 }
