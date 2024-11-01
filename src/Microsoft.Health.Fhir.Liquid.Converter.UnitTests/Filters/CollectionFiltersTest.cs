@@ -52,19 +52,29 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
                 maxIterations: 0,
                 formatProvider: CultureInfo.InvariantCulture,
                 cancellationToken: CancellationToken.None);
+
             var collection = new List<object> { 1, 2, 3 };
             Assert.Equal("1 ,2 ,3 ,", Filters.BatchRender(context, collection, "foo", "i"));
+            var result = Filters.BatchRenderParallel(context, collection, "foo", "i");
+            Assert.Contains("1 ", result);
+            Assert.Contains("2 ", result);
+            Assert.Contains("3 ", result);
 
             // Valid template file system but null collection
             Assert.Equal(string.Empty, Filters.BatchRender(context, null, "foo", "i"));
+            Assert.Equal(string.Empty, Filters.BatchRenderParallel(context, null, "foo", "i"));
 
             // No template file system
             context = new Context(CultureInfo.InvariantCulture);
             var exception = Assert.Throws<RenderException>(() => Filters.BatchRender(context, null, "foo", "bar"));
             Assert.Equal(FhirConverterErrorCode.TemplateNotFound, exception.FhirConverterErrorCode);
+            exception = Assert.Throws<RenderException>(() => Filters.BatchRenderParallel(context, null, "foo", "bar"));
+            Assert.Equal(FhirConverterErrorCode.TemplateNotFound, exception.FhirConverterErrorCode);
 
             // Valid template file system but non-existing template
             exception = Assert.Throws<RenderException>(() => Filters.BatchRender(context, collection, "bar", "i"));
+            Assert.Equal(FhirConverterErrorCode.TemplateNotFound, exception.FhirConverterErrorCode);
+            exception = Assert.Throws<RenderException>(() => Filters.BatchRenderParallel(context, collection, "bar", "i"));
             Assert.Equal(FhirConverterErrorCode.TemplateNotFound, exception.FhirConverterErrorCode);
         }
     }
