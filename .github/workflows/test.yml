@@ -2,8 +2,6 @@ name: Test fhir-converter
 
 on:
   pull_request:
-    branches:
-      - "**"
   push:
     branches:
       - main
@@ -24,7 +22,7 @@ jobs:
   
   functional-test-dotnet-fhir-converter:
     runs-on: ubuntu-latest
-     steps:
+    steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Setup dotnet
