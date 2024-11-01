@@ -1,0 +1,33 @@
+{
+    "resourceType": "Bundle",
+    "type": "batch",
+    "entry": [
+        {% evaluate patientId using 'Utils/GenerateId' obj: msg.ClinicalDocument.recordTarget.patientRole -%}
+        {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
+        {% include 'Header' -%}
+        {% include 'Section/Problem' -%}
+        {% include 'Section/AllergiesAndAdverseReaction' -%}
+        {% include 'Section/Medication' -%}
+        {% include 'Section/Result' -%}
+        {% include 'Section/VitalSign' -%}
+        {% include 'Section/ReasonforReferral' -%}
+
+        {% include 'Section/Encounter' -%}
+        {% include 'Section/FamilyHistory' -%}
+        {% include 'Section/HospitalDischargeDiagnosis' -%}
+        {% include 'Section/HospitalAdmissionDiagnosis' -%}
+        {% include 'Section/Immunization' -%}
+        {% include 'Section/Procedure' -%}
+        {% include 'Section/SocialHistory' -%}
+        {% include 'Section/FunctionalStatus' -%}
+        {% include 'Section/MedicalEquipment' -%}
+
+        {% include 'Section/AdvanceDirective' -%}
+        {% include 'Section/MentalStatus' -%}
+        {% include 'Section/Nutrition' -%}
+        {% include 'Section/Payer' -%}
+
+        {% assign documentId = msg | to_json_string | generate_uuid -%}
+        {% include 'Resource/DocumentReference' documentReference: msg ID: documentId -%}
+    ]
+}

@@ -1,0 +1,2 @@
+{% assign supplyId = entry.supply | to_json_string | generate_uuid -%}
+{% include 'Resource/Device2' deviceEntry: entry.supply, ID: supplyId -%}

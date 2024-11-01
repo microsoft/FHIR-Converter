@@ -1,0 +1,85 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Observation",
+        "id":"{{ ID }}",
+        "meta":
+        {
+            "profile":
+            [
+                "http://hl7.org/fhir/us/ecr/StructureDefinition/us-ph-travel-history",
+            ],
+        },
+        "code" : {
+            "coding" :
+            [
+                {
+                    "system" : "http://snomed.info/sct",
+                    "code" : "420008001",
+                    "display" : "Travel"
+                }
+            ],
+            "text" : "Travel History"
+        },
+        "status":
+             {% if observationEntry.statusCode._ -%}
+                "{{ observationEntry.statusCode._}}",
+            {% else -%}
+                "{{ observationEntry.statusCode.code | get_property: 'ValueSet/ObservationStatus' }}",
+            {% endif -%}
+        "component":
+        [
+            {
+                "code" : {
+                    "coding" :
+                    [
+                        {
+                            "system" : "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                            "code" : "LOC",
+                            "display" : "Location"
+                        }
+                    ]
+                },
+                "valueCodeableConcept" : {
+                    "text": "{{ observationEntry.text.reference._ }}",
+                },
+            }
+        ],
+        "effectivePeriod":
+        {
+            {% if observationEntry.effectiveTime.low.value -%}
+            "start":"{{ observationEntry.effectiveTime.low.value | format_as_date_time }}",
+            {% endif -%}
+            {% if observationEntry.effectiveTime.high.value -%}
+            "end":"{{ observationEntry.effectiveTime.high.value | format_as_date_time }}",
+            {% endif -%}
+        },
+        {% if observationEntry.effectiveTime.low.value == null -%}
+        "effectiveDateTime":"{{ observationEntry.effectiveTime.value | format_as_date_time }}",
+        {% endif -%}
+        {% if observationEntry.value.code -%}
+            "valueCodeableConcept":
+            {
+                {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.value -%},
+                {% assign obsValueTrans = observationEntry.value.translation | to_array -%}
+                    {% if obsValueTrans.first -%}
+                        {% for obsValueTran in obsValueTrans -%}
+                            {% include 'DataType/CodeableConcept' CodeableConcept: obsValueTran -%},
+                        {% endfor -%}
+                    {% endif -%}
+            },
+        {% elsif observationEntry.value.value -%}
+            "valueQuantity":
+            {
+                "value":{{ observationEntry.value.value }},
+                "unit":"{{ observationEntry.value.unit }}",
+            },
+        {% else -%}
+            "valueString":"{{ observationEntry.value._ }}",
+        {% endif -%}
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Observation/{{ ID }}",
+    },
+},

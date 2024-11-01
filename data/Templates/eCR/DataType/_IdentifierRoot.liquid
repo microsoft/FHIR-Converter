@@ -1,0 +1,9 @@
+{% if Identifier.nullFlavor == null -%}
+        "value":"{{Identifier.root}}",
+        {% if Identifier.assigningAuthorityName -%}
+            "assigner":
+            {
+                "display":"{{Identifier.assigningAuthorityName}}"
+            }
+        {% endif -%}
+{% endif -%}

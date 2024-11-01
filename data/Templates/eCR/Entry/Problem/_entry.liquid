@@ -1,0 +1,5 @@
+{% assign entryRelationships = entry.act.entryRelationship | to_array %}
+
+{% for probRelationship in entryRelationships %}
+  {% include 'Entry/Problem/entry_act_entryRelationship' with probRelationship, text: text, relatedEntries: entryRelationships %}
+{% endfor %}

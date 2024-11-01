@@ -1,0 +1,14 @@
+{% case code -%}
+    {% when "HP" -%}
+        "home",
+    {% when "H" -%}
+        "home",
+    {% when 'WP' -%}
+        "work",
+    {% when "TMP" -%}
+        "temp",
+    {% when "BAD" -%}
+        "old",
+    {% else -%}
+        "",
+{% endcase -%}

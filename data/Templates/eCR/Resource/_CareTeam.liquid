@@ -1,0 +1,48 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "CareTeam",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = careTeamEntry.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "status": "{{ careTeamEntry.statusCode.code }}",
+        "name": "{{ careTeamEntry.code.originalText.reference._ }}",
+        "subject": {
+            "reference": "{{ patientId }}"
+        },
+        "period": {
+            "start": "{{ careTeamEntry.effectiveTime.low.value }}",
+            "end": "{{ careTeamEntry.effectiveTime.high.value }}",
+        },
+        "participant": [
+            {% assign components = careTeamEntry.component | to_array -%}
+            {% for component in components -%} 
+                {
+                    "role": {
+                        "text": "{{ component.act.performer.['sdtc_functionCode'].originalText._ }}",
+                    },
+                    {% assign practitionerId = component.act.performer.assignedEntity | to_json_string | generate_uuid -%}
+                    {% assign fullPractitionerId = practitionerId | prepend: 'Practitioner/' -%}
+                    "member": {
+                        "reference": "{{ fullPractitionerId }}",
+                    },
+                    "period": {
+                        "start": "{{ component.act.effectiveTime.low.value}}",
+                        "end": "{{ component.act.effectiveTime.high.value}}",
+                    },
+                    "modifierExtension": [
+                        {
+                            "url": "participant.status",
+                            "valueString": "{{ component.act.statusCode.code }}"
+                        },
+                    ],
+                },
+            {% endfor -%}
+        ],
+    },
+},

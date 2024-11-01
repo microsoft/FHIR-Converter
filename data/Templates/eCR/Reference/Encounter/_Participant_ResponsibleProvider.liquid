@@ -1,0 +1,26 @@
+{
+    "resource":{
+        "resourceType": "Encounter",
+        "id":"{{ ID }}",
+        "participant":
+        [
+            {
+                "type": [
+                    {
+                        "coding": [
+                            {
+                                "system": "http://terminology.hl7.org/CodeSystem/v3-ParticipationType",
+                                "code": "ATND"
+                            },
+
+                        ],
+                    },
+                ],
+                "individual":
+                {
+                    "reference":"{{ REF }}",
+                },
+            },
+        ],
+    },
+},

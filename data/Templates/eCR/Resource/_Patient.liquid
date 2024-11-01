@@ -1,0 +1,118 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Patient",
+        "id":"{{ ID }}",
+        "meta":
+        {
+            "profile":
+            [
+                "http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient",
+            ],
+        },
+        "identifier":
+        [
+            {% assign ids = patientRole.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "name":
+        [
+            {% assign names = patientRole.patient.name | to_array -%}
+            {% for name in names -%}
+            { {% include 'DataType/HumanName' HumanName: name -%} },
+            {% endfor -%}
+        ],
+        "birthDate":"{{ patientRole.patient.birthTime.value | add_hyphens_date }}",
+        {% assign deceasedDateValue = patientRole.patient['sdtc_deceasedTime'].value %}
+        {% if deceasedDateValue %}
+            "deceasedDate": "{{ deceasedDateValue | add_hyphens_date }}",
+        {% else %}
+            "deceasedBoolean": false,
+        {% endif %}
+        "gender":"{{ patientRole.patient.administrativeGenderCode.code | get_property: 'ValueSet/Gender' }}",
+        "extension":
+        [
+            { {% include 'Extension/Race' Race: patientRole.patient -%} },
+            { {% include 'Extension/Ethnicity' Ethnicity: patientRole.patient -%} },
+            {% for socialObservation in SOCIALOBS -%}
+                {% if socialObservation.observation.templateId and socialObservation.observation.templateId.root and socialObservation.observation.templateId.root == '2.16.840.1.113883.10.20.34.3.45' -%}
+                    { {% include 'Extension/GenderIdentity' gendIdOb: socialObservation.observation -%} },
+                {% elsif socialObservation.observation.templateId and socialObservation.observation.templateId.root and socialObservation.observation.templateId.root == '2.16.840.1.113883.10.20.15.2.3.48' -%}
+                    { {% include 'Extension/TribalAffiliation' tribeAOb: socialObservation.observation -%} },
+                {% elsif socialObservation.observation.templateId and socialObservation.observation.templateId.root and socialObservation.observation.templateId.root == '2.16.840.1.113883.10.20.22.4.200' -%}
+                     { {% include 'Extension/BirthSex' birthSObs: socialObservation.observation -%} },
+                {% endif -%}
+            {% endfor -%}
+
+        ],
+        "address":
+        [
+            {% assign addrs = patientRole.addr | to_array -%}
+            {% for addr in addrs -%}
+            { {% include 'DataType/Address' Address: addr -%} },
+            {% endfor -%}
+        ],
+        "telecom":
+        [
+            {% assign telecoms = patientRole.telecom | to_array -%}
+            {% for telecom in telecoms -%}
+            { {% include 'DataType/ContactPoint' ContactPoint: telecom -%} },
+            {% endfor -%}
+        ],
+        {% if contact.classCode == "ECON" -%}
+        "contact": [
+             {
+                {% if contact.code.originalText._ %}
+                  "relationship": {{ contact.code.originalText._ | to_json_string | downcase }},
+                {% endif %}
+                "name":[
+                    {% assign names = contact.associatedPerson.name | to_array -%}
+                    {% for name in names -%}
+                    { {% include 'DataType/HumanName' HumanName: name -%} },
+                    {% endfor -%}
+                ],
+                "telecom": [
+                    {% assign telecoms = contact.telecom | to_array -%}
+                    {% for telecom in telecoms -%}
+                    { {% include 'DataType/ContactPoint' ContactPoint: telecom -%} },
+                    {% endfor -%}
+                ],
+                "address":[
+                    {% assign addrs = contact.addr | to_array -%}
+                    {% for addr in addrs -%}
+                    { {% include 'DataType/Address' Address: addr -%} },
+                    {% endfor -%}
+                ],
+             }
+        ],
+        {% endif contact  -%}
+        "communication":
+        [
+            {% assign languageCommunications = patientRole.patient.languageCommunication | to_array -%}
+            {% for languageCommunication in languageCommunications -%}
+            {
+                "language":
+                {
+                    "coding":
+                    [
+                        {
+                            "system":"urn:ietf:bcp:47",
+                            "code":"{{ languageCommunication.languageCode.code | downcase | get_property: 'ValueSet/Language', , 'code'  }}",
+                            "display":"{{ languageCommunication.languageCode.code | downcase | get_property: 'ValueSet/Language', , 'display'  }}",
+                        },
+                    ],
+                },
+                {% if languageCommunication.preferenceInd.value -%}
+                    "preferred": {{ languageCommunication.preferenceInd.value }},
+                {% endif -%}
+            },
+            {% endfor -%}
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Patient/{{ ID }}",
+    },
+},

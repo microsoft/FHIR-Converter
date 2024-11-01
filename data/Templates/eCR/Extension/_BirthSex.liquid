@@ -1,0 +1,13 @@
+{% if birthSObs -%}
+    "url" : "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
+    "extension" : [
+        {
+          "url" : "value",
+          "valueCodeableConcept" : {
+            "coding" : [
+              { {% include 'DataType/Coding' Coding: birthSObs.value -%} },
+            ]
+          },
+        },
+      ],
+{% endif -%}

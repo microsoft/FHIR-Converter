@@ -1,0 +1,71 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "Immunization",
+        "id":"{{ID}}",
+        "identifier":
+        [
+            {% assign ids = immunization.id | to_array -%}
+            {% for id in ids -%}
+                { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+
+        {% assign entryRelationships = immunization.entryRelationship | to_array -%}
+        {% for entryRelationship in entryRelationships -%}
+            {% assign templateIdString = entryRelationship.observation.templateId | to_json_string -%}
+            {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.53"' -%}
+                "statusReason": { {% include 'DataType/CodeableConcept' CodeableConcept: entryRelationship.observation.code -%} },
+            {% endif -%}
+        {% endfor -%}
+        "protocolApplied": [
+            {% for entryRelationship in entryRelationships -%}
+                {
+                    {% if entryRelationship.typeCode == "COMP" -%}
+                        "doseNumberPositiveInt": "{{ entryRelationship.sequenceNumber.value }}",
+                    {% endif %}
+                },
+            {% endfor %}
+        ],
+        {% if immunization.effectiveTime.low -%}
+            "occurrenceDateTime": "{{ immunization.effectiveTime.low.value | format_as_date_time }}",
+        {% elsif immunization.effectiveTime.value -%}
+            "occurrenceDateTime": "{{ immunization.effectiveTime.value | format_as_date_time }}",
+        {% else -%}
+            "occurrenceString": "Unknown",
+        {% endif -%}
+
+        {% assign consumables = immunization.consumable | to_array -%}
+        {% for consumable in consumables -%}
+            {% assign manufacturedProducts = consumable.manufacturedProduct | to_array -%}
+            {% for manufacturedProduct in manufacturedProducts -%}
+                {% assign templateIdString = manufacturedProduct.templateId | to_json_string -%}
+                {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.54"' -%}
+                    {% assign translations = manufacturedProduct.manufacturedMaterial.code.translation | to_array -%}
+                    {% assign code = manufacturedProduct.manufacturedMaterial.code | to_array -%}
+                    {% assign codes = code | concat: translations %}
+                    "vaccineCode":{ {% include 'DataType/CodeableConcept' CodeableConcept: codes -%} },
+                    "lotNumber":"{{ manufacturedProduct.manufacturedMaterial.lotNumberText._ }}",
+                    {% assign manufacturerId = manufacturedProduct.manufacturerOrganization | to_json_string | generate_uuid -%}
+                    {% assign fullManufacturerId = manufacturerId | prepend: 'Organization/' -%}
+                    "manufacturer": {
+                        "reference": "{{ fullManufacturerId }}",
+                    },
+                {% endif -%}
+            {% endfor -%}
+        {% endfor -%}
+
+        {% if immunization.statusCode.code -%}
+            "status":"{{immunization.statusCode.code | get_property: 'ValueSet/ImmunizationStatus' }}",
+        {% else -%}
+            "status":"completed",
+        {% endif -%}
+        "primarySource": true,
+        "route":{ {% include 'DataType/CodeableConcept' CodeableConcept: immunization.routeCode -%}},
+        "site":{ {% include 'DataType/CodeableConcept' CodeableConcept: immunization.approachSiteCode -%} },      
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Immunization/{{ID}}",
+    },
+},

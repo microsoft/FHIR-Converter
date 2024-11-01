@@ -1,0 +1,16 @@
+{% if tribeAOb -%}
+    "url" : "http://hl7.org/fhir/us/ecr/StructureDefinition/us-ph-tribal-affiliation-extension",
+    "extension" : [
+        {
+          "url" : "TribeName",
+          "valueCoding":
+                    { {% include 'DataType/Coding' Coding: tribeAOb.code -%} },
+        },
+        {% if tribeAOb.value -%}
+          {
+            "url" : "EnrolledTribeMember",
+            "valueBoolean" : {{tribeAOb.value.value}}
+          },
+        {% endif -%}
+      ],
+{% endif -%}

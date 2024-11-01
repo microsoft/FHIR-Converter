@@ -1,0 +1,59 @@
+{% assign diagnosticId = entry.organizer | to_json_string | generate_uuid -%}
+{% assign resultTranslations = entry.organizer.code.translation | to_array -%}
+{% if entry.organizer.code.code or resultTranslations.first -%}
+    {% include 'Resource/DiagnosticReport' diagnosticReport: entry.organizer, ID: diagnosticId -%}
+    {% include 'Reference/DiagnosticReport/Subject' ID: diagnosticId, REF: fullPatientId -%}
+    {% if entry.organizer.performer -%}
+        {% if entry.organizer.performer.assignedEntity.assignedPerson and entry.organizer.performer.assignedEntity.assignedPerson.name and entry.organizer.performer.assignedEntity.name.given._ -%}
+        {% evaluate performerId using 'Utils/GenerateId' obj: entry.organizer.performer.assignedEntity -%}
+        {% include 'Resource/Practitioner' practitioner: entry.organizer.performer.assignedEntity, ID: performerId -%}
+        {% assign fullPerformerId = performerId | prepend: 'Practitioner/' -%}
+        {% include 'Reference/DiagnosticReport/Performer' ID: diagnosticId, REF: fullPerformerId -%}
+        {% elsif entry.organizer.performer.assignedEntity.representedOrganization and entry.organizer.performer.assignedEntity.representedOrganization.name._ -%}
+        {% assign performerId = entry.organizer.performer.assignedEntity.representedOrganization | to_json_string | generate_uuid -%}
+        {% include 'Resource/Organization' organization: entry.organizer.performer.assignedEntity.representedOrganization, ID: performerId -%}
+        {% assign fullPerformerId = performerId | prepend: 'Organization/' -%}
+        {% include 'Reference/DiagnosticReport/Performer' ID: diagnosticId, REF: fullPerformerId -%}
+        {% endif -%}
+    {% endif -%}
+    {% if entry.organizer.effectiveTime.low and entry.organizer.effectiveTime.low.value -%}
+        {% assign collectTime = entry.organizer.effectiveTime.low.value -%}
+    {% elsif entry.organizer.effectiveTime.high and entry.organizer.effectiveTime.high.value -%}
+        {% assign collectTime = entry.organizer.effectiveTime.high.value -%}
+    {% elsif entry.organizer.effectiveTime and entry.organizer.effectiveTime.value and entry.organizer.effectiveTime.value != "UNK"-%}
+        {% assign collectTime = entry.organizer.effectiveTime.value -%}
+    {% else -%}
+        {% assign collectTime = "None" -%}
+    {% endif -%}
+    
+    {% assign comps = entry.organizer.component | to_array -%}
+    {% for comp in comps -%}
+        {% if comp.procedure  -%}
+            {% if comp.procedure.entryRelationship and comp.procedure.entryRelationship.act -%}
+              {% assign acts = comp.procedure.entryRelationship.act | to_array %}
+              {% for act in acts -%}
+                {% if act.code and act.code["code"] == "SPRECEIVE" %}
+                  {% assign receiveTime = act.effectiveTime.value -%}
+                {% endif -%}
+              {% endfor -%} 
+            {% endif -%}
+            {% if comp.procedure.participant.participantRole.id -%}
+                {% if comp.procedure.participant.participantRole.playingEntity.code.translation -%}
+                    {% assign translations = comp.procedure.participant.participantRole.playingEntity.code.translation | to_array -%}
+                    {% if translations.first.displayName -%}
+                        {% assign specValue = translations.first.displayName -%}
+                    {% endif -%}
+                {% elsif comp.procedure.participant.participantRole.id.displayName -%}
+                    {% assign specValue = comp.procedure.participant.participantRole.id.displayName -%}
+                {% elsif entry.organizer.component.procedure.participant.participantRole.playingEntity.code.displayName -%}
+                    {% assign specValue = comp.procedure.participant.participantRole.playingEntity.code.displayName -%}
+                {% else -%}
+                    {% assign specValue = "None" -%}
+                {% endif -%}
+            {% endif -%}
+        {% endif -%}
+    {% endfor-%}   
+    {% for component in comps %}
+        {% include 'Entry/Result/entry_organizer_component' with component, text: text %}
+    {% endfor %}
+{% endif -%}

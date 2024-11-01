@@ -1,0 +1,2 @@
+{% assign firstSections = msg | get_first_ccda_sections_by_template_id: '2.16.840.1.113883.10.20.22.2.6.1' -%}
+{{ firstSections.2_16_840_1_113883_10_20_22_2_6_1.entry | to_array | batch_render: 'Entry/AllergiesAndAdverseReaction/entry', 'entry' }}

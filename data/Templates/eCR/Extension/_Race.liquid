@@ -1,0 +1,49 @@
+{% if Race.raceCode -%}
+    "url" : "http://hl7.org/fhir/us/core/StructureDefinition/us-core-race",
+    "extension":
+    [
+        {% assign raceCodes1 = Race.raceCode | to_array -%}
+        {% assign raceCodes2 = Race.sdtc_raceCode | to_array -%}
+        {% assign raceCodes = raceCodes1 | concat: raceCodes2 -%}
+        {% for r in raceCodes -%}
+            {
+                {% if r.nullFlavor -%}
+                    "url" : "ombCategory",
+                    "valueCoding":
+                    {
+                        "system":"http://terminology.hl7.org/CodeSystem/v3-NullFlavor",
+                        "code":"{{r.nullFlavor}}",
+                        {% assign normalizedCode = r.nullFlavor | upcase -%}
+                        {% if normalizedCode == 'ASKU' -%}
+                            "display":"Asked but no answer",
+                        {% else -%}
+                            "display":"Unknown",
+                        {% endif -%}
+                    },
+                {% else -%}
+                    {% if r.code == '1002-5' or r.code == '2028-9' or r.code == '2054-5' or r.code == '2076-8' or r.code == '2106-3' -%}
+                        "url" : "ombCategory",
+                    {% else -%}
+                        "url" : "detailed",
+                    {% endif -%}
+                    "valueCoding": { {% include 'DataType/Coding' Coding: r -%} },
+                {% endif -%}
+            },
+        {% endfor -%}
+        {
+            "url": "text",
+            {% if Race.sdtc_raceCode -%}
+                "valueString":"Mixed",
+            {% elsif Race.raceCode.nullFlavor -%}
+                {% assign normalizedCode = Race.raceCode.nullFlavor | upcase -%}
+                {% if normalizedCode == 'ASKU' -%}
+                    "valueString":"Asked but no answer",
+                {% else -%}
+                    "valueString":"Unknown",
+                {% endif -%}
+            {% else -%}
+                "valueString":"{{Race.raceCode.displayName}}",
+            {% endif -%}
+        }
+    ],
+{% endif -%}

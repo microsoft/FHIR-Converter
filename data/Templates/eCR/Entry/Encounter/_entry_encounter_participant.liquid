@@ -1,0 +1,9 @@
+{% if participant.typeCode == 'LOC' -%}
+    {% assign templateIdString = participant.participantRole.templateId | to_json_string -%}
+    {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.32"'-%}
+        {% assign locationId = participant.participantRole | to_json_string | generate_uuid -%}
+        {% include 'Resource/Location' location: participant.participantRole, ID: locationId -%}
+        {% assign fullLocationId = locationId | prepend: 'Location/' -%}
+        {% include 'Reference/Encounter/Location_Location' ID: encounterId, REF: fullLocationId -%}
+    {% endif -%}
+{% endif -%}
