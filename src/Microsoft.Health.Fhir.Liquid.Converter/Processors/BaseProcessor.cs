@@ -161,6 +161,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             }
             catch (Exception ex)
             {
+                Console.WriteLine("Ex: {1} StackTrace: '{0}'", Environment.StackTrace, ex);
                 throw new RenderException(FhirConverterErrorCode.TemplateRenderingError, string.Format(Resources.TemplateRenderingError, ex.Message), ex);
             }
         }
