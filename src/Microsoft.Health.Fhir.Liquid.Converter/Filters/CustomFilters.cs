@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using DotLiquid.Util;
+using Microsoft.Health.MeasurementUtility;
 using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json.Linq;
 

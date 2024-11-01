@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Microsoft.Health.Fhir.Liquid.Converter;
 using Xunit;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests;
