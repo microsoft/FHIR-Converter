@@ -40,7 +40,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             _jsonTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Json", "ExamplePatient.json"));
             _jsonExpectData = File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, "ExamplePatient.json"));
             _fhirStu3TestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Stu3", "Patient.json"));
-            _fhirBundleTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Json", "Bundle.json"));
+            _fhirBundleTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Json", "bundle.json"));
             _fhirBundleExpectedData = File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, "BundleToHl7v2.hl7"));
             _processorSettings = new ProcessorSettings();
 
