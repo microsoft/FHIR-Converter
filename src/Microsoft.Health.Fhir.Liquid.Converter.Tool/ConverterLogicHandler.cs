@@ -48,7 +48,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 ConvertBatchFiles(dataProcessor, templateProvider, dataType, options.RootTemplate, options.InputDataFolder, options.OutputDataFolder, options.IsTraceInfo);
             }
 
-            Console.WriteLine($"HERE Conversion completed!");
+            Console.WriteLine($"Conversion completed!");
         }
 
         private static void ConvertSingleFile(IFhirConverter dataProcessor, ITemplateProvider templateProvider, DataType dataType, string rootTemplate, string inputContent, string outputFile, bool isTraceInfo)
