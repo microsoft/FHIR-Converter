@@ -237,7 +237,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             return data.Select(item => new[]
             {
                 item[0],
-                Path.Join(Constants.SampleDataDirectory, "Fhir", item[1]),
+                Path.Join(Constants.SampleDataDirectory, "FHIR", item[1]),
                 Path.Join(Constants.ExpectedDataFolder, "FhirToHl7v2", item[0], item[2]),
             });
         }
