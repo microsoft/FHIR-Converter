@@ -155,7 +155,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             {
                 throw new RenderException(FhirConverterErrorCode.TimeoutError, Resources.TimeoutError, ex);
             }
-            catch (RenderException ex)
+            catch (RenderException)
             {
                 throw;
             }

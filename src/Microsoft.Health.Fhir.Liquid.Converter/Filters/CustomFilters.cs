@@ -1,13 +1,16 @@
+// -------------------------------------------------------------------------------------------------
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
+// -------------------------------------------------------------------------------------------------
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.AccessControl;
 using System.Text;
 using System.Text.RegularExpressions;
 using DotLiquid.Util;
-using Microsoft.Health.MeasurementUtility;
 using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json.Linq;
 
