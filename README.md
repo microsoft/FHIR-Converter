@@ -1,8 +1,10 @@
-# FHIR Converter
+# Skylight fork of microsoft/FHIR Converter
 
 FHIR converter is an open source project that enables conversion of health data from legacy formats to and from FHIR.  The FHIR converter uses the [Liquid template language](https://shopify.github.io/liquid/) and the .NET runtime.
 
-The FHIR converter supports the following conversions: **HL7v2 to FHIR**, **C-CDA to FHIR**, **JSON to FHIR**, **FHIR STU3 to R4**, and **FHIR to HL7v2** (*Preview*).
+The Microsoft FHIR converter supports the following conversions: **HL7v2 to FHIR**, **C-CDA to FHIR**, **JSON to FHIR**, **FHIR STU3 to R4**, and **FHIR to HL7v2** (*Preview*).
+
+The Skylight fork has added support for **eCR to FHIR** and **ELR to FHIR**. Some other changes to the code were needed to support these conversions in addition to the new functionality. These converters are still under active development and are not yet fully validated.
 
 The converter uses templates that define mappings between these different data formats. The templates are written in [Liquid](https://shopify.github.io/liquid/) templating language and make use of custom [filters](docs/Filters-and-Tags.md).  
 
