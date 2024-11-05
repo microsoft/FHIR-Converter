@@ -38,18 +38,23 @@
               {% endfor -%} 
             {% endif -%}
             {% if comp.procedure.participant.participantRole.id -%}
-                {% if comp.procedure.participant.participantRole.playingEntity.code.translation -%}
-                    {% assign translations = comp.procedure.participant.participantRole.playingEntity.code.translation | to_array -%}
+                {% assign playingEntity = comp.procedure.participant.participantRole.playingEntity -%}
+                {% if playingEntity.code.translation -%}
+                    {% assign translations = playingEntity.code.translation | to_array -%}
                     {% if translations.first.displayName -%}
                         {% assign specValue = translations.first.displayName -%}
                     {% endif -%}
                 {% elsif comp.procedure.participant.participantRole.id.displayName -%}
                     {% assign specValue = comp.procedure.participant.participantRole.id.displayName -%}
-                {% elsif entry.organizer.component.procedure.participant.participantRole.playingEntity.code.displayName -%}
-                    {% assign specValue = comp.procedure.participant.participantRole.playingEntity.code.displayName -%}
+                {% elsif playingEntity.code.originalText._ %}
+                    {% assign specValue = playingEntity.code.originalText._ -%}
+                {% elsif playingEntity.code.displayName -%}
+                     {% assign specValue = playingEntity.code.displayName -%}
                 {% else -%}
                     {% assign specValue = "None" -%}
                 {% endif -%}
+            {% else  -%}
+                {% assign specValue = "None" -%}
             {% endif -%}
         {% endif -%}
     {% endfor-%}   
