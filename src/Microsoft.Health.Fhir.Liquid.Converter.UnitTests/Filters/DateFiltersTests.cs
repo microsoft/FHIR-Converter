@@ -50,7 +50,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { string.Empty, 60, "local", string.Empty };
             yield return new object[] { @"1970-01-01T00:01:00.000+10:00", -60, "utc", @"1969-12-31T14:00:00.000Z" };
             yield return new object[] { @"1970-01-01T00:01:00.000+05:30", -60, "utc", @"1969-12-31T18:30:00.000Z" };
-            yield return new object[] { @"1970-01-01T00:01:00Z", 60.123, "preserve", @"1970-01-01T00:02:00.123Z" };
+            yield return new object[] { @"1970-01-01T00:01:00Z", 60.123, "preserve", @"1970-01-01T00:02:00.122Z" };
             yield return new object[] { @"1970-01-01T00:01:00+06:00", 60.000, "preserve", @"1970-01-01T00:02:00+06:00" };
             yield return new object[] { @"1970-01-01T00:01:00+06:30", 60.000, "preserve", @"1970-01-01T00:02:00+06:30" };
             yield return new object[] { @"1970-01-01T00:01:00+14:00", 60, "utc", @"1969-12-31T10:02:00Z" };
@@ -74,7 +74,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         {
             yield return new object[] { null, 60, null };
             yield return new object[] { string.Empty, 60, string.Empty };
-            yield return new object[] { @"1970-01-01T00:01:00Z", 60.123, @"1970-01-01T00:02:00.123Z" };
+            yield return new object[] { @"1970-01-01T00:01:00Z", 60.123, @"1970-01-01T00:02:00.122Z" };
             yield return new object[] { @"1970-01-01T00:01:00+06:00", 60.000, @"1970-01-01T00:02:00+06:00" };
             yield return new object[] { @"1970-01-01T00:01:00.1234+06:00", 60.000, @"1970-01-01T00:02:00.123+06:00" };
             yield return new object[] { @"1970-01-01T00:01:00.1234+06:00", 60.1234, @"1970-01-01T00:02:00.246+06:00" };

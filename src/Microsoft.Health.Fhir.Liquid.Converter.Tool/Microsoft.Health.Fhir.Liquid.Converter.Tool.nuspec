@@ -9,10 +9,10 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Package Description</description>
     <contentFiles>
-      <files include="any/net6.0/**/*.*" buildAction="Content" copyToOutput="true" />
+      <files include="any/net8.0/**/*.*" buildAction="Content" copyToOutput="true" />
     </contentFiles>
   </metadata>
   <files>
-    <file src="..\..\bin\publish\**" target="contentFiles\any\net6.0" />
+    <file src="..\..\bin\publish\**" target="contentFiles\any\net8.0" />
   </files>
 </package>
