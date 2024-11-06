@@ -281,6 +281,32 @@ public class CustomFilterTests
   }
 
   [Fact]
+  public void FindInnerTextById_ValidId_ReturnsString()
+  {
+    var innerXml = "<paragraph style=\"bold\">hello</paragraph>";
+    var fragment = $"<content ID=\"hi\">{innerXml}</content><content ID=\"bye\">bye</content>";
+    var actual = Filters.FindInnerTextById(fragment, "hi");
+    Assert.Equal(actual, innerXml);
+  }
+
+  [Fact]
+  public void FindInnerTextById_InalidId_ReturnsNull()
+  {
+
+    var innerXml = "<paragraph style=\"bold\">hello</paragraph>";
+    var fragment = $"<content ID=\"hi\">{innerXml}</content><content ID=\"bye\">bye</content>";
+    var actual = Filters.FindInnerTextById(fragment, "nope");
+    Assert.Null(actual);
+  }
+
+  [Fact]
+  public void FindInnerTextById_Null_ReturnsNull()
+  {
+    var actual = Filters.FindInnerTextById(null, "nope");
+    Assert.Null(actual);
+  }
+
+  [Fact]
   public void ConcatStrings_ValidData_ReturnsCorrectString()
   {
     var object1 = new List<object>()
