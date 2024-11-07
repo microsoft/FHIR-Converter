@@ -521,7 +521,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     }
 
     /// <summary>
-    /// Searches for the original text content of a node with a specified ID within a 
+    /// Searches for the original text content of a node with a specified ID within a
     /// given xml string (`text._innerText` in most cases).
     /// </summary>
     /// <param name="fullText">The string of XML to search within.</param>
