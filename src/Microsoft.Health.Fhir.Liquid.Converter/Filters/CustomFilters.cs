@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 using DotLiquid.Util;
 using Microsoft.VisualBasic.FileIO;
 using Newtonsoft.Json.Linq;
@@ -517,6 +518,48 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
       rxnormDict ??= CSVMapDictionary(Path.Combine(outDir, @"rxnorm.csv"));
       rxnormDict.TryGetValue(rxnorm ?? string.Empty, out string? element);
       return element;
+    }
+
+    /// <summary>
+    /// Searches for the original text content of a node with a specified ID within a
+    /// given xml string (`text._innerText` in most cases).
+    /// </summary>
+    /// <param name="fullText">The string of XML to search within.</param>
+    /// <param name="id">The ID (reference value) to search for within the data structure.</param>
+    /// <returns>A string with the content of the node with the specified ID, or null if not found.</returns>
+    public static string? FindInnerTextById(string fullText, string id)
+    {
+      XmlDocument doc = new ();
+
+      // Add wrapper <doc> as the fragment may not have one root node.
+      doc.LoadXml($"<doc>{fullText}</doc>");
+      XmlElement root = doc.DocumentElement;
+      return FindInnerTextByIdRecursive(root, id);
+    }
+
+    private static string? FindInnerTextByIdRecursive(XmlElement root, string id)
+    {
+      foreach (XmlNode node in root.ChildNodes)
+      {
+        if (node is XmlElement el)
+        {
+          foreach (XmlAttribute attr in el.Attributes)
+          {
+            if (attr.LocalName.ToLower() == "id" && attr.Value == id)
+            {
+              return el.InnerXml;
+            }
+          }
+
+          var res = FindInnerTextByIdRecursive(el, id);
+          if (res != null)
+          {
+            return res;
+          }
+        }
+      }
+
+      return null;
     }
 
     /// <summary>

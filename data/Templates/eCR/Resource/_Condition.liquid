@@ -39,12 +39,9 @@
         "code":
         {
             {% assign translations = conditionEntry.value.translation | to_array -%}
-            {% if translations.first.code -%}
-                {% include 'DataType/CodeableConcept' CodeableConcept: translations.first -%}
-            {% endif -%}
-            {% if translations.first == null -%}
-                {% include 'DataType/CodeableConcept' CodeableConcept: conditionEntry.value -%}
-            {% endif -%}
+            {% assign code = conditionEntry.value | to_array -%}
+            {% assign codes = code | concat: translations %}
+            {% include 'DataType/CodeableConcept' CodeableConcept: codes -%}
         },
         {% if conditionEntry.effectiveTime.low.value -%}
             "onsetDateTime":"{{ conditionEntry.effectiveTime.low.value | format_as_date_time }}",
@@ -66,15 +63,10 @@
             {
                 {% for relatedEntry in relatedEntries -%}
                     {% assign templateIdString = relatedEntry.act.templateId.root | to_json_string -%}
-                    {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.64"' and relatedEntry.act.text.reference.value -%}
+                    {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.64"' or templateIdString contains "2.16.840.1.113883.10.20.22.4.202" and relatedEntry.act.text.reference.value -%}
                         {% assign commentRefVal = relatedEntry.act.text.reference.value | replace: '#', '' -%}
-                        {% assign commentObj = text | find_object_by_id: commentRefVal -%}
-
-                        {% if commentObj != null and commentObj.content != null %}
-                            {% assign commentParagraphString = commentObj.paragraph | concat_strings %}
-                            {% assign commentContentString = commentObj.content | concat_strings | remove: '"' %}
-                            "text": "{{ commentParagraphString | append: "<br/>" | append: commentContentString }}",
-                        {% endif %}
+                        {% assign commentText = text._innerText  | find_inner_text_by_id: commentRefVal -%}
+                        "text": "{{ commentText | escape_special_chars }}",
                     {% endif -%}
                 {% endfor -%}
                 
