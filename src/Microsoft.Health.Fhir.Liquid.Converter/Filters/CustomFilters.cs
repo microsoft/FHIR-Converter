@@ -557,9 +557,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
             return res;
           }
         }
-     }
+      }
 
-     return null;
+      return null;
     }
 
     /// <summary>
