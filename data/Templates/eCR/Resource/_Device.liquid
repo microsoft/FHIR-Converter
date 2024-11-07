@@ -1,0 +1,38 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Device",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = author.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "manufacturer":"{{ author.assignedAuthoringDevice.manufacturerModelName._ }}",
+        "version":
+        [
+            {
+                "value":"{{ author.assignedAuthoringDevice.softwareName._ }}",
+            },
+        ],
+        "property": [
+            {
+                "type": {
+                    "coding": [
+                        {
+                            "system": "http://hl7.org/fhir/device-category",
+                            "code": "software",
+                            "display": "software",
+                        },
+                    ]
+                }
+            }
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Device/{{ ID }}",
+    },
+},

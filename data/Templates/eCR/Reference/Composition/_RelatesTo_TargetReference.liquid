@@ -1,0 +1,30 @@
+{
+    "resource":{
+        "resourceType": "Composition",
+        "id":"{{ ID }}",
+        "relatesTo":
+        [
+            {
+                {% if relatedDOC.typeCode and relatedDOC.typeCode == "RPLC" -%}
+                    "code": "replaces",
+                {% endif -%}                
+                {% if relatedDOC.parentDocument -%}
+                    {% if relatedDOC.parentDocument.id and relatedDOC.parentDocument.id.root -%}
+
+                        "targetReference":
+                        {
+                            "reference":"Composition/{{ relatedDOC.parentDocument.id.root }}",
+                        },
+                    {% endif -%}
+                    "extension":[
+                        {
+                            "url" : "http://hl7.org/fhir/StructureDefinition/composition-clinicaldocument-versionNumber",
+                            "valueString" : "{{ relatedDOC.parentDocument.versionNumber.value }}"
+                        },
+                    ],
+                {% endif -%}
+
+            },
+        ],
+    },
+},

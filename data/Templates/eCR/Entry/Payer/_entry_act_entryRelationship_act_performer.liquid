@@ -1,0 +1,7 @@
+{% assign templateIdString = entry.templateId | to_json_string -%}
+{% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.87"' -%}
+    {% if entry.assignedEntity.representedOrganization.name._ -%}
+        {% assign organizationId = entry.assignedEntity.representedOrganization | to_json_string | generate_uuid -%}
+        {% include 'Resource/Organization' organization: entry.assignedEntity.representedOrganization ID: organizationId -%}
+    {% endif -%}
+{% endif -%}

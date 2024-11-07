@@ -78,8 +78,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Parsers
             var expectedInnerText = "<some xmlns=\"urn:hl7-org:v3\">node</some><some xmlns=\"urn:hl7-org:v3\">other node</some>";
             Assert.Equal(
                 expectedInnerText,
-                (contents?["text"] as Dictionary<string, object>)?.GetValueOrDefault("_innerText")
-            );
+                (contents?["text"] as Dictionary<string, object>)?.GetValueOrDefault("_innerText"));
         }
     }
 }

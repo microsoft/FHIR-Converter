@@ -1,0 +1,14 @@
+{% if probRelationship.observation.code.codeSystem == "2.16.840.1.113883.6.96" or probRelationship.observation.code.codeSystem == "2.16.840.1.113883.6.1" or probRelationship.observation.code.translation.codeSystem == "2.16.840.1.113883.6.96" or probRelationship.observation.code.translation.codeSystem == "2.16.840.1.113883.6.1" -%}
+    {% if probRelationship.observation.code.code == "64572001" or probRelationship.observation.code.code == "55607006" or probRelationship.observation.code.code == "282291009" or probRelationship.observation.code.translation.code == "64572001" or probRelationship.observation.code.translation.code == "55607006" -%}
+        {% if probRelationship.observation.value.code and probRelationship.observation.value.value.code != "NA" -%}
+            {% assign conditionId = probRelationship.observation | to_json_string | generate_uuid -%}
+            {% include 'Resource/Condition' conditionEntry: probRelationship.observation, ID: conditionId, text: text, relatedEntries: relatedEntries -%}
+            {% include 'Reference/Condition/Subject' ID: conditionId, REF: fullPatientId -%}
+            {% assign isDiagnosis = diagnoses[probRelationship.observation.value.code] %}
+            {% if isDiagnosis -%}
+                {% assign fullConditionId = conditionId | prepend: 'Condition/' -%}
+                {% include 'Reference/Encounter/Diagnosis_Condition' ID: encounterId, REF: fullConditionId -%}
+            {% endif -%}
+        {% endif -%}
+    {% endif -%}
+{% endif -%}

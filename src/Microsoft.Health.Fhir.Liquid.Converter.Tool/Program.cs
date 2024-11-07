@@ -26,7 +26,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"Process failed: {ex.Message}");
+                Console.Error.WriteLine($"Ex: {ex} StackTrace: '{Environment.StackTrace}'");
+                Console.Error.WriteLine($"HERE Process failed: {ex.Message}");
                 return -1;
             }
         }

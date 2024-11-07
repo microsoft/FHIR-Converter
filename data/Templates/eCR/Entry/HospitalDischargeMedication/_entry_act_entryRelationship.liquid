@@ -1,0 +1,13 @@
+{% assign substanceAdministrationId = relationship.substanceAdministration | to_json_string | generate_uuid -%}
+{% include 'Resource/MedicationAdministration' medicationAdministration: relationship.substanceAdministration, ID: substanceAdministrationId -%}
+{% assign manufacturedMaterialId = relationship.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial | to_json_string | generate_uuid -%}
+{% include 'Resource/Medication' medication: relationship.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial, ID: manufacturedMaterialId -%}
+{% if relationship.substanceAdministration.performer.assignedEntity.representedOrganization -%}
+    {% assign organizationId = relationship.substanceAdministration.performer.assignedEntity.representedOrganization | to_json_string | generate_uuid -%}
+    {% include 'Resource/Organization' organization: relationship.substanceAdministration.performer.assignedEntity.representedOrganization, ID: organizationId -%}
+{% endif -%}
+{% include 'Reference/MedicationAdministration/Subject' ID: substanceAdministrationId, REF: fullPatientId -%}
+{% assign fullManufacturedMaterialId = manufacturedMaterialId | prepend: 'Medication/' -%}
+{% include 'Reference/MedicationAdministration/MedicationReference' ID: substanceAdministrationId, REF: fullManufacturedMaterialId -%}
+
+{{ relationship.substanceAdministration.entryRelationship | to_array | batch_render: 'Entry/HospitalDischargeMedication/entry_act_entryRelationship_substanceAdministration_entryRelationship', 'entryRelationship' }}

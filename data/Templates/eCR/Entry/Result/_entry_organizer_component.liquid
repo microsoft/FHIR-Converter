@@ -1,0 +1,42 @@
+{% if component.observation -%}
+  {% if component.observation.code.nullFlavor and component.observation.code.nullFlavor != 'UNK' -%}
+    {% else -%}
+      {% assign observationId = component.observation | to_json_string | generate_uuid -%}
+      {% include 'Resource/Observation' observationCategory: 'laboratory', observationEntry: component.observation, ID: observationId, specimenValue: specValue, collectTime: collectTime, receiveTime: receiveTime, text: text -%}
+      {% assign fullObservationId = observationId | prepend: 'Observation/' -%}
+      {% include 'Reference/DiagnosticReport/Result' ID: diagnosticId, REF: fullObservationId -%}
+      {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
+
+      {% assign labDeviceNameReference = component.observation.text.reference.value | replace: '#', '' | append: 'TestMethodName1'-%}
+      {% assign labDeviceName = text | find_object_by_id: labDeviceNameReference | to_html_string -%}
+      {% if labDeviceName != null and labDeviceName != "" %}
+        {% assign deviceId = labDeviceName | generate_uuid %}
+        {% assign fullDeviceId = deviceId | prepend: 'Device/' %}
+        {% include 'Resource/Device2', ID: deviceId, deviceName: labDeviceName -%}
+        {% include 'Reference/Observation/Device', ID: observationId, REF: fullDeviceId -%}
+      {% endif %}
+
+    {% if component.observation.author.assignedAuthor -%}
+        {% evaluate practitionerResultId using 'Utils/GenerateId' obj: component.observation.author.assignedAuthor -%}
+        {% include 'Resource/Practitioner' practitioner: component.observation.author.assignedAuthor, ID: practitionerResultId -%}
+        {% assign fullPractitionerResultId = practitionerResultId | prepend: 'Practitioner/' -%}
+        {% include 'Reference/Observation/Performer' ID: observationId, REF: fullPractitionerResultId -%}
+      {% elsif component.observation.performer.assignedEntity.representedOrganization -%}
+        {% assign orgId = component.observation.performer.assignedEntity.representedOrganization | to_json_string | generate_uuid -%}
+        {% assign orgName = component.observation.performer.assignedEntity.representedOrganization.name._ -%}
+        {% include 'Resource/Organization' organization: component.observation.performer.assignedEntity.representedOrganization, ID: orgId -%}
+        {% assign fullOrgId = orgId | prepend: 'Organization/' -%}
+        {% include 'Reference/Observation/Performer' ID: observationId, REF: fullOrgId, PERFNAME: orgName -%}
+      {% endif -%}
+  {% endif -%}
+{% endif -%}
+{% if component.organizer and component.organizer.classCode == "BATTERY" %}
+  {% if component.organizer.code.nullFlavor and component.observation.code.nullFlavor != 'UNK' -%}
+    {% else -%}
+      {% assign observationId = component.organizer | to_json_string | generate_uuid -%}
+      {% include 'Resource/Observation' observationCategory: 'laboratory', observationEntry: component.organizer, ID: observationId, classCode: component.organizer.classCode -%}
+      {% assign fullObservationId = observationId | prepend: 'Observation/' -%}
+      {% include 'Reference/DiagnosticReport/Result' ID: diagnosticId, REF: fullObservationId -%}
+      {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
+  {% endif -%}    
+{% endif -%}

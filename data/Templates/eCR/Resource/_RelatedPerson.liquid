@@ -1,0 +1,64 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "RelatedPerson",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = relatedPerson.id | to_array -%}
+            {% for id in ids -%}
+            {% endfor -%}
+        ],
+        "relationship":
+        [
+            { {% include 'DataType/CodeableConcept' CodeableConcept: relatedPerson.code -%} },
+        ],
+        "name":
+        [
+            {% assign names = relatedPerson.guardianPerson.name | to_array -%}
+            {% for name in names -%}
+            { {% include 'DataType/HumanName' HumanName: name -%} },
+            {% endfor -%}
+        ],
+        "telecom":
+        [
+            {% assign telecoms = relatedPerson.telecom | to_array -%}
+            {% for telecom in telecoms -%}
+            { {% include 'DataType/ContactPoint' ContactPoint: telecom -%} },
+            {% endfor -%}
+        ],
+        "birthDate":"{{ relatedPerson.guardianPerson.birthTime.value | add_hyphens_date }}",
+        "gender":"{{ relatedPerson.guardianPerson.administrativeGenderCode.displayName | downcase }}",
+        "address":
+        [
+            {% assign addrs = relatedPerson.addr | to_array -%}
+            {% for addr in addrs -%}
+            { {% include 'DataType/Address' Address: addr -%} },
+            {% endfor -%}
+        ],
+        "communication":
+        [
+            {% assign languageCommunications = relatedPerson.guardianPerson.languageCommunication | to_array -%}
+            {% for languageCommunication in languageCommunications -%}
+            {
+                "language":
+                {
+                    "coding":
+                    [
+                        {
+                            "system":"http://hl7.org/fhir/ValueSet/languages",
+                            "code":"{{ languageCommunication.languageCode.code }}",
+                            "display":"{{ languageCommunication.languageCode.code | downcase | get_property: 'ValueSet/Language' }}",
+                        },
+                    ],
+                },
+                "preferred":"{{ languageCommunication.preferenceInd.value }}",
+            },
+            {% endfor -%}
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"RelatedPerson/{{ ID }}",
+    },
+},

@@ -1,0 +1,7 @@
+"coding": 
+[
+	{% assign concepts = CodeableConcept | to_array -%}
+	{% for concept in concepts -%}
+	{ {% include 'DataType/Coding' Coding: concept -%} },
+	{% endfor -%}
+],

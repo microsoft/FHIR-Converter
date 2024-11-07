@@ -1,0 +1,63 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "AllergyIntolerance",
+        "id":"{{ID}}",
+        "identifier":
+        [
+            {% assign ids = allergyEntry.id | to_array -%}
+            {% for i in ids -%}
+                { {% include 'DataType/Identifier' Identifier: i -%} },
+            {% endfor -%}
+        ],
+        "clinicalStatus":
+        {
+            "coding":
+            [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/allergyintolerance-clinical",
+                    "code":"{{ allergyStatus.code | get_property: 'ValueSet/AllergyStatus' }}",
+                }
+            ]
+        },
+        "reaction":
+        [
+            {% assign relationships = allergyEntry.entryRelationship | to_array -%}
+            {% for r in relationships -%}
+            {
+                {% if allergyEntry.participant.participantRole.playingEntity.code.translation -%}
+                    "substance":{ {% include 'DataType/CodeableConcept' CodeableConcept: allergyEntry.participant.participantRole.playingEntity.code.translation -%} },
+                {% else -%}
+                    "substance":{ {% include 'DataType/CodeableConcept' CodeableConcept: allergyEntry.participant.participantRole.playingEntity.code -%} },
+                {% endif -%}
+
+                {% assign templateIdString = r.observation.templateId | to_json_string -%}
+                {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.9"' -%}
+                    "manifestation":
+                    [
+                        {% if r.observation.value.translation -%}
+                            { {% include 'DataType/CodeableConcept' CodeableConcept: r.observation.value.translation -%} },
+                        {% else -%}
+                            { {% include 'DataType/CodeableConcept' CodeableConcept: r.observation.value -%} },
+                        {% endif -%}
+                    ],
+                    "onset": "{{ r.observation.effectiveTime.low.value | format_as_date_time }}", 
+                {% endif -%}
+                {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.8"' -%}
+                    {% if r.observation.value.translation -%}
+                        "severity":"{{ r.observation.value.translation.displayName | downcase | get_property: 'ValueSet/AllergySeverity' }}",
+                    {% else -%}
+                        "severity":"{{ r.observation.value.displayName | downcase | get_property: 'ValueSet/AllergySeverity' }}",
+                    {% endif -%}
+                {% endif -%}
+            },
+            {% endfor -%}
+
+        ],
+        "onsetDateTime":"{{ allergyEntry.effectiveTime.low.value | format_as_date_time }}",
+    },
+    "request":{
+        "method":"PUT",
+        "url":"AllergyIntolerance/{{ID}}",
+    },
+},

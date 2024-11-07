@@ -1,0 +1,52 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "FamilyMemberHistory",
+        "id":"{{ID}}",
+        "identifier":
+        [
+            {% assign ids = familyEntry.id | to_array -%}
+            {% for id in ids -%}
+                { {% include 'DataType/Identifier' Identifier: id -%} }
+            {% endfor -%}
+        ],
+        "status":"completed",
+        "relationship":
+            {% if familyEntry.subject.relatedSubject.code.translation -%}
+                { {% include 'DataType/CodeableConcept' CodeableConcept: familyEntry.subject.relatedSubject.code.translation -%} },
+            {% else -%}
+                { {% include 'DataType/CodeableConcept' CodeableConcept: familyEntry.subject.relatedSubject.code -%} },
+            {% endif -%}
+        "sex":{ {% include 'DataType/CodeableConcept' CodeableConcept: familyEntry.subject.relatedSubject.subject.administrativeGenderCode -%} },
+        "bornString":"{{familyEntry.subject.relatedSubject.subject.birthTime.value}}",
+        "condition":
+        [
+            {% assign components = familyEntry.component | to_array -%}
+            {% for component in components -%}
+                {
+                    "code":{ {% include 'DataType/CodeableConcept' CodeableConcept: component.observation.value -%} },
+                    {% assign entryRelationships = component.observation.entryRelationship | to_array -%}
+                    {% for entryRelationship in entryRelationships -%}
+                        {% assign templateIdString = entryRelationship.observation.templateId | to_json_string -%}
+                        {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.47"' -%}
+                            "contributedToDeath":true,
+                        {% endif -%}
+                        {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.31"' -%}
+                            {% if entryRelationship.observation.value.value -%}
+                                "onsetAge":{
+                                        "value": {{entryRelationship.observation.value.value}},
+                                        "system": "http://unitsofmeasure.org",
+                                        "code": "{{entryRelationship.observation.value.unit}}"
+                                    },
+                            {% endif -%}
+                        {% endif -%}
+                    {% endfor -%}
+                },
+            {% endfor -%}
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"FamilyMemberHistory/{{ID}}",
+    },
+},

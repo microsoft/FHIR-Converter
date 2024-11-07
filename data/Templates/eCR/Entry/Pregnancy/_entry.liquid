@@ -1,0 +1,18 @@
+{% if entry.observation -%}
+    {% assign observationId = entry.observation | to_json_string | generate_uuid -%}
+    {% if entry.observation.code.nullFlavor or entry.observation.value.nullFlavor -%}
+    {% else -%}
+        {% assign templateIds = entry.observation.templateId | to_array -%}
+        {% for tempId in templateIds -%}
+            {% if tempId and tempId.root and tempId.root == '2.16.840.1.113883.10.20.15.3.8' -%}
+                {% continue %}
+            {% elsif tempId and tempId.root and tempId.root == '2.16.840.1.113883.10.20.22.4.293' -%}
+                {% include 'Resource/ObservationPregnancyStatus' observationCategory: 'exam', observationEntry: entry.observation, ID: observationId -%}
+                {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
+            {% else -%}
+                {% include 'Resource/Observation' observationCategory: 'exam', observationEntry: entry.observation, ID: observationId -%}
+                {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
+            {% endif -%}            
+        {% endfor -%}
+    {% endif -%}
+{% endif -%}

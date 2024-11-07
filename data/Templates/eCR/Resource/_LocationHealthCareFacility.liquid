@@ -1,0 +1,52 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Location",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = location.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        
+        {% if location.location.name and location.location.name._ -%}
+            "name":"{{ location.location.name._ }}",
+        {% elsif location.serviceProviderOrganization and location.serviceProviderOrganization.name and location.serviceProviderOrganization.name._ -%}
+            "name":"{{ location.serviceProviderOrganization.name._ }}",
+        {% endif -%}
+
+
+        "address":
+        {
+            {% if location.location.addr and location.location.addr.state._ -%}
+                {% include 'DataType/Address' Address: location.location.addr -%}
+            {% elsif location.serviceProviderOrganization.addr and location.serviceProviderOrganization.addr.state._ -%}
+                {% include 'DataType/Address' Address: location.serviceProviderOrganization.addr -%}
+            {% endif -%}
+        },
+        "telecom":
+        [
+            {% assign telecoms = location.location.telecom | to_array -%}
+            {% if telecoms.first.value -%}
+            {% else -%}
+                {% assign telecoms = location.serviceProviderOrganization.telecom | to_array -%}
+            {% endif -%}
+            {% for telecom in telecoms -%}
+            { {% include 'DataType/ContactPoint' ContactPoint: telecom -%} },
+            {% endfor -%}
+        ],
+        "type":
+        [
+            {% assign codes = location.code | to_array -%}
+            {% for code in codes -%}
+            { {% include 'DataType/CodeableConcept' CodeableConcept: code -%} },
+            {% endfor -%}
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Location/{{ ID }}",
+    },
+},

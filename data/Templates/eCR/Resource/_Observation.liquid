@@ -1,0 +1,229 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Observation",
+        "id":"{{ ID }}",
+        "meta":
+        {
+            "profile":
+            [
+                "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observationresults",
+            ],
+        },
+        "identifier":
+        [
+            {% assign ids = observationEntry.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "category":
+        [
+            {
+                "coding":
+                [
+                    {
+                        {% if observationCategory -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/observation-category",
+                            "code":"{{ observationCategory }}",
+                        {% endif -%}
+                    },
+                ],
+            },
+        ],
+        "status":"{{ observationEntry.statusCode.code | get_property: 'ValueSet/ObservationStatus' }}",
+        "code":
+        {
+            {% assign translations = observationEntry.code.translation | to_array -%}
+            {% assign code = observationEntry.code | to_array -%}
+            {% assign codes = code | concat: translations %}
+            {% include 'DataType/CodeableConcept' CodeableConcept: codes -%}
+        },
+        "effectivePeriod":
+        {
+            {% if observationEntry.effectiveTime.low.value -%}
+            "start":"{{ observationEntry.effectiveTime.low.value | format_as_date_time }}",
+            {% endif -%}
+            {% if observationEntry.effectiveTime.high.value -%}
+            "end":"{{ observationEntry.effectiveTime.high.value | format_as_date_time }}",
+            {% endif -%}
+        },
+        {% if observationEntry.effectiveTime.low.value == null -%}
+        "effectiveDateTime":"{{ observationEntry.effectiveTime.value | format_as_date_time }}",
+        {% endif -%}
+        "bodySite":
+        {
+            {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.targetSiteCode -%}
+        },
+        {% if observationEntry.value.code -%}
+            "valueCodeableConcept":
+            {
+                {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.value -%}
+            },
+        {% elsif observationEntry.value.value -%}
+            "valueQuantity":
+            {
+                "value":{{ observationEntry.value.value }},
+                {% if observationEntry.value.unit and  observationEntry.value.unit != "null" -%}
+                "unit":"{{ observationEntry.value.unit }}",
+                {% endif -%}
+            },
+        {% else -%}
+            {% if observationEntry.value._ %}
+                "valueString":"{{ observationEntry.value._ }}",
+            {% else %}
+                {% assign obsRefVal = observationEntry.value.reference.value | replace: '#', '' -%}
+                {% assign valueStringObject = text | find_object_by_id: obsRefVal -%}
+                {% if valueStringObject != null %}
+                        {% if valueStringObject._ != null %}
+                            {% assign valueString = valueStringObject._ | concat_strings %}
+                        {% elsif valueStringObject.content != null %}
+                            {% assign valueString = valueStringObject.content | concat_strings %}
+                        {% endif %}
+                    "valueString": "{{ valueString | replace: '\n', '\\n'  }}",
+                {% endif %}
+            {% endif %}
+        {% endif -%}
+        "referenceRange":
+        [
+            {
+                {% if observationEntry.referenceRange.observationRange.value.low.value and observationEntry.referenceRange.observationRange.value.high.value -%}
+                    "text":"{{ observationEntry.referenceRange.observationRange.value.low.value }} {{ observationEntry.referenceRange.observationRange.value.low.unit }} - {{ observationEntry.referenceRange.observationRange.value.high.value }} {{ observationEntry.referenceRange.observationRange.value.high.unit }}",
+                {% elsif observationEntry.referenceRange.observationRange.value.low.translation.value and observationEntry.referenceRange.observationRange.value.high.translation.value %}
+                    "text":"{{ observationEntry.referenceRange.observationRange.value.low.translation.value }} {{ observationEntry.referenceRange.observationRange.value.low.translation.originalText._ }} - {{ observationEntry.referenceRange.observationRange.value.high.translation.value }} {{ observationEntry.referenceRange.observationRange.value.high.translation.originalText._ }}",
+                {% else %}
+                    "text":"{{  observationEntry.referenceRange.observationRange.text._ }}",
+                {% endif %}
+                {% if observationEntry.referenceRange.observationRange.value.low.value -%}
+                    "low":
+                    {
+                        "value":{{ observationEntry.referenceRange.observationRange.value.low.value }},
+                        "unit":"{{ observationEntry.referenceRange.observationRange.value.low.unit }}",
+                    },
+                {% elsif observationEntry.referenceRange.observationRange.value.low.translation.value %}
+                    "low": {
+                        "value":"{{ observationEntry.referenceRange.observationRange.value.low.translation.value }}",
+                        "unit":"{{ observationEntry.referenceRange.observationRange.value.low.translation.originalText._ }}",
+                    },
+                {% endif -%}
+                {% if observationEntry.referenceRange.observationRange.value.high.value -%}
+                    "high":
+                    {
+                        "value":{{ observationEntry.referenceRange.observationRange.value.high.value }},
+                        "unit":"{{ observationEntry.referenceRange.observationRange.value.high.unit }}",
+                    },
+                {% elsif observationEntry.referenceRange.observationRange.value.high.translation.value %}
+                    "high": {
+                        "value":"{{ observationEntry.referenceRange.observationRange.value.high.translation.value }}",
+                        "unit":"{{ observationEntry.referenceRange.observationRange.value.high.translation.originalText._ }}",
+                    },
+                {% endif -%}
+            },
+        ],
+        "interpretation":
+        [
+            { {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.interpretationCode -%} },
+        ],
+        {% if observationEntry.entryRelationship %}
+            {% assign entryRelationships = observationEntry.entryRelationship | to_array %}
+            {% for entry in entryRelationships %}
+                {% if entry.act.templateId.root == "2.16.840.1.113883.10.20.22.4.64" and entry.act.text.reference._%}
+                    {% assign obsRefVal = entry.act.text.reference.value| replace: '#', '' -%}
+                    {% assign valueStringObject = text | find_object_by_id: obsRefVal -%}
+                    "note":
+                    [
+                        {
+                            {% if valueStringObject != null %}
+                              {% if valueStringObject._ != null %}
+                                  {% if valueStringObject.br != null %}
+                                    {% assign value = valueStringObject._ | to_html_string_join_br %}
+                                  {% else %}
+                                    {% assign value = valueStringObject._ | to_html_string %}
+                                  {% endif %}
+                              {% elsif valueStringObject.content != null %}
+                                  {% if valueStringObject.br != null %}
+                                    {% assign value = valueStringObject.content | to_html_string_join_br %}
+                                  {% else %}
+                                    {% assign value = valueStringObject.content | to_html_string %}
+                                  {% endif %}
+                              {% endif %}
+                              "text": "{{ value | replace: '\n', '\\n' | remove: '"' }}",
+                            {% else %}
+                              "text": "{{ entry.act.text.reference._ }}",
+                            {% endif %}
+                        }
+                    ],
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        {% if classCode == "BATTERY" %}
+            {% assign batteryComponents = observationEntry.component | to_array %}
+            "component":
+            [
+                {% for component in batteryComponents %}
+                {
+                    "code":
+                        {
+                            {% if component.observation.code -%}
+                                {% include 'DataType/CodeableConcept' CodeableConcept: component.observation.code -%}
+                            {% endif -%}
+                        },
+                    "valueString": "{{ component.observation.value._ }}",
+                    "extension": [
+                        {% if component.observation.methodCode.originalText._ %}
+                        {
+                            "url": "methodCode originalText",
+                            "valueString": "{{ component.observation.methodCode.originalText._ }}",
+                        },
+                        {% endif %}
+                    ],
+                },
+                {% endfor %}
+            ],
+        {% endif %}
+        {% assign observationTextReferenceValue = observationEntry.text.reference.value -%}
+        {% assign observationValueReferenceValue = observationEntry.value.reference.value -%}
+        "extension":
+            [ {
+                {% if specimenValue and specimenValue != "None" or collectTime and collectTime != "None" or observationTextReferenceValue != "None" or observationValueReferenceValue != "None" -%}
+
+                    "url" : "http://hl7.org/fhir/R4/specimen.html",
+                    "extension": [
+                    {% if specimenValue and specimenValue != "None" -%}
+                        {
+                            "url" : "specimen source",
+                            "valueString" : "{{ specimenValue }}",
+                        },
+                    {% endif -%}
+                    {% if collectTime and collectTime != "None" -%}
+                        {
+                            "url" : "specimen collection time",
+                            "valueDateTime" : "{{ collectTime | format_as_date_time }}",
+                        },
+                    {% endif -%}
+                    {% if receiveTime and receiveTime != "None" -%}
+                        {
+                            "url" : "specimen receive time",
+                            "valueDateTime" : "{{ receiveTime | format_as_date_time }}",
+                        },
+                    {% endif -%}
+                    {% if observationTextReferenceValue -%}
+                        {
+                            "url":"observation entry reference value",
+                            "valueString":"{{ observationTextReferenceValue }}",
+                        },
+                    {% elsif observationValueReferenceValue -%}
+                        {
+                            "url":"observation entry reference value",
+                            "valueString":"{{ observationValueReferenceValue }}",
+                        },
+                    {% endif -%}
+                    ],
+                {% endif -%}
+            },],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Observation/{{ ID }}",
+    },
+},

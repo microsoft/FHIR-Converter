@@ -1,0 +1,18 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Medication",
+        "id":"{{ ID }}",
+        "code":
+        {
+            {% assign translations = medication.code.translation | to_array -%}
+            {% assign code = medication.code | to_array -%}
+            {% assign codes = code | concat: translations %}
+            {% include 'DataType/CodeableConcept' CodeableConcept: codes -%}
+        },
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Medication/{{ ID }}",
+    },
+},
