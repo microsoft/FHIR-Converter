@@ -64,27 +64,19 @@
         {% if contact.classCode == "ECON" -%}
         "contact": [
              {
-                {% if contact.code.originalText._ %}
-                  "relationship": {{ contact.code.originalText._ | to_json_string | downcase }},
-                {% endif %}
-                "name":[
-                    {% assign names = contact.associatedPerson.name | to_array -%}
-                    {% for name in names -%}
-                    { {% include 'DataType/HumanName' HumanName: name -%} },
-                    {% endfor -%}
+                "relationship": [
+                    { {% include 'DataType/CodeableConcept' CodeableConcept: contact.code -%} }
                 ],
+                {% assign name = contact.associatedPerson.name | to_array | first-%}
+                "name": { {% include 'DataType/HumanName' HumanName: name -%} },
                 "telecom": [
                     {% assign telecoms = contact.telecom | to_array -%}
                     {% for telecom in telecoms -%}
                     { {% include 'DataType/ContactPoint' ContactPoint: telecom -%} },
                     {% endfor -%}
                 ],
-                "address":[
-                    {% assign addrs = contact.addr | to_array -%}
-                    {% for addr in addrs -%}
-                    { {% include 'DataType/Address' Address: addr -%} },
-                    {% endfor -%}
-                ],
+                {% assign addr = contact.addr | to_array | first -%}
+                "address": { {% include 'DataType/Address' Address: addr -%} },
              }
         ],
         {% endif contact  -%}
