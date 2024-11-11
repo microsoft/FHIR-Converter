@@ -1,8 +1,8 @@
 steps:
   - task: UseDotNet@2
-    displayName: 'Use .NET Core sdk 6.0.x'
+    displayName: 'Use .NET Core sdk 8.0.x'
     inputs:
-      version: 6.0.x
+      version: 8.0.x
       selectOrConfig: configs
       nugetConfigPath: nuget.config
 
