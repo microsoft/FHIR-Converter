@@ -3,11 +3,7 @@
     "extension" : [
         {
           "url" : "value",
-          "valueCodeableConcept" : {
-            "coding" : [
-              { {% include 'DataType/Coding' Coding: birthSObs.value -%} },
-            ]
-          },
+          {% include 'Utils/ValueHelper' value: birthSobs.value, origText: SOCIALTEXT -%}
         },
       ],
 {% endif -%}

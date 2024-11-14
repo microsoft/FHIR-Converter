@@ -58,26 +58,7 @@
         {% if observationEntry.effectiveTime.low.value == null -%}
         "effectiveDateTime":"{{ observationEntry.effectiveTime.value | format_as_date_time }}",
         {% endif -%}
-        {% if observationEntry.value.code -%}
-            "valueCodeableConcept":
-            {
-                {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.value -%},
-                {% assign obsValueTrans = observationEntry.value.translation | to_array -%}
-                    {% if obsValueTrans.first -%}
-                        {% for obsValueTran in obsValueTrans -%}
-                            {% include 'DataType/CodeableConcept' CodeableConcept: obsValueTran -%},
-                        {% endfor -%}
-                    {% endif -%}
-            },
-        {% elsif observationEntry.value.value -%}
-            "valueQuantity":
-            {
-                "value":{{ observationEntry.value.value }},
-                "unit":"{{ observationEntry.value.unit }}",
-            },
-        {% else -%}
-            "valueString":"{{ observationEntry.value._ }}",
-        {% endif -%}
+        {% include 'Utils/ValueHelper' value: observationEntry.value, origText: text._innerText -%}
         "component" : [
             {% assign obsRelationships = observationEntry.entryRelationship | to_array -%}
             {% for obsRelation in obsRelationships -%}
@@ -91,26 +72,7 @@
                             {% include 'DataType/CodeableConcept' CodeableConcept: obsRelation.observation.code -%}
                         {% endif -%}
                     },
-                {% if obsRelation.observation.value.code -%}
-                    "valueCodeableConcept":
-                    {
-                        {% include 'DataType/CodeableConcept' CodeableConcept: obsRelation.observation.value -%},
-                        {% assign obsValueTransRel = obsRelation.observation.value.translation | to_array -%}
-                            {% if obsValueTransRel.first -%}
-                                {% for obsValueTranRel in obsValueTransRel -%}
-                                    {% include 'DataType/CodeableConcept' CodeableConcept: obsValueTranRel -%},
-                                {% endfor -%}
-                            {% endif -%}
-                    },
-                {% elsif obsRelation.observation.value.value -%}
-                    "valueQuantity":
-                    {
-                        "value":{{ obsRelation.observation.value.value }},
-                        "unit":"{{ obsRelation.observation.value.unit }}",
-                    },
-                {% else -%}
-                    "valueString":"{{ obsRelation.observation.value._ }}",
-                {% endif -%}
+                {% include 'Utils/ValueHelper' value: obsRelation.observation.value, origText: text._innerText -%}
             },
             {% endfor -%}
         ],

@@ -1,0 +1,26 @@
+{% if value.code %}
+    "valueCodeableConcept" : {
+        {% assign translations = value.translation | to_array -%}
+        {% assign code = value | to_array -%}
+        {% assign codes = code | concat: translations %}
+        {% include 'DataType/CodeableConcept' CodeableConcept: codes -%}
+    },
+{% elsif value["xsi:type"] == "BL" -%}
+    "valueBoolean" : {{ value.value }}
+{% elsif value.value -%}
+    "valueQuantity": {
+        "value":{{ value.value }},
+        {% if value.unit and  value.unit != "null" -%}
+        "unit":"{{ value.unit }}",
+        {% endif -%}
+    },
+{% elsif value._ %}
+    "valueString":"{{ value._ }}",
+{% elsif value.originalText._ %}
+    "valueString":"{{ value.originalText._ }}",
+{% else %}
+    {% assign ref = value.reference.value | default: value.originalText.reference.value -%}
+    {% assign refVal = ref | replace: '#', '' -%}
+    {% assign valueString = origText | find_inner_text_by_id: refVal -%}
+    "valueString": "{{ valueString | clean_string_from_tabs | escape_special_chars }}",
+{% endif -%}

@@ -65,8 +65,8 @@
                     {% assign templateIdString = relatedEntry.act.templateId.root | to_json_string -%}
                     {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.64"' or templateIdString contains "2.16.840.1.113883.10.20.22.4.202" and relatedEntry.act.text.reference.value -%}
                         {% assign commentRefVal = relatedEntry.act.text.reference.value | replace: '#', '' -%}
-                        {% assign commentText = text._innerText  | find_inner_text_by_id: commentRefVal -%}
-                        "text": "{{ commentText | escape_special_chars }}",
+                        {% assign commentText = text._innerText | find_inner_text_by_id: commentRefVal -%}
+                        "text": "{{ commentText | clean_string_from_tabs | escape_special_chars }}",
                     {% endif -%}
                 {% endfor -%}
                 

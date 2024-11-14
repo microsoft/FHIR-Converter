@@ -200,12 +200,17 @@
                                 {
                                     "reference": "{{ fullObservationId }}",
                                 },
-                            {% elsif sectionEntry.observation.templateId and sectionEntry.observation.templateId[0] and sectionEntry.observation.templateId[0].root and sectionEntry.observation.templateId[0].root == '2.16.840.1.113883.10.20.22.4.38' and sectionEntry.observation.code and sectionEntry.observation.code.code == '76690-7' -%}
-                                {% assign observationId = sectionEntry.observation | to_json_string | generate_uuid -%}
-                                {% assign fullObservationId = observationId | prepend: 'Observation/' -%}
-                                {
-                                    "reference": "{{ fullObservationId }}",
-                                },
+                            {% elsif component.section.code.code == "29762-2" -%}
+                                {% capture shouldRender -%}
+                                    {%- include 'Utils/IsSocialHistoryObservation' observation: sectionEntry.observation -%}
+                                {%- endcapture -%}
+                                {%- if shouldRender contains "true" -%}
+                                    {% assign observationId = sectionEntry.observation | to_json_string | generate_uuid -%}
+                                    {% assign fullObservationId = observationId | prepend: 'Observation/' -%}
+                                    {
+                                        "reference": "{{ fullObservationId }}",
+                                    },
+                                {% endif -%}
                             {% endif -%}
                         {% endfor -%}
                     ],

@@ -3,11 +3,7 @@
     "extension" : [
         {
           "url" : "value",
-          "valueCodeableConcept" : {
-            "coding" : [
-              { {% include 'DataType/Coding' Coding: gendIdOb.value -%} },
-            ]
-          },
+          {% include 'Utils/ValueHelper' value: gendIdOb.value, origText: SOCIALTEXT -%}
         },
       ],
 {% endif -%}

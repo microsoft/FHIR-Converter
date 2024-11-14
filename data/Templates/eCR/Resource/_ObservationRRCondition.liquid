@@ -70,20 +70,7 @@
         {
             {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.targetSiteCode -%}
         },
-        {% if observationEntry.value.code -%}
-            "valueCodeableConcept":
-            {
-                {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.value -%}
-            },
-        {% elsif observationEntry.value.value -%}
-            "valueQuantity":
-            {
-                "value":{{ observationEntry.value.value }},
-                "unit":"{{ observationEntry.value.unit }}",
-            },
-        {% else -%}
-            "valueString":"{{ observationEntry.value._ }}",
-        {% endif -%}
+        {% include 'Utils/ValueHelper' value: observationEntry.value, origText: text._innerText -%}
         "referenceRange":
         [
             {

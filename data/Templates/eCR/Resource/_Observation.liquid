@@ -55,35 +55,7 @@
         {
             {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.targetSiteCode -%}
         },
-        {% if observationEntry.value.code -%}
-            "valueCodeableConcept":
-            {
-                {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.value -%}
-            },
-        {% elsif observationEntry.value.value -%}
-            "valueQuantity":
-            {
-                "value":{{ observationEntry.value.value }},
-                {% if observationEntry.value.unit and  observationEntry.value.unit != "null" -%}
-                "unit":"{{ observationEntry.value.unit }}",
-                {% endif -%}
-            },
-        {% else -%}
-            {% if observationEntry.value._ %}
-                "valueString":"{{ observationEntry.value._ }}",
-            {% else %}
-                {% assign obsRefVal = observationEntry.value.reference.value | replace: '#', '' -%}
-                {% assign valueStringObject = text | find_object_by_id: obsRefVal -%}
-                {% if valueStringObject != null %}
-                        {% if valueStringObject._ != null %}
-                            {% assign valueString = valueStringObject._ | concat_strings %}
-                        {% elsif valueStringObject.content != null %}
-                            {% assign valueString = valueStringObject.content | concat_strings %}
-                        {% endif %}
-                    "valueString": "{{ valueString | replace: '\n', '\\n'  }}",
-                {% endif %}
-            {% endif %}
-        {% endif -%}
+        {% include 'Utils/ValueHelper' value: observationEntry.value, origText: text._innerText %}
         "referenceRange":
         [
             {

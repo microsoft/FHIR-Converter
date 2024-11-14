@@ -41,28 +41,7 @@
         {% endif -%}
         {% comment %} When we have eCRs with actual data for this element, revist these values {% endcomment %}
         {% comment %} May need to use this ValueSet: http://hl7.org/fhir/us/core/STU6.1/ValueSet-us-core-sexual-orientation.html {% endcomment %}
-        {% if observationEntry.value.code -%}
-            "valueCodeableConcept":
-            {
-                {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.value -%},
-                {% assign obsValueTrans = observationEntry.value.translation | to_array -%}
-                    {% if obsValueTrans.first -%}
-                        {% for obsValueTran in obsValueTrans -%}
-                            {% include 'DataType/CodeableConcept' CodeableConcept: obsValueTran -%},
-                        {% endfor -%}
-                    {% endif -%}
-            },
-        {% elsif observationEntry.value.value -%}
-            "valueQuantity":
-            {
-                "value":{{ observationEntry.value.value }},
-                "unit":"{{ observationEntry.value.unit }}",
-            },
-        {% elsif observationEntry.value.originalText.reference._ -%}
-            "valueString":"{{ observationEntry.value.originalText.reference._ }}",
-        {% else -%}
-            "valueString":"unknown",
-        {% endif -%}
+        {% include 'Utils/ValueHelper' value: observationEntry.value, origText: text._innerText -%}
     },
     "request":{
         "method":"PUT",

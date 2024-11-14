@@ -9,7 +9,7 @@
         {% if tribeAOb.value -%}
           {
             "url" : "EnrolledTribeMember",
-            "valueBoolean" : {{tribeAOb.value.value}}
+            {% include 'Utils/ValueHelper' value: tribeAOb.value, origText: SOCIALTEXT -%}
           },
         {% endif -%}
       ],

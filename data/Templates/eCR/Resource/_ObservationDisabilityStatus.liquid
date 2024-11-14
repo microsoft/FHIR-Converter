@@ -53,14 +53,7 @@
         {% if observationEntry.effectiveTime.low.value == null -%}
         "effectiveDateTime":"{{ observationEntry.effectiveTime.value | format_as_date_time }}",
         {% endif -%}
-        {% if observationEntry.value.code -%}
-            "valueCodeableConcept":
-            {
-                {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.value -%}
-            },
-        {% elsif observationEntry.value.value -%}
-            "valueBoolean": {{ observationEntry.value.value }},
-        {% endif -%}
+        {% include 'Utils/ValueHelper' value: observationEntry.value, origText: text._innerText -%}
     },
     "request":{
         "method":"PUT",

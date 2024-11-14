@@ -305,8 +305,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
       return stringBuilder.ToString();
     }
 
-    public static string CleanStringFromTabs(string value)
+    public static string? CleanStringFromTabs(string? value)
     {
+      if (value == null)
+      {
+          return null;
+      }
+
       const string reduceMultiSpace = @"[ ]{2,}";
       return Regex.Replace(value.Replace("\t", " "), reduceMultiSpace, " ");
     }
