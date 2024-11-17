@@ -220,6 +220,24 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
             yield return new object[] { @"2001-01T" };
         }
 
+        public static IEnumerable<object[]> GetValidDataAndFormatForTimeHandling()
+        {
+            yield return new object[] { @"0730", "HHmm", "preserve", false, "07:30:00" };
+            yield return new object[] { @"1730", "HHmm", "preserve", false, "17:30:00" };
+            yield return new object[] { @"12010000", "HHmmssff", "preserve", false, "12:01:00" };
+            yield return new object[] { @"12010001", "HHmmssff", "preserve", false, "12:01:00.0100000" };
+            yield return new object[] { @"094010", "HHmmss", "preserve", false, "09:40:10" };
+            yield return new object[] { @"09:45:50", "HH:mm:ss", "preserve", false, "09:45:50" };
+            yield return new object[] { @"144100.0000+0300", "HHmmss.ffffzzz", "utc", false, "11:41:00" };
+            yield return new object[] { @"144100.0000+0300", "HHmmss.ffffzzz", "preserve", false, "14:41:00" };
+            yield return new object[] { @"18:45", "HHmm", "preserve", true, "18:45" }; // time format does not match format string, but date parsing error is suppressed
+        }
+
+        public static IEnumerable<object[]> GetInvalidDataForTimeHandling()
+        {
+            yield return new object[] { @"9999", "HHmm" };
+        }
+
         [Theory]
         [MemberData(nameof(GetValidDataForAddSeconds))]
         public void GivenSeconds_WhenAddOnValidDateTime_CorrectDateTimeStringShouldBeReturned(string originalDateTime, double seconds, string timeZoneHandling, string expectedDateTime)
@@ -353,6 +371,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         public void GivenAnInvalidDateTime_WhenFormatAsHl7DateTime_ExceptionShouldBeThrown(string input)
         {
             var exception = Assert.Throws<RenderException>(() => Filters.FormatAsHl7v2DateTime(input));
+            Assert.Equal(FhirConverterErrorCode.InvalidDateTimeFormat, exception.FhirConverterErrorCode);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetValidDataAndFormatForTimeHandling))]
+        public void GivenAValidData_WhenFormatTimeWithColonAndInputFormatProvided_FormattedTimeOrOriginalInputShouldBeReturned(string input, string inputFormat, string timeZoneHandling, bool suppressParsingError, string expectedDateTime)
+        {
+            var result = Filters.FormatTimeWithColon(input, inputFormat, timeZoneHandling, suppressParsingError);
+            Assert.Equal(expectedDateTime, result);
+        }
+
+        [Theory]
+        [MemberData(nameof(GetInvalidDataForTimeHandling))]
+        public void GivenInvalidData_WhenFormatAsTimeInterval_ExceptionThrown(string input, string inputFormat)
+        {
+            var exception = Assert.Throws<RenderException>(() => Filters.FormatTimeWithColon(input, inputFormat));
             Assert.Equal(FhirConverterErrorCode.InvalidDateTimeFormat, exception.FhirConverterErrorCode);
         }
 
