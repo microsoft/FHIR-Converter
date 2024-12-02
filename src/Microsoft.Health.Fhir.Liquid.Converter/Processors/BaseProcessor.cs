@@ -159,6 +159,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             {
                 throw;
             }
+            catch (FhirConverterException)
+            {
+                throw;
+            }
             catch (Exception ex)
             {
                 throw new RenderException(FhirConverterErrorCode.TemplateRenderingError, string.Format(Resources.TemplateRenderingError, ex.Message), ex);
