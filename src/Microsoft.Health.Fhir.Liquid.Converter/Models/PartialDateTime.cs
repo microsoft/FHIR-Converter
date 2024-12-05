@@ -84,8 +84,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Models
 
         public PartialDateTime AddSeconds(double seconds)
         {
-            var timespan = TimeSpan.FromSeconds(seconds);          
-            DateTimeValue = DateTimeValue.AddSeconds(timespan.TotalSeconds);
+            var timespan = TimeSpan.FromSeconds(seconds);
+            DateTimeValue = DateTimeValue.Add(timespan);
             MillisecondString = null;
 
             if (Precision != DateTimePrecision.Milliseconds)
