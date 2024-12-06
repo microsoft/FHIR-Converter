@@ -9,7 +9,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Package Description</description>
     <dependencies>
-      <group targetFramework="net6.0">
+      <group targetFramework="net8.0">
         <dependency id="Antlr4.Runtime.Standard" version="4.8.0" exclude="Build,Analyzers" />
         <dependency id="Azure.Identity" version="1.10.3" exclude="Build,Analyzers" />
         <dependency id="Azure.Storage.Blobs" version="12.17.0" exclude="Build,Analyzers" />
@@ -33,7 +33,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\net6.0\Microsoft.Health.Fhir.Liquid.Converter.dll" target="lib\net6.0" />
-    <file src="bin\Release\net6.0\Microsoft.Health.Fhir.TemplateManagement.dll" target="lib\net6.0" />
+    <file src="bin\Release\net8.0\Microsoft.Health.Fhir.Liquid.Converter.dll" target="lib\net8.0" />
+    <file src="bin\Release\net8.0\Microsoft.Health.Fhir.TemplateManagement.dll" target="lib\net8.0" />
   </files>
 </package>
