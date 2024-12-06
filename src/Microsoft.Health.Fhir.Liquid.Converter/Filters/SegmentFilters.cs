@@ -6,6 +6,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
+using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter
@@ -17,6 +19,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     {
         public static Dictionary<string, Hl7v2Segment> GetFirstSegments(Hl7v2Data hl7v2Data, string segmentIdContent)
         {
+            if (hl7v2Data == null)
+            {
+                throw new TemplateLoadException(FhirConverterErrorCode.TemplateDataMismatch, "Incorrect template was passed in for the input data format.");
+            }
+
             var result = new Dictionary<string, Hl7v2Segment>();
             var segmentIds = segmentIdContent.Split(@"|");
             for (var i = 0; i < hl7v2Data.Meta.Count; ++i)
