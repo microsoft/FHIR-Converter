@@ -159,7 +159,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             {
                 throw;
             }
-            catch (FhirConverterException)
+            catch (TemplateLoadException)
             {
                 throw;
             }

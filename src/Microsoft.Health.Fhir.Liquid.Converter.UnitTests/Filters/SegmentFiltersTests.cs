@@ -46,7 +46,7 @@ RXA|0|1|20131112||88^influenza, unspecified formulation^CVX|999|||01^Historical 
             Assert.True(!segments.ContainsKey("PV1"));
 
             // Hl7v2Data and segment id content could not be null
-            Assert.Throws<FhirConverterException>(() => Filters.GetFirstSegments(null, "PID"));
+            Assert.Throws<TemplateLoadException>(() => Filters.GetFirstSegments(null, "PID"));
             Assert.Throws<NullReferenceException>(() => Filters.GetFirstSegments(new Hl7v2Data(), null));
         }
 

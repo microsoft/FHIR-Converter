@@ -21,7 +21,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
         {
             if (hl7v2Data == null)
             {
-                throw new FhirConverterException(FhirConverterErrorCode.TemplateDataMismatch, "Incorrect template was passed in for the input data format.");
+                throw new TemplateLoadException(FhirConverterErrorCode.TemplateDataMismatch, "Incorrect template was passed in for the input data format.");
             }
 
             var result = new Dictionary<string, Hl7v2Segment>();
