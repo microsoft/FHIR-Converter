@@ -1,0 +1,18 @@
+{% if ContactPoint.value -%}
+	{% if ContactPoint.use == 'PG' -%}
+		"system":"pager",
+		"value": "{{ContactPoint.value | replace: 'tel:\s*', ''}}",
+	{% elsif ContactPoint.value contains 'tel:' -%}
+		"system":"phone",
+		"value": "{{ContactPoint.value | replace: 'tel:\s*', ''}}",
+		"use": "{{ ContactPoint.use | get_property: 'ValueSet/TelecomUse' }}",
+	{% elsif ContactPoint.value contains 'mailto:' or ContactPoint.value contains '@' -%}
+		"system":"email",
+		"value": "{{ContactPoint.value | replace: 'mailto:\s*', ''}}",
+		"use": "{{ ContactPoint.use | get_property: 'ValueSet/TelecomUse' }}",
+	{% elsif ContactPoint.value contains 'fax:' -%}
+		"system":"fax",
+		"value": "{{ContactPoint.value | replace: 'fax:\s*', ''}}",
+		"use": "{{ ContactPoint.use | get_property: 'ValueSet/TelecomUse' }}",
+	{% endif -%}
+{% endif -%}

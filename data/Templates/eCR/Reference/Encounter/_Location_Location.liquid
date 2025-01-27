@@ -1,0 +1,36 @@
+{
+    "resource":{
+        "resourceType": "Encounter",
+        "id":"{{ ID }}",
+        "location":
+        [
+            {
+                {% assign ids = LOC.id | to_array -%}
+                {% if ids.first and ids.first.root -%}
+                    "id": "{{ids.first.root}}",
+                {% else -%}
+                    "id": "None",
+                {% endif -%}
+                "location":
+                {
+                    "reference":"{{ REF }}",
+                    {% if LOC.location.name and LOC.location.name._ -%}
+                        "display":"{{ LOC.location.name._ }}",
+                    {% elsif LOC.serviceProviderOrganization and LOC.serviceProviderOrganization.name and LOC.serviceProviderOrganization.name._ -%}
+                        "display":"{{ LOC.serviceProviderOrganization.name._ }}",
+                    {% else -%}
+                        "display": "None",
+                    {% endif -%}
+
+                },
+                {% assign codes = LOC.code | to_array -%}
+                {% if codes.first -%}
+                "extension": [{
+                    "url": "http://build.fhir.org/ig/HL7/case-reporting/StructureDefinition-us-ph-location-definitions.html#Location.type",
+                    "valueCodeableConcept": { {% include 'DataType/CodeableConcept' CodeableConcept: codes.first -%} },
+                },],
+                {% endif -%}
+            },
+        ],
+    },
+},

@@ -1,0 +1,201 @@
+{% evaluate practitionerId using 'Utils/GenerateId' obj: msg.ClinicalDocument.componentOf.encompassingEncounter.responsibleParty.assignedEntity -%}
+{% if msg.ClinicalDocument.id and msg.ClinicalDocument.id.root -%}
+  {% assign compositionId = msg.ClinicalDocument.id.root -%}
+{% else -%}
+  {% assign compositionId = msg._originalData | generate_uuid -%}
+{% endif -%}
+{% include 'Resource/Composition' composition: msg.ClinicalDocument, practitionerId: practitionerId, ID: compositionId -%}
+{% include 'Reference/Composition/Subject' ID: compositionId, REF: fullPatientId -%}
+
+{% if msg.ClinicalDocument.relatedDocument -%}
+  {% include 'Reference/Composition/RelatesTo_TargetReference' ID: compositionId, relatedDOC: msg.ClinicalDocument.relatedDocument -%}
+{% endif -%}
+
+{% if msg.ClinicalDocument.componentOf.encompassingEncounter -%}
+  {% assign encounterId = msg.ClinicalDocument.componentOf.encompassingEncounter | to_json_string | generate_uuid -%}
+  {% include 'Resource/Encounter' encounter: msg.ClinicalDocument.componentOf.encompassingEncounter, ID: encounterId  -%}
+  {% assign encounterSection = msg | get_first_ccda_sections_by_template_id: '2.16.840.1.113883.10.20.22.2.22.1' %}  
+  {% assign encounterEntries = encounterSection.2_16_840_1_113883_10_20_22_2_22_1.entry | to_array %}
+  {% assign diagnoses = encounterEntries | get_diagnosis_dictionary %}
+  {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
+  {% assign fullEncounterId = encounterId | prepend: 'Encounter/' -%}
+  {% include 'Reference/Composition/Encounter' ID: compositionId, REF: fullEncounterId -%}
+  {% if msg.ClinicalDocument.componentOf.encompassingEncounter.location.healthCareFacility -%}
+    {% assign locationId = msg.ClinicalDocument.componentOf.encompassingEncounter.location.healthCareFacility | to_json_string | generate_uuid -%}
+    {% include 'Resource/LocationHealthCareFacility' location: msg.ClinicalDocument.componentOf.encompassingEncounter.location.healthCareFacility ID: locationId -%}
+    {% assign fullLocationId = locationId | prepend: 'Location/' -%}
+    {% include 'Reference/Encounter/Location_Location' ID: encounterId, REF: fullLocationId, LOC: msg.ClinicalDocument.componentOf.encompassingEncounter.location.healthCareFacility -%}
+    {% if msg.ClinicalDocument.componentOf.encompassingEncounter.location.healthCareFacility.serviceProviderOrganization -%}
+      {% assign serviceProviderId = msg.ClinicalDocument.componentOf.encompassingEncounter.location.healthCareFacility.serviceProviderOrganization | to_json_string | generate_uuid -%}
+      {% include 'Resource/Organization' organization: msg.ClinicalDocument.componentOf.encompassingEncounter.location.healthCareFacility.serviceProviderOrganization ID: serviceProviderId -%}
+      {% assign fullServiceProviderId = serviceProviderId | prepend: 'Organization/' -%}
+      {% include 'Reference/Encounter/ServiceProvider' ID: encounterId, REF: fullServiceProviderId -%}
+    {% endif -%}
+  {% endif -%}
+{% endif -%}
+
+{% assign responsibleParty = msg.ClinicalDocument.componentOf.encompassingEncounter.responsibleParty.assignedEntity -%}
+{% if responsibleParty -%}
+  {% include 'Resource/PractitionerResponsibleParty' practitioner: responsibleParty ID: practitionerId -%}
+  {% assign fullPractitionerId = practitionerId | prepend: 'Practitioner/' -%}
+  {% assign practitionerRoleId =  responsibleParty | to_json_string | generate_uuid %}
+  {% assign fullPractitionerRoleId = practitionerRoleId | prepend: 'PractitionerRole/' %}
+  {% include 'Reference/PractitionerRole/Practitioner', REF: fullPractitionerId, ID: practitionerRoleId -%}
+
+  {% include 'Reference/Encounter/Participant_Individual' ID: encounterId, REF: fullPractitionerRoleId type: "ATND" -%}
+  {% if responsibleParty.representedOrganization %}
+    {% evaluate organizationId using 'Utils/GenerateId' obj: responsibleParty.representedOrganization -%}
+    {% assign fullOrganizationId = organizationId | prepend: 'Organization/' -%}
+    {% include 'Resource/Organization', organization: responsibleParty.representedOrganization ID: organizationId -%}
+    {% assign practitionerRoleId =  responsibleParty | to_json_string | generate_uuid %}
+    {% include 'Reference/PractitionerRole/Practitioner', REF: fullPractitionerId, ID: practitionerRoleId -%}
+    {% include 'Reference/PractitionerRole/Organization', REF: fullOrganizationId, ID: practitionerRoleId -%}
+  {% endif %}
+{% endif -%}
+
+{% assign encounterParticipants = msg.ClinicalDocument.componentOf.encompassingEncounter.encounterParticipant | to_array -%} 
+{% for encounterParticipant in encounterParticipants -%}
+  {% if encounterParticipant.assignedEntity -%}
+    {% assign encounterParticipantId = encounterParticipant | to_json_string | generate_uuid %}
+    {% include 'Resource/Practitioner' practitioner: encounterParticipant.assignedEntity ID: encounterParticipantId -%}
+    {% assign fullPractitionerId = encounterParticipantId | prepend: 'Practitioner/' -%}
+    {% assign practitionerRoleId =  encounterParticipant.assignedEntity | to_json_string | generate_uuid %}
+    {% assign fullPractitionerRoleId = practitionerRoleId | prepend: 'PractitionerRole/' %}
+    {% include 'Reference/PractitionerRole/Practitioner', REF: fullPractitionerId, ID: practitionerRoleId -%}
+  
+    {% include 'Reference/Encounter/Participant_Individual'  ID: encounterId, REF: fullPractitionerRoleId type: encounterParticipant.typeCode time: encounterParticipant.time -%}
+    {% if encounterParticipant.assignedEntity.representedOrganization %}
+      {% evaluate organizationId using 'Utils/GenerateId' obj: encounterParticipant.assignedEntity.representedOrganization -%}
+      {% assign fullOrganizationId = organizationId | prepend: 'Organization/' -%}
+      {% include 'Resource/Organization', organization: encounterParticipant.assignedEntity.representedOrganization ID: organizationId -%}
+      {% assign practitionerRoleId =  encounterParticipant.assignedEntity | to_json_string | generate_uuid %}
+      {% include 'Reference/PractitionerRole/Practitioner', REF: fullPractitionerId, ID: practitionerRoleId -%}
+      {% include 'Reference/PractitionerRole/Organization', REF: fullOrganizationId, ID: practitionerRoleId -%}
+    {% endif %}
+  {% endif -%}
+{% endfor -%}
+
+{% if msg.ClinicalDocument.section.code.code and msg.ClinicalDocument.section.code.code == "88085-6" -%}
+  {% assign sectionId = msg.ClinicalDocument.section | to_json_string | generate_uuid -%}
+  {% assign entries = msg.ClinicalDocument.section.entry | to_array -%}
+  {% for entry in entries -%}
+    {% if entry.organizer.templateId.root and entry.organizer.templateId.root == "2.16.840.1.113883.10.20.15.2.3.34" -%}
+      {% assign comps = entry.organizer.component | to_array -%}
+      {% for comp in comps -%}
+        {% assign obs = comp.observation | to_array -%}
+        {% for ob in obs -%}
+          {% if ob.code.codeSystem == "2.16.840.1.113883.6.96" and ob.code.code == "64572001" and ob.value.code and ob.value.code != "NA" -%}
+            {% if ob.id and ob.id.root -%}
+              {% assign observationId = ob.id.root -%}
+            {% else -%}
+              {% assign observationId = ob.value | to_json_string | generate_uuid -%}
+            {% endif -%}
+
+            {% if ob.entryRelationship and ob.entryRelationship.organizer and ob.entryRelationship.organizer.participant %}
+              {% assign participants = ob.entryRelationship.organizer.participant | to_array %}
+              {% for participant in participants %}
+                {% if participant.participantRole and participant.participantRole.code.codeSystem == "2.16.840.1.114222.4.5.232" and participant.participantRole.code.code == "RR7" %}
+                  {% assign organizationRoutingEntityId = participant | to_json_string | generate_uuid %}
+                  {% assign organizationRoutingEntityName = participant.participantRole.playingEntity.name._ %}
+                  {% include "Resource/OrganizationRRRoutingEntity" organization: participant.participantRole, ID: organizationRoutingEntityId  %}
+                {% endif %}
+              {% endfor %}
+            {% endif -%}
+
+            {% include "Resource/ObservationRRCondition" observationEntry: ob, ID: observationId, RoutingEntityId: organizationRoutingEntityId, RoutingEntityName: organizationRoutingEntityName-%}
+          {% endif -%}
+        {% endfor -%}
+      {% endfor -%}
+    {% endif -%}
+  {% endfor -%}
+{% endif -%}
+
+{% if msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization.name._ -%}
+  {% evaluate custId using 'Utils/GenerateId' obj: msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization -%}
+  {% include 'Resource/Organization' organization: msg.ClinicalDocument.custodian.assignedCustodian.representedCustodianOrganization ID: custId -%}
+  {% assign fullCustId = custId | prepend: 'Organization/' -%}
+  {% include 'Reference/Composition/Custodian' ID: compositionId, REF: fullCustId -%}
+{% endif -%}
+
+{% assign authors = msg.ClinicalDocument.author | to_array -%}
+{% for author in authors -%}
+  {% assign fullAuthorOrgId  = null %}
+  {% assign fullAuthorPractitionerId = null %}
+  {% assign fullAuthoringDeviceId = null %}
+
+  {% if author.assignedAuthor.assignedAuthoringDevice -%}
+    {% assign authoringDeviceId = author.assignedAuthor.assignedAuthoringDevice | to_json_string | generate_uuid -%}
+    {% include 'Resource/Device' author: author.assignedAuthor ID: authoringDeviceId -%}
+    {% assign fullAuthoringDeviceId = authoringDeviceId | prepend: 'Device/' -%}
+    {% include 'Reference/Composition/Author' ID: compositionId, REF: fullAuthoringDeviceId -%}
+  {% endif -%}
+
+  {% if author.assignedAuthor.assignedPerson and author.assignedAuthor.assignedPerson.name and author.assignedAuthor.assignedPerson.name.given.first._  -%}
+    {% evaluate authorPractitionerId using 'Utils/GenerateId' obj: author.assignedAuthor -%}
+    {% include 'Resource/Practitioner' practitioner: author.assignedAuthor ID: authorPractitionerId -%}
+    {% assign fullAuthorPractitionerId = authorPractitionerId | prepend: 'Practitioner/' -%}
+  {% endif -%}
+
+  {% if author.assignedAuthor.representedOrganization and author.assignedAuthor.representedOrganization.name and author.assignedAuthor.representedOrganization.name._ -%}
+    {% evaluate authorOrgId using 'Utils/GenerateId' obj: author.assignedAuthor.representedOrganization -%}
+    {% include 'Resource/Organization' organization: author.assignedAuthor.representedOrganization ID: authorOrgId -%}
+    {% assign fullAuthorOrgId = AuthorOrgId | prepend: 'Organization/' -%}
+    {% if authoringDeviceId -%}
+      {% include 'Reference/Device/Owner' ID: authoringDeviceId, REF: fullAuthorOrgId -%}
+    {% endif %}
+  {% endif -%}
+
+  {% if fullAuthorOrgId and fullAuthorPractitionerId %}
+    {% assign practitionerRoleId =  author | to_json_string | generate_uuid %}
+    {% assign fullPractitionerRoleId = practitionerRoleId | prepend: 'PractitionerRole/' %}
+    {% include 'Reference/PractitionerRole/Organization', REF: fullAuthorOrgId, ID: practitionerRoleId -%}
+    {% include 'Reference/PractitionerRole/Practitioner', REF: fullAuthorPractitionerId, ID: practitionerRoleId -%}
+    {% include 'Reference/Composition/Author' ID: compositionId, REF: fullPractitionerRoleId -%}
+  {% elseif fullAuthorOrgId and fullAuthoringDeviceId == null %}
+      {% include 'Reference/Composition/Author' ID: compositionId, REF: fullAuthorOrgId -%}
+  {% elseif fullAuthorPractitionerId %}
+      {% include 'Reference/Composition/Author' ID: compositionId, REF: fullAuthorPractitionerId -%}
+  {% endif %}
+{% endfor -%}
+
+{% if msg.ClinicalDocument.recordTarget.patientRole -%}
+  {% assign patientSectionObservations = true -%}
+  {% assign participants = msg.ClinicalDocument.participant | to_array %}
+  {% include 'Section/SocialHistory' SOCIALOBS: socialObs SOCIALTEXT: socialHistoryText -%}
+  {% include 'Resource/Patient' patientRole: msg.ClinicalDocument.recordTarget.patientRole ID: patientId SOCIALOBS: socialObs SOCIALTEXT: socialHistoryText participants: participants -%}
+  {% assign careTeam = msg | get_first_ccda_sections_by_template_id: '2.16.840.1.113883.10.20.22.2.500' %} 
+  {% if careTeam %}
+    {% assign careTeamId = careTeam.2_16_840_1_113883_10_20_22_2_500 | to_json_string | generate_uuid -%}
+    {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
+    {% include 'Resource/CareTeam' careTeamEntry: careTeam.2_16_840_1_113883_10_20_22_2_500.entry.organizer ID: careTeamId patientId: fullPatientId%}
+    {% for member in careTeam.2_16_840_1_113883_10_20_22_2_500.entry.organizer.component %}
+      {% assign practitionerId = member.act.performer.assignedEntity | to_json_string | generate_uuid -%}
+      {% include 'Resource/Practitioner' practitioner: member.act.performer.assignedEntity ID: practitionerId %}
+    {% endfor  %}
+  {% endif %}
+{% endif -%}
+{% assign patientSectionObservations = false -%}
+
+{% assign carePlan = msg | get_first_ccda_sections_by_template_id: '2.16.840.1.113883.10.20.22.2.10' %}
+{% assign carePlanResource = carePlan.2_16_840_1_113883_10_20_22_2_10 %}
+{% assign carePlanId = carePlanResource | to_json_string | generate_uuid %}
+{% include 'Resource/CarePlan' carePlan: carePlanResource ID: carePlanId patientReference: fullPatientId  %}
+
+{% assign medicationsAdministered = msg | get_first_ccda_sections_by_template_id: '2.16.840.1.113883.10.20.22.2.38' %}
+{% assign entries = medicationsAdministered.2_16_840_1_113883_10_20_22_2_38.entry | to_array -%}
+{% for entry in entries %}
+  {% assign substanceAdministrationId = entry.substanceAdministration | to_json_string | generate_uuid -%}
+  {% include 'Resource/MedicationAdministration', medicationAdministration: entry.substanceAdministration, ID: substanceAdministrationId -%}
+  {% assign manufacturedMaterialId = entry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial | to_json_string | generate_uuid -%}
+  {% include 'Resource/Medication', medication: entry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial, ID: manufacturedMaterialId -%}
+  {% include 'Reference/MedicationAdministration/Subject', ID: substanceAdministrationId, REF: fullPatientId -%}
+  {% assign fullManufacturedMaterialId = manufacturedMaterialId | prepend: 'Medication/' -%}
+  {% include 'Reference/MedicationAdministration/MedicationReference', ID: substanceAdministrationId, REF: fullManufacturedMaterialId -%}
+{% endfor %}
+
+{% if msg.ClinicalDocument.recordTarget.patientRole.patient.guardian -%}
+  {% assign relatedPersonId = msg.ClinicalDocument.recordTarget.patientRole.patient.guardian | to_json_string | generate_uuid -%}
+  {% include 'Resource/RelatedPerson' relatedPerson: msg.ClinicalDocument.recordTarget.patientRole.patient.guardian ID: relatedPersonId -%}
+  {% assign fullPatientId = patientId | prepend: 'Patient/' -%}
+  {% include 'Reference/RelatedPerson/Patient' ID: relatedPersonId, REF: fullPatientId -%}
+{% endif -%}

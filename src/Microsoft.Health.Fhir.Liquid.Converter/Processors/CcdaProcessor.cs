@@ -10,7 +10,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
 using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
-using Microsoft.Health.MeasurementUtility;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
@@ -27,13 +26,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
-            object ccdaData;
-            using (ITimed inputDeserializationTime =
-                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.InputDeserializationDuration, duration)))
-            {
-                ccdaData = _parser.Parse(data);
-            }
-
+            object ccdaData = _parser.Parse(data);
             return InternalConvertFromObject(ccdaData, rootTemplate, templateProvider, traceInfo);
         }
 

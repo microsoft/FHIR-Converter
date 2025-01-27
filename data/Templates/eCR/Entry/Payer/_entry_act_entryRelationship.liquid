@@ -1,0 +1,3 @@
+{% assign actId = entry.act | to_json_string | generate_uuid -%}
+{% include 'Resource/Coverage' payerEntry: entry.act, ID: actId -%}
+{{ entry.act.performer | to_array | batch_render: 'Entry/Payer/entry_act_entryRelationship_act_performer', 'entry' }}

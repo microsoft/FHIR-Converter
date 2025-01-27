@@ -69,10 +69,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Parsers
             // "sdtc:raceCode" is parsed into "sdtc_raceCode"
             document = "<ClinicalDocument xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns = \"urn:hl7-org:v3\" xmlns:sdtc = \"urn:hl7-org:sdtc\">" +
                        "<sdtc:raceCode code=\"2076-8\" displayName=\"Hawaiian or Other Pacific Islander\" codeSystem=\"2.16.840.1.113883.6.238\" codeSystemName=\"Race &amp; Ethnicity - CDC\"/>" +
+                       "<text><some>node</some><some>other node</some></text>" +
                        "</ClinicalDocument>";
             data = _parser.Parse(document);
             contents = (data as Dictionary<string, object>)?.GetValueOrDefault("ClinicalDocument") as Dictionary<string, object>;
             Assert.NotNull(contents?["sdtc_raceCode"]);
+
+            var expectedInnerText = "<some xmlns=\"urn:hl7-org:v3\">node</some><some xmlns=\"urn:hl7-org:v3\">other node</some>";
+            Assert.Equal(
+                expectedInnerText,
+                (contents?["text"] as Dictionary<string, object>)?.GetValueOrDefault("_innerText"));
         }
     }
 }

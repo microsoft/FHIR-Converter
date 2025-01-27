@@ -11,7 +11,6 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
 using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
-using Microsoft.Health.MeasurementUtility;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
@@ -30,13 +29,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
-            object hl7v2Data;
-            using (ITimed inputDeserializationTime =
-                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.InputDeserializationDuration, duration)))
-            {
-                hl7v2Data = _parser.Parse(data);
-            }
-
+            object hl7v2Data = _parser.Parse(data);
             return InternalConvertFromObject(hl7v2Data, rootTemplate, templateProvider, traceInfo);
         }
 

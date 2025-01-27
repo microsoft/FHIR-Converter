@@ -1,0 +1,20 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "MedicationRequest",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = medicationRequest.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "intent":"order",
+        "status":"{{ medicationRequest.statusCode.code }}",
+    },
+    "request":{
+        "method":"PUT",
+        "url":"MedicationRequest/{{ ID }}",
+    },
+},

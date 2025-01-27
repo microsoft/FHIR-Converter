@@ -1,0 +1,8 @@
+{% if component.observation -%}
+    {% if component.observation.code.nullFlavor or component.observation.value.nullFlavor -%}
+    {% else -%}
+        {% assign observationId = component.observation | to_json_string | generate_uuid -%}
+        {% include 'Resource/Observation' observationCategory: 'vital-signs', observationEntry: component.observation, ID: observationId -%}
+        {% include 'Reference/Observation/Subject' ID: observationId, REF: fullPatientId -%}
+    {% endif -%}
+{% endif -%}

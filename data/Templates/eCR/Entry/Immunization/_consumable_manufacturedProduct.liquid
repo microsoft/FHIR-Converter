@@ -1,0 +1,53 @@
+{% assign manProdTempIds = manProduct.templateId | to_array -%}
+{% if manProdTempIds.first.root == "2.16.840.1.113883.10.20.22.4.54" -%}
+    {% if manProduct.manufacturedMaterial.code.nullFlavor -%}
+        {% if manProduct.manufacturedMaterial.code.translation -%}
+            {% assign codeTranslations = manProduct.manufacturedMaterial.code.translation | to_array -%}
+            {% for codeTranslation in codeTranslations -%}
+                {% include 'Resource/Immunization' immunization: entrySub, ID: immunizationId -%}
+                {% if entrySub.informant.assignedEntity.id.root == 'FACILITY' -%}
+                    {% if entrySub.informant.assignedEntity.representedOrganization.name._ -%}
+                        {% assign organizationId = entrySub.informant.assignedEntity.representedOrganization | to_json_string | generate_uuid -%}
+                        {% include 'Resource/Organization' organization: entrySub.informant.assignedEntity.representedOrganization, ID: organizationId -%}
+                        {% assign fullOrganizationId = organizationId | prepend: 'Organization/' -%}
+                        {% include 'Reference/Immunization/Performer_Actor' ID: immunizationId, REF: fullOrganizationId -%}
+                    {% endif -%}
+                {% endif -%}
+                {% if entrySub.consumable.manufacturedProduct.manufacturerOrganization -%}
+                    {% assign manufacturerId = entrySub.consumable.manufacturedProduct.manufacturerOrganization | to_json_string | generate_uuid -%}
+                    {% include 'Resource/Organization' organization: entrySub.consumable.manufacturedProduct.manufacturerOrganization, ID: manufacturerId -%}
+                {% endif -%}
+                {% include 'Reference/Immunization/Patient' ID: immunizationId, REF: fullPatientId -%}
+            {% endfor -%}
+        {% else -%}
+            {% include 'Resource/Immunization' immunization: entrySub, ID: immunizationId -%}
+            {% if entrySub.informant.assignedEntity.id.root == 'FACILITY' -%}
+                {% if entrySub.informant.assignedEntity.representedOrganization.name._ -%}
+                    {% assign organizationId = entrySub.informant.assignedEntity.representedOrganization | to_json_string | generate_uuid -%}
+                    {% include 'Resource/Organization' organization: entrySub.informant.assignedEntity.representedOrganization, ID: organizationId -%}
+                    {% assign fullOrganizationId = organizationId | prepend: 'Organization/' -%}
+                    {% include 'Reference/Immunization/Performer_Actor' ID: immunizationId, REF: fullOrganizationId -%}
+                {% endif -%}
+            {% endif -%}
+            {% if entrySub.consumable.manufacturedProduct.manufacturerOrganization -%}
+                {% assign manufacturerId = entrySub.consumable.manufacturedProduct.manufacturerOrganization | to_json_string | generate_uuid -%}
+                {% include 'Resource/Organization' organization: entrySub.consumable.manufacturedProduct.manufacturerOrganization, ID: manufacturerId -%}
+            {% endif -%}
+        {% endif -%}            
+    {% else -%}
+        {% include 'Resource/Immunization' immunization: entrySub, ID: immunizationId -%}
+        {% if entrySub.informant.assignedEntity.id.root == 'FACILITY' -%}
+            {% if entrySub.informant.assignedEntity.representedOrganization.name._ -%}
+                {% assign organizationId = entrySub.informant.assignedEntity.representedOrganization | to_json_string | generate_uuid -%}
+                {% include 'Resource/Organization' organization: entrySub.informant.assignedEntity.representedOrganization, ID: organizationId -%}
+                {% assign fullOrganizationId = organizationId | prepend: 'Organization/' -%}
+                {% include 'Reference/Immunization/Performer_Actor' ID: immunizationId, REF: fullOrganizationId -%}
+            {% endif -%}
+        {% endif -%}
+        {% if entrySub.consumable.manufacturedProduct.manufacturerOrganization -%}
+            {% assign manufacturerId = entrySub.consumable.manufacturedProduct.manufacturerOrganization | to_json_string | generate_uuid -%}
+            {% include 'Resource/Organization' organization: entrySub.consumable.manufacturedProduct.manufacturerOrganization, ID: manufacturerId -%}
+        {% endif -%}
+        {% include 'Reference/Immunization/Patient' ID: immunizationId, REF: fullPatientId -%}
+    {% endif -%}
+{% endif -%}

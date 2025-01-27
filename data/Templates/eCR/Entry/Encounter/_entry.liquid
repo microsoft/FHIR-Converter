@@ -1,0 +1,14 @@
+{% assign encounterId = entry | to_json_string | generate_uuid -%}
+{% include 'Resource/Encounter' encounter: entry.encounter, ID: encounterId -%}
+{% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
+
+{% if entry.encounter.performer.assignedEntity -%}
+    {% assign entity = entry.encounter.performer.assignedEntity %}
+    {% assign practitionerEncPerfId = entity | to_json_string | generate_uuid -%}
+    {% include 'Resource/Practitioner' practitioner: entity, ID: practitionerEncPerfId -%}
+    {% assign fullPractitionerEncPerfId = practitionerEncPerfId | prepend: 'Practitioner/' -%}
+    {% include 'Reference/Encounter/Participant_Individual' ID: encounterId, REF: fullPractitionerEncPerfId type: entity.typeCode time: entity.time -%}
+{% endif -%}
+
+{{ entry.encounter.participant | to_array | batch_render: 'Entry/Encounter/entry_encounter_participant', 'participant' }}
+{{ entry.encounter.entryRelationship | to_array | batch_render: 'Entry/Encounter/entry_encounter_entryRelationship', 'relationship' }}

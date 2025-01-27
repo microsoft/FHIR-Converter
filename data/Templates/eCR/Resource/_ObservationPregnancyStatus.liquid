@@ -1,0 +1,84 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Observation",
+        "id":"{{ ID }}",
+        "meta":
+        {
+            "profile":
+            [
+                "http://hl7.org/fhir/us/ecr/StructureDefinition/us-ph-pregnancy-status-observation",
+            ],
+        },
+        "identifier":
+        [
+            {% assign ids = observationEntry.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "category":
+        [
+            {
+                "coding":
+                [
+                    {
+                        {% if observationCategory -%}
+                            "system":"http://terminology.hl7.org/CodeSystem/observation-category",
+                            "code":"{{ observationCategory }}",
+                        {% endif -%}
+                    },
+                ],
+            },
+        ],
+        "status":
+             {% if observationEntry.statusCode._ -%}
+                "{{ observationEntry.statusCode._}}",
+            {% else -%}
+                "{{ observationEntry.statusCode.code | get_property: 'ValueSet/ObservationStatus' }}",
+            {% endif -%}
+        "code":
+        {
+            {% if observationEntry.code.translation.code -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.code.translation -%}
+            {% endif -%}
+            {% if observationEntry.code.translation.code == null -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: observationEntry.code -%}
+            {% endif -%}
+        },
+        "effectivePeriod":
+        {
+            {% if observationEntry.effectiveTime.low.value -%}
+            "start":"{{ observationEntry.effectiveTime.low.value | format_as_date_time }}",
+            {% endif -%}
+            {% if observationEntry.effectiveTime.high.value -%}
+            "end":"{{ observationEntry.effectiveTime.high.value | format_as_date_time }}",
+            {% endif -%}
+        },
+        {% if observationEntry.effectiveTime.low.value == null -%}
+        "effectiveDateTime":"{{ observationEntry.effectiveTime.value | format_as_date_time }}",
+        {% endif -%}
+        {% include 'Utils/ValueHelper' value: observationEntry.value, origText: text._innerText -%}
+        "component" : [
+            {% assign obsRelationships = observationEntry.entryRelationship | to_array -%}
+            {% for obsRelation in obsRelationships -%}
+            {
+                "code":
+                    {
+                        {% if obsRelation.observation.code.translation.code -%}
+                            {% include 'DataType/CodeableConcept' CodeableConcept: obsRelation.observation.code.translation -%}
+                        {% endif -%}
+                        {% if obsRelation.observation.code.translation.code == null -%}
+                            {% include 'DataType/CodeableConcept' CodeableConcept: obsRelation.observation.code -%}
+                        {% endif -%}
+                    },
+                {% include 'Utils/ValueHelper' value: obsRelation.observation.value, origText: text._innerText -%}
+            },
+            {% endfor -%}
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Observation/{{ ID }}",
+    },
+},

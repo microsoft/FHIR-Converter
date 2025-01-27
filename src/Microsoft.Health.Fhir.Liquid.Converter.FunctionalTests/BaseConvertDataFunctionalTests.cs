@@ -3,6 +3,7 @@
 // Licensed under the MIT License (MIT). See LICENSE in the repo root for license information.
 // -------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -213,6 +214,20 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             });
         }
 
+        public static IEnumerable<object[]> GetDataForEcr()
+        {
+            var data = new List<string[]>
+            {
+                new[] { @"EICR", @"eCR_full.xml", @"eCR_full-expected.json" },
+            };
+            return data.Select(item => new[]
+            {
+                item[0],
+                Path.Join(Constants.SampleDataDirectory, "eCR", item[1]),
+                Path.Join(Constants.ExpectedDataFolder, "eCR", item[0], item[2]),
+            });
+        }
+
         public static IEnumerable<object[]> GetDataForJson()
         {
             var data = new List<string[]>
@@ -237,7 +252,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             return data.Select(item => new[]
             {
                 item[0],
-                Path.Join(Constants.SampleDataDirectory, "Fhir", item[1]),
+                Path.Join(Constants.SampleDataDirectory, "FHIR", item[1]),
                 Path.Join(Constants.ExpectedDataFolder, "FhirToHl7v2", item[0], item[2]),
             });
         }
@@ -332,8 +347,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             var actualObject = JObject.Parse(actualContent);
 
             // Remove DocumentReference, where date is different every time conversion is run and gzip result is OS dependent
-            expectedObject["entry"]?.Last()?.Remove();
-            actualObject["entry"]?.Last()?.Remove();
+            if (expectedObject["entry"]?.Last()["resource"]["resourceType"].ToString() == "DocumentReference")
+            {
+                expectedObject["entry"]?.Last()?.Remove();
+                actualObject["entry"]?.Last()?.Remove();
+            }
+
+            var diff = DiffHelper.FindDiff(actualObject, expectedObject);
+            if (diff.HasValues)
+            {
+                Console.WriteLine(diff);
+            }
 
             Assert.True(JToken.DeepEquals(expectedObject, actualObject));
         }

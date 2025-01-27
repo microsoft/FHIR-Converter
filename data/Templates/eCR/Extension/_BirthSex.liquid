@@ -1,0 +1,9 @@
+{% if birthSObs -%}
+    "url" : "http://hl7.org/fhir/us/core/StructureDefinition/us-core-birthsex",
+    "extension" : [
+        {
+          "url" : "value",
+          {% include 'Utils/ValueHelper' value: birthSobs.value, origText: SOCIALTEXT -%}
+        },
+      ],
+{% endif -%}

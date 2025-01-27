@@ -1,0 +1,14 @@
+{% assign result = false -%}
+{% assign firstTemplate = observation.templateId | to_array | first -%}
+{% if observation.value.nullFlavor and observation.value.originalText == null or observation.code.nullFlavor -%}
+{% comment -%} ^ Don't include truly unknown observations {% endcomment -%}
+{% elsif firstTemplate.root == '2.16.840.1.113883.10.20.34.3.45' or observation.code.code == '76691-5' -%}
+{% comment -%} ^ Gender Identity handled as an extension to patient{% endcomment -%}
+{% elsif firstTemplate.root == '2.16.840.1.113883.10.20.22.4.200' -%}
+{% comment -%} ^ Birth sex handled as extension to patient {% endcomment -%}
+{% elsif firstTemplate.root == '2.16.840.1.113883.10.20.15.2.3.48' -%}    
+{% comment -%} ^ Tribal Affiliation handled as an extension to patient{% endcomment -%}
+{% else -%}
+    {% assign result = true -%}
+{% endif -%}
+{{ result }}
