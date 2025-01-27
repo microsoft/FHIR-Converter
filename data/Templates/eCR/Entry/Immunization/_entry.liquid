@@ -1,0 +1,5 @@
+{% evaluate immunizationId using 'Utils/GenerateId' obj: entry.substanceAdministration -%}
+{% assign entrySubs = entry.substanceAdministration| to_array -%}
+{% for entrySub in entrySubs -%}
+    {{ entrySub.consumable | to_array | batch_render: 'Entry/Immunization/entry_consumable', 'subConsumable' }}
+{% endfor -%}

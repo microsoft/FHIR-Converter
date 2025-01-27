@@ -1,0 +1,50 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Goal",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = goalEntry.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "description":
+        {
+            {% include 'DataType/CodeableConcept' CodeableConcept: goalEntry.code -%}
+        },
+        "lifecycleStatus":"{{ goalEntry.statusCode.code }}",
+        "priority":
+        {
+            {% assign values = goalEntry.entryRelationship.observation.value | to_array -%}
+            {% include 'DataType/CodeableConcept' CodeableConcept: values.first -%}
+        },
+        "target":
+        [
+            {
+                "measure":
+                {
+                    {% if goalEntry.code.translation -%}
+                    {% include 'DataType/CodeableConcept' CodeableConcept: goalEntry.code.translation -%}
+                    {% endif -%}
+                    {% if goalEntry.code.translation == null -%}
+                    {% include 'DataType/CodeableConcept' CodeableConcept: goalEntry.code -%}
+                    {% endif -%}
+                },
+                {% if goalEntry.value.low.value -%}
+                    "detailQuantity":
+                    {
+                        "value":{{ goalEntry.value.low.value }},
+                        "unit":"{{ goalEntry.value.low.unit }}",
+                    },
+                {% endif -%}
+                "dueDate":"{{ goalEntry.effectiveTime.value | add_hyphens_date }}",
+            },
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Goal/{{ ID }}",
+    },
+},

@@ -1,0 +1,19 @@
+{% if entry.procedure -%}
+    {% assign procedureId = entry.procedure | to_json_string | generate_uuid -%}
+    {% include 'Resource/Procedure' procedureEntry: entry.procedure, ID: procedureId -%}
+    {% assign organizationId = entry.procedure.performer.assignedEntity.representedOrganization | to_json_string | generate_uuid -%}    
+    {% include 'Resource/Organization' organization: entry.procedure.performer.assignedEntity.representedOrganization, ID: organizationId -%}
+    {% include 'Reference/Procedure/Subject' ID: procedureId, REF: fullPatientId -%}
+    {% assign fullOrganizationId = organizationId | prepend: 'Organization/' -%}
+    {% include 'Reference/Procedure/Performer_Actor' ID: procedureId, REF: fullOrganizationId -%}
+{% endif -%}
+
+{% if entry.substanceAdministration -%}
+    {% assign substanceAdministrationId = entry.substanceAdministration | to_json_string | generate_uuid -%}
+    {% include 'Resource/MedicationAdministration', medicationAdministration: entry.substanceAdministration, ID: substanceAdministrationId -%}
+    {% assign manufacturedMaterialId = entry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial | to_json_string | generate_uuid -%}
+    {% include 'Resource/Medication' medication: entry.substanceAdministration.consumable.manufacturedProduct.manufacturedMaterial, ID: manufacturedMaterialId -%}
+    {% include 'Reference/MedicationAdministration/Subject' ID: substanceAdministrationId, REF: fullPatientId -%}
+    {% assign fullManufacturedMaterialId = manufacturedMaterialId | prepend: 'Medication/' -%}
+    {% include 'Reference/MedicationAdministration/MedicationReference' ID: substanceAdministrationId, REF: fullManufacturedMaterialId -%}
+{% endif -%}

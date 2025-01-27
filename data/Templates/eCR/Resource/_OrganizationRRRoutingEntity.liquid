@@ -1,0 +1,54 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Organization",
+        "id":"{{ ID }}",
+        "meta":
+        {
+            "profile":
+            [
+                "http://hl7.org/fhir/us/ecr/StructureDefinition/rr-routing-entity-organization",
+            ],
+        },
+        "identifier":
+        [
+            {% assign ids = participant.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "active": true,
+        "type":
+        [
+            {
+                "coding" :
+                [
+                    {
+                        "system" : "urn:oid:2.16.840.1.114222.4.5.232",
+                        "code" : "RR7",
+                        "display" : "Routing Entity",
+                    },
+                ]
+            },
+        ],
+        "name":"{{ organization.playingEntity.name._ }}",
+        "address":
+        [
+            {% assign addrs = organization.addr | to_array -%}
+            {% for addr in addrs -%}
+            { {% include 'DataType/Address' Address: addr -%} },
+            {% endfor -%}
+        ],
+        "telecom":
+        [
+            {% assign telecoms = organization.telecom | to_array -%}
+            {% for telecom in telecoms -%}
+            { {% include 'DataType/ContactPoint' ContactPoint: telecom -%} },
+            {% endfor -%}
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Organization/{{ ID }}",
+    },
+},

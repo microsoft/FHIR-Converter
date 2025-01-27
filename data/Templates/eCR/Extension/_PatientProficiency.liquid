@@ -1,0 +1,40 @@
+{% if modeCode != null or proficiencyLevelCode != null %}
+{% assign modeCodeDisplay = modeCode.code | downcase | get_property: 'ValueSet/LanguageAbilityMode', 'display' -%}
+{% assign proficiencyLevelCodeDisplay = proficiencyLevelCode.code | downcase | get_property: 'ValueSet/LanguageAbilityProficiency', 'display' -%}
+
+{% if modeCodeDisplay != "" and modeCodeDisplay != null %}
+    {% assign hasData = true %}
+{% endif -%}
+{% if proficiencyLevelCodeDisplay != "" and proficiencyLevelCodeDisplay != null %}
+    {% assign hasData = true %}
+{% endif -%}
+
+{% if hasData == true %}
+"url": "http://hl7.org/fhir/StructureDefinition/patient-proficiency",
+"extension": 
+[
+    {% if modeCodeDisplay %}
+    {
+        "url": "type",
+        "valueCoding": 
+        {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-LanguageAbilityMode",
+            "code": "{{ modeCode.code | upcase }}",
+            "display": "{{ modeCodeDisplay }}",        
+        },
+    },
+    {% endif -%}
+    {% if proficiencyLevelCodeDisplay %}
+    {
+        "url": "level",
+        "valueCoding": 
+        {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-LanguageAbilityProficiency",
+            "code": "{{ proficiencyLevelCode.code | upcase }}",
+            "display": "{{ proficiencyLevelCodeDisplay }}",        
+        },
+    },
+    {% endif -%}
+],
+{% endif -%}
+{% endif -%}

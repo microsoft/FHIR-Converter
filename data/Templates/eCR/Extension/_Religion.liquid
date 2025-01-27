@@ -1,0 +1,4 @@
+{% if patient.religiousAffiliationCode != null and patient.religiousAffiliationCode.nullFlavor == null -%}
+    "url" : "http://hl7.org/fhir/StructureDefinition/patient-religion",
+    {% include 'Utils/ValueHelper' value: patient.religiousAffiliationCode -%}
+{% endif -%}

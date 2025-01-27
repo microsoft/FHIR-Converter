@@ -1,7 +1,7 @@
 {
-  "valueBoolean" : {{msg.initialBoolean}},
-  "valueDecimal" : {{msg.initialDecimal}},
-  "valueInteger" : {{msg.initialInteger}},
+  "valueBoolean" : {{msg.initialBoolean | default: 'null'}},
+  "valueDecimal" : {{msg.initialDecimal | default: 'null'}},
+  "valueInteger" : {{msg.initialInteger | default: 'null'}},
   "valueDate" : "{{msg.initialDate}}",
   "valueDateTime" : "{{msg.initialDateTime}}",
   "valueTime" : "{{msg.initialTime}}",
@@ -13,4 +13,3 @@
   "valueReference" : {{msg.initialReference | to_json_string | default : '""'}},
   "initial[x]" : "",
 }
-

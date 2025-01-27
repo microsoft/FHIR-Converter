@@ -1,0 +1,80 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Condition",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = conditionEntry.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "clinicalStatus":
+        {
+            {% assign entryRelationships = conditionEntry.entryRelationship | to_array -%}
+            {% for entryRelationship in entryRelationships -%}
+                {% assign templateIdString = entryRelationship.observation.templateId | to_json_string -%}
+                {% if  templateIdString  contains '"2.16.840.1.113883.10.20.22.4.5"' -%}
+                    {% include 'DataType/CodeableConcept' CodeableConcept: entryRelationship.observation.value -%}
+                {% elsif templateIdString  contains '"2.16.840.1.113883.10.20.22.4.6"' -%}
+                    {% include 'DataType/CodeableConcept' CodeableConcept: entryRelationship.observation.value -%}
+                {% endif -%}
+            {% endfor -%}
+        },
+        "category": [
+        {
+            {% assign templateIds = conditionEntry.templateId | to_array -%}
+            {% if  templateIds.first.root == "2.16.840.1.113883.10.20.22.4.4" -%}
+                "coding": [
+                    {
+                        "code":"problem-item-list",
+                        "display": "Problem List Item",
+                        "system": "http://hl7.org/fhir/us/core/ValueSet/us-core-condition-category",
+                    },
+                ],
+            {% endif -%}
+        },
+        ],
+        "code":
+        {
+            {% assign translations = conditionEntry.value.translation | to_array -%}
+            {% assign code = conditionEntry.value | to_array -%}
+            {% assign codes = code | concat: translations %}
+            {% include 'DataType/CodeableConcept' CodeableConcept: codes -%}
+        },
+        {% if conditionEntry.effectiveTime.low.value -%}
+            "onsetDateTime":"{{ conditionEntry.effectiveTime.low.value | format_as_date_time }}",
+        {% elsif conditionEntry.author.time and conditionEntry.author.time.value -%}
+            "onsetDateTime":"{{ conditionEntry.author.time.value | format_as_date_time }}",
+        {% endif -%}
+        "onsetAge":
+        {
+            {% assign entryRelationships = conditionEntry.entryRelationship | to_array -%}
+            {% for entryRelationship in entryRelationships -%}
+                {% assign templateIdString = entryRelationship.observation.templateId | to_json_string -%}
+                {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.31"' -%}
+                    {% include 'DataType/CodeableConcept' CodeableConcept: entryRelationship.observation.value.value -%}
+                {% endif -%}
+            {% endfor -%}
+        },
+        "note":
+        [
+            {
+                {% for relatedEntry in relatedEntries -%}
+                    {% assign templateIdString = relatedEntry.act.templateId.root | to_json_string -%}
+                    {% if templateIdString contains '"2.16.840.1.113883.10.20.22.4.64"' or templateIdString contains "2.16.840.1.113883.10.20.22.4.202" and relatedEntry.act.text.reference.value -%}
+                        {% assign commentRefVal = relatedEntry.act.text.reference.value | replace: '#', '' -%}
+                        {% assign commentText = text._innerText | find_inner_text_by_id: commentRefVal -%}
+                        "text": "{{ commentText | clean_string_from_tabs | escape_special_chars }}",
+                    {% endif -%}
+                {% endfor -%}
+                
+            }
+        ],
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Condition/{{ ID }}",
+    },
+},

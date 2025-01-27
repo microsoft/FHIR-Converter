@@ -18,7 +18,6 @@ using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Hl7v2;
 using Microsoft.Health.Fhir.Liquid.Converter.Models.Json;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
-using Microsoft.Health.MeasurementUtility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NJsonSchema;
@@ -51,13 +50,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         protected override string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
-            object jsonData;
-            using (ITimed inputDeserializationTime =
-                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.InputDeserializationDuration, duration)))
-            {
-                jsonData = _parser.Parse(data);
-            }
-
+            object jsonData = _parser.Parse(data);
             var result = InternalConvertFromObject(jsonData, rootTemplate, templateProvider, traceInfo);
 
             var hl7Message = GenerateHL7Message(ConvertToJObject(result));

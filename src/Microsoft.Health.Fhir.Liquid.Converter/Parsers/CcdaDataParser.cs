@@ -6,8 +6,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Newtonsoft.Json;
@@ -26,6 +28,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
             try
             {
                 var xDocument = XDocument.Parse(document);
+
+                // Serialize contents of `text` elements as string in `_innerText` child element
+                StringifyTextNodeContents(xDocument?.Root);
 
                 // Remove redundant namespaces to avoid appending namespace prefix before elements
                 var defaultNamespace = xDocument.Root?.GetDefaultNamespace().NamespaceName;
@@ -110,6 +115,39 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Parsers
                     case XElement elementNode:
                         ReplaceTextWithElement(elementNode);
                         break;
+                }
+            }
+        }
+
+        private static void StringifyTextNodeContents(XElement element)
+        {
+            if (element == null)
+            {
+                return;
+            }
+
+            System.Xml.XmlWriterSettings xws = new ()
+            {
+                OmitXmlDeclaration = true,
+                ConformanceLevel = System.Xml.ConformanceLevel.Fragment,
+            };
+
+            foreach (var el in element.Descendants())
+            {
+                if (el.Name.LocalName == "text")
+                {
+                    System.Text.StringBuilder sb = new ();
+
+                    using (System.Xml.XmlWriter xw = System.Xml.XmlWriter.Create(sb, xws))
+                    {
+                        foreach (var node in el.Nodes())
+                        {
+                            node.WriteTo(xw);
+                        }
+                    }
+
+                    var content = sb.ToString();
+                    el.SetAttributeValue("_innerText", content);
                 }
             }
         }

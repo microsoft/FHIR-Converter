@@ -88,6 +88,17 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             ConvertCCDAMessageAndValidateExpectedResponse(templateProvider, rootTemplate, inputFile, expectedFile);
         }
 
+        // TODO: uncomment once we have test data again
+        // [Theory]
+        // [MemberData(nameof(GetDataForEcr))]
+        // public void GivenEcrDocument_WhenConverting_ExpectedFhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)
+        // {
+        //     var templateDirectory = Path.Join(AppDomain.CurrentDomain.BaseDirectory, Constants.TemplateDirectory, "eCR");
+        //     var templateProvider = new TemplateProvider(templateDirectory, DataType.Ccda);
+
+        //     ConvertCCDAMessageAndValidateExpectedResponse(templateProvider, rootTemplate, inputFile, expectedFile);
+        // }
+
         [Theory]
         [MemberData(nameof(GetDataForStu3ToR4))]
         public void GivenStu3FhirData_WhenConverting_ExpectedR4FhirResourceShouldBeReturned(string rootTemplate, string inputFile, string expectedFile)

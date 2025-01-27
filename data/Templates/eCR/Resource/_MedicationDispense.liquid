@@ -1,0 +1,27 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "MedicationDispense",
+        "id":"{{ ID }}",
+        "identifier":
+        [
+            {% assign ids = medicationDispense.id | to_array -%}
+            {% for id in ids -%}
+            { {% include 'DataType/Identifier' Identifier: id -%} },
+            {% endfor -%}
+        ],
+        "status":"{{ medicationDispense.statusCode.code }}",
+        "whenPrepared":"{{ medicationDispense.effectiveTime.value | format_as_date_time }}",
+        {% if medicationDispense.quantity.value -%}
+            "quantity":
+            {
+                "value":{{ medicationDispense.quantity.value }},
+                "unit":"{{ medicationDispense.quantity.unit }}",
+            },
+        {% endif -%}
+    },
+    "request":{
+        "method":"PUT",
+        "url":"MedicationDispense/{{ ID }}",
+    },
+},

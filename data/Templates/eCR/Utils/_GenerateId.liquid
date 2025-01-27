@@ -1,0 +1,38 @@
+{% assign ids = obj.id | to_array -%}
+{% if ids.first -%}
+    {% for singleId in ids -%}
+        {% if singleId.nullFlavor -%}
+            {% if singleId.root and singleId.extension -%}
+                {{ singleId.root | append: '|' | append: singleId.extension | generate_uuid }}
+                {% break -%}
+            {% else -%}
+                {% if obj.representedOrganization.name._ and obj.assignedPerson.name.given._ -%}
+                    {{ obj.representedOrganization.name._ | append: '|' | append: obj.assignedPerson.name.given._ | generate_uuid }}
+                    {% break -%}
+                {% elsif obj.representedOrganization.name._ -%}
+                    {{ obj.representedOrganization | to_json_string | generate_uuid }}
+                    {% break -%}
+                {% elsif obj.assignedPerson.name.given._ -%}
+                    {{ obj.assignedPerson | to_json_string | generate_uuid }}
+                    {% break -%}
+                {% else -%}
+                    {{ obj | to_json_string | generate_uuid }}
+                    {% break -%}
+                {% endif -%}
+            {% endif -%}
+        {% else -%}
+            {% if singleId.root and singleId.extension -%}
+                {{ singleId.root | append: '|' | append: singleId.extension | generate_uuid }}
+                {% break -%}
+            {% elsif singleId.extension -%}
+                {{ singleId.extension | generate_uuid }}
+                {% break -%}
+            {% else -%}
+                {{ obj | to_json_string | generate_uuid }}
+                {% break -%}
+            {% endif -%}
+        {% endif -%}
+    {% endfor -%}
+{% else -%}
+    {{ obj | to_json_string | generate_uuid }}
+{% endif -%}

@@ -1,0 +1,50 @@
+{
+    "fullUrl":"urn:uuid:{{ ID }}",
+    "resource":{
+        "resourceType": "Observation",
+        "id":"{{ ID }}",
+        "meta":
+        {
+            "profile":
+            [
+                "http://hl7.org/fhir/us/core/StructureDefinition/us-core-observation-sexual-orientation",
+            ],
+        },
+        "code" : {
+            "coding" :
+            [
+                {
+                    "system" : "http://loinc.org",
+                    "code" : "76690-7",
+                    "display" : "Sexual orientation"
+                }
+            ],
+            "text" : "Sexual orientation"
+        },
+        "status":
+             {% if observationEntry.statusCode._ -%}
+                "{{ observationEntry.statusCode._}}",
+            {% else -%}
+                "{{ observationEntry.statusCode.code | get_property: 'ValueSet/ObservationStatus' }}",
+            {% endif -%},
+        "effectivePeriod":
+        {
+            {% if observationEntry.effectiveTime.low.value -%}
+            "start":"{{ observationEntry.effectiveTime.low.value | format_as_date_time }}",
+            {% endif -%}
+            {% if observationEntry.effectiveTime.high.value -%}
+            "end":"{{ observationEntry.effectiveTime.high.value | format_as_date_time }}",
+            {% endif -%}
+        },
+        {% if observationEntry.effectiveTime.low.value == null -%}
+        "effectiveDateTime":"{{ observationEntry.effectiveTime.value | format_as_date_time }}",
+        {% endif -%}
+        {% comment %} When we have eCRs with actual data for this element, revist these values {% endcomment %}
+        {% comment %} May need to use this ValueSet: http://hl7.org/fhir/us/core/STU6.1/ValueSet-us-core-sexual-orientation.html {% endcomment %}
+        {% include 'Utils/ValueHelper' value: observationEntry.value, origText: text._innerText -%}
+    },
+    "request":{
+        "method":"PUT",
+        "url":"Observation/{{ ID }}",
+    },
+},

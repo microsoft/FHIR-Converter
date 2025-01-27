@@ -1,0 +1,42 @@
+{
+    "fullUrl":"urn:uuid:{{ID}}",
+    "resource":{
+        "resourceType": "CarePlan",
+        "id":"{{ID}}",
+        "identifier":
+        [
+            {% assign ids = carePlan.id | to_array -%}
+            {% for id in ids -%}
+                { {% include 'DataType/Identifier' Identifier: id -%} }
+            {% endfor -%}
+        ],
+        "status": "unknown",
+        "intent": "proposal",
+        "subject": {
+            "reference": "{{ patientReference }}",
+        },
+        "activity":[
+            {% for carePlanEntry in carePlan.entry %}
+                {% if carePlanEntry.procedure.templateId.root == "2.16.840.1.113883.10.20.22.4.41" or carePlanEntry.procedure.templateId[0].root == "2.16.840.1.113883.10.20.22.4.41" %}
+                {
+                    "detail": {
+                        "code":{ {% include 'DataType/CodeableConcept' CodeableConcept: carePlanEntry.procedure.code -%} },
+                        "status":"scheduled",
+                        "scheduledString": "{{ carePlanEntry.procedure.effectiveTime.value }}",
+                    },
+                    "extension": [
+                        {
+                            "url": "dibbs.orderedDate",
+                            "valueString": "{{ carePlanEntry.procedure.author.time.value }}"
+                        }
+                    ]
+                },
+                {% endif %}
+            {% endfor %}
+        ]
+    },
+    "request":{
+        "method":"PUT",
+        "url":"CarePlan/{{ID}}",
+    },
+},
