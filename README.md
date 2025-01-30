@@ -10,6 +10,10 @@ The converter uses templates that define mappings between these different data f
 
 The converter comes with a few ready-to-use templates. If needed, you can create a new template, or modify existing templates to meet your specific conversion requirements. The provided templates are based off of HL7 v2.8. Other versions may require you to make modifications to these templates on your own. See [Templates & Authoring](#templates--authoring) for specifics.
 
+## Release
+
+Releases and tags will be generated on each commit to main. Tags will be built by using base-version.txt and incrementing a counter at the end. When dibbs-FHIR-Converter syncs with microsoft/FHIR-Converter, base-version.txt should be updated to reflect that new version number.
+
 ## What's New?
 The latest iteration of the *Preview* FHIR converter makes some significant changes over [previous versions](#previous-versions).
 
@@ -54,7 +58,7 @@ To use your custom templates, the FHIR converter API offers robust support for s
 
 ## Deployment
 
-You can deploy the FHIR converter API using the instructions found [here](/docs/how-to-guides/deployment-options.md).  The default deployment will deploy the FHIR Conventer API container hosted on Azure Container Apps.
+You can deploy the FHIR converter API using the instructions found [here](/docs/how-to-guides/deployment-options.md). The default deployment will deploy the FHIR Conventer API container hosted on Azure Container Apps.
 
 ## API
 
@@ -90,7 +94,7 @@ Detailed documentation of prior Converter release is covered in the table below.
  
 ## Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit [the CLA site](https://cla.opensource.microsoft.com).
 

@@ -1,0 +1,49 @@
+name: Release fhir-converter
+
+on:
+  workflow_run:
+    workflows: ["Test fhir-converter"]
+    types:
+      - completed
+
+jobs:
+  tag-release:
+    name: Release
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: "0"
+          ref: "main"
+      - name: Get base version
+        id: base_version
+        run: echo "BASE_VERSION=$(cat base-version.txt)" >> $GITHUB_OUTPUT
+      - name: Get current tag
+        id: get_current_tag
+        run: |
+          echo "CURRENT_TAG=$(git describe --tags --abbrev=0)" >> $GITHUB_OUTPUT
+      - name: Generate new tag tag
+        id: get_new_tag
+        env:
+          base_version: ${{ steps.base_version.outputs.BASE_VERSION }}
+          current_tag: ${{ steps.get_current_tag.outputs.CURRENT_TAG }}
+        run: |
+          next_tag=v"$base_version"-1
+
+          # If the current tag matches the tag used by microsoft, 
+          if [[ $current_tag == v"$base_version"-* ]] ;
+          then
+              current_dibbs_counter=$(cut -d'-' -f2 <<< $current_tag);
+              next_dibbs_counter=$((previous_dibbs_counter + 1));
+              next_tag="$base_version"-"$next_dibbs_counter"
+          fi
+
+          echo "NEXT_TAG=next_tag" >> $GITHUB_OUTPUT
+
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ steps.get_new_tag.outputs.NEXT_TAG }}
+        run: |
+          gh release create "$tag" --generate-notes
