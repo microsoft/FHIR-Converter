@@ -14,7 +14,6 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors;
 using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
-using Microsoft.Health.MeasurementUtility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -40,24 +39,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         {
             cancellationToken.ThrowIfCancellationRequested();
             string result;
-            using (ITimed totalConversionTime =
-                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.TotalDuration, duration)))
-            {
-                result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
-            }
-
+            result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
             return result;
         }
 
         public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null)
         {
             string result;
-            using (ITimed totalConversionTime =
-                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.TotalDuration, duration)))
-            {
-                result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
-            }
-
+            result = InternalConvert(data, rootTemplate, templateProvider, traceInfo);
             return result;
         }
 
@@ -105,11 +94,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
             // Step: Retrieve Template
             Template template;
-            using (ITimed totalConversionTime =
-                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.TemplateRetrievalDuration, duration)))
-            {
-                template = templateProvider.GetTemplate(rootTemplate);
-            }
+            template = templateProvider.GetTemplate(rootTemplate);
 
             if (template == null)
             {
@@ -121,19 +106,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
             // Step: Render Template
             string rawResult;
-            using (ITimed templateRenderTime =
-                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.TemplateRenderDuration, duration)))
-            {
-                rawResult = RenderTemplates(template, context);
-            }
+            rawResult = RenderTemplates(template, context);
 
             // Step: Post-Process
             JObject result;
-            using (ITimed postProcessTime =
-                Performance.TrackDuration(duration => LogTelemetry(FhirConverterMetrics.PostProcessDuration, duration)))
-            {
-                result = PostProcessor.Process(rawResult);
-            }
+            result = PostProcessor.Process(rawResult);
 
             CreateTraceInfo(data, context, traceInfo);
 

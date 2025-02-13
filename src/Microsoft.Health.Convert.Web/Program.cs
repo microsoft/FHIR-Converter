@@ -8,7 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<ITemplateProvider>(new TemplateProvider(builder.Configuration["TemplateDirectory"], DataType.Ccda));
+var templateDirectory = builder.Configuration["TemplateDirectory"];
+builder.Services.AddSingleton<ITemplateProvider>(new TemplateProvider($"{templateDirectory}/Ccda", DataType.Ccda));
 builder.Services.AddSingleton<IFhirConverter>(new CcdaProcessor(new ProcessorSettings(), ConsoleLoggerFactory.CreateLogger<CcdaProcessor>()));
 
 var app = builder.Build();
