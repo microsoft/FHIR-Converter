@@ -1,0 +1,92 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  DOTNET_NOLOGO: "true"
+  TF_VAR_environment: ${{ github.ref_name == 'main' && 'rc' || 'dev' }}
+  TF_VAR_aws_account_id: "825765386763"
+  TF_VAR_aws_region: "us-east-1"
+  TF_VAR_terraform_bucket: "mergence-health-terraform"
+  TF_VAR_terraform_table: "terraform-lock"
+  TF_VAR_organization_id: "mergencehealth"
+  TF_VAR_ecr_repository_name: "mergencehealth/fhir-converter"
+  TF_VAR_project_tag: "fhir-converter"
+
+permissions:
+  id-token: write
+  contents: read
+  checks: write
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 9.0.x
+      - name: Restore dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --no-restore
+
+  publish:
+
+    runs-on: ubuntu-latest
+    needs: build
+
+    strategy:
+      matrix:
+        name: [ app ]
+        include:
+          - name: app
+            dockerfile: "Dockerfile"
+            image: "mergencehealth/fhir-converter"
+            target: final
+
+    steps:
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-duration-seconds: 900 # 15m (minimum allowed duration)
+          role-to-assume: arn:aws:iam::${{ env.TF_VAR_aws_account_id }}:role/GitHubActionsOIDCRole
+          managed-session-policies: arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryPowerUser
+          aws-region: ${{ env.TF_VAR_aws_region }}
+      - name: AWS ECR Login
+        id: ecr-login
+        uses: aws-actions/amazon-ecr-login@v2
+      - name: Extract Docker metadata
+        id: docker-meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ steps.ecr-login.outputs.registry && format('{0}/', steps.ecr-login.outputs.registry) || '' }}${{ matrix.image }}
+          flavor: |
+            suffix=${{ matrix.tag_suffix && format('-{0}', matrix.tag_suffix) || '' }},onlatest=true
+            latest=auto
+          tags: |
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,format=long
+      - name: Build and publish image
+        uses: docker/build-push-action@v6
+        with:
+          provenance: false
+          tags: ${{ steps.docker-meta.outputs.tags }}
+          labels: ${{ steps.docker-meta.outputs.labels }}
+          file: ${{ matrix.dockerfile }}
+          target: ${{ matrix.target }}
+          push: ${{ steps.ecr-login.outputs.registry != '' }}
