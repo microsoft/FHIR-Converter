@@ -1,9 +1,0 @@
-﻿{% assign Composition = msg.ClinicalDocument -%}                                           
-{
-    "datetime1": "{{ Composition.datetime1.value | add_hyphens_date }}",
-    "datetime2": "{{ Composition.datetime2.value | add_hyphens_date }}",
-    "datetime3": "{{ Composition.datetime2.value | format_as_date_time }}",
-    "datetime4": "{{ Composition.datetime3.value | format_as_date_time }}",
-    "datetime5": "{{ Composition.datetime4.value | format_as_date_time }}",
-    "datetime6": "{{ Composition.datetime5.value | format_as_date_time }}"
-}

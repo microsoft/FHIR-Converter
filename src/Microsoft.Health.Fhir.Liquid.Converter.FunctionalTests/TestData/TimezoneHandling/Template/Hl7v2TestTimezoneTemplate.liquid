@@ -1,9 +1,0 @@
-﻿{% assign firstSegments = hl7v2Data | get_first_segments: 'IN1' -%}                                           
-{
-    "datetime1": "{{ firstSegments.IN1.1.Value | add_hyphens_date }}",
-    "datetime2": "{{ firstSegments.IN1.2.Value | add_hyphens_date }}",
-    "datetime3": "{{ firstSegments.IN1.2.Value | format_as_date_time }}",
-    "datetime4": "{{ firstSegments.IN1.3.Value | format_as_date_time }}",
-    "datetime5": "{{ firstSegments.IN1.4.Value | format_as_date_time }}",
-    "datetime6": "{{ firstSegments.IN1.5.Value | format_as_date_time }}"
-}

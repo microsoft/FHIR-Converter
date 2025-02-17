@@ -1,0 +1,2 @@
+{% assign actId = entry.act | to_json_string | generate_uuid -%}
+{ "reference":"Communication/urn:uuid:{{ actId }}" }
