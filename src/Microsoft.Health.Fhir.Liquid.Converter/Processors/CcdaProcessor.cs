@@ -36,25 +36,5 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
             return InternalConvertFromObject(ccdaData, rootTemplate, templateProvider, traceInfo);
         }
-
-        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data, string rootTemplate)
-        {
-            // Load value set mapping
-            var context = base.CreateContext(templateProvider, data, rootTemplate);
-            var codeMapping = templateProvider.GetTemplate(GetCodeMappingTemplatePath(context));
-            if (codeMapping?.Root?.NodeList?.First() != null)
-            {
-                context["CodeMapping"] = codeMapping.Root.NodeList.First();
-            }
-
-            return context;
-        }
-
-        private string GetCodeMappingTemplatePath(Context context)
-        {
-            var rootTemplateParentPath = context[TemplateUtility.RootTemplateParentPathScope]?.ToString();
-            var codeSystemTemplateName = "ValueSet/ValueSet";
-            return TemplateUtility.GetFormattedTemplatePath(codeSystemTemplateName, rootTemplateParentPath);
-        }
     }
 }

@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using DotLiquid;
 using EnsureThat;
@@ -63,7 +64,23 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 
         protected abstract string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
 
-        protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data, string rootTemplate)
+        protected Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data, string rootTemplate)
+        {
+            Context context = CreateBaseContext(templateProvider, data);
+
+            // Load filters
+            context.AddFilters(typeof(Filters));
+
+            // Add root template's parent path to context.
+            AddRootTemplatePathScope(context, templateProvider, rootTemplate);
+
+            // Inject of codemapping into context.
+            InjectCodeMappingIntoContext(context, templateProvider);
+
+            return context;
+        }
+
+        protected virtual Context CreateBaseContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load data and templates
             var cancellationToken = Settings.TimeOut > 0 ? new CancellationTokenSource(Settings.TimeOut).Token : CancellationToken.None;
@@ -75,12 +92,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 maxIterations: Settings.MaxIterations,
                 formatProvider: CultureInfo.InvariantCulture,
                 cancellationToken: cancellationToken);
-
-            // Load filters
-            context.AddFilters(typeof(Filters));
-
-            // Add root template's parent path to context.
-            AddRootTemplatePathScope(context, templateProvider, rootTemplate);
 
             return context;
         }
@@ -180,6 +191,39 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             if (Settings.EnableTelemetryLogger)
             {
                 Logger.LogInformation("{Metric}: {Duration} milliseconds.", telemetryName, duration);
+            }
+        }
+
+        protected void InjectCodeMappingIntoContext(Context context, ITemplateProvider templateProvider)
+        {
+            var rootTemplateParentPath = context[TemplateUtility.RootTemplateParentPathScope]?.ToString();
+            List<string> codeMappings = new List<string> { "ValueSet/ValueSet", "CodeSystem/CodeSystem", };
+            var allPaths = codeMappings
+                .Select(name => TemplateUtility.GetFormattedTemplatePath(name, rootTemplateParentPath))
+                .ToList();
+
+            CodeMapping combinedMapping = null;
+
+            foreach (var path in allPaths)
+            {
+                var template = templateProvider.GetTemplate(path);
+                var node = template?.Root?.NodeList?.FirstOrDefault() as CodeMapping;
+                if (node != null)
+                {
+                    if (combinedMapping == null)
+                    {
+                        combinedMapping = node;
+                    }
+                    else
+                    {
+                        combinedMapping.Append(node);
+                    }
+                }
+            }
+
+            if (combinedMapping != null)
+            {
+                context["CodeMapping"] = combinedMapping;
             }
         }
     }
