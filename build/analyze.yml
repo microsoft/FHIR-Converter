@@ -155,7 +155,7 @@ steps:
     CredScan: true
 
 - task: TSAUpload@2
-  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
+  # condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
   displayName: 'TSA upload'
   inputs:
     tsaVersion: 'TsaV2' 
@@ -167,7 +167,7 @@ steps:
 - task: DropValidatorTask@0
   displayName: 'SBOM Validator and Publisher Task'
   inputs:
-    BuildDropPath: '$(Agent.TempDirectory)/artifacts/deploy'
+    BuildDropPath: '$(Agent.TempDirectory)/artifacts/FhirConverterBuild'
     OutputPath: 'output.json'
     ValidateSignature: true
     Verbosity: 'Verbose'
