@@ -69,9 +69,8 @@ stages:
   jobs:
   - job: Guardian
     pool:
-      name: '$(DefaultWindowsPool)'
-      demands:
-        - ImageOverride -equals $(DefaultWindowsImage)
+      pool:
+      vmImage: 'windows-latest'
       
     steps:
     - template: analyze.yml
