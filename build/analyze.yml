@@ -35,7 +35,7 @@ steps:
   - task: ExtractFiles@1
     displayName: 'Extract Fhir Converter Binaries'
     inputs:
-      archiveFilePatterns: '$(Agent.TempDirectory)/artifacts/bin/Microsoft.Health.Fhir.Liquid.Converter.Tool.zip'
+      archiveFilePatterns: '$(Agent.TempDirectory)/artifacts/FhirConverterBuild/bin/Microsoft.Health.Fhir.Liquid.Converter.Tool.zip'
       destinationFolder: '$(Build.SourcesDirectory)/artifacts/fhirconverter'
 
 - ${{ if eq(parameters.runAntiMalware, 'true') }}:
