@@ -155,12 +155,12 @@ steps:
     CredScan: true
 
 - task: TSAUpload@2
-  condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
+  # condition: and(succeeded(), eq(variables['build.sourceBranch'], 'refs/heads/main'))
   displayName: 'TSA upload'
   inputs:
     tsaVersion: 'TsaV2' 
     codebase: 'NewOrUpdate'
-    GdnPublishTsaOnboard: false
+    GdnPublishTsaOnboard: true
     GdnPublishTsaConfigFile: '$(Build.SourcesDirectory)\.config\tsaoptions.json'
     GdnPublishTsaExportedResultsPublishable: true
 

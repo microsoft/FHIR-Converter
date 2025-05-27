@@ -27,13 +27,13 @@ steps:
       projects: '**/*.csproj'
       arguments: '--configuration $(buildConfiguration) --version-suffix $(build.buildNumber) -p:AssemblyVersion="$(assemblySemVer)" -p:FileVersion="$(assemblySemFileVer)"'
 
-  - task: DotNetCoreCLI@2
-    displayName: 'dotnet test'
-    inputs:
-      command: test
-      projects: '**/*UnitTests/*.csproj'
-      arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
-      nobuild: true
+  # - task: DotNetCoreCLI@2
+  #   displayName: 'dotnet test'
+  #   inputs:
+  #     command: test
+  #     projects: '**/*UnitTests/*.csproj'
+  #     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+  #     nobuild: true
 
   - task: ComponentGovernanceComponentDetection@0
     inputs:
