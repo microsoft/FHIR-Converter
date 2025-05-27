@@ -62,6 +62,21 @@ stages:
           packageArtifacts: true
           packageNugets: false
 
+- stage: AnalyzeSecurity
+  displayName: 'Run Security Analysis and Validate'
+  dependsOn:
+  - BuildRunUnitTests
+  jobs:
+  - job: Guardian
+    pool:
+      pool:
+      vmImage: 'windows-latest'
+      
+    steps:
+    - template: analyze.yml
+      parameters:
+        analyzePackages: false
+
 - stage: FunctionalTests
   displayName: 'Run functional tests'
   dependsOn:

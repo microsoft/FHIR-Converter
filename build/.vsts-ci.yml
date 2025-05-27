@@ -64,6 +64,19 @@ stages:
     steps:
     - template: build.yml
 
+- stage: AnalyzeSecurity
+  displayName: 'Run Security Analysis and Validate'
+  dependsOn:
+  - BuildRunUnitTests
+  jobs:
+  - job: Guardian
+    pool:
+      pool:
+      vmImage: 'windows-latest'
+      
+    steps:
+    - template: analyze.yml
+
 - stage: FunctionalTests
   displayName: 'Run functional tests'
   dependsOn:
