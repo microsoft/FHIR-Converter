@@ -160,7 +160,7 @@ steps:
   inputs:
     tsaVersion: 'TsaV2' 
     codebase: 'NewOrUpdate'
-    GdnPublishTsaOnboard: true
+    GdnPublishTsaOnboard: false
     GdnPublishTsaConfigFile: '$(Build.SourcesDirectory)\.config\tsaoptions.json'
     GdnPublishTsaExportedResultsPublishable: true
 
