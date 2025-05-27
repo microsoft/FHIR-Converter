@@ -59,6 +59,57 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         }
 
         [Fact]
+        public void GetProperty_WhenCodeMappingIsAppended_ReturnsMappedValue()
+        {
+            // empty context
+            var context = new Context(CultureInfo.InvariantCulture);
+            Assert.Null(Filters.GetProperty(context, null, null, null));
+
+            // context with null CodeMapping
+            context = new Context(
+                environments: new List<Hash>(),
+                outerScope: new Hash(),
+                registers: new Hash(),
+                errorsOutputMode: ErrorsOutputMode.Rethrow,
+                maxIterations: 0,
+                formatProvider: CultureInfo.InvariantCulture,
+                cancellationToken: CancellationToken.None);
+            context["CodeMapping"] = null;
+
+            // First CodeMapping from CodeSystem
+            var firstMapping = new CodeMapping(new Dictionary<string, Dictionary<string, Dictionary<string, string>>>
+            {
+                {
+                    "CodeSystem/Gender", new Dictionary<string, Dictionary<string, string>>
+                    {
+                        { "M", new Dictionary<string, string> { { "code", "male" } } },
+                    }
+                },
+            });
+
+            // Additional CodeMapping from ValueSet
+            var additionalMapping = new CodeMapping(new Dictionary<string, Dictionary<string, Dictionary<string, string>>>
+            {
+                {
+                    "ValueSet/Gender", new Dictionary<string, Dictionary<string, string>>
+                    {
+                        { "F", new Dictionary<string, string> { { "code", "female" } } },
+                        { "O", new Dictionary<string, string> { { "code", "other" } } },
+                    }
+                },
+            });
+
+            // Append ValueSet to CodeMapping
+            firstMapping.Append(additionalMapping);
+            context["CodeMapping"] = firstMapping;
+
+            // Assert both CodeSystem/Gender and ValueSet/Gender
+            Assert.Equal("male", Filters.GetProperty(context, "M", "CodeSystem/Gender", "code"));
+            Assert.Equal("female", Filters.GetProperty(context, "F", "ValueSet/Gender", "code"));
+            Assert.Equal("other", Filters.GetProperty(context, "O", "ValueSet/Gender", "code"));
+        }
+
+        [Fact]
         public void EvaluateTest()
         {
             Assert.Null(Filters.Evaluate(null, null));
