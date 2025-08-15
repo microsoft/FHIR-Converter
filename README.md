@@ -19,6 +19,9 @@ Some of the changes include:
 
  All the documentation for the new *preview* FHIR converter API can be found in the [How to Guides](docs/how-to-guides/) folder.
 
+ ** Note **
+ The containerized API is not open source and the code for the API is not contained in this repository.  This repository contains documentation, deployment instructions, the core convert engine, and default templates.
+
 ## Architecture
 
 The FHIR converter API *preview* provides [REST based APIs](#api) to perform conversion requests.
