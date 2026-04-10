@@ -31,6 +31,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             yield return new object[] { DataType.Hl7v2, ConvertDataOutputFormat.Fhir, typeof(Hl7v2Processor) };
             yield return new object[] { DataType.Json, ConvertDataOutputFormat.Fhir, typeof(JsonProcessor) };
             yield return new object[] { DataType.Fhir, ConvertDataOutputFormat.Hl7v2, typeof(FhirToHl7v2Processor) };
+            yield return new object[] { DataType.FhirR4, ConvertDataOutputFormat.Fhir, typeof(FhirR4Processor) };
         }
 
         [Theory]
@@ -39,6 +40,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         {
             IFhirConverter processor = _convertProcessorFactory.GetProcessor(inputType, outputFormat);
             Assert.Equal(expectedProcessorType, processor.GetType());
+        }
+
+        [Fact]
+        public void GivenFhirR4InputType_WhenGetProcessor_ProcessorImplementsIFhirConverterWithVariables()
+        {
+            IFhirConverter processor = _convertProcessorFactory.GetProcessor(DataType.FhirR4, ConvertDataOutputFormat.Fhir);
+            Assert.IsAssignableFrom<IFhirConverterWithVariables>(processor);
         }
 
         [Fact]

@@ -27,11 +27,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         private static readonly string _fhirStu3TestData;
         private static readonly string _fhirBundleTestData;
         private static readonly string _fhirBundleExpectedData;
+        private static readonly string _fhirR4TestData;
         private static readonly ProcessorSettings _processorSettings;
         private static readonly Hl7v2Processor _hl7v2Processor;
         private static readonly CcdaProcessor _ccdaProcessor;
         private static readonly JsonProcessor _jsonProcessor;
         private static readonly FhirProcessor _fhirProcessor;
+        private static readonly FhirR4Processor _fhirR4Processor;
 
         static ProcessorTests()
         {
@@ -42,12 +44,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             _fhirStu3TestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Stu3", "Patient.json"));
             _fhirBundleTestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "Json", "Bundle.json"));
             _fhirBundleExpectedData = File.ReadAllText(Path.Join(TestConstants.ExpectedDirectory, "BundleToHl7v2.hl7"));
+            _fhirR4TestData = File.ReadAllText(Path.Join(TestConstants.SampleDataDirectory, "FhirR4", "PatientWithIdentifiers.json"));
             _processorSettings = new ProcessorSettings();
 
             _hl7v2Processor = new Hl7v2Processor(_processorSettings, FhirConverterLogging.CreateLogger<Hl7v2Processor>());
             _ccdaProcessor = new CcdaProcessor(_processorSettings, FhirConverterLogging.CreateLogger<CcdaProcessor>());
             _jsonProcessor = new JsonProcessor(_processorSettings, FhirConverterLogging.CreateLogger<JsonProcessor>());
             _fhirProcessor = new FhirProcessor(_processorSettings, FhirConverterLogging.CreateLogger<FhirProcessor>());
+            _fhirR4Processor = new FhirR4Processor(_processorSettings, FhirConverterLogging.CreateLogger<FhirR4Processor>());
         }
 
         public static IEnumerable<object[]> GetValidInputsWithTemplateDirectory()
@@ -56,6 +60,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             yield return new object[] { _ccdaProcessor, new TemplateProvider(TestConstants.CcdaTemplateDirectory, DataType.Ccda), _ccdaTestData, "CCD" };
             yield return new object[] { _jsonProcessor, new TemplateProvider(TestConstants.JsonTemplateDirectory, DataType.Json), _jsonTestData, "ExamplePatient" };
             yield return new object[] { _fhirProcessor, new TemplateProvider(TestConstants.FhirStu3TemplateDirectory, DataType.Fhir), _fhirStu3TestData, "Patient" };
+            yield return new object[] { _fhirR4Processor, new TemplateProvider(TestConstants.FhirR4TemplateDirectory, DataType.FhirR4), _fhirR4TestData, "Passthrough" };
         }
 
         public static IEnumerable<object[]> GetValidInputsWithTemplateCollection()
@@ -72,6 +77,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             yield return new object[] { _ccdaProcessor, new TemplateProvider(templateCollection), _ccdaTestData };
             yield return new object[] { _jsonProcessor, new TemplateProvider(templateCollection), _jsonTestData };
             yield return new object[] { _fhirProcessor, new TemplateProvider(templateCollection), _fhirStu3TestData };
+            yield return new object[] { _fhirR4Processor, new TemplateProvider(templateCollection), _fhirR4TestData };
         }
 
         public static IEnumerable<object[]> GetMockDefaultTemplateCollection()
@@ -161,6 +167,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
                 new FhirProcessor(new ProcessorSettings(), FhirConverterLogging.CreateLogger<FhirProcessor>()), new FhirProcessor(positiveTimeOutSettings, FhirConverterLogging.CreateLogger<FhirProcessor>()), new FhirProcessor(negativeTimeOutSettings, FhirConverterLogging.CreateLogger<FhirProcessor>()),
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Fhir), _fhirStu3TestData,
             };
+            yield return new object[]
+            {
+                new FhirR4Processor(new ProcessorSettings(), FhirConverterLogging.CreateLogger<FhirR4Processor>()), new FhirR4Processor(positiveTimeOutSettings, FhirConverterLogging.CreateLogger<FhirR4Processor>()), new FhirR4Processor(negativeTimeOutSettings, FhirConverterLogging.CreateLogger<FhirR4Processor>()),
+                new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.FhirR4), _fhirR4TestData,
+            };
         }
 
         public static IEnumerable<object[]> GetValidInputsWithLargeForLoop()
@@ -189,6 +200,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Fhir),
                 _fhirStu3TestData,
             };
+            yield return new object[]
+            {
+                _fhirR4Processor,
+                new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.FhirR4),
+                _fhirR4TestData,
+            };
         }
 
         public static IEnumerable<object[]> GetValidInputsWithNestingTooDeep()
@@ -216,6 +233,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
                 _fhirProcessor,
                 new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.Fhir),
                 _fhirStu3TestData,
+            };
+            yield return new object[]
+            {
+                _fhirR4Processor,
+                new TemplateProvider(TestConstants.TestTemplateDirectory, DataType.FhirR4),
+                _fhirR4TestData,
             };
         }
 

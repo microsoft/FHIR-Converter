@@ -383,5 +383,59 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("ValidateTagSyntaxError", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable name must not be null or empty..
+        /// </summary>
+        internal static string InvalidVariableName {
+            get {
+                return ResourceManager.GetString("InvalidVariableName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid variable name &apos;{0}&apos;. Variable names must contain only letters, digits, and underscores, and must start with a letter or underscore..
+        /// </summary>
+        internal static string InvalidVariableNameFormat {
+            get {
+                return ResourceManager.GetString("InvalidVariableNameFormat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable name &apos;{0}&apos; is reserved and cannot be used..
+        /// </summary>
+        internal static string ReservedVariableName {
+            get {
+                return ResourceManager.GetString("ReservedVariableName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Too many variables provided. Maximum allowed is {0}, but {1} were provided..
+        /// </summary>
+        internal static string TooManyVariables {
+            get {
+                return ResourceManager.GetString("TooManyVariables", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable name exceeds the maximum allowed length of {0} characters..
+        /// </summary>
+        internal static string VariableNameTooLong {
+            get {
+                return ResourceManager.GetString("VariableNameTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; value exceeds the maximum allowed length of {1} characters..
+        /// </summary>
+        internal static string VariableValueTooLong {
+            get {
+                return ResourceManager.GetString("VariableValueTooLong", resourceCulture);
+            }
+        }
     }
 }

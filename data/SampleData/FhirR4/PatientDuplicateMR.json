@@ -1,0 +1,44 @@
+{
+  "resourceType": "Patient",
+  "id": "patient-duplicate-mr",
+  "identifier": [
+    {
+      "use": "official",
+      "type": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "MR",
+            "display": "Medical Record Number"
+          }
+        ]
+      },
+      "system": "http://hospital-a.example.org/mrn",
+      "value": "MRN-111"
+    },
+    {
+      "use": "official",
+      "type": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "MR",
+            "display": "Medical Record Number"
+          }
+        ]
+      },
+      "system": "http://hospital-b.example.org/mrn",
+      "value": "MRN-222"
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "family": "Doe",
+      "given": [
+        "Jane"
+      ]
+    }
+  ]
+}

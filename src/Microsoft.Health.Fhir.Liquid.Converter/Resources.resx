@@ -225,4 +225,22 @@
   <data name="ValidateTagSyntaxError" xml:space="preserve">
     <value>Syntax Error in 'validate' tag - Valid syntax: validate [schema file].</value>
   </data>
+  <data name="InvalidVariableName" xml:space="preserve">
+    <value>Variable name must not be null or empty.</value>
+  </data>
+  <data name="InvalidVariableNameFormat" xml:space="preserve">
+    <value>Invalid variable name '{0}'. Variable names must contain only letters, digits, and underscores, and must start with a letter or underscore.</value>
+  </data>
+  <data name="ReservedVariableName" xml:space="preserve">
+    <value>Variable name '{0}' is reserved and cannot be used.</value>
+  </data>
+  <data name="VariableNameTooLong" xml:space="preserve">
+    <value>Variable name exceeds the maximum allowed length of {0} characters.</value>
+  </data>
+  <data name="VariableValueTooLong" xml:space="preserve">
+    <value>Variable '{0}' value exceeds the maximum allowed length of {1} characters.</value>
+  </data>
+  <data name="TooManyVariables" xml:space="preserve">
+    <value>Too many variables provided. Maximum allowed is {0}, but {1} were provided.</value>
+  </data>
 </root>
