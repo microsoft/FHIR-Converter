@@ -15,7 +15,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter
     {
         public static string RaiseError(string message)
         {
-            throw new RenderException(FhirConverterErrorCode.TemplateRenderingError, message);
+            string normalizedMessage = string.IsNullOrWhiteSpace(message) ? Resources.DefaultTemplateError : message;
+            throw new RenderException(FhirConverterErrorCode.TemplateRenderingError, normalizedMessage);
         }
     }
 }

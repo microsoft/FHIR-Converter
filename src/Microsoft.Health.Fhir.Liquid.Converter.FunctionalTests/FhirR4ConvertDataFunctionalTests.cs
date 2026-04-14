@@ -85,9 +85,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
             var factory = new ConvertProcessorFactory(new Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory());
             var converter = factory.GetProcessor(DataType.FhirR4, ConvertDataOutputFormat.Fhir);
 
-            Assert.IsAssignableFrom<IFhirConverterWithVariables>(converter);
-
-            var variableConverter = (IFhirConverterWithVariables)converter;
             var templateDirectory = Path.Join(Constants.TemplateDirectory, "FhirR4");
             var templateProvider = new TemplateProvider(templateDirectory, DataType.FhirR4);
             var inputContent = File.ReadAllText(Path.Join(Constants.SampleDataDirectory, "FhirR4", "PatientWithIdentifiers.json"));
@@ -97,7 +94,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
                 { "dragonSystem", "urn:oid:1.2.3.4.5.6.7.8.9-dragon-copilot" },
             };
 
-            var result = variableConverter.Convert(inputContent, "DragonPatientMrn", templateProvider, variables);
+            var result = converter.Convert(inputContent, "DragonPatientMrn", templateProvider, variables);
             var resultObj = JObject.Parse(result);
 
             Assert.Equal("Patient", resultObj["resourceType"]?.ToString());

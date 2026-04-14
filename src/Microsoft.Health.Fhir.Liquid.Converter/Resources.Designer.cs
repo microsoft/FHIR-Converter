@@ -387,9 +387,27 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         /// <summary>
         ///   Looks up a localized string similar to Variable name must not be null or empty..
         /// </summary>
-        internal static string InvalidVariableName {
+        internal static string InvalidVariable {
             get {
-                return ResourceManager.GetString("InvalidVariableName", resourceCulture);
+                return ResourceManager.GetString("InvalidVariable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Template raised an error..
+        /// </summary>
+        internal static string DefaultTemplateError {
+            get {
+                return ResourceManager.GetString("DefaultTemplateError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duplicate variable name (case-insensitive): &apos;{0}&apos;..
+        /// </summary>
+        internal static string DuplicateVariableName {
+            get {
+                return ResourceManager.GetString("DuplicateVariableName", resourceCulture);
             }
         }
         

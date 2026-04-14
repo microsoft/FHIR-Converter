@@ -6,7 +6,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using DotLiquid;
 using EnsureThat;
@@ -15,21 +14,15 @@ using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.OutputProcessors;
 using Microsoft.Health.Fhir.Liquid.Converter.Parsers;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 using Microsoft.Health.MeasurementUtility;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
 {
-    public class FhirR4Processor : JsonProcessor, IFhirConverterWithVariables
+    public class FhirR4Processor : JsonProcessor
     {
-        private static readonly Regex ValidVariableNameRegex = new Regex(@"^[a-zA-Z_][a-zA-Z0-9_]*$", RegexOptions.Compiled);
-        private static readonly HashSet<string> ReservedVariableNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "msg", "vars" };
-
-        private const int MaxVariableNameLength = 128;
-        private const int MaxVariableValueLength = 1048576;
-        private const int MaxVariableCount = 100;
-
         private readonly IDataParser _dataParser;
 
         public FhirR4Processor(ProcessorSettings processorSettings, ILogger<FhirR4Processor> logger)
@@ -50,7 +43,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             return base.InternalConvert(data, rootTemplate, templateProvider, traceInfo);
         }
 
-        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, IDictionary<string, string> variables, TraceInfo traceInfo = null)
+        public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, IDictionary<string, string> variables, TraceInfo traceInfo = null)
         {
             string result;
             using (ITimed totalConversionTime =
@@ -62,7 +55,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             return result;
         }
 
-        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, IDictionary<string, string> variables, CancellationToken cancellationToken, TraceInfo traceInfo = null)
+        public override string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, IDictionary<string, string> variables, CancellationToken cancellationToken, TraceInfo traceInfo = null)
         {
             cancellationToken.ThrowIfCancellationRequested();
             string result;
@@ -87,24 +80,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 throw new RenderException(FhirConverterErrorCode.NullTemplateProvider, Resources.NullTemplateProvider);
             }
 
-            // Validate variables
-            if (variables != null)
-            {
-                if (variables.Count > MaxVariableCount)
-                {
-                    throw new RenderException(FhirConverterErrorCode.InvalidVariableName, string.Format(Resources.TooManyVariables, MaxVariableCount, variables.Count));
-                }
-
-                foreach (var kvp in variables)
-                {
-                    ValidateVariableName(kvp.Key);
-
-                    if (kvp.Value != null && kvp.Value.Length > MaxVariableValueLength)
-                    {
-                        throw new RenderException(FhirConverterErrorCode.InvalidVariableName, string.Format(Resources.VariableValueTooLong, kvp.Key, MaxVariableValueLength));
-                    }
-                }
-            }
+            VariableValidator.ValidateVariables(variables);
 
             // Step: Parse input
             object jsonData;
@@ -129,7 +105,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 throw new RenderException(FhirConverterErrorCode.TemplateNotFound, string.Format(Resources.TemplateNotFound, rootTemplate));
             }
 
-            // Build context with msg + vars as sibling keys
+            // Build context with msg + vars as sibling keys.
+            // Hash.FromDictionary requires Dictionary<string, object>; Hash is needed for Liquid member access (e.g. vars.dragonSystem).
             var dictionary = new Dictionary<string, object> { { DataKey, jsonData } };
             if (variables != null && variables.Count > 0)
             {
@@ -157,29 +134,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             CreateTraceInfo(jsonData, context, traceInfo);
 
             return result.ToString(Formatting.Indented);
-        }
-
-        public static void ValidateVariableName(string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                throw new RenderException(FhirConverterErrorCode.InvalidVariableName, Resources.InvalidVariableName);
-            }
-
-            if (name.Length > MaxVariableNameLength)
-            {
-                throw new RenderException(FhirConverterErrorCode.InvalidVariableName, string.Format(Resources.VariableNameTooLong, MaxVariableNameLength));
-            }
-
-            if (!ValidVariableNameRegex.IsMatch(name))
-            {
-                throw new RenderException(FhirConverterErrorCode.InvalidVariableName, string.Format(Resources.InvalidVariableNameFormat, name));
-            }
-
-            if (ReservedVariableNames.Contains(name))
-            {
-                throw new RenderException(FhirConverterErrorCode.InvalidVariableName, string.Format(Resources.ReservedVariableName, name));
-            }
         }
     }
 }

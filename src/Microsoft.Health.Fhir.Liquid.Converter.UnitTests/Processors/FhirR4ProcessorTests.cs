@@ -10,6 +10,7 @@ using System.Threading;
 using Microsoft.Health.Fhir.Liquid.Converter.Exceptions;
 using Microsoft.Health.Fhir.Liquid.Converter.Models;
 using Microsoft.Health.Fhir.Liquid.Converter.Processors;
+using Microsoft.Health.Fhir.Liquid.Converter.Utilities;
 using Newtonsoft.Json.Linq;
 using Xunit;
 
@@ -49,7 +50,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [Fact]
         public void GivenVariables_WhenConvertViaInterface_VariablesAreAccessible()
         {
-            IFhirConverterWithVariables converter = _fhirR4Processor;
+            IFhirConverter converter = _fhirR4Processor;
             var variables = GetDragonVariables();
             var result = converter.Convert(_fhirR4TestData, "DragonPatientMrn", _templateProvider, variables);
             var resultObj = JObject.Parse(result);
@@ -68,7 +69,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [Fact]
         public void GivenVariables_WhenConvertWithCancellationToken_CorrectResultReturned()
         {
-            IFhirConverterWithVariables converter = _fhirR4Processor;
+            IFhirConverter converter = _fhirR4Processor;
             var variables = GetDragonVariables();
             var result = converter.Convert(_fhirR4TestData, "DragonPatientMrn", _templateProvider, variables, CancellationToken.None);
             var resultObj = JObject.Parse(result);
@@ -187,13 +188,13 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [InlineData("A")]
         public void GivenValidVariableNames_WhenValidate_NoException(string name)
         {
-            FhirR4Processor.ValidateVariableName(name);
+            VariableValidator.ValidateVariableName(name);
         }
 
         [Fact]
         public void GivenReservedNameMsg_WhenValidate_RenderExceptionThrown()
         {
-            var exception = Assert.Throws<RenderException>(() => FhirR4Processor.ValidateVariableName("msg"));
+            var exception = Assert.Throws<RenderException>(() => VariableValidator.ValidateVariableName("msg"));
             Assert.Contains("reserved", exception.Message);
         }
 
@@ -202,7 +203,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [InlineData(null)]
         public void GivenNullOrEmptyName_WhenValidate_RenderExceptionThrown(string name)
         {
-            Assert.Throws<RenderException>(() => FhirR4Processor.ValidateVariableName(name));
+            Assert.Throws<RenderException>(() => VariableValidator.ValidateVariableName(name));
         }
 
         [Theory]
@@ -213,14 +214,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [InlineData("valid!!!")]
         public void GivenInvalidVariableNames_WhenValidate_RenderExceptionThrown(string name)
         {
-            var exception = Assert.Throws<RenderException>(() => FhirR4Processor.ValidateVariableName(name));
+            var exception = Assert.Throws<RenderException>(() => VariableValidator.ValidateVariableName(name));
             Assert.Contains("Invalid variable name", exception.Message);
         }
 
         [Fact]
         public void GivenPreCancelledToken_WhenConvert_OperationCancelledExceptionThrown()
         {
-            IFhirConverterWithVariables converter = _fhirR4Processor;
+            IFhirConverter converter = _fhirR4Processor;
             var variables = GetDragonVariables();
             var cts = new CancellationTokenSource();
             cts.Cancel();
@@ -233,7 +234,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         {
             var factory = new ConvertProcessorFactory(new Microsoft.Extensions.Logging.Abstractions.NullLoggerFactory());
             var processor = factory.GetProcessor(DataType.FhirR4, ConvertDataOutputFormat.Fhir);
-            Assert.IsAssignableFrom<IFhirConverterWithVariables>(processor);
+            var variables = GetDragonVariables();
+            var result = processor.Convert(_fhirR4TestData, "DragonPatientMrn", _templateProvider, variables);
+            Assert.Contains("Patient", result);
         }
 
         [Fact]
@@ -287,7 +290,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             };
             var exception = Assert.Throws<RenderException>(() =>
                 _fhirR4Processor.Convert(_fhirR4TestData, "DragonPatientMrn", _templateProvider, variables));
-            Assert.Equal(FhirConverterErrorCode.InvalidVariableName, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.InvalidVariable, exception.FhirConverterErrorCode);
         }
 
         [Fact]
@@ -299,7 +302,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             };
             var exception = Assert.Throws<RenderException>(() =>
                 _fhirR4Processor.Convert(_fhirR4TestData, "DragonPatientMrn", _templateProvider, variables));
-            Assert.Equal(FhirConverterErrorCode.InvalidVariableName, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.InvalidVariable, exception.FhirConverterErrorCode);
             Assert.Contains("reserved", exception.Message);
         }
 
@@ -312,7 +315,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             };
             var exception = Assert.Throws<RenderException>(() =>
                 _fhirR4Processor.Convert(_fhirR4TestData, "DragonPatientMrn", _templateProvider, variables));
-            Assert.Equal(FhirConverterErrorCode.InvalidVariableName, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.InvalidVariable, exception.FhirConverterErrorCode);
         }
 
         [Fact]
@@ -367,14 +370,14 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [Fact]
         public void GivenValidationHelperDirectly_WhenInvalidName_CorrectErrorCode()
         {
-            var exception = Assert.Throws<RenderException>(() => FhirR4Processor.ValidateVariableName("match.code"));
-            Assert.Equal(FhirConverterErrorCode.InvalidVariableName, exception.FhirConverterErrorCode);
+            var exception = Assert.Throws<RenderException>(() => VariableValidator.ValidateVariableName("match.code"));
+            Assert.Equal(FhirConverterErrorCode.InvalidVariable, exception.FhirConverterErrorCode);
 
-            exception = Assert.Throws<RenderException>(() => FhirR4Processor.ValidateVariableName("msg"));
-            Assert.Equal(FhirConverterErrorCode.InvalidVariableName, exception.FhirConverterErrorCode);
+            exception = Assert.Throws<RenderException>(() => VariableValidator.ValidateVariableName("msg"));
+            Assert.Equal(FhirConverterErrorCode.InvalidVariable, exception.FhirConverterErrorCode);
 
-            exception = Assert.Throws<RenderException>(() => FhirR4Processor.ValidateVariableName(null));
-            Assert.Equal(FhirConverterErrorCode.InvalidVariableName, exception.FhirConverterErrorCode);
+            exception = Assert.Throws<RenderException>(() => VariableValidator.ValidateVariableName(null));
+            Assert.Equal(FhirConverterErrorCode.InvalidVariable, exception.FhirConverterErrorCode);
         }
 
         [Fact]
@@ -454,8 +457,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         [InlineData("Vars")]
         public void GivenReservedNameCaseVariations_WhenValidate_RenderExceptionThrown(string name)
         {
-            var exception = Assert.Throws<RenderException>(() => FhirR4Processor.ValidateVariableName(name));
-            Assert.Equal(FhirConverterErrorCode.InvalidVariableName, exception.FhirConverterErrorCode);
+            var exception = Assert.Throws<RenderException>(() => VariableValidator.ValidateVariableName(name));
+            Assert.Equal(FhirConverterErrorCode.InvalidVariable, exception.FhirConverterErrorCode);
             Assert.Contains("reserved", exception.Message);
         }
 
@@ -470,7 +473,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
 
             var exception = Assert.Throws<RenderException>(() =>
                 _fhirR4Processor.Convert(_fhirR4TestData, "DragonPatientMrn", _templateProvider, variables));
-            Assert.Equal(FhirConverterErrorCode.InvalidVariableName, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.InvalidVariable, exception.FhirConverterErrorCode);
             Assert.Contains("Too many variables", exception.Message);
         }
 
@@ -478,8 +481,8 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         public void GivenVariableNameExceedingMaxLength_WhenValidate_RenderExceptionThrown()
         {
             var longName = new string('a', 129);
-            var exception = Assert.Throws<RenderException>(() => FhirR4Processor.ValidateVariableName(longName));
-            Assert.Equal(FhirConverterErrorCode.InvalidVariableName, exception.FhirConverterErrorCode);
+            var exception = Assert.Throws<RenderException>(() => VariableValidator.ValidateVariableName(longName));
+            Assert.Equal(FhirConverterErrorCode.InvalidVariable, exception.FhirConverterErrorCode);
             Assert.Contains("length", exception.Message);
         }
 
@@ -492,8 +495,22 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             };
             var exception = Assert.Throws<RenderException>(() =>
                 _fhirR4Processor.Convert(_fhirR4TestData, "DragonPatientMrn", _templateProvider, variables));
-            Assert.Equal(FhirConverterErrorCode.InvalidVariableName, exception.FhirConverterErrorCode);
+            Assert.Equal(FhirConverterErrorCode.InvalidVariable, exception.FhirConverterErrorCode);
             Assert.Contains("exceeds", exception.Message);
+        }
+
+        [Fact]
+        public void GivenDuplicateVariableNamesCaseInsensitive_WhenConvert_RenderExceptionThrown()
+        {
+            var variables = new Dictionary<string, string>
+            {
+                { "matchCode", "MR" },
+                { "MatchCode", "MR" },
+            };
+            var exception = Assert.Throws<RenderException>(() =>
+                _fhirR4Processor.Convert(_fhirR4TestData, "DragonPatientMrn", _templateProvider, variables));
+            Assert.Equal(FhirConverterErrorCode.InvalidVariable, exception.FhirConverterErrorCode);
+            Assert.Contains("Duplicate", exception.Message);
         }
     }
 }

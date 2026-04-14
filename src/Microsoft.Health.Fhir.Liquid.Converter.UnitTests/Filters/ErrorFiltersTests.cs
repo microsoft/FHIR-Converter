@@ -20,17 +20,19 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
         }
 
         [Fact]
-        public void GivenNullMessage_WhenRaiseError_RenderExceptionThrown()
+        public void GivenNullMessage_WhenRaiseError_RenderExceptionThrownWithDefaultMessage()
         {
             var exception = Assert.Throws<RenderException>(() => Filters.RaiseError(null));
             Assert.Equal(FhirConverterErrorCode.TemplateRenderingError, exception.FhirConverterErrorCode);
+            Assert.Equal("Template raised an error.", exception.Message);
         }
 
         [Fact]
-        public void GivenEmptyMessage_WhenRaiseError_RenderExceptionThrown()
+        public void GivenEmptyMessage_WhenRaiseError_RenderExceptionThrownWithDefaultMessage()
         {
             var exception = Assert.Throws<RenderException>(() => Filters.RaiseError(string.Empty));
             Assert.Equal(FhirConverterErrorCode.TemplateRenderingError, exception.FhirConverterErrorCode);
+            Assert.Equal("Template raised an error.", exception.Message);
         }
     }
 }

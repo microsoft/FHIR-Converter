@@ -225,8 +225,14 @@
   <data name="ValidateTagSyntaxError" xml:space="preserve">
     <value>Syntax Error in 'validate' tag - Valid syntax: validate [schema file].</value>
   </data>
-  <data name="InvalidVariableName" xml:space="preserve">
+  <data name="InvalidVariable" xml:space="preserve">
     <value>Variable name must not be null or empty.</value>
+  </data>
+  <data name="DefaultTemplateError" xml:space="preserve">
+    <value>Template raised an error.</value>
+  </data>
+  <data name="DuplicateVariableName" xml:space="preserve">
+    <value>Duplicate variable name (case-insensitive): '{0}'.</value>
   </data>
   <data name="InvalidVariableNameFormat" xml:space="preserve">
     <value>Invalid variable name '{0}'. Variable names must contain only letters, digits, and underscores, and must start with a letter or underscore.</value>

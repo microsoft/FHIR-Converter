@@ -43,10 +43,10 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         }
 
         [Fact]
-        public void GivenFhirR4InputType_WhenGetProcessor_ProcessorImplementsIFhirConverterWithVariables()
+        public void GivenFhirR4InputType_WhenGetProcessor_ProcessorSupportsFhirR4()
         {
             IFhirConverter processor = _convertProcessorFactory.GetProcessor(DataType.FhirR4, ConvertDataOutputFormat.Fhir);
-            Assert.IsAssignableFrom<IFhirConverterWithVariables>(processor);
+            Assert.IsType<FhirR4Processor>(processor);
         }
 
         [Fact]
