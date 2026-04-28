@@ -1,0 +1,40 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "IdentifierSelectionCriteria",
+  "description": "Criteria for selecting a FHIR R4 Identifier from a Patient resource",
+  "type": "object",
+  "properties": {
+    "conditions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "description": "Dot-notated path relative to the Identifier (e.g., 'type.coding.code', 'system', 'type.text')",
+            "enum": [
+              "type.coding.code",
+              "type.coding.system",
+              "type.coding.display",
+              "type.text",
+              "system"
+            ]
+          },
+          "value": {
+            "type": "string",
+            "description": "The value to match against"
+          }
+        },
+        "required": ["path", "value"],
+        "additionalProperties": false
+      }
+    },
+    "outputSystem": {
+      "type": "string",
+      "description": "The system URI for the new Dragon identifier"
+    }
+  },
+  "required": ["conditions", "outputSystem"],
+  "additionalProperties": false
+}

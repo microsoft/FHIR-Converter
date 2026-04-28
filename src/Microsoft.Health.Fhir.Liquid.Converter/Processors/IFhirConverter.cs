@@ -18,5 +18,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
         public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, IDictionary<string, string> variables, TraceInfo traceInfo = null);
 
         public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, IDictionary<string, string> variables, CancellationToken cancellationToken, TraceInfo traceInfo = null);
+
+        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, IList<VariableDefinition> variables, TraceInfo traceInfo = null);
+
+        public string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, IList<VariableDefinition> variables, CancellationToken cancellationToken, TraceInfo traceInfo = null);
     }
 }
