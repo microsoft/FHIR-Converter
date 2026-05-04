@@ -60,6 +60,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
                 {
                     Path.Join(_templateDirectory, templateFolder, "metadata.json"),
                     Path.Join(_templateDirectory, templateFolder, "Schema", "meta-schema.json"),
+                    Path.Join(_templateDirectory, templateFolder, "Schemas", "IdentifierSelectionCriteria.json"),
                 };
                 var expectedTemplateFiles = Directory.GetFiles(Path.Join(_templateDirectory, templateFolder), "*", SearchOption.AllDirectories)
                     .Where(file => !excludeFiles.Contains(file)).ToList();
