@@ -16,7 +16,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests
     public class FhirR4ConvertDataFunctionalTests
     {
         private static readonly ProcessorSettings _processorSettings = new ProcessorSettings();
-        private static readonly string _schemaPath = Path.Join(Constants.TemplateDirectory, "FhirR4", "Schemas", "IdentifierSelectionCriteria.json");
+        private static readonly string _schemaPath = Path.Join(Constants.TemplateDirectory, "FhirR4", "Schemas", "IdentifierSelectionCriteria.schema.json");
         private static readonly string _identifierSelectionSchema = File.ReadAllText(_schemaPath);
 
         private static FhirR4Processor CreateProcessor()

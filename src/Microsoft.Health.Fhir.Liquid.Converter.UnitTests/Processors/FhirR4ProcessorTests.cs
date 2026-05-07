@@ -38,7 +38,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
             _processorSettings = new ProcessorSettings();
             _fhirR4Processor = new FhirR4Processor(_processorSettings, FhirConverterLogging.CreateLogger<FhirR4Processor>());
             _templateProvider = new TemplateProvider(TestConstants.FhirR4TemplateDirectory, DataType.FhirR4);
-            _identifierSelectionSchema = File.ReadAllText(Path.Join(TestConstants.FhirR4TemplateDirectory, "Schemas", "IdentifierSelectionCriteria.json"));
+            _identifierSelectionSchema = File.ReadAllText(Path.Join(TestConstants.FhirR4TemplateDirectory, "Schemas", "IdentifierSelectionCriteria.schema.json"));
         }
 
         private static Dictionary<string, string> GetDragonVariables()
@@ -53,7 +53,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Processors
         private static IList<VariableDefinition> GetDragonTypedVariables(string codingCode = "MR", string outputSystem = "urn:oid:1.2.3.4.5.6.7.8.9-dragon-copilot")
         {
             var criteriaValue = $"{{ \"conditions\": [{{ \"path\": \"type.coding.code\", \"value\": \"{codingCode}\" }}], \"outputSystem\": \"{outputSystem}\" }}";
-            var schemaPath = Path.Join(TestConstants.FhirR4TemplateDirectory, "Schemas", "IdentifierSelectionCriteria.json");
+            var schemaPath = Path.Join(TestConstants.FhirR4TemplateDirectory, "Schemas", "IdentifierSelectionCriteria.schema.json");
             var schema = File.ReadAllText(schemaPath);
             return new List<VariableDefinition>
             {

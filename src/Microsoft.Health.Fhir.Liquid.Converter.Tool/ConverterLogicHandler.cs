@@ -103,6 +103,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                 DataType.Ccda => new CcdaProcessor(DefaultProcessorSettings, ConsoleLoggerFactory.CreateLogger<CcdaProcessor>()),
                 DataType.Json => new JsonProcessor(DefaultProcessorSettings, ConsoleLoggerFactory.CreateLogger<JsonProcessor>()),
                 DataType.Fhir => new FhirProcessor(DefaultProcessorSettings, ConsoleLoggerFactory.CreateLogger<FhirProcessor>()),
+                DataType.FhirR4 => new FhirR4Processor(DefaultProcessorSettings, ConsoleLoggerFactory.CreateLogger<FhirR4Processor>()),
                 _ => throw new NotImplementedException($"The conversion from data type {dataType} to FHIR is not supported")
             };
         }
@@ -126,6 +127,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Tool
                     .Where(x => CcdaExtensions.Contains(Path.GetExtension(x).ToLower())).ToList(),
                 DataType.Json => Directory.EnumerateFiles(inputDataFolder, "*.json", SearchOption.AllDirectories).ToList(),
                 DataType.Fhir => Directory.EnumerateFiles(inputDataFolder, "*.json", SearchOption.AllDirectories).ToList(),
+                DataType.FhirR4 => Directory.EnumerateFiles(inputDataFolder, "*.json", SearchOption.AllDirectories).ToList(),
                 _ => new List<string>(),
             };
         }
