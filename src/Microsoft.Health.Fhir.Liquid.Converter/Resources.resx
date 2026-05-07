@@ -249,4 +249,43 @@
   <data name="TooManyVariables" xml:space="preserve">
     <value>Too many variables provided. Maximum allowed is {0}, but {1} were provided.</value>
   </data>
+  <data name="InvalidVariableType" xml:space="preserve">
+    <value>Variable '{0}' has an unsupported type '{1}'.</value>
+  </data>
+  <data name="VariableValueNull" xml:space="preserve">
+    <value>Variable '{0}' value must not be null.</value>
+  </data>
+  <data name="VariableSchemaNotAllowed" xml:space="preserve">
+    <value>Variable '{0}' of type '{1}' must not have a schema defined.</value>
+  </data>
+  <data name="VariableNumericParseError" xml:space="preserve">
+    <value>Variable '{0}' value '{1}' could not be parsed as a numeric value.</value>
+  </data>
+  <data name="VariableComplexSchemaRequired" xml:space="preserve">
+    <value>Variable '{0}' of type 'Complex' requires a JSON Schema definition.</value>
+  </data>
+  <data name="VariableSchemaTooLong" xml:space="preserve">
+    <value>Variable '{0}' schema exceeds the maximum allowed length of {1} characters.</value>
+  </data>
+  <data name="VariableComplexSchemaInvalid" xml:space="preserve">
+    <value>Variable '{0}' has an invalid JSON Schema: {1}</value>
+  </data>
+  <data name="VariableComplexValueInvalidJson" xml:space="preserve">
+    <value>Variable '{0}' value is not valid JSON: {1}</value>
+  </data>
+  <data name="VariableComplexSchemaValidationFailed" xml:space="preserve">
+    <value>Variable '{0}' value does not conform to the provided JSON Schema: {1}</value>
+  </data>
+  <data name="IdentifierSelectionNoMatch" xml:space="preserve">
+    <value>No identifier matched the selection criteria.</value>
+  </data>
+  <data name="IdentifierSelectionMultipleMatches" xml:space="preserve">
+    <value>Multiple identifiers ({0}) matched the selection criteria. Expected exactly one.</value>
+  </data>
+  <data name="IdentifierSelectionInvalidCriteria" xml:space="preserve">
+    <value>Invalid selection criteria: {0}</value>
+  </data>
+  <data name="IdentifierSelectionInvalidInput" xml:space="preserve">
+    <value>Input to select_identifier must be an array of identifiers.</value>
+  </data>
 </root>

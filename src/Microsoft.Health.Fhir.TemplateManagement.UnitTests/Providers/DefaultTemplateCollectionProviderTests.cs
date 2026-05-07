@@ -33,6 +33,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             { DefaultRootTemplateParentPath.Json, "Json" },
             { DefaultRootTemplateParentPath.Fhir, "Stu3ToR4" },
             { DefaultRootTemplateParentPath.FhirToHl7v2, "FhirToHl7v2" },
+            { DefaultRootTemplateParentPath.FhirR4, "FhirR4" },
         };
 
         public DefaultTemplateCollectionProviderTests()

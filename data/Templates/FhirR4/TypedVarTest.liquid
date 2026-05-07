@@ -1,0 +1,6 @@
+{% mergeDiff msg -%}
+{
+  "numericVar": {{ vars.numericVar }},
+  "stringVar": {{ vars.stringVar | to_json_string }}
+}
+{% endmergeDiff -%}

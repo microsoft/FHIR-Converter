@@ -1,31 +1,7 @@
-{%- unless vars.matchCode and vars.matchCode != "" -%}
-  {{ "matchCode variable is required but was not provided or is empty." | raise_error }}
+{%- unless vars.selectionCriteria -%}
+  {{ "selectionCriteria variable is required but was not provided." | raise_error }}
 {%- endunless -%}
-{%- assign matchCount = 0 -%}
-{%- assign matchedIdentifier = nil -%}
-{%- for id in msg.identifier -%}
-  {%- if id.type and id.type.coding -%}
-    {%- assign identifierMatchesCode = false -%}
-    {%- for coding in id.type.coding -%}
-      {%- if coding.code == vars.matchCode -%}
-        {%- assign identifierMatchesCode = true -%}
-      {%- endif -%}
-    {%- endfor -%}
-    {%- if identifierMatchesCode -%}
-      {%- assign matchCount = matchCount | plus: 1 -%}
-      {%- assign matchedIdentifier = id -%}
-    {%- endif -%}
-  {%- endif -%}
-{%- endfor -%}
-{%- if matchCount == 0 -%}
-  {{ "No identifier found matching type.coding.code = '" | append: vars.matchCode | append: "'" | raise_error }}
-{%- endif -%}
-{%- if matchCount > 1 -%}
-  {{ "Multiple identifiers (" | append: matchCount | append: ") found matching type.coding.code = '" | append: vars.matchCode | append: "'. Expected exactly one." | raise_error }}
-{%- endif -%}
-{%- unless vars.dragonSystem and vars.dragonSystem != "" -%}
-  {{ "dragonSystem variable is required but was not provided or is empty." | raise_error }}
-{%- endunless -%}
+{%- assign matched = msg.identifier | select_identifier: vars.selectionCriteria -%}
 {% mergeDiff msg -%}
 {
   "identifier": [
@@ -33,10 +9,10 @@
       {{ id | to_json_string }},
     {% endfor -%}
     {
-      "use": {{ matchedIdentifier.use | to_json_string | default: '"official"' }},
-      "type": {{ matchedIdentifier.type | to_json_string }},
-      "system": {{ vars.dragonSystem | to_json_string }},
-      "value": {{ matchedIdentifier.value | to_json_string }}
+      "use": {{ matched.use | to_json_string | default: '"official"' }},
+      "type": {{ matched.type | to_json_string }},
+      "system": {{ vars.selectionCriteria.outputSystem | to_json_string }},
+      "value": {{ matched.value | to_json_string }}
     }
   ]
 }

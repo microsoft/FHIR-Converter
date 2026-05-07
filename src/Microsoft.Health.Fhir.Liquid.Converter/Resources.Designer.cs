@@ -455,5 +455,122 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
                 return ResourceManager.GetString("VariableValueTooLong", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; has an unsupported type &apos;{1}&apos;..
+        /// </summary>
+        internal static string InvalidVariableType {
+            get {
+                return ResourceManager.GetString("InvalidVariableType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; value must not be null..
+        /// </summary>
+        internal static string VariableValueNull {
+            get {
+                return ResourceManager.GetString("VariableValueNull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; of type &apos;{1}&apos; must not have a schema defined..
+        /// </summary>
+        internal static string VariableSchemaNotAllowed {
+            get {
+                return ResourceManager.GetString("VariableSchemaNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; value &apos;{1}&apos; could not be parsed as a numeric value..
+        /// </summary>
+        internal static string VariableNumericParseError {
+            get {
+                return ResourceManager.GetString("VariableNumericParseError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; of type &apos;Complex&apos; requires a JSON Schema definition..
+        /// </summary>
+        internal static string VariableComplexSchemaRequired {
+            get {
+                return ResourceManager.GetString("VariableComplexSchemaRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; schema exceeds the maximum allowed length of {1} characters..
+        /// </summary>
+        internal static string VariableSchemaTooLong {
+            get {
+                return ResourceManager.GetString("VariableSchemaTooLong", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; has an invalid JSON Schema: {1}.
+        /// </summary>
+        internal static string VariableComplexSchemaInvalid {
+            get {
+                return ResourceManager.GetString("VariableComplexSchemaInvalid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; value is not valid JSON: {1}.
+        /// </summary>
+        internal static string VariableComplexValueInvalidJson {
+            get {
+                return ResourceManager.GetString("VariableComplexValueInvalidJson", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable &apos;{0}&apos; value does not conform to the provided JSON Schema: {1}.
+        /// </summary>
+        internal static string VariableComplexSchemaValidationFailed {
+            get {
+                return ResourceManager.GetString("VariableComplexSchemaValidationFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No identifier matched the selection criteria..
+        /// </summary>
+        internal static string IdentifierSelectionNoMatch {
+            get {
+                return ResourceManager.GetString("IdentifierSelectionNoMatch", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Multiple identifiers ({0}) matched the selection criteria. Expected exactly one..
+        /// </summary>
+        internal static string IdentifierSelectionMultipleMatches {
+            get {
+                return ResourceManager.GetString("IdentifierSelectionMultipleMatches", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid selection criteria: {0}.
+        /// </summary>
+        internal static string IdentifierSelectionInvalidCriteria {
+            get {
+                return ResourceManager.GetString("IdentifierSelectionInvalidCriteria", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Input to select_identifier must be an array of identifiers..
+        /// </summary>
+        internal static string IdentifierSelectionInvalidInput {
+            get {
+                return ResourceManager.GetString("IdentifierSelectionInvalidInput", resourceCulture);
+            }
+        }
     }
 }
