@@ -25,7 +25,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
             try
             {
                 Dictionary<string, byte[]> artifacts = new Dictionary<string, byte[]> { };
-                using var reader = ReaderFactory.Open(tarGzStream);
+                using var reader = ReaderFactory.OpenReader(tarGzStream);
                 while (reader.MoveToNextEntry())
                 {
                     if (!reader.Entry.IsDirectory)
