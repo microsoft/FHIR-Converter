@@ -12,7 +12,6 @@ using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using SharpCompress.Common;
-using SharpCompress.Compressors;
 using SharpCompress.Readers;
 using SharpCompress.Writers;
 using SharpCompress.Writers.Tar;
