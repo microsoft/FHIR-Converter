@@ -21,6 +21,8 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
 {
     public class StreamUtility
     {
+        private const int GzipDefaultCompressionLevel = 6;
+
         public static Dictionary<string, byte[]> DecompressFromTarGz(Stream tarGzStream, string artifactFolder = "")
         {
             try
@@ -69,7 +71,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
                 {
                     using (var tarWriter = new TarWriter(stream, new TarWriterOptions(CompressionType.GZip, true)
                     {
-                        CompressionLevel = (int)CompressionLevel.Default,
+                        CompressionLevel = GzipDefaultCompressionLevel,
                     }))
                     {
                         foreach (var eachFile in fileContents)
