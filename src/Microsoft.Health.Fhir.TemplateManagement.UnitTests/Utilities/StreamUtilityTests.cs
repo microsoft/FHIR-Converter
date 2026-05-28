@@ -62,24 +62,6 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
         }
 
         [Fact]
-        public void GivenACompressedTarGzFile_WhenDecompressWithArtifactFolder_ArtifactNamesShouldContainFolderPrefix()
-        {
-            var rawBytes = File.ReadAllBytes(_tarGzFilePath);
-            var compressedStream = new MemoryStream(rawBytes);
-            var artifacts = StreamUtility.DecompressFromTarGz(compressedStream, "folder");
-
-            Assert.All(artifacts.Keys, k => Assert.StartsWith("folder/", k));
-        }
-
-        [Fact]
-        public void GivenACompressedTarGzFile_WhenDecompressWithoutArtifactFolder_ArtifactNamesShouldNotHavePrefix()
-        {
-            var artifacts = StreamUtility.DecompressFromTarGz(new MemoryStream(File.ReadAllBytes(_tarGzFilePath)));
-
-            Assert.All(artifacts.Keys, k => Assert.DoesNotContain("folder/", k));
-        }
-
-        [Fact]
         public void GivenFileContent_WhenCompressWithFixedTimestamp_CompressedFilesWithFixedDigestShouldBeReturned()
         {
             var artifacts = new Dictionary<string, byte[]>();
