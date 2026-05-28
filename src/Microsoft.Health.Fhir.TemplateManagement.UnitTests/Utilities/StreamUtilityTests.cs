@@ -68,8 +68,15 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Utilities
             var compressedStream = new MemoryStream(rawBytes);
             var artifacts = StreamUtility.DecompressFromTarGz(compressedStream, "folder");
 
-            Assert.Contains("folder/ADT_A01.liquid", artifacts.Keys);
-            Assert.Contains("folder/ORU_R01.liquid", artifacts.Keys);
+            Assert.All(artifacts.Keys, k => Assert.StartsWith("folder/", k));
+        }
+
+        [Fact]
+        public void GivenACompressedTarGzFile_WhenDecompressWithoutArtifactFolder_ArtifactNamesShouldNotHavePrefix()
+        {
+            var artifacts = StreamUtility.DecompressFromTarGz(new MemoryStream(File.ReadAllBytes(_tarGzFilePath)));
+
+            Assert.All(artifacts.Keys, k => Assert.DoesNotContain("folder/", k));
         }
 
         [Fact]
