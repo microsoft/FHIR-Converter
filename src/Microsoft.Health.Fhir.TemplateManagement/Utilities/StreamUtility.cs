@@ -12,6 +12,7 @@ using EnsureThat;
 using Microsoft.Health.Fhir.TemplateManagement.Exceptions;
 using Microsoft.Health.Fhir.TemplateManagement.Models;
 using SharpCompress.Common;
+using SharpCompress.Compressors;
 using SharpCompress.Readers;
 using SharpCompress.Writers;
 using SharpCompress.Writers.Tar;
@@ -66,7 +67,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
                 var resultStream = new MemoryStream();
                 using (Stream stream = resultStream)
                 {
-                    using (var tarWriter = new TarWriter(stream, new TarWriterOptions(CompressionType.GZip, true)))
+                    using (var tarWriter = new TarWriter(stream, new TarWriterOptions(CompressionType.GZip, true)
+                    {
+                        CompressionLevel = (int)CompressionLevel.Default,
+                    }))
                     {
                         foreach (var eachFile in fileContents)
                         {
