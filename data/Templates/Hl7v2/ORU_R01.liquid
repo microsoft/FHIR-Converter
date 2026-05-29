@@ -2,10 +2,11 @@
 {% assign sftSegmentLists = hl7v2Data | get_segment_lists: 'SFT' -%}
 {% assign pidSegmentLists = hl7v2Data | get_segment_lists: 'PID' -%}
 {% assign arvSegmentLists = hl7v2Data | get_segment_lists: 'ARV' -%}
-{% assign obrSegmentLists = hl7v2Data | get_segment_lists: 'OBR' -%}
 {% assign ctdSegmentLists = hl7v2Data | get_segment_lists: 'CTD' -%}
 {% assign txaSegmentLists = hl7v2Data | get_segment_lists: 'TXA' -%}
+{% assign splitDataByObrSegmentsResult = hl7v2Data | split_data_by_segments: 'OBR' -%}
 {% evaluate bundleID using 'ID/Bundle' Data: firstSegments.MSH.10 -%} 
+{% assign mainListIndexPosition = 0 %}
 {
     "resourceType": "Bundle",
     "type": "batch",
@@ -776,13 +777,17 @@
         {% assign obrSegmentPositionIndex_orc = 0 -%}
         {% assign obxSegmentPositionIndex_obr = 0 -%}
         {% assign obxSegmentPositionIndex_spm = 0 -%}
-        {% for obrSegment in obrSegmentLists.OBR -%}
+        {% for segmentsSubList in splitDataByObrSegmentsResult %}
+            {% if mainListIndexPosition != 0 %}
+            {% assign obrSegmentList = segmentsSubList | get_segment_lists: 'OBR' -%}
+            {% assign obrSegment = obrSegmentList.OBR[0] %}
             {% assign checkParent = hl7v2Data | get_parent_segment: 'OBR', {{obrSegmentPositionIndex_orc}}, 'ORC' -%}
             {% assign prtSegmentLists = hl7v2Data | get_related_segment_list: checkParent.ORC, 'PRT' -%}
             {% assign checkParentTXA = hl7v2Data | get_parent_segment: 'OBR', {{obrSegmentPositionIndex_orc}}, 'TXA' -%}
             {% assign cti_obrSegmentLists = hl7v2Data | get_related_segment_list: obrSegment, 'CTI' -%}
             
-            {% assign obxSegmentLists = hl7v2Data | get_related_segment_list: obrSegment, 'OBX' -%}
+            {% assign obxSegmentLists = segmentsSubList | get_related_segment_list: obrSegment, 'OBX' -%}
+            {% assign  splitDataByObxSegmentsResult = segmentsSubList | split_data_by_segments: 'OBX' -%}
             {% assign spmSegmentLists = hl7v2Data | get_related_segment_list: obrSegment, 'SPM' -%}
 
             {% evaluate patientId using 'ID/Patient' PID: pidSegmentLists.PID[0], type: 'First' -%}
@@ -1285,7 +1290,9 @@
             {% assign observationId = null %}
             {%- assign obx_diagnosticReportID2 = null -%}
             
-            {% for obxSegment in obxSegmentLists.OBX -%}
+            {% for obxSegmentsSubList in splitDataByObxSegmentsResult -%}
+                {% assign obxSegmentList = obxSegmentsSubList | get_segment_lists: 'OBX' -%}
+                {% for obxSegment in obxSegmentList.OBX -%}
                 {% if obxSegment.2.Value == 'ED' or obxSegment.2.Value == 'RP' %}
                     {% for obx_16 in obxSegment.16.Repeats -%}
                         {% if obx_16.9.1 != "" and obx_16.9.1 != null and obx_16.9.2 != "" and obx_16.9.2 != null and obx_16.9.3 != "" and obx_16.9.3 != null -%}
@@ -1363,7 +1370,7 @@
                         {% include 'Resource/Observation' Observation_ServiceRequest_ID: serviceRequestId, ID: observationId %}  
                     {% endif %}  
                     {% include 'Extensions/Observation/ObservationExtension' OBX: obxSegment, ID: observationId %}
-                    {% assign nteSegmentLists2 = hl7v2Data | get_related_segment_list: obxSegment, 'NTE' -%}
+                    {% assign nteSegmentLists2 = obxSegmentsSubList | get_segment_lists: 'NTE' -%}
                     {% for nteSegment2 in nteSegmentLists2.NTE -%}    
                         {% if nteSegment2.5 -%}    
                             {% if nteSegment2.5.9.1 != "" and nteSegment2.5.9.1 != null and nteSegment2.5.9.2 != "" and nteSegment2.5.9.2 != null and nteSegment2.5.9.3 != "" and nteSegment2.5.9.3 != null -%}
@@ -1498,7 +1505,7 @@
                     {% endif -%} 
                     
                 {% endfor %}
-
+                {% endfor %}
                 {%- comment -%} OBSERVATION - PRT related coding end {%- endcomment -%}
             {% endfor -%}
 
@@ -1856,6 +1863,8 @@
                 {% assign obxSegmentPositionIndex_obr = obxSegmentPositionIndex_obr | plus: 1 -%}  
             {% assign obrSegmentPositionIndex_orc = obrSegmentPositionIndex_orc | plus: 1 -%} 
         {% endfor -%}
+    {% endif %}
+    {% assign mainListIndexPosition = 1 %}
     {% endfor -%}
     ] 
 }
