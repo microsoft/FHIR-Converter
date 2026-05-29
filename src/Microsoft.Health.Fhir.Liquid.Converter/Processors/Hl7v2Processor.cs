@@ -40,32 +40,12 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             return InternalConvertFromObject(hl7v2Data, rootTemplate, templateProvider, traceInfo);
         }
 
-        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data, string rootTemplate)
-        {
-            // Load code system mapping
-            var context = base.CreateContext(templateProvider, data, rootTemplate);
-            var codeMapping = templateProvider.GetTemplate(GetCodeMappingTemplatePath(context));
-            if (codeMapping?.Root?.NodeList?.First() != null)
-            {
-                context["CodeMapping"] = codeMapping.Root.NodeList.First();
-            }
-
-            return context;
-        }
-
         protected override void CreateTraceInfo(object data, Context context, TraceInfo traceInfo)
         {
             if (traceInfo is Hl7v2TraceInfo hl7v2TraceInfo)
             {
                 hl7v2TraceInfo.UnusedSegments = Hl7v2TraceInfo.CreateTraceInfo(data as Hl7v2Data).UnusedSegments;
             }
-        }
-
-        private string GetCodeMappingTemplatePath(Context context)
-        {
-            var rootTemplateParentPath = context[TemplateUtility.RootTemplateParentPathScope]?.ToString();
-            var codeSystemTemplateName = "CodeSystem/CodeSystem";
-            return TemplateUtility.GetFormattedTemplatePath(codeSystemTemplateName, rootTemplateParentPath);
         }
     }
 }
