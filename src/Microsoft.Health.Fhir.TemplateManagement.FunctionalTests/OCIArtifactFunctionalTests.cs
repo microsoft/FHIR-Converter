@@ -294,6 +294,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             {
                 Assert.Equal(4, StreamUtility.DecompressFromTarGz(fs).Count());
             }
+
             DirectoryHelper.ClearFolder(initInputFolder);
             DirectoryHelper.ClearFolder("checkMultiLayersFolder");
         }
@@ -334,6 +335,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.FunctionalTests
             {
                 Assert.Equal(840, StreamUtility.DecompressFromTarGz(fs).Count());
             }
+
             DirectoryHelper.ClearFolder(initInputFolder);
             DirectoryHelper.ClearFolder("checkNewBaseLayerFolder");
         }
