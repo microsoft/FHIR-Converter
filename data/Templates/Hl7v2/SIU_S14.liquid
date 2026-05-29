@@ -298,8 +298,9 @@
             {% endif -%}
 
                 {% evaluate encounterId using 'ID/Encounter' PV1: pv1Segment, baseId: patientId -%}
+                {% evaluate appointmentID using 'ID/Appointment' SCH: firstSegments.SCH, baseId: patientId-%}
                 {% assign fullEncounterId = encounterId | prepend: 'Encounter/' -%}
-                {% include 'Resource/Encounter' Root_Template: 'SIU_S14', PV1: pv1Segment, PV2: pv2Segment, ID: encounterId, AccountId:accountId -%}
+                {% include 'Resource/Encounter' Root_Template: 'SIU_S14', PV1: pv1Segment, PV2: pv2Segment, ID: encounterId, AccountId:accountId, AppointmentID:appointmentID -%}
                 {% include 'Reference/Encounter/Subject' ID: encounterId, REF: fullPatientId -%}
                 {% include 'Extensions/Encounter/EncounterExtension' ID: encounterId, PV1: pv1Segment, PV2: pv2Segment -%}
             {% endif -%}
