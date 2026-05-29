@@ -1,7 +1,7 @@
 jobs:
   - job: Windows_Functional_Test
     pool:
-        vmImage: 'windows-2019'
+        vmImage: 'windows-2025'
     continueOnError: false
     steps:
     - checkout: none #skip checking out the default repository resource
@@ -12,7 +12,7 @@ jobs:
         downloadPath: $(System.DefaultWorkingDirectory)
     - script: |
         docker pull wusongrui/registry-windows:2.7.1
-        docker run --rm -d -p 5000:5000 --name registry wusongrui/registry-windows:2.7.1
+        docker run --rm -d --isolation=hyperv -p 5000:5000 --name registry wusongrui/registry-windows:2.7.1
       displayName: start registry
 
     - script: |
