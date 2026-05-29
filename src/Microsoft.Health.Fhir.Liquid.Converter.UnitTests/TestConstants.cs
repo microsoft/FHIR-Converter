@@ -15,6 +15,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests
         public static readonly string CcdaTemplateDirectory = Path.Join(TemplateDirectory, "Ccda");
         public static readonly string JsonTemplateDirectory = Path.Join(TemplateDirectory, "Json");
         public static readonly string FhirStu3TemplateDirectory = Path.Join(TemplateDirectory, "Stu3ToR4");
+        public static readonly string FhirR4TemplateDirectory = Path.Join(TemplateDirectory, "FhirR4");
         public static readonly string TestTemplateDirectory = "TestData/TestTemplates";
         public static readonly string ExpectedDirectory = "TestData/Expected/";
     }
