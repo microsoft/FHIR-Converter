@@ -20,12 +20,14 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
 {
     public class StreamUtility
     {
+        private const int GzipDefaultCompressionLevel = 6;
+
         public static Dictionary<string, byte[]> DecompressFromTarGz(Stream tarGzStream, string artifactFolder = "")
         {
             try
             {
                 Dictionary<string, byte[]> artifacts = new Dictionary<string, byte[]> { };
-                using var reader = ReaderFactory.Open(tarGzStream);
+                using var reader = ReaderFactory.OpenReader(tarGzStream);
                 while (reader.MoveToNextEntry())
                 {
                     if (!reader.Entry.IsDirectory)
@@ -66,7 +68,10 @@ namespace Microsoft.Health.Fhir.TemplateManagement.Utilities
                 var resultStream = new MemoryStream();
                 using (Stream stream = resultStream)
                 {
-                    using (var tarWriter = new TarWriter(stream, new TarWriterOptions(CompressionType.GZip, true)))
+                    using (var tarWriter = new TarWriter(stream, new TarWriterOptions(CompressionType.GZip, true)
+                    {
+                        CompressionLevel = GzipDefaultCompressionLevel,
+                    }))
                     {
                         foreach (var eachFile in fileContents)
                         {
