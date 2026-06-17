@@ -54,11 +54,11 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             return InternalConvertFromObject(jsonData, rootTemplate, templateProvider, traceInfo);
         }
 
-        protected override Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data, string rootTemplate)
+        protected override Context CreateBaseContext(ITemplateProvider templateProvider, IDictionary<string, object> data)
         {
             // Load data and templates
             var cancellationToken = Settings.TimeOut > 0 ? new CancellationTokenSource(Settings.TimeOut).Token : CancellationToken.None;
-            var context = new JSchemaContext(
+            return new JSchemaContext(
                 environments: new List<Hash> { Hash.FromDictionary(data) },
                 outerScope: new Hash(),
                 registers: Hash.FromDictionary(new Dictionary<string, object> { { "file_system", templateProvider.GetTemplateFileSystem() } }),
@@ -69,14 +69,6 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             {
                 ValidateSchemas = new List<JsonSchema>(),
             };
-
-            // Load filters
-            context.AddFilters(typeof(Filters));
-
-            // Add root template's parent path to context.
-            AddRootTemplatePathScope(context, templateProvider, rootTemplate);
-
-            return context;
         }
 
         protected override void CreateTraceInfo(object data, Context context, TraceInfo traceInfo)
