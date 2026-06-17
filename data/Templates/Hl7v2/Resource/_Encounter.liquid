@@ -615,6 +615,9 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
             {% endif -%}
 
         ],
+        {%if AppointmentID -%}
+            {% include 'Reference/Appointment/Reference_in_Encounter' AppointmentID: AppointmentID -%}
+        {%endif -%}
         "period":
         {
            
