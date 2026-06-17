@@ -16,7 +16,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.FilterTests
 {{ 'foo' | contains: 'fo' }}
 {{ '\E' | escape_special_chars }}
 {{ '\\E' | unescape_special_chars }}
-{{ true | is_nan }}
+{{ 1 | is_nan }}
 {{ -2019.6 | abs }}
 {{ 3 | pow: 3 }}
 {{ -5 | sign }}
@@ -28,7 +28,7 @@ f
 true
 \\E
 \E
-true
+false
 2019.6
 27
 -1
