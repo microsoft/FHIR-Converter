@@ -3,7 +3,14 @@
 
 name: $(Date:yyyyMMdd)$(Rev:.r)
 
-trigger: none
+trigger:
+  paths:
+    include:
+    - '*'
+    exclude:
+    - '*.md'
+    - docs
+    - data
 
 pr:
   branches:
