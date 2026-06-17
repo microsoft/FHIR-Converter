@@ -1854,8 +1854,8 @@
                     {%- comment -%} SPECIMEN_OBSERVATION - PRT related coding start {%- endcomment -%} 
                 {% endfor -%}
                 {% assign obxSegmentPositionIndex_obr = obxSegmentPositionIndex_obr | plus: 1 -%}  
-            {% assign obrSegmentPositionIndex_orc = obrSegmentPositionIndex_orc | plus: 1 -%} 
-        {% endfor -%}
-    {% endfor -%}
+			{% endfor -%}
+			{% assign obrSegmentPositionIndex_orc = obrSegmentPositionIndex_orc | plus: 1 -%} 
+		{% endfor -%}
     ] 
 }
