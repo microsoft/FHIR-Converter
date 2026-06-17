@@ -19,6 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <InternalsVisibleTo Include="Microsoft.Health.Fhir.Liquid.Converter.UnitTests" />
+    <InternalsVisibleTo Include="Microsoft.Health.Fhir.Liquid.Converter.FunctionalTests" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="SampleData\Hl7v2\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -61,6 +61,16 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
             return result;
         }
 
+        public virtual string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, IDictionary<string, string> variables, TraceInfo traceInfo = null)
+        {
+            throw new NotImplementedException(string.Format("{0} does not support variable-aware conversion.", GetType().Name));
+        }
+
+        public virtual string Convert(string data, string rootTemplate, ITemplateProvider templateProvider, IDictionary<string, string> variables, CancellationToken cancellationToken, TraceInfo traceInfo = null)
+        {
+            throw new NotImplementedException(string.Format("{0} does not support variable-aware conversion.", GetType().Name));
+        }
+
         protected abstract string InternalConvert(string data, string rootTemplate, ITemplateProvider templateProvider, TraceInfo traceInfo = null);
 
         protected virtual Context CreateContext(ITemplateProvider templateProvider, IDictionary<string, object> data, string rootTemplate)

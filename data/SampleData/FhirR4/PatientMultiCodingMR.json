@@ -1,0 +1,51 @@
+{
+  "resourceType": "Patient",
+  "id": "patient-multi-coding-mr",
+  "identifier": [
+    {
+      "use": "official",
+      "type": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "MR",
+            "display": "Medical Record Number"
+          },
+          {
+            "system": "http://hospital.example.org/local-codes",
+            "code": "MR",
+            "display": "Medical Record Number (local)"
+          }
+        ],
+        "text": "Medical Record Number"
+      },
+      "system": "http://hospital.example.org/mrn",
+      "value": "MRN-99999"
+    },
+    {
+      "use": "official",
+      "type": {
+        "coding": [
+          {
+            "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+            "code": "SS",
+            "display": "Social Security Number"
+          }
+        ]
+      },
+      "system": "http://hl7.org/fhir/sid/us-ssn",
+      "value": "999-99-9999"
+    }
+  ],
+  "active": true,
+  "name": [
+    {
+      "use": "official",
+      "family": "Jones",
+      "given": [
+        "Alex"
+      ]
+    }
+  ],
+  "gender": "unknown"
+}

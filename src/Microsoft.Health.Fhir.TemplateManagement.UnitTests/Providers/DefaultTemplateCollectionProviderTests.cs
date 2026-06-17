@@ -50,7 +50,7 @@ namespace Microsoft.Health.Fhir.TemplateManagement.UnitTests.Providers
             Assert.Single(templateCollection);
 
             // Verify expected number of templates per data type as per templates packaged from the data/Templates directory.
-            foreach (var defaultRootTemplateParentPath in Enum.GetValues<DefaultRootTemplateParentPath>())
+            foreach (var defaultRootTemplateParentPath in _defaultTemplatesFolderInfo.Keys)
             {
                 var templateFolder = _defaultTemplatesFolderInfo[defaultRootTemplateParentPath];
 

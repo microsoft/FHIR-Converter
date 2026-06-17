@@ -42,6 +42,9 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Processors
                 case (DataType.Fhir, ConvertDataOutputFormat.Hl7v2):
                     converter = new FhirToHl7v2Processor(processorSettings, _loggerFactory.CreateLogger<FhirToHl7v2Processor>());
                     break;
+                case (DataType.FhirR4, ConvertDataOutputFormat.Fhir):
+                    converter = new FhirR4Processor(processorSettings, _loggerFactory.CreateLogger<FhirR4Processor>());
+                    break;
                 default:
                     throw new InvalidOperationException($"Input Data Type {inputDataType} and Output Format {outputFormat} pairing is not supported.");
             }
