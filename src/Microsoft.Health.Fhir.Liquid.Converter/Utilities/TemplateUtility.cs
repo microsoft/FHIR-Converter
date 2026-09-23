@@ -175,7 +175,7 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
             JsonSchema schema;
             try
             {
-                schema = JsonSchema.FromJsonAsync(content).GetAwaiter().GetResult();
+                schema = JsonSchema.FromJsonAsync(content, null, CreateRestrictedReferenceResolverFactory()).GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {
@@ -210,7 +210,18 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.Utilities
                 metaSchemaContent = reader.ReadToEnd();
             }
 
-            return JsonSchema.FromJsonAsync(metaSchemaContent).GetAwaiter().GetResult();
+            return JsonSchema.FromJsonAsync(metaSchemaContent, null, CreateRestrictedReferenceResolverFactory()).GetAwaiter().GetResult();
+        }
+
+        /// <summary>
+        /// Creates a reference resolver factory that blocks external (file or URL) <c>$ref</c> resolution to
+        /// prevent server-side request forgery (SSRF) when parsing untrusted JSON schema templates.
+        /// In-document references (e.g. <c>#/definitions/...</c>) continue to resolve normally.
+        /// </summary>
+        private static Func<JsonSchema, JsonReferenceResolver> CreateRestrictedReferenceResolverFactory()
+        {
+            return schema => new RestrictedJsonReferenceResolver(
+                new JsonSchemaAppender(schema, new DefaultTypeNameGenerator()));
         }
 
         public static string GetRootTemplateParentPath(string rootTemplate)
