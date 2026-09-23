@@ -160,6 +160,15 @@ namespace Microsoft.Health.Fhir.Liquid.Converter {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to External JSON schema reference &apos;{0}&apos; is not allowed..
+        /// </summary>
+        internal static string ExternalJsonSchemaReferenceNotAllowed {
+            get {
+                return ResourceManager.GetString("ExternalJsonSchemaReferenceNotAllowed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid JSON schema content : {0}..
         /// </summary>
         internal static string InvalidJsonSchemaContent {
