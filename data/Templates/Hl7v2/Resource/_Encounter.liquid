@@ -114,12 +114,13 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                     {% assign PL_Value_Except_PL5_PL9 = PV1.3.Value %}
                 {% endif -%}
 
-                {% if PV1.3.1 -%}
-                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL_Field_Value: PV1.3.1, PL: PV1.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% comment -%} Most granular PL component first: bed (3), room (2), point of care (1), then facility, building, and floor. {% endcomment -%}
+                {% if PV1.3.3 -%}
+                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL_Field_Value: PV1.3.3, PL: PV1.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.3.2 -%}
                     {% evaluate Location_ID_PV1_3 using 'ID/Location' PL_Field_Value: PV1.3.2, PL: PV1.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
-                {% elseif PV1.3.3 -%}
-                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL_Field_Value: PV1.3.3, PL: PV1.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif PV1.3.1 -%}
+                    {% evaluate Location_ID_PV1_3 using 'ID/Location' PL_Field_Value: PV1.3.1, PL: PV1.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.3.4 -%}
                     {% evaluate Location_ID_PV1_3 using 'ID/Location' PL_Field_Value: PV1.3.4, PL: PV1.3, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.3.7 -%}
@@ -172,12 +173,13 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                     {% assign PL_Value_Except_PL5_PL9 = PV1.6.Value %}
                 {% endif -%}
 
-                {% if PV1.6.1 -%}
-                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL_Field_Value: PV1.6.1, PL: PV1.6, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% comment -%} Most granular PL component first: bed (3), room (2), point of care (1), then facility, building, and floor. {% endcomment -%}
+                {% if PV1.6.3 -%}
+                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL_Field_Value: PV1.6.3, PL: PV1.6, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.6.2 -%}
                     {% evaluate Location_ID_PV1_6 using 'ID/Location' PL_Field_Value: PV1.6.2, PL: PV1.6, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
-                {% elseif PV1.6.3 -%}
-                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL_Field_Value: PV1.6.3, PL: PV1.6, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif PV1.6.1 -%}
+                    {% evaluate Location_ID_PV1_6 using 'ID/Location' PL_Field_Value: PV1.6.1, PL: PV1.6, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.6.4 -%}
                     {% evaluate Location_ID_PV1_6 using 'ID/Location' PL_Field_Value: PV1.6.4, PL: PV1.6, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.6.7 -%}
@@ -215,12 +217,13 @@ Practitioner_ID_PV1_52: A resource Id, used to fill "participant.individual.refe
                     {% assign PL_Value_Except_PL5_PL9 = PV1.11.Value %}
                 {% endif -%}
 
-                {% if PV1.11.1 -%}
-                    {% evaluate Location_ID_PV1_11 using 'ID/Location' PL_Field_Value: PV1.11.1, PL: PV1.11, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% comment -%} Most granular PL component first: bed (3), room (2), point of care (1), then facility, building, and floor. {% endcomment -%}
+                {% if PV1.11.3 -%}
+                    {% evaluate Location_ID_PV1_11 using 'ID/Location' PL_Field_Value: PV1.11.3, PL: PV1.11, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.11.2 -%}
                     {% evaluate Location_ID_PV1_11 using 'ID/Location' PL_Field_Value: PV1.11.2, PL: PV1.11, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
-                {% elseif PV1.11.3 -%}
-                    {% evaluate Location_ID_PV1_11 using 'ID/Location' PL_Field_Value: PV1.11.3, PL: PV1.11, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
+                {% elseif PV1.11.1 -%}
+                    {% evaluate Location_ID_PV1_11 using 'ID/Location' PL_Field_Value: PV1.11.1, PL: PV1.11, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.11.4 -%}
                     {% evaluate Location_ID_PV1_11 using 'ID/Location' PL_Field_Value: PV1.11.4, PL: PV1.11, PL_Value_Except_PL5_PL9: PL_Value_Except_PL5_PL9 -%}
                 {% elseif PV1.11.7 -%}
