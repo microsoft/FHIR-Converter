@@ -141,6 +141,46 @@ namespace Microsoft.Health.Fhir.Liquid.Converter.UnitTests.Utilities
             exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
         }
 
+        [Theory]
+        [InlineData(@"{""type"": ""object"", ""properties"": {""x"": {""$ref"": ""http://169.254.169.254/latest/meta-data/""}}}")]
+        [InlineData(@"{""type"": ""object"", ""properties"": {""x"": {""$ref"": ""https://example.com/schema.json""}}}")]
+        [InlineData(@"{""type"": ""object"", ""properties"": {""x"": {""$ref"": ""file:///etc/passwd""}}}")]
+        [InlineData(@"{""type"": ""object"", ""properties"": {""x"": {""$ref"": ""external.json#/definitions/x""}}}")]
+        public void GivenJsonSchemaTemplateWithExternalReference_WhenParseTemplates_ExceptionShouldBeThrown(string schemaContent)
+        {
+            // External ($ref to file or URL) references must be rejected to prevent server-side request forgery (SSRF).
+            var templates = new Dictionary<string, string> { { "ExternalRef.schema.json", schemaContent } };
+            var exception = Assert.Throws<TemplateLoadException>(() => TemplateUtility.ParseTemplates(templates));
+            Assert.Equal(FhirConverterErrorCode.InvalidJsonSchema, exception.FhirConverterErrorCode);
+        }
+
+        [Fact]
+        public void GivenJsonSchemaTemplateWithInDocumentReference_WhenParseTemplates_CorrectResultShouldBeReturned()
+        {
+            // In-document references (resolved entirely within the schema) must continue to work.
+            var schemaContent = @"{
+                ""type"": ""object"",
+                ""definitions"": { ""idType"": { ""type"": ""string"" } },
+                ""properties"": { ""id"": { ""$ref"": ""#/definitions/idType"" } }
+            }";
+            var templates = new Dictionary<string, string> { { "LocalRef.schema.json", schemaContent } };
+            var parsedTemplates = TemplateUtility.ParseTemplates(templates);
+            Assert.NotNull(parsedTemplates["LocalRef.schema.json"]);
+        }
+
+        [Fact]
+        public void GivenValidJsonSchemaTemplate_WhenParseTemplates_CorrectResultShouldBeReturned()
+        {
+            var schemaContent = @"{
+                ""$schema"": ""http://json-schema.org/draft-04/schema#"",
+                ""type"": ""object"",
+                ""properties"": { ""resourceType"": { ""type"": ""string"" } }
+            }";
+            var templates = new Dictionary<string, string> { { "Valid.schema.json", schemaContent } };
+            var parsedTemplates = TemplateUtility.ParseTemplates(templates);
+            Assert.NotNull(parsedTemplates["Valid.schema.json"]);
+        }
+
         [Fact]
         public void GivenNestedTemplates_WhenParseTemplates_CorrectResultShouldBeReturned()
         {
